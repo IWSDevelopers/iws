@@ -16,8 +16,10 @@ package net.iaeste.iws.core.services;
 
 import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.api.requests.CommitteeRequest;
+import net.iaeste.iws.api.requests.FetchSurveyOfCountryRequest;
 import net.iaeste.iws.api.requests.InternationalGroupRequest;
-import net.iaeste.iws.api.requests.RegionalGroupRequest;
+import net.iaeste.iws.api.requests.SurveyOfCountryRequest;
+import net.iaeste.iws.api.responses.FetchSurveyOfCountryRespose;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.persistence.Authentication;
 import org.slf4j.Logger;
@@ -36,23 +38,15 @@ public final class CommitteeService {
         throw new NotImplementedException("Method pending implementation.");
     }
 
-    public Fallible manageCommittee(final Authentication authentication, final CommitteeRequest request) {
-        throw new NotImplementedException("Method pending implementation.");
-    }
-
-    public Fallible upgradeCommittee(final Authentication authentication, final CommitteeRequest request) {
-        throw new NotImplementedException("Method pending implementation.");
-    }
-
     public Fallible manageInternationalGroup(final Authentication authentication, final InternationalGroupRequest request) {
         throw new NotImplementedException("Method pending implementation.");
     }
 
-    public Fallible createRegionalGroup(final Authentication authentication, final RegionalGroupRequest request) {
+    public FetchSurveyOfCountryRespose fetchSurveyOfCountry(final Authentication authentication, final FetchSurveyOfCountryRequest request) {
         throw new NotImplementedException("Method pending implementation.");
     }
 
-    public Fallible manageRegionalGroup(final Authentication authentication, final RegionalGroupRequest request) {
+    public Fallible processSurveyOfCountry(final Authentication authentication, final SurveyOfCountryRequest request) {
         throw new NotImplementedException("Method pending implementation.");
     }
 }

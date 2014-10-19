@@ -17,8 +17,10 @@ package net.iaeste.iws.client;
 import net.iaeste.iws.api.Committees;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.CommitteeRequest;
+import net.iaeste.iws.api.requests.FetchSurveyOfCountryRequest;
 import net.iaeste.iws.api.requests.InternationalGroupRequest;
-import net.iaeste.iws.api.requests.RegionalGroupRequest;
+import net.iaeste.iws.api.requests.SurveyOfCountryRequest;
+import net.iaeste.iws.api.responses.FetchSurveyOfCountryRespose;
 import net.iaeste.iws.api.util.Fallible;
 
 /**
@@ -45,47 +47,31 @@ public final class CommitteeClient implements Committees {
      * {@inheritDoc}
      */
     @Override
-    public Fallible createCommittee(final AuthenticationToken token, final CommitteeRequest request) {
-        return client.createCommittee(token, request);
+    public Fallible processCommittee(final AuthenticationToken token, final CommitteeRequest request) {
+        return client.processCommittee(token, request);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Fallible manageCommittee(final AuthenticationToken token, final CommitteeRequest request) {
-        return client.manageCommittee(token, request);
+    public Fallible processInternationalGroup(final AuthenticationToken token, final InternationalGroupRequest request) {
+        return client.processInternationalGroup(token, request);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Fallible upgradeCommittee(final AuthenticationToken token, final CommitteeRequest request) {
-        return client.upgradeCommittee(token, request);
+    public FetchSurveyOfCountryRespose fetchSurveyOfCountry(final AuthenticationToken token, final FetchSurveyOfCountryRequest request) {
+        return client.fetchSurveyOfCountry(token, request);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Fallible manageInternationalGroup(final AuthenticationToken token, final InternationalGroupRequest request) {
-        return client.manageInternationalGroup(token, request);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Fallible createRegionalGroup(final AuthenticationToken token, final RegionalGroupRequest request) {
-        return client.createRegionalGroup(token, request);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Fallible manageRegionalGroup(final AuthenticationToken token, final RegionalGroupRequest request) {
-        return client.manageRegionalGroup(token, request);
+    public Fallible processSurveyOfCountry(final AuthenticationToken token, final SurveyOfCountryRequest request) {
+        return client.processSurveyOfCountry(token, request);
     }
 }

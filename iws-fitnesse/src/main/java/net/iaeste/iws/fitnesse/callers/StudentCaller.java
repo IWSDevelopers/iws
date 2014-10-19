@@ -51,7 +51,7 @@ public final class StudentCaller implements Students {
     public CreateUserResponse createStudent(final AuthenticationToken token, final CreateUserRequest request) {
         try {
             return caller.createStudent(token, request);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             throw new StopTestException(e);
         }
     }
@@ -63,7 +63,7 @@ public final class StudentCaller implements Students {
     public StudentResponse processStudent(final AuthenticationToken token, final StudentRequest request) {
         try {
             return caller.processStudent(token, request);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             throw new StopTestException(e);
         }
     }
@@ -75,7 +75,7 @@ public final class StudentCaller implements Students {
     public FetchStudentsResponse fetchStudents(final AuthenticationToken token, final FetchStudentsRequest request) {
         try {
             return caller.fetchStudents(token, request);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             throw new StopTestException(e);
         }
     }
@@ -87,7 +87,7 @@ public final class StudentCaller implements Students {
     public StudentApplicationResponse processStudentApplication(final AuthenticationToken token, final ProcessStudentApplicationsRequest request) {
         try {
             return caller.processStudentApplication(token, request);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             throw new StopTestException(e);
         }
     }
@@ -99,7 +99,7 @@ public final class StudentCaller implements Students {
     public FetchStudentApplicationsResponse fetchStudentApplications(final AuthenticationToken token, final FetchStudentApplicationsRequest request) {
         try {
             return caller.fetchStudentApplications(token, request);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             throw new StopTestException(e);
         }
     }
@@ -111,7 +111,7 @@ public final class StudentCaller implements Students {
     public StudentApplicationResponse processApplicationStatus(final AuthenticationToken token, final StudentApplicationRequest request) {
         try {
             return caller.processApplicationStatus(token, request);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             throw new StopTestException(e);
         }
     }

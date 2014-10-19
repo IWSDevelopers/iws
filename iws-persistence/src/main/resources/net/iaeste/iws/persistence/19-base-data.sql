@@ -34,6 +34,10 @@ insert into roles (id, external_id, role, description) values (5, '29ee5196-0db1
 -- System Control: 1xx
 insert into permissions (id, permission) values (100, 'FETCH_COUNTRIES');
 insert into permissions (id, permission) values (101, 'PROCESS_COUNTRY');
+insert into permissions (id, permission) values (102, 'PROCESS_COMMITTEE');
+insert into permissions (id, permission) values (103, 'PROCESS_INTERNATIONAL_GROUP');
+insert into permissions (id, permission) values (150, 'FETCH_SURVEY_OF_COUNTRIES');
+insert into permissions (id, permission) values (151, 'PROCESS_SURVEY_OF_COUNTRIES');
 -- Administration: 2xx
 insert into permissions (id, permission) values (200, 'CONTROL_USER_ACCOUNT');
 insert into permissions (id, permission) values (201, 'FETCH_USER');
@@ -102,13 +106,47 @@ insert into permission_to_role (role_id, permission_id) values (5, 100);
 
 -- Permission 101 - Process Country
 --   -> GroupTypes: 0 Administration
---                  4 National
 --   -> Roles:      1 Owner
 --                  2 Moderator
 insert into permission_to_grouptype (grouptype_id, permission_id) values (0, 101);
-insert into permission_to_grouptype (grouptype_id, permission_id) values (4, 101);
 insert into permission_to_role (role_id, permission_id) values (1, 101);
 insert into permission_to_role (role_id, permission_id) values (2, 101);
+
+-- Permission 102 - Process Committee
+--   -> GroupTypes: 0 Administration
+--   -> Roles:      1 Owner
+--                  2 Moderator
+insert into permission_to_grouptype (grouptype_id, permission_id) values (0, 102);
+insert into permission_to_role (role_id, permission_id) values (1, 102);
+insert into permission_to_role (role_id, permission_id) values (2, 102);
+
+-- Permission 103 - Process Country
+--   -> GroupTypes: 0 Administration
+--   -> Roles:      1 Owner
+--                  2 Moderator
+insert into permission_to_grouptype (grouptype_id, permission_id) values (0, 103);
+insert into permission_to_role (role_id, permission_id) values (1, 103);
+insert into permission_to_role (role_id, permission_id) values (2, 103);
+
+-- Permission 150 - Fetch Survey of Countries
+--   -> GroupTypes: 0 Administration
+--                  3 International
+--                  4 National
+--   -> Roles:      1 Owner
+--                  2 Moderator
+insert into permission_to_grouptype (grouptype_id, permission_id) values (0, 150);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (3, 150);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (4, 150);
+insert into permission_to_role (role_id, permission_id) values (1, 150);
+insert into permission_to_role (role_id, permission_id) values (2, 150);
+
+-- Permission 151 - Process Survey of Countries
+--   -> GroupTypes: 4 National
+--   -> Roles:      1 Owner
+--                  2 Moderator
+insert into permission_to_grouptype (grouptype_id, permission_id) values (4, 151);
+insert into permission_to_role (role_id, permission_id) values (1, 151);
+insert into permission_to_role (role_id, permission_id) values (2, 151);
 
 -- Permission 200 - Control User Account
 --   -> GroupTypes: 0 Administration

@@ -55,7 +55,7 @@ public final class AccessCaller implements Access {
     public AuthenticationResponse generateSession(final AuthenticationRequest request) {
         try {
             return caller.generateSession(request);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             throw new StopTestException(e);
         }
     }
@@ -67,7 +67,7 @@ public final class AccessCaller implements Access {
     public Fallible requestResettingSession(final AuthenticationRequest request) {
         try {
             return caller.requestResettingSession(request);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             throw new StopTestException(e);
         }
     }
@@ -79,7 +79,7 @@ public final class AccessCaller implements Access {
     public AuthenticationResponse resetSession(final String resetSessionToken) {
         try {
             return caller.resetSession(resetSessionToken);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             throw new StopTestException(e);
         }
     }
@@ -91,7 +91,7 @@ public final class AccessCaller implements Access {
     public <T extends Serializable> Fallible saveSessionData(final AuthenticationToken token, final SessionDataRequest<T> request) {
         try {
             return caller.saveSessionData(token, request);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             throw new StopTestException(e);
         }
     }
@@ -103,7 +103,7 @@ public final class AccessCaller implements Access {
     public <T extends Serializable> SessionDataResponse<T> readSessionData(final AuthenticationToken token) {
         try {
             return caller.readSessionData(token);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             throw new StopTestException(e);
         }
     }
@@ -115,7 +115,7 @@ public final class AccessCaller implements Access {
     public FallibleResponse verifySession(final AuthenticationToken token) {
         try {
             return caller.verifySession(token);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             throw new StopTestException(e);
         }
     }
@@ -127,7 +127,7 @@ public final class AccessCaller implements Access {
     public FallibleResponse deprecateSession(final AuthenticationToken token) {
         try {
             return caller.deprecateSession(token);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             throw new StopTestException(e);
         }
     }
@@ -139,7 +139,7 @@ public final class AccessCaller implements Access {
     public Fallible forgotPassword(final String username) {
         try {
             return caller.forgotPassword(username);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             throw new StopTestException(e);
         }
     }
@@ -151,7 +151,7 @@ public final class AccessCaller implements Access {
     public Fallible resetPassword(final String resetPasswordToken, final Password password) {
         try {
             return caller.resetPassword(resetPasswordToken, password);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             throw new StopTestException(e);
         }
     }
@@ -163,7 +163,7 @@ public final class AccessCaller implements Access {
     public FallibleResponse updatePassword(final AuthenticationToken token, final Password password) {
         try {
             return caller.updatePassword(token, password);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             throw new StopTestException(e);
         }
     }
@@ -175,7 +175,7 @@ public final class AccessCaller implements Access {
     public FetchPermissionResponse fetchPermissions(final AuthenticationToken token) {
         try {
             return caller.fetchPermissions(token);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             throw new StopTestException(e);
         }
     }

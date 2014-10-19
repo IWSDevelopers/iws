@@ -17,8 +17,10 @@ package net.iaeste.iws.fitnesse.callers;
 import net.iaeste.iws.api.Committees;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.CommitteeRequest;
+import net.iaeste.iws.api.requests.FetchSurveyOfCountryRequest;
 import net.iaeste.iws.api.requests.InternationalGroupRequest;
-import net.iaeste.iws.api.requests.RegionalGroupRequest;
+import net.iaeste.iws.api.requests.SurveyOfCountryRequest;
+import net.iaeste.iws.api.responses.FetchSurveyOfCountryRespose;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.client.CommitteeClient;
 import net.iaeste.iws.fitnesse.exceptions.StopTestException;
@@ -46,10 +48,10 @@ public final class CommitteeCaller implements Committees {
      * {@inheritDoc}
      */
     @Override
-    public Fallible createCommittee(final AuthenticationToken token, final CommitteeRequest request) {
+    public Fallible processCommittee(final AuthenticationToken token, final CommitteeRequest request) {
         try {
-            return caller.createCommittee(token, request);
-        } catch (Exception e) {
+            return caller.processCommittee(token, request);
+        } catch (RuntimeException e) {
             throw new StopTestException(e);
         }
     }
@@ -58,10 +60,10 @@ public final class CommitteeCaller implements Committees {
      * {@inheritDoc}
      */
     @Override
-    public Fallible manageCommittee(final AuthenticationToken token, final CommitteeRequest request) {
+    public Fallible processInternationalGroup(final AuthenticationToken token, final InternationalGroupRequest request) {
         try {
-            return caller.manageCommittee(token, request);
-        } catch (Exception e) {
+            return caller.processInternationalGroup(token, request);
+        } catch (RuntimeException e) {
             throw new StopTestException(e);
         }
     }
@@ -70,10 +72,10 @@ public final class CommitteeCaller implements Committees {
      * {@inheritDoc}
      */
     @Override
-    public Fallible upgradeCommittee(final AuthenticationToken token, final CommitteeRequest request) {
+    public FetchSurveyOfCountryRespose fetchSurveyOfCountry(final AuthenticationToken token, final FetchSurveyOfCountryRequest request) {
         try {
-            return caller.upgradeCommittee(token, request);
-        } catch (Exception e) {
+            return caller.fetchSurveyOfCountry(token, request);
+        } catch (RuntimeException e) {
             throw new StopTestException(e);
         }
     }
@@ -82,34 +84,10 @@ public final class CommitteeCaller implements Committees {
      * {@inheritDoc}
      */
     @Override
-    public Fallible manageInternationalGroup(final AuthenticationToken token, final InternationalGroupRequest request) {
+    public Fallible processSurveyOfCountry(final AuthenticationToken token, final SurveyOfCountryRequest request) {
         try {
-            return caller.manageInternationalGroup(token, request);
-        } catch (Exception e) {
-            throw new StopTestException(e);
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Fallible createRegionalGroup(final AuthenticationToken token, final RegionalGroupRequest request) {
-        try {
-            return caller.createRegionalGroup(token, request);
-        } catch (Exception e) {
-            throw new StopTestException(e);
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Fallible manageRegionalGroup(final AuthenticationToken token, final RegionalGroupRequest request) {
-        try {
-            return caller.manageRegionalGroup(token, request);
-        } catch (Exception e) {
+            return caller.processSurveyOfCountry(token, request);
+        } catch (RuntimeException e) {
             throw new StopTestException(e);
         }
     }

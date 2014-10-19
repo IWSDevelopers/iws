@@ -16,12 +16,14 @@ package net.iaeste.iws.api;
 
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.CommitteeRequest;
+import net.iaeste.iws.api.requests.FetchSurveyOfCountryRequest;
 import net.iaeste.iws.api.requests.InternationalGroupRequest;
-import net.iaeste.iws.api.requests.RegionalGroupRequest;
+import net.iaeste.iws.api.requests.SurveyOfCountryRequest;
+import net.iaeste.iws.api.responses.FetchSurveyOfCountryRespose;
 import net.iaeste.iws.api.util.Fallible;
 
 /**
- * Control of National Committees and Regional Groups are done via the
+ * Control of National Committees and International Groups is done via the
  * functionality provided by this Interface.<br />
  *   The IAESTE Committees consists of several different types, from Full
  * Members, Associate Members to Co-operating Institutions. Once a new member
@@ -31,24 +33,15 @@ import net.iaeste.iws.api.util.Fallible;
  * applies, is that a Country can only go from Co-Operating Institution state to
  * Associate Member state, if the Committees in the Country have consolidated,
  * meaning that there can be only one National Committee.<br />
- *   An exception to this rule does apply, which was made for China. The rule
- * states, that the Country can move up in membership, if the other Institutions
- * will accept the status of SAR, Self Administrated Region. A SAR is in itself
- * a complete National Committee, with its own staff, and the rule for the
- * IntraWeb is irrelevant, as a SAR has the same rights as any other
- * Committee.<br />
- *   There exists two types of International Groups for IAESTE, one is referred
- * to as "International", and the other as "Regional". International Groups, are
- * those Groups instituted by IAESTE, this includes SID, Seminar on IAESTE
- * Development, and the IDT, IAESTE Internet Development Team. Both are groups
- * under direct control of the General Secretary, with a budget that is mandated
- * annually by the IAESTE Members during the Annual Conference. The other type,
+ *   Besides the Groups for Committees, there exists Global Groups in IAESTE,
+ * these are referred to as International Groups. International Groups, is any
+ * Group, which is not under the control of a single Country, but serves a
+ * larger purpose. The standard International Groups includes the SID (Seminar
+ * on IAESTE Development) and the IDT (IAESTE Internet Development Team). Both
  * Regional, is designed as an Independent Group. It serves the purpose of
- * allowing some countries to join together with an interest focus. an example;
- * CEC or Central European Countries.<br />
- *   The main purpose for Regional Groups, is to have a forum, which is
- * independent of IAESTE, meaning that the General Secretary and the Board have
- * no influence over it.
+ * are groups under direct control by the Board of IAESTE. It is also possible
+ * to create International Groups for other purposes, which may serve regional
+ * purposes, for example the CEC (Central European Countries).
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -57,35 +50,23 @@ import net.iaeste.iws.api.util.Fallible;
 public interface Committees {
 
     /**
-     * Creates a new Co-operating Institution for IAESTE. This requres that the
-     * following information is provided:
-     * <ul>
-     *     <li>National Secretary</li>
-     *     <li>Country Name</li>
-     *     <li>IAESTE Name</li>
-     * </ul>
-     *
-     * @param token   User Authentication Request object
-     * @param request Committee Request Object
-     * @return Standard Error object
-     */
-    Fallible createCommittee(AuthenticationToken token, CommitteeRequest request);
-
-    /**
-     * Managing a Committee, means that it is possible to update the current
-     * National Secretary, change the Country and, the name.<br />
-     *   Note, changing the name of will also mean that the public mailinglists,
-     * will also be changed! So this option should no be used lightly.
-     *
-     * @param token   User Authentication Request object
-     * @param request Committee Request Object
-     * @return Standard Error object
-     */
-    Fallible manageCommittee(AuthenticationToken token, CommitteeRequest request);
-
-    /**
-     * Upgrades a Committee from the current status to the next level, following
-     * these rules:
+     * Processing a Committee means either creating a new one, altering
+     * information about an existing, upgrading it or suspend/delete it.<br />
+     *   If there is no Id for the Committee, then the IWS will assume that the
+     * request is for creating a new Co-operating Institution. There will be
+     * additional checks regarding the current status of the Country, etc. The
+     * IWS will also create an NS account for the new Committee.<br />
+     *   If the Id is provided, then the committee will be updated. It is
+     * possible to change the current status of the Committee, change a country
+     * from Co-operating Institution to Associate Member or an Associate Member
+     * to Full Member. It is also possible to suspend/delete a Committee, in
+     * which case the status of the Country will also be updated to reflect
+     * this.<br />
+     *   It is also possible as part of an update, to change the current
+     * National Secretary, if the former National Secretary did not properly
+     * hand over the ownership.<br />
+     *   Upgrading a Committee from the current status to the next level, will
+     * be done according to the following rules:
      * <ul>
      *     <li>Current Status: <b>Co-operating Institution</b><br />
      *       Co-operating Institutions can be upgraded to Associate Members
@@ -103,40 +84,59 @@ public interface Committees {
      *       Associate Members can become Full Members after a few years.
      *     </li>
      * </ul>
-     * Note; The IntraWeb does not make any distinctions between members,
-     * regarding how and what they may do.
+     *
+     *
+     * Creates a new Co-operating Institution for IAESTE. This requres that the
+     * following information is provided:
+     * <ul>
+     *     <li>National Secretary</li>
+     *     <li>Country Name</li>
+     *     <li>IAESTE Name</li>
+     * </ul>
      *
      * @param token   User Authentication Request object
      * @param request Committee Request Object
      * @return Standard Error object
      */
-    Fallible upgradeCommittee(AuthenticationToken token, CommitteeRequest request);
+    Fallible processCommittee(AuthenticationToken token, CommitteeRequest request);
 
     /**
      * Note; A problem was discovered with the Board. Normally, only the owner
      * of an International Group is receiving the public mails, but the Board
      * is a special case, here all members should receive the mails.
+     *   2014-10-19; The GroupTypes have been extended with mail settings and
+     * the UserGroup relation is also extended with same, so it is possible to
+     * have both public and private mailing lists and flags exists to control
+     * wether a user is on either and if the user may write to the private
+     * list.<br />
+     *   For now, please consider this stub a work-in-progress to be finalized
+     * as part of IWS Release 1.2 (Scheduled January 2015).
      *
      * @param token   User Authentication Request object
      * @param request International Group Request Object
      * @return Standard Error object
      */
-    Fallible manageInternationalGroup(AuthenticationToken token, InternationalGroupRequest request);
+    Fallible processInternationalGroup(AuthenticationToken token, InternationalGroupRequest request);
 
     /**
-     *
+     * Retrieves the Survey for a given Country. The survey is a rather
+     * comprehensive list of information that must be updated annually by each
+     * country. It contains various general purpose information which is
+     * important for other countries.
      *
      * @param token   User Authentication Request object
-     * @param request Regional Request Object
-     * @return Standard Error object
+     * @param request Fetch Survey of Country Request Object
+     * @return Response Object with the Survey information or error information
      */
-    Fallible createRegionalGroup(AuthenticationToken token, RegionalGroupRequest request);
+    FetchSurveyOfCountryRespose fetchSurveyOfCountry(AuthenticationToken token, FetchSurveyOfCountryRequest request);
 
     /**
+     * Processes the Survey of Countries for the given Country. The processing
+     * result is the returned.
      *
      * @param token   User Authentication Request object
-     * @param request Regional Request Object
+     * @param request Survey of Country Request Object
      * @return Standard Error object
      */
-    Fallible manageRegionalGroup(AuthenticationToken token, RegionalGroupRequest request);
+    Fallible processSurveyOfCountry(AuthenticationToken token, SurveyOfCountryRequest request);
 }

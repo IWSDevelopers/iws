@@ -37,7 +37,7 @@ public final class CreateCommittee  extends AbstractFixture<Fallible> {
     @Override
     public void execute() throws StopTestException {
         createSession();
-        setResponse(committees.createCommittee(getToken(), request));
+        setResponse(committees.processCommittee(getToken(), request));
     }
 
     @Override

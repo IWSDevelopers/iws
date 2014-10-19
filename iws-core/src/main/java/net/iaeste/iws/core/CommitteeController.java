@@ -21,9 +21,11 @@ import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.requests.CommitteeRequest;
+import net.iaeste.iws.api.requests.FetchSurveyOfCountryRequest;
 import net.iaeste.iws.api.requests.InternationalGroupRequest;
-import net.iaeste.iws.api.requests.RegionalGroupRequest;
+import net.iaeste.iws.api.requests.SurveyOfCountryRequest;
 import net.iaeste.iws.api.responses.FallibleResponse;
+import net.iaeste.iws.api.responses.FetchSurveyOfCountryRespose;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.core.services.CommitteeService;
 import net.iaeste.iws.core.services.ServiceFactory;
@@ -54,9 +56,9 @@ public final class CommitteeController extends CommonController implements Commi
      * {@inheritDoc}
      */
     @Override
-    public Fallible createCommittee(final AuthenticationToken token, final CommitteeRequest request) {
+    public Fallible processCommittee(final AuthenticationToken token, final CommitteeRequest request) {
         if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting createCommittee()"));
+            log.trace(formatLogMessage(token, "Starting processCommittee()"));
         }
         Fallible response;
 
@@ -71,7 +73,7 @@ public final class CommitteeController extends CommonController implements Commi
         }
 
         if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished createCommittee()"));
+            log.trace(formatLogMessage(token, "Finished processCommittee()"));
         }
         return response;
     }
@@ -80,61 +82,9 @@ public final class CommitteeController extends CommonController implements Commi
      * {@inheritDoc}
      */
     @Override
-    public Fallible manageCommittee(final AuthenticationToken token, final CommitteeRequest request) {
+    public Fallible processInternationalGroup(final AuthenticationToken token, final InternationalGroupRequest request) {
         if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting manageCommittee()"));
-        }
-        Fallible response;
-
-        try {
-            final Authentication authentication = verifyAccess(token, Permission.PROCESS_COMMITTEE);
-            verify(request);
-
-            final CommitteeService service = factory.prepareCommitteeService();
-            response = service.manageCommittee(authentication, request);
-        } catch (IWSException e) {
-            response = new FallibleResponse(e.getError(), e.getMessage());
-        }
-
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished manageCommittee()"));
-        }
-        return response;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Fallible upgradeCommittee(final AuthenticationToken token, final CommitteeRequest request) {
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting upgradeCommittee()"));
-        }
-        Fallible response;
-
-        try {
-            final Authentication authentication = verifyAccess(token, Permission.UPGRADE_COMMITTEE);
-            verify(request);
-
-            final CommitteeService service = factory.prepareCommitteeService();
-            response = service.upgradeCommittee(authentication, request);
-        } catch (IWSException e) {
-            response = new FallibleResponse(e.getError(), e.getMessage());
-        }
-
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished upgradeCommittee()"));
-        }
-        return response;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Fallible manageInternationalGroup(final AuthenticationToken token, final InternationalGroupRequest request) {
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting manageInternationalGroup()"));
+            log.trace(formatLogMessage(token, "Starting processInternationalGroup()"));
         }
         Fallible response;
 
@@ -149,7 +99,7 @@ public final class CommitteeController extends CommonController implements Commi
         }
 
         if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished manageInternationalGroup()"));
+            log.trace(formatLogMessage(token, "Finished processInternationalGroup()"));
         }
         return response;
     }
@@ -158,24 +108,24 @@ public final class CommitteeController extends CommonController implements Commi
      * {@inheritDoc}
      */
     @Override
-    public Fallible createRegionalGroup(final AuthenticationToken token, final RegionalGroupRequest request) {
+    public FetchSurveyOfCountryRespose fetchSurveyOfCountry(final AuthenticationToken token, final FetchSurveyOfCountryRequest request) {
         if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting createRegionalGroup()"));
+            log.trace(formatLogMessage(token, "Starting fetchSurveyOfCountry()"));
         }
-        Fallible response;
+        FetchSurveyOfCountryRespose response;
 
         try {
-            final Authentication authentication = verifyAccess(token, Permission.CREATE_REGIONAL_GROUP);
+            final Authentication authentication = verifyAccess(token, Permission.FETCH_SURVEY_OF_COUNTRIES);
             verify(request);
 
             final CommitteeService service = factory.prepareCommitteeService();
-            response = service.createRegionalGroup(authentication, request);
+            response = service.fetchSurveyOfCountry(authentication, request);
         } catch (IWSException e) {
-            response = new FallibleResponse(e.getError(), e.getMessage());
+            response = new FetchSurveyOfCountryRespose(e.getError(), e.getMessage());
         }
 
         if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished createRegionalGroup()"));
+            log.trace(formatLogMessage(token, "Finished fetchSurveyOfCountry()"));
         }
         return response;
     }
@@ -184,24 +134,24 @@ public final class CommitteeController extends CommonController implements Commi
      * {@inheritDoc}
      */
     @Override
-    public Fallible manageRegionalGroup(final AuthenticationToken token, final RegionalGroupRequest request) {
+    public Fallible processSurveyOfCountry(final AuthenticationToken token, final SurveyOfCountryRequest request) {
         if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting manageRegionalGroup()"));
+            log.trace(formatLogMessage(token, "Starting processSurveyOfCountry()"));
         }
         Fallible response;
 
         try {
-            final Authentication authentication = verifyAccess(token, Permission.PROCESS_REGIONAL_GROUP);
+            final Authentication authentication = verifyAccess(token, Permission.PROCESS_SURVEY_OF_COUNTRIES);
             verify(request);
 
             final CommitteeService service = factory.prepareCommitteeService();
-            response = service.manageRegionalGroup(authentication, request);
+            response = service.processSurveyOfCountry(authentication, request);
         } catch (IWSException e) {
             response = new FallibleResponse(e.getError(), e.getMessage());
         }
 
         if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished manageRegionalGroup()"));
+            log.trace(formatLogMessage(token, "Finished processSurveyOfCountry()"));
         }
         return response;
     }

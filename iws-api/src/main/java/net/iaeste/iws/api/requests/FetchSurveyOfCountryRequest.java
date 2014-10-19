@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
  * ----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.requests.RegionalGroupRequest
+ * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.requests.FetchSurveyOfCountryRequest
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -23,27 +23,45 @@ import java.util.Map;
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   IWS 1.0
+ * @since   IWS 1.2
  */
-public final class RegionalGroupRequest extends AbstractVerification {
+public final class FetchSurveyOfCountryRequest extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
+
+    private String groupId = null;
 
     // =========================================================================
     // Object Constructors
     // =========================================================================
 
     /**
-     * Empty Constructor, to use if the setters are invoked. This is required
-     * for WebServices to work properly.
+     * Default Constructor.
      */
-    public RegionalGroupRequest() {
+    public FetchSurveyOfCountryRequest() {
     }
 
     // =========================================================================
     // Standard Setters & Getters
     // =========================================================================
+
+    /**
+     * Setting the Id of the National Committee to retrieve the Survey of
+     * Countries for. The Id must be valid, otherwise an Illegal Argument
+     * Exception is thrown.
+     *
+     * @param groupId National Group Id
+     * @throws IllegalArgumentException if given group Id is invalid
+     */
+    public void setGroupId(final String groupId) throws IllegalArgumentException {
+        ensureValidId("groupId", groupId);
+        this.groupId = groupId;
+    }
+
+    public String getGroupId() {
+        return groupId;
+    }
 
     // =========================================================================
     // Standard Request Methods
@@ -54,7 +72,10 @@ public final class RegionalGroupRequest extends AbstractVerification {
      */
     @Override
     public Map<String, String> validate() {
-        final Map<String, String> validation = new HashMap<>(0);
+        final Map<String, String> validation = new HashMap<>(1);
+
+        isNotNull(validation, "groupId", groupId);
+
         return validation;
     }
 }

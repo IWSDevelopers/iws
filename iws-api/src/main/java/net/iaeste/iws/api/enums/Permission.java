@@ -88,11 +88,10 @@ public enum Permission {
     // Committee related Permissions
     // =========================================================================
 
-    PROCESS_COMMITTEE("Process Committee", Committees.class, "createCommittee", "manageCommittee"),
-    UPGRADE_COMMITTEE("Upgrade Committee", Committees.class, "upgradeCommittee"),
-    PROCESS_INTERNATIONAL_GROUP("Process International Group", Committees.class, "manageInternationalGroup"),
-    CREATE_REGIONAL_GROUP("Create Regional Group", Committees.class, "createRegionalGroup"),
-    PROCESS_REGIONAL_GROUP("Process Regional Group", Committees.class, "manageRegionalGroup"),
+    PROCESS_COMMITTEE("Process Committee", Committees.class, "processCommittee", "manageCommittee"),
+    PROCESS_INTERNATIONAL_GROUP("Process International Group", Committees.class, "processInternationalGroup"),
+    FETCH_SURVEY_OF_COUNTRIES("Fetch Survey of Countries", Committees.class, "fetchSurveyOfCountry"),
+    PROCESS_SURVEY_OF_COUNTRIES("Process Survey of Countries", Committees.class, "processSurveyOfCountry"),
 
     // =========================================================================
     // File related Permissions

@@ -49,7 +49,7 @@ public final class StorageCaller implements Storage {
     public FileResponse processFile(final AuthenticationToken token, final FileRequest request) {
         try {
             return caller.processFile(token, request);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             throw new StopTestException(e);
         }
     }
@@ -61,7 +61,7 @@ public final class StorageCaller implements Storage {
     public FetchFileResponse fetchFile(final AuthenticationToken token, final FetchFileRequest request) {
         try {
             return caller.fetchFile(token, request);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             throw new StopTestException(e);
         }
     }

@@ -35,7 +35,7 @@ public enum GroupType {
      * such as marriage where the family name is changed.<br />
      *   There can only exists 1 Administration Group.
      */
-    ADMINISTRATION("Administration", false, true),
+    ADMINISTRATION("Administration", WhoMayJoin.All, false, true),
 
     /**
      * All user accounts have a private group assigned, with this type. It is
@@ -45,7 +45,7 @@ public enum GroupType {
      * from the system, then the private data can be easily removed as
      * well.
      */
-    PRIVATE("Private", false, false),
+    PRIVATE("Private", WhoMayJoin.None, false, false),
 
     /**
      * All members are assigned to this type, which gives the rights to the
@@ -58,7 +58,7 @@ public enum GroupType {
      * IDT members, etc.<br />
      *   Note; users can only be member of 1 Members Group!
      */
-    MEMBER("Members", true, false),
+    MEMBER("Members", WhoMayJoin.Members, true, false),
 
     /**
      * International Groups, are Groups which share members across Country
@@ -99,7 +99,7 @@ public enum GroupType {
      *   Regardless of the purpose, any group which purpose is not bound to a
      * Single country, is an International Group.
      */
-    INTERNATIONAL("International", true, true),
+    INTERNATIONAL("International", WhoMayJoin.All, true, true),
 
     /**
      * All Countries have both a Members group, where all the people who are a
@@ -111,13 +111,13 @@ public enum GroupType {
      * be allowed to join the NC's Mailinglist.<br />
      *   Note; users can only be member of 1 National Group!
      */
-    NATIONAL("Staff", false, true),
+    NATIONAL("Staff", WhoMayJoin.Members, false, true),
 
     /**
      * Local Groups are for Local Committees around the Country. Local Groups
      * will have a National Group as parent Group.
      */
-    LOCAL("Local Committee", true, true),
+    LOCAL("Local Committee", WhoMayJoin.Members, true, true),
 
     /**
      * For Groups, where you need only to have a common mailinglist as well as
@@ -125,7 +125,7 @@ public enum GroupType {
      * purpose well.<br />
      *   Workgroups can be assigned as a sub-group to any of the other groups.
      */
-    WORKGROUP("WorkGroup", true, true),
+    WORKGROUP("WorkGroup", WhoMayJoin.Inherited, true, true),
 
     /**
      * The Student Group is for Offer Applicants, meaning that if a person
@@ -139,13 +139,33 @@ public enum GroupType {
      * group (with role Student). Normal members who wishes to apply for Offers,
      * must also be added to the Student Group.
      */
-    STUDENT("Students", false, false);
+    STUDENT("Students", WhoMayJoin.Members, false, false);
 
     // =========================================================================
     // Private Constructor & functionality
     // =========================================================================
 
+    /**
+     * This enum contains the rules regarding who may join a Group, since it
+     * depends on the specific type.
+     */
+    private enum WhoMayJoin {
+
+        /** Only users belonging to the Member Group may join. */
+        Members,
+
+        /** Everybody may join this type of Group. */
+        All,
+
+        /** The group is closed for adding members. */
+        None,
+
+        /** The rule, regarding who may join is the same as the parents. */
+        Inherited
+    }
+
     private final String description;
+    private final WhoMayJoin whoMayJoin;
     private final Boolean mayHavePrivateMailinglist;
     private final Boolean mayHavePublicMailinglist;
 
@@ -161,17 +181,23 @@ public enum GroupType {
      * who's on either.
      *
      * @param description               Display name for this GroupType
+     * @param whoMayJoin                   The membmers who may join
      * @param mayHavePrivateMailinglist May this GroupType have private lists
      * @param mayHavePublicMailinglist  May this GroupType have public lists
      */
-    GroupType(final String description, final Boolean mayHavePrivateMailinglist, final Boolean mayHavePublicMailinglist) {
+    GroupType(final String description, final WhoMayJoin whoMayJoin, final Boolean mayHavePrivateMailinglist, final Boolean mayHavePublicMailinglist) {
         this.description = description;
+        this.whoMayJoin = whoMayJoin;
         this.mayHavePrivateMailinglist = mayHavePrivateMailinglist;
         this.mayHavePublicMailinglist = mayHavePublicMailinglist;
     }
 
     public String getDescription() {
         return description;
+    }
+
+    public WhoMayJoin getWhoMayJoin() {
+        return whoMayJoin;
     }
 
     public Boolean getMayHavePrivateMailinglist() {

@@ -121,7 +121,7 @@ create table countries (
 create table permissions (
     id                  integer,
     permission          varchar(50),
-    restricted          decimal(1) default 0,
+    restricted          boolean default false,
     description         varchar(2048),
 
     /* Primary & Foreign Keys */

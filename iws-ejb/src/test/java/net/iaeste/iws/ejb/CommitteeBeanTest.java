@@ -72,7 +72,7 @@ public class CommitteeBeanTest {
     public void testDummy() {
         final AuthenticationToken token = null;
         final CommitteeRequest request = null;
-        final Fallible response = bean.createCommittee(token, request);
+        final Fallible response = bean.processCommittee(token, request);
         assertThat(response.isOk(), is(false));
     }
 }

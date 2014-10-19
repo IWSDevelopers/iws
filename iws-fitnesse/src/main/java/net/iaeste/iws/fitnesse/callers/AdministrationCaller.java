@@ -69,7 +69,7 @@ public final class AdministrationCaller implements Administration {
     public CreateUserResponse createUser(final AuthenticationToken token, final CreateUserRequest request) {
         try {
             return caller.createUser(token, request);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             throw new StopTestException(e);
         }
     }
@@ -81,7 +81,7 @@ public final class AdministrationCaller implements Administration {
     public Fallible activateUser(final String activationString) {
         try {
             return caller.activateUser(activationString);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             throw new StopTestException(e);
         }
     }
@@ -93,7 +93,7 @@ public final class AdministrationCaller implements Administration {
     public Fallible updateUsername(final String updateCode) {
         try {
             return caller.updateUsername(updateCode);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             throw new StopTestException(e);
         }
     }
@@ -105,7 +105,7 @@ public final class AdministrationCaller implements Administration {
     public Fallible controlUserAccount(final AuthenticationToken token, final UserRequest request) {
         try {
             return caller.controlUserAccount(token, request);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             throw new StopTestException(e);
         }
     }
@@ -117,7 +117,7 @@ public final class AdministrationCaller implements Administration {
     public Fallible changeAccountName(final AuthenticationToken token, final AccountNameRequest request) {
         try {
             return caller.changeAccountName(token, request);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             throw new StopTestException(e);
         }
     }
@@ -129,7 +129,7 @@ public final class AdministrationCaller implements Administration {
     public FetchUserResponse fetchUser(final AuthenticationToken token, final FetchUserRequest request) {
         try {
             return caller.fetchUser(token, request);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             throw new StopTestException(e);
         }
     }
@@ -141,7 +141,7 @@ public final class AdministrationCaller implements Administration {
     public FetchRoleResponse fetchRoles(final AuthenticationToken token, final FetchRoleRequest request) {
         try {
             return caller.fetchRoles(token, request);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             throw new StopTestException(e);
         }
     }
@@ -153,7 +153,7 @@ public final class AdministrationCaller implements Administration {
     public ProcessGroupResponse processGroup(final AuthenticationToken token, final GroupRequest request) {
         try {
             return caller.processGroup(token, request);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             throw new StopTestException(e);
         }
     }
@@ -165,7 +165,7 @@ public final class AdministrationCaller implements Administration {
     public Fallible deleteSubGroup(final AuthenticationToken token, final GroupRequest request) {
         try {
             return caller.deleteSubGroup(token, request);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             throw new StopTestException(e);
         }
     }
@@ -177,7 +177,7 @@ public final class AdministrationCaller implements Administration {
     public FetchGroupResponse fetchGroup(final AuthenticationToken token, final FetchGroupRequest request) {
         try {
             return caller.fetchGroup(token, request);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             throw new StopTestException(e);
         }
     }
@@ -189,7 +189,7 @@ public final class AdministrationCaller implements Administration {
     public Fallible changeGroupOwner(final AuthenticationToken token, final OwnerRequest request) {
         try {
             return caller.changeGroupOwner(token, request);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             throw new StopTestException(e);
         }
     }
@@ -201,7 +201,7 @@ public final class AdministrationCaller implements Administration {
     public ProcessUserGroupResponse processUserGroupAssignment(final AuthenticationToken token, final UserGroupAssignmentRequest request) {
         try {
             return caller.processUserGroupAssignment(token, request);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             throw new StopTestException(e);
         }
     }
@@ -213,7 +213,7 @@ public final class AdministrationCaller implements Administration {
     public SearchUserResponse searchUsers(final AuthenticationToken token, final SearchUserRequest request) {
         try {
             return caller.searchUsers(token, request);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             throw new StopTestException(e);
         }
     }
@@ -225,7 +225,7 @@ public final class AdministrationCaller implements Administration {
     public Fallible processCountry(final AuthenticationToken token, final CountryRequest request) {
         try {
             return caller.processCountry(token, request);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             throw new StopTestException(e);
         }
     }
@@ -237,7 +237,7 @@ public final class AdministrationCaller implements Administration {
     public FetchCountryResponse fetchCountries(final AuthenticationToken token, final FetchCountryRequest request) {
         try {
             return caller.fetchCountries(token, request);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             throw new StopTestException(e);
         }
     }
@@ -249,7 +249,7 @@ public final class AdministrationCaller implements Administration {
     public EmergencyListResponse fetchEmergencyList(final AuthenticationToken token) {
         try {
             return caller.fetchEmergencyList(token);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             throw new StopTestException(e);
         }
     }
@@ -261,7 +261,7 @@ public final class AdministrationCaller implements Administration {
     public ContactsResponse fetchContacts(final AuthenticationToken token, final ContactsRequest request) {
         try {
             return caller.fetchContacts(token, request);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             throw new StopTestException(e);
         }
     }

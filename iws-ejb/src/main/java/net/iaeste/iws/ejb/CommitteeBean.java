@@ -18,9 +18,11 @@ import net.iaeste.iws.api.Committees;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.CommitteeRequest;
+import net.iaeste.iws.api.requests.FetchSurveyOfCountryRequest;
 import net.iaeste.iws.api.requests.InternationalGroupRequest;
-import net.iaeste.iws.api.requests.RegionalGroupRequest;
+import net.iaeste.iws.api.requests.SurveyOfCountryRequest;
 import net.iaeste.iws.api.responses.FallibleResponse;
+import net.iaeste.iws.api.responses.FetchSurveyOfCountryRespose;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.core.CommitteeController;
@@ -118,11 +120,11 @@ public class CommitteeBean extends AbstractBean implements Committees {
      */
     @Override
     @Interceptors(Profiler.class)
-    public Fallible createCommittee(final AuthenticationToken token, final CommitteeRequest request) {
+    public Fallible processCommittee(final AuthenticationToken token, final CommitteeRequest request) {
         Fallible response;
 
         try {
-            response = controller.createCommittee(token, request);
+            response = controller.processCommittee(token, request);
             log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
             log.error(generateErrorLog(e, token));
@@ -137,11 +139,11 @@ public class CommitteeBean extends AbstractBean implements Committees {
      */
     @Override
     @Interceptors(Profiler.class)
-    public Fallible manageCommittee(final AuthenticationToken token, final CommitteeRequest request) {
+    public Fallible processInternationalGroup(final AuthenticationToken token, final InternationalGroupRequest request) {
         Fallible response;
 
         try {
-            response = controller.manageCommittee(token, request);
+            response = controller.processInternationalGroup(token, request);
             log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
             log.error(generateErrorLog(e, token));
@@ -156,15 +158,15 @@ public class CommitteeBean extends AbstractBean implements Committees {
      */
     @Override
     @Interceptors(Profiler.class)
-    public Fallible upgradeCommittee(final AuthenticationToken token, final CommitteeRequest request) {
-        Fallible response;
+    public FetchSurveyOfCountryRespose fetchSurveyOfCountry(final AuthenticationToken token, final FetchSurveyOfCountryRequest request) {
+        FetchSurveyOfCountryRespose response;
 
         try {
-            response = controller.upgradeCommittee(token, request);
+            response = controller.fetchSurveyOfCountry(token, request);
             log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
             log.error(generateErrorLog(e, token));
-            response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
+            response = new FetchSurveyOfCountryRespose(IWSErrors.ERROR, e.getMessage());
         }
 
         return response;
@@ -175,49 +177,11 @@ public class CommitteeBean extends AbstractBean implements Committees {
      */
     @Override
     @Interceptors(Profiler.class)
-    public Fallible manageInternationalGroup(final AuthenticationToken token, final InternationalGroupRequest request) {
+    public Fallible processSurveyOfCountry(final AuthenticationToken token, final SurveyOfCountryRequest request) {
         Fallible response;
 
         try {
-            response = controller.manageInternationalGroup(token, request);
-            log.info(generateResponseLog(response, token));
-        } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token));
-            response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
-        }
-
-        return response;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @Interceptors(Profiler.class)
-    public Fallible createRegionalGroup(final AuthenticationToken token, final RegionalGroupRequest request) {
-        Fallible response;
-
-        try {
-            response = controller.createRegionalGroup(token, request);
-            log.info(generateResponseLog(response, token));
-        } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token));
-            response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
-        }
-
-        return response;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @Interceptors(Profiler.class)
-    public Fallible manageRegionalGroup(final AuthenticationToken token, final RegionalGroupRequest request) {
-        Fallible response;
-
-        try {
-            response = controller.manageRegionalGroup(token, request);
+            response = controller.processSurveyOfCountry(token, request);
             log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
             log.error(generateErrorLog(e, token));

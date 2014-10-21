@@ -381,8 +381,6 @@ public final class ViewTransformer {
         result.add(view.getNsFirstname());
         result.add(view.getNsLastname());
 
-        result.add(embeddedCountry.getCountryName());
-
         return result;
     }
 
@@ -530,8 +528,6 @@ public final class ViewTransformer {
         result.add(embeddedOffer.getModified());
         result.add(view.getNsFirstname());
         result.add(view.getNsLastname());
-
-        result.add(embeddedCountry.getCountryName());
 
         return result;
     }

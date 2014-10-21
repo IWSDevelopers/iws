@@ -242,7 +242,6 @@ public class ExchangeCSVService {
         result.add("Last modified");
         result.add("NS First Name");
         result.add("NS Last Name");
-        result.add("Country");
 
         return result;
     }

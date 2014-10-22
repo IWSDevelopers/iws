@@ -16,9 +16,11 @@ package net.iaeste.iws.core.services;
 
 import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.api.requests.CommitteeRequest;
+import net.iaeste.iws.api.requests.FetchCommitteeRequest;
 import net.iaeste.iws.api.requests.FetchSurveyOfCountryRequest;
 import net.iaeste.iws.api.requests.InternationalGroupRequest;
 import net.iaeste.iws.api.requests.SurveyOfCountryRequest;
+import net.iaeste.iws.api.responses.FetchCommitteeResponse;
 import net.iaeste.iws.api.responses.FetchSurveyOfCountryRespose;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.persistence.Authentication;
@@ -34,6 +36,10 @@ public final class CommitteeService {
 
     private static final Logger log = LoggerFactory.getLogger(CommitteeService.class);
 
+    public FetchCommitteeResponse fetchCommittees(final Authentication authentication, final FetchCommitteeRequest request) {
+        throw new NotImplementedException("Method pending implementation.");
+    }
+
     public Fallible createCommittee(final Authentication authentication, final CommitteeRequest request) {
         throw new NotImplementedException("Method pending implementation.");
     }
@@ -43,10 +49,10 @@ public final class CommitteeService {
     }
 
     public FetchSurveyOfCountryRespose fetchSurveyOfCountry(final Authentication authentication, final FetchSurveyOfCountryRequest request) {
-        throw new NotImplementedException("Method pending implementation.");
+        throw new NotImplementedException("Method pending implementation, see Trac #924.");
     }
 
     public Fallible processSurveyOfCountry(final Authentication authentication, final SurveyOfCountryRequest request) {
-        throw new NotImplementedException("Method pending implementation.");
+        throw new NotImplementedException("Method pending implementation, see Trac #924.");
     }
 }

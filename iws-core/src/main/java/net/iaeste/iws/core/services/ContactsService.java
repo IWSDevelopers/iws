@@ -248,7 +248,7 @@ public final class ContactsService {
             //           A possible solution is to have the UserGroup extracted
             //         as the initial value, and have the two lists containing
             //         members and subgroups.
-            response.setGroups(new ArrayList<Group>(extractGroups(userEntities).subList(0,1)));
+            response.setGroups(new ArrayList<>(extractGroups(userEntities).subList(0,1)));
             response.setUsers(extractUsers(userEntities));
 
             return response;

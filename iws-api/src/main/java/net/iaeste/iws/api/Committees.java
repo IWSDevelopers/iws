@@ -16,9 +16,11 @@ package net.iaeste.iws.api;
 
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.CommitteeRequest;
+import net.iaeste.iws.api.requests.FetchCommitteeRequest;
 import net.iaeste.iws.api.requests.FetchSurveyOfCountryRequest;
 import net.iaeste.iws.api.requests.InternationalGroupRequest;
 import net.iaeste.iws.api.requests.SurveyOfCountryRequest;
+import net.iaeste.iws.api.responses.FetchCommitteeResponse;
 import net.iaeste.iws.api.responses.FetchSurveyOfCountryRespose;
 import net.iaeste.iws.api.util.Fallible;
 
@@ -48,6 +50,18 @@ import net.iaeste.iws.api.util.Fallible;
  * @since   IWS 1.0
  */
 public interface Committees {
+
+    /**
+     * Working with committees involve working with more details than normally
+     * allowed. Additionally, it must also be possible to work with both Active
+     * and Suspended Committees. This request will facilitate precisely this,
+     * reading the additional details needed for all existing Committees.
+     *
+     * @param token   User Authentication Request object
+     * @param request Fetch Committee Request Object
+     * @return Fetch Response Object, with standard error information
+     */
+    FetchCommitteeResponse fetchCommittees(AuthenticationToken token, FetchCommitteeRequest request);
 
     /**
      * Processing a Committee means either creating a new one, altering

@@ -21,10 +21,12 @@ import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.requests.CommitteeRequest;
+import net.iaeste.iws.api.requests.FetchCommitteeRequest;
 import net.iaeste.iws.api.requests.FetchSurveyOfCountryRequest;
 import net.iaeste.iws.api.requests.InternationalGroupRequest;
 import net.iaeste.iws.api.requests.SurveyOfCountryRequest;
 import net.iaeste.iws.api.responses.FallibleResponse;
+import net.iaeste.iws.api.responses.FetchCommitteeResponse;
 import net.iaeste.iws.api.responses.FetchSurveyOfCountryRespose;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.core.services.CommitteeService;
@@ -50,6 +52,32 @@ public final class CommitteeController extends CommonController implements Commi
      */
     public CommitteeController(final ServiceFactory factory) {
         super(factory);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public FetchCommitteeResponse fetchCommittees(final AuthenticationToken token, final FetchCommitteeRequest request) {
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Starting fetchCommittees()"));
+        }
+        FetchCommitteeResponse response;
+
+        try {
+            final Authentication authentication = verifyAccess(token, Permission.PROCESS_COMMITTEE);
+            verify(request);
+
+            final CommitteeService service = factory.prepareCommitteeService();
+            response = service.fetchCommittees(authentication, request);
+        } catch (IWSException e) {
+            response = new FetchCommitteeResponse(e.getError(), e.getMessage());
+        }
+
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Finished fetchCommittees()"));
+        }
+        return response;
     }
 
     /**

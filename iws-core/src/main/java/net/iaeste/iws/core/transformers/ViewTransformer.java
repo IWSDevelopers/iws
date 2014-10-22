@@ -269,7 +269,7 @@ public final class ViewTransformer {
         result.add(embeddedEmployer.getWorkingPlace());
         result.add(embeddedEmployer.getBusiness());
         result.add(null);
-        result.add(embeddedEmployer.getNearestPublicTransport());
+        result.add(embeddedEmployer.getNearestAirport());
         result.add(embeddedEmployer.getNearestPublicTransport());
         result.add(embeddedEmployer.getNumberOfEmployees());
         result.add(embeddedOffer.getWeeklyHours());
@@ -417,7 +417,7 @@ public final class ViewTransformer {
         result.add(embeddedEmployer.getWorkingPlace());
         result.add(embeddedEmployer.getBusiness());
         result.add(null);
-        result.add(embeddedEmployer.getNearestPublicTransport());
+        result.add(embeddedEmployer.getNearestAirport());
         result.add(embeddedEmployer.getNearestPublicTransport());
         result.add(embeddedEmployer.getNumberOfEmployees());
         result.add(embeddedOffer.getWeeklyHours());

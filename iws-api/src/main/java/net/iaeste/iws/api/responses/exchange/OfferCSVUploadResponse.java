@@ -18,6 +18,8 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.util.AbstractFallible;
 
+import java.util.Map;
+
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -27,6 +29,26 @@ public class OfferCSVUploadResponse extends AbstractFallible {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
+
+    /**
+     * Each CSV record to be updated will have a tri-state. Either it was added,
+     * updated or there were processing errors.
+     */
+    public enum ProcessingResult { Added, Updated, Error }
+
+    /**
+     * Map with the result from each record from the CSV file that which was
+     * processed. The map contain the Offer Reference Number as key, and the
+     * result of the processing as the value.
+     */
+    private Map<String, ProcessingResult> processingResult;
+
+    /**
+     * Map with the error information related to the processing. The map contain
+     * the Offer Reference Number as key, and the validation result as the
+     * value.
+     */
+    private Map<String, Map<String, String>> errors;
 
     // =========================================================================
     // Object Constructors
@@ -54,6 +76,22 @@ public class OfferCSVUploadResponse extends AbstractFallible {
     // Standard Setters & Getters
     // =========================================================================
 
+    public void setProcessingResult(final Map<String, ProcessingResult> processingResult) {
+        this.processingResult = processingResult;
+    }
+
+    public Map<String, ProcessingResult> getProcessingResult() {
+        return processingResult;
+    }
+
+    public void setErrors(final Map<String, Map<String, String>> errors) {
+        this.errors = errors;
+    }
+
+    public Map<String, Map<String, String>> getErrors() {
+        return errors;
+    }
+
     // =========================================================================
     // Standard Response Methods
     // =========================================================================
@@ -63,6 +101,9 @@ public class OfferCSVUploadResponse extends AbstractFallible {
      */
     @Override
     public String toString() {
-        return null;
+        // Skipping the Error map here
+        return "OfferCSVUploadResponse{" +
+                "processingResult=" + processingResult +
+                '}';
     }
 }

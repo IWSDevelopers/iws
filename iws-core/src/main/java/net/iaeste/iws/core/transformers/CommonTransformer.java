@@ -26,6 +26,7 @@ import net.iaeste.iws.persistence.entities.CountryEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.GroupTypeEntity;
 import net.iaeste.iws.persistence.entities.PersonEntity;
+import org.apache.commons.csv.CSVRecord;
 
 /**
  * Transformation of Common Objects.
@@ -140,6 +141,25 @@ public final class CommonTransformer {
         return type;
     }
 
+    public static Address addressFromCsv(final CSVRecord record) {
+        Address address = null;
+
+        if (record != null) {
+            address = new Address();
+
+            address.setStreet1(record.get("Street1"));
+            address.setStreet2(record.get("Street2"));
+            address.setPostalCode(record.get("PostalCode"));
+            address.setCity(record.get("City"));
+            address.setState(record.get("State"));
+            address.setPobox(record.get("PostBox"));
+            //following causes exception because there are not all required fields in CSV file
+//            address.setCountry(countryFromCsv(record));
+        }
+
+        return address;
+    }
+
     public static Address transform(final AddressEntity entity) {
         Address address = null;
 
@@ -174,6 +194,18 @@ public final class CommonTransformer {
         }
 
         return entity;
+    }
+
+    public static Country countryFromCsv(final CSVRecord record) {
+        Country country = null;
+
+        if (record != null) {
+            country = new Country();
+
+            country.setCountryName(record.get("Country"));
+        }
+
+        return country;
     }
 
     public static Country transform(final CountryEntity entity) {

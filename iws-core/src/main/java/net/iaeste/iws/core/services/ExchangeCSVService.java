@@ -16,6 +16,11 @@ package net.iaeste.iws.core.services;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
+import net.iaeste.iws.api.dtos.Address;
+import net.iaeste.iws.api.dtos.Country;
+import net.iaeste.iws.api.dtos.exchange.Employer;
+import net.iaeste.iws.api.dtos.exchange.Offer;
+import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.requests.exchange.OfferCSVDownloadRequest;
 import net.iaeste.iws.api.requests.exchange.OfferCSVUploadRequest;
@@ -23,42 +28,87 @@ import net.iaeste.iws.api.responses.exchange.OfferCSVDownloadResponse;
 import net.iaeste.iws.api.responses.exchange.OfferCSVUploadResponse;
 import net.iaeste.iws.api.util.AbstractVerification;
 import net.iaeste.iws.api.util.Paginatable;
+import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.core.exceptions.PermissionException;
+import net.iaeste.iws.core.transformers.CommonTransformer;
+import net.iaeste.iws.core.transformers.ExchangeTransformer;
 import net.iaeste.iws.core.transformers.ViewTransformer;
+import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.ExchangeDao;
 import net.iaeste.iws.persistence.ViewsDao;
+import net.iaeste.iws.persistence.entities.AddressEntity;
+import net.iaeste.iws.persistence.entities.GroupEntity;
+import net.iaeste.iws.persistence.entities.exchange.EmployerEntity;
+import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
+import net.iaeste.iws.persistence.exceptions.IdentificationException;
 import net.iaeste.iws.persistence.views.OfferView;
 import net.iaeste.iws.persistence.views.SharedOfferView;
 import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
+import org.apache.commons.csv.CSVRecord;
 
 import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.Reader;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.1
  */
-public class ExchangeCSVService {
+public class ExchangeCSVService extends CommonService<ExchangeDao> {
 
     private final static char DELIMITER = ',';
 
     private final ExchangeDao dao;
+    private final AccessDao accessDao;
     private final ViewsDao viewsDao;
 
-    public ExchangeCSVService(final ExchangeDao dao, final ViewsDao viewsDao) {
+    public ExchangeCSVService(final Settings settings, final ExchangeDao dao, final AccessDao accessDao, final ViewsDao viewsDao) {
+        super(settings, dao);
+
         this.dao = dao;
+        this.accessDao = accessDao;
         this.viewsDao = viewsDao;
     }
 
     public OfferCSVUploadResponse uploadOffers(final Authentication authentication, final OfferCSVUploadRequest request) {
-        throw new IWSException(IWSErrors.NOT_IMPLEMENTED, "Fetch Offers as CSV is not yet implemented, see Trac Ticket #920.");
+        final OfferCSVUploadResponse response = new OfferCSVUploadResponse();
+        Map<String, OfferCSVUploadResponse.ProcessingResult> processingResult = new HashMap<>();
+        final Map<String, Map<String, String>> errors = new HashMap<>();
+
+        try (ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(request.getData());
+             Reader reader = new InputStreamReader(byteArrayInputStream);
+             CSVParser parser = getDefaultCsvParser(reader)) {
+            Map<String, Integer> headersMap = parser.getHeaderMap();
+            Set<String> headers = headersMap.keySet();
+            Set<String> expectedHeaders = new HashSet<>(createFirstRow());
+            if (expectedHeaders.equals(headers)) {
+                for (final CSVRecord record : parser.getRecords()) {
+                    process(processingResult, errors, authentication, record);
+                }
+            } else {
+                throw new IWSException(IWSErrors.PROCESSING_FAILURE, "Invalid CSV header");
+            }
+        } catch (IOException e) {
+            throw new IWSException(IWSErrors.PROCESSING_FAILURE, "CSV upload processing failed", e);
+        }
+
+        response.setProcessingResult(processingResult);
+        response.setErrors(errors);
+        return response;
     }
 
     public OfferCSVDownloadResponse downloadOffers(final Authentication authentication, final OfferCSVDownloadRequest request) {
@@ -119,11 +169,22 @@ public class ExchangeCSVService {
         return data;
     }
 
+    private CSVParser getDefaultCsvParser(final Reader input) {
+        try {
+            return CSVFormat.RFC4180.withDelimiter(DELIMITER)
+                    .withHeader()
+                            //.withNullString("")
+                    .parse(input);
+        } catch (IOException e) {
+            throw new IWSException(IWSErrors.PROCESSING_FAILURE, "Creating CSVPrinter failed", e);
+        }
+    }
+
     private CSVPrinter getDefaultCsvPrinter(final Appendable output) {
         try {
             return CSVFormat.RFC4180.withDelimiter(DELIMITER)
-                                    .withNullString("")
-                                    .print(output);
+                    .withNullString("")
+                    .print(output);
         } catch (IOException e) {
             throw new IWSException(IWSErrors.PROCESSING_FAILURE, "Creating CSVPrinter failed", e);
         }
@@ -169,6 +230,119 @@ public class ExchangeCSVService {
         } catch (IOException e) {
             throw new IWSException(IWSErrors.PROCESSING_FAILURE, "Serialization to CSV failed", e);
         }
+    }
+
+    private void process(final Map<String, OfferCSVUploadResponse.ProcessingResult> processingResult, final Map<String, Map<String, String>> errors, final Authentication authentication, final CSVRecord record) {
+        String refNo = "";
+        try {
+            refNo = record.get("Ref.No");
+            final Map<String, String> conversionErrors = new HashMap<>(0);
+            final Offer csvOffer = ExchangeTransformer.offerFromCsv(record, conversionErrors);
+            final Employer csvEmployer= ExchangeTransformer.employerFromCsv(record, conversionErrors);
+            final Address csvAddress = CommonTransformer.addressFromCsv(record);
+            final Country csvCountry = CommonTransformer.countryFromCsv(record); //There is no information about country except a name, useless for upload
+//            csvCountry.setCurrency(csvOffer.getCurrency());
+            //use current country instead
+            final Country country = CommonTransformer.transform(authentication.getGroup().getCountry());
+            csvAddress.setCountry(country);
+            csvEmployer.setAddress(csvAddress);
+
+            csvOffer.setEmployer(csvEmployer);
+
+            final Map<String, String> validationErrors = csvOffer.validate();
+            validationErrors.putAll(conversionErrors);
+            if (validationErrors.isEmpty()) {
+                final OfferEntity existingEntity = dao.findOfferByRefNo(authentication, refNo);
+                final OfferEntity newEntity = ExchangeTransformer.transform(csvOffer);
+
+                if (existingEntity != null) {
+                    //TODO ExchangeService has this check but why to check authentication.getGroup when permissionCheck
+                    //     then takes authentication.getGroup again? should be offer.employer.group instead?
+                    //permissionCheck(authentication, existingEntity.getEmployer().getGroup()); ?
+                    permissionCheck(authentication, authentication.getGroup());
+
+                    //keep original offer state
+                    newEntity.setStatus(existingEntity.getStatus());
+
+                    csvEmployer.setEmployerId(existingEntity.getEmployer().getExternalId());
+                    final EmployerEntity employerEntity = process(authentication, csvEmployer);
+                    existingEntity.setEmployer(employerEntity);
+
+                    newEntity.setExternalId(existingEntity.getExternalId());
+                    dao.persist(authentication, existingEntity, newEntity);
+                    processingResult.put(refNo, OfferCSVUploadResponse.ProcessingResult.Updated);
+                } else {
+                    //create employer
+                    final EmployerEntity employer = process(authentication, csvOffer.getEmployer());
+
+                    // Add the Group to the Offer, otherwise our refno checks will fail
+                    employer.setGroup(authentication.getGroup());
+
+                    newEntity.setEmployer(employer);
+
+                    ExchangeService.verifyRefnoValidity(authentication, newEntity);
+
+                    newEntity.setExchangeYear(AbstractVerification.calculateExchangeYear());
+                    // Add the employer to the Offer
+                    newEntity.setEmployer(employer);
+                    // Set the Offer status to New
+                    newEntity.setStatus(OfferState.NEW);
+
+                    // Persist the Offer with history
+                    dao.persist(authentication, newEntity);
+                    processingResult.put(refNo, OfferCSVUploadResponse.ProcessingResult.Added);
+                }
+            } else {
+                processingResult.put(refNo, OfferCSVUploadResponse.ProcessingResult.Error);
+                errors.put(refNo, validationErrors);
+            }
+        } catch (IllegalArgumentException|IWSException e) {
+            processingResult.put(refNo, OfferCSVUploadResponse.ProcessingResult.Error);
+            if (errors.containsKey(refNo)) {
+                errors.get(refNo).put("general", e.getMessage());
+            } else {
+                final Map<String, String> generalError = new HashMap<>(1);
+                generalError.put("general", e.getMessage());
+                errors.put(refNo, generalError);
+            }
+        }
+    }
+
+    private EmployerEntity process(final Authentication authentication, final Employer employer) {
+        EmployerEntity entity;
+        try {
+            entity = dao.findEmployer(employer.getEmployerId());
+        } catch (IdentificationException e) {
+            //no or multiple employers
+            entity = null;
+            employer.setEmployerId(null);
+        }
+
+        if (entity == null) {
+            entity = ExchangeTransformer.transform(employer);
+            GroupEntity nationalGroup = accessDao.findNationalGroup(authentication.getUser());
+            entity.setGroup(nationalGroup);
+            processAddress(authentication, entity.getAddress());
+            dao.persist(authentication, entity);
+        } else {
+            final EmployerEntity updated = ExchangeTransformer.transform(employer);
+            processAddress(authentication, entity.getAddress(), employer.getAddress());
+            dao.persist(authentication, entity, updated);
+        }
+        return entity;
+    }
+
+    private AddressEntity process(final Authentication authentication, final Address address, final AddressEntity existingEntity) {
+        AddressEntity result;
+        final AddressEntity newAddress = CommonTransformer.transform(address);
+        if (existingEntity == null) {
+            dao.persist(authentication, newAddress);
+            result = newAddress;
+        } else {
+            dao.persist(authentication, existingEntity, newAddress);
+            result = existingEntity;
+        }
+        return result;
     }
 
     private List<String> createFirstRow() {

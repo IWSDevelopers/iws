@@ -205,7 +205,8 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
         return date.getCurrentYear() + (date.getCurrentMonth() >= Calendar.SEPTEMBER ? 1 : 0);
     }
 
-    private static void verifyRefnoValidity(final Authentication authentication, final OfferEntity offer) {
+    //TODO 2014-10-23 @Kim - I made the method public to be accessible from CSV service. Is it OK or should we move it to a shared place?
+    public static void verifyRefnoValidity(final Authentication authentication, final OfferEntity offer) {
         final String countryCode = offer.getEmployer().getGroup().getCountry().getCountryCode();
         final String refno = offer.getRefNo();
 

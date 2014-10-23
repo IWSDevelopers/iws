@@ -185,11 +185,21 @@ public interface IWSConstants {
     String DATE_FORMAT = "dd-MMM-yyyy";
 
     /**
+     * Default CSV Date Format.
+     */
+    String CSV_DATE_FORMAT = "yyyy-MM-dd";
+
+    /**
      * Default IWS DateTime Format.
      */
     String DATE_TIME_FORMAT = DATE_FORMAT + " HH:mm:ss";
 
     String TIMESTAMP_FORMAT = "yyyyMMddHHmmssSSS";
+
+    /**
+     * DateFormat Object for formatting and parsing Date Object from/to CSV.
+     */
+    DateFormat CSV_FORMATTER = new SimpleDateFormat(CSV_DATE_FORMAT, DEFAULT_LOCALE);
 
     /**
      * DateFormat Object for formatting and parsing Date Object.

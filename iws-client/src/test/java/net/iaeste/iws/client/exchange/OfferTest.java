@@ -42,6 +42,7 @@ import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishedGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.HideForeignOffersRequest;
 import net.iaeste.iws.api.requests.exchange.OfferCSVDownloadRequest;
+import net.iaeste.iws.api.requests.exchange.OfferCSVUploadRequest;
 import net.iaeste.iws.api.requests.exchange.OfferStatisticsRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
 import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
@@ -50,6 +51,7 @@ import net.iaeste.iws.api.responses.exchange.FetchGroupsForSharingResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
 import net.iaeste.iws.api.responses.exchange.FetchPublishedGroupsResponse;
 import net.iaeste.iws.api.responses.exchange.OfferCSVDownloadResponse;
+import net.iaeste.iws.api.responses.exchange.OfferCSVUploadResponse;
 import net.iaeste.iws.api.responses.exchange.OfferResponse;
 import net.iaeste.iws.api.responses.exchange.OfferStatisticsResponse;
 import net.iaeste.iws.api.responses.exchange.PublishOfferResponse;
@@ -63,8 +65,10 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -1269,7 +1273,7 @@ public final class OfferTest extends AbstractTest {
     }
 
     @Test
-    public void testOutboxCsvDownload() {
+    public void testCsvWorkflow() {
         final AuthenticationToken austriaTokenWithNationalGroup = new AuthenticationToken(austriaToken);
         if (austriaTokenNationallGroup != null) {
             austriaTokenWithNationalGroup.setGroupId(austriaTokenNationallGroup.getGroupId());
@@ -1304,6 +1308,17 @@ public final class OfferTest extends AbstractTest {
 
         assertThat(inboxCsvResponse.isOk(), is(true));
         assertThat(inboxCsvResponse.getData(), is(not(nullValue())));
+
+        OfferCSVUploadRequest uploadRequest = new OfferCSVUploadRequest(outboxCsvResponse.getData());
+        OfferCSVUploadResponse uploadResponse = exchange.uploadOffers(austriaTokenWithNationalGroup, uploadRequest);
+
+        assertThat(uploadResponse.isOk(), is(true));
+        final Map<String, OfferCSVUploadResponse.ProcessingResult> processingResult = uploadResponse.getProcessingResult();
+        EnumSet<OfferCSVUploadResponse.ProcessingResult> okProcessingResults = EnumSet.of(OfferCSVUploadResponse.ProcessingResult.Updated, OfferCSVUploadResponse.ProcessingResult.Added);
+        assertThat(processingResult, is(not(nullValue())));
+        for (final String refNo : processingResult.keySet()) {
+            assertTrue(okProcessingResults.contains(processingResult.get(refNo)));
+        }
     }
 
     private static Offer findOfferFromResponse(final String refno, final FetchOffersResponse response) {

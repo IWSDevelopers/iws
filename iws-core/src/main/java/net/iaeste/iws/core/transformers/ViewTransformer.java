@@ -16,6 +16,7 @@ package net.iaeste.iws.core.transformers;
 
 import static net.iaeste.iws.core.transformers.EmbeddedConverter.convert;
 
+import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.dtos.Address;
 import net.iaeste.iws.api.dtos.Country;
 import net.iaeste.iws.api.dtos.File;
@@ -377,7 +378,7 @@ public final class ViewTransformer {
 
         result.add(embeddedOfferGroup.getCreated());
 
-        result.add(embeddedOffer.getModified());
+        result.add(embeddedOfferGroup.getModified());
         result.add(view.getNsFirstname());
         result.add(view.getNsLastname());
 
@@ -403,7 +404,7 @@ public final class ViewTransformer {
         final String exportedRefNo = embeddedOffer.getOldRefNo() != null ? embeddedOffer.getOldRefNo() : embeddedOffer.getRefNo();
 
         result.add(exportedRefNo);
-        result.add(embeddedOffer.getNominationDeadline());
+        result.add(embeddedOffer.getNominationDeadline() != null ? IWSConstants.CSV_FORMATTER.format(embeddedOffer.getNominationDeadline()) : "");
         result.add(embeddedOffer.getPrivateComment());
         result.add(embeddedEmployer.getName());
         result.add(embeddedAddress.getStreet1());
@@ -427,9 +428,9 @@ public final class ViewTransformer {
         String fieldOfStudiesString = "";
         for (FieldOfStudy fieldOfStudy : CollectionTransformer.explodeEnumSet(FieldOfStudy.class, embeddedOffer.getFieldOfStudies())) {
             if (fieldOfStudiesString.isEmpty()) {
-                fieldOfStudiesString = fieldOfStudy.getDescription();
+                fieldOfStudiesString = fieldOfStudy.name();
             } else {
-                fieldOfStudiesString = fieldOfStudiesString + ", " + fieldOfStudy.getDescription();
+                fieldOfStudiesString = fieldOfStudiesString + ", " + fieldOfStudy.name();
             }
         }
         result.add(fieldOfStudiesString);
@@ -437,11 +438,11 @@ public final class ViewTransformer {
 
         String specializationsString = "";
         for (String spe : CollectionTransformer.explodeStringSet(embeddedOffer.getSpecializations())) {
-            String toPut = spe.charAt(0) + spe.toLowerCase().replace('_', ' ').substring(1);
+//            String toPut = spe.charAt(0) + spe.toLowerCase().replace('_', ' ').substring(1);
             if (!specializationsString.isEmpty()) {
-                specializationsString = specializationsString + ", " + toPut;
+                specializationsString = specializationsString + ", " + spe;
             } else {
-                specializationsString = toPut;
+                specializationsString = spe;
             }
         }
         result.add(specializationsString);
@@ -451,8 +452,8 @@ public final class ViewTransformer {
         result.add(StringUtils.removeLineBreaks(embeddedOffer.getWorkDescription()));
         result.add(embeddedOffer.getMinimumWeeks());
         result.add(embeddedOffer.getMaximumWeeks());
-        result.add(embeddedOffer.getFromDate());
-        result.add(embeddedOffer.getToDate());
+        result.add(embeddedOffer.getFromDate() != null ? IWSConstants.CSV_FORMATTER.format(embeddedOffer.getFromDate()) : "");
+        result.add(embeddedOffer.getToDate() != null ? IWSConstants.CSV_FORMATTER.format(embeddedOffer.getToDate()) : "");
 
         boolean studyBeginning = false;
         boolean studyMiddle = false;
@@ -491,41 +492,56 @@ public final class ViewTransformer {
             result.add(CommonTransformer.convertToYesNo(false));
         }
 
-        result.add(embeddedOffer.getLanguage1() != null ? embeddedOffer.getLanguage1().getDescription() : null);
-        result.add(embeddedOffer.getLanguage1Level() != null ? embeddedOffer.getLanguage1Level().getDescription() : null);
-        result.add(embeddedOffer.getLanguage1Operator() != null ? embeddedOffer.getLanguage1Operator().getDescription() : null);
+//        result.add(embeddedOffer.getLanguage1() != null ? embeddedOffer.getLanguage1().getDescription() : null);
+//        result.add(embeddedOffer.getLanguage1Level() != null ? embeddedOffer.getLanguage1Level().getDescription() : null);
+//        result.add(embeddedOffer.getLanguage1Operator() != null ? embeddedOffer.getLanguage1Operator().getDescription() : null);
 
-        result.add(embeddedOffer.getLanguage2() != null ? embeddedOffer.getLanguage2().getDescription() : null);
-        result.add(embeddedOffer.getLanguage2Level() != null ? embeddedOffer.getLanguage2Level().getDescription() : null);
-        result.add(embeddedOffer.getLanguage2Operator() != null ? embeddedOffer.getLanguage2Operator().getDescription() : null);
+        result.add(embeddedOffer.getLanguage1());
+        result.add(embeddedOffer.getLanguage1Level());
+        result.add(embeddedOffer.getLanguage1Operator());
 
-        result.add(embeddedOffer.getLanguage3() != null ? embeddedOffer.getLanguage3().getDescription() : null);
-        result.add(embeddedOffer.getLanguage3Level() != null ? embeddedOffer.getLanguage3Level().getDescription() : null);
+//        result.add(embeddedOffer.getLanguage2() != null ? embeddedOffer.getLanguage2().getDescription() : null);
+//        result.add(embeddedOffer.getLanguage2Level() != null ? embeddedOffer.getLanguage2Level().getDescription() : null);
+//        result.add(embeddedOffer.getLanguage2Operator() != null ? embeddedOffer.getLanguage2Operator().getDescription() : null);
 
-        result.add(embeddedCountry.getCurrency() != null ? embeddedCountry.getCurrency().getDescription() : null);
+        result.add(embeddedOffer.getLanguage2());
+        result.add(embeddedOffer.getLanguage2Level());
+        result.add(embeddedOffer.getLanguage2Operator());
+
+//        result.add(embeddedOffer.getLanguage3() != null ? embeddedOffer.getLanguage3().getDescription() : null);
+//        result.add(embeddedOffer.getLanguage3Level() != null ? embeddedOffer.getLanguage3Level().getDescription() : null);
+
+        result.add(embeddedOffer.getLanguage3());
+        result.add(embeddedOffer.getLanguage3Level());
+
+//        result.add(embeddedCountry.getCurrency() != null ? embeddedCountry.getCurrency().getDescription() : null);
+        result.add(embeddedCountry.getCurrency());
         result.add(embeddedOffer.getPayment());
-        result.add(embeddedOffer.getPaymentFrequency() != null ? embeddedOffer.getPaymentFrequency().getDescription() : null);
+//        result.add(embeddedOffer.getPaymentFrequency() != null ? embeddedOffer.getPaymentFrequency().getDescription() : null);
+        result.add(embeddedOffer.getPaymentFrequency());
         result.add(embeddedOffer.getDeduction());
         result.add(embeddedOffer.getLodgingBy());
         result.add(embeddedOffer.getLodgingCost());
-        result.add(embeddedOffer.getLodgingCostFrequency() != null ? embeddedOffer.getLodgingCostFrequency().getDescription() : null);
+//        result.add(embeddedOffer.getLodgingCostFrequency() != null ? embeddedOffer.getLodgingCostFrequency().getDescription() : null);
+        result.add(embeddedOffer.getLodgingCostFrequency());
         result.add(embeddedOffer.getLivingCost());
-        result.add(embeddedOffer.getLivingCostFrequency() != null ? embeddedOffer.getLivingCostFrequency().getDescription() : null);
+//        result.add(embeddedOffer.getLivingCostFrequency() != null ? embeddedOffer.getLivingCostFrequency().getDescription() : null);
+        result.add(embeddedOffer.getLivingCostFrequency());
         result.add(embeddedOffer.getNumberOfHardCopies());
         result.add(embeddedOffer.getStatus() != null ? embeddedOffer.getStatus().getDescription() : null);
 
 
-        result.add(embeddedOffer.getFromDate2());
-        result.add(embeddedOffer.getToDate2());
+        result.add(embeddedOffer.getFromDate2() != null ? IWSConstants.CSV_FORMATTER.format(embeddedOffer.getFromDate2()) : "");
+        result.add(embeddedOffer.getToDate2() != null ? IWSConstants.CSV_FORMATTER.format(embeddedOffer.getToDate2()) : "");
 
-        result.add(embeddedOffer.getUnavailableFrom());
-        result.add(embeddedOffer.getUnavailableTo());
+        result.add(embeddedOffer.getUnavailableFrom() != null ? IWSConstants.CSV_FORMATTER.format(embeddedOffer.getUnavailableFrom()) : "");
+        result.add(embeddedOffer.getUnavailableTo() != null ? IWSConstants.CSV_FORMATTER.format(embeddedOffer.getUnavailableTo()) : "");
 
         result.add(StringUtils.removeLineBreaks(embeddedOffer.getAdditionalInformation()));
 
         result.add(null);
 
-        result.add(embeddedOffer.getModified());
+        result.add(embeddedOffer.getModified() != null ? IWSConstants.CSV_FORMATTER.format(embeddedOffer.getModified()) : "");
         result.add(view.getNsFirstname());
         result.add(view.getNsLastname());
 

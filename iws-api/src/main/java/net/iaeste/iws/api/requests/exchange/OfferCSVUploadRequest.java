@@ -31,6 +31,8 @@ public class OfferCSVUploadRequest extends AbstractPaginatable {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
+    private byte[] data;
+
     // =========================================================================
     // Object Constructors
     // =========================================================================
@@ -40,11 +42,24 @@ public class OfferCSVUploadRequest extends AbstractPaginatable {
      * for WebServices to work properly.
      */
     public OfferCSVUploadRequest() {
+        this.data = null;
+    }
+
+    public OfferCSVUploadRequest(final byte[] data) {
+        this.data = data;
     }
 
     // =========================================================================
     // Standard Setters & Getters
     // =========================================================================
+
+    public void setData(final byte[] data) {
+        this.data = data;
+    }
+
+    public byte[] getData() {
+        return data;
+    }
 
     // =========================================================================
     // Standard Request Methods
@@ -56,6 +71,8 @@ public class OfferCSVUploadRequest extends AbstractPaginatable {
     @Override
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(0);
+
+        isNotNull(validation, "data", data);
 
         return validation;
     }

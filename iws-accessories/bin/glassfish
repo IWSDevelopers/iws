@@ -10,10 +10,10 @@
 # Methods:
 #     o show_help     ( Void )   :: Shows help on using the script
 #     o doLock        ( Void )   :: Creates a lock file
-#     o getProcesses  ( Void )   :: Retrieves WildFly process count
-#     o doStart       ( Void )   :: Attempts to start WildFly
-#     o doStop        ( Void )   :: Attempts to stop WildFly
-#     o doStatus      ( Void )   :: Retrieves the WildFly status
+#     o getProcesses  ( Void )   :: Retrieves Glassfish process count
+#     o doStart       ( Void )   :: Attempts to start Glassfish
+#     o doStop        ( Void )   :: Attempts to stop Glassfish
+#     o doStatus      ( Void )   :: Retrieves the Glassfish status
 #     o doClean       ( Void )   :: Cleans existing test results
 #     o doDeployIWS   ( Void )   :: Deploys latest IWS Snapshot
 #     o doDeployIW4   ( Void )   :: Deploys latest IW4 Snapshot

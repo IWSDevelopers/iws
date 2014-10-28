@@ -145,13 +145,15 @@ create table permissions (
 -- functionionality. All Groups in the IW has to be assigned an overall type.
 --   Please note, that certain GroupType, are designed so any given user may
 -- only be member of 1 (one), others are open, so users can be part of many.
--- The restricted groups are: Administration, Members, National and Sar - In
--- fact, a user can only be member of either 1 National or 1 SAR.
+-- The restricted groups are: Administration, Members and National - In fact, a
+-- user can only be member of 1 National.
 -- =============================================================================
 create table grouptypes (
     id                  integer,
     grouptype           varchar(50),
     description         varchar(2048),
+    private_list        boolean,
+    public_list         boolean,
 
     /* Primary & Foreign Keys */
     constraint grouptype_pk primary key (id),
@@ -160,8 +162,10 @@ create table grouptypes (
     constraint grouptype_unique_grouptype unique (grouptype),
 
     /* Not Null Constraints */
-    constraint grouptype_notnull_id        check (id is not null),
-    constraint grouptype_notnull_grouptype check (grouptype is not null)
+    constraint grouptype_notnull_id           check (id is not null),
+    constraint grouptype_notnull_grouptype    check (grouptype is not null),
+    constraint grouptype_notnull_private_list check (private_list is not null),
+    constraint grouptype_notnull_public_list  check (public_list is not null)
 );
 
 

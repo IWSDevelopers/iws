@@ -166,6 +166,8 @@ create table grouptypes (
     id                  integer,
     grouptype           varchar(50),
     description         varchar(2048),
+    private_list        boolean,
+    public_list         boolean,
 
     /* Primary & Foreign Keys */
     constraint grouptype_pk primary key (id),
@@ -174,8 +176,10 @@ create table grouptypes (
     constraint grouptype_unique_grouptype unique (grouptype),
 
     /* Not Null Constraints */
-    constraint grouptype_notnull_id        check (id is not null),
-    constraint grouptype_notnull_grouptype check (grouptype is not null)
+    constraint grouptype_notnull_id           check (id is not null),
+    constraint grouptype_notnull_grouptype    check (grouptype is not null),
+    constraint grouptype_notnull_private_list check (private_list is not null),
+    constraint grouptype_notnull_public_list  check (public_list is not null)
 );
 
 

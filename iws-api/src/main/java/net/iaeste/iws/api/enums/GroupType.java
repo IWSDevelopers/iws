@@ -35,7 +35,7 @@ public enum GroupType {
      * such as marriage where the family name is changed.<br />
      *   There can only exists 1 Administration Group.
      */
-    ADMINISTRATION("Administration", WhoMayJoin.All, false, true),
+    ADMINISTRATION("Administration", WhoMayJoin.All, true, true),
 
     /**
      * All user accounts have a private group assigned, with this type. It is
@@ -45,7 +45,7 @@ public enum GroupType {
      * from the system, then the private data can be easily removed as
      * well.
      */
-    PRIVATE("Private", WhoMayJoin.None, false, false),
+    PRIVATE("Private", WhoMayJoin.None, false, true),
 
     /**
      * All members are assigned to this type, which gives the rights to the

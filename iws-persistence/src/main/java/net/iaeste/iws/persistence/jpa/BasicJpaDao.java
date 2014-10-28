@@ -23,7 +23,7 @@ import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.StorageType;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.util.Paginatable;
-import net.iaeste.iws.common.monitoring.MonitoringLevel;
+import net.iaeste.iws.api.enums.MonitoringLevel;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.BasicDao;
 import net.iaeste.iws.persistence.Externable;
@@ -92,8 +92,8 @@ public class BasicJpaDao implements BasicDao {
         // We have to start by persisting the entityToPersist, to have an Id
         entityManager.persist(entityToPersist);
 
-        final MonitoringLevel level = monitoringProcessor.findClassMonitoringLevel(entityToPersist);
-        if ((level != MonitoringLevel.NONE) && (authentication.getGroup() != null)) {
+        final MonitoringLevel level = findMonitoringLevel(entityToPersist, authentication.getGroup());
+        if (level != MonitoringLevel.NONE) {
             final List<Field> changes = monitoringProcessor.findChanges(level, entityToPersist);
             final String className = monitoringProcessor.findClassMonitoringName(entityToPersist);
             persistMonitoredData(authentication, className, entityToPersist.getId(), changes);
@@ -105,9 +105,9 @@ public class BasicJpaDao implements BasicDao {
      */
     @Override
     public <T extends Updateable<T>> void persist(final Authentication authentication, final T entityToPersist, final T changesToBeMerged) {
-        final MonitoringLevel level = monitoringProcessor.findClassMonitoringLevel(entityToPersist);
-        if ((level != MonitoringLevel.NONE) && (authentication.getGroup() != null)) {
-            final List<Field> changes = monitoringProcessor.findChanges (level, entityToPersist, changesToBeMerged);
+        final MonitoringLevel level = findMonitoringLevel(entityToPersist, authentication.getGroup());
+        if (level != MonitoringLevel.NONE) {
+            final List<Field> changes = monitoringProcessor.findChanges(level, entityToPersist, changesToBeMerged);
             final String className = monitoringProcessor.findClassMonitoringName(entityToPersist);
             persistMonitoredData(authentication, className, entityToPersist.getId(), changes);
         }
@@ -341,6 +341,41 @@ public class BasicJpaDao implements BasicDao {
     // =========================================================================
     // Internal Methods
     // =========================================================================
+
+    /**
+     * Monitoring of data is made based on the common monitoring level of both
+     * the Entity & Group. If both have detailed level - then all information is
+     * monitored. Otherwise if either is having either marked or detailed, then
+     * the level is marked and if one or both doesn't support monitoring, then
+     * nothing is monitored.<br />
+     *   By default, all entities support detailed monitoring but the groups
+     * doesn't support monitoring. Monitoring must be explicitly added by the
+     * group moderators.
+     *
+     * @param entity Entity to check for monitoring
+     * @param group  Grop to check for monitoring
+     * @return Combined result for the monitoring
+     */
+    private MonitoringLevel findMonitoringLevel(final IWSEntity entity, final GroupEntity group) {
+        final MonitoringLevel entityLevel = monitoringProcessor.findClassMonitoringLevel(entity);
+        final MonitoringLevel groupLevel;
+        if (group != null && group.getMonitoringLevel() != null) {
+            groupLevel = group.getMonitoringLevel();
+        } else {
+            groupLevel = MonitoringLevel.NONE;
+        }
+
+        final MonitoringLevel level;
+        if ((entityLevel == MonitoringLevel.NONE) || (groupLevel == MonitoringLevel.NONE)) {
+            level = MonitoringLevel.NONE;
+        } else if ((entityLevel == MonitoringLevel.MARKED) || (groupLevel == MonitoringLevel.MARKED)) {
+            level = MonitoringLevel.MARKED;
+        } else {
+            level = MonitoringLevel.DETAILED;
+        }
+
+        return level;
+    }
 
     /**
      * First, we check if the Entity is updateable, i.e. one that is exposed

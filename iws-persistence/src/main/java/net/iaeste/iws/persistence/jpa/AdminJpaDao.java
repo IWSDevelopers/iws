@@ -91,6 +91,28 @@ public class AdminJpaDao extends BasicJpaDao implements AdminDao {
      * {@inheritDoc}
      */
     @Override
+    public List<UserGroupEntity> findUserGroupsForContactsByExternalUserId(final String externalUserId) {
+        final Query query = entityManager.createNamedQuery("usergroup.findContactForExternalUserId");
+        query.setParameter("euid", externalUserId);
+
+        return query.getResultList();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<UserGroupEntity> findUserGroupsForContactsByExternalGroupId(final String externalGroupId) {
+        final Query query = entityManager.createNamedQuery("usergroup.findContactForExternalGroupId");
+        query.setParameter("egid", externalGroupId);
+
+        return query.getResultList();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public List<UserGroupEntity> searchUsers(String firstname, String lastname) {
         final Query query = entityManager.createNamedQuery("userGroup.searchByFirstNameAndLastNameInMembers");
         // Weird, if I add the following lines directly into the setParameter,

@@ -127,7 +127,9 @@ public final class GroupService {
                     throw new IdentificationException("Another Group exist with a similar name " + name);
                 }
             } else {
-                throw new PermissionException("It is not permitted to update Groups of type " + type + " with this request.");
+                final Group theGroup = request.getGroup();
+                log.info("Group Updated was made for the restricted group {} of type {}. Only selected fields have been updated!", theGroup.getGroupName(), theGroup.getGroupType().getDescription());
+                limitedGroupUpdate(authentication, entity, theGroup);
             }
         }
 
@@ -161,6 +163,29 @@ public final class GroupService {
         groupEntity.setDescription(group.getDescription());
         groupEntity.setFullName(GroupUtil.prepareFullGroupName(type, group, basename));
         groupEntity.setListName(GroupUtil.prepareListName(type, groupEntity.getFullName(), entity.getCountry() != null ? entity.getCountry().getCountryName() : null));
+        groupEntity.setMonitoringLevel(group.getMonitoringLevel());
+
+        dao.persist(authentication, entity, groupEntity);
+    }
+
+    /**
+     * For some groups, we are only allowing to change the monitoring level,
+     * nothing else.
+     *
+     * @param authentication Authentication information for requesting user
+     * @param entity         Entity to update
+     * @param changesToGroup Group Object from the requesting user
+     */
+    private void limitedGroupUpdate(final Authentication authentication, final GroupEntity entity, final Group group) {
+        final GroupEntity groupEntity = new GroupEntity();
+        // Most fields are not updatable, so we set them to the ones we already
+        // have stored in the database
+        groupEntity.setGroupName(entity.getGroupName());
+        groupEntity.setDescription(entity.getDescription());
+        groupEntity.setFullName(entity.getFullName());
+        groupEntity.setListName(entity.getListName());
+        // Monitoring is allowed to be updated
+        groupEntity.setMonitoringLevel(group.getMonitoringLevel());
 
         dao.persist(authentication, entity, groupEntity);
     }

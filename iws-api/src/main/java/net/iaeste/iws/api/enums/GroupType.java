@@ -181,7 +181,7 @@ public enum GroupType {
      * who's on either.
      *
      * @param description               Display name for this GroupType
-     * @param whoMayJoin                   The membmers who may join
+     * @param whoMayJoin                The membmers who may join
      * @param mayHavePrivateMailinglist May this GroupType have private lists
      * @param mayHavePublicMailinglist  May this GroupType have public lists
      */

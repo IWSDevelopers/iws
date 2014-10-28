@@ -94,6 +94,7 @@ public final class CommonTransformer {
             group.setListName(entity.getListName());
             group.setGroupType(transform(entity.getGroupType()));
             group.setDescription(entity.getDescription());
+            group.setMonitoringLevel(entity.getMonitoringLevel());
             if (entity.getCountry() != null) {
                 group.setCountry(transform(entity.getCountry()));
             }

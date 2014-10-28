@@ -26,7 +26,10 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.enums.GroupType;
+import net.iaeste.iws.api.enums.MonitoringLevel;
+import net.iaeste.iws.api.requests.FetchGroupRequest;
 import net.iaeste.iws.api.requests.GroupRequest;
+import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.ProcessGroupResponse;
 import net.iaeste.iws.api.util.Fallible;
 import org.junit.Test;
@@ -61,6 +64,24 @@ public final class GroupProcessingTest extends AbstractAdministration {
     // =========================================================================
     // Positive Tests, when creating a subgroup
     // =========================================================================
+
+    @Test
+    public void testMonitoringChanges() {
+        final Group group = findNationalGroup(token);
+        assertThat(group.getMonitoringLevel(), is(not(MonitoringLevel.DETAILED)));
+
+        token.setGroupId(group.getGroupId());
+        group.setMonitoringLevel(MonitoringLevel.DETAILED);
+        final GroupRequest request1 = new GroupRequest(group);
+        final ProcessGroupResponse response1 = client.processGroup(token, request1);
+        assertThat(response1.isOk(), is(true));
+
+        final FetchGroupRequest request2 = new FetchGroupRequest(group.getGroupId());
+        final FetchGroupResponse response2 = client.fetchGroup(token, request2);
+        assertThat(response2.isOk(), is(true));
+        assertThat(response2.getGroup(), is(not(nullValue())));
+        assertThat(response2.getGroup().getMonitoringLevel(), is(MonitoringLevel.DETAILED));
+    }
 
     @Test
     public void testCreatingLocalAsSubGroupToMembers() {
@@ -193,17 +214,20 @@ public final class GroupProcessingTest extends AbstractAdministration {
     // =========================================================================
 
     @Test
-    public void testUpdatingIllegalGroup() {
+    public void testUpdatingRestrictedGroup() {
+        final String newName = "New Name";
         final Group group = findNationalGroup(token);
-        group.setGroupName("New Name");
+        assertThat(group.getMonitoringLevel(), is(not(MonitoringLevel.MARKED)));
+        group.setGroupName(newName);
+        group.setMonitoringLevel(MonitoringLevel.MARKED);
         token.setGroupId(group.getGroupId());
         final GroupRequest request = new GroupRequest(group);
 
         final ProcessGroupResponse response = client.processGroup(token, request);
-        assertThat(response, is(not(nullValue())));
-        assertThat(response.isOk(), is(false));
-        assertThat(response.getError(), is(IWSErrors.NOT_PERMITTED));
-        assertThat(response.getMessage(), is("It is not permitted to update Groups of type NATIONAL with this request."));
+        assertThat(response.isOk(), is(true));
+        final Group updatedGroup = response.getGroup();
+        assertThat(updatedGroup.getGroupName(), is(not(newName)));
+        assertThat(updatedGroup.getMonitoringLevel(), is(MonitoringLevel.MARKED));
     }
 
     @Test

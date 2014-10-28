@@ -148,6 +148,7 @@ create view file_attachments as
     g.parent_id          as group_parent_id,
     g.group_name         as group_groupname,
     g.status             as group_status,
+    g.monitoring_level   as group_monitoring_level,
     g.modified           as group_modified,
     g.created            as group_created,
     u.id                 as user_id,

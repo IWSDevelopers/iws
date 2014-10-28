@@ -55,6 +55,10 @@ public interface AdminDao extends BasicDao {
 
     List<UserGroupEntity> findUserGroups(String externalUserId);
 
+    List<UserGroupEntity> findUserGroupsForContactsByExternalUserId(String externalUserId);
+
+    List<UserGroupEntity> findUserGroupsForContactsByExternalGroupId(String externalGroupId);
+
     List<UserGroupEntity> searchUsers(String firstname, String lastname);
 
     List<UserGroupEntity> searchUsers(String firstname, String lastname, String externalMemberGroupId);

@@ -16,6 +16,7 @@ package net.iaeste.iws.persistence.views;
 
 import net.iaeste.iws.api.enums.GroupStatus;
 import net.iaeste.iws.api.enums.GroupType;
+import net.iaeste.iws.api.enums.MonitoringLevel;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -55,6 +56,10 @@ public class EmbeddedGroup {
     @Enumerated(EnumType.STRING)
     @Column(name = "group_status", insertable = false, updatable = false)
     private GroupStatus status = null;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "group_monitoring_level", insertable = false, updatable = false)
+    private MonitoringLevel monitoringLevel = null;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "group_modified", insertable = false, updatable = false)
@@ -106,6 +111,14 @@ public class EmbeddedGroup {
 
     public GroupStatus getStatus() {
         return status;
+    }
+
+    public void setMonitoringLevel(final MonitoringLevel monitoringLevel) {
+        this.monitoringLevel = monitoringLevel;
+    }
+
+    public MonitoringLevel getMonitoringLevel() {
+        return monitoringLevel;
     }
 
     public void setModified(final Date modified) {

@@ -17,8 +17,8 @@ package net.iaeste.iws.persistence.entities;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.Currency;
 import net.iaeste.iws.api.enums.Membership;
-import net.iaeste.iws.common.monitoring.Monitored;
-import net.iaeste.iws.common.monitoring.MonitoringLevel;
+import net.iaeste.iws.persistence.monitoring.Monitored;
+import net.iaeste.iws.api.enums.MonitoringLevel;
 import net.iaeste.iws.persistence.Externable;
 
 import javax.persistence.Column;

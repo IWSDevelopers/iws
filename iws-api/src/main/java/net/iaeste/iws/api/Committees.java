@@ -99,7 +99,6 @@ public interface Committees {
      *     </li>
      * </ul>
      *
-     *
      * Creates a new Co-operating Institution for IAESTE. This requres that the
      * following information is provided:
      * <ul>

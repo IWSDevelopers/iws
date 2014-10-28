@@ -16,6 +16,7 @@ package net.iaeste.iws.api.dtos;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.GroupType;
+import net.iaeste.iws.api.enums.MonitoringLevel;
 import net.iaeste.iws.api.util.AbstractVerification;
 
 import java.util.HashMap;
@@ -37,6 +38,7 @@ public final class Group extends AbstractVerification {
     private String listName = null;
     private GroupType groupType = null;
     private String description = null;
+    private MonitoringLevel monitoringLevel = MonitoringLevel.NONE;
     private Country country = null;
 
     // =========================================================================
@@ -62,6 +64,7 @@ public final class Group extends AbstractVerification {
             fullName = group.fullName;
             listName = group.listName;
             groupType = group.groupType;
+            monitoringLevel = group.monitoringLevel;
             description = group.description;
             if (group.country != null) {
                 country = new Country(group.country);
@@ -228,6 +231,26 @@ public final class Group extends AbstractVerification {
     }
 
     /**
+     * Sets the Group Monitoring Level. This will tell IWS if and how any
+     * changes should be monitored.<br />
+     *   By default, the policy of the IWS is to provide maximum privacy, so no
+     * data is monitored. If monitoring is desired, then this value must
+     * explicitly be changed.<br />
+     *   The method will throw an {@code IllegalArgumentException} if the given
+     * value is invalid, i.e. null.
+     *
+     * @param monitoringLevel Monitoring Level
+     */
+    public void setMonitoringLevel(final MonitoringLevel monitoringLevel) {
+        ensureNotNull("monitoringLevel", monitoringLevel);
+        this.monitoringLevel = monitoringLevel;
+    }
+
+    public MonitoringLevel getMonitoringLevel() {
+        return monitoringLevel;
+    }
+
+    /**
      * Sets the Group Country, if the Group is having a Country relation.
      *
      * @param country The Country for this Group
@@ -289,6 +312,9 @@ public final class Group extends AbstractVerification {
         if ((description != null) ? !description.equals(group.description) : (group.description != null)) {
             return false;
         }
+        if ((monitoringLevel != null) ? monitoringLevel != group.monitoringLevel : (group.monitoringLevel != null)) {
+            return false;
+        }
         return !((country != null) ? !country.equals(group.country) : (group.country != null));
     }
 
@@ -305,6 +331,7 @@ public final class Group extends AbstractVerification {
         result = IWSConstants.HASHCODE_MULTIPLIER * result + ((listName != null) ? listName.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + ((groupType != null) ? groupType.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + ((description != null) ? description.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((monitoringLevel != null) ? monitoringLevel.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + ((country != null) ? country.hashCode() : 0);
 
         return result;
@@ -322,6 +349,7 @@ public final class Group extends AbstractVerification {
                 ", listName='" + getListName() + '\'' +
                 ", groupType=" + groupType +
                 ", description='" + description + '\'' +
+                ", monitoringLevel='" + monitoringLevel + '\'' +
                 ", country=" + country +
                 '}';
     }

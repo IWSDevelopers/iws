@@ -4,6 +4,8 @@
 # Glassfish Control Script
 # -----------------------------------------------------------------------------
 # History:
+#   Version 1.01 - 2014-10-28, Kim Jensen <Kim.Jensen@secunet.com>
+#     o Extended Status with Memory & Thread information
 #   Version 1.00 - 2014-10-25, Kim Jensen <Kim.Jensen@secunet.com>
 #     o Initial version
 # -----------------------------------------------------------------------------
@@ -146,7 +148,15 @@ doStatus () {
     getProcesses
 
     if [ $? -ge 1 ]; then
-        echo "Glassfish is running"
+        # Calculate the information about Glassfish, we're collecting
+        # information about the current number of Java Threads and how
+        # much memory is consumed.
+        gPid=`ps -eaf | grep -v "grep" | grep "glassfish.jar" | awk '{ print $2; }'`
+        gThreads=`prtstat ${gPid} 2>/dev/null | grep "Threads" | awk '{ print $6; }'`
+        if [ "${gThreads}" = "" ]; then gThreads="0"; fi
+        gMemory=`prtstat ${gPid} 2>/dev/null | grep "RSS" | awk '{ print $2; }'`
+        if [ "${gMemory}" = "" ]; then gMemory="0"; fi
+        echo -e "Glassfish is running (${gThreads} Threads, Consuming ${gMemory} MB)"
     else
         echo "Glassfish is not running"
     fi

@@ -47,7 +47,6 @@ import java.util.regex.Pattern;
 public final class ContactsService {
 
     private static final Pattern SPACE_PATTERN = Pattern.compile("/ +/");
-    private static final int MAX_DEPTH_CONTACT_GROUPS = 3;
 
     private final AdminDao dao;
 
@@ -210,12 +209,12 @@ public final class ContactsService {
      * @return Contact Response with User details and associated Groups
      */
     private ContactsResponse retrieveContactForUser(final String externalUserId) {
-        final List<UserGroupEntity> groupEntities = dao.findUserGroups(externalUserId);
+        final List<UserGroupEntity> groupEntities = dao.findUserGroupsForContactsByExternalUserId(externalUserId);
 
         if (!groupEntities.isEmpty()) {
             final ContactsResponse response = new ContactsResponse();
             response.setType(ContactsType.USER);
-            response.setUsers(new ArrayList<User>(extractUsers(groupEntities).subList(0, 1)));
+            response.setUsers(new ArrayList<>(extractUsers(groupEntities).subList(0, 1)));
             response.setGroups(extractGroups(groupEntities));
 
             return response;
@@ -233,7 +232,7 @@ public final class ContactsService {
      * @return Contact Response with Groups details and associated Users
      */
     private ContactsResponse retrieveContactForGroup(final String externalGroupId) {
-        final List<UserGroupEntity> userEntities = dao.findGroupMembers(externalGroupId);
+        final List<UserGroupEntity> userEntities = dao.findUserGroupsForContactsByExternalGroupId(externalGroupId);
 
         if (!userEntities.isEmpty()) {
             final ContactsResponse response = new ContactsResponse();

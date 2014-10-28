@@ -18,8 +18,8 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.Language;
 import net.iaeste.iws.api.enums.exchange.LanguageLevel;
 import net.iaeste.iws.api.enums.exchange.StudyLevel;
-import net.iaeste.iws.common.monitoring.Monitored;
-import net.iaeste.iws.common.monitoring.MonitoringLevel;
+import net.iaeste.iws.persistence.monitoring.Monitored;
+import net.iaeste.iws.api.enums.MonitoringLevel;
 import net.iaeste.iws.persistence.entities.Updateable;
 import net.iaeste.iws.persistence.entities.UserEntity;
 

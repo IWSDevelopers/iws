@@ -17,8 +17,8 @@ package net.iaeste.iws.persistence.entities;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.GroupStatus;
 import net.iaeste.iws.common.exceptions.NotificationException;
-import net.iaeste.iws.common.monitoring.Monitored;
-import net.iaeste.iws.common.monitoring.MonitoringLevel;
+import net.iaeste.iws.persistence.monitoring.Monitored;
+import net.iaeste.iws.api.enums.MonitoringLevel;
 import net.iaeste.iws.common.notification.Notifiable;
 import net.iaeste.iws.common.notification.NotificationField;
 import net.iaeste.iws.common.notification.NotificationType;
@@ -75,11 +75,13 @@ import java.util.Map;
                         "order by g.groupType.grouptype asc, g.groupName asc"),
         @NamedQuery(name = "group.findAllForContacts",
                 query = "select g from GroupEntity g " +
-                        "where g.groupType.grouptype = " + EntityConstants.GROUPTYPE_MEMBER +
-                        "   or g.groupType.grouptype = " + EntityConstants.GROUPTYPE_INTERNATIONAL +
-                        "   or g.groupType.grouptype = " + EntityConstants.GROUPTYPE_NATIONAL +
-                        "   or g.groupType.grouptype = " + EntityConstants.GROUPTYPE_LOCAL +
-                        "   or g.groupType.grouptype = " + EntityConstants.GROUPTYPE_WORKGROUP +
+                        "where g.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
+                        "  and g.groupType.grouptype in" +
+                                " (" + EntityConstants.GROUPTYPE_MEMBER +
+                                ", " + EntityConstants.GROUPTYPE_INTERNATIONAL +
+                                ", " + EntityConstants.GROUPTYPE_NATIONAL +
+                                ", " + EntityConstants.GROUPTYPE_LOCAL +
+                                ", " + EntityConstants.GROUPTYPE_WORKGROUP + ") " +
                         "order by g.groupType.grouptype asc, g.groupName asc"),
         @NamedQuery(name = "group.findByUserAndExternalId",
                 query = "select g from GroupEntity g, UserGroupEntity ug " +
@@ -221,6 +223,11 @@ public class GroupEntity implements Externable<GroupEntity>, Notifiable {
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private GroupStatus status = GroupStatus.ACTIVE;
+
+    @Monitored(name="Monitoring Level", level = MonitoringLevel.DETAILED)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "monitoring_level", nullable = false)
+    private MonitoringLevel monitoringLevel = MonitoringLevel.NONE;
 
     /**
      * For the data migration, it is problematic to use the old Id's, hence
@@ -369,6 +376,14 @@ public class GroupEntity implements Externable<GroupEntity>, Notifiable {
         return status;
     }
 
+    public void setMonitoringLevel(final MonitoringLevel monitoringLevel) {
+        this.monitoringLevel = monitoringLevel;
+    }
+
+    public MonitoringLevel getMonitoringLevel() {
+        return monitoringLevel;
+    }
+
     public void setOldId(final Integer oldId) {
         this.oldId = oldId;
     }
@@ -433,6 +448,7 @@ public class GroupEntity implements Externable<GroupEntity>, Notifiable {
             fullName = obj.fullName;
             description = obj.description;
             listName = obj.listName;
+            monitoringLevel = obj.monitoringLevel;
         }
     }
 

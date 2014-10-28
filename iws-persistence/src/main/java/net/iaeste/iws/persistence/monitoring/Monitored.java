@@ -12,11 +12,13 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-package net.iaeste.iws.common.monitoring;
+package net.iaeste.iws.persistence.monitoring;
 
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
+import net.iaeste.iws.api.enums.MonitoringLevel;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;

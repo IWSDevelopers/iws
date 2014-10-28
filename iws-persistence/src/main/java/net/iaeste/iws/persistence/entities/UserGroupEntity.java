@@ -16,8 +16,8 @@ package net.iaeste.iws.persistence.entities;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.common.exceptions.NotificationException;
-import net.iaeste.iws.common.monitoring.Monitored;
-import net.iaeste.iws.common.monitoring.MonitoringLevel;
+import net.iaeste.iws.persistence.monitoring.Monitored;
+import net.iaeste.iws.api.enums.MonitoringLevel;
 import net.iaeste.iws.common.notification.Notifiable;
 import net.iaeste.iws.common.notification.NotificationField;
 import net.iaeste.iws.common.notification.NotificationType;
@@ -55,6 +55,16 @@ import java.util.Map;
                         "where ug.group.status <> " + EntityConstants.GROUP_STATUS_DELETED +
                         "  and ug.user.status <> " + EntityConstants.USER_STATUS_DELETED +
                         "  and ug.group.externalId = :egid"),
+        @NamedQuery(name = "usergroup.findContactForExternalGroupId",
+                query = "select ug from UserGroupEntity ug " +
+                        "where ug.group.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
+                        "  and ug.user.status = " + EntityConstants.USER_STATUS_ACTIVE +
+                        "  and ug.group.externalId = :egid"),
+        @NamedQuery(name = "usergroup.findContactForExternalUserId",
+                query = "select ug from UserGroupEntity ug " +
+                        "where ug.group.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
+                        "  and ug.user.status = " + EntityConstants.USER_STATUS_ACTIVE +
+                        "  and ug.user.externalId = :euid"),
         @NamedQuery(name = "usergroup.findForExternalUserId",
                 query = "select ug from UserGroupEntity ug " +
                         "where ug.group.status <> " + EntityConstants.GROUP_STATUS_DELETED +

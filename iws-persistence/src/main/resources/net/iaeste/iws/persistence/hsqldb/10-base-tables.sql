@@ -206,6 +206,7 @@ create table groups (
     country_id          integer,
     list_name           varchar(100),
     status              varchar(10) default 'ACTIVE',
+    monitoring_level    varchar(10) default 'NONE',
     old_iw3_id          integer,
     modified            timestamp default now(),
     created             timestamp default now(),
@@ -235,6 +236,7 @@ create table groups (
     constraint group_notnull_name         check (group_name is not null),
     constraint group_parent_before_id     check (parent_id <= id),
     constraint group_notnull_status       check (status is not null),
+    constraint group_monitoring_level     check (monitoring_level is not null),
     constraint group_notnull_modified     check (modified is not null),
     constraint group_notnull_created      check (created is not null)
 );

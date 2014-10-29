@@ -51,6 +51,8 @@ import javax.persistence.EntityManager;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -259,6 +261,7 @@ public class NotificationEmailSender implements Observer {
                 //Processing of other notification than 'IMMEDIATELY' ones will be triggered by a timer and all required information
                 //should be get from DB directly according to the NotificationType
                 if (userSetting != null && userSetting.getFrequency() == NotificationFrequency.IMMEDIATELY) {
+                    debugLogActivationLink(fields, type);
                     log.info("User notification setting for " + type + " was found");
                     try {
                         final ObjectMessage msg = session.createObjectMessage();
@@ -287,6 +290,20 @@ public class NotificationEmailSender implements Observer {
             }
         }
         return ret;
+    }
+
+    // printout of the activation link for easier testing of add user functionality
+    private static void debugLogActivationLink(Map<NotificationField, String> fields, NotificationType notificationType) {
+        if(notificationType == NotificationType.ACTIVATE_USER && log.isDebugEnabled()) {
+            String hostname;
+            try {
+                hostname = InetAddress.getLocalHost().getHostName();
+            } catch (UnknownHostException e) {
+                // Just assume localhost
+                hostname = "localhost";
+            }
+            log.debug("***** ACTIVATION LINK https://" + hostname + "/intraweb/pages/activateUser.xhtml?code=" + fields.get(NotificationField.CODE) + " *****");
+        }
     }
 
     //TODO probably not necessary to have the whole UserEntity, maybe just List<string> (emails) would be enough

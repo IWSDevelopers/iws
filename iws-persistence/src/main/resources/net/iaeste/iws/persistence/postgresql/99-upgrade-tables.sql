@@ -15,6 +15,11 @@ update groups set monitoring_level = 'NONE';
 alter table groups add constraint group_monitoring_level check (monitoring_level is not null);
 
 -- =============================================================================
+-- Making the Board the default Administrator Group
+-- =============================================================================
+update groups set grouptype_id = 0 where id = 3;
+
+-- =============================================================================
 -- GroupType Corrections for mailing lists, required for our mail views, the
 -- information is not mapped with our ORM, as these settings are fixed.
 -- =============================================================================

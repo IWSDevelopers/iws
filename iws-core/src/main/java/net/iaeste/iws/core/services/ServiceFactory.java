@@ -15,16 +15,18 @@
 package net.iaeste.iws.core.services;
 
 import net.iaeste.iws.common.configuration.Settings;
-import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.core.monitors.ActiveSessions;
+import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.AdminDao;
+import net.iaeste.iws.persistence.CommitteeDao;
 import net.iaeste.iws.persistence.CountryDao;
 import net.iaeste.iws.persistence.ExchangeDao;
 import net.iaeste.iws.persistence.StudentDao;
 import net.iaeste.iws.persistence.ViewsDao;
 import net.iaeste.iws.persistence.jpa.AccessJpaDao;
 import net.iaeste.iws.persistence.jpa.AdminJpaDao;
+import net.iaeste.iws.persistence.jpa.CommitteeJpaDao;
 import net.iaeste.iws.persistence.jpa.CountryJpaDao;
 import net.iaeste.iws.persistence.jpa.ExchangeJpaDao;
 import net.iaeste.iws.persistence.jpa.StudentJpaDao;
@@ -49,11 +51,11 @@ public final class ServiceFactory {
     // Note, for now the Constructor sets the EntityManager, it is a long-term
     // requirement, that we instead should have setters for the DAO's.
     private final EntityManager entityManager;
-    private final Notifications notifications;
-    private final CountryDao countryDao;
     private final AccessDao accessDao;
+    private final CountryDao countryDao;
     private final ExchangeDao exchangeDao;
     private final StudentDao studentDao;
+    private final Notifications notifications;
     private final Settings settings;
 
     public ServiceFactory(final EntityManager entityManager, final Notifications notifications, final Settings settings) {
@@ -80,7 +82,8 @@ public final class ServiceFactory {
     }
 
     public CommitteeService prepareCommitteeService() {
-        return new CommitteeService();
+        final CommitteeDao committeeDao = new CommitteeJpaDao(entityManager);
+        return new CommitteeService(committeeDao);
     }
 
     public CountryService prepareCountryService() {

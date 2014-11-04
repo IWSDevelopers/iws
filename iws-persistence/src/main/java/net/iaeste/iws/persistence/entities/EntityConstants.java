@@ -47,6 +47,11 @@ public final class EntityConstants {
     // =========================================================================
 
     /**
+     * GroupType value for Members; {@link net.iaeste.iws.api.enums.GroupType#ADMINISTRATION}.
+     */
+    public static final String GROUPTYPE_ADMINISTRATION = DELIMITER + "ADMINISTRATION" + DELIMITER;
+
+    /**
      * GroupType value for Members; {@link net.iaeste.iws.api.enums.GroupType#MEMBER}.
      */
     public static final String GROUPTYPE_MEMBER = DELIMITER + "MEMBER" + DELIMITER;

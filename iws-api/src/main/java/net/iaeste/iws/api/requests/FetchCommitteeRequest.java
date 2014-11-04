@@ -36,9 +36,10 @@ public class FetchCommitteeRequest extends AbstractPaginatable {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
+    private static final Set<GroupStatus> ALLOWED = EnumSet.of(GroupStatus.ACTIVE, GroupStatus.SUSPENDED);
     private List<String> countryIds;
     private Membership membership;
-    private Set<GroupStatus> statuses = EnumSet.of(GroupStatus.ACTIVE, GroupStatus.SUSPENDED);
+    private Set<GroupStatus> statuses = ALLOWED;
 
     // =========================================================================
     // Object Constructors
@@ -49,6 +50,8 @@ public class FetchCommitteeRequest extends AbstractPaginatable {
      * for WebServices to work properly.
      */
     public FetchCommitteeRequest() {
+        countryIds = null;
+        membership = null;
     }
 
     /**
@@ -137,7 +140,7 @@ public class FetchCommitteeRequest extends AbstractPaginatable {
      * @throws IllegalArgumentException if the statuses is null
      */
     public void setStatuses(final Set<GroupStatus> statuses) throws IllegalArgumentException {
-        ensureNotNullOrEmpty("statuses", statuses);
+        ensureNotNullAndContains("statuses", statuses, ALLOWED);
 
         this.statuses = statuses;
     }
@@ -146,7 +149,7 @@ public class FetchCommitteeRequest extends AbstractPaginatable {
         return statuses;
     }
 
-// =========================================================================
+    // =========================================================================
     // Standard Request Methods
     // =========================================================================
 
@@ -156,6 +159,11 @@ public class FetchCommitteeRequest extends AbstractPaginatable {
     @Override
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>();
+
+        if ((countryIds != null) && (membership != null)) {
+            validation.put("request", "The request Object contain both CountryIds & Membership, only one can be used.");
+        }
+        isNotNullAndContains(validation, "statuses", statuses, ALLOWED);
 
         return validation;
     }

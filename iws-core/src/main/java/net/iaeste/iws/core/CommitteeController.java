@@ -65,11 +65,11 @@ public final class CommitteeController extends CommonController implements Commi
         FetchCommitteeResponse response;
 
         try {
-            final Authentication authentication = verifyAccess(token, Permission.PROCESS_COMMITTEE);
+            verifyAccess(token, Permission.PROCESS_COMMITTEE);
             verify(request);
 
             final CommitteeService service = factory.prepareCommitteeService();
-            response = service.fetchCommittees(authentication, request);
+            response = service.fetchCommittees(request);
         } catch (IWSException e) {
             response = new FetchCommitteeResponse(e.getError(), e.getMessage());
         }
@@ -95,7 +95,7 @@ public final class CommitteeController extends CommonController implements Commi
             verify(request);
 
             final CommitteeService service = factory.prepareCommitteeService();
-            response = service.createCommittee(authentication, request);
+            response = service.processCommittee(authentication, request);
         } catch (IWSException e) {
             response = new FallibleResponse(e.getError(), e.getMessage());
         }

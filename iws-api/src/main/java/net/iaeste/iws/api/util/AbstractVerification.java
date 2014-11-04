@@ -49,6 +49,7 @@ public abstract class AbstractVerification implements Verifiable {
     private static final String ERROR_NOT_EXACT_LENGTH = "The field %s is not matching the required length %d.";
     private static final String ERROR_MINIMUM_VALUE = "The field %s must be at least %d.";
     private static final String ERROR_NOT_WITHIN_LIMITS = "The field %s is not within the required limits from %s to %d.";
+    private static final String ERROR_ILLEGAL_VALUES = "The field %s contain illegal value %s.";
     private static final String ERROR_INVALID = "The field %s is invalid.";
     private static final String ERROR_INVALID_REGEX = "The field %s does not follow the required format %s.";
     private static final String ERROR_NOT_VERIFABLE = "The field %s is not verifiable.";
@@ -275,6 +276,38 @@ public abstract class AbstractVerification implements Verifiable {
     }
 
     /**
+     * Throws an {@code IllegalArgumentException} if the given value is neither
+     * null or less than the value.
+     *
+     * @param field   Name of the field
+     * @param value   The value of the field
+     * @param minimum The minimally allowed value for the field
+     * @throws IllegalArgumentException if the value is null or too small
+     */
+    protected <T extends Number> void ensureNotNullAndMinimum(final String field, final T value, final T minimum) throws IllegalArgumentException {
+        ensureNotNull(field, value);
+        ensureMinimum(field, value, minimum);
+    }
+
+    /**
+     * Throws an {@code IllegalArgumentException} if the given Collection is
+     * either null or containing illegal values.
+     *
+     * @param field      The name of the field (value) to be verified
+     * @param value      the Collectin to verify
+     * @param acceptable Collection of allowed values
+     */
+    protected <E extends Enum<?>> void ensureNotNullAndContains(final String field, final Collection<E> value, final Collection<E> acceptable) {
+        ensureNotNull(field, value);
+
+        for (final E found : value) {
+            if (!acceptable.contains(found)) {
+                throw new IllegalArgumentException(format(ERROR_ILLEGAL_VALUES, field, found));
+            }
+        }
+    }
+
+    /**
      * Throws an {@code IllegalArgumentException} if the given value is not the
      * exact length.
      *
@@ -304,20 +337,6 @@ public abstract class AbstractVerification implements Verifiable {
                 throw new IllegalArgumentException(format(ERROR_MINIMUM_VALUE, field, minimum));
             }
         }
-    }
-
-    /**
-     * Throws an {@code IllegalArgumentException} if the given value is neither
-     * null or less than the value.
-     *
-     * @param field   Name of the field
-     * @param value   The value of the field
-     * @param minimum The minimally allowed value for the field
-     * @throws IllegalArgumentException if the value is null or too small
-     */
-    protected <T extends Number> void ensureNotNullAndMinimum(final String field, final T value, final T minimum) throws IllegalArgumentException {
-        ensureNotNull(field, value);
-        ensureMinimum(field, value, minimum);
     }
 
     /**
@@ -535,6 +554,31 @@ public abstract class AbstractVerification implements Verifiable {
     }
 
     /**
+     * The method takes a value, and verifies that it is neither null, nor
+     * containing illegal values.
+     *
+     * @param validation Map with Error information
+     * @param field      The name of the field (value) to be verified
+     * @param value      the Collectin to verify
+     * @param acceptable Collection of allowed values
+     */
+    protected <E extends Enum<?>> void isNotNullAndContains(final Map<String, String> validation, final String field, final Collection<E> value, final Collection<E> acceptable) {
+        isNotNull(validation, field, value);
+
+        if (value != null) {
+            boolean containIllegalValue = false;
+            for (final E found : value) {
+                if (!acceptable.contains(found)) {
+                    containIllegalValue = true;
+                }
+            }
+            if (containIllegalValue) {
+                addError(validation, field, "The field contains illegal values.");
+            }
+        }
+    }
+
+    /**
      * The method takes a value, and verifies that this value is verifiable. If
      * an error is found, then the information is added to the validation
      * Map.
@@ -546,7 +590,7 @@ public abstract class AbstractVerification implements Verifiable {
     protected void isVerifiable(final Map<String, String> validation, final String field, final Verifiable value) {
         if (value != null) {
             for (final Map.Entry<String, String> entry : value.validate().entrySet()) {
-                addError(validation, "field:" + entry.getKey(), entry.getValue());
+                addError(validation, "Object[" + field + "] field:" + entry.getKey(), entry.getValue());
             }
         }
     }

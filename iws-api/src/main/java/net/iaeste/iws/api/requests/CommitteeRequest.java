@@ -15,6 +15,7 @@
 package net.iaeste.iws.api.requests;
 
 import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.api.dtos.UserGroup;
 import net.iaeste.iws.api.util.AbstractVerification;
 
 import java.util.HashMap;
@@ -30,6 +31,8 @@ public final class CommitteeRequest extends AbstractVerification {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
+    private UserGroup committee;
+
     // =========================================================================
     // Object Constructors
     // =========================================================================
@@ -41,9 +44,27 @@ public final class CommitteeRequest extends AbstractVerification {
     public CommitteeRequest() {
     }
 
+    /**
+     * Default Constructor.
+     *
+     * @param committee National Committee (National Group + Owner)
+     */
+    public CommitteeRequest(final UserGroup committee) {
+        setCommittee(committee);
+    }
+
     // =========================================================================
     // Standard Setters & Getters
     // =========================================================================
+
+    public void setCommittee(final UserGroup committee) throws IllegalArgumentException {
+        ensureNotNullAndVerifiable("committee", committee);
+        this.committee = committee;
+    }
+
+    public UserGroup getCommittee() {
+        return committee;
+    }
 
     // =========================================================================
     // Standard Request Methods
@@ -55,6 +76,9 @@ public final class CommitteeRequest extends AbstractVerification {
     @Override
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(0);
+
+        isNotNullAndVerifiable(validation, "committee", committee);
+
         return validation;
     }
 }

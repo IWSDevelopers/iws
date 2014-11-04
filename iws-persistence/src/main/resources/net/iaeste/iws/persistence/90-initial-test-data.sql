@@ -797,3 +797,6 @@ insert into user_to_group (external_id, user_id, group_id, role_id) values ('2f4
 update groups set status = 'SUSPENDED' where id = 10;
 -- Four out testing, we need to suspend a single Account, First available, Argentina
 update users set status = 'SUSPENDED' where id = 2;
+
+-- Australia is set to be Administrator
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('440c0460-9f7f-41d7-8986-94ede5e35ea0', 3, 3, 1);

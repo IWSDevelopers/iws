@@ -77,7 +77,8 @@ import java.util.Map;
                 query = "select g from GroupEntity g " +
                         "where g.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
                         "  and g.groupType.grouptype in" +
-                                " (" + EntityConstants.GROUPTYPE_MEMBER +
+                                " (" + EntityConstants.GROUPTYPE_ADMINISTRATION +
+                                ", " + EntityConstants.GROUPTYPE_MEMBER +
                                 ", " + EntityConstants.GROUPTYPE_INTERNATIONAL +
                                 ", " + EntityConstants.GROUPTYPE_NATIONAL +
                                 ", " + EntityConstants.GROUPTYPE_LOCAL +

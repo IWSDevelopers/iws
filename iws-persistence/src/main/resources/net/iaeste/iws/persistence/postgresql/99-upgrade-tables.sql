@@ -38,3 +38,30 @@ update grouptypes set private_list = false, public_list = false where id = 7;
 -- =============================================================================
 -- Corrections for trac Tickets:
 -- =============================================================================
+
+
+
+-- =============================================================================
+-- Complete update with replacing the views
+-- =============================================================================
+drop view application_view;
+drop view country_details;
+drop view domestic_offer_statistics;
+drop view employer_view;
+drop view file_attachments;
+drop view find_active_sessions;
+drop view find_inactive_sessions;
+drop view find_not_activated_accounts;
+drop view find_shared_to_groups;
+drop view foreign_offer_statistics;
+drop view group_permissions;
+drop view notification_job_task_details;
+drop view offer_view;
+drop view shared_offer_view;
+drop view student_view;
+drop view user_permissions;
+drop view view_user_group;
+drop view view_users;
+
+\ir ../15-base-views.sql
+\ir ../35-exchange-views.sql

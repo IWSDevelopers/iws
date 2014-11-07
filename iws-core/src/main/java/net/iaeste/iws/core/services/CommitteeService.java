@@ -14,15 +14,18 @@
  */
 package net.iaeste.iws.core.services;
 
+import net.iaeste.iws.api.dtos.UserGroup;
 import net.iaeste.iws.api.enums.GroupStatus;
 import net.iaeste.iws.api.enums.Membership;
 import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.api.requests.CommitteeRequest;
 import net.iaeste.iws.api.requests.FetchCommitteeRequest;
+import net.iaeste.iws.api.requests.FetchInternationalGroupRequest;
 import net.iaeste.iws.api.requests.FetchSurveyOfCountryRequest;
 import net.iaeste.iws.api.requests.InternationalGroupRequest;
 import net.iaeste.iws.api.requests.SurveyOfCountryRequest;
 import net.iaeste.iws.api.responses.FetchCommitteeResponse;
+import net.iaeste.iws.api.responses.FetchInternationalGroupResponse;
 import net.iaeste.iws.api.responses.FetchSurveyOfCountryRespose;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.core.transformers.AdministrationTransformer;
@@ -76,15 +79,37 @@ public final class CommitteeService {
         } else {
             found = dao.findAllCommittees(statuses);
         }
+        final List<UserGroup> result = AdministrationTransformer.transformMembers(found);
 
-        return new FetchCommitteeResponse(AdministrationTransformer.transformMembers(found));
+        return new FetchCommitteeResponse(result);
     }
 
+    /**
+     *
+     * @param authentication
+     * @param request
+     * @return
+     */
     public Fallible processCommittee(final Authentication authentication, final CommitteeRequest request) {
         throw new NotImplementedException("Method pending implementation.");
     }
 
-    public Fallible manageInternationalGroup(final Authentication authentication, final InternationalGroupRequest request) {
+    /**
+     * Retrieves a List of International Groups with their respective Owners or
+     * Coordinators. The list will consists of those International Groups,
+     * matching the requrested, i.e. Active and/or Suspended.
+     *
+     * @param request Request Object
+     * @return List of International Groups, matching the request
+     */
+    public FetchInternationalGroupResponse fetchInternationalGroups(final FetchInternationalGroupRequest request) {
+        final List<UserGroupEntity> found = dao.findInternationalGroups(request.getStatuses());
+        final List<UserGroup> result = AdministrationTransformer.transformMembers(found);
+
+        return new FetchInternationalGroupResponse(result);
+    }
+
+    public Fallible processInternationalGroup(final Authentication authentication, final InternationalGroupRequest request) {
         throw new NotImplementedException("Method pending implementation.");
     }
 

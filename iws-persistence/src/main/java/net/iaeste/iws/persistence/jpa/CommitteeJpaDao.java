@@ -95,4 +95,21 @@ public class CommitteeJpaDao extends BasicJpaDao implements CommitteeDao {
 
         return query.getResultList();
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<UserGroupEntity> findInternationalGroups(final Set<GroupStatus> statuses) {
+        final String jql =
+                "select u " +
+                "from UserGroupEntity u " +
+                "where u.group.groupType.grouptype = " + EntityConstants.GROUPTYPE_INTERNATIONAL +
+                "  and u.role.id = " + EntityConstants.ROLE_OWNER +
+                "  and u.group.status in :statuses";
+        final Query query = entityManager.createQuery(jql);
+        query.setParameter("statuses", statuses);
+
+        return query.getResultList();
+    }
 }

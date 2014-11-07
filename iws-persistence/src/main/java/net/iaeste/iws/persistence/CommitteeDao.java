@@ -33,4 +33,6 @@ public interface CommitteeDao extends BasicDao {
     List<UserGroupEntity> findCommitteesByMembership(Membership membership, Set<GroupStatus> statuses);
 
     List<UserGroupEntity> findAllCommittees(Set<GroupStatus> statuses);
+
+    List<UserGroupEntity> findInternationalGroups(Set<GroupStatus> statuses);
 }

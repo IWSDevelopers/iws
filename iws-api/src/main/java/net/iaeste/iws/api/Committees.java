@@ -17,10 +17,12 @@ package net.iaeste.iws.api;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.CommitteeRequest;
 import net.iaeste.iws.api.requests.FetchCommitteeRequest;
+import net.iaeste.iws.api.requests.FetchInternationalGroupRequest;
 import net.iaeste.iws.api.requests.FetchSurveyOfCountryRequest;
 import net.iaeste.iws.api.requests.InternationalGroupRequest;
 import net.iaeste.iws.api.requests.SurveyOfCountryRequest;
 import net.iaeste.iws.api.responses.FetchCommitteeResponse;
+import net.iaeste.iws.api.responses.FetchInternationalGroupResponse;
 import net.iaeste.iws.api.responses.FetchSurveyOfCountryRespose;
 import net.iaeste.iws.api.util.Fallible;
 
@@ -39,11 +41,10 @@ import net.iaeste.iws.api.util.Fallible;
  * these are referred to as International Groups. International Groups, is any
  * Group, which is not under the control of a single Country, but serves a
  * larger purpose. The standard International Groups includes the SID (Seminar
- * on IAESTE Development) and the IDT (IAESTE Internet Development Team). Both
- * Regional, is designed as an Independent Group. It serves the purpose of
- * are groups under direct control by the Board of IAESTE. It is also possible
- * to create International Groups for other purposes, which may serve regional
- * purposes, for example the CEC (Central European Countries).
+ * on IAESTE Development) and the IDT (IAESTE Internet Development Team). Other
+ * International Groups may exists, which is not under the control of the Board,
+ * this would include "Regional" groups, such as the CEC (Central European
+ * Countries) or similar Groups.
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -64,6 +65,12 @@ public interface Committees {
     FetchCommitteeResponse fetchCommittees(AuthenticationToken token, FetchCommitteeRequest request);
 
     /**
+     * Processing Committees, means create, alter, upgrade, suspend or delete
+     * National Groups, with their related Member Group as well as control the
+     * National Secretary.<br />
+     *   The Id of the National Committee is omitted, meaning that the system
+     * will look at the existing records and the current country status to see
+     * what it shall do with this committee.
      * Processing a Committee means either creating a new one, altering
      * information about an existing, upgrading it or suspend/delete it.<br />
      *   If there is no Id for the Committee, then the IWS will assume that the
@@ -87,11 +94,8 @@ public interface Committees {
      *     after a period. However, to become an Associate member, all
      *     Institutions in the Country must merge and agree on a comon
      *     Structure. As there can only be one Associate Member in a Country,
-     *     the rest will be either Local Committee's or SAR's.<br />
-     *       If SAR is chosen, then the SAR will remain completely indepedent of
-     *     the main Committee. Example; China is a Member, and Macao, Hong Kong
-     *     and Taiwan are all SAR's.<br />
-     *       If Local Committee is chosen, then the control if moved over to the
+     *     the rest will be either Local Committee's.<br />
+     *       If Local Committee is chosen, then the control is moved over to the
      *     new National Committee.
      *     </li>
      *     <li>Current Status: <b>Associate Member</b><br />
@@ -112,6 +116,8 @@ public interface Committees {
      * @return Standard Error object
      */
     Fallible processCommittee(AuthenticationToken token, CommitteeRequest request);
+
+    FetchInternationalGroupResponse fetchInternationalGroups(AuthenticationToken token, FetchInternationalGroupRequest request);
 
     /**
      * Note; A problem was discovered with the Board. Normally, only the owner

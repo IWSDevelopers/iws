@@ -22,11 +22,13 @@ import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.requests.CommitteeRequest;
 import net.iaeste.iws.api.requests.FetchCommitteeRequest;
+import net.iaeste.iws.api.requests.FetchInternationalGroupRequest;
 import net.iaeste.iws.api.requests.FetchSurveyOfCountryRequest;
 import net.iaeste.iws.api.requests.InternationalGroupRequest;
 import net.iaeste.iws.api.requests.SurveyOfCountryRequest;
 import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchCommitteeResponse;
+import net.iaeste.iws.api.responses.FetchInternationalGroupResponse;
 import net.iaeste.iws.api.responses.FetchSurveyOfCountryRespose;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.core.services.CommitteeService;
@@ -110,6 +112,32 @@ public final class CommitteeController extends CommonController implements Commi
      * {@inheritDoc}
      */
     @Override
+    public FetchInternationalGroupResponse fetchInternationalGroups(final AuthenticationToken token, final FetchInternationalGroupRequest request) {
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Starting fetchInternationalGroups()"));
+        }
+        FetchInternationalGroupResponse response;
+
+        try {
+            verifyAccess(token, Permission.PROCESS_INTERNATIONAL_GROUP);
+            verify(request);
+
+            final CommitteeService service = factory.prepareCommitteeService();
+            response = service.fetchInternationalGroups(request);
+        } catch (IWSException e) {
+            response = new FetchInternationalGroupResponse(e.getError(), e.getMessage());
+        }
+
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Finished fetchInternationalGroups()"));
+        }
+        return response;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Fallible processInternationalGroup(final AuthenticationToken token, final InternationalGroupRequest request) {
         if (log.isTraceEnabled()) {
             log.trace(formatLogMessage(token, "Starting processInternationalGroup()"));
@@ -121,7 +149,7 @@ public final class CommitteeController extends CommonController implements Commi
             verify(request);
 
             final CommitteeService service = factory.prepareCommitteeService();
-            response = service.manageInternationalGroup(authentication, request);
+            response = service.processInternationalGroup(authentication, request);
         } catch (IWSException e) {
             response = new FallibleResponse(e.getError(), e.getMessage());
         }

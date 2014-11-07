@@ -18,10 +18,12 @@ import net.iaeste.iws.api.Committees;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.CommitteeRequest;
 import net.iaeste.iws.api.requests.FetchCommitteeRequest;
+import net.iaeste.iws.api.requests.FetchInternationalGroupRequest;
 import net.iaeste.iws.api.requests.FetchSurveyOfCountryRequest;
 import net.iaeste.iws.api.requests.InternationalGroupRequest;
 import net.iaeste.iws.api.requests.SurveyOfCountryRequest;
 import net.iaeste.iws.api.responses.FetchCommitteeResponse;
+import net.iaeste.iws.api.responses.FetchInternationalGroupResponse;
 import net.iaeste.iws.api.responses.FetchSurveyOfCountryRespose;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.client.notifications.NotificationSpy;
@@ -90,6 +92,14 @@ public class CommitteeSpringClient implements Committees {
     @Override
     public Fallible processCommittee(final AuthenticationToken token, final CommitteeRequest request) {
         return client.processCommittee(token, request);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public FetchInternationalGroupResponse fetchInternationalGroups(final AuthenticationToken token, final FetchInternationalGroupRequest request) {
+        return client.fetchInternationalGroups(token, request);
     }
 
     /**

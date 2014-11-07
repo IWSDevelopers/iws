@@ -18,10 +18,12 @@ import net.iaeste.iws.api.Committees;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.CommitteeRequest;
 import net.iaeste.iws.api.requests.FetchCommitteeRequest;
+import net.iaeste.iws.api.requests.FetchInternationalGroupRequest;
 import net.iaeste.iws.api.requests.FetchSurveyOfCountryRequest;
 import net.iaeste.iws.api.requests.InternationalGroupRequest;
 import net.iaeste.iws.api.requests.SurveyOfCountryRequest;
 import net.iaeste.iws.api.responses.FetchCommitteeResponse;
+import net.iaeste.iws.api.responses.FetchInternationalGroupResponse;
 import net.iaeste.iws.api.responses.FetchSurveyOfCountryRespose;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.client.CommitteeClient;
@@ -65,6 +67,18 @@ public final class CommitteeCaller implements Committees {
     public Fallible processCommittee(final AuthenticationToken token, final CommitteeRequest request) {
         try {
             return caller.processCommittee(token, request);
+        } catch (RuntimeException e) {
+            throw new StopTestException(e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public FetchInternationalGroupResponse fetchInternationalGroups(final AuthenticationToken token, final FetchInternationalGroupRequest request) {
+        try {
+            return caller.fetchInternationalGroups(token, request);
         } catch (RuntimeException e) {
             throw new StopTestException(e);
         }

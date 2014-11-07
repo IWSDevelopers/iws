@@ -81,8 +81,15 @@ public final class UserAccountTest extends AbstractAdministration {
         final CreateUserRequest createRequest = new CreateUserRequest(username, "Alfons", "Åberg");
         final CreateUserResponse createResponse = administration.createUser(token, createRequest);
         final AccountNameRequest request = new AccountNameRequest(createResponse.getUser(), "Aaberg");
-        final Fallible response = administration.changeAccountName(token, request);
+
+        // To rename someone, we need to be Administator, for the test,
+        // Australia acts as Administrator, so we're using this Account for it
+        final AuthenticationToken adminToken = login("australia@iaeste.au", "australia");
+        final Fallible response = administration.changeAccountName(adminToken, request);
         assertThat(response.isOk(), is(true));
+        logout(adminToken);
+
+        // Now we can verify that the name was changed
         final FetchUserRequest fetchRequest = new FetchUserRequest();
         fetchRequest.setUserId(createResponse.getUser().getUserId());
         final FetchUserResponse fetchResponse = administration.fetchUser(token, fetchRequest);

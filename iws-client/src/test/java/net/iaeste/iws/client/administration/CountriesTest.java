@@ -62,9 +62,9 @@ public final class CountriesTest extends AbstractAdministration {
         final FetchCountryRequest request1 = new FetchCountryRequest(countryIds);
         final FetchCountryRequest request2 = new FetchCountryRequest(Membership.FULL_MEMBER);
         final FetchCountryRequest request3 = new FetchCountryRequest();
-        final FetchCountryResponse response1 = client.fetchCountries(token, request1);
-        final FetchCountryResponse response2 = client.fetchCountries(token, request2);
-        final FetchCountryResponse response3 = client.fetchCountries(token, request3);
+        final FetchCountryResponse response1 = administration.fetchCountries(token, request1);
+        final FetchCountryResponse response2 = administration.fetchCountries(token, request2);
+        final FetchCountryResponse response3 = administration.fetchCountries(token, request3);
 
         assertThat(response1.isOk(), is(true));
         assertThat(response1.getCountries().isEmpty(), is(false));
@@ -91,7 +91,7 @@ public final class CountriesTest extends AbstractAdministration {
     public void testIfCertainCountriesExists() {
         final FetchCountryRequest request = new FetchCountryRequest();
         request.setCountryType(CountryType.COUNTRIES);
-        final FetchCountryResponse response = client.fetchCountries(token, request);
+        final FetchCountryResponse response = administration.fetchCountries(token, request);
 
         assertThat(response.isOk(), is(true));
         assertThat(response.getCountries().size(), is(86));

@@ -17,8 +17,6 @@ package net.iaeste.iws.client.exchange;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
-import net.iaeste.iws.api.Access;
-import net.iaeste.iws.api.Administration;
 import net.iaeste.iws.api.Exchange;
 import net.iaeste.iws.api.dtos.Address;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
@@ -30,12 +28,9 @@ import net.iaeste.iws.api.requests.FetchCountryRequest;
 import net.iaeste.iws.api.requests.exchange.FetchEmployerRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessEmployerRequest;
 import net.iaeste.iws.api.responses.FetchCountryResponse;
-import net.iaeste.iws.api.responses.FetchPermissionResponse;
 import net.iaeste.iws.api.responses.exchange.EmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchEmployerResponse;
 import net.iaeste.iws.client.AbstractTest;
-import net.iaeste.iws.client.AccessClient;
-import net.iaeste.iws.client.AdministrationClient;
 import net.iaeste.iws.client.ExchangeClient;
 import org.junit.After;
 import org.junit.Before;
@@ -56,7 +51,6 @@ public final class EmployerTest extends AbstractTest {
 
     private static final String USERNAME = "vietnam@iaeste.vn";
     private static final String PASSWORD = "vietnam";
-    private final Access access = new AccessClient();
 
     @Before
     @Override
@@ -156,9 +150,6 @@ public final class EmployerTest extends AbstractTest {
         countryIds.add(countryCode);
         request.setCountryIds(countryIds);
 
-        final Access access = new AccessClient();
-        final FetchPermissionResponse result = access.fetchPermissions(token);
-        final Administration administration = new AdministrationClient();
         final FetchCountryResponse response = administration.fetchCountries(token, request);
         return response.getCountries().get(0);
     }

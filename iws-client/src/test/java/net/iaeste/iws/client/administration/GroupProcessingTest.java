@@ -73,11 +73,11 @@ public final class GroupProcessingTest extends AbstractAdministration {
         token.setGroupId(group.getGroupId());
         group.setMonitoringLevel(MonitoringLevel.DETAILED);
         final GroupRequest request1 = new GroupRequest(group);
-        final ProcessGroupResponse response1 = client.processGroup(token, request1);
+        final ProcessGroupResponse response1 = administration.processGroup(token, request1);
         assertThat(response1.isOk(), is(true));
 
         final FetchGroupRequest request2 = new FetchGroupRequest(group.getGroupId());
-        final FetchGroupResponse response2 = client.fetchGroup(token, request2);
+        final FetchGroupResponse response2 = administration.fetchGroup(token, request2);
         assertThat(response2.isOk(), is(true));
         assertThat(response2.getGroup(), is(not(nullValue())));
         assertThat(response2.getGroup().getMonitoringLevel(), is(MonitoringLevel.DETAILED));
@@ -103,7 +103,7 @@ public final class GroupProcessingTest extends AbstractAdministration {
         group.setDescription(groupDescription);
 
         final GroupRequest request = new GroupRequest(group);
-        final ProcessGroupResponse response = client.processGroup(token, request);
+        final ProcessGroupResponse response = administration.processGroup(token, request);
 
         // Now, check that the changes are in
         assertThat(response.isOk(), is(true));
@@ -136,7 +136,7 @@ public final class GroupProcessingTest extends AbstractAdministration {
         group.setDescription(groupDescription);
 
         final GroupRequest request = new GroupRequest(group);
-        final ProcessGroupResponse response = client.processGroup(token, request);
+        final ProcessGroupResponse response = administration.processGroup(token, request);
 
         // Now, check that the changes are in
         assertThat(response.isOk(), is(true));
@@ -165,7 +165,7 @@ public final class GroupProcessingTest extends AbstractAdministration {
         group.setDescription(groupDescription);
 
         final GroupRequest request = new GroupRequest(group);
-        final ProcessGroupResponse response = client.processGroup(token, request);
+        final ProcessGroupResponse response = administration.processGroup(token, request);
 
         // Now, check that the changes are in
         assertThat(response.isOk(), is(true));
@@ -197,7 +197,7 @@ public final class GroupProcessingTest extends AbstractAdministration {
         token.setGroupId(result.getGroup().getGroupId());
 
         final GroupRequest request = new GroupRequest(group);
-        final ProcessGroupResponse response = client.processGroup(token, request);
+        final ProcessGroupResponse response = administration.processGroup(token, request);
 
         assertThat(response.isOk(), is(true));
         assertThat(response.getGroup(), is(not(nullValue())));
@@ -223,7 +223,7 @@ public final class GroupProcessingTest extends AbstractAdministration {
         token.setGroupId(group.getGroupId());
         final GroupRequest request = new GroupRequest(group);
 
-        final ProcessGroupResponse response = client.processGroup(token, request);
+        final ProcessGroupResponse response = administration.processGroup(token, request);
         assertThat(response.isOk(), is(true));
         final Group updatedGroup = response.getGroup();
         assertThat(updatedGroup.getGroupName(), is(not(newName)));
@@ -241,7 +241,7 @@ public final class GroupProcessingTest extends AbstractAdministration {
         final GroupRequest request = new GroupRequest(group);
 
         token.setGroupId(findMemberGroup(token).getGroupId());
-        final ProcessGroupResponse response = client.processGroup(token, request);
+        final ProcessGroupResponse response = administration.processGroup(token, request);
         assertThat(response, is(not(nullValue())));
         assertThat(response.isOk(), is(false));
         assertThat(response.getError(), is(IWSErrors.AUTHORIZATION_ERROR));

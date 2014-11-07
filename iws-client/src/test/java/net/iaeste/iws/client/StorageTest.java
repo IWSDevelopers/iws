@@ -27,6 +27,8 @@ import net.iaeste.iws.api.responses.FetchFileResponse;
 import net.iaeste.iws.api.responses.FileResponse;
 import org.junit.Test;
 
+import java.nio.charset.Charset;
+
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -51,7 +53,7 @@ public class StorageTest extends AbstractTest {
         // First generate a primitive file to store.
         final byte[] testdata1 = { (byte) 1, (byte) 2, (byte) 3, (byte) 4, (byte) 5,
                                    (byte) 6, (byte) 7, (byte) 8, (byte) 9, (byte) 0 };
-        final byte[] testdata2 = "My Test data".getBytes();
+        final byte[] testdata2 = "My Test data".getBytes(Charset.defaultCharset());
         final File file = new File();
         file.setFilename("testFile");
         file.setFiledata(testdata1);

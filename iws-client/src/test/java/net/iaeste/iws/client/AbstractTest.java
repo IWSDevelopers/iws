@@ -28,6 +28,8 @@ import net.iaeste.iws.api.responses.AuthenticationResponse;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.client.notifications.NotificationSpy;
 import net.iaeste.iws.common.exceptions.AuthenticationException;
+import net.iaeste.iws.common.notification.NotificationField;
+import net.iaeste.iws.common.notification.NotificationType;
 import org.junit.After;
 import org.junit.Before;
 
@@ -40,8 +42,8 @@ import org.junit.Before;
  */
 public abstract class AbstractTest {
 
-    private static final Access access = new AccessClient();
-    private static final Administration administration = new AdministrationClient();
+    protected static final Access access = new AccessClient();
+    protected static final Administration administration = new AdministrationClient();
     protected final NotificationSpy spy = NotificationSpy.getInstance();
     protected AuthenticationToken token = null;
 
@@ -129,5 +131,15 @@ public abstract class AbstractTest {
         assertThat(response.isOk(), is(true));
 
         return response.getGroup();
+    }
+
+    /**
+     * Reads the next Code from the Notifications.
+     *
+     * @param type Notification Type
+     * @return Code from the Message
+     */
+    protected String readCode(final NotificationType type) {
+        return spy.getNext(type).getFields().get(NotificationField.CODE);
     }
 }

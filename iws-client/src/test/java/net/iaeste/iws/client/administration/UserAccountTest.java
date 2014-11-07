@@ -20,7 +20,6 @@ import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 
-import net.iaeste.iws.api.Administration;
 import net.iaeste.iws.api.Students;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.Address;
@@ -40,12 +39,12 @@ import net.iaeste.iws.api.requests.UserRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentsRequest;
 import net.iaeste.iws.api.responses.CreateUserResponse;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
+import net.iaeste.iws.api.responses.FetchPermissionResponse;
 import net.iaeste.iws.api.responses.FetchRoleResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
 import net.iaeste.iws.api.responses.student.FetchStudentsResponse;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.api.util.Fallible;
-import net.iaeste.iws.client.AdministrationClient;
 import net.iaeste.iws.client.StudentClient;
 import net.iaeste.iws.common.notification.NotificationField;
 import net.iaeste.iws.common.notification.NotificationType;
@@ -61,8 +60,6 @@ import java.util.List;
  */
 public final class UserAccountTest extends AbstractAdministration {
 
-    private final Administration administration = new AdministrationClient();
-
     @Override
     public void setup() {
         token = login("austria@iaeste.at", "austria");
@@ -72,6 +69,58 @@ public final class UserAccountTest extends AbstractAdministration {
     @Override
     public void tearDown() {
         logout(token);
+    }
+
+    @Test
+    public void testUsernameChange() {
+        // First, let's create a new account for Harvey Rabbit, which we can
+        // use to test with.
+        final String username = "harvey@iaeste.us";
+        final String password = "harvey's password which is super secret.";
+        final CreateUserRequest createRequest = new CreateUserRequest(username, password, "Harvey", "Rabbit");
+        final CreateUserResponse createResponse = administration.createUser(token, createRequest);
+        assertThat(createResponse.isOk(), is(true));
+
+        // To ensure that we can use the account, we have to activate it. Once
+        // it is activated, we can move on to the actual test.
+        final String activationCode = readCode(NotificationType.ACTIVATE_USER);
+        final Fallible activateResponse = administration.activateUser(activationCode);
+        assertThat(activateResponse.isOk(), is(true));
+
+        // Now we have a fresh new account which is active. So we can now try to
+        // change the Username. To do this, we have to log in as the user, since
+        // only a user may change his/her own username.
+        final String newUsername = "rabbit@iaeste.us";
+        final AuthenticationToken myToken = login(username, password);
+        // We're building the request with the user itself as User Object
+        final UserRequest updateRequest = new UserRequest(createResponse.getUser());
+        // We're setting a new username here, which we can use.
+        updateRequest.setNewUsername(newUsername);
+        // To update the username, we need to provide some credentials,
+        // otherwise the IWS will reject the request. This is needed to ensure
+        // that nobody is attempting to hijack an active account.
+        updateRequest.setPassword(password);
+        // Let's just clear the Spy before we're using it :-)
+        final Fallible updateResponse = administration.controlUserAccount(myToken, updateRequest);
+        assertThat(updateResponse.isOk(), is(true));
+        // Changing username must work without being logged in, well actually
+        // it doesn't matter. As it doesn't use the current Session.
+        logout(myToken);
+        // Now, we can read out the update Code from the Notifications, which
+        // is a cheap way of reading the value from the e-mail that is send.
+        final String updateCode = readCode(NotificationType.UPDATE_USERNAME);
+        final Fallible resetResponse = administration.updateUsername(updateCode);
+        assertThat(resetResponse.isOk(), is(true));
+
+        // Final part of the test, login with the new username, and ensure that
+        // the UserId we're getting is the same as the previous Id.
+        final AuthenticationToken newToken = login(newUsername, password);
+        assertThat(newToken, is(not(nullValue())));
+        final FetchPermissionResponse permissionResponse = access.fetchPermissions(newToken);
+        assertThat(permissionResponse.isOk(), is(true));
+        assertThat(permissionResponse.getAuthorizations().get(0).getUserGroup().getUser().getUserId(), is(createResponse.getUser().getUserId()));
+        logout(newToken);
+        // And done - Long test, but worth it :-)
     }
 
     @Test
@@ -121,7 +170,7 @@ public final class UserAccountTest extends AbstractAdministration {
         final NotificationType type = NotificationType.ACTIVATE_USER;
         final NotificationField field = NotificationField.CODE;
         final String activationCode = spy.getNext(type).getFields().get(field);
-        final Fallible activateResponse = client.activateUser(activationCode);
+        final Fallible activateResponse = administration.activateUser(activationCode);
         assertThat(activateResponse.isOk(), is(true));
 
         // 4. Delete the new User
@@ -149,7 +198,7 @@ public final class UserAccountTest extends AbstractAdministration {
         final NotificationType type = NotificationType.ACTIVATE_USER;
         final NotificationField field = NotificationField.CODE;
         final String activationCode = spy.getNext(type).getFields().get(field);
-        final Fallible activateResponse = client.activateUser(activationCode);
+        final Fallible activateResponse = administration.activateUser(activationCode);
         assertThat(activateResponse.isOk(), is(false));
         assertThat(activateResponse.getError(), is(IWSErrors.AUTHENTICATION_ERROR));
         assertThat(activateResponse.getMessage(), is("No account for this user was found."));

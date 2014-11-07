@@ -66,7 +66,7 @@ public final class ContactsTest extends AbstractAdministration {
         final SearchUserRequest request = new SearchUserRequest();
         request.setName("aust"); // Australia, Austria
 
-        final SearchUserResponse response = client.searchUsers(token, request);
+        final SearchUserResponse response = administration.searchUsers(token, request);
         assertThat(response.isOk(), is(true));
         assertThat(response.getUsers().size(), is(2));
     }
@@ -81,7 +81,7 @@ public final class ContactsTest extends AbstractAdministration {
         request1.setName("aust"); // Australia, Austria
         request1.setGroup(memberGroup);
 
-        final SearchUserResponse response1 = client.searchUsers(token, request1);
+        final SearchUserResponse response1 = administration.searchUsers(token, request1);
         assertThat(response1.isOk(), is(true));
         assertThat(response1.getUsers().size(), is(0));
 
@@ -89,14 +89,14 @@ public final class ContactsTest extends AbstractAdministration {
         request2.setName("spa"); // Spain
         request2.setGroup(memberGroup);
 
-        final SearchUserResponse response2 = client.searchUsers(token, request2);
+        final SearchUserResponse response2 = administration.searchUsers(token, request2);
         assertThat(response2.isOk(), is(true));
         assertThat(response2.getUsers().size(), is(1));
     }
 
     @Test
     public void testFindEmergencyList() {
-        final EmergencyListResponse response = client.fetchEmergencyList(token);
+        final EmergencyListResponse response = administration.fetchEmergencyList(token);
 
         assertThat(response.isOk(), is(true));
         assertThat(response.getEmergencyContacts().isEmpty(), is(false));
@@ -105,7 +105,7 @@ public final class ContactsTest extends AbstractAdministration {
     @Test
     public void testFindContacts() {
         final ContactsRequest requestAll = new ContactsRequest();
-        final ContactsResponse responseAll = client.fetchContacts(token, requestAll);
+        final ContactsResponse responseAll = administration.fetchContacts(token, requestAll);
         assertThat(responseAll.isOk(), is(true));
         assertThat(responseAll.getType(), is(ContactsType.OTHER));
         assertThat(responseAll.getGroups().isEmpty(), is(false));
@@ -113,7 +113,7 @@ public final class ContactsTest extends AbstractAdministration {
 
         final ContactsRequest requestGroup = new ContactsRequest();
         requestGroup.setGroupId(responseAll.getGroups().get(10).getGroupId());
-        final ContactsResponse responseGroup = client.fetchContacts(token, requestGroup);
+        final ContactsResponse responseGroup = administration.fetchContacts(token, requestGroup);
         assertThat(responseGroup.isOk(), is(true));
         assertThat(responseGroup.getType(), is(ContactsType.GROUP));
         assertThat(responseGroup.getGroups().size(), is(1));
@@ -122,7 +122,7 @@ public final class ContactsTest extends AbstractAdministration {
 
         final ContactsRequest requestUser = new ContactsRequest();
         requestUser.setUserId(responseGroup.getUsers().get(0).getUserId());
-        final ContactsResponse responseUser = client.fetchContacts(token, requestUser);
+        final ContactsResponse responseUser = administration.fetchContacts(token, requestUser);
         assertThat(responseUser.isOk(), is(true));
         assertThat(responseUser.getType(), is(ContactsType.USER));
         assertThat(responseUser.getUsers().size(), is(1));
@@ -135,7 +135,7 @@ public final class ContactsTest extends AbstractAdministration {
         final ContactsRequest request = new ContactsRequest();
         request.setUserId(UUID.randomUUID().toString());
 
-        final ContactsResponse response = client.fetchContacts(token, request);
+        final ContactsResponse response = administration.fetchContacts(token, request);
         assertThat(response.isOk(), is(false));
         assertThat(response.getError(), is(IWSErrors.OBJECT_IDENTIFICATION_ERROR));
         assertThat(response.getMessage().contains("No details were found for User with Id"), is(true));
@@ -146,7 +146,7 @@ public final class ContactsTest extends AbstractAdministration {
         final ContactsRequest request = new ContactsRequest();
         request.setGroupId(UUID.randomUUID().toString());
 
-        final ContactsResponse response = client.fetchContacts(token, request);
+        final ContactsResponse response = administration.fetchContacts(token, request);
         assertThat(response.isOk(), is(false));
         assertThat(response.getError(), is(IWSErrors.OBJECT_IDENTIFICATION_ERROR));
         assertThat(response.getMessage().contains("No details were found for Group with Id"), is(true));

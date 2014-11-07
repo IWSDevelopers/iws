@@ -62,7 +62,7 @@ public final class DeleteSubGroupTest extends AbstractAdministration {
         final Group memberGroup = findMemberGroup(token);
         token.setGroupId(memberGroup.getGroupId());
         final GroupRequest request = new GroupRequest(createResponse.getGroup());
-        final Fallible deleteResponse = client.deleteSubGroup(token, request);
+        final Fallible deleteResponse = administration.deleteSubGroup(token, request);
         assertThat(deleteResponse, is(not(nullValue())));
         assertThat(deleteResponse.isOk(), is(true));
         assertThat(deleteResponse.getError(), is(IWSErrors.SUCCESS));
@@ -76,7 +76,7 @@ public final class DeleteSubGroupTest extends AbstractAdministration {
         final Group memberGroup = findMemberGroup(token);
         token.setGroupId(memberGroup.getGroupId());
         final GroupRequest request = new GroupRequest(createResponse.getGroup());
-        final Fallible deleteResponse = client.deleteSubGroup(token, request);
+        final Fallible deleteResponse = administration.deleteSubGroup(token, request);
         assertThat(deleteResponse, is(not(nullValue())));
         assertThat(deleteResponse.isOk(), is(false));
         assertThat(deleteResponse.getError(), is(IWSErrors.NOT_PERMITTED));
@@ -93,13 +93,13 @@ public final class DeleteSubGroupTest extends AbstractAdministration {
         group.setGroupType(GroupType.WORKGROUP);
         token.setGroupId(createResponse.getGroup().getGroupId());
         final GroupRequest subGrouprequest = new GroupRequest(group);
-        final ProcessGroupResponse subGroupResponse = client.processGroup(token, subGrouprequest);
+        final ProcessGroupResponse subGroupResponse = administration.processGroup(token, subGrouprequest);
         assertThat(subGroupResponse, is(not(nullValue())));
         assertThat(subGroupResponse.isOk(), is(true));
 
         token.setGroupId(findMemberGroup(token).getGroupId());
         final GroupRequest request = new GroupRequest(createResponse.getGroup());
-        final Fallible response = client.deleteSubGroup(token, request);
+        final Fallible response = administration.deleteSubGroup(token, request);
         assertThat(response, is(not(nullValue())));
         assertThat(response.isOk(), is(false));
         assertThat(response.getError(), is(IWSErrors.NOT_PERMITTED));
@@ -113,7 +113,7 @@ public final class DeleteSubGroupTest extends AbstractAdministration {
 
         token.setGroupId(memberGroup.getGroupId());
         final GroupRequest request = new GroupRequest(nationalGroup);
-        final Fallible response = client.deleteSubGroup(token, request);
+        final Fallible response = administration.deleteSubGroup(token, request);
         assertThat(response, is(not(nullValue())));
         assertThat(response.isOk(), is(false));
         assertThat(response.getError(), is(IWSErrors.NOT_PERMITTED));

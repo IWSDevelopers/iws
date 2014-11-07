@@ -19,7 +19,6 @@ import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 
-import net.iaeste.iws.api.Administration;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.User;
@@ -31,7 +30,6 @@ import net.iaeste.iws.api.responses.CreateUserResponse;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.ProcessGroupResponse;
 import net.iaeste.iws.client.AbstractTest;
-import net.iaeste.iws.client.AdministrationClient;
 import net.iaeste.iws.client.notifications.NotificationSpy;
 import net.iaeste.iws.common.notification.NotificationField;
 import net.iaeste.iws.common.notification.NotificationType;
@@ -45,14 +43,12 @@ import net.iaeste.iws.common.notification.NotificationType;
  */
 public abstract class AbstractAdministration extends AbstractTest {
 
-    protected static final Administration client = new AdministrationClient();
-
     protected static User createAndActiveUser(final AuthenticationToken token, final String username, final String firstname, final String lastname) {
         final NotificationSpy spy = NotificationSpy.getInstance();
         final User user = createUser(token, username, firstname, lastname);
 
         final String activationCode = spy.getNext(NotificationType.ACTIVATE_USER).getFields().get(NotificationField.CODE);
-        client.activateUser(activationCode);
+        administration.activateUser(activationCode);
 
         return user;
     }
@@ -64,7 +60,7 @@ public abstract class AbstractAdministration extends AbstractTest {
         createUserRequest.setFirstname(firstname);
         createUserRequest.setLastname(lastname);
 
-        final CreateUserResponse response = client.createUser(token, createUserRequest);
+        final CreateUserResponse response = administration.createUser(token, createUserRequest);
         assertThat(response.isOk(), is(true));
         assertThat(response.getUser(), is(not(nullValue())));
         assertThat(response.getUser().getUserId(), is(not(nullValue())));
@@ -80,7 +76,7 @@ public abstract class AbstractAdministration extends AbstractTest {
         final FetchGroupRequest fetchRequest = new FetchGroupRequest(parent);
         fetchRequest.setUsersToFetch(FetchGroupRequest.FetchType.ACTIVE);
         fetchRequest.setFetchSubGroups(true);
-        final FetchGroupResponse fetchResponse = client.fetchGroup(token, fetchRequest);
+        final FetchGroupResponse fetchResponse = administration.fetchGroup(token, fetchRequest);
 
         final Group group = new Group();
         group.setGroupName(groupName);
@@ -88,6 +84,6 @@ public abstract class AbstractAdministration extends AbstractTest {
         token.setGroupId(fetchResponse.getGroup().getGroupId());
         final GroupRequest request = new GroupRequest(group);
 
-        return client.processGroup(token, request);
+        return administration.processGroup(token, request);
     }
 }

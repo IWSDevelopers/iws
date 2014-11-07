@@ -44,8 +44,6 @@ import org.junit.Test;
  */
 public final class AccessClientTest extends AbstractTest {
 
-    private final Access access = new AccessClient();
-
     @Override
     public void setup() {
     }
@@ -230,9 +228,6 @@ public final class AccessClientTest extends AbstractTest {
 
     @Test
     public void testUpdatePassword() {
-        // For this test, we also need the Administration Client
-        final AdministrationClient administration = new AdministrationClient();
-
         // Create a new Token, that we can use for the test
         final AuthenticationToken adminToken = access.generateSession(new AuthenticationRequest("austria@iaeste.at", "austria")).getToken();
 

@@ -24,7 +24,7 @@ import java.util.Map;
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   IWS 1.2
+ * @since   IWS 1.1
  */
 public final class SurveyOfCountryRequest extends AbstractVerification {
 

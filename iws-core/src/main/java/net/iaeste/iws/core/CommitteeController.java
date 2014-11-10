@@ -67,8 +67,8 @@ public final class CommitteeController extends CommonController implements Commi
         FetchCommitteeResponse response;
 
         try {
-            verifyAccess(token, Permission.PROCESS_COMMITTEE);
             verify(request);
+            verifyAccess(token, Permission.PROCESS_COMMITTEE);
 
             final CommitteeService service = factory.prepareCommitteeService();
             response = service.fetchCommittees(request);
@@ -93,11 +93,12 @@ public final class CommitteeController extends CommonController implements Commi
         Fallible response;
 
         try {
-            final Authentication authentication = verifyAccess(token, Permission.PROCESS_COMMITTEE);
             verify(request);
+            final Authentication authentication = verifyAccess(token, Permission.PROCESS_COMMITTEE);
 
             final CommitteeService service = factory.prepareCommitteeService();
-            response = service.processCommittee(authentication, request);
+            service.processCommittee(authentication, request);
+            response = new FallibleResponse();
         } catch (IWSException e) {
             response = new FallibleResponse(e.getError(), e.getMessage());
         }
@@ -119,8 +120,8 @@ public final class CommitteeController extends CommonController implements Commi
         FetchInternationalGroupResponse response;
 
         try {
-            verifyAccess(token, Permission.PROCESS_INTERNATIONAL_GROUP);
             verify(request);
+            verifyAccess(token, Permission.PROCESS_INTERNATIONAL_GROUP);
 
             final CommitteeService service = factory.prepareCommitteeService();
             response = service.fetchInternationalGroups(request);
@@ -145,11 +146,12 @@ public final class CommitteeController extends CommonController implements Commi
         Fallible response;
 
         try {
-            final Authentication authentication = verifyAccess(token, Permission.PROCESS_INTERNATIONAL_GROUP);
             verify(request);
+            final Authentication authentication = verifyAccess(token, Permission.PROCESS_INTERNATIONAL_GROUP);
 
             final CommitteeService service = factory.prepareCommitteeService();
-            response = service.processInternationalGroup(authentication, request);
+            service.processInternationalGroup(authentication, request);
+            response = new FallibleResponse();
         } catch (IWSException e) {
             response = new FallibleResponse(e.getError(), e.getMessage());
         }
@@ -171,8 +173,8 @@ public final class CommitteeController extends CommonController implements Commi
         FetchSurveyOfCountryRespose response;
 
         try {
-            final Authentication authentication = verifyAccess(token, Permission.FETCH_SURVEY_OF_COUNTRIES);
             verify(request);
+            final Authentication authentication = verifyAccess(token, Permission.FETCH_SURVEY_OF_COUNTRIES);
 
             final CommitteeService service = factory.prepareCommitteeService();
             response = service.fetchSurveyOfCountry(authentication, request);
@@ -197,11 +199,12 @@ public final class CommitteeController extends CommonController implements Commi
         Fallible response;
 
         try {
-            final Authentication authentication = verifyAccess(token, Permission.PROCESS_SURVEY_OF_COUNTRIES);
             verify(request);
+            final Authentication authentication = verifyAccess(token, Permission.PROCESS_SURVEY_OF_COUNTRIES);
 
             final CommitteeService service = factory.prepareCommitteeService();
-            response = service.processSurveyOfCountry(authentication, request);
+            service.processSurveyOfCountry(authentication, request);
+            response = new FallibleResponse();
         } catch (IWSException e) {
             response = new FallibleResponse(e.getError(), e.getMessage());
         }

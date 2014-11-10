@@ -231,7 +231,7 @@ create table groups (
 
     /* Primary & Foreign Keys */
     constraint group_pk              primary key (id),
-    constraint group_fk_group_id     foreign key (parent_id) references groups (id),
+    constraint group_fk_group_id     foreign key (parent_id)    references groups (id),
     constraint group_fk_grouptype_id foreign key (grouptype_id) references grouptypes (id),
     constraint group_fk_country_id   foreign key (country_id)   references countries (id),
 

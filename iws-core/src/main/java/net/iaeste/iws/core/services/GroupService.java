@@ -102,11 +102,11 @@ public final class GroupService {
             // under the Members Group, and is parallel to the National Group
             if ((parentType != GroupType.WORKGROUP) && (type == GroupType.WORKGROUP)) {
                 entity = createGroup(authentication, GroupType.WORKGROUP, request.getGroup(), authentication.getGroup());
-                setGroupOwner(entity, authentication.getUser());
+                setGroupOwner(authentication, entity);
             } else if ((parentType == GroupType.MEMBER) && (type == GroupType.LOCAL)) {
                 // Create new Local Committee
                 entity = createGroup(authentication, GroupType.LOCAL, request.getGroup(), authentication.getGroup());
-                setGroupOwner(entity, authentication.getUser());
+                setGroupOwner(authentication, entity);
             } else {
                 throw new PermissionException("Not allowed to create a sub-group of type '" + type.getDescription() + "'.");
             }
@@ -549,20 +549,20 @@ public final class GroupService {
     private void throwIfGroupnameIsUsed(final GroupEntity parent, final String groupName) {
         final List<GroupEntity> found = dao.findGroupByNameAndParent(groupName, parent);
         if (!found.isEmpty()) {
-            throw new PersistenceException(IWSErrors.PERSISTENCE_ERROR, "Group cannot be created, another Group with the same name exists.");
+            throw new PersistenceException("Group cannot be created, another Group with the same name exists.");
         }
     }
 
-    private void setGroupOwner(final GroupEntity group, final UserEntity user) {
+    private void setGroupOwner(final Authentication authentication, final GroupEntity group) {
         final RoleEntity role = dao.findRoleById(IWSConstants.ROLE_OWNER);
 
         final UserGroupEntity userGroup = new UserGroupEntity();
         userGroup.setGroup(group);
-        userGroup.setUser(user);
+        userGroup.setUser(authentication.getUser());
         userGroup.setRole(role);
         userGroup.setTitle(role.getRole());
 
-        dao.persist(userGroup);
+        dao.persist(authentication, userGroup);
     }
 
     private List<UserGroup> findGroupMembers(final GroupEntity entity, final FetchGroupRequest request) {

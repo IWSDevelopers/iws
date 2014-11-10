@@ -537,7 +537,7 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
      */
     @Override
     public UserEntity findOwnerByGroup(final GroupEntity group) {
-        final Query query = entityManager.createNamedQuery("usergroup.findOwnerByGroup");
+        final Query query = entityManager.createNamedQuery("usergroup.findOwnerByExternalGroupId");
         query.setParameter("egid", group.getExternalId());
 
         UserGroupEntity userGroupEntity = findUniqueResult(query, "UserGroup");

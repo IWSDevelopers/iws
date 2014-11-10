@@ -15,7 +15,14 @@
 package net.iaeste.iws.persistence;
 
 import net.iaeste.iws.api.enums.GroupStatus;
+import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.Membership;
+import net.iaeste.iws.api.enums.UserStatus;
+import net.iaeste.iws.persistence.entities.CountryEntity;
+import net.iaeste.iws.persistence.entities.GroupEntity;
+import net.iaeste.iws.persistence.entities.GroupTypeEntity;
+import net.iaeste.iws.persistence.entities.RoleEntity;
+import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.UserGroupEntity;
 
 import java.util.List;
@@ -32,7 +39,33 @@ public interface CommitteeDao extends BasicDao {
 
     List<UserGroupEntity> findCommitteesByMembership(Membership membership, Set<GroupStatus> statuses);
 
-    List<UserGroupEntity> findAllCommittees(Set<GroupStatus> statuses);
+    List<UserGroupEntity> findGroupsByTypeAndStatuses(GroupType type, Set<GroupStatus> statuses);
 
-    List<UserGroupEntity> findInternationalGroups(Set<GroupStatus> statuses);
+    GroupEntity findGroupByExternalId(String externalGroupId);
+
+    UserEntity findUserByExternalId(String externalUserId);
+
+    GroupEntity findGroupByName(String groupName);
+
+    GroupTypeEntity findGroupTypeByType(GroupType type);
+
+    RoleEntity findRole(Long id);
+
+    UserGroupEntity findGroupOwner(GroupEntity groupEntity);
+
+    UserGroupEntity findExistingRelation(GroupEntity groupEntity, UserEntity userEntity);
+
+    List<GroupEntity> findAllCommitteesForCountry(CountryEntity country);
+
+    GroupEntity findMemberGroupForStaff(GroupEntity staff);
+
+    List<UserGroupEntity> findGroupMembers(GroupEntity group, Set<UserStatus> statuses);
+
+    GroupEntity findPrivateGroup(UserEntity user);
+
+    int deleteSessions(UserEntity user);
+
+    List<GroupEntity> findSubgroups(GroupEntity group);
+
+    UserEntity findUserByUsername(String username);
 }

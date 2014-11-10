@@ -65,50 +65,94 @@ public interface Committees {
     FetchCommitteeResponse fetchCommittees(AuthenticationToken token, FetchCommitteeRequest request);
 
     /**
-     * Processing Committees, means create, alter, upgrade, suspend or delete
-     * National Groups, with their related Member Group as well as control the
-     * National Secretary.<br />
-     *   The Id of the National Committee is omitted, meaning that the system
-     * will look at the existing records and the current country status to see
-     * what it shall do with this committee.
-     * Processing a Committee means either creating a new one, altering
-     * information about an existing, upgrading it or suspend/delete it.<br />
-     *   If there is no Id for the Committee, then the IWS will assume that the
-     * request is for creating a new Co-operating Institution. There will be
-     * additional checks regarding the current status of the Country, etc. The
-     * IWS will also create an NS account for the new Committee.<br />
-     *   If the Id is provided, then the committee will be updated. It is
-     * possible to change the current status of the Committee, change a country
-     * from Co-operating Institution to Associate Member or an Associate Member
-     * to Full Member. It is also possible to suspend/delete a Committee, in
-     * which case the status of the Country will also be updated to reflect
-     * this.<br />
-     *   It is also possible as part of an update, to change the current
-     * National Secretary, if the former National Secretary did not properly
-     * hand over the ownership.<br />
-     *   Upgrading a Committee from the current status to the next level, will
-     * be done according to the following rules:
+     * Processing Committees, means create, update, merge/upgrade, activate,
+     * suspend or delete National Groups, with their related Member Group as
+     * well as control the National Secretary.<br />
+     *   The Request is fairly complex, hence the Request Objects takes an
+     * Action as a principal argument, which must be defined and the action to
+     * be taken will depend on the Action given. The required data needed for
+     * the processing also depends on the given Action.
      * <ul>
-     *     <li>Current Status: <b>Co-operating Institution</b><br />
-     *       Co-operating Institutions can be upgraded to Associate Members
-     *     after a period. However, to become an Associate member, all
-     *     Institutions in the Country must merge and agree on a comon
-     *     Structure. As there can only be one Associate Member in a Country,
-     *     the rest will be either Local Committee's.<br />
-     *       If Local Committee is chosen, then the control is moved over to the
-     *     new National Committee.
-     *     </li>
-     *     <li>Current Status: <b>Associate Member</b><br />
-     *       Associate Members can become Full Members after a few years.
-     *     </li>
+     *   <li><b>Action: Create</b><br />
+     *   This Action is for creating new Cooperating Institutions, meaning
+     *   create both a new Members Group and a new Staff. The request requires
+     *   that the Country is set as well as Institution. And to ensure that a
+     *   new National Secretary can be applied, the first and last name and
+     *   username must all be applied. It is not possible to create a new
+     *   Cooperating Institution with an existing user. The name of the
+     *   Institution will be used to create the Abbreviation, which again serves
+     *   as the Staff name and also public mail address.<br />
+     *   Example:
+     *     <pre>
+     *     Country: Elbonia
+     *     Institution: Super Tech
+     *     </pre>
+     *   Result:<br />
+     *     <pre>
+     *     Staff: Elbonia, ST
+     *     Fullname: Elbonia, Super Tech
+     *     Mail: Elbonia_ST@iaeste.org
+     *     </pre>
+     *   Note; Attempting to add a Cooperating Institution to a Country which is
+     *   already having status as Associate Member or Full Member will result in
+     *   an error.
+     *   </li>
      * </ul>
-     *
-     * Creates a new Co-operating Institution for IAESTE. This requres that the
-     * following information is provided:
      * <ul>
-     *     <li>National Secretary</li>
-     *     <li>Country Name</li>
-     *     <li>IAESTE Name</li>
+     *   <li><b>Action: Change NS</b><br />
+     *   It is only allowed to change the National Secretary of an active
+     *   Committee, as name changes will affect mailing lists and these are used
+     *   as part of a Committee's official information.<br />
+     *     The National Secretary can either be an existing member of the
+     *   Committee, or a new user. Attempting to make a person from either a
+     *   different committee or a global member the new National Secretary will
+     *   result in an error.
+     *   </li>
+     * </ul>
+     * <ul>
+     *   <li><b>Action: Merge</b><br />
+     *   To be decided by the Board.
+     *   </li>
+     * </ul>
+     * <ul>
+     *   <li><b>Action: Upgrade</b><br />
+     *   Upgrades a Committee from Cooperating Institution to Associate Member
+     *   (if only a single Committee exists in the Country) or from Associate
+     *   Member to Full Member. Attempting to upgrade a Cooperating Institution
+     *   where two or more Committees exists or attempting to upgrade a Full
+     *   Member will result in an error.
+     *   </li>
+     * </ul>
+     * <ul>
+     *   <li><b>Action: Activate</b><br />
+     *   Activates a previously Suspended Committee, meaning that both the
+     *   Member and National Groups will have their status changed to Active.
+     *   Attempting to Activate something else will result in an error.<br />
+     *     Note; Activation of a Committee, means that all accounts that belongs
+     *   to it, will also be reactivated.
+     *   </li>
+     * </ul>
+     * <ul>
+     *   <li><b>Action: Suspend</b><br />
+     *   Suspends an already Active Committee, meaning that both the Member and
+     *   National Groups will have their status changed to Suspended. Attempting
+     *   to Suspend something else will result in an error.<br />
+     *     Note; All accounts currently belonging to the Suspended Committee,
+     *   will also be suspended. All new accounts will be deleted, as they also
+     *   should not be allowed to function.
+     *   </li>
+     * </ul>
+     * <ul>
+     *   <li><b>Action: Delete</b><br />
+     *   Deletes a previously suspended Committee, meaning that all Members will
+     *   be removed, as will all subgroups, and internal data - leaving only
+     *   the stubs and already published information that is important for other
+     *   Committees, like Offers, and shared Students. Attempting to delete an
+     *   Active Committee will result in an error.<br />
+     *     All accounts belonging to the Committee will also be deleted from the
+     *   system. All sub-groups, like WorkGroups and Local Committees will also
+     *   be deleted together with their data.
+     *   </li>
      * </ul>
      *
      * @param token   User Authentication Request object
@@ -117,19 +161,40 @@ public interface Committees {
      */
     Fallible processCommittee(AuthenticationToken token, CommitteeRequest request);
 
+    /**
+     * Working with International Groups involve working with more details than
+     * normally allowed. Additionally, it must also be possible to work with
+     * both Active and Suspended International Groups. This request will
+     * facilitate precisely this, reading the additional details needed for all
+     * existing International Groups.
+     *
+     * @param token   User Authentication Request object
+     * @param request Fetch International Group Request Object
+     * @return Fetch Response Object, with standard error information
+     */
     FetchInternationalGroupResponse fetchInternationalGroups(AuthenticationToken token, FetchInternationalGroupRequest request);
 
     /**
-     * Note; A problem was discovered with the Board. Normally, only the owner
-     * of an International Group is receiving the public mails, but the Board
-     * is a special case, here all members should receive the mails.
-     *   2014-10-19; The GroupTypes have been extended with mail settings and
-     * the UserGroup relation is also extended with same, so it is possible to
-     * have both public and private mailing lists and flags exists to control
-     * wether a user is on either and if the user may write to the private
-     * list.<br />
-     *   For now, please consider this stub a work-in-progress to be finalized
-     * as part of IWS Release 1.2 (Scheduled January 2015).
+     * International Groups are Groups which serve a more global purpose,
+     * examples of these is the SID or Seminar on IAESTE Development or the IDT,
+     * Internet Development Team, both serve a purpose of supporting the
+     * organization to improve it.<br />
+     *   With this request, it is possible to create, update, suspend, activate
+     * or delete International Groups, as well as setting the Coordinator
+     * (Owner), of it.<br />
+     *   If the Group is given without an Id, it is assumed that a new Group
+     * should be created, and the request will result in an error if either a
+     * different group with the same name exists or if no User Object is present
+     * in the request, as it is then not possible to set a Coordinator (Owner)
+     * of the Group.<br />
+     *   If the Id is set, then the Group will be updated, meaning that it is
+     * possible to rename the Group or add a new Coordinator (Owner) of the
+     * Group.<br />
+     *   If the Group is being suspended, then all other changes will be
+     * ignored, as it is considered irrelevant to update either Coordinator or
+     * Group information for a Group which is suspended. So Coordinator and
+     * other Group information is only updated if the Group is either Active or
+     * given given the new Status Active, after it was suspended.
      *
      * @param token   User Authentication Request object
      * @param request International Group Request Object

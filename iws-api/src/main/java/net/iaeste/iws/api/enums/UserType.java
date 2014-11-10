@@ -20,7 +20,7 @@ package net.iaeste.iws.api.enums;
  * <pre>
  *   ALTER TABLE users ADD COLUMN type VARCHAR(1);
  *   ALTER TABLE users ALTER COLUMN type SET DEFAULT 'v';
- *   UPDATE users SET type =
+ *   CHANGE_NS users SET type =
  *     CASE
  *       WHEN volunteer = 't' THEN 'v'
  *       WHEN volunteer = 'f' THEN 'e'

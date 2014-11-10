@@ -131,6 +131,8 @@ public interface IWSErrors {
      */
     IWSError MONITORING_FAILURE = new IWSError(506, "Monitoring Serialization Error.");
 
+    IWSError ILLEGAL_ACTION = new IWSError(507, "User attempted to perform an illegal action.");
+
     IWSError USER_ACCOUNT_EXISTS = new IWSError(601, "User Account Already exists.");
 
     IWSError NO_USER_ACCOUNT_FOUND = new IWSError(602, "No User Account exists.");

@@ -115,7 +115,7 @@ import java.util.Map;
                         "  and ug.group.groupType.grouptype = " + EntityConstants.GROUPTYPE_NATIONAL +
                         "  and ug.role.id = " + EntityConstants.ROLE_OWNER +
                         "  and ug.group.parentId = :mgid"),
-        @NamedQuery(name = "usergroup.findOwnerByGroup",
+        @NamedQuery(name = "usergroup.findOwnerByExternalGroupId",
                 query = "select ug from UserGroupEntity ug " +
                         "where ug.group.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
                         "  and ug.group.externalId = :egid" +

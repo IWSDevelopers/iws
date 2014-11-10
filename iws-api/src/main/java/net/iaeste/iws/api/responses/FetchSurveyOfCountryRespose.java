@@ -22,7 +22,7 @@ import net.iaeste.iws.api.util.AbstractFallible;
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   IWS 1.2
+ * @since   IWS 1.1
  */
 public final class FetchSurveyOfCountryRespose extends AbstractFallible {
 

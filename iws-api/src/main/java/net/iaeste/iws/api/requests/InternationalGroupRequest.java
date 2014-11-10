@@ -15,6 +15,9 @@
 package net.iaeste.iws.api.requests;
 
 import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.api.dtos.Group;
+import net.iaeste.iws.api.dtos.User;
+import net.iaeste.iws.api.enums.GroupStatus;
 import net.iaeste.iws.api.util.AbstractVerification;
 
 import java.util.HashMap;
@@ -30,6 +33,10 @@ public final class InternationalGroupRequest extends AbstractVerification {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
+    private Group group = null;
+    private User user = null;
+    private GroupStatus status = GroupStatus.ACTIVE;
+
     // =========================================================================
     // Object Constructors
     // =========================================================================
@@ -41,9 +48,82 @@ public final class InternationalGroupRequest extends AbstractVerification {
     public InternationalGroupRequest() {
     }
 
+    /**
+     * Simple Constructor, to use when only need to change an International
+     * Group. This will not change the current Owner of the Group.
+     *
+     * @param group Group to update
+     */
+    public InternationalGroupRequest(final Group group) {
+        setGroup(group);
+    }
+
+    /**
+     * Full Constructor, to use when creating a new International Group or when
+     * updating the current Coordinator (Owner) of the International Group.
+     *
+     * @param group International Group to either create or update
+     * @param user  User to set as Coordinator (Owner)
+     */
+    public InternationalGroupRequest(final Group group, final User user) {
+        setGroup(group);
+        setUser(user);
+    }
+
     // =========================================================================
     // Standard Setters & Getters
     // =========================================================================
+
+    /**
+     * Sets the Group to be processed. The Group Object must be valid, otherwise
+     * the method will throw an IllegalArgument Exception.
+     *
+     * @param group Group to process
+     * @throws IllegalArgumentException if Group is null or nor verifiable
+     */
+    public void setGroup(final Group group) throws IllegalArgumentException {
+        ensureNotNullAndVerifiable("group", group);
+        this.group = group;
+    }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    /**
+     * Sets the User to be added as Coordinator (Owner) of the International
+     * Group. The User must be verifiable, otherwise the method will throw an
+     * IllegalArgument Exception.
+     *
+     * @param user User to set as Coordinator (Owner)
+     * @throws IllegalArgumentException if not verifiable
+     */
+    public void setUser(final User user) throws IllegalArgumentException {
+        ensureVerifiable("user", user);
+        this.user = user;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    /**
+     * Sets the Status of the Group, if it should change. The Status must be one
+     * of the known valid stats of a Group, which includes "Active", "Suspended"
+     * or "Deleted". If "Deleted" is chosen, then the Group will be deleted from
+     * the system.
+     *
+     * @param status New Status for the Group
+     * @throws IllegalArgumentException if status is null
+     */
+    public void setStatus(final GroupStatus status) throws IllegalArgumentException {
+        ensureNotNull("status", status);
+        this.status = status;
+    }
+
+    public GroupStatus getStatus() {
+        return status;
+    }
 
     // =========================================================================
     // Standard Request Methods
@@ -55,6 +135,11 @@ public final class InternationalGroupRequest extends AbstractVerification {
     @Override
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(0);
+
+        isNotNullAndVerifiable(validation, "group", group);
+        isVerifiable(validation, "user", user);
+        isNotNull(validation, "status", status);
+
         return validation;
     }
 }

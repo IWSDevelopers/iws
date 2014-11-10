@@ -14,7 +14,9 @@
  */
 package net.iaeste.iws.core.services;
 
+import static net.iaeste.iws.common.utils.HashcodeGenerator.generateHash;
 import static net.iaeste.iws.common.utils.StringUtils.toLower;
+import static net.iaeste.iws.common.utils.StringUtils.toUpper;
 import static net.iaeste.iws.core.transformers.CommonTransformer.transform;
 import static net.iaeste.iws.core.util.LogUtil.formatLogMessage;
 
@@ -38,12 +40,18 @@ import net.iaeste.iws.api.requests.SurveyOfCountryRequest;
 import net.iaeste.iws.api.responses.FetchCommitteeResponse;
 import net.iaeste.iws.api.responses.FetchInternationalGroupResponse;
 import net.iaeste.iws.api.responses.FetchSurveyOfCountryRespose;
+import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.common.exceptions.IllegalActionException;
+import net.iaeste.iws.common.notification.NotificationType;
+import net.iaeste.iws.common.utils.PasswordGenerator;
+import net.iaeste.iws.common.utils.StringUtils;
+import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.core.transformers.AdministrationTransformer;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.CommitteeDao;
 import net.iaeste.iws.persistence.entities.CountryEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
+import net.iaeste.iws.persistence.entities.RoleEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.UserGroupEntity;
 import net.iaeste.iws.persistence.exceptions.IdentificationException;
@@ -53,6 +61,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
@@ -61,14 +70,16 @@ import java.util.UUID;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
-public final class CommitteeService {
+public final class CommitteeService extends CommonService<CommitteeDao> {
 
     private static final Logger log = LoggerFactory.getLogger(CommitteeService.class);
 
-    private final CommitteeDao dao;
+    private final Notifications notifications;
 
-    public CommitteeService(final CommitteeDao dao) {
-        this.dao = dao;
+    public CommitteeService(final Settings settings, final CommitteeDao dao, final Notifications notifications) {
+        super(settings, dao);
+
+        this.notifications = notifications;
     }
 
     // =========================================================================
@@ -172,7 +183,7 @@ public final class CommitteeService {
         String committeeName = country.getCountryName() + ", ";
 
         for (final String part : institutionName.split(" ")) {
-            committeeName += part.substring(0, 1).toUpperCase(IWSConstants.DEFAULT_LOCALE);
+            committeeName += toUpper(part.substring(0, 1));
         }
 
         return committeeName;
@@ -189,8 +200,153 @@ public final class CommitteeService {
         }
     }
 
+    /**
+     * Changing the National Secretary involves a series of checks
+     * @param authentication
+     * @param request
+     */
     private void changeNsForCommittee(final Authentication authentication, final CommitteeRequest request) {
-        throw new NotImplementedException("Method pending implementation.");
+        final GroupEntity staff = dao.findGroupByExternalId(request.getNationalCommittee().getGroupId());
+
+        if (staff != null) {
+            if (staff.getStatus() == GroupStatus.ACTIVE) {
+                final GroupEntity member = dao.findMemberGroupForStaff(staff);
+                if (request.getNationalSecretary() != null) {
+                    final UserEntity user = dao.findUserByExternalId(request.getNationalSecretary().getUserId());
+                    if (user != null) {
+                        makeUserNationalSecretary(authentication, user, member, staff);
+                    } else {
+                        throw new IllegalActionException("National Secretary provided is not a valid User.");
+                    }
+                } else if (request.getFirstname() != null && request.getLastname() != null && request.getUsername() != null) {
+                    final UserEntity existing = dao.findUserByUsername(request.getUsername());
+                    if (existing == null) {
+                        makeUserNationalSecretary(authentication, request, member, staff);
+                    } else {
+                        throw new IllegalActionException("Cannot create new National Secretary for existing User.");
+                    }
+                } else {
+                    throw new IllegalActionException("No new National Secretary information provided.");
+                }
+            } else {
+                throw new IllegalActionException("Attempting to change National Secretary for a suspended Committee, is not allowed.");
+            }
+        } else {
+            throw new IllegalActionException("Attempting to change National Secretary non-existing Committee.");
+        }
+    }
+
+    private void makeUserNationalSecretary(final Authentication authentication, final UserEntity user, final GroupEntity member, final GroupEntity staff) {
+        final UserGroupEntity memberEntity = dao.findUserGroupRelation(member, user);
+        if (memberEntity != null) {
+            if (!Objects.equals(memberEntity.getRole().getId(), IWSConstants.ROLE_OWNER)) {
+                // First, we'll downgrade the existing Owner to Moderator
+                final RoleEntity moderator = dao.findRole(IWSConstants.ROLE_MODERATOR);
+                changeExistingOwnerRole(authentication, moderator, member, staff);
+
+                // Now we can upgrade the role for the new Owner
+                final UserGroupEntity staffEntity = dao.findUserGroupRelation(staff, user);
+                final RoleEntity owner = dao.findRole(IWSConstants.ROLE_OWNER);
+                memberEntity.setRole(owner);
+                staffEntity.setRole(owner);
+                dao.persist(authentication, memberEntity);
+                dao.persist(authentication, staffEntity);
+            } else {
+                throw new IllegalActionException("Attempting to make existing National Secretary new National Secretary is not allowed.");
+            }
+        } else {
+            throw new IllegalActionException("New National Secretary is not a member of the Committee.");
+        }
+    }
+
+    private void makeUserNationalSecretary(final Authentication authentication, final CommitteeRequest request, final GroupEntity member, final GroupEntity staff) {
+        // First, we'll downgrade the existing Owner to Moderator
+        final RoleEntity moderator = dao.findRole(IWSConstants.ROLE_MODERATOR);
+        changeExistingOwnerRole(authentication, moderator, member, staff);
+
+        final RoleEntity owner = dao.findRole(IWSConstants.ROLE_OWNER);
+        final UserEntity user = new UserEntity();
+        // First, the Password. If no password is specified, then we'll generate
+        // one. Regardlessly, the password is set in the UserEntity, for the
+        // Notification
+        final String password = PasswordGenerator.generatePassword();
+
+        // As we doubt that a user will provide enough entropy to enable us to
+        // generate a hash value that cannot be looked up in rainbow tables,
+        // we're "salting" it, and additionally storing the the random part of
+        // the salt in the Entity as well, the hardcoded part of the Salt is
+        // stored in the Hashcode Generator
+        final String salt = UUID.randomUUID().toString();
+
+        // Now, set all the information about the user and persist the Account
+        user.setUsername(request.getUsername());
+        user.setTemporary(password);
+        user.setPassword(generateHash(password, salt));
+        user.setSalt(salt);
+        user.setFirstname(request.getFirstname());
+        user.setLastname(request.getLastname());
+        user.setAlias(generateUserAlias(request));
+        user.setCode(generateActivationCode(request));
+        user.setPerson(createEmptyPerson(authentication));
+        dao.persist(authentication, user);
+
+        final GroupEntity privateGroup = createAndPersistPrivateGroup(authentication, user);
+        final UserGroupEntity privateUserGroup = new UserGroupEntity(user, privateGroup, owner);
+        dao.persist(authentication, privateUserGroup);
+
+        final UserGroupEntity memberGroup = new UserGroupEntity(user, member, owner);
+        dao.persist(authentication, memberGroup);
+        final UserGroupEntity staffGroup = new UserGroupEntity(user, staff, owner);
+        dao.persist(authentication, staffGroup);
+
+        notifications.notify(authentication, user, NotificationType.NEW_USER);
+        notifications.notify(authentication, user, NotificationType.PROCESS_EMAIL_ALIAS);
+        notifications.notify(authentication, user, NotificationType.ACTIVATE_USER);
+    }
+
+    private void changeExistingOwnerRole(final Authentication authentication, final RoleEntity role, final GroupEntity... groups) {
+        if (groups != null) {
+            for (final GroupEntity group : groups) {
+                final UserGroupEntity currentOwner = dao.findGroupOwner(group);
+                currentOwner.setRole(role);
+                currentOwner.setTitle("");
+                dao.persist(authentication, currentOwner);
+            }
+        }
+    }
+
+    private String generateUserAlias(final CommitteeRequest request) {
+        final String name = StringUtils.convertToAsciiMailAlias(request.getFirstname() + '.' + request.getLastname());
+        final String address = '@' + settings.getPublicMailAddress();
+
+        final Long serialNumber = dao.findNumberOfAliasesForName(name);
+        final String alias;
+        if ((serialNumber != null) && (serialNumber > 0)) {
+            alias = name + (serialNumber + 1) + address;
+        } else {
+            alias = name + address;
+        }
+
+        return alias;
+    }
+
+    private static String generateActivationCode(final CommitteeRequest request) {
+        final String clear = request.getUsername()
+                           + request.getFirstname()
+                           + request.getLastname()
+                           + UUID.randomUUID();
+
+        return generateHash(clear);
+    }
+
+    private GroupEntity createAndPersistPrivateGroup(final Authentication authentication, final UserEntity user) {
+        final GroupEntity group = new GroupEntity();
+
+        group.setGroupName(user.getFirstname() + ' ' + user.getLastname());
+        group.setGroupType(dao.findGroupTypeByType(GroupType.PRIVATE));
+        dao.persist(authentication, group);
+
+        return group;
     }
 
     private void mergeCommittees(final Authentication authentication, final CommitteeRequest request) {
@@ -294,6 +450,13 @@ public final class CommitteeService {
         }
     }
 
+    /**
+     * Deletes a currently suspended Committee. This includes deleting all
+     * member accounts, data and delete subgroups.
+     *
+     * @param authentication User authentication Object
+     * @param request        Request Object
+     */
     private void deleteCommittee(final Authentication authentication, final CommitteeRequest request) {
         final GroupEntity staff = dao.findGroupByExternalId(request.getNationalCommittee().getGroupId());
 
@@ -330,6 +493,7 @@ public final class CommitteeService {
 
     private void changeStatusForMembers(final Authentication authentication, final GroupEntity group, final UserStatus status) {
         final List<UserGroupEntity> users = dao.findGroupMembers(group, EnumSet.of(UserStatus.ACTIVE, UserStatus.SUSPENDED));
+
         for (final UserGroupEntity entity : users) {
             final UserEntity user = entity.getUser();
             user.setStatus(status);
@@ -347,6 +511,7 @@ public final class CommitteeService {
         // First, recursively remove all sub groups. Since the structure of
         // Groups is following a strict hierarchy, this is perfectly safe
         final List<GroupEntity> subgroups = dao.findSubgroups(group);
+
         for (final GroupEntity entity : subgroups) {
             deleteGroupStructure(authentication, entity);
         }
@@ -361,6 +526,7 @@ public final class CommitteeService {
 
     private void deleteNewMembers(final Authentication authentication, final GroupEntity group) {
         final List<UserGroupEntity> users = dao.findGroupMembers(group, EnumSet.of(UserStatus.NEW));
+
         for (final UserGroupEntity entity : users) {
             final UserEntity user = entity.getUser();
 

@@ -309,4 +309,33 @@ public class CommitteeJpaDao extends BasicJpaDao implements CommitteeDao {
 
         return findSingleResult(query, "User");
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserGroupEntity findUserGroupRelation(final GroupEntity group, final UserEntity user) {
+        final String jql =
+                "select ug from UserGroupEntity ug " +
+                "where ug.group.id = :gid" +
+                "  and ug.user.id = :uid";
+
+        final Query query = entityManager.createQuery(jql);
+        query.setParameter("gid", group.getId());
+        query.setParameter("uid", user.getId());
+
+        return findSingleResult(query, "User");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Long findNumberOfAliasesForName(final String name) {
+        final Query query = entityManager.createNamedQuery("user.findNumberOfSimilarAliases");
+        query.setParameter("startOfAlias", name.toLowerCase(IWSConstants.DEFAULT_LOCALE) + '%');
+
+        return (Long) query.getSingleResult();
+    }
+
 }

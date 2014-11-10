@@ -83,7 +83,7 @@ public final class ServiceFactory {
 
     public CommitteeService prepareCommitteeService() {
         final CommitteeDao committeeDao = new CommitteeJpaDao(entityManager);
-        return new CommitteeService(committeeDao);
+        return new CommitteeService(settings, committeeDao, notifications);
     }
 
     public CountryService prepareCountryService() {

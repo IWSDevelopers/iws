@@ -68,4 +68,8 @@ public interface CommitteeDao extends BasicDao {
     List<GroupEntity> findSubgroups(GroupEntity group);
 
     UserEntity findUserByUsername(String username);
+
+    UserGroupEntity findUserGroupRelation(GroupEntity group, UserEntity user);
+
+    Long findNumberOfAliasesForName(String name);
 }

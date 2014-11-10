@@ -1309,7 +1309,7 @@ public final class OfferTest extends AbstractTest {
         assertThat(inboxCsvResponse.isOk(), is(true));
         assertThat(inboxCsvResponse.getData(), is(not(nullValue())));
 
-        OfferCSVUploadRequest uploadRequest = new OfferCSVUploadRequest(outboxCsvResponse.getData());
+        OfferCSVUploadRequest uploadRequest = new OfferCSVUploadRequest(outboxCsvResponse.getData(), OfferCSVUploadRequest.FieldDelimiter.COMMA);
         OfferCSVUploadResponse uploadResponse = exchange.uploadOffers(austriaTokenWithNationalGroup, uploadRequest);
 
         assertThat(uploadResponse.isOk(), is(true));

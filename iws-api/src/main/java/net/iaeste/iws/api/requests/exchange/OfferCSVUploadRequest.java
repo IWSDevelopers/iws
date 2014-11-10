@@ -31,7 +31,33 @@ public class OfferCSVUploadRequest extends AbstractPaginatable {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
+    /**
+     * Available CSV fields delimiters.
+     */
+    public enum FieldDelimiter { COMMA(','), SEMICOLON(';');
+        // =========================================================================
+        // Private Constructor & functionality
+        // =========================================================================
+
+        private final char description;
+
+        FieldDelimiter(final char description) {
+            this.description = description;
+        }
+
+        public char getDescription() {
+            return description;
+        }}
+
+    /**
+     * CSV file content
+     */
     private byte[] data;
+
+    /**
+     * CSV field delimiter
+     */
+    private FieldDelimiter delimiter;
 
     // =========================================================================
     // Object Constructors
@@ -43,10 +69,12 @@ public class OfferCSVUploadRequest extends AbstractPaginatable {
      */
     public OfferCSVUploadRequest() {
         this.data = null;
+        this.delimiter = null;
     }
 
-    public OfferCSVUploadRequest(final byte[] data) {
+    public OfferCSVUploadRequest(final byte[] data, final FieldDelimiter delimiter) {
         this.data = data;
+        this.delimiter = delimiter;
     }
 
     // =========================================================================
@@ -59,6 +87,14 @@ public class OfferCSVUploadRequest extends AbstractPaginatable {
 
     public byte[] getData() {
         return data;
+    }
+
+    public void setDelimiter(final FieldDelimiter delimiter) {
+        this.delimiter = delimiter;
+    }
+
+    public FieldDelimiter getDelimiter() {
+        return delimiter;
     }
 
     // =========================================================================

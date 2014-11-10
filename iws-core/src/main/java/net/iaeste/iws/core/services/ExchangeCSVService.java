@@ -89,9 +89,11 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
         Map<String, OfferCSVUploadResponse.ProcessingResult> processingResult = new HashMap<>();
         final Map<String, Map<String, String>> errors = new HashMap<>();
 
+        final char fieldDelimiter = request.getDelimiter() != null ? request.getDelimiter().getDescription() : DELIMITER;
+
         try (ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(request.getData());
              Reader reader = new InputStreamReader(byteArrayInputStream);
-             CSVParser parser = getDefaultCsvParser(reader)) {
+             CSVParser parser = getDefaultCsvParser(reader, fieldDelimiter)) {
             Map<String, Integer> headersMap = parser.getHeaderMap();
             Set<String> headers = headersMap.keySet();
             Set<String> expectedHeaders = new HashSet<>(createFirstRow());
@@ -169,9 +171,9 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
         return data;
     }
 
-    private CSVParser getDefaultCsvParser(final Reader input) {
+    private CSVParser getDefaultCsvParser(final Reader input, final char delimiter) {
         try {
-            return CSVFormat.RFC4180.withDelimiter(DELIMITER)
+            return CSVFormat.RFC4180.withDelimiter(delimiter)
                     .withHeader()
                             //.withNullString("")
                     .parse(input);

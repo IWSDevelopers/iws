@@ -98,7 +98,7 @@ public final class CsvTransformer {
         Date result = null;
         if (input != null && !input.isEmpty()) {
             try {
-                result = new Date(IWSConstants.CSV_FORMATTER.parse(input));
+                result = new Date(IWSConstants.FORMATTER.parse(input));
             } catch (ParseException e) {
                 errors.put(field, e.getMessage());
             }

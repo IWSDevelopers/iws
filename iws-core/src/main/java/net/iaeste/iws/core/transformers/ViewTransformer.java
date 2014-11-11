@@ -404,7 +404,7 @@ public final class ViewTransformer {
         final String exportedRefNo = embeddedOffer.getOldRefNo() != null ? embeddedOffer.getOldRefNo() : embeddedOffer.getRefNo();
 
         result.add(exportedRefNo);
-        result.add(embeddedOffer.getNominationDeadline() != null ? IWSConstants.CSV_FORMATTER.format(embeddedOffer.getNominationDeadline()) : "");
+        result.add(embeddedOffer.getNominationDeadline() != null ? IWSConstants.FORMATTER.format(embeddedOffer.getNominationDeadline()) : "");
         result.add(embeddedOffer.getPrivateComment());
         result.add(embeddedEmployer.getName());
         result.add(embeddedAddress.getStreet1());
@@ -452,8 +452,8 @@ public final class ViewTransformer {
         result.add(StringUtils.removeLineBreaks(embeddedOffer.getWorkDescription()));
         result.add(embeddedOffer.getMinimumWeeks());
         result.add(embeddedOffer.getMaximumWeeks());
-        result.add(embeddedOffer.getFromDate() != null ? IWSConstants.CSV_FORMATTER.format(embeddedOffer.getFromDate()) : "");
-        result.add(embeddedOffer.getToDate() != null ? IWSConstants.CSV_FORMATTER.format(embeddedOffer.getToDate()) : "");
+        result.add(embeddedOffer.getFromDate() != null ? IWSConstants.FORMATTER.format(embeddedOffer.getFromDate()) : "");
+        result.add(embeddedOffer.getToDate() != null ? IWSConstants.FORMATTER.format(embeddedOffer.getToDate()) : "");
 
         boolean studyBeginning = false;
         boolean studyMiddle = false;
@@ -531,17 +531,17 @@ public final class ViewTransformer {
         result.add(embeddedOffer.getStatus() != null ? embeddedOffer.getStatus().getDescription() : null);
 
 
-        result.add(embeddedOffer.getFromDate2() != null ? IWSConstants.CSV_FORMATTER.format(embeddedOffer.getFromDate2()) : "");
-        result.add(embeddedOffer.getToDate2() != null ? IWSConstants.CSV_FORMATTER.format(embeddedOffer.getToDate2()) : "");
+        result.add(embeddedOffer.getFromDate2() != null ? IWSConstants.FORMATTER.format(embeddedOffer.getFromDate2()) : "");
+        result.add(embeddedOffer.getToDate2() != null ? IWSConstants.FORMATTER.format(embeddedOffer.getToDate2()) : "");
 
-        result.add(embeddedOffer.getUnavailableFrom() != null ? IWSConstants.CSV_FORMATTER.format(embeddedOffer.getUnavailableFrom()) : "");
-        result.add(embeddedOffer.getUnavailableTo() != null ? IWSConstants.CSV_FORMATTER.format(embeddedOffer.getUnavailableTo()) : "");
+        result.add(embeddedOffer.getUnavailableFrom() != null ? IWSConstants.FORMATTER.format(embeddedOffer.getUnavailableFrom()) : "");
+        result.add(embeddedOffer.getUnavailableTo() != null ? IWSConstants.FORMATTER.format(embeddedOffer.getUnavailableTo()) : "");
 
         result.add(StringUtils.removeLineBreaks(embeddedOffer.getAdditionalInformation()));
 
         result.add(null);
 
-        result.add(embeddedOffer.getModified() != null ? IWSConstants.CSV_FORMATTER.format(embeddedOffer.getModified()) : "");
+        result.add(embeddedOffer.getModified() != null ? IWSConstants.FORMATTER.format(embeddedOffer.getModified()) : "");
         result.add(view.getNsFirstname());
         result.add(view.getNsLastname());
 

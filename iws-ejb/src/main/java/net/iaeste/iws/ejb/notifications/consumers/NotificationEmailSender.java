@@ -214,32 +214,36 @@ public class NotificationEmailSender implements Observer {
     }
 
     private void processTask(final NotificationJobTasksView task) {
+        if (task != null) {
             log.info("Processing email notification job task " + task.getId());
             try (final ByteArrayInputStream inputStream = new ByteArrayInputStream(task.getObject());
                  final ObjectInputStream objectStream = new ObjectInputStream(inputStream);) {
                 final Map<NotificationField, String> fields = (Map<NotificationField, String>) objectStream.readObject();
                 NotificationProcessTaskStatus processedStatus = NotificationProcessTaskStatus.ERROR;
                 //TODO task is not processed, so value false is hardcoded for now, should be changed or deleted once problems are solved
-                dao.updateNotificationJobTask(task.getId(), false, task.getAttempts()+1);
+                dao.updateNotificationJobTask(task.getId(), false, task.getAttempts() + 1);
                 if (fields != null) {
                     processedStatus = processTask(fields, task.getNotificationType());
                 }
                 final boolean processed = processedStatus != NotificationProcessTaskStatus.ERROR;
-                log.info("Notification job task " + task.getId() + " attempt number is going to be updated to " + (task.getAttempts()+1) + ", processed set to " + processed);
-                dao.updateNotificationJobTask(task.getId(), processed, task.getAttempts()+1);
+                log.info("Notification job task " + task.getId() + " attempt number is going to be updated to " + (task.getAttempts() + 1) + ", processed set to " + processed);
+                dao.updateNotificationJobTask(task.getId(), processed, task.getAttempts() + 1);
                 log.info("Notification job task " + task.getId() + " was updated");
-            } catch (IOException|ClassNotFoundException e) {
+            } catch (IOException | ClassNotFoundException e) {
                 final boolean processed = false;
-                log.info("Notification job task " + task.getId() + " failed, task is going to be updated to " + (task.getAttempts()+1) + ", processed set to " + processed);
-                dao.updateNotificationJobTask(task.getId(), processed, task.getAttempts()+1);
+                log.info("Notification job task " + task.getId() + " failed, task is going to be updated to " + (task.getAttempts() + 1) + ", processed set to " + processed);
+                dao.updateNotificationJobTask(task.getId(), processed, task.getAttempts() + 1);
                 log.info("Notification job task " + task.getId() + " was updated");
                 log.error(e.getMessage(), e);
             } catch (IWSException e) {
                 //prevent throwing IWSException out, it stops the timer to run this processing
                 final boolean processed = false;
-                dao.updateNotificationJobTask(task.getId(), processed, task.getAttempts()+1);
+                dao.updateNotificationJobTask(task.getId(), processed, task.getAttempts() + 1);
                 log.error("Error during notification processing", e);
             }
+        } else {
+            log.error("Processing of a NULL task is will not work.");
+        }
     }
 
     private NotificationProcessTaskStatus processTask(final Map<NotificationField, String> fields, final NotificationType type) {

@@ -86,21 +86,21 @@ public class MailMigrator implements Migrator<IW3UsersEntity> {
      * to be created.
      */
     private static final String[][] STATIC_ALIASES = {
-            { "India@iaeste.org", "India_KU@iaeste.org" },
-            { "India@iaeste.org", "India_MIT@iaeste.org" },
-            { "Bangladesh_Afzal_Management@iaeste.org", "bangladeshafm@iaeste.org" },
-            { "Bangladesh_AFM@iaeste.org", "Bangladesh_Afzal_Management@iaeste.org" },
-            { "Bangladesh_CAT@iaeste.org", "College_of_Aviation_Technology@iaeste.org" },
+            { "india@iaeste.org", "india_ku@iaeste.org" },
+            { "india@iaeste.org", "india_mit@iaeste.org" },
+            { "bangladesh_afm@iaeste.org", "bangladeshafm@iaeste.org" },
+            { "bangladesh_afm@iaeste.org", "bangladesh_afzal_management@iaeste.org" },
+            { "bangladesh_cat@iaeste.org", "college_of_aviation_technology@iaeste.org" },
             { "bolivia_ib@iaeste.org", "boliviaib@iaeste.org" },
             { "vietnam_nu@iaeste.org", "vietnamnu@iaeste.org" },
-            { "Nepal@iaeste.org", "Nepal_CI@iaeste.org" },
-            { "Nepal_CI@iaeste.org", "NepalCI@iaeste.org" },
-            { "Kenya_DKUT@iaeste.org", "Kenya_DeKut@iaeste.org" },
+            { "nepal@iaeste.org", "nepal_ci@iaeste.org" },
+            { "nepal@iaeste.org", "nepalci@iaeste.org" },
+            { "kenya_dkut@iaeste.org", "kenya_dekut@iaeste.org" },
             { "board@iaeste.org", "president@iaeste.org" },
             { "board@iaeste.org", "gs@iaeste.org" },
             { "board@iaeste.org", "general.secretary@iaeste.org" },
-            { "idt@iaeste.net", "idt.members@iaeste.net"},
-            { "bruce.wicks@iaeste.org", "bruce.mehlmann-wicks@iaeste.org" }};
+            { "bruce.wicks@iaeste.org", "bruce.mehlmann-wicks@iaeste.org" }
+    };
 
     @Autowired
     private IWSDao iwsDao;
@@ -158,7 +158,6 @@ public class MailMigrator implements Migrator<IW3UsersEntity> {
                 log.info("Skipping Mailinglist for {} (id: {}), as it is invalid.", group.getGroupName(), group.getId());
             } else {
                 switch (group.getGroupType().getGrouptype()) {
-                    case ADMINISTRATION: // Doesn't need a mailinglist
                     case PRIVATE: // Covered by aliases
                     case STUDENT: // Schema for Students is unclear
                         skipped++;
@@ -169,6 +168,7 @@ public class MailMigrator implements Migrator<IW3UsersEntity> {
                         createMailinglist(group, true);
                         persisted++;
                         break;
+                    case ADMINISTRATION:
                     case INTERNATIONAL:
                         createMailinglist(group, false);
                         createMailinglist(group, true);

@@ -38,8 +38,6 @@ import net.iaeste.iws.api.responses.FetchRoleResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.common.notification.NotificationType;
-import net.iaeste.iws.common.utils.PasswordGenerator;
-import net.iaeste.iws.common.utils.StringUtils;
 import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
@@ -112,7 +110,7 @@ public final class AccountService extends CommonService<AccessDao> {
         final RoleEntity member = dao.findRoleById(IWSConstants.ROLE_MEMBER);
 
         final String username = verifyUsernameNotInSystem(request.getUsername());
-        final UserEntity user = createAndPersistUserEntity(authentication, username, request);
+        final UserEntity user = createAndPersistUserEntity(authentication, username, request.getPassword(), request.getFirstname(), request.getLastname(), request.isStudent());
         final GroupEntity privateGroup = createAndPersistPrivateGroup(user);
         final UserGroupEntity privateUserGroup = new UserGroupEntity(user, privateGroup, owner);
 
@@ -129,7 +127,7 @@ public final class AccountService extends CommonService<AccessDao> {
         final String username = verifyUsernameNotInSystem(request.getUsername());
         final GroupEntity studentGroup = findOrCreateStudentGroup(authentication);
 
-        final UserEntity user = createAndPersistUserEntity(authentication, username, request);
+        final UserEntity user = createAndPersistUserEntity(authentication, username, request.getPassword(), request.getFirstname(), request.getLastname(), request.isStudent());
         final StudentEntity studentEntity = new StudentEntity(user);
         dao.persist(studentEntity);
         final RoleEntity student = dao.findRoleById(IWSConstants.ROLE_STUDENT);
@@ -399,104 +397,6 @@ public final class AccountService extends CommonService<AccessDao> {
     // =========================================================================
     // Internal Methods
     // =========================================================================
-
-    /**
-     * Creates and persists a new UserEntity in the database. The Entity is
-     * based on the User Credentials, that is stored in the Request Object, with
-     * the exception of the Username, that due to a pre-processing, is provided
-     * as a parameter.<br />
-     *   The creation process will run some checks, and also generate some
-     * information by default. First, the user alias will be generated, if no
-     * alias can be generated (user provided information was not unique enough),
-     * then the create processs will fail.<br />
-     *   If no password was provided, then a random password is generated and
-     * returned to the user in the activation e-mail. Regardless, a salt is
-     * generated and used together with the password to create a cryptographical
-     * hashvalue that is then stored. The Salt is also stored in the database
-     * for verification when the user attempts to login.<br />
-     *   Finally, an Activation Code is generated, this is required for the user
-     * to activate the account, if an account is not activated, then it cannot
-     * be used.<br />
-     *   If no errors occurred during the creation, the new {@code UserEntity}
-     * is returned, otherwise an {@code IWSException} is thrown.
-     *
-     * @param authentication Authentication information from the requesting user
-     * @param username       Pre-processed username
-     * @param request        Request Object with remaining user information
-     * @return Newly created {@code UserEntity} Object
-     * @throws IWSException if unable to create the user
-     */
-    private UserEntity createAndPersistUserEntity(final Authentication authentication, final String username, final CreateUserRequest request) throws IWSException {
-        final UserEntity user = new UserEntity();
-
-        // First, the Password. If no password is specified, then we'll generate
-        // one. Regardlessly, the password is set in the UserEntity, for the
-        // Notification
-        final String password;
-        if (request.getPassword() == null) {
-            password = PasswordGenerator.generatePassword();
-        } else {
-            password = toLower(request.getPassword());
-        }
-
-        // As we doubt that a user will provide enough entropy to enable us to
-        // generate a hash value that cannot be looked up in rainbow tables,
-        // we're "salting" it, and additionally storing the the random part of
-        // the salt in the Entity as well, the hardcoded part of the Salt is
-        // stored in the Hashcode Generator
-        final String salt = UUID.randomUUID().toString();
-
-        // Now, set all the information about the user and persist the Account
-        user.setUsername(username);
-        user.setTemporary(password);
-        user.setPassword(generateHash(password, salt));
-        user.setSalt(salt);
-        user.setFirstname(request.getFirstname());
-        user.setLastname(request.getLastname());
-        user.setAlias(generateUserAlias(request));
-        user.setCode(generateActivationCode(request));
-        user.setPerson(createEmptyPerson(authentication));
-        dao.persist(authentication, user);
-
-        return user;
-    }
-
-    private String generateUserAlias(final CreateUserRequest request) throws IWSException {
-        String alias = null;
-
-        if (!request.isStudent()) {
-            final String name = StringUtils.convertToAsciiMailAlias(request.getFirstname() + '.' + request.getLastname());
-            final String address = '@' + settings.getPublicMailAddress();
-
-            final Long serialNumber = dao.findNumberOfAliasesForName(name);
-            if ((serialNumber != null) && (serialNumber > 0)) {
-                alias = name + (serialNumber + 1) + address;
-            } else {
-                alias = name + address;
-            }
-        }
-
-        return alias;
-    }
-
-    private static String generateActivationCode(final CreateUserRequest request) {
-        final String clear = request.getUsername()
-                           + request.getFirstname()
-                           + request.getLastname()
-                           + UUID.randomUUID();
-
-        return generateHash(clear);
-    }
-
-    private GroupEntity createAndPersistPrivateGroup(final UserEntity user) {
-        final GroupEntity group = new GroupEntity();
-
-        group.setGroupName(user.getFirstname() + ' ' + user.getLastname());
-        group.setGroupType(dao.findGroupType(GroupType.PRIVATE));
-        dao.persist(group);
-
-        return group;
-    }
 
     /**
      * This method handles a users own changes. Meaning, that if a user comes in

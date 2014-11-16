@@ -124,17 +124,6 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
      * {@inheritDoc}
      */
     @Override
-    public Long findNumberOfAliasesForName(final String name) {
-        final Query query = entityManager.createNamedQuery("user.findNumberOfSimilarAliases");
-        query.setParameter("startOfAlias", name.toLowerCase(IWSConstants.DEFAULT_LOCALE) + '%');
-
-        return (Long) query.getSingleResult();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public SessionEntity findActiveSession(final UserEntity user) {
         final Query query = entityManager.createNamedQuery("session.findByUser");
         query.setParameter("id", user.getId());
@@ -229,18 +218,6 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
         }
 
         return list;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public GroupTypeEntity findGroupType(final GroupType groupType) {
-        final Query query = entityManager.createNamedQuery("grouptype.findByName");
-        // Query runs a String lower check on the value
-        query.setParameter("name", groupType.name());
-
-        return findSingleResult(query, "GroupType");
     }
 
     /**

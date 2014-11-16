@@ -31,6 +31,7 @@ import net.iaeste.iws.persistence.entities.AddressEntity;
 import net.iaeste.iws.persistence.entities.CountryEntity;
 import net.iaeste.iws.persistence.entities.FileEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
+import net.iaeste.iws.persistence.entities.GroupTypeEntity;
 import net.iaeste.iws.persistence.entities.IWSEntity;
 import net.iaeste.iws.persistence.entities.MonitoringEntity;
 import net.iaeste.iws.persistence.entities.PermissionRoleEntity;
@@ -234,6 +235,29 @@ public class BasicJpaDao implements BasicDao {
         query.setParameter("id", id);
 
         return findUniqueResult(query, "address");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Long findNumberOfAliasesForName(final String name) {
+        final Query query = entityManager.createNamedQuery("user.findNumberOfSimilarAliases");
+        query.setParameter("startOfAlias", name.toLowerCase(IWSConstants.DEFAULT_LOCALE) + '%');
+
+        return (Long) query.getSingleResult();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public GroupTypeEntity findGroupType(final GroupType groupType) {
+        final Query query = entityManager.createNamedQuery("grouptype.findByName");
+        // Query runs a String lower check on the value
+        query.setParameter("name", groupType.name());
+
+        return findSingleResult(query, "GroupType");
     }
 
     /**

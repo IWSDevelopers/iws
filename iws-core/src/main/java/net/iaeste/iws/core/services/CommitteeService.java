@@ -155,21 +155,22 @@ public final class CommitteeService extends CommonService<CommitteeDao> {
         final CountryEntity country = dao.findCountry(request.getCountryId());
         if (country != null) {
             if ((country.getMembership() != Membership.ASSOCIATE_MEMBER) && (country.getMembership() != Membership.FULL_MEMBER)) {
+                final String groupname = prepareCommitteeName(country, request.getInstitutionName());
                 if (country.getMembership() == Membership.COOPERATING_INSTITUTION) {
-                    final String groupname = prepareCommitteeName(country, request.getInstitutionName());
                     final GroupEntity group = dao.findGroupByName(groupname);
                     if (group == null) {
-
+                        // No Committee exists with the name, which is good, as
+                        // we can then create a new Cooperating Institution
+                        doCreateCommittee(authentication, request, country, groupname);
                     } else {
                         throw new IllegalActionException("A Committee with the name " + groupname + "already exist.");
                     }
                 } else {
-                    final GroupEntity members = new GroupEntity();
-                    final GroupEntity staff = new GroupEntity();
+                    // Country is currently not a Cooperating Institution, so
+                    // we'll create the first new one for it
+                    doCreateCommittee(authentication, request, country, groupname);
                     country.setMembership(Membership.COOPERATING_INSTITUTION);
-                    final UserEntity user = new UserEntity();
-                    final UserGroupEntity nsMember = new UserGroupEntity();
-                    final UserGroupEntity nsStaff = new UserGroupEntity();
+                    dao.persist(authentication, country);
                 }
             } else {
                 throw new IllegalActionException("Cannot create a new Cooperating Institution for a Member Country.");
@@ -189,10 +190,67 @@ public final class CommitteeService extends CommonService<CommitteeDao> {
         return committeeName;
     }
 
-    private UserEntity createNationalSecretary(final Authentication authentication, final CommitteeRequest request) {
+    private void doCreateCommittee(final Authentication authentication, final CommitteeRequest request, final CountryEntity country, final String groupname) {
+        final RoleEntity owner = dao.findRole(IWSConstants.ROLE_OWNER);
+        final UserEntity ns = createNationalSecretary(authentication, owner, request);
+        final GroupEntity members = createGroup(authentication, authentication.getGroup().getId(), country, GroupType.MEMBER, groupname, request.getInstitutionName());
+        final GroupEntity staff = createGroup(authentication, members.getId(), country, GroupType.NATIONAL, groupname, request.getInstitutionName());
+        final UserGroupEntity nsMembers = new UserGroupEntity(ns, members, owner);
+        final UserGroupEntity nsStaff = new UserGroupEntity(ns, staff, owner);
+        dao.persist(authentication, nsMembers);
+        dao.persist(authentication, nsStaff);
+    }
+
+    private GroupEntity createGroup(final Authentication authentication, final Long parentId, final CountryEntity country, final GroupType type, final String groupName, final String committeeName) {
+        final GroupEntity group = new GroupEntity();
+        group.setGroupName(groupName);
+        group.setFullName(prepareGroupDescription(type, committeeName));
+        group.setDescription(group.getFullName());
+        group.setGroupType(dao.findGroupTypeByType(type));
+        group.setParentId(parentId);
+        group.setCountry(country);
+        dao.persist(authentication, group);
+
+        return group;
+    }
+
+    private static String prepareGroupDescription(final GroupType type, final String fullname) {
+        final String description;
+
+        switch (type) {
+            case MEMBER:
+            case NATIONAL:
+                description = fullname + type.getDescription();
+                break;
+            default:
+                description = fullname;
+        }
+
+        return description;
+    }
+
+    /**
+     * Created a new National Secretary based on the given information about
+     * username, firstname and lastname. The new NS will also be notified of
+     * the account.
+     *
+     * @param authentication User authentication Object
+     * @param owner          Owner Role
+     * @param request        Request Object
+     * @return Newly Persisted User Entity
+     */
+    private UserEntity createNationalSecretary(final Authentication authentication, final RoleEntity owner, final CommitteeRequest request) {
         final UserEntity existing = dao.findUserByUsername(request.getUsername());
         if (existing == null) {
-            final UserEntity user = new UserEntity();
+            final UserEntity user = createAndPersistUserEntity(authentication, request.getUsername(), null, request.getFirstname(), request.getLastname(), false);
+            final GroupEntity privateGroup = createAndPersistPrivateGroup(user);
+            final UserGroupEntity privateUserGroup = new UserGroupEntity(user, privateGroup, owner);
+            dao.persist(privateUserGroup);
+
+            // Now, we can send of Notitications about a new User Account and
+            // ensure that the e-mail alias is being properly processed
+            notifications.notify(authentication, user, NotificationType.NEW_USER);
+            notifications.notify(authentication, user, NotificationType.PROCESS_EMAIL_ALIAS);
 
             return user;
         } else {

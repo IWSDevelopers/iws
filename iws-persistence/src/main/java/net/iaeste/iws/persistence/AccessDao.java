@@ -82,8 +82,6 @@ public interface AccessDao extends BasicDao {
 
     UserEntity findUserByAlias(String alias);
 
-    Long findNumberOfAliasesForName(String name);
-
     SessionEntity findActiveSession(UserEntity user);
 
     SessionEntity findActiveSession(AuthenticationToken token);
@@ -118,8 +116,6 @@ public interface AccessDao extends BasicDao {
      * @return List of results from the PermissionView
      */
     List<UserPermissionView> findPermissions(Authentication authentication, String externalGroupId);
-
-    GroupTypeEntity findGroupType(GroupType groupType);
 
     GroupEntity findGroupByPermission(UserEntity user, String groupId, Permission permission);
 

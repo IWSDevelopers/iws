@@ -14,6 +14,9 @@
  */
 package net.iaeste.iws.core.services;
 
+import static net.iaeste.iws.common.utils.HashcodeGenerator.generateHash;
+import static net.iaeste.iws.common.utils.PasswordGenerator.generatePassword;
+import static net.iaeste.iws.common.utils.StringUtils.toLower;
 import static net.iaeste.iws.core.transformers.StorageTransformer.transform;
 
 import net.iaeste.iws.api.constants.IWSConstants;
@@ -21,10 +24,12 @@ import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.Address;
 import net.iaeste.iws.api.dtos.File;
 import net.iaeste.iws.api.dtos.Person;
+import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.StorageType;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.common.exceptions.AuthorizationException;
+import net.iaeste.iws.common.utils.StringUtils;
 import net.iaeste.iws.core.exceptions.PermissionException;
 import net.iaeste.iws.core.transformers.CommonTransformer;
 import net.iaeste.iws.persistence.Authentication;
@@ -34,6 +39,7 @@ import net.iaeste.iws.persistence.entities.CountryEntity;
 import net.iaeste.iws.persistence.entities.FileEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.PersonEntity;
+import net.iaeste.iws.persistence.entities.UserEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -71,6 +77,80 @@ public class CommonService<T extends BasicDao> {
     // =========================================================================
 
     /**
+     * Creates and persists a new UserEntity in the database. The Entity is
+     * based on the User Credentials, that is stored in the Request Object, with
+     * the exception of the Username, that due to a pre-processing, is provided
+     * as a parameter.<br />
+     *   The creation process will run some checks, and also generate some
+     * information by default. First, the user alias will be generated, if no
+     * alias can be generated (user provided information was not unique enough),
+     * then the create processs will fail.<br />
+     *   If no password was provided, then a random password is generated and
+     * returned to the user in the activation e-mail. Regardless, a salt is
+     * generated and used together with the password to create a cryptographical
+     * hashvalue that is then stored. The Salt is also stored in the database
+     * for verification when the user attempts to login.<br />
+     *   Finally, an Activation Code is generated, this is required for the user
+     * to activate the account, if an account is not activated, then it cannot
+     * be used.<br />
+     *   If no errors occurred during the creation, the new {@code UserEntity}
+     * is returned, otherwise an {@code IWSException} is thrown.
+     *
+     * @param authentication Authentication information from the requesting user
+     * @param username       Pre-processed username
+     * @param request        Request Object with remaining user information
+     * @return Newly created {@code UserEntity} Object
+     * @throws IWSException if unable to create the user
+     */
+    protected UserEntity createAndPersistUserEntity(final Authentication authentication, final String username, final String password, final String firstname, final String lastname, final boolean studentAccount) throws IWSException {
+        final UserEntity user = new UserEntity();
+
+        // First, the Password. If no password is specified, then we'll generate
+        // one. Regardlessly, the password is set in the UserEntity, for the
+        // Notification
+        final String thePassword = password == null ? generatePassword() : toLower(password);
+
+        // As we doubt that a user will provide enough entropy to enable us to
+        // generate a hash value that cannot be looked up in rainbow tables,
+        // we're "salting" it, and additionally storing the the random part of
+        // the salt in the Entity as well, the hardcoded part of the Salt is
+        // stored in the Hashcode Generator
+        final String salt = UUID.randomUUID().toString();
+
+        // Now, set all the information about the user and persist the Account
+        user.setUsername(username);
+        user.setTemporary(thePassword);
+        user.setPassword(generateHash(thePassword, salt));
+        user.setSalt(salt);
+        user.setFirstname(firstname);
+        user.setLastname(lastname);
+        user.setAlias(generateUserAlias(firstname, lastname, studentAccount));
+        user.setCode(generateHash(username + firstname + lastname + UUID.randomUUID()));
+        user.setPerson(createEmptyPerson(authentication));
+        dao.persist(authentication, user);
+
+        return user;
+    }
+
+    private String generateUserAlias(final String firstname, final String lastname, final boolean studentAccount) throws IWSException {
+        String alias = null;
+
+        if (!studentAccount) {
+            final String name = StringUtils.convertToAsciiMailAlias(firstname + '.' + lastname);
+            final String address = '@' + settings.getPublicMailAddress();
+
+            final Long serialNumber = dao.findNumberOfAliasesForName(name);
+            if ((serialNumber != null) && (serialNumber > 0)) {
+                alias = name + (serialNumber + 1) + address;
+            } else {
+                alias = name + address;
+            }
+        }
+
+        return alias;
+    }
+
+    /**
      * Creates and Persists a new (empty) {@code PersonEntity} with an internal
      * {@code AddressEntity}.
      *
@@ -85,6 +165,16 @@ public class CommonService<T extends BasicDao> {
 
         // Return the new Entity
         return person;
+    }
+
+    protected GroupEntity createAndPersistPrivateGroup(final UserEntity user) {
+        final GroupEntity group = new GroupEntity();
+
+        group.setGroupName(user.getFirstname() + ' ' + user.getLastname());
+        group.setGroupType(dao.findGroupType(GroupType.PRIVATE));
+        dao.persist(group);
+
+        return group;
     }
 
     /**

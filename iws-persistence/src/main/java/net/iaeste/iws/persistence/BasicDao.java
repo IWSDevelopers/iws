@@ -21,6 +21,7 @@ import net.iaeste.iws.persistence.entities.AddressEntity;
 import net.iaeste.iws.persistence.entities.CountryEntity;
 import net.iaeste.iws.persistence.entities.FileEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
+import net.iaeste.iws.persistence.entities.GroupTypeEntity;
 import net.iaeste.iws.persistence.entities.IWSEntity;
 import net.iaeste.iws.persistence.entities.MonitoringEntity;
 import net.iaeste.iws.persistence.entities.PermissionRoleEntity;
@@ -143,6 +144,10 @@ public interface BasicDao {
      * @return Unique Address Entity
      */
     AddressEntity findAddress(Long id);
+
+    GroupTypeEntity findGroupType(GroupType groupType);
+
+    Long findNumberOfAliasesForName(String name);
 
     /**
      * Finds a file for a given User with the provided External File Id. This

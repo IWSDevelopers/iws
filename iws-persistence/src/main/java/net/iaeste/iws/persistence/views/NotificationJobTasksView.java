@@ -133,6 +133,19 @@ public class NotificationJobTasksView extends AbstractView<NotificationJobTasksV
      * {@inheritDoc}
      */
     @Override
+    public String toString() {
+        return "NotificationJobTasksView{" +
+                "id=" + id +
+                ", attempts=" + attempts +
+                ", notificationType=" + notificationType +
+                ", consumerId=" + consumerId +
+                '}';
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public int compareTo(final NotificationJobTasksView o) {
         final int result = id.compareTo(o.id);
 

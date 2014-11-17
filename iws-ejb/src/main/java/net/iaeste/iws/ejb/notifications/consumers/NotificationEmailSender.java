@@ -214,7 +214,7 @@ public class NotificationEmailSender implements Observer {
     }
 
     private void processTask(final NotificationJobTasksView task) {
-        if (task != null) {
+        if ((task != null) && (task.getObject() != null)) {
             log.info("Processing email notification job task " + task.getId());
             try (final ByteArrayInputStream inputStream = new ByteArrayInputStream(task.getObject());
                  final ObjectInputStream objectStream = new ObjectInputStream(inputStream);) {
@@ -242,7 +242,11 @@ public class NotificationEmailSender implements Observer {
                 log.error("Error during notification processing", e);
             }
         } else {
-            log.error("Processing of a NULL task is will not work.");
+            if (task != null) {
+                log.error("Processing of a " + task + " task is will not work.");
+            } else {
+                log.error("Processing of a NULL task is will not work.");
+            }
         }
     }
 

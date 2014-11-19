@@ -53,6 +53,15 @@ public class EmbeddedGroup {
     @Column(name = "group_groupname", insertable = false, updatable = false)
     private String groupName = null;
 
+    @Column(name = "group_list_name", insertable = false, updatable = false)
+    private String listName = null;
+
+    @Column(name = "group_private_list", insertable = false, updatable = false)
+    private Boolean privateList = null;
+
+    @Column(name = "group_public_list", insertable = false, updatable = false)
+    private Boolean publicList = null;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "group_status", insertable = false, updatable = false)
     private GroupStatus status = null;
@@ -103,6 +112,30 @@ public class EmbeddedGroup {
 
     public String getGroupName() {
         return groupName;
+    }
+
+    public void setListName(final String listName) {
+        this.listName = listName;
+    }
+
+    public String getListName() {
+        return listName;
+    }
+
+    public void setPrivateList(final Boolean privateList) {
+        this.privateList = privateList;
+    }
+
+    public Boolean getPrivateList() {
+        return privateList;
+    }
+
+    public void setPublicList(final Boolean publicList) {
+        this.publicList = publicList;
+    }
+
+    public Boolean getPublicList() {
+        return publicList;
     }
 
     public void setStatus(final GroupStatus status) {

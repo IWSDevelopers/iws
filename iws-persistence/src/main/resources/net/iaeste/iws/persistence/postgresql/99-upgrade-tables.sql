@@ -8,11 +8,18 @@
 insert into versions (db_version, iws_version) values (3, '1.1.2');
 
 -- =============================================================================
--- Group Corrections to allow monitoring
+-- Group Corrections to allow monitoring & Better Mailing list control
 -- =============================================================================
 alter table groups add column monitoring_level varchar(10) default 'NONE';
+alter table groups add column private_list boolean;
+alter table groups add column public_list boolean;
 update groups set monitoring_level = 'NONE';
+-- 0 = Admin; 2 = Member; 3 = International; 4 = National; 5 = Local; 6 = WorkGroup
+update groups set private_list = true where grouptype_id in (0, 2, 3,    5, 6);
+update groups set public_list  = true where grouptype_id in (0,    3, 4, 5, 6);
 alter table groups add constraint group_monitoring_level check (monitoring_level is not null);
+alter table groups add constraint group_private_list     check (private_list is not null);
+alter table groups add constraint group_public_list      check (public_list is not null);
 
 -- =============================================================================
 -- Making the Board the default Administrator Group
@@ -50,8 +57,10 @@ delete from permissions;
 -- System Control: 1xx
 insert into permissions (id, permission) values (100, 'FETCH_COUNTRIES');
 insert into permissions (id, permission) values (101, 'PROCESS_COUNTRY');
-insert into permissions (id, permission) values (102, 'PROCESS_COMMITTEE');
-insert into permissions (id, permission) values (103, 'PROCESS_INTERNATIONAL_GROUP');
+insert into permissions (id, permission) values (110, 'FETCH_COMMITTEES');
+insert into permissions (id, permission) values (111, 'PROCESS_COMMITTEE');
+insert into permissions (id, permission) values (120, 'FETCH_INTERNATIONAL_GROUPS');
+insert into permissions (id, permission) values (121, 'PROCESS_INTERNATIONAL_GROUP');
 insert into permissions (id, permission) values (150, 'FETCH_SURVEY_OF_COUNTRIES');
 insert into permissions (id, permission) values (151, 'PROCESS_SURVEY_OF_COUNTRIES');
 -- Administration: 2xx
@@ -128,21 +137,41 @@ insert into permission_to_grouptype (grouptype_id, permission_id) values (0, 101
 insert into permission_to_role (role_id, permission_id) values (1, 101);
 insert into permission_to_role (role_id, permission_id) values (2, 101);
 
--- Permission 102 - Process Committee
+-- Permission 110 - Fetch Committees
 --   -> GroupTypes: 0 Administration
 --   -> Roles:      1 Owner
 --                  2 Moderator
-insert into permission_to_grouptype (grouptype_id, permission_id) values (0, 102);
-insert into permission_to_role (role_id, permission_id) values (1, 102);
-insert into permission_to_role (role_id, permission_id) values (2, 102);
+--                  3 Member
+insert into permission_to_grouptype (grouptype_id, permission_id) values (0, 110);
+insert into permission_to_role (role_id, permission_id) values (1, 110);
+insert into permission_to_role (role_id, permission_id) values (2, 110);
+insert into permission_to_role (role_id, permission_id) values (3, 110);
 
--- Permission 103 - Process Country
+-- Permission 111 - Process Committee
 --   -> GroupTypes: 0 Administration
 --   -> Roles:      1 Owner
 --                  2 Moderator
-insert into permission_to_grouptype (grouptype_id, permission_id) values (0, 103);
-insert into permission_to_role (role_id, permission_id) values (1, 103);
-insert into permission_to_role (role_id, permission_id) values (2, 103);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (0, 111);
+insert into permission_to_role (role_id, permission_id) values (1, 111);
+insert into permission_to_role (role_id, permission_id) values (2, 111);
+
+-- Permission 120 - Fetch International Groups
+--   -> GroupTypes: 0 Administration
+--   -> Roles:      1 Owner
+--                  2 Moderator
+--                  3 Member
+insert into permission_to_grouptype (grouptype_id, permission_id) values (0, 120);
+insert into permission_to_role (role_id, permission_id) values (1, 120);
+insert into permission_to_role (role_id, permission_id) values (2, 120);
+insert into permission_to_role (role_id, permission_id) values (3, 120);
+
+-- Permission 121 - Process International Group
+--   -> GroupTypes: 0 Administration
+--   -> Roles:      1 Owner
+--                  2 Moderator
+insert into permission_to_grouptype (grouptype_id, permission_id) values (0, 121);
+insert into permission_to_role (role_id, permission_id) values (1, 121);
+insert into permission_to_role (role_id, permission_id) values (2, 121);
 
 -- Permission 150 - Fetch Survey of Countries
 --   -> GroupTypes: 0 Administration
@@ -406,12 +435,10 @@ insert into permission_to_role (role_id, permission_id) values (3, 421);
 
 -- Permission: 422 - Process Publish Offer
 --   -> GroupTypes: 4 National
---                  5 Local
 --   -> Roles:      1 Owner
 --                  2 Moderator
 --                  3 Member
 insert into permission_to_grouptype (grouptype_id, permission_id) values (4, 422);
-insert into permission_to_grouptype (grouptype_id, permission_id) values (5, 422);
 insert into permission_to_role (role_id, permission_id) values (1, 422);
 insert into permission_to_role (role_id, permission_id) values (2, 422);
 insert into permission_to_role (role_id, permission_id) values (3, 422);

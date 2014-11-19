@@ -146,6 +146,9 @@ public final class GroupService {
      *   <li><b>fullName</b> - Updated</li>
      *   <li><b>description</b> - If provided</li>
      *   <li><b>listName</b> - Generated</li>
+     *   <li><b>PrivateList</b> - If provided & Allowed</li>
+     *   <li><b>PublicList</b> - If provided & Allowed</li>
+     *   <li><b>MonitoringLevel</b> - If provided</li>
      * </ul>
      *
      * @param authentication Authentication information for requesting user
@@ -163,6 +166,8 @@ public final class GroupService {
         groupEntity.setDescription(group.getDescription());
         groupEntity.setFullName(GroupUtil.prepareFullGroupName(type, group, basename));
         groupEntity.setListName(GroupUtil.prepareListName(type, groupEntity.getFullName(), entity.getCountry() != null ? entity.getCountry().getCountryName() : null));
+        groupEntity.setPrivateList(group.getPrivateList() && group.getGroupType().getMayHavePrivateMailinglist());
+        groupEntity.setPublicList(group.getPublicList() && group.getGroupType().getMayHavePublicMailinglist());
         groupEntity.setMonitoringLevel(group.getMonitoringLevel());
 
         dao.persist(authentication, entity, groupEntity);
@@ -537,6 +542,8 @@ public final class GroupService {
         groupEntity.setDescription(group.getDescription());
         groupEntity.setFullName(GroupUtil.prepareFullGroupName(type, group, basename));
         groupEntity.setParentId(parent.getId());
+        groupEntity.setPublicList(type.getMayHavePublicMailinglist());
+        groupEntity.setPrivateList(type.getMayHavePrivateMailinglist());
         groupEntity.setListName(GroupUtil.prepareListName(type, groupEntity.getFullName(), country != null ? country.getCountryName() : null));
 
         // Save the new Group in the database

@@ -152,6 +152,8 @@ public final class EmbeddedConverter {
 
         group.setGroupId(embedded.getExternalId());
         group.setGroupName(embedded.getGroupName());
+        group.setPrivateList(embedded.getPrivateList());
+        group.setPublicList(embedded.getPublicList());
         group.setGroupType(embedded.getGroupType());
 
         return group;

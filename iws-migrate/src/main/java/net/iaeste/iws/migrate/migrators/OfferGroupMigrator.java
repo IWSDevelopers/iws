@@ -217,18 +217,18 @@ public class OfferGroupMigrator implements Migrator<IW3Offer2GroupEntity> {
      * 2013-01-02:<br />
      * <pre>
      * 'code' -> iw3 -> iw4
-     * 'a' - > accepted -> shared
-     * 'c' - > cancelled -> closed
-     * 'e' - > exchanged -> shared
-     * 'n' - > new -> new
-     * 'o' - > nomination rejected -> application rejected
+     * 'a' -> accepted -> shared
+     * 'c' -> cancelled -> closed
+     * 'e' -> exchanged -> shared
+     * 'n' -> new -> new
+     * 'o' -> nomination rejected -> application rejected
      * 'p' -> nomination -> nominations
      * 'q' -> not accepted -> shared
      * 'r' -> declined -> shared
      * 's' -> sn complete -> shared
      * 't' -> taken -> shared
      * 'u' -> nomination accepted -> nominations
-     * 'v' - > viewed -> shared
+     * 'v' -> viewed -> shared
      * 'w' -> waiting sn -> shared
      * 'x' -> ac exchanged -> shared
      * 'default' -> new
@@ -253,8 +253,9 @@ public class OfferGroupMigrator implements Migrator<IW3Offer2GroupEntity> {
             case "o": // Nomination Rejected
                 state = OfferState.SHARED;
                 break;
-            // can only happen, if the offer gets unshared after the the status APPLIED" passed
-            // as the IW3 did never used the nomination functionality, this can never be a valid state
+            // can only happen, if the offer gets unshared after the the status
+            // APPLIED" passed as the IW3 did never used the nomination
+            // functionality, this can never be a valid state
             case "c": // Cancelled
                 state = OfferState.CLOSED;
                 break;

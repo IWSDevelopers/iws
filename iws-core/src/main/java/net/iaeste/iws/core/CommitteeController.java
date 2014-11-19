@@ -68,7 +68,7 @@ public final class CommitteeController extends CommonController implements Commi
 
         try {
             verify(request);
-            verifyAccess(token, Permission.PROCESS_COMMITTEE);
+            verifyAccess(token, Permission.FETCH_COMMITTEES);
 
             final CommitteeService service = factory.prepareCommitteeService();
             response = service.fetchCommittees(request);
@@ -121,7 +121,7 @@ public final class CommitteeController extends CommonController implements Commi
 
         try {
             verify(request);
-            verifyAccess(token, Permission.PROCESS_INTERNATIONAL_GROUP);
+            verifyAccess(token, Permission.FETCH_INTERNATIONAL_GROUPS);
 
             final CommitteeService service = factory.prepareCommitteeService();
             response = service.fetchInternationalGroups(request);

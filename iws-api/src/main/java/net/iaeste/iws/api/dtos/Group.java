@@ -36,6 +36,8 @@ public final class Group extends AbstractVerification {
     private String groupName = null;
     private String fullName = null;
     private String listName = null;
+    private Boolean privateList = true;
+    private Boolean publicList = true;
     private GroupType groupType = null;
     private String description = null;
     private MonitoringLevel monitoringLevel = MonitoringLevel.NONE;
@@ -63,6 +65,8 @@ public final class Group extends AbstractVerification {
             groupName = group.groupName;
             fullName = group.fullName;
             listName = group.listName;
+            privateList = group.privateList;
+            publicList = group.publicList;
             groupType = group.groupType;
             monitoringLevel = group.monitoringLevel;
             description = group.description;
@@ -145,31 +149,65 @@ public final class Group extends AbstractVerification {
         this.listName = listName;
     }
 
+    /**
+     * Retrieves the name of the mailing list based on the Mailing list flags.
+     * Note, that it is possible for a Group to have both a public and a private
+     * list.
+     *
+     * @return Public list if set, otherwise private list if set or null if not
+     */
     public String getListName() {
-        final String list;
+        String list = null;
 
-        if ((groupType != null) && (listName != null)) {
-            switch (groupType) {
-                case INTERNATIONAL:
-                case LOCAL:
-                case MEMBER:
-                case WORKGROUP:
-                    list = listName + '@' + IWSConstants.PRIVATE_EMAIL_ADDRESS;
-                    break;
-                case NATIONAL:
-                    list = listName + '@' + IWSConstants.PUBLIC_EMAIL_ADDRESS;
-                    break;
-                case ADMINISTRATION:
-                case PRIVATE:
-                case STUDENT:
-                default:
-                    list = null;
+        if (listName != null) {
+            if (publicList != null && publicList == true) {
+                list = listName + '@' + IWSConstants.PUBLIC_EMAIL_ADDRESS;
+            } else if (privateList != null && privateList == true) {
+                list = listName + '@' + IWSConstants.PRIVATE_EMAIL_ADDRESS;
             }
-        } else {
-            list = null;
         }
 
         return list;
+    }
+
+    /**
+     * Sets the Private Mailinglist flag. Meaning, that if the underlying
+     * GroupType allows a private mailing list, then the Group can be updated to
+     * also have one.<br />
+     *   Note, the value must be set to either true or false. Changing the flag
+     * for a group where it is not allowed, will be ignored. Attempting to set
+     * the value to null will result in an IllegalArgument Exception.
+     *
+     * @param privateList True or False, depending on the GroupType
+     * @throws IllegalArgumentException if set to null
+     */
+    public void setPrivateList(final Boolean privateList) throws IllegalArgumentException {
+        //ensureNotNull("privateList", privateList);
+        this.privateList = privateList;
+    }
+
+    public Boolean getPrivateList() {
+        return privateList;
+    }
+
+    /**
+     * Sets the Public Mailinglist flag. Meaning, that if the underlying
+     * GroupType allows a private mailing list, then the Group can be updated to
+     * also have one.<br />
+     *   Note, the value must be set to either true or false. Changing the flag
+     * for a group where it is not allowed, will be ignored. Attempting to set
+     * the value to null will result in an IllegalArgument Exception.
+     *
+     * @param privateList True or False, depending on the GroupType
+     * @throws IllegalArgumentException if set to null
+     */
+    public void setPublicList(final Boolean publicList) {
+        //ensureNotNull("publicList", publicList);
+        this.publicList = publicList;
+    }
+
+    public Boolean getPublicList() {
+        return publicList;
     }
 
     /**
@@ -276,6 +314,8 @@ public final class Group extends AbstractVerification {
 
         isNotNull(validation, "groupName", groupName);
         isNotNull(validation, "groupType", groupType);
+        //isNotNull(validation, "privateList", privateList);
+        //isNotNull(validation, "publicList", publicList);
 
         return validation;
     }
@@ -306,6 +346,12 @@ public final class Group extends AbstractVerification {
         if ((listName != null) ? !listName.equals(group.listName) : (group.listName != null)) {
             return false;
         }
+        if ((privateList != null) ? !privateList.equals(group.privateList) : (group.privateList != null)) {
+            return false;
+        }
+        if ((publicList != null) ? !publicList.equals(group.publicList) : (group.publicList != null)) {
+            return false;
+        }
         if (groupType != group.groupType) {
             return false;
         }
@@ -329,6 +375,8 @@ public final class Group extends AbstractVerification {
         result = IWSConstants.HASHCODE_MULTIPLIER * result + ((groupName != null) ? groupName.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + ((fullName != null) ? fullName.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + ((listName != null) ? listName.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((privateList != null) ? privateList.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((publicList != null) ? publicList.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + ((groupType != null) ? groupType.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + ((description != null) ? description.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + ((monitoringLevel != null) ? monitoringLevel.hashCode() : 0);
@@ -347,6 +395,8 @@ public final class Group extends AbstractVerification {
                 ", groupName='" + groupName + '\'' +
                 ", fullName='" + fullName + '\'' +
                 ", listName='" + getListName() + '\'' +
+                ", privateList=" + privateList +
+                ", publicList=" + publicList +
                 ", groupType=" + groupType +
                 ", description='" + description + '\'' +
                 ", monitoringLevel='" + monitoringLevel + '\'' +

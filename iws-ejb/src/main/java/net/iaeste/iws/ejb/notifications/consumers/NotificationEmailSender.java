@@ -243,9 +243,9 @@ public class NotificationEmailSender implements Observer {
             }
         } else {
             if (task != null) {
-                log.error("Processing of a " + task + " task is will not work.");
+                log.error("Processing of the " + task + " which contains no Object, cannot be completed.");
             } else {
-                log.error("Processing of a NULL task is will not work.");
+                log.error("Processing of a NULL task will not work.");
             }
         }
     }

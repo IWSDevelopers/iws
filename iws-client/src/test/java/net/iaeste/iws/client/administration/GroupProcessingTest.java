@@ -88,7 +88,7 @@ public final class GroupProcessingTest extends AbstractAdministration {
         final String groupName = "My Local Committee";
         final String groupDescription = "The Group Description";
         final String fullName = "Denmark." + groupName;
-        final String listName = toLower(fullName.replace(' ', '_') + '@' + IWSConstants.PRIVATE_EMAIL_ADDRESS);
+        final String listName = toLower(fullName.replace(' ', '_') + '@' + IWSConstants.PUBLIC_EMAIL_ADDRESS);
 
         final ProcessGroupResponse result = createGroup(token, GroupType.MEMBER, GroupType.LOCAL, groupName);
         assertThat(result.isOk(), is(true));
@@ -112,8 +112,10 @@ public final class GroupProcessingTest extends AbstractAdministration {
         assertThat(response.getGroup().getDescription(), is(groupDescription));
         assertThat(response.getGroup().getGroupType(), is(GroupType.LOCAL));
         assertThat(response.getGroup().getGroupName(), is(groupName));
-        assertThat(response.getGroup().getListName(), is(listName));
         assertThat(response.getGroup().getFullName(), is(fullName));
+        assertThat(response.getGroup().getPrivateList(), is(GroupType.LOCAL.getMayHavePrivateMailinglist()));
+        assertThat(response.getGroup().getPublicList(), is(GroupType.LOCAL.getMayHavePublicMailinglist()));
+        assertThat(response.getGroup().getListName(), is(listName));
     }
 
     @Test
@@ -121,7 +123,7 @@ public final class GroupProcessingTest extends AbstractAdministration {
         final String groupName = "My Work Group";
         final String groupDescription = "My Description";
         final String fullName = "Denmark." + groupName;
-        final String listName = toLower(fullName.replace(' ', '_') + '@' + IWSConstants.PRIVATE_EMAIL_ADDRESS);
+        final String listName = toLower(fullName.replace(' ', '_') + '@' + IWSConstants.PUBLIC_EMAIL_ADDRESS);
 
         final ProcessGroupResponse result = createGroup(token, GroupType.MEMBER, GroupType.WORKGROUP, groupName);
         assertThat(result.isOk(), is(true));
@@ -185,7 +187,7 @@ public final class GroupProcessingTest extends AbstractAdministration {
         final String workgroupName = "My Local Work Group";
         final String workgroupDescription = "The Group Description";
         final String workgroupFullName = "Denmark." + localName + '.' + workgroupName;
-        final String workgroupListName = toLower(workgroupFullName.replace(' ', '_') + '@' + IWSConstants.PRIVATE_EMAIL_ADDRESS);
+        final String workgroupListName = toLower(workgroupFullName.replace(' ', '_') + '@' + IWSConstants.PUBLIC_EMAIL_ADDRESS);
 
         final ProcessGroupResponse result = createGroup(token, GroupType.MEMBER, GroupType.LOCAL, localName);
         assertThat(result.isOk(), is(true));

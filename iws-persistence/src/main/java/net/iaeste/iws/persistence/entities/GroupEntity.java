@@ -220,6 +220,14 @@ public class GroupEntity implements Externable<GroupEntity>, Notifiable {
     @Column(name = "list_name", length = 100)
     private String listName = null;
 
+    @Monitored(name="Group Has Private List", level = MonitoringLevel.DETAILED)
+    @Column(name = "private_list", nullable = false)
+    private Boolean privateList = null;
+
+    @Monitored(name="Group Has Public List", level = MonitoringLevel.DETAILED)
+    @Column(name = "public_list", nullable = false)
+    private Boolean publicList = null;
+
     @Monitored(name="Group Status", level = MonitoringLevel.DETAILED)
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
@@ -369,6 +377,22 @@ public class GroupEntity implements Externable<GroupEntity>, Notifiable {
         return listName;
     }
 
+    public void setPrivateList(final Boolean privateList) {
+        this.privateList = privateList;
+    }
+
+    public Boolean getPrivateList() {
+        return privateList;
+    }
+
+    public void setPublicList(final Boolean publicList) {
+        this.publicList = publicList;
+    }
+
+    public Boolean getPublicList() {
+        return publicList;
+    }
+
     public void setStatus(final GroupStatus status) {
         this.status = status;
     }
@@ -449,6 +473,8 @@ public class GroupEntity implements Externable<GroupEntity>, Notifiable {
             fullName = obj.fullName;
             description = obj.description;
             listName = obj.listName;
+            privateList = obj.privateList;
+            publicList = obj.publicList;
             monitoringLevel = obj.monitoringLevel;
         }
     }

@@ -16,7 +16,6 @@ package net.iaeste.iws.core.services;
 
 import static net.iaeste.iws.common.utils.HashcodeGenerator.generateHash;
 import static net.iaeste.iws.common.utils.StringUtils.toLower;
-import static net.iaeste.iws.common.utils.StringUtils.toUpper;
 import static net.iaeste.iws.core.transformers.CommonTransformer.transform;
 import static net.iaeste.iws.core.util.LogUtil.formatLogMessage;
 
@@ -130,6 +129,9 @@ public final class CommitteeService extends CommonService<CommitteeDao> {
             case CREATE:
                 createCommittee(authentication, request);
                 break;
+            case UPDATE:
+                updateCommittee(authentication, request);
+                break;
             case CHANGE_NS:
                 changeNsForCommittee(authentication, request);
                 break;
@@ -155,7 +157,7 @@ public final class CommitteeService extends CommonService<CommitteeDao> {
         final CountryEntity country = dao.findCountry(request.getCountryId());
         if (country != null) {
             if ((country.getMembership() != Membership.ASSOCIATE_MEMBER) && (country.getMembership() != Membership.FULL_MEMBER)) {
-                final String groupname = prepareCommitteeName(country, request.getInstitutionName());
+                final String groupname = country.getCountryName() + ", " + request.getInstitutionAbbreviation();
                 if (country.getMembership() == Membership.COOPERATING_INSTITUTION) {
                     final GroupEntity group = dao.findGroupByName(groupname);
                     if (group == null) {
@@ -178,16 +180,6 @@ public final class CommitteeService extends CommonService<CommitteeDao> {
         } else {
             throw new IllegalActionException("Cannot create a Committee for a not existing Country.");
         }
-    }
-
-    private String prepareCommitteeName(final CountryEntity country, final String institutionName) {
-        String committeeName = country.getCountryName() + ", ";
-
-        for (final String part : institutionName.split(" ")) {
-            committeeName += toUpper(part.substring(0, 1));
-        }
-
-        return committeeName;
     }
 
     private void doCreateCommittee(final Authentication authentication, final CommitteeRequest request, final CountryEntity country, final String groupname) {
@@ -256,6 +248,10 @@ public final class CommitteeService extends CommonService<CommitteeDao> {
         } else {
             throw new IllegalActionException("Cannot create National Secretary for the new Committee, as the username is already in the system.");
         }
+    }
+
+    private void updateCommittee(final Authentication authentication, final CommitteeRequest request) {
+        throw new NotImplementedException("Method pending implementation.");
     }
 
     /**

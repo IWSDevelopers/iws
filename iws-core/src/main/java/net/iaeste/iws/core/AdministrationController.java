@@ -84,11 +84,10 @@ public final class AdministrationController extends CommonController implements 
         FetchCountryResponse response;
 
         try {
-            //verifyAccess(token, Permission.FETCH_COUNTRIES);
             // This request is "for free", there's no need for permission
             // checks, since all it does is read from a non-protected table
-            verifyPrivateAccess(token);
             verify(request);
+            verifyPrivateAccess(token);
 
             final CountryService service = factory.prepareCountryService();
             response = service.fetchCountries(request);
@@ -113,8 +112,8 @@ public final class AdministrationController extends CommonController implements 
         Fallible response;
 
         try {
-            final Authentication authentication = verifyAccess(token, Permission.PROCESS_COUNTRY);
             verify(request);
+            final Authentication authentication = verifyAccess(token, Permission.PROCESS_COUNTRY);
 
             final CountryService service = factory.prepareCountryService();
             service.processCountries(authentication, request);
@@ -140,8 +139,8 @@ public final class AdministrationController extends CommonController implements 
         CreateUserResponse response;
 
         try {
-            final Authentication authentication = verifyAccess(token, Permission.CONTROL_USER_ACCOUNT);
             verify(request);
+            final Authentication authentication = verifyAccess(token, Permission.CONTROL_USER_ACCOUNT);
 
             final AccountService service = factory.prepareAccountService();
             response = service.createUser(authentication, request);
@@ -167,6 +166,7 @@ public final class AdministrationController extends CommonController implements 
 
         try {
             verifyCode(activationString, "Provided Activation String is invalid.");
+
             final AccountService service = factory.prepareAccountService();
             service.activateUser(activationString);
             response = new FallibleResponse();
@@ -192,6 +192,7 @@ public final class AdministrationController extends CommonController implements 
 
         try {
             verifyCode(updateCode, "The UpdateCode is invalid.");
+
             final AccountService service = factory.prepareAccountService();
             service.updateUsername(updateCode);
             response = new FallibleResponse();
@@ -220,8 +221,8 @@ public final class AdministrationController extends CommonController implements 
             // that handles the request. The reason for this, is that users may
             // also alter their own data, but that it requires the correct
             // permissions to alter others.
-            final Authentication authentication = verifyPrivateAccess(token);
             verify(request);
+            final Authentication authentication = verifyPrivateAccess(token);
 
             final AccountService service = factory.prepareAccountService();
             service.controlUserAccount(authentication, request);
@@ -277,8 +278,8 @@ public final class AdministrationController extends CommonController implements 
             // The Permission check for this request, is moved into the service
             // that handles the request. The reason for this, is that users may
             // also request their own data.
-            final Authentication authentication = verifyPrivateAccess(token);
             verify(request);
+            final Authentication authentication = verifyPrivateAccess(token);
 
             final AccountService service = factory.prepareAccountService();
             response = service.fetchUser(authentication, request);

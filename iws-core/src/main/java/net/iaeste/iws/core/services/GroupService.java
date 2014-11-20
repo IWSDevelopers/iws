@@ -189,6 +189,8 @@ public final class GroupService {
         groupEntity.setDescription(entity.getDescription());
         groupEntity.setFullName(entity.getFullName());
         groupEntity.setListName(entity.getListName());
+        groupEntity.setPrivateList(group.getPrivateList() && group.getGroupType().getMayHavePrivateMailinglist());
+        groupEntity.setPublicList(group.getPublicList() && group.getGroupType().getMayHavePublicMailinglist());
         // Monitoring is allowed to be updated
         groupEntity.setMonitoringLevel(group.getMonitoringLevel());
 

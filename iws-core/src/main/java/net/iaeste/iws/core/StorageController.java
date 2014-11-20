@@ -60,8 +60,8 @@ public final class StorageController extends CommonController implements Storage
         FileResponse response;
 
         try {
-            final Authentication authentication = verifyAccess(token, Permission.PROCESS_FILE);
             verify(request);
+            final Authentication authentication = verifyAccess(token, Permission.PROCESS_FILE);
 
             final StorageService service = factory.prepareStorageService();
             response = service.processFile(authentication, request);
@@ -86,12 +86,12 @@ public final class StorageController extends CommonController implements Storage
         FetchFileResponse response;
 
         try {
+            verify(request);
             // A user may always fetch their own files, so we make the
             // permission check in the Service class, if the GroupId is defined
             // in the Request. Otherwise, it is assumed that the is private and
             // treated thus.
             final Authentication authentication = verifyPrivateAccess(token);
-            verify(request);
 
             final StorageService service = factory.prepareStorageService();
             response = service.fetchFile(authentication, request);

@@ -182,7 +182,7 @@ public final class Group extends AbstractVerification {
      * @throws IllegalArgumentException if set to null
      */
     public void setPrivateList(final Boolean privateList) throws IllegalArgumentException {
-        //ensureNotNull("privateList", privateList);
+        ensureNotNull("privateList", privateList);
         this.privateList = privateList;
     }
 
@@ -202,7 +202,7 @@ public final class Group extends AbstractVerification {
      * @throws IllegalArgumentException if set to null
      */
     public void setPublicList(final Boolean publicList) {
-        //ensureNotNull("publicList", publicList);
+        ensureNotNull("publicList", publicList);
         this.publicList = publicList;
     }
 
@@ -314,8 +314,8 @@ public final class Group extends AbstractVerification {
 
         isNotNull(validation, "groupName", groupName);
         isNotNull(validation, "groupType", groupType);
-        //isNotNull(validation, "privateList", privateList);
-        //isNotNull(validation, "publicList", publicList);
+        isNotNull(validation, "privateList", privateList);
+        isNotNull(validation, "publicList", publicList);
 
         return validation;
     }

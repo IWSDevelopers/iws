@@ -32,7 +32,7 @@ import net.iaeste.iws.api.constants.IWSErrors;
  */
 public abstract class AbstractDto extends AbstractVerification implements Fallible {
 
-    /** {@link net.iaeste.iws.api.constants.IWSConstants#SERIAL_VERSION_UID}. */
+    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     /** IWS Error Object. */

@@ -113,8 +113,13 @@ public final class CommonTransformer {
 
             entity.setExternalId(group.getGroupId());
             entity.setGroupName(group.getGroupName());
+            entity.setFullName(group.getFullName());
+            entity.setPrivateList(group.getPrivateList());
+            entity.setPublicList(group.getPrivateList());
+            entity.setListName(group.getListName());
             entity.setGroupType(transform(group.getGroupType()));
             entity.setDescription(group.getDescription());
+            entity.setMonitoringLevel(group.getMonitoringLevel());
             if (group.getCountry() != null) {
                 entity.setCountry(transform(group.getCountry()));
             }

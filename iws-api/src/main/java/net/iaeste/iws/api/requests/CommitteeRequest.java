@@ -37,6 +37,8 @@ public final class CommitteeRequest extends AbstractVerification {
     private String countryId = null;
     // The name of the Institution to use when creating a new Cooperating Institution
     private String institutionName = null;
+    // The official Abbreviation for the Institution, for creating & updating
+    private String institutionAbbreviation = null;
     // Firstname of the new National Secreraty for a new Cooperating Institution
     private String firstname = null;
     // Lastname of the new National Secreraty for a new Cooperating Institution
@@ -58,6 +60,9 @@ public final class CommitteeRequest extends AbstractVerification {
 
         /** Create a new Cooperating Institution. */
         CREATE,
+
+        /** Updating a Committee, i.e. change Institution Name & Abbreviation. */
+        UPDATE,
 
         /** Change the National Secretary. */
         CHANGE_NS,
@@ -108,6 +113,16 @@ public final class CommitteeRequest extends AbstractVerification {
     // Standard Setters & Getters
     // =========================================================================
 
+    /**
+     * Sets the CountryId, or CountryCode, which is the standard two-letter code
+     * for all Countries, defined by the UN. The Code is used by several of the
+     * request variations, and if needed, it must be set.<br />
+     *   The method will throw an IllegalArgument Exception, if the CountryId
+     * is set to null or is not exactly 2 characters long.
+     *
+     * @param countryId Two-letter Country Code
+     * @throws IllegalArgumentException if null or not exactly 2 characters long
+     */
     public void setCountryId(final String countryId) throws IllegalArgumentException {
         ensureNotNullAndExactLength("countryId", countryId, 2);
         this.countryId = countryId;
@@ -117,7 +132,18 @@ public final class CommitteeRequest extends AbstractVerification {
         return countryId;
     }
 
-    public void setInstitutionName(final String institutionName) {
+    /**
+     * Sets the Institution Name, which is the name of the Cooperating
+     * Institition, to either create or update. The name is most often the name
+     * of the University or Department, for which a Cooperating Institution is
+     * to be added.<br />
+     *   The method will throw an IllegalArgument Exception, if the name is set
+     * to null, empty or too long. The max length is 50 characters.
+     *
+     * @param institutionName
+     * @throws IllegalArgumentException
+     */
+    public void setInstitutionName(final String institutionName) throws IllegalArgumentException {
         ensureNotNullOrEmptyOrTooLong("institutionName", institutionName, 50);
         this.institutionName = institutionName;
     }
@@ -126,7 +152,25 @@ public final class CommitteeRequest extends AbstractVerification {
         return institutionName;
     }
 
-    public void setFirstname(final String firstname) {
+    /**
+     * Sets the Abbreviation for the Cooperating Institution, which is used for
+     * the official IAESTE Committee Name and also official mailing list. The
+     * abbreviation is allowed to be max 5 characters long. If longer, then the
+     * method will throw an IllegalArgument Exception.
+     *
+     * @param institutionAbbreviation Institution Abbreviation
+     * @throws IllegalArgumentException if null, empty or longer than 5 characters
+     */
+    public void setInstitutionAbbreviation(final String institutionAbbreviation) throws IllegalArgumentException {
+        ensureNotNullOrEmptyOrTooLong("institutionAbbreviation", institutionAbbreviation, 5);
+        this.institutionAbbreviation = institutionAbbreviation;
+    }
+
+    public String getInstitutionAbbreviation() {
+        return institutionAbbreviation;
+    }
+
+    public void setFirstname(final String firstname) throws IllegalArgumentException {
         ensureNotNullOrEmptyOrTooLong("firstname", firstname, CreateUserRequest.USER_MAXIMUM_FIRSTNAME);
         this.firstname = firstname;
     }
@@ -135,7 +179,12 @@ public final class CommitteeRequest extends AbstractVerification {
         return firstname;
     }
 
-    public void setLastname(final String lastname) {
+    /**
+     *
+     * @param lastname
+     * @throws IllegalArgumentException
+     */
+    public void setLastname(final String lastname) throws IllegalArgumentException {
         ensureNotNullOrEmptyOrTooLong("lastname", lastname, CreateUserRequest.USER_MAXIMUM_LASTNAME);
         this.lastname = lastname;
     }
@@ -144,6 +193,16 @@ public final class CommitteeRequest extends AbstractVerification {
         return lastname;
     }
 
+    /**
+     * Sets the Usenrame for creating a new National Secretary, which is done
+     * when creating a new Committee or can optionaly be used when setting a new
+     * National Secretary for an existing Committee.<br />
+     *   The username must be a valid e-mail address, otherwise the method will
+     * throw an IllegalArgument Exception.
+     *
+     * @param username National Secretary Username
+     * @throws IllegalArgumentException if not a valid e-mail address
+     */
     public void setUsername(final String username) throws IllegalArgumentException {
         ensureNotNullAndValidEmail("username", username);
         ensureNotTooLong("username", username, CreateUserRequest.USER_MAXIMUM_USERNAME);
@@ -201,9 +260,15 @@ public final class CommitteeRequest extends AbstractVerification {
                 case CREATE:
                     isNotNull(validation, "countryId", countryId);
                     isNotNull(validation, "institutionName", institutionName);
+                    isNotNull(validation, "institutionAbbreviation", institutionAbbreviation);
                     isNotNull(validation, "firstname", firstname);
                     isNotNull(validation, "lastname", lastname);
                     isNotNull(validation, "username", username);
+                    break;
+                case UPDATE:
+                    isNotNull(validation, "nationalCommittee", nationalCommittee);
+                    isNotNull(validation, "institutionName", institutionName);
+                    isNotNull(validation, "institutionAbbreviation", institutionAbbreviation);
                     break;
                 case MERGE:
                     isNotNull(validation, "countryId", countryId);

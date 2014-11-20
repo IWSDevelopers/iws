@@ -89,8 +89,8 @@ public final class ExchangeController extends CommonController implements Exchan
         OfferStatisticsResponse response;
 
         try {
-            final Authentication authentication = verifyAccess(token, Permission.FETCH_OFFER_STATISTICS);
             verify(request);
+            final Authentication authentication = verifyAccess(token, Permission.FETCH_OFFER_STATISTICS);
 
             final ExchangeFetchService service = factory.prepareExchangeFetchService();
             response = service.fetchOfferStatistics(authentication, request);
@@ -115,8 +115,8 @@ public final class ExchangeController extends CommonController implements Exchan
         EmployerResponse response;
 
         try {
-            final Authentication authentication = verifyAccess(token, Permission.PROCESS_EMPLOYER);
             verify(request);
+            final Authentication authentication = verifyAccess(token, Permission.PROCESS_EMPLOYER);
 
             final ExchangeService service = factory.prepareExchangeService();
             response = service.processEmployer(authentication, request);
@@ -141,8 +141,8 @@ public final class ExchangeController extends CommonController implements Exchan
         FetchEmployerResponse response;
 
         try {
-            final Authentication authentication = verifyAccess(token, Permission.FETCH_EMPLOYERS);
             verify(request);
+            final Authentication authentication = verifyAccess(token, Permission.FETCH_EMPLOYERS);
 
             final ExchangeFetchService service = factory.prepareExchangeFetchService();
             response = service.fetchEmployers(authentication, request);
@@ -167,8 +167,8 @@ public final class ExchangeController extends CommonController implements Exchan
         OfferResponse response;
 
         try {
-            final Authentication authentication = verifyAccess(token, Permission.PROCESS_OFFER);
             verify(request);
+            final Authentication authentication = verifyAccess(token, Permission.PROCESS_OFFER);
 
             final ExchangeService service = factory.prepareExchangeService();
             response = service.processOffer(authentication, request);
@@ -193,8 +193,8 @@ public final class ExchangeController extends CommonController implements Exchan
         OfferResponse response;
 
         try {
-            final Authentication authentication = verifyAccess(token, Permission.PROCESS_OFFER);
             verify(request);
+            final Authentication authentication = verifyAccess(token, Permission.PROCESS_OFFER);
 
             final ExchangeService service = factory.prepareExchangeService();
             service.deleteOffer(authentication, request);
@@ -220,8 +220,8 @@ public final class ExchangeController extends CommonController implements Exchan
         OfferCSVUploadResponse response;
 
         try {
-            final Authentication authentication = verifyAccess(token, Permission.PROCESS_OFFER);
             verify(request);
+            final Authentication authentication = verifyAccess(token, Permission.PROCESS_OFFER);
 
             final ExchangeCSVService service = factory.prepareExchangeCSVService();
             response = service.uploadOffers(authentication, request);
@@ -246,8 +246,8 @@ public final class ExchangeController extends CommonController implements Exchan
         FetchOffersResponse response;
 
         try {
-            final Authentication authentication = verifyAccess(token, Permission.FETCH_OFFERS);
             verify(request);
+            final Authentication authentication = verifyAccess(token, Permission.FETCH_OFFERS);
 
             final ExchangeFetchService service = factory.prepareExchangeFetchService();
             response = service.fetchOffers(authentication, request);
@@ -272,8 +272,8 @@ public final class ExchangeController extends CommonController implements Exchan
         OfferCSVDownloadResponse response;
 
         try {
-            final Authentication authentication = verifyAccess(token, Permission.FETCH_OFFERS);
             verify(request);
+            final Authentication authentication = verifyAccess(token, Permission.FETCH_OFFERS);
 
             final ExchangeCSVService service = factory.prepareExchangeCSVService();
             response = service.downloadOffers(authentication, request);
@@ -298,8 +298,8 @@ public final class ExchangeController extends CommonController implements Exchan
         Fallible response;
 
         try {
-            final Authentication authentication = verifyAccess(token, Permission.PROCESS_OFFER_TEMPLATES);
             verify(request);
+            final Authentication authentication = verifyAccess(token, Permission.PROCESS_OFFER_TEMPLATES);
 
             final ExchangeService service = factory.prepareExchangeService();
             service.processOfferTemplates(authentication, request);
@@ -325,8 +325,8 @@ public final class ExchangeController extends CommonController implements Exchan
         FetchOfferTemplateResponse response;
 
         try {
-            final Authentication authentication = verifyAccess(token, Permission.FETCH_OFFER_TEMPLATES);
             verify(request);
+            final Authentication authentication = verifyAccess(token, Permission.FETCH_OFFER_TEMPLATES);
 
             final ExchangeFetchService service = factory.prepareExchangeFetchService();
             response = service.fetchOfferTemplates(authentication, request);
@@ -351,8 +351,8 @@ public final class ExchangeController extends CommonController implements Exchan
         Fallible response;
 
         try {
-            final Authentication authentication = verifyAccess(token, Permission.PROCESS_PUBLISH_OFFER);
             verify(request);
+            final Authentication authentication = verifyAccess(token, Permission.PROCESS_PUBLISH_OFFER);
 
             final ExchangeService service = factory.prepareExchangeService();
             service.processPublishingGroups(authentication, request);
@@ -378,8 +378,8 @@ public final class ExchangeController extends CommonController implements Exchan
         FetchPublishingGroupResponse response;
 
         try {
-            final Authentication authentication = verifyAccess(token, Permission.FETCH_PUBLISH_GROUPS);
             verify(request);
+            final Authentication authentication = verifyAccess(token, Permission.FETCH_PUBLISH_GROUPS);
 
             final ExchangeFetchService service = factory.prepareExchangeFetchService();
             response = service.fetchPublishGroups(authentication, request);
@@ -405,8 +405,8 @@ public final class ExchangeController extends CommonController implements Exchan
         Fallible response;
 
         try {
-            final Authentication authentication = verifyAccess(token, Permission.PROCESS_PUBLISH_OFFER);
             verify(request);
+            final Authentication authentication = verifyAccess(token, Permission.PROCESS_PUBLISH_OFFER);
 
             final ExchangeService service = factory.prepareExchangeService();
             service.deletePublishingGroup(authentication, request);
@@ -457,8 +457,8 @@ public final class ExchangeController extends CommonController implements Exchan
         PublishOfferResponse response;
 
         try {
-            final Authentication authentication = verifyAccess(token, Permission.PROCESS_PUBLISH_OFFER);
             verify(request);
+            final Authentication authentication = verifyAccess(token, Permission.PROCESS_PUBLISH_OFFER);
 
             final ExchangeService service = factory.prepareExchangeService();
             service.processPublishOffer(authentication, request);
@@ -484,8 +484,8 @@ public final class ExchangeController extends CommonController implements Exchan
         FetchPublishedGroupsResponse response;
 
         try {
-            final Authentication authentication = verifyAccess(token, Permission.FETCH_PUBLISH_GROUPS);
             verify(request);
+            final Authentication authentication = verifyAccess(token, Permission.FETCH_PUBLISH_GROUPS);
 
             final ExchangeFetchService service = factory.prepareExchangeFetchService();
             response = service.fetchPublishedOfferInfo(authentication, request);
@@ -510,8 +510,8 @@ public final class ExchangeController extends CommonController implements Exchan
         Fallible response;
 
         try {
-            final Authentication authentication = verifyAccess(token, Permission.PROCESS_PUBLISH_OFFER);
             verify(request);
+            final Authentication authentication = verifyAccess(token, Permission.PROCESS_PUBLISH_OFFER);
 
             final ExchangeService service = factory.prepareExchangeService();
             service.processHideForeignOffers(authentication, request);
@@ -537,8 +537,8 @@ public final class ExchangeController extends CommonController implements Exchan
         Fallible response;
 
         try {
-            final Authentication authentication = verifyAccess(token, Permission.PROCESS_PUBLISH_OFFER);
             verify(request);
+            final Authentication authentication = verifyAccess(token, Permission.PROCESS_PUBLISH_OFFER);
 
             final ExchangeService service = factory.prepareExchangeService();
             service.rejectOffer(authentication, request);

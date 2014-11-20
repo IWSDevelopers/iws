@@ -68,8 +68,8 @@ public final class StudentController extends CommonController implements Student
         CreateUserResponse response;
 
         try {
-            final Authentication authentication = verifyAccess(token, Permission.CREATE_STUDENT_ACCOUNT);
             verify(request);
+            final Authentication authentication = verifyAccess(token, Permission.CREATE_STUDENT_ACCOUNT);
 
             final AccountService service = factory.prepareAccountService();
             response = service.createStudent(authentication, request);
@@ -94,8 +94,8 @@ public final class StudentController extends CommonController implements Student
         StudentResponse response;
 
         try {
-            final Authentication authentication = verifyAccess(token, Permission.PROCESS_STUDENT);
             verify(request);
+            final Authentication authentication = verifyAccess(token, Permission.PROCESS_STUDENT);
 
             final StudentService service = factory.prepareStudentService();
             response = service.processStudent(authentication, request);
@@ -120,8 +120,8 @@ public final class StudentController extends CommonController implements Student
         FetchStudentsResponse response;
 
         try {
-            final Authentication authentication = verifyAccess(token, Permission.FETCH_STUDENTS);
             verify(request);
+            final Authentication authentication = verifyAccess(token, Permission.FETCH_STUDENTS);
 
             final StudentService service = factory.prepareStudentService();
             response = service.fetchStudents(authentication, request);
@@ -146,8 +146,8 @@ public final class StudentController extends CommonController implements Student
         StudentApplicationResponse response;
 
         try {
-            final Authentication authentication = verifyAccess(token, Permission.PROCESS_STUDENT_APPLICATION);
             verify(request);
+            final Authentication authentication = verifyAccess(token, Permission.PROCESS_STUDENT_APPLICATION);
 
             final StudentService service = factory.prepareStudentService();
             response = service.processStudentApplication(authentication, request);
@@ -172,8 +172,8 @@ public final class StudentController extends CommonController implements Student
         FetchStudentApplicationsResponse response;
 
         try {
-            final Authentication authentication = verifyAccess(token, Permission.FETCH_STUDENT_APPLICATION);
             verify(request);
+            final Authentication authentication = verifyAccess(token, Permission.FETCH_STUDENT_APPLICATION);
 
             final StudentService service = factory.prepareStudentService();
             response = service.fetchStudentApplications(authentication, request);
@@ -198,8 +198,8 @@ public final class StudentController extends CommonController implements Student
         StudentApplicationResponse response;
 
         try {
-            final Authentication authentication = verifyAccess(token, Permission.PROCESS_STUDENT_APPLICATION);
             verify(request);
+            final Authentication authentication = verifyAccess(token, Permission.PROCESS_STUDENT_APPLICATION);
 
             final StudentService service = factory.prepareStudentService();
             response = service.processApplicationStatus(authentication, request);

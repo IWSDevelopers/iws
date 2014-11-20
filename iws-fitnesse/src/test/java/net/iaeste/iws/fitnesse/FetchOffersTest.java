@@ -29,7 +29,14 @@ import org.junit.Test;
  * @since   IWS 1.0
  */
 public class FetchOffersTest {
+
     private FetchOffers cut;
+
+    @After
+    public void logout() {
+        cut.deprecateSession();
+        cut = null;
+    }
 
     @Test
     public void testInvalidCall() {
@@ -44,7 +51,7 @@ public class FetchOffersTest {
 
         assertThat(cut.isRequestOk(), is(false));
         assertThat(cut.errorCode(), is(IWSErrors.VERIFICATION_ERROR.getError()));
-        assertThat(cut.errorMessage(), startsWith("Invalid Authentication Token provided."));
+        assertThat(cut.errorMessage(), startsWith("Cannot process a Null Request Object. Object may not be null."));
     }
 
     @Test
@@ -65,11 +72,5 @@ public class FetchOffersTest {
         assertThat(cut.isRequestOk(), is(true));
         assertThat(cut.errorCode(), is(IWSErrors.SUCCESS.getError()));
         assertThat(cut.numberOfFetchedOffers(), is(4));
-    }
-
-    @After
-    public void logout() {
-        cut.deprecateSession();
-        cut = null;
     }
 }

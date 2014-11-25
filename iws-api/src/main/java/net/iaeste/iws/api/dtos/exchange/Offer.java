@@ -636,7 +636,7 @@ public final class Offer extends AbstractVerification {
      * characters, or an IllegalArgiment Exception is thrown.
      *
      * @param privateComment Private Comment
-     * @throws IllegalArgumentException if field is longer than 2000 characters
+     * @throws IllegalArgumentException if field is longer than 1000 characters
      */
     public void setPrivateComment(final String privateComment) throws IllegalArgumentException {
         ensureNotTooLong("privateComment", privateComment, 1000);

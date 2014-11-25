@@ -178,7 +178,7 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
                   //.withNullString("")
                     .parse(input);
         } catch (IOException e) {
-            throw new IWSException(IWSErrors.PROCESSING_FAILURE, "Creating CSVPrinter failed", e);
+            throw new IWSException(IWSErrors.PROCESSING_FAILURE, "Creating CSVParser failed", e);
         }
     }
 

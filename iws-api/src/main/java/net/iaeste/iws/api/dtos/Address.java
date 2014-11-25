@@ -34,7 +34,7 @@ public final class Address extends AbstractVerification {
      * Most fields of type String in this Object, are allowed to be as big as
      * this number.
      */
-    private static final int FIELD_LENGTH = 100;
+    public static final int FIELD_LENGTH = 100;
 
     /**
      * Postal Codes are used by a rather large number of countries, in fact
@@ -44,7 +44,7 @@ public final class Address extends AbstractVerification {
      * Code (two letters) additionally, meaning that the Postal Code can be up
      * to 12 Characters long.
      */
-    private static final int POSTAL_CODE_LENGTH = 12;
+    public static final int POSTAL_CODE_LENGTH = 12;
 
     private String street1 = null;
     private String street2 = null;

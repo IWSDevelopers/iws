@@ -70,7 +70,7 @@ import java.util.Set;
  */
 public class ExchangeCSVService extends CommonService<ExchangeDao> {
 
-    private final static char DELIMITER = ',';
+    private static final char DELIMITER = ',';
 
     private final ExchangeDao dao;
     private final AccessDao accessDao;
@@ -421,5 +421,4 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
 
         return result;
     }
-
 }

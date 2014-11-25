@@ -18,7 +18,6 @@ package net.iaeste.iws.api.enums.exchange;
  * @author  Matej Kosco / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
- * @noinspection EnumeratedConstantNamingConvention
  */
 public enum StudyLevel {
 

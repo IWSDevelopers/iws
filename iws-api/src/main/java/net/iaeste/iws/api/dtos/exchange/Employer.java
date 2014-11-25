@@ -35,8 +35,10 @@ public final class Employer extends AbstractVerification {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    /** The maximum length for Employer related Strings. */
-    private static final int FIELD_LENGTH = 255;
+    /**
+     * The maximum length for Employer related Strings.
+     */
+    public static final int FIELD_LENGTH = 255;
 
     private String employerId = null;
     private Group group = null;

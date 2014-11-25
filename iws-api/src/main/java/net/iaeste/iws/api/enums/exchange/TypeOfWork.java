@@ -20,7 +20,6 @@ package net.iaeste.iws.api.enums.exchange;
  * @author  Marko Cilimkovic / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
- * @noinspection EnumeratedConstantNamingConvention
  */
 public enum TypeOfWork {
 

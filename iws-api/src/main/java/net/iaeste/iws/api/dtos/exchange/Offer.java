@@ -535,6 +535,13 @@ public final class Offer extends AbstractVerification {
         return currency;
     }
 
+    /**
+     * Sets the Deduction allowed. The value may not exceed the max limit of 50
+     * characters or an IllegalArgument Exception is thrown.
+     *
+     * @param deduction Deduction
+     * @throws IllegalArgumentException if longer than 50 characters
+     */
     public void setDeduction(final String deduction) {
         ensureNotTooLong("deduction", deduction, 50);
         this.deduction = deduction;
@@ -560,6 +567,13 @@ public final class Offer extends AbstractVerification {
         return livingCostFrequency;
     }
 
+    /**
+     * Sets who organizes the Lodging. The value may not exceed the max limit of
+     * 255 characters or an IllegalArgument Exception is thrown.
+     *
+     * @param lodgingBy Lodging is organized by
+     * @throws IllegalArgumentException if longer than 255 characters
+     */
     public void setLodgingBy(final String lodgingBy) {
         ensureNotTooLong("lodgingBy", lodgingBy, 255);
         this.lodgingBy = lodgingBy;
@@ -601,6 +615,13 @@ public final class Offer extends AbstractVerification {
         return numberOfHardCopies;
     }
 
+    /**
+     * Sets the Additional Information for an Offer. The value may nor exceed
+     * 3000 characters, or an IllegalArgiment Exception is thrown.
+     *
+     * @param additionalInformation Additional Information
+     * @throws IllegalArgumentException if field is longer than 3000 characters
+     */
     public void setAdditionalInformation(final String additionalInformation) throws IllegalArgumentException {
         ensureNotTooLong("additionalInformation", additionalInformation, 3000);
         this.additionalInformation = additionalInformation;
@@ -610,6 +631,13 @@ public final class Offer extends AbstractVerification {
         return additionalInformation;
     }
 
+    /**
+     * Sets the Private Comment for an Offer. The value may nor exceed 1000
+     * characters, or an IllegalArgiment Exception is thrown.
+     *
+     * @param privateComment Private Comment
+     * @throws IllegalArgumentException if field is longer than 2000 characters
+     */
     public void setPrivateComment(final String privateComment) throws IllegalArgumentException {
         ensureNotTooLong("privateComment", privateComment, 1000);
         this.privateComment = privateComment;

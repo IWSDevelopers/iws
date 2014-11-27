@@ -165,7 +165,7 @@ import java.util.Map;
 @Monitored(name = "Group", level = MonitoringLevel.DETAILED)
 public class GroupEntity implements Externable<GroupEntity>, Notifiable {
 
-    /** {@link net.iaeste.iws.api.constants.IWSConstants#SERIAL_VERSION_UID}. */
+    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     @Id

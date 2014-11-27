@@ -50,9 +50,9 @@ public interface IWSConstants {
      * the recipients of the information may not be able to understand or read
      * it properly.<br />
      *   Also, it happens all too often that data is getting corrupted while
-     * being processed, simply because of strange charactersets being
+     * being processed, simply because of strange character sets being
      * used.<br />
-     *   Latin 15 was chosen as default, as it supports the Euro sign. The Euro
+     *   Latin9 was chosen as default, as it supports the Euro sign. The Euro
      * is one of the largest currencies being used.
      */
     String DEFAULT_ENCODING = "ISO-8859-15";
@@ -63,9 +63,54 @@ public interface IWSConstants {
     Locale DEFAULT_LOCALE = Locale.ENGLISH;
 
     /**
-     * Passwords in the IWS must be at least this long.
+     * E-mail addresses have changed numerous times over the years. To ensure
+     * that they are valid, we need a simple regex. Unfortunately, the constant
+     * changes to what is allowed and what isn't means that any regex will
+     * eventually fail. For this reason, we've tried to keep it simple yet able
+     * to allow at least 99% of all valid addresses.rb />
+     *   See <a href="http://en.wikipedia.org/wiki/Email_address">Wikipedia</a>
+     * for more information.<br />
+     *   This regex does not support the quotation rules, which makes the rule
+     * check more complicated, nor does it support IPv6 addresses.
      */
-    int MINIMAL_PASSWORD_LENGTH = 5;
+    String EMAIL_REGEX = "^[a-zA-Z0-9_\\.\\-\\+ !#\\$%&'\\*/=\\?\\^`\\{\\}\\|~]+@([a-zA-Z0-9_\\-]+\\.)*[a-zA-Z0-9]{2,}$";
+
+    Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX);
+
+    /**
+     * The minimal lenghth for a password which the user is choosing must be
+     * this long.
+     */
+    int MINIMAL_PASSWORD_LENGTH = 6;
+
+    /**
+     * Passwords must have a minimal length, using whatever characters the user
+     * prefers. Although it may make sense to force control of different
+     * character groups, we also do not wish to force users to use complex
+     * passwords which they'll forget. The online comic
+     * <a href="http://xkcd.com/936/">XKCD</a> have a wonderful little cartoon
+     * on the matter.<br />
+     *   Rainbow attacks will not be possible, regardless of how simple a
+     * password a user chooses, since we're salting all incoming Passwords with
+     * a two-factor salt. Hence, we trust that users are competent enough at
+     * choosing passwords, which will protect their access.
+     */
+    String PASSWORD_REGEX = "^.{" + MINIMAL_PASSWORD_LENGTH + ",}$";
+
+    Pattern PASSWORD_PATTERN = Pattern.compile(PASSWORD_REGEX);
+
+    /**
+     * This is the length for generated Passwords. Meaning passwords for
+     * accounts where no initial password was given.
+     */
+    int GENERATED_PASSWORD_LENGTH = 8;
+
+    /**
+     * For the automatic password generator, we need a list of characters, that
+     * cannot be misinterpreted when read, i.e. l and 1 should not be in the
+     * list, since they can too easily be mistaken for each other.
+     */
+    String PASSWORD_GENERATOR_CHARACTERS = "abcdefghjkmnpqrstuvwxzy23456789";
 
     /**
      * The maximum number of concurrently active tokens in the system. Meaning
@@ -80,11 +125,9 @@ public interface IWSConstants {
      * Sessions will time-out after a number of minutes being idle. Meaning that
      * no activity took place using the account. The value is set to 8 hours per
      * default, so inactivity during a normal Office workday shouldn't cause any
-     * problems.<br />
-     *   Due to problems for users, we're reducing the time to 1 hour.
+     * problems.
      */
     long MAX_SESSION_IDLE_PERIOD = 28800000L;  // 8 hours
-    //long MAX_SESSION_IDLE_PERIOD = 3600000L;   // 1 hour
 
     /**
      * The maximum number of times a user may attempt to login with incorrect
@@ -180,14 +223,10 @@ public interface IWSConstants {
     int HASHCODE_MULTIPLIER = 31;
 
     /**
-     * Default IWS Date Format.
+     * Default IWS Date Format. The format was chosen as it proves the fewest
+     * problems for used regarding understanding it.
      */
     String DATE_FORMAT = "dd-MMM-yyyy";
-
-    /**
-     * Default CSV Date Format.
-     */
-    String CSV_DATE_FORMAT = "yyyy-MM-dd";
 
     /**
      * Default IWS DateTime Format.
@@ -197,61 +236,27 @@ public interface IWSConstants {
     String TIMESTAMP_FORMAT = "yyyyMMddHHmmssSSS";
 
     /**
-     * DateFormat Object for formatting and parsing Date Object from/to CSV.
-     */
-    DateFormat CSV_FORMATTER = new SimpleDateFormat(CSV_DATE_FORMAT, DEFAULT_LOCALE);
-
-    /**
      * DateFormat Object for formatting and parsing Date Object.
      */
     DateFormat FORMATTER = new SimpleDateFormat(DATE_FORMAT, DEFAULT_LOCALE);
+
+    /**
+     * By default, all CSV dates must follow the ISO-8601 format.
+     */
+    String CSV_DATE_FORMAT = "yyyy-MM-dd";
+
+    /**
+     * DateFormat Object for formatting and parsing Date Object from/to CSV.
+     */
+    DateFormat CSV_FORMATTER = new SimpleDateFormat(CSV_DATE_FORMAT, DEFAULT_LOCALE);
 
     /**
      * Default IWS Success message.
      */
     String SUCCESS = "OK";
 
-    /**
-     * Passwords must be at least 6 characters long, using whatever characters
-     * the user prefers. Although it may make sense to force control of
-     * different character groups, we also do not wish to force users to use
-     * complex passwords which they'll forget. The online comic
-     * <a href="http://xkcd.com/936/">XKCD</a> have a wonderful little cartoon
-     * on the matter.<br />
-     *   Rainbow attacks will not be possible, regardless of how simple a
-     * password a user chooses, since we're salting all incoming Passwords with
-     * a two-factor salt. Hence, we trust that users are competent enough at
-     * choosing passwords, which will protect their access.
-     */
-    String PASSWORD_REGEX = "^.{6,}$";
-    Pattern PASSWORD_PATTERN = Pattern.compile(PASSWORD_REGEX);
-
-    /**
-     * E-mail addresses have changed numerous times over the years. To ensure
-     * that they are valid, we need a simple regex. Unfortunately, the constant
-     * changes to what is allowed and what isn't means that any regex will
-     * eventually fail. For this reason, we've tried to keep it simple yet able
-     * to allow at least 99% of all valid addresses.rb />
-     *   See <a href="http://en.wikipedia.org/wiki/Email_address">Wikipedia</a>
-     * for more information.<br />
-     *   This regex does not support the quotation rules, which makes the rule
-     * check more complicated, nor does it support IPv6 addresses.
-     */
-    String EMAIL_REGEX = "^[a-zA-Z0-9_\\.\\-\\+ !#\\$%&'\\*/=\\?\\^`\\{\\}\\|~]+@([a-zA-Z0-9_\\-]+\\.)*[a-zA-Z0-9]{2,}$";
-    Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX);
-
-    /**
-     * For the automatic password generator, we need a list of characters, that
-     * cannot be misinterpreted when read, i.e. l and 1 should not be in the
-     * list, since they can too easily be mistaken for each other.
-     */
-    String PASSWORD_GENERATOR_CHARACTERS = "abcdefghjkmnpqrstuvwxzy23456789";
-
-    /**
-     * The default length to use for the automatically generated passwords.
-     */
-    int DEFAULT_PASSWORD_LENGTH = 8;
-
+    // These are only used internally, and should be dropped if possible, and
+    // replaced with correct usage of the Permissions
     Long ROLE_OWNER = 1L;
     Long ROLE_MODERATOR = 2L;
     Long ROLE_MEMBER = 3L;

@@ -42,11 +42,11 @@ public final class PasswordGenerator {
      *
      * @return New random password
      * @see IWSConstants#PASSWORD_GENERATOR_CHARACTERS
-     * @see IWSConstants#DEFAULT_PASSWORD_LENGTH
+     * @see IWSConstants#GENERATED_PASSWORD_LENGTH
      */
     public static String generatePassword() {
         final String allowedCharacters = IWSConstants.PASSWORD_GENERATOR_CHARACTERS;
-        final int length = IWSConstants.DEFAULT_PASSWORD_LENGTH;
+        final int length = IWSConstants.GENERATED_PASSWORD_LENGTH;
 
         final char[] password = new char[length];
         final Random random = new SecureRandom();

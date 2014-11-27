@@ -36,7 +36,7 @@ public class PasswordGeneratorTest {
     @Test
     public void testGeneratePassword() {
         final String password = PasswordGenerator.generatePassword();
-        assertThat(password.length(), is(IWSConstants.DEFAULT_PASSWORD_LENGTH));
+        assertThat(password.length(), is(IWSConstants.GENERATED_PASSWORD_LENGTH));
 
         final char[] chars = password.toCharArray();
         for (final char c : chars) {

@@ -26,13 +26,12 @@ import java.util.regex.Pattern;
 public interface IWSExchangeConstants {
 
     /**
-     * From Trac: https://trac.iaeste.net/ticket/414#comment:10
-     * The reference number is not yet implemented 100%. The 6 char part should
-     * allow characters and the last part should state the type of the offer
-     * (R..reserved, C..COBE, L..limited). So the reg exp should look like this:
-     * [A-Z]{2}-[0-9]{4}-[A-Z0-9]{6}(-[RLC])?
+     * Following a Board decision in the Autumn, 2014 - all Reference Numbers
+     * must apply to the following regex. The format was updated as part of Trac
+     * ticket #930, which superseeds the format ticket #414. The actual decision
+     * points from the Board minutes is still pending.
      */
-    String REFNO_FORMAT = "[A-Z]{2}-[0-9]{4}-[A-Z0-9]{6}(-[RLC])?";
+    String REFNO_FORMAT = "[A-Z]{2}-[0-9]{4}-[A-Z0-9\\-]{1,8}";
     Pattern REFNO_PATTERN = Pattern.compile(REFNO_FORMAT);
 
     /**

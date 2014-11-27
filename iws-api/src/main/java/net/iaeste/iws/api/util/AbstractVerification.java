@@ -294,7 +294,7 @@ public abstract class AbstractVerification implements Verifiable {
      * either null or containing illegal values.
      *
      * @param field      The name of the field (value) to be verified
-     * @param value      the Collectin to verify
+     * @param value      the Collection to verify
      * @param acceptable Collection of allowed values
      */
     protected <E extends Enum<?>> void ensureNotNullAndContains(final String field, final Collection<E> value, final Collection<E> acceptable) {
@@ -304,6 +304,22 @@ public abstract class AbstractVerification implements Verifiable {
             if (!acceptable.contains(found)) {
                 throw new IllegalArgumentException(format(ERROR_ILLEGAL_VALUES, field, found));
             }
+        }
+    }
+
+    /**
+     * Throws an {@code IllegalArgumentException} if the given Enum is
+     * either null or not in the list of allowed values.
+     *
+     * @param field      The name of the field (value) to be verified
+     * @param value      the Enum to verify
+     * @param acceptable Collection of allowed values
+     */
+    protected <E extends Enum<?>> void ensureNotNullAndContains(final String field, final E value, final Collection<E> acceptable) {
+        ensureNotNull(field, value);
+
+        if (!acceptable.contains(value)) {
+            throw new IllegalArgumentException(format(ERROR_ILLEGAL_VALUES, field, value));
         }
     }
 
@@ -509,19 +525,19 @@ public abstract class AbstractVerification implements Verifiable {
     /**
      * Calculates the Exchange Year for Offers. Used for both searching for
      * Offers, and for creating Offers. According to the specifications, the
-     * Exchange year changes on Septmber first to the next year, meaning that
+     * Exchange year changes on September first to the next year, meaning that
      * the "Current Exchange Year" is the same as the "Current Year" until
-     * Sepber 1st, and the following year afterworth.<br />
+     * September 1st, and the following year afterworth.<br />
      * <ul>
      *   <li>Example 1: April 1st, 2014 => Current Exchange Year is 2014</li>
-     *   <li>Example 2: Auguet 31st, 2014 => Current Exchange Year is 2014</li>
+     *   <li>Example 2: August 31st, 2014 => Current Exchange Year is 2014</li>
      *   <li>Example 3: September 1st, 2014 => Current Exchange Year is 2015</li>
      *   <li>Example 4: October 1st, 2014 => Current Exchange Year is 2015</li>
      * </ul>
      *
      * @return Current Exchange Year
      */
-    public static Integer calculateExchangeYear() {
+    public static int calculateExchangeYear() {
         final Date date = new Date();
 
         return date.getCurrentYear() + ((date.getCurrentMonth() >= Calendar.SEPTEMBER) ? 1 : 0);
@@ -559,7 +575,7 @@ public abstract class AbstractVerification implements Verifiable {
      *
      * @param validation Map with Error information
      * @param field      The name of the field (value) to be verified
-     * @param value      the Collectin to verify
+     * @param value      the Collection to verify
      * @param acceptable Collection of allowed values
      */
     protected <E extends Enum<?>> void isNotNullAndContains(final Map<String, String> validation, final String field, final Collection<E> value, final Collection<E> acceptable) {
@@ -573,6 +589,25 @@ public abstract class AbstractVerification implements Verifiable {
                 }
             }
             if (containIllegalValue) {
+                addError(validation, field, "The field contains illegal values.");
+            }
+        }
+    }
+
+    /**
+     * The method takes a value, and verifies that it is neither null, nor
+     * containing illegal values.
+     *
+     * @param validation Map with Error information
+     * @param field      The name of the field (value) to be verified
+     * @param value      the Enum to verify
+     * @param acceptable Collection of allowed values
+     */
+    protected <E extends Enum<?>> void isNotNullAndContains(final Map<String, String> validation, final String field, final E value, final Collection<E> acceptable) {
+        isNotNull(validation, field, value);
+
+        if (value != null) {
+            if (!acceptable.contains(value)) {
                 addError(validation, field, "The field contains illegal values.");
             }
         }

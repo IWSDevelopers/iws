@@ -24,21 +24,21 @@ import java.util.Set;
  */
 public enum OfferType {
 
-    LIMITED("Limited", "L", EnumSet.of(ExchangeType.AC, ExchangeType.IW, ExchangeType.COBE)),
-    RESERVED("Reserved", "R", EnumSet.of(ExchangeType.AC, ExchangeType.IW)),
-    OPEN("Open", null, EnumSet.of(ExchangeType.AC, ExchangeType.IW, ExchangeType.COBE));
+    LIMITED("Limited", "-L", EnumSet.of(ExchangeType.AC, ExchangeType.IW, ExchangeType.COBE)),
+    RESERVED("Reserved", "-R", EnumSet.of(ExchangeType.AC, ExchangeType.IW)),
+    OPEN("Open", "", EnumSet.of(ExchangeType.AC, ExchangeType.IW, ExchangeType.COBE));
 
     // =========================================================================
     // Private Constructor & functionality
     // =========================================================================
 
     private final String description;
-    private final String letter;
+    private final String type;
     private final Set<ExchangeType> exchangeTypes;
 
-    OfferType(final String description, final String letter, final Set<ExchangeType> exchangeTypes) {
+    OfferType(final String description, final String type, final Set<ExchangeType> exchangeTypes) {
         this.description = description;
-        this.letter = letter;
+        this.type = type;
         this.exchangeTypes = exchangeTypes;
     }
 
@@ -46,8 +46,8 @@ public enum OfferType {
         return description;
     }
 
-    public String getLetter() {
-        return letter;
+    public String getType() {
+        return type;
     }
 
     public Set<ExchangeType> getExchangeTypes() {

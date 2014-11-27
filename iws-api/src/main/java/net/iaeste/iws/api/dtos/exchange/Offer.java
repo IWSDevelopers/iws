@@ -18,10 +18,12 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.exchange.IWSExchangeConstants;
 import net.iaeste.iws.api.enums.Currency;
 import net.iaeste.iws.api.enums.Language;
+import net.iaeste.iws.api.enums.exchange.ExchangeType;
 import net.iaeste.iws.api.enums.exchange.FieldOfStudy;
 import net.iaeste.iws.api.enums.exchange.LanguageLevel;
 import net.iaeste.iws.api.enums.exchange.LanguageOperator;
 import net.iaeste.iws.api.enums.exchange.OfferState;
+import net.iaeste.iws.api.enums.exchange.OfferType;
 import net.iaeste.iws.api.enums.exchange.PaymentFrequency;
 import net.iaeste.iws.api.enums.exchange.StudyLevel;
 import net.iaeste.iws.api.enums.exchange.TypeOfWork;
@@ -51,6 +53,8 @@ public final class Offer extends AbstractVerification {
 
     private String offerId = null;
     private String refNo = null;
+    private OfferType offerType = OfferType.OPEN;
+    private ExchangeType exchangeType = ExchangeType.IW;
 
     private String oldRefNo = null;
 
@@ -134,6 +138,8 @@ public final class Offer extends AbstractVerification {
         if (offer != null) {
             offerId = offer.offerId;
             refNo = offer.refNo;
+            offerType = offer.offerType;
+            exchangeType = offer.exchangeType;
             employer = new Employer(offer.employer);
             workDescription = offer.workDescription;
             weeklyHours = offer.weeklyHours;
@@ -222,6 +228,41 @@ public final class Offer extends AbstractVerification {
 
     public String getRefNo() {
         return refNo;
+    }
+
+    /**
+     * Returns the Printable or Displayable version of the Reference Number. This
+     * is the version of the Reference Number together with Type of Offer.
+     *
+     * @return Reference Number + Offer Type
+     */
+    public String printableRefNo() {
+        return refNo + offerType.getType();
+    }
+
+    /**
+     * Sets the Type of Offer, meaning if this Offer is either Reserved, Limited
+     * or Open. The type is closely linked together with the Reference Number
+     * @param offerType
+     * @throws IllegalArgumentException
+     */
+    public void setOfferType(final OfferType offerType) throws IllegalArgumentException {
+        ensureNotNull("offerType", offerType);
+        this.offerType = offerType;
+    }
+
+    public OfferType getOfferType() {
+        return offerType;
+    }
+
+    public void setExchangeType(final ExchangeType exchangeType) throws IllegalArgumentException {
+        ensureNotNull("offerType", offerType);
+        ensureNotNullAndContains("exchangeType", exchangeType, offerType.getExchangeTypes());
+        this.exchangeType = exchangeType;
+    }
+
+    public ExchangeType getExchangeType() {
+        return exchangeType;
     }
 
     /**
@@ -749,6 +790,16 @@ public final class Offer extends AbstractVerification {
         // These checks match those from the Database, remaining are implicit
         // filled by the IWS Logic as part of the processing of the Offer
         isNotNull(validation, "refNo", refNo);
+        isNotNull(validation, "offerType", offerType);
+        // The Exchange Type cannot be null and we also need to verify the
+        // content, however as it is dependent on the Offer Type, we must add
+        // a null check here
+        if (offerType != null) {
+            isNotNullAndContains(validation, "exchangeType", exchangeType, offerType.getExchangeTypes());
+        } else {
+            isNotNull(validation, "exchangeType", exchangeType);
+        }
+
         // We need to ensure that the Employer is verifiable also!
         isNotNullAndVerifiable(validation, "employer", employer);
         isNotNull(validation, "employer", employer);
@@ -797,10 +848,10 @@ public final class Offer extends AbstractVerification {
         if (employer != null ? !employer.equals(offer.employer) : offer.employer != null) {
             return false;
         }
-        if (fieldOfStudies != null ? !fieldOfStudies.equals(offer.fieldOfStudies) : offer.fieldOfStudies != null) {
+        if (exchangeType != offer.exchangeType) {
             return false;
         }
-        if (hidden != null ? !hidden.equals(offer.hidden) : offer.hidden != null) {
+        if (fieldOfStudies != null ? !fieldOfStudies.equals(offer.fieldOfStudies) : offer.fieldOfStudies != null) {
             return false;
         }
         if (language1 != offer.language1) {
@@ -866,6 +917,9 @@ public final class Offer extends AbstractVerification {
         if (offerId != null ? !offerId.equals(offer.offerId) : offer.offerId != null) {
             return false;
         }
+        if (offerType != offer.offerType) {
+            return false;
+        }
         if (oldRefNo != null ? !oldRefNo.equals(offer.oldRefNo) : offer.oldRefNo != null) {
             return false;
         }
@@ -917,7 +971,6 @@ public final class Offer extends AbstractVerification {
         if (weeklyWorkDays != null ? !weeklyWorkDays.equals(offer.weeklyWorkDays) : offer.weeklyWorkDays != null) {
             return false;
         }
-
         return !(workDescription != null ? !workDescription.equals(offer.workDescription) : offer.workDescription != null);
     }
 
@@ -930,6 +983,8 @@ public final class Offer extends AbstractVerification {
 
         result = IWSConstants.HASHCODE_MULTIPLIER * result + ((offerId != null) ? offerId.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (refNo != null ? refNo.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (offerType != null ? offerType.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (exchangeType != null ? exchangeType.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (oldRefNo != null ? oldRefNo.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (employer != null ? employer.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (workDescription != null ? workDescription.hashCode() : 0);
@@ -987,6 +1042,8 @@ public final class Offer extends AbstractVerification {
         return "Offer{" +
                 "offerId='" + offerId + '\'' +
                 ", refNo='" + refNo + '\'' +
+                ", offerType='" + offerType + '\'' +
+                ", exchangeType='" + exchangeType + '\'' +
                 ", oldRefNo='" + oldRefNo + '\'' +
                 ", employer=" + employer +
                 ", workDescription='" + workDescription + '\'' +

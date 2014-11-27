@@ -16,9 +16,11 @@ package net.iaeste.iws.persistence.views;
 
 import net.iaeste.iws.api.enums.Currency;
 import net.iaeste.iws.api.enums.Language;
+import net.iaeste.iws.api.enums.exchange.ExchangeType;
 import net.iaeste.iws.api.enums.exchange.LanguageLevel;
 import net.iaeste.iws.api.enums.exchange.LanguageOperator;
 import net.iaeste.iws.api.enums.exchange.OfferState;
+import net.iaeste.iws.api.enums.exchange.OfferType;
 import net.iaeste.iws.api.enums.exchange.PaymentFrequency;
 import net.iaeste.iws.api.enums.exchange.TypeOfWork;
 
@@ -47,6 +49,14 @@ public class EmbeddedOffer {
 
     @Column(name = "offer_old_ref_no", insertable = false, updatable = false)
     private String oldRefNo = null;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "offer_offer_type", insertable = false, updatable = false)
+    private OfferType offerType = null;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "offer_exchange_type", insertable = false, updatable = false)
+    private ExchangeType exchangeType = null;
 
     @Column(name = "offer_work_description", insertable = false, updatable = false)
     private String workDescription = null;
@@ -213,6 +223,22 @@ public class EmbeddedOffer {
 
     public String getRefNo() {
         return refNo;
+    }
+
+    public void setOfferType(final OfferType offerType) {
+        this.offerType = offerType;
+    }
+
+    public OfferType getOfferType() {
+        return offerType;
+    }
+
+    public void setExchangeType(final ExchangeType exchangeType) {
+        this.exchangeType = exchangeType;
+    }
+
+    public ExchangeType getExchangeType() {
+        return exchangeType;
     }
 
     public void setOldRefNo(final String oldRefNo) {

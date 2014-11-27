@@ -14,9 +14,11 @@ alter table groups add column monitoring_level varchar(10) default 'NONE';
 alter table groups add column private_list boolean;
 alter table groups add column public_list boolean;
 update groups set monitoring_level = 'NONE';
--- 0 = Admin; 2 = Member; 3 = International; 4 = National; 5 = Local; 6 = WorkGroup
-update groups set private_list = true where grouptype_id in (0, 2, 3,    5, 6);
-update groups set public_list  = true where grouptype_id in (0,    3, 4, 5, 6);
+-- 0 = Admin; 1 = Private; 2 = Member; 3 = International; 4 = National; 5 = Local; 6 = WorkGroup; 7 = Student
+update groups set private_list = false where grouptype_id in (   1,       4,       7);
+update groups set private_list = true  where grouptype_id in (0,    2, 3,    5, 6);
+update groups set public_list  = false where grouptype_id in (   1, 2,             7);
+update groups set public_list  = true  where grouptype_id in (0,       3, 4, 5, 6);
 alter table groups add constraint group_monitoring_level check (monitoring_level is not null);
 alter table groups add constraint group_private_list     check (private_list is not null);
 alter table groups add constraint group_public_list      check (public_list is not null);
@@ -27,6 +29,20 @@ alter table groups add constraint group_public_list      check (public_list is n
 update groups set grouptype_id = 0 where id = 3;
 
 -- =============================================================================
+-- Adding OfferType & ExchangeType to Offer, see Trac Task #930
+-- =============================================================================
+alter table offers add column offer_type varchar(10);
+alter table offers add column exchange_type varchar(10);
+update offers set offer_type = 'OPEN', exchange_type = 'COBE';
+update offers set offer_type = 'LIMITED' where ref_no like '%-L';
+update offers set offer_type = 'RESERVED' where ref_no like '%-R';
+alter table offers add constraint offer_notnull_offer_type    check (offer_type is not null);
+alter table offers add constraint offer_notnull_exchange_type check (exchange_type is not null);
+-- TODO update existing Offers, so the final letter is removed and offertype is set accordingly.
+-- TODO IAESTE Switzerland is the principal problem here, given that they have 25 conflicting refnos for 2015 alone!
+-- update offers set ref_no = substring(ref_no from 1 for 14);
+
+--  =============================================================================
 -- GroupType Corrections for mailing lists, required for our mail views, the
 -- information is not mapped with our ORM, as these settings are fixed.
 -- =============================================================================
@@ -528,3 +544,91 @@ drop view view_users;
 
 \ir ../15-base-views.sql
 \ir ../35-exchange-views.sql
+
+-- =============================================================================
+-- Following Views are added here as HyperSQL doesn't support them
+-- =============================================================================
+
+create view find_inactive_members as
+  select
+    u.id as user_id,
+    u.created::date as created,
+    u.username as username,
+    g.group_name as country
+  from
+    users u
+    left join user_to_group u2g on u.id = u2g.user_id
+    left join groups g on g.id = u2g.group_id
+  where u.status = 'NEW'
+    and g.grouptype_id = 2
+    and u.created < now() - interval '6 months'
+  order by u.created desc;
+
+create view find_active_sessions as
+  select
+    s.id          as session_id,
+    s.session_key as session_key,
+    s.user_id     as user_id,
+    u.username    as username,
+    u.firstname   as firstname,
+    u.lastname    as lastname,
+    s.deprecated  as deprecated,
+    s.modified    as last_access,
+    s.created     as session_start
+  from
+    sessions s,
+    users u
+  where u.id = s.user_id
+    and s.deprecated = '0'
+    and s.modified > now() - interval '12 hours'
+  order by last_access desc;
+
+create view find_inactive_sessions as
+  select
+    s.id          as session_id,
+    s.session_key as session_key,
+    s.user_id     as user_id,
+    u.username    as username,
+    u.firstname   as firstname,
+    u.lastname    as lastname,
+    s.deprecated  as deprecated,
+    s.modified    as last_access,
+    s.created     as session_start
+  from
+    sessions s,
+    users u
+  where u.id = s.user_id
+    and s.deprecated = '0'
+    and s.modified < now() - interval '12 hours'
+  order by last_access desc;
+
+-- =============================================================================
+-- List User Information
+-- =============================================================================
+create view view_users as
+  select
+    u.id                                                                              as id,
+    u.external_id                                                                     as external_id,
+    u.firstname                                                                       as firstname,
+    u.lastname                                                                        as lastname,
+    u.username                                                                        as username,
+    c.nationality                                                                     as nationality,
+    case when u.salt in ('undefined', 'heartbleed') then u.salt else 'defined' end    as password,
+    u.created::date                                                                   as created,
+    case when max(s.created) is null then 'never' else max(s.created)::date::text end as last_login
+  from
+    countries c,
+    persons p,
+    users u
+    left join sessions s on u.id = s.user_id
+  where p.id = u.person_id
+    and c.id = p.nationality
+  group by
+    u.id,
+    u.external_id,
+    u.firstname,
+    u.lastname,
+    u.username,
+    c.nationality,
+    u.salt,
+    u.created;

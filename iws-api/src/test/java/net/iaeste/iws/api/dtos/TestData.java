@@ -21,9 +21,11 @@ import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.enums.Currency;
 import net.iaeste.iws.api.enums.Language;
 import net.iaeste.iws.api.enums.Membership;
+import net.iaeste.iws.api.enums.exchange.ExchangeType;
 import net.iaeste.iws.api.enums.exchange.FieldOfStudy;
 import net.iaeste.iws.api.enums.exchange.LanguageLevel;
 import net.iaeste.iws.api.enums.exchange.LanguageOperator;
+import net.iaeste.iws.api.enums.exchange.OfferType;
 import net.iaeste.iws.api.enums.exchange.PaymentFrequency;
 import net.iaeste.iws.api.enums.exchange.Specialization;
 import net.iaeste.iws.api.enums.exchange.StudyLevel;
@@ -79,6 +81,8 @@ public final class TestData {
     // Default data for filling our test Offer Object. Lacking is the refNo,
     // which must be provided
     private static final Date INITIAL_DATE = new Date().plusDays(90);
+    public static final OfferType OFFER_TYPE = OfferType.OPEN;
+    public static final ExchangeType OFFER_EXCHANGE_TYPE = ExchangeType.COBE;
     public static final String OFFER_WORK_DESCRIPTION = "Work Description";
     public static final Float OFFER_WEEKLY_HOURS = 37.5f;
     public static final Float OFFER_DAILY_HOURS = 7.5f;
@@ -130,6 +134,8 @@ public final class TestData {
         final Offer offer = new Offer();
 
         offer.setRefNo(refNo);
+        offer.setOfferType(OFFER_TYPE);
+        offer.setExchangeType(OFFER_EXCHANGE_TYPE);
         offer.setEmployer(prepareEmployer(employerName, countryCode));
         offer.setWeeklyHours(OFFER_WEEKLY_HOURS);
         offer.setWorkDescription(OFFER_WORK_DESCRIPTION);

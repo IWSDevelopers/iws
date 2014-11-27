@@ -36,7 +36,9 @@ import net.iaeste.iws.api.dtos.exchange.Employer;
 import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.enums.FetchType;
 import net.iaeste.iws.api.enums.GroupType;
+import net.iaeste.iws.api.enums.exchange.ExchangeType;
 import net.iaeste.iws.api.enums.exchange.OfferState;
+import net.iaeste.iws.api.enums.exchange.OfferType;
 import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishedGroupsRequest;
@@ -153,6 +155,36 @@ public final class OfferTest extends AbstractTest {
         final Offer offerWithNS = fetchResponse.getOffers().get(0);
         assertThat(offerWithNS.getNsFirstname(), is("NS"));
         assertThat(offerWithNS.getNsLastname(), is("Poland"));
+    }
+
+    @Test
+    public void testChangingOfferAndExchangeType() {
+        final String refno = "PL-" + AbstractVerification.calculateExchangeYear() + "-00634743";
+        final Offer initialOffer = TestData.prepareFullOffer(refno, "Poland A/S", "PL");
+
+        // Save our offer.
+        final ProcessOfferRequest request = new ProcessOfferRequest(initialOffer);
+        final OfferResponse saveResponse = exchange.processOffer(token, request);
+        assertThat(saveResponse.isOk(), is(true));
+        assertThat(saveResponse.getOffer(), is(not(nullValue())));
+
+        // Now, let's update the Offer & Exchange Types
+        final Offer savedOffer = saveResponse.getOffer();
+        savedOffer.setOfferType(OfferType.RESERVED);
+        savedOffer.setExchangeType(ExchangeType.AC);
+        request.setOffer(savedOffer);
+        final OfferResponse updateResponse = exchange.processOffer(token, request);
+        assertThat(updateResponse.isOk(), is(true));
+
+        final Offer updatedOffer = updateResponse.getOffer();
+        assertThat(initialOffer.getOfferType(), is(TestData.OFFER_TYPE));
+        assertThat(updatedOffer.getOfferType(), is(not(TestData.OFFER_TYPE)));
+        assertThat(updatedOffer.getOfferType(), is(OfferType.RESERVED));
+        assertThat(initialOffer.getExchangeType(), is(TestData.OFFER_EXCHANGE_TYPE));
+        assertThat(updatedOffer.getExchangeType(), is(not(TestData.OFFER_EXCHANGE_TYPE)));
+        assertThat(updatedOffer.getExchangeType(), is(ExchangeType.AC));
+        assertThat(updatedOffer.getRefNo(), is(refno));
+        assertThat(updatedOffer.printableRefNo(), is(refno + OfferType.RESERVED.getType()));
     }
 
     @Test

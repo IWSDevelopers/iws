@@ -184,6 +184,8 @@ public final class EmbeddedConverter {
 
         result.setOfferId(embedded.getExternalId());
         result.setRefNo(embedded.getRefNo());
+        result.setOfferType(embedded.getOfferType());
+        result.setExchangeType(embedded.getExchangeType());
         result.setOldRefNo(embedded.getOldRefNo());
         result.setWorkDescription(embedded.getWorkDescription());
         result.setTypeOfWork(embedded.getTypeOfWork());

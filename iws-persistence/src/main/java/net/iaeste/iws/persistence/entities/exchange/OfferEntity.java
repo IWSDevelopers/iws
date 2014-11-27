@@ -17,9 +17,11 @@ package net.iaeste.iws.persistence.entities.exchange;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.Currency;
 import net.iaeste.iws.api.enums.Language;
+import net.iaeste.iws.api.enums.exchange.ExchangeType;
 import net.iaeste.iws.api.enums.exchange.LanguageLevel;
 import net.iaeste.iws.api.enums.exchange.LanguageOperator;
 import net.iaeste.iws.api.enums.exchange.OfferState;
+import net.iaeste.iws.api.enums.exchange.OfferType;
 import net.iaeste.iws.api.enums.exchange.PaymentFrequency;
 import net.iaeste.iws.api.enums.exchange.TypeOfWork;
 import net.iaeste.iws.persistence.monitoring.Monitored;
@@ -139,6 +141,16 @@ public class OfferEntity implements Externable<OfferEntity>, Notifiable {
      */
     @Column(name = "ref_no", length = 16, nullable = false, unique = true)
     private String refNo = null;
+
+    @Monitored(name="Offer type", level = MonitoringLevel.DETAILED)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "offer_type", length = 10, nullable = false)
+    private OfferType offerType;
+
+    @Monitored(name="Exchange type", level = MonitoringLevel.DETAILED)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "exchange_type", length = 10, nullable = false)
+    private ExchangeType exchangeType;
 
     /**
      * The IW3 database contained two reference numbers, System & Local RefNo.
@@ -396,6 +408,22 @@ public class OfferEntity implements Externable<OfferEntity>, Notifiable {
 
     public String getRefNo() {
         return refNo;
+    }
+
+    public void setOfferType(final OfferType offerType) {
+        this.offerType = offerType;
+    }
+
+    public OfferType getOfferType() {
+        return offerType;
+    }
+
+    public void setExchangeType(final ExchangeType exchangeType) {
+        this.exchangeType = exchangeType;
+    }
+
+    public ExchangeType getExchangeType() {
+        return exchangeType;
     }
 
     public void setOldRefno(final String oldRefno) {
@@ -805,6 +833,8 @@ public class OfferEntity implements Externable<OfferEntity>, Notifiable {
         if ((id != null) && (obj != null) && externalId.equals(obj.externalId)) {
             // Note, Id, ExternalId & refno are *not* allowed to be updated!
             // Also note, oldOfferId and oldRefNo are *not* allowed to be updated!
+            offerType = obj.offerType;
+            exchangeType = obj.exchangeType;
 
             // General Work Description
             workDescription = obj.workDescription;

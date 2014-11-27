@@ -67,6 +67,8 @@ public final class ExchangeTransformer {
 
             result.setExternalId(offer.getOfferId());
             result.setRefNo(offer.getRefNo());
+            result.setOfferType(offer.getOfferType());
+            result.setExchangeType(offer.getExchangeType());
             result.setEmployer(transform(offer.getEmployer()));
             result.setWorkDescription(offer.getWorkDescription());
             result.setWeeklyHours(offer.getWeeklyHours());
@@ -175,6 +177,8 @@ public final class ExchangeTransformer {
 
             result.setOfferId(entity.getExternalId());
             result.setRefNo(entity.getRefNo());
+            result.setOfferType(entity.getOfferType());
+            result.setExchangeType(entity.getExchangeType());
             result.setOldRefNo(entity.getOldRefno());
             result.setEmployer(transform(entity.getEmployer()));
             result.setWorkDescription(entity.getWorkDescription());

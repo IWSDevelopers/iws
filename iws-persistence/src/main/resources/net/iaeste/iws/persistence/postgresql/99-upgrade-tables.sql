@@ -38,9 +38,140 @@ update offers set offer_type = 'LIMITED' where ref_no like '%-L';
 update offers set offer_type = 'RESERVED' where ref_no like '%-R';
 alter table offers add constraint offer_notnull_offer_type    check (offer_type is not null);
 alter table offers add constraint offer_notnull_exchange_type check (exchange_type is not null);
--- TODO update existing Offers, so the final letter is removed and offertype is set accordingly.
--- TODO IAESTE Switzerland is the principal problem here, given that they have 25 conflicting refnos for 2015 alone!
--- update offers set ref_no = substring(ref_no from 1 for 14);
+
+--select ref_no from offers where ref_no like '%-C' or ref_no like '%-L' or ref_no like '%-R' order by ref_no asc;
+-- First the simple updates, will fix around 400
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no like 'AT-20%-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no like 'AU-20%-R';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no like 'BD-20%-L';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no like 'BR-20%-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no like 'CA-20%-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no like 'CA-20%-R';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no like 'ES-20%-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no like 'HK-20%-R';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no like 'IE-20%-L';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no like 'IN-20%-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no like 'IN-20%-L';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no like 'JO-20%-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no like 'NO-20%-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no like 'PS-20%-R';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no like 'SI-20%-R';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no like 'TH-20%-L';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no like 'UK-20%-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no like 'UK-20%-L';
+-- Updating individual offers causing problems
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2014-000006-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2014-000014-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2014-000033-R';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2014-000036-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2014-000057-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2014-000008-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2014-000061-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2014-000064-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2014-000070-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2014-000088-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2014-000095-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2014-000097-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2014-000100-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2014-000109-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2014-000115-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2014-000116-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2014-000122-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2014-000124-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2014-000125-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2014-000126-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2014-000128-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2014-000129-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2014-000130-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2014-000134-R';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2014-000135-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2014-000136-R';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2014-000137-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2014-000138-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2014-000139-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2014-000141-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2014-000142-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2014-000143-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2014-000144-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2014-000150-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2014-000151-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2014-000152-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2014-000153-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2014-000154-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2014-000161-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2014-000163-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2014-000165-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2014-000166-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2014-000210-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2014-000229-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2014-000241-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2014-XXXXXX-L';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2015-000200-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2015-000201-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2015-000202-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2015-000203-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2015-000207-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2015-000208-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2015-000210-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2015-000211-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2015-000212-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2015-000213-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2015-000214-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2015-000215-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2015-000216-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2015-000217-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2015-000218-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2015-000219-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2015-000220-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2015-000221-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2015-000224-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2015-000245-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2015-000250-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2015-000251-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CH-2015-000252-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'CZ-2014-000228-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'ES-2015-003200-L';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'ES-2015-005100-L';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'ES-2015-005101-L';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'ES-2015-007400-L';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'ES-2015-007401-L';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'IE-2014-0000CP-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'IE-2014-0000T1-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'IE-2014-000TAK-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'IE-2014-000ZT1-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'IE-2014-000ZT3-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'IE-2014-VMW005-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'IE-2015-CP0001-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'JP-2014-000002-R';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'JP-2014-00060A-L';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'SK-2014-BA1402-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'SK-2014-BA1404-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'SK-2014-BA1406-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'SK-2014-BA1416-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'SK-2014-KE1405-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'SK-2014-KE1410-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'SK-2014-KE1414-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'SK-2014-KE1416-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'SK-2014-ZA1403-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'SK-2014-ZA1405-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'SK-2014-ZA1406-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'SK-2014-ZA1407-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'SK-2014-ZA1410-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'SK-2014-ZA1411-C';
+update offers set ref_no = substring(ref_no from 1 for 14) where ref_no = 'SK-2014-ZA1414-C';
+-- Leaving the following offers as problems:
+-- select offer_ref_no as refno, offer_exchange_year as year, country_name as country from offer_view where offer_ref_no in ('CH-2014-000043-C', 'CH-2014-000133-R', 'CH-2014-000145-C', 'CH-2015-000230-L', 'CH-2015-000238-C', 'ES-2015-001100-L', 'IE-2014-000CP2-C', 'SK-2014-ZA1418-C');
+--       refno       | year |   country
+-- ------------------+------+-------------
+--  ES-2015-001100-L | 2015 | Spain
+--  SK-2014-ZA1418-C | 2014 | Slovakia
+--  IE-2014-000CP2-C | 2014 | Ireland
+--  CH-2014-000133-R | 2014 | Switzerland
+--  CH-2015-000230-L | 2015 | Switzerland
+--  CH-2014-000145-C | 2014 | Switzerland
+--  CH-2014-000043-C | 2014 | Switzerland
+--  CH-2015-000238-C | 2015 | Switzerland
+-- (8 rows)
 
 --  =============================================================================
 -- GroupType Corrections for mailing lists, required for our mail views, the

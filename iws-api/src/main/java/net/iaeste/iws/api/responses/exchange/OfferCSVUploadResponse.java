@@ -16,7 +16,7 @@ package net.iaeste.iws.api.responses.exchange;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
-import net.iaeste.iws.api.util.AbstractFallible;
+import net.iaeste.iws.api.responses.FallibleResponse;
 
 import java.util.Map;
 
@@ -25,7 +25,7 @@ import java.util.Map;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.1
  */
-public class OfferCSVUploadResponse extends AbstractFallible {
+public class OfferCSVUploadResponse extends FallibleResponse {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;

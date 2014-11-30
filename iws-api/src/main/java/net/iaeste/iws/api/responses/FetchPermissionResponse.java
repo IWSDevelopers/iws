@@ -21,7 +21,6 @@ import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.Role;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.Permission;
-import net.iaeste.iws.api.util.AbstractFallible;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
@@ -35,7 +34,7 @@ import java.util.Map;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
-public final class FetchPermissionResponse extends AbstractFallible {
+public final class FetchPermissionResponse extends FallibleResponse {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;

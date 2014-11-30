@@ -51,4 +51,11 @@ public interface Fallible extends Serializable {
      * @return Error message or null.
      */
     String getMessage();
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    String toString();
 }

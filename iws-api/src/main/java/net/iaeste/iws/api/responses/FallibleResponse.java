@@ -16,7 +16,11 @@ package net.iaeste.iws.api.responses;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
-import net.iaeste.iws.api.util.AbstractFallible;
+import net.iaeste.iws.api.constants.IWSErrors;
+import net.iaeste.iws.api.util.Fallible;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 
 /**
  * Default Response Object, for those methods, that only return the error
@@ -26,35 +30,62 @@ import net.iaeste.iws.api.util.AbstractFallible;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
-public final class FallibleResponse extends AbstractFallible {
+@XmlType(name = "FallibleResponse")
+public class FallibleResponse implements Fallible {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    // =========================================================================
-    // Object Constructors
-    // =========================================================================
+    /** IWS Error Object. */
+    @XmlElement(required = true, nillable = false)
+    private final IWSError error;
+
+    /** IWS Error Message. */
+    @XmlElement(required = true, nillable = false)
+    private final String message;
 
     /**
-     * Empty Constructor, to use if the setters are invoked. This is required
-     * for WebServices to work properly.
+     * Default Constructor.
      */
     public FallibleResponse() {
+        error = IWSErrors.SUCCESS;
+        message = IWSConstants.SUCCESS;
     }
 
     /**
-     * Error Constructor.
+     * Error Constructor, for all Result Objects.
      *
      * @param error    IWS Error Object
      * @param message  Error Message
      */
     public FallibleResponse(final IWSError error, final String message) {
-        super(error, message);
+        this.error = error;
+        this.message = message;
     }
 
-    // =========================================================================
-    // Standard Response Methods
-    // =========================================================================
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final boolean isOk() {
+        return IWSErrors.SUCCESS.getError() == error.getError();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final String getMessage() {
+        return message;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final IWSError getError() {
+        return error;
+    }
 
     /**
      * {@inheritDoc}
@@ -64,12 +95,17 @@ public final class FallibleResponse extends AbstractFallible {
         if (this == obj) {
             return true;
         }
-
         if (!(obj instanceof FallibleResponse)) {
             return false;
         }
 
-        return super.equals(obj);
+        final FallibleResponse that = (FallibleResponse) obj;
+
+        if ((error != null) ? !error.equals(that.error) : (that.error != null)) {
+            return false;
+        }
+
+        return !((message != null) ? !message.equals(that.message) : (that.message != null));
     }
 
     /**
@@ -77,7 +113,12 @@ public final class FallibleResponse extends AbstractFallible {
      */
     @Override
     public int hashCode() {
-        return super.hashCode();
+        int hash = IWSConstants.HASHCODE_INITIAL_VALUE;
+
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((error != null) ? error.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((message != null) ? message.hashCode() : 0);
+
+        return hash;
     }
 
     /**
@@ -85,6 +126,9 @@ public final class FallibleResponse extends AbstractFallible {
      */
     @Override
     public String toString() {
-        return "";
+        return "FallibleResponse{" +
+                "error=" + error +
+                ", message='" + message + '\'' +
+                '}';
     }
 }

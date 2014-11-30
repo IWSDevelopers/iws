@@ -14,10 +14,10 @@
  */
 package net.iaeste.iws.api.responses;
 
+import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
-import com.gargoylesoftware.base.testing.EqualsTester;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.constants.IWSErrors;
@@ -57,17 +57,18 @@ public final class FallibleResponseTest {
         final FallibleResponse same = new FallibleResponse(IWSErrors.FATAL, "fatal");
         final FallibleResponse diff = new FallibleResponse();
 
+        // Test Equality
+        assertThat(obj, is(same));
+        assertThat(obj, is(not(diff)));
+
         // Test Hashcodes
         assertThat(obj.hashCode(), is(-1592032781));
         assertThat(same.hashCode(), is(-1592032781));
         assertThat(diff.hashCode(), is(-1344310095));
 
         // Test ToString
-        assertThat(obj.toString(), is(""));
-        assertThat(same.toString(), is(""));
-        assertThat(diff.toString(), is(""));
-
-        // Test Equals
-        new EqualsTester(obj, same, diff, null);
+        assertThat(obj.toString(), is("FallibleResponse{error=IWSError[error=300,description=A fatal error occurred, which will prevent the IWS from working properly.], message='fatal'}"));
+        assertThat(same.toString(), is("FallibleResponse{error=IWSError[error=300,description=A fatal error occurred, which will prevent the IWS from working properly.], message='fatal'}"));
+        assertThat(diff.toString(), is("FallibleResponse{error=IWSError[error=0,description=Success.], message='OK'}"));
     }
 }

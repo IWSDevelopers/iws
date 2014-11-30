@@ -17,7 +17,7 @@ package net.iaeste.iws.api.responses.exchange;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.dtos.exchange.Offer;
-import net.iaeste.iws.api.util.AbstractFallible;
+import net.iaeste.iws.api.responses.FallibleResponse;
 
 import java.util.List;
 
@@ -26,7 +26,7 @@ import java.util.List;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
-public final class FetchOffersResponse extends AbstractFallible {
+public final class FetchOffersResponse extends FallibleResponse {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;

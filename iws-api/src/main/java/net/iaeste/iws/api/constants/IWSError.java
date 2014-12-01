@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.api.constants;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 import java.io.Serializable;
 
 /**
@@ -24,12 +26,25 @@ import java.io.Serializable;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
+@XmlType(name = "IWSError")
 public final class IWSError implements Serializable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
+
+    @XmlElement(required = true, nillable = false)
     private final int error;
+
+    @XmlElement(required = true, nillable = false)
     private final String description;
+
+    /**
+     * Empty Constructor, required for WebServices to work.
+     */
+    public IWSError() {
+        this.error = IWSErrors.SUCCESS.error;
+        this.description = IWSErrors.SUCCESS.description;
+    }
 
     /**
      * Default Constructor.

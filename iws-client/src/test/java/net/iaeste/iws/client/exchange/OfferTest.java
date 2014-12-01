@@ -80,8 +80,9 @@ import java.util.Set;
  */
 public final class OfferTest extends AbstractTest {
 
-    private static final String PL_YEAR = "PL-2014";
-    private static final String AT_YEAR = "AT-2014";
+    private static final int exchangeYear = AbstractVerification.calculateExchangeYear();
+    private static final String PL_YEAR = "PL-" + exchangeYear;
+    private static final String AT_YEAR = "AT-" + exchangeYear;
 
     private final Exchange exchange = new ExchangeClient();
     private AuthenticationToken austriaToken = null;
@@ -189,7 +190,7 @@ public final class OfferTest extends AbstractTest {
 
     @Test
     public void testDuplicateOffer() {
-        final String refno = "PL-2013-123ABC-R";
+        final String refno = "PL-" + exchangeYear + "-123ABC-R";
         final Offer offer = TestData.prepareFullOffer(refno, "Poland A/S", "PL");
         final Offer duplicate = TestData.prepareFullOffer(refno, "Poland A/S", "PL");
         final ProcessOfferRequest request = new ProcessOfferRequest();
@@ -213,7 +214,7 @@ public final class OfferTest extends AbstractTest {
 
     @Test
     public void testDuplicatingOffer() {
-        final Offer offer = TestData.prepareFullOffer("PL-2013-123457-C", "Poland A/S", "PL");
+        final Offer offer = TestData.prepareFullOffer("PL-" + exchangeYear + "-123457-C", "Poland A/S", "PL");
         final ProcessOfferRequest request = new ProcessOfferRequest();
 
         // Save our first offer.
@@ -225,7 +226,7 @@ public final class OfferTest extends AbstractTest {
 
         // Now, let's duplicate the Offer, and give it a new RefNo
         final Offer duplicate = initial.getOffer();
-        duplicate.setRefNo("PL-2013-123458-L");
+        duplicate.setRefNo("PL-" + exchangeYear + "-123458-L");
         duplicate.setOfferId(null);
         request.setOffer(duplicate);
         final OfferResponse duplication = exchange.processOffer(token, request);
@@ -238,7 +239,7 @@ public final class OfferTest extends AbstractTest {
      */
     @Test
     public void testUpdateExistingOffer() {
-        final Offer initialOffer = TestData.prepareFullOffer("PL-2013-654321-C", "Poland GmbH", "PL");
+        final Offer initialOffer = TestData.prepareFullOffer("PL-" + exchangeYear + "-654321-C", "Poland GmbH", "PL");
         final ProcessOfferRequest request = new ProcessOfferRequest();
         request.setOffer(initialOffer);
         final OfferResponse saveResponse = exchange.processOffer(token, request);
@@ -269,7 +270,7 @@ public final class OfferTest extends AbstractTest {
     public void testProcessOfferWithInvalidRefno() {
         final Offer minimalOffer = OfferTestUtility.getMinimalOffer();
         // We're logged in as Poland, so the Offer must start with "PL".
-        minimalOffer.setRefNo("GB-2012-000001");
+        minimalOffer.setRefNo("GB-" + exchangeYear + "-000001");
 
         final ProcessOfferRequest offerRequest = new ProcessOfferRequest(minimalOffer);
         final OfferResponse processResponse = exchange.processOffer(token, offerRequest);

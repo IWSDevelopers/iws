@@ -26,6 +26,7 @@ import net.iaeste.iws.api.enums.Language;
 import net.iaeste.iws.api.enums.exchange.FieldOfStudy;
 import net.iaeste.iws.api.enums.exchange.LanguageLevel;
 import net.iaeste.iws.api.enums.exchange.LanguageOperator;
+import net.iaeste.iws.api.enums.exchange.OfferType;
 import net.iaeste.iws.api.enums.exchange.PaymentFrequency;
 import net.iaeste.iws.api.enums.exchange.Specialization;
 import net.iaeste.iws.api.enums.exchange.StudyLevel;
@@ -122,6 +123,7 @@ public final class ExchangeTransformer {
             result = new Offer();
 
             result.setRefNo(record.get("Ref.No"));
+            result.setOfferType(CsvTransformer.toEnum(offerErrors, "OfferType", record.get("OfferType"), OfferType.class));
 
             //employer is read in separate way and is assigned afterwards
 //            result.setEmployer(employerFromCsv(record, offerErrors));

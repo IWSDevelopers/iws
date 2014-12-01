@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.core.services;
 
+import static net.iaeste.iws.api.util.AbstractVerification.calculateExchangeYear;
+import static net.iaeste.iws.common.utils.StringUtils.toUpper;
 import static net.iaeste.iws.core.transformers.ExchangeTransformer.transform;
 import static net.iaeste.iws.core.util.LogUtil.formatLogMessage;
 
@@ -145,13 +147,13 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
             // Before we can persist the Offer, we need to check that the refno
             // is valid. Since the Country is part of the Group, we can simply
             // compare the refno with that
-            verifyRefnoValidity(authentication, newEntity);
+            verifyRefnoValidity(newEntity);
 
             final OfferEntity existingEntity = dao.findOfferByRefNo(authentication, newEntity.getRefNo());
             if (existingEntity == null) {
                 // Create a new Offer
 
-                newEntity.setExchangeYear(calculateCurrentExchangeYear());
+                newEntity.setExchangeYear(calculateExchangeYear());
                 // Add the employer to the Offer
                 newEntity.setEmployer(employer);
                 // Set the Offer status to New
@@ -199,40 +201,49 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
         return new OfferResponse(offer);
     }
 
-    private static Integer calculateCurrentExchangeYear() {
-        final Date date = new Date();
-
-        return date.getCurrentYear() + (date.getCurrentMonth() >= Calendar.SEPTEMBER ? 1 : 0);
-    }
-
-    //TODO 2014-10-23 @Kim - I made the method public to be accessible from CSV service. Is it OK or should we move it to a shared place?
-    public static void verifyRefnoValidity(final Authentication authentication, final OfferEntity offer) {
+    /**
+     * The method is checking that a Reference Number is valid for a new Offer.
+     * This means that the Country Code is correct, and that the Exchange Year
+     * is also correct. If either is failing, then a Verification Exception is
+     * thrown.
+     *
+     * @param offer Offer to verify
+     * @throws VerificationException if the Reference Number is invalid
+     */
+    public static void verifyRefnoValidity(final OfferEntity offer) throws ExchangeException {
         final String countryCode = offer.getEmployer().getGroup().getCountry().getCountryCode();
         final String refno = offer.getRefNo();
+        final String[] parts = toUpper(refno).split("-");
 
-        if (!refno.startsWith(countryCode)) {
-            throw new VerificationException("The reference number is not valid for this country. Received '" + refno.substring(0, 2) + "' but expected '" + countryCode + "'.");
+        // First, we're checking that the CountryCode is correct. Since we've
+        // splitted the Reference Number into at least 3 parts ("-" is allowed
+        // in the running number part), we can just look at the first one.
+        if (!countryCode.equals(parts[0])) {
+            throw new VerificationException("The reference number is not valid for this country. Received '" + parts[0] + "' but expected '" + countryCode + "'.");
         }
 
+        // Now, we're running two checks, one for the current year and one for
+        // the next Exchange Year. Some countries may start adding Offers for
+        // the following Exchange Year before the fixed change date. So for all
+        // Offers created prior to September 1st, we're allowing both this and
+        // next year. But all offers created after September 1st, it must be the
+        // new Exchange Year.
         final Date today = new Date();
-        final int year = today.getCurrentYear();
-        final int month = today.getCurrentMonth();
-        if (month >= Calendar.SEPTEMBER) {
-            // According to Trac task #372, refno's must be set to the following
-            // year, after September
-            if (!refno.startsWith(countryCode + '-' + (year + 1))) {
-                final String newRefno = refno.replaceFirst("[A-Z]{2}-\\d{4}", countryCode + '-' + (year + 1));
-                log.info(formatLogMessage(authentication, "The refno '%s' is invalid, have replaced it with '%s'.", refno, newRefno));
-                offer.setRefNo(newRefno);
+        final int currentYear = today.getCurrentYear();
+        final int exchangeYear = calculateExchangeYear();
+        final int foundYear = Integer.valueOf(parts[1]);
+
+        if (today.getCurrentMonth() >= Calendar.SEPTEMBER) {
+            // We're looking at offers after the Exchange Year change, so we
+            // only allow this.
+            if (foundYear != exchangeYear) {
+                throw new VerificationException("The Exchange Year for the Reference Number '" + refno + "' is invalid, expected is " + exchangeYear + '.');
             }
         } else {
-            // Let's add a check, which will allow both this and next year. As
-            // we do not know when countries may start to prepare Offers for
-            // next year
-            if (!refno.startsWith(countryCode + '-' + year) && !refno.startsWith(countryCode + '-' + (year + 1))) {
-                final String newRefno = refno.replaceFirst("[A-Z]{2}-\\d{4}", countryCode + '-' + year);
-                log.info(formatLogMessage(authentication, "The refno '%s' is invalid, have replaced it with '%s'.", refno, newRefno));
-                offer.setRefNo(newRefno);
+            // Prior to September 1st, we're allowing both the current and next
+            // year.
+            if (foundYear != currentYear || foundYear != exchangeYear) {
+                throw new VerificationException("The Exchange Year for the Reference Number '" + refno + "- is invalid, expected is " + currentYear + " or " + exchangeYear + '.');
             }
         }
     }

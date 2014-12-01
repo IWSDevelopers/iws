@@ -404,6 +404,7 @@ public final class ViewTransformer {
         final String exportedRefNo = embeddedOffer.getOldRefNo() != null ? embeddedOffer.getOldRefNo() : embeddedOffer.getRefNo();
 
         result.add(exportedRefNo);
+        result.add(embeddedOffer.getOfferType());
         result.add(embeddedOffer.getNominationDeadline() != null ? IWSConstants.FORMATTER.format(embeddedOffer.getNominationDeadline()) : "");
         result.add(embeddedOffer.getPrivateComment());
         result.add(embeddedEmployer.getName());

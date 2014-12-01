@@ -175,7 +175,7 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
         try {
             return CSVFormat.RFC4180.withDelimiter(delimiter)
                     .withHeader()
-                            //.withNullString("")
+                  //.withNullString("")
                     .parse(input);
         } catch (IOException e) {
             throw new IWSException(IWSErrors.PROCESSING_FAILURE, "Creating CSVPrinter failed", e);
@@ -282,7 +282,7 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
 
                     newEntity.setEmployer(employer);
 
-                    ExchangeService.verifyRefnoValidity(authentication, newEntity);
+                    ExchangeService.verifyRefnoValidity(newEntity);
 
                     newEntity.setExchangeYear(AbstractVerification.calculateExchangeYear());
                     // Add the employer to the Offer
@@ -350,6 +350,7 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
     private List<String> createFirstRow() {
         final List<String> result = new ArrayList<>();
         result.add("Ref.No");
+        result.add("OfferType");
         result.add("Deadline");
         result.add("Comment");
         result.add("Employer");

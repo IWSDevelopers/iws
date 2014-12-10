@@ -24,9 +24,9 @@ import java.util.Set;
  */
 public enum OfferType {
 
+    OPEN("Open", "", EnumSet.of(ExchangeType.AC, ExchangeType.IW, ExchangeType.COBE)),
     LIMITED("Limited", "-L", EnumSet.of(ExchangeType.AC, ExchangeType.IW, ExchangeType.COBE)),
-    RESERVED("Reserved", "-R", EnumSet.of(ExchangeType.AC, ExchangeType.IW)),
-    OPEN("Open", "", EnumSet.of(ExchangeType.AC, ExchangeType.IW, ExchangeType.COBE));
+    RESERVED("Reserved", "-R", EnumSet.of(ExchangeType.AC, ExchangeType.IW));
 
     // =========================================================================
     // Private Constructor & functionality

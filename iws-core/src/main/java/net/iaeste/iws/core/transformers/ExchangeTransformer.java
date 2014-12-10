@@ -23,6 +23,7 @@ import net.iaeste.iws.api.dtos.exchange.Student;
 import net.iaeste.iws.api.dtos.exchange.StudentApplication;
 import net.iaeste.iws.api.enums.Currency;
 import net.iaeste.iws.api.enums.Language;
+import net.iaeste.iws.api.enums.exchange.ExchangeType;
 import net.iaeste.iws.api.enums.exchange.FieldOfStudy;
 import net.iaeste.iws.api.enums.exchange.LanguageLevel;
 import net.iaeste.iws.api.enums.exchange.LanguageOperator;
@@ -124,6 +125,7 @@ public final class ExchangeTransformer {
 
             result.setRefNo(record.get("Ref.No"));
             result.setOfferType(CsvTransformer.toEnum(offerErrors, "OfferType", record.get("OfferType"), OfferType.class));
+            result.setExchangeType(CsvTransformer.toEnum(offerErrors, "ExchangeType", record.get("ExchangeType"), ExchangeType.class));
 
             //employer is read in separate way and is assigned afterwards
 //            result.setEmployer(employerFromCsv(record, offerErrors));

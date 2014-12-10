@@ -92,11 +92,11 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
         final char fieldDelimiter = request.getDelimiter() != null ? request.getDelimiter().getDescription() : DELIMITER;
 
         try (ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(request.getData());
-             Reader reader = new InputStreamReader(byteArrayInputStream);
+             Reader reader = new InputStreamReader(byteArrayInputStream, IWSConstants.DEFAULT_ENCODING);
              CSVParser parser = getDefaultCsvParser(reader, fieldDelimiter)) {
             Map<String, Integer> headersMap = parser.getHeaderMap();
             Set<String> headers = headersMap.keySet();
-            Set<String> expectedHeaders = new HashSet<>(createFirstRow());
+            Set<String> expectedHeaders = new HashSet<>(createDomesticFirstRow());
             if (expectedHeaders.equals(headers)) {
                 for (final CSVRecord record : parser.getRecords()) {
                     process(processingResult, errors, authentication, record);
@@ -198,7 +198,7 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
              BufferedWriter writer = new BufferedWriter(streamWriter)) {
 
             CSVPrinter printer = getDefaultCsvPrinter(writer);
-            printer.printRecord(createFirstRow());
+            printer.printRecord(createForeignFirstRow());
 
             for (final SharedOfferView offer : offers) {
                 printer.printRecord(ViewTransformer.transformToStringList(offer));
@@ -219,7 +219,7 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
              BufferedWriter writer = new BufferedWriter(streamWriter)) {
 
             CSVPrinter printer = getDefaultCsvPrinter(writer);
-            printer.printRecord(createFirstRow());
+            printer.printRecord(createDomesticFirstRow());
 
             for (final OfferView offer : offers) {
                 printer.printRecord(ViewTransformer.transformToStringList(offer));
@@ -236,9 +236,9 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
 
     private void process(final Map<String, OfferCSVUploadResponse.ProcessingResult> processingResult, final Map<String, Map<String, String>> errors, final Authentication authentication, final CSVRecord record) {
         String refNo = "";
+        final Map<String, String> conversionErrors = new HashMap<>(0);
         try {
             refNo = record.get("Ref.No");
-            final Map<String, String> conversionErrors = new HashMap<>(0);
             final Offer csvOffer = ExchangeTransformer.offerFromCsv(record, conversionErrors);
             final Employer csvEmployer= ExchangeTransformer.employerFromCsv(record, conversionErrors);
             final Address csvAddress = CommonTransformer.addressFromCsv(record);
@@ -305,6 +305,9 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
             } else {
                 final Map<String, String> generalError = new HashMap<>(1);
                 generalError.put("general", e.getMessage());
+                if (!conversionErrors.isEmpty()) {
+                    generalError.putAll(conversionErrors);
+                }
                 errors.put(refNo, generalError);
             }
         }
@@ -347,10 +350,9 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
         return result;
     }
 
-    private List<String> createFirstRow() {
+    private List<String> createForeignFirstRow() {
         final List<String> result = new ArrayList<>();
         result.add("Ref.No");
-        result.add("OfferType");
         result.add("Deadline");
         result.add("Comment");
         result.add("Employer");
@@ -419,6 +421,79 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
         result.add("Last modified");
         result.add("NS First Name");
         result.add("NS Last Name");
+
+        return result;
+    }
+
+    private List<String> createDomesticFirstRow() {
+        final List<String> result = new ArrayList<>();
+        result.add("Ref.No");
+        result.add("OfferType");
+        result.add("ExchangeType");
+        result.add("Deadline");
+        result.add("Comment");
+        result.add("Employer");
+        result.add("Street1");
+        result.add("Street2");
+        result.add("PostBox");
+        result.add("PostalCode");
+        result.add("City");
+        result.add("State");
+        result.add("Country");
+        result.add("Website");
+        result.add("Workplace");
+        result.add("Business");
+        result.add("Responsible");
+        result.add("Airport");
+        result.add("Transport");
+        result.add("Employees");
+        result.add("HoursWeekly");
+        result.add("HoursDaily");
+        result.add("Canteen");
+        result.add("Faculty");
+        result.add("Specialization");
+        result.add("TrainingRequired");
+        result.add("OtherRequirements");
+        result.add("Workkind");
+        result.add("WeeksMin");
+        result.add("WeeksMax");
+        result.add("From");
+        result.add("To");
+        result.add("StudyCompleted_Beginning");
+        result.add("StudyCompleted_Middle");
+        result.add("StudyCompleted_End");
+        result.add("WorkType_P");
+        result.add("WorkType_R");
+        result.add("WorkType_W");
+        result.add("WorkType_N");
+        result.add("Language1");
+        result.add("Language1Level");
+        result.add("Language1Or");
+        result.add("Language2");
+        result.add("Language2Level");
+        result.add("Language2Or");
+        result.add("Language3");
+        result.add("Language3Level");
+        result.add("Currency");
+        result.add("Payment");
+        result.add("PaymentFrequency");
+        result.add("Deduction");
+        result.add("Lodging");
+        result.add("LodgingCost");
+        result.add("LodgingCostFrequency");
+        result.add("LivingCost");
+        result.add("LivingCostFrequency");
+        result.add("NoHardCopies");
+        result.add("Status");
+
+        result.add("Period2_From");
+        result.add("Period2_To");
+        result.add("Holidays_From");
+        result.add("Holidays_To");
+
+        result.add("Additional_Info");
+
+        result.add("Shared");
 
         return result;
     }

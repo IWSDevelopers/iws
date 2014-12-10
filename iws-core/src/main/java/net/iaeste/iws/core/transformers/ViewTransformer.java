@@ -355,7 +355,7 @@ public final class ViewTransformer {
         result.add(embeddedOffer.getLanguage3() != null ? embeddedOffer.getLanguage3().getDescription() : null);
         result.add(embeddedOffer.getLanguage3Level() != null ? embeddedOffer.getLanguage3Level().getDescription() : null);
 
-        result.add(embeddedCountry.getCurrency() != null ? embeddedCountry.getCurrency().getDescription() : null);
+        result.add(embeddedCountry.getCurrency()); //we want to keep abbreviation, not full description
         result.add(embeddedOffer.getPayment());
         result.add(embeddedOffer.getPaymentFrequency() != null ? embeddedOffer.getPaymentFrequency().getDescription() : null);
         result.add(embeddedOffer.getDeduction());
@@ -405,6 +405,7 @@ public final class ViewTransformer {
 
         result.add(exportedRefNo);
         result.add(embeddedOffer.getOfferType());
+        result.add(embeddedOffer.getExchangeType());
         result.add(embeddedOffer.getNominationDeadline() != null ? IWSConstants.FORMATTER.format(embeddedOffer.getNominationDeadline()) : "");
         result.add(embeddedOffer.getPrivateComment());
         result.add(embeddedEmployer.getName());

@@ -4,9 +4,11 @@
 # Glassfish Control Script
 # -----------------------------------------------------------------------------
 # History:
-#   Version 1.01 - 2014-10-28, Kim Jensen <Kim.Jensen@secunet.com>
+#   Version 1.02 - 2014-12-12, Kim Jensen <Kim.jensen@dawn.dk>
+#     o Added another kill command to the stop function
+#   Version 1.01 - 2014-10-28, Kim Jensen <Kim.Jensen@dawn.dk>
 #     o Extended Status with Memory & Thread information
-#   Version 1.00 - 2014-10-25, Kim Jensen <Kim.Jensen@secunet.com>
+#   Version 1.00 - 2014-10-25, Kim Jensen <Kim.Jensen@dawn.dk>
 #     o Initial version
 # -----------------------------------------------------------------------------
 # Methods:
@@ -28,6 +30,7 @@
 readonly appDirectory="/opt/java/glassfish3"
 export GLASSFISH_HOME=${appDirectory}
 readonly GlassfishPort=4848
+readonly GlassfishIPv6Port=3820
 readonly GlassfishDebugPort=9009
 readonly domain="domain1"
 readonly instance="${appDirectory}/glassfish/domains/${domain}"
@@ -130,6 +133,7 @@ doStop () {
         echo "Stopping Glassfish ..."
 
         netstat -pant 2>/dev/null | grep ${GlassfishPort} | grep java | awk '{print $7;}' | cut -d'/' -f1 | xargs kill -15 2>&1 >>${serverLog}
+        netstat -pant 2>/dev/null | grep ${GlassfishIPv6Port} | grep java | awk '{print $7;}' | cut -d'/' -f1 | xargs kill -15 2>&1 >>${serverLog}
         # If the debugging is running, the process may not be killed by the above command
         netstat -pant 2>/dev/null | grep ${GlassfishDebugPort} | grep java | awk '{print $7;}' | cut -d'/' -f1 | xargs kill -15 2>&1 >>${serverLog}
         pgrep glassfish | xargs kill -15 2>&1 >/dev/null

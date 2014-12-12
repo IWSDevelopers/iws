@@ -145,6 +145,8 @@ public interface IWSErrors {
 
     IWSError CANNOT_DELETE_OFFER = new IWSError(701, "Shared Offers cannot be deleted.");
 
+    IWSError CANNOT_PROCESS_SHARED_OFFER = new IWSError(702, "Shared Offers cannot be updated.");
+
     IWSError PDF_ERROR = new IWSError(990, "PDF Generator Error.");
 
     /**

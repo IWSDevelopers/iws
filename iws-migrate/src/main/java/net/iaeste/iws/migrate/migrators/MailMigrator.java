@@ -18,6 +18,7 @@ import static net.iaeste.iws.common.utils.StringUtils.toLower;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.GroupStatus;
+import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.migrate.daos.IWSDao;
 import net.iaeste.iws.migrate.daos.MailDao;
 import net.iaeste.iws.migrate.entities.IW3UsersEntity;
@@ -157,27 +158,14 @@ public class MailMigrator implements Migrator<IW3UsersEntity> {
             } else if (group.getListName() == null) {
                 log.info("Skipping Mailinglist for {} (id: {}), as it is invalid.", group.getGroupName(), group.getId());
             } else {
-                switch (group.getGroupType().getGrouptype()) {
-                    case PRIVATE: // Covered by aliases
-                    case STUDENT: // Schema for Students is unclear
-                        skipped++;
-                        break;
-                    case MEMBER:
-                    case LOCAL:
-                    case WORKGROUP:
-                        createMailinglist(group, true);
-                        persisted++;
-                        break;
-                    case ADMINISTRATION:
-                    case INTERNATIONAL:
-                        createMailinglist(group, false);
-                        createMailinglist(group, true);
-                        persisted += 2;
-                        break;
-                    case NATIONAL:
-                        createMailinglist(group, false);
-                        persisted++;
-                        break;
+                final GroupType type = group.getGroupType().getGrouptype();
+                if (group.getPrivateList() && type.getMayHavePrivateMailinglist()) {
+                    createMailinglist(group, true);
+                    persisted++;
+                }
+                if (group.getPublicList() && type.getMayHavePublicMailinglist()) {
+                    createMailinglist(group, false);
+                    persisted++;
                 }
             }
         }

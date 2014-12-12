@@ -169,9 +169,14 @@ public class CommonService<T extends BasicDao> {
 
     protected GroupEntity createAndPersistPrivateGroup(final UserEntity user) {
         final GroupEntity group = new GroupEntity();
+        final GroupType type = GroupType.PRIVATE;
 
         group.setGroupName(user.getFirstname() + ' ' + user.getLastname());
-        group.setGroupType(dao.findGroupType(GroupType.PRIVATE));
+        group.setGroupType(dao.findGroupType(type));
+        // As we have Unique Constraints on the List Types, we also have to
+        // set them accordingly
+        group.setPrivateList(type.getMayHavePrivateMailinglist());
+        group.setPublicList(type.getMayHavePublicMailinglist());
         dao.persist(group);
 
         return group;

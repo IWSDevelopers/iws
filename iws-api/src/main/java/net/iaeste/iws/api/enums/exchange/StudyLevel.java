@@ -23,7 +23,7 @@ public enum StudyLevel {
 
     B("Begin (1-3 semesters)"),
     M("Middle (4-6 semesters)"),
-    E("End (7 and more semesters)");
+    E("End (7 and or semesters)");
 
     // ========================================================================
     // Private Constructor & functionality

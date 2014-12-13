@@ -39,7 +39,7 @@ public enum StudyCompleted {
     BEGINNING_MIDDLE,
 
     /**
-     * End (7 and more semesters)
+     * End (7 or more semesters)
      */
     END,
 

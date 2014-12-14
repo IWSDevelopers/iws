@@ -14,6 +14,13 @@
  */
 package net.iaeste.iws.core.transformers;
 
+import static net.iaeste.iws.api.enums.exchange.OfferFields.CITY;
+import static net.iaeste.iws.api.enums.exchange.OfferFields.POSTAL_CODE;
+import static net.iaeste.iws.api.enums.exchange.OfferFields.POST_BOX;
+import static net.iaeste.iws.api.enums.exchange.OfferFields.STATE;
+import static net.iaeste.iws.api.enums.exchange.OfferFields.STREET_1;
+import static net.iaeste.iws.api.enums.exchange.OfferFields.STREET_2;
+
 import net.iaeste.iws.api.dtos.Address;
 import net.iaeste.iws.api.dtos.Country;
 import net.iaeste.iws.api.dtos.Group;
@@ -155,14 +162,14 @@ public final class CommonTransformer {
         if (record != null) {
             address = new Address();
 
-            address.setStreet1(record.get("Street1"));
-            address.setStreet2(record.get("Street2"));
-            address.setPostalCode(record.get("PostalCode"));
-            address.setCity(record.get("City"));
-            address.setState(record.get("State"));
-            address.setPobox(record.get("PostBox"));
+            address.setStreet1(record.get(STREET_1.getField()));
+            address.setStreet2(record.get(STREET_2.getField()));
+            address.setPostalCode(record.get(POSTAL_CODE.getField()));
+            address.setCity(record.get(CITY.getField()));
+            address.setState(record.get(STATE.getField()));
+            address.setPobox(record.get(POST_BOX.getField()));
             //following causes exception because there are not all required fields in CSV file
-//            address.setCountry(countryFromCsv(record));
+            //address.setCountry(countryFromCsv(record));
         }
 
         return address;

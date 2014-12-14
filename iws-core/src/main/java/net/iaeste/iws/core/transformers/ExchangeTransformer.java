@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.core.transformers;
 
+import static net.iaeste.iws.api.enums.exchange.OfferFields.*;
+
 import net.iaeste.iws.api.dtos.File;
 import net.iaeste.iws.api.dtos.exchange.Employer;
 import net.iaeste.iws.api.dtos.exchange.Offer;
@@ -123,51 +125,53 @@ public final class ExchangeTransformer {
         if (record != null) {
             result = new Offer();
 
-            result.setRefNo(record.get("Ref.No"));
-            result.setOfferType(CsvTransformer.toEnum(offerErrors, "OfferType", record.get("OfferType"), OfferType.class));
-            result.setExchangeType(CsvTransformer.toEnum(offerErrors, "ExchangeType", record.get("ExchangeType"), ExchangeType.class));
+            result.setRefNo(record.get(REFNO.getField()));
+            result.setOfferType(CsvTransformer.toEnum(offerErrors, record, OFFER_TYPE, OfferType.class));
+            result.setExchangeType(CsvTransformer.toEnum(offerErrors, record, EXCHANGE_TYPE, ExchangeType.class));
 
             //employer is read in separate way and is assigned afterwards
-//            result.setEmployer(employerFromCsv(record, offerErrors));
+            //result.setEmployer(employerFromCsv(record, offerErrors));
 
             result.setWorkDescription(record.get("Workkind"));
-            result.setWeeklyHours(CsvTransformer.toFloat(offerErrors, "HoursWeekly", record.get("HoursWeekly")));
-            result.setDailyHours(CsvTransformer.toFloat(offerErrors, "HoursDaily", record.get("HoursDaily")));
-//            result.setWeeklyWorkDays(record.getWeeklyWorkDays()); //not existing in CSV?
-            result.setTypeOfWork(CsvTransformer.toTypeOfWork(offerErrors, "WorkType", record.get("WorkType_P"), record.get("WorkType_R"), record.get("WorkType_W"), record.get("WorkType_N")));
-            result.setStudyLevels(CsvTransformer.toStudyLevels(offerErrors, "StudyCompleted_*", record.get("StudyCompleted_Beginning"), record.get("StudyCompleted_Middle"), record.get("StudyCompleted_End")));
-            result.setFieldOfStudies(CsvTransformer.toEnumSet(offerErrors, "Faculty", record.get("Faculty"), FieldOfStudy.class));
-            result.setSpecializations(CsvTransformer.toStringSet(offerErrors, "Specialization", record.get("Specialization")));
-            result.setPreviousTrainingRequired(CsvTransformer.toBoolean(offerErrors, "TrainingRequired", record.get("TrainingRequired")));
-            result.setOtherRequirements(record.get("OtherRequirements"));
-            result.setMinimumWeeks(CsvTransformer.toInteger(offerErrors, "WeeksMin", record.get("WeeksMin")));
-            result.setMaximumWeeks(CsvTransformer.toInteger(offerErrors, "WeeksMax", record.get("WeeksMax")));
+            result.setWeeklyHours(CsvTransformer.toFloat(offerErrors, record, HOURS_WEEKLY));
+            result.setDailyHours(CsvTransformer.toFloat(offerErrors, record, HOURS_DAILY));
+            //not existing in CSV?
+            //result.setWeeklyWorkDays(record.getWeeklyWorkDays());
+            result.setTypeOfWork(CsvTransformer.toTypeOfWork(offerErrors, "WorkType", record.get(WORK_TYPE_P.getField()), record.get(WORK_TYPE_R.getField()), record.get(WORK_TYPE_W.getField()), record.get(WORK_TYPE_N.getField())));
+            result.setStudyLevels(CsvTransformer.toStudyLevels(offerErrors, "StudyCompleted_*", record.get(STUDY_COMPLETED_BEGINNING.getField()), record.get(STUDY_COMPLETED_MIDDLE.getField()), record.get(STUDY_COMPLETED_END.getField())));
+            result.setFieldOfStudies(CsvTransformer.toEnumSet(offerErrors, record, FACULTY, FieldOfStudy.class));
+            result.setSpecializations(CsvTransformer.toStringSet(offerErrors, record, SPECIALIZATION));
+            result.setPreviousTrainingRequired(CsvTransformer.toBoolean(offerErrors, record, TRAINING_REQUIRED));
+            result.setOtherRequirements(record.get(OTHER_REQUIREMENTS.getField()));
+            result.setMinimumWeeks(CsvTransformer.toInteger(offerErrors, record, WEEKS_MIN));
+            result.setMaximumWeeks(CsvTransformer.toInteger(offerErrors, record, WEEKS_MAX));
 
-            result.setPeriod1(CsvTransformer.toDatePeriod(offerErrors, "From/To", record.get("From"), record.get("To")));
-            result.setPeriod2(CsvTransformer.toDatePeriod(offerErrors, "Period2_From/Period2_To", record.get("Period2_From"), record.get("Period2_From")));
-            result.setUnavailable(CsvTransformer.toDatePeriod(offerErrors, "Holidays_From/Holidays_To", record.get("Holidays_From"), record.get("Holidays_To")));
-            result.setLanguage1(CsvTransformer.toEnum(offerErrors, "Language1", record.get("Language1"), Language.class));
-            result.setLanguage1Level(CsvTransformer.toEnum(offerErrors, "Language1Level", record.get("Language1Level"), LanguageLevel.class));
-            result.setLanguage1Operator(CsvTransformer.toEnum(offerErrors, "Language1Or", record.get("Language1Or"), LanguageOperator.class));
-            result.setLanguage2(CsvTransformer.toEnum(offerErrors, "Language2", record.get("Language2"), Language.class));
-            result.setLanguage2Level(CsvTransformer.toEnum(offerErrors, "Language2Level", record.get("Language2Level"), LanguageLevel.class));
-            result.setLanguage2Operator(CsvTransformer.toEnum(offerErrors, "Language2Or", record.get("Language2Or"), LanguageOperator.class));
-            result.setLanguage3(CsvTransformer.toEnum(offerErrors, "Language3", record.get("Language3"), Language.class));
-            result.setLanguage3Level(CsvTransformer.toEnum(offerErrors, "Language3Level", record.get("Language3Level"), LanguageLevel.class));
-            result.setPayment(CsvTransformer.toBigDecimal(offerErrors, "Payment", record.get("Payment")));
-            result.setPaymentFrequency(CsvTransformer.toEnum(offerErrors, "PaymentFrequency", record.get("PaymentFrequency"), PaymentFrequency.class));
-            result.setCurrency(CsvTransformer.toEnum(offerErrors, "Currency", record.get("Currency"), Currency.class));
-            result.setDeduction(record.get("Deduction"));
-            result.setLivingCost(CsvTransformer.toBigDecimal(offerErrors, "LivingCost", record.get("LivingCost")));
-            result.setLivingCostFrequency(CsvTransformer.toEnum(offerErrors, "LivingCostFrequency", record.get("LivingCostFrequency"), PaymentFrequency.class));
-            result.setLodgingBy(record.get("Lodging"));
-            result.setLodgingCost(CsvTransformer.toBigDecimal(offerErrors, "LodgingCost", record.get("LodgingCost")));
-            result.setLodgingCostFrequency(CsvTransformer.toEnum(offerErrors, "LodgingCostFrequency", record.get("LodgingCostFrequency"), PaymentFrequency.class));
-            result.setAdditionalInformation(record.get("Additional_Info"));
-            result.setPrivateComment(record.get("Comment"));
+            result.setPeriod1(CsvTransformer.toDatePeriod(offerErrors, record, FROM, TO));
+            result.setPeriod2(CsvTransformer.toDatePeriod(offerErrors, record, PERIOD_2_FROM, PERIOD_2_TO));
+            result.setUnavailable(CsvTransformer.toDatePeriod(offerErrors, record, HOLIDAYS_FROM, HOLIDAYS_TO));
+            result.setLanguage1(CsvTransformer.toEnum(offerErrors, record, LANGUAGE_1, Language.class));
+            result.setLanguage1Level(CsvTransformer.toEnum(offerErrors, record, LANGUAGE_1_LEVEL, LanguageLevel.class));
+            result.setLanguage1Operator(CsvTransformer.toEnum(offerErrors, record, LANGUAGE_1_OR, LanguageOperator.class));
+            result.setLanguage2(CsvTransformer.toEnum(offerErrors, record, LANGUAGE_2, Language.class));
+            result.setLanguage2Level(CsvTransformer.toEnum(offerErrors, record, LANGUAGE_2_LEVEL, LanguageLevel.class));
+            result.setLanguage2Operator(CsvTransformer.toEnum(offerErrors, record, LANGUAGE_2_OR, LanguageOperator.class));
+            result.setLanguage3(CsvTransformer.toEnum(offerErrors, record, LANGUAGE_3, Language.class));
+            result.setLanguage3Level(CsvTransformer.toEnum(offerErrors, record, LANGUAGE_3_LEVEL, LanguageLevel.class));
+            result.setPayment(CsvTransformer.toBigDecimal(offerErrors, record, PAYMENT));
+            result.setPaymentFrequency(CsvTransformer.toEnum(offerErrors, record, PAYMENT_FREQUENCY, PaymentFrequency.class));
+            // Should be set via the Country
+            result.setCurrency(CsvTransformer.toEnum(offerErrors, record, CURRENCY, Currency.class));
+            result.setDeduction(record.get(DEDUCTION.getField()));
+            result.setLivingCost(CsvTransformer.toBigDecimal(offerErrors, record, LIVING_COST));
+            result.setLivingCostFrequency(CsvTransformer.toEnum(offerErrors, record, LIVING_COST_FREQUENCY, PaymentFrequency.class));
+            result.setLodgingBy(record.get(LODGING.getField()));
+            result.setLodgingCost(CsvTransformer.toBigDecimal(offerErrors, record, LODGING_COST));
+            result.setLodgingCostFrequency(CsvTransformer.toEnum(offerErrors, record, LODGING_COST_FREQUENCY, PaymentFrequency.class));
+            result.setAdditionalInformation(record.get(ADDITIONAL_INFO.getField()));
+            result.setPrivateComment(record.get(COMMENT.getField()));
             //result.setStatus(); ignored intentionally
-            result.setNumberOfHardCopies(CsvTransformer.toInteger(offerErrors, "NoHardCopies", record.get("NoHardCopies")));
-            result.setNominationDeadline(CsvTransformer.toDate(offerErrors, "Deadline", record.get("Deadline")));
+            result.setNumberOfHardCopies(CsvTransformer.toInteger(offerErrors, record, NO_HARD_COPIES));
+            result.setNominationDeadline(CsvTransformer.toDate(offerErrors, record, DEADLINE));
         }
 
         return result;
@@ -281,17 +285,17 @@ public final class ExchangeTransformer {
         if (record != null) {
             result = new Employer();
 
-            result.setName(record.get("Employer"));
+            result.setName(record.get(EMPLOYER.getField()));
             //result.setDepartment(); not in CSV
-            result.setBusiness(record.get("Business"));
+            result.setBusiness(record.get(BUSINESS.getField()));
             //read separately, assigned later
-//            result.setAddress(CommonTransformer.addressFromCsv(record));
-            result.setEmployeesCount(record.get("Employees"));
-            result.setWebsite(record.get("Website"));
-            result.setWorkingPlace(record.get("Workplace"));
-            result.setNearestAirport(record.get("Airport"));
-            result.setNearestPublicTransport(record.get("Transport"));
-            result.setCanteen(CsvTransformer.toBoolean(errors, "Canteen", record.get("Canteen")));
+            //result.setAddress(CommonTransformer.addressFromCsv(record));
+            result.setEmployeesCount(record.get(EMPLOYEES.getField()));
+            result.setWebsite(record.get(WEBSITE.getField()));
+            result.setWorkingPlace(record.get(WORKPLACE.getField()));
+            result.setNearestAirport(record.get(AIRPORT.getField()));
+            result.setNearestPublicTransport(record.get(TRANSPORT.getField()));
+            result.setCanteen(CsvTransformer.toBoolean(errors, record, CANTEEN));
         }
 
         return result;

@@ -146,11 +146,14 @@ public final class AccountService extends CommonService<AccessDao> {
         if (existingGroup != null) {
             studentGroup = existingGroup;
         } else {
+            final GroupType type = GroupType.STUDENT;
             studentGroup = new GroupEntity();
             studentGroup.setExternalId(UUID.randomUUID().toString());
             studentGroup.setCountry(memberGroup.getCountry());
-            studentGroup.setGroupName(memberGroup.getGroupName() + '.' + GroupType.STUDENT.getDescription());
-            studentGroup.setGroupType(dao.findGroupType(GroupType.STUDENT));
+            studentGroup.setPrivateList(type.getMayHavePrivateMailinglist());
+            studentGroup.setPublicList(type.getMayHavePublicMailinglist());
+            studentGroup.setGroupName(memberGroup.getGroupName() + '.' + type.getDescription());
+            studentGroup.setGroupType(dao.findGroupType(type));
             studentGroup.setParentId(memberGroup.getId());
             dao.persist(studentGroup);
         }

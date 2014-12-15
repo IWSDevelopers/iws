@@ -25,7 +25,6 @@ import net.iaeste.iws.api.dtos.exchange.Student;
 import net.iaeste.iws.api.dtos.exchange.StudentApplication;
 import net.iaeste.iws.api.enums.Currency;
 import net.iaeste.iws.api.enums.Language;
-import net.iaeste.iws.api.enums.exchange.ExchangeType;
 import net.iaeste.iws.api.enums.exchange.FieldOfStudy;
 import net.iaeste.iws.api.enums.exchange.LanguageLevel;
 import net.iaeste.iws.api.enums.exchange.LanguageOperator;
@@ -127,7 +126,8 @@ public final class ExchangeTransformer {
 
             result.setRefNo(record.get(REFNO.getField()));
             result.setOfferType(CsvTransformer.toEnum(offerErrors, record, OFFER_TYPE, OfferType.class));
-            result.setExchangeType(CsvTransformer.toEnum(offerErrors, record, EXCHANGE_TYPE, ExchangeType.class));
+            // ExchangeType is relevant when an Offer is shared - not when uploading
+            //result.setExchangeType(CsvTransformer.toEnum(offerErrors, record, EXCHANGE_TYPE, ExchangeType.class));
 
             //employer is read in separate way and is assigned afterwards
             //result.setEmployer(employerFromCsv(record, offerErrors));

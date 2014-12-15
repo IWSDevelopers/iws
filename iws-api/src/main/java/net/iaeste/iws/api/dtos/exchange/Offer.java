@@ -54,7 +54,8 @@ public final class Offer extends AbstractVerification {
     private String offerId = null;
     private String refNo = null;
     private OfferType offerType = OfferType.OPEN;
-    private ExchangeType exchangeType = ExchangeType.COBE;
+    // Defaulting to IW, as COBE is causing problems for Reserved Offers
+    private ExchangeType exchangeType = ExchangeType.IW;
 
     private String oldRefNo = null;
 

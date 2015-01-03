@@ -1,6 +1,6 @@
 /*
  * =============================================================================
- * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * Copyright 1998-2015, IAESTE Internet Development Team. All rights reserved.
  * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-client) - net.iaeste.iws.client.notifications.NotificationSpy
  * -----------------------------------------------------------------------------

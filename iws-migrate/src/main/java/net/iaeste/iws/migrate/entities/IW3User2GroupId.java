@@ -1,8 +1,8 @@
 /*
  * =============================================================================
- * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * Copyright 1998-2015, IAESTE Internet Development Team. All rights reserved.
  * ----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-migrate) - net.iaeste.iws.migrate.entities.UserGroupId
+ * Project: IntraWeb Services (iws-migrate) - net.iaeste.iws.migrate.entities.IW3User2GroupId
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be

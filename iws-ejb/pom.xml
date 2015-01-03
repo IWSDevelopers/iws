@@ -115,12 +115,6 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
         </dependency>
-        <!-- this has to come from local respository set to iws-accessories and has to be placed before javaee-api -->
-        <!--<dependency>-->
-            <!--<groupId>jms</groupId>-->
-            <!--<artifactId>jms</artifactId>-->
-            <!--<version>1.1</version>-->
-        <!--</dependency>-->
         <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-api</artifactId>
@@ -131,19 +125,12 @@
             <artifactId>freemarker</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-all</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>gsbase</groupId>
             <artifactId>gsbase</artifactId>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.hamcrest</groupId>

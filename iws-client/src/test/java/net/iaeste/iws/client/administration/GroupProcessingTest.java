@@ -1,6 +1,6 @@
 /*
  * =============================================================================
- * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * Copyright 1998-2015, IAESTE Internet Development Team. All rights reserved.
  * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-client) - net.iaeste.iws.client.administration.GroupProcessingTest
  * -----------------------------------------------------------------------------
@@ -19,8 +19,8 @@ import static org.hamcrest.Matchers.equalToIgnoringCase;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.Matchers.startsWith;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.startsWith;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;

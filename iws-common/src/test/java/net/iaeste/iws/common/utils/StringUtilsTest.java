@@ -1,6 +1,6 @@
 /*
  * =============================================================================
- * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * Copyright 1998-2015, IAESTE Internet Development Team. All rights reserved.
  * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-common) - net.iaeste.iws.common.utils.StringUtilsTest
  * -----------------------------------------------------------------------------
@@ -12,7 +12,6 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-
 package net.iaeste.iws.common.utils;
 
 import static org.hamcrest.core.Is.is;

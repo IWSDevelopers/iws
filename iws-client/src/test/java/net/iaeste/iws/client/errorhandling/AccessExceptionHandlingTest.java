@@ -1,6 +1,6 @@
 /*
  * =============================================================================
- * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * Copyright 1998-2015, IAESTE Internet Development Team. All rights reserved.
  * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-client) - net.iaeste.iws.client.errorhandling.AccessExceptionHandlingTest
  * -----------------------------------------------------------------------------
@@ -66,7 +66,7 @@ import javax.persistence.PersistenceContext;
 @Transactional
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = {Beans.class})
-@Ignore
+@Ignore("Test cases needs completion")
 public class AccessExceptionHandlingTest {
 
     private static final AuthenticationToken TOKEN = new AuthenticationToken("9635b22b2ff750832146496b8327dc81ed8d79ddd4c8c7448971eceb4667adef");

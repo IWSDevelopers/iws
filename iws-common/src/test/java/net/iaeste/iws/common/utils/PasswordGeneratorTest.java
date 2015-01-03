@@ -1,6 +1,6 @@
 /*
  * =============================================================================
- * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * Copyright 1998-2015, IAESTE Internet Development Team. All rights reserved.
  * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-common) - net.iaeste.iws.common.utils.PasswordGeneratorTest
  * -----------------------------------------------------------------------------
@@ -12,14 +12,13 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-
 package net.iaeste.iws.common.utils;
-
-import net.iaeste.iws.api.constants.IWSConstants;
-import org.junit.Test;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+
+import net.iaeste.iws.api.constants.IWSConstants;
+import org.junit.Test;
 
 /**
  * @author  Michal Knapik / last $Author:$

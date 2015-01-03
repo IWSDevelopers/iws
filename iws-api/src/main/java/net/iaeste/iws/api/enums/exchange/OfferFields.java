@@ -1,8 +1,8 @@
 /*
  * =============================================================================
- * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * Copyright 1998-2015, IAESTE Internet Development Team. All rights reserved.
  * ----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-core) - net.iaeste.iws.api.enums.exchange.OfferFields
+ * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.enums.exchange.OfferFields
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be

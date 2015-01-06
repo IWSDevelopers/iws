@@ -1,0 +1,145 @@
+#!/bin/bash
+
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+# Statistics Script
+# -----------------------------------------------------------------------------
+# History:
+#   Version 1.00 - 2015-01-06, Kim Jensen <Kim.Jensen@dawn.dk>
+#     o Initial version
+# -----------------------------------------------------------------------------
+# Methods:
+#     o show_help     ( Void )      :: Shows help on using the script
+#     o doLock        ( Void )      :: Creates a lock file
+#     0 doSloc        ( Project )   :: Generate Raw SLOC Count
+#     o doStats       ( Project )   :: Project to generate Statistics for
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+# Configuration settings, please only modify this section
+# -----------------------------------------------------------------------------
+projectRoot="${HOME}/projects/Private/IDT"
+
+# Merge Options, some authors have either changed names, or misconfigured their
+# Git setup initially.
+mergeJensen="-c merge_authors=\"kim,Kim Jensen\""
+mergeKnapik1="-c merge_authors=\"Michał Knapik,Michal Knapik\""
+mergeKnapik2="-c merge_authors=\"zaker,Michal Knapik\""
+mergePickelbauer="-c merge_authors=\"Jenkins,Michael Pickelbauer\""
+mergePecan="-c merge_authors=\"Matjaž Pečan,Matjaz Pecan\""
+options="${mergeJensen} ${mergeKnapik1} ${mergeKnapik2} ${mergePickelbauer} ${mergePecan}"
+
+# Lock file settings for flock. Please don't change this!
+readonly scriptLockFD="200"
+readonly scriptLock="/tmp/.`basename $0`.lock"
+
+# Script specific information, should only be altered, if logic is updated
+readonly scriptVersion="1.00"
+readonly scriptAuthor="Kim Jensen"
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+# Show Help - Displays the help, to use this script
+# -----------------------------------------------------------------------------
+# Param  -> Void
+# Return -> Void
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+show_help () {
+    echo "Statistics script, Version ${scriptVersion} by ${scriptAuthor}"
+    echo "Usage: `basename $0` (ACTION) [PROJECT]"
+    echo
+    echo "  The Action imust be one of the following:"
+    echo "    git      Generate the Git Statistics"
+    echo "    sloc     Generate Raw SLOC (Source Lines of Code) Count"
+    echo
+    echo "  The Project must be one of the following:"
+    echo "    iws      IntraWeb Services"
+    echo "    iw4      IntraWeb Frontend version 4"
+    echo "    iws-pdf  IntraWeb PDF Project"
+    echo
+}
+
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+# doLock - Locks the program, so a second instance cannot start
+# -----------------------------------------------------------------------------
+# Param  -> Void
+# Return -> 0 if successful, otherwise 1 (failed to obtain lock)
+# -----------------------------------------------------------------------------
+# Create the Lock file and assign a FileDescriptor to it, this is then used by
+# flock to create a lock that will prevent other programs from running
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+doLock () {
+    # create lock file
+    eval "exec ${scriptLockFD}>${scriptLock}"
+
+    # acquire the lock
+    flock -n ${scriptLockFD} \
+        && return 0 \
+        || return 1
+}
+
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+# doStart - Attempts to start Glassfish
+# -----------------------------------------------------------------------------
+# Param  -> Project
+# Return -> Void
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+doStats () {
+    local theProject=${1}
+
+    # Run gitstats
+    eval "exec gitstats ${options} ${projectRoot}/${theProject} ${projectRoot}/stats/${theProject}"
+}
+
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+# doSloc - Generating raw SLOC count
+# -----------------------------------------------------------------------------
+# Param  -> Project
+# Return -> Void
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+doSloc () {
+    local root="${projectRoot}/${1}"
+    total=0
+
+    # First, find the find the different kinds of files and count their lines
+
+    java=`find ${root} -iname *.java  -type f 2>/dev/null | xargs cat | wc -l`
+    html=`find ${root} -iname *.xhtml -type f 2>/dev/null | xargs cat | wc -l`
+    sql=`find ${root}  -iname *.sql   -type f 2>/dev/null | xargs cat | wc -l`
+    let "total = java + html + sql"
+
+    echo "Raw SLOC Count"
+    echo "Programs  : ${java}"
+    echo "Templates : ${html}"
+    echo "Database  : ${sql}"
+    echo "================="
+    echo "Total     : ${total}"
+}
+
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+# Main part, please don't touch!
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+doLock
+if [ $? -ne 0 ]; then
+    echo "Another instance is already running..."
+    exit 1
+elif [ $# -ge 1 ]; then
+    action=${1}
+    project=${2}
+
+    if [ "$project" != "" ]; then
+        if [ "${action}" == "git" ]; then
+            doStats ${project}
+        elif [ "${action}" == "sloc" ]; then
+            doSloc ${project}
+        else
+            show_help
+        fi
+    else
+        show_help
+    fi
+else
+    show_help
+fi
+
+# Now, remove the lockfile
+rm ${scriptLock}

@@ -22,6 +22,7 @@ import net.iaeste.iws.persistence.entities.exchange.EmployerEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity;
 import net.iaeste.iws.persistence.entities.exchange.PublishingGroupEntity;
+import net.iaeste.iws.persistence.exceptions.IdentificationException;
 import net.iaeste.iws.persistence.exceptions.PersistenceException;
 import net.iaeste.iws.persistence.views.DomesticOfferStatisticsView;
 import net.iaeste.iws.persistence.views.EmployerView;
@@ -39,12 +40,24 @@ import java.util.Set;
 public interface ExchangeDao extends BasicDao {
 
     List<ForeignOfferStatisticsView> findForeignOfferStatistics(GroupEntity group, Integer year);
+
     List<DomesticOfferStatisticsView> findDomesticOfferStatistics(GroupEntity group, Integer year);
 
     EmployerEntity findEmployer(String externalId);
 
-    EmployerEntity findUniqueEmployer(Authentication authentication, Employer employer);
-    EmployerEntity findUniqueEmployer(GroupEntity group, EmployerEntity employer);
+    /**
+     * Finds a Unique Employer in the IntraWeb. The Uniqueness of an Employer is
+     * characterized by the employer name, department and workplace as well as
+     * the owning Group.<br />
+     *   Note; There is a bug in the current implementation which prevents the
+     * department from being used in the unique identification of the Employer.
+     *
+     * @param authentication User Authentication information with the Group Id
+     * @param employer       The Employer to find
+     * @return Found Employer Entity or null
+     * @throws IdentificationException if more Employer Entities were found
+     */
+    EmployerEntity findUniqueEmployer(Authentication authentication, Employer employer) throws IdentificationException;
 
     OfferEntity findOfferByOldOfferId(Integer oldOfferId);
 
@@ -285,5 +298,6 @@ public interface ExchangeDao extends BasicDao {
     void hideOfferGroups(List<Long> ids);
 
     PublishingGroupEntity getSharingListByExternalIdAndOwnerId(String externalId, Long groupId);
+
     List<PublishingGroupEntity> getSharingListForOwner(Long id);
 }

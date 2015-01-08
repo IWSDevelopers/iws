@@ -38,11 +38,9 @@ import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.ExchangeDao;
 import net.iaeste.iws.persistence.ViewsDao;
-import net.iaeste.iws.persistence.entities.AddressEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.exchange.EmployerEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
-import net.iaeste.iws.persistence.exceptions.IdentificationException;
 import net.iaeste.iws.persistence.views.OfferView;
 import net.iaeste.iws.persistence.views.SharedOfferView;
 import org.apache.commons.csv.CSVFormat;
@@ -174,7 +172,7 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
         try {
             return CSVFormat.RFC4180.withDelimiter(delimiter)
                     .withHeader()
-                  //.withNullString("")
+                            //.withNullString("")
                     .parse(input);
         } catch (IOException e) {
             throw new IWSException(IWSErrors.PROCESSING_FAILURE, "Creating CSVParser failed", e);
@@ -184,8 +182,8 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
     private CSVPrinter getDefaultCsvPrinter(final Appendable output) {
         try {
             return CSVFormat.RFC4180.withDelimiter(DELIMITER)
-                    .withNullString("")
-                    .print(output);
+                                    .withNullString("")
+                                    .print(output);
         } catch (IOException e) {
             throw new IWSException(IWSErrors.PROCESSING_FAILURE, "Creating CSVPrinter failed", e);
         }
@@ -237,7 +235,7 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
         try {
             refNo = record.get(OfferFields.REFNO.getField());
             final Offer csvOffer = ExchangeTransformer.offerFromCsv(record, conversionErrors);
-            final Employer csvEmployer= ExchangeTransformer.employerFromCsv(record, conversionErrors);
+            final Employer csvEmployer = ExchangeTransformer.employerFromCsv(record, conversionErrors);
             final Address csvAddress = CommonTransformer.addressFromCsv(record);
             final Country country = CommonTransformer.transform(authentication.getGroup().getCountry());
             csvAddress.setCountry(country);
@@ -251,9 +249,6 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
                 final OfferEntity newEntity = ExchangeTransformer.transform(csvOffer);
 
                 if (existingEntity != null) {
-                    //TODO ExchangeService has this check but why to check authentication.getGroup when permissionCheck
-                    //     then takes authentication.getGroup again? should be offer.employer.group instead?
-                    //permissionCheck(authentication, existingEntity.getEmployer().getGroup()); ?
                     permissionCheck(authentication, authentication.getGroup());
 
                     //keep original offer state
@@ -267,7 +262,9 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
                     dao.persist(authentication, existingEntity, newEntity);
                     processingResult.put(refNo, OfferCSVUploadResponse.ProcessingResult.Updated);
                 } else {
-                    //create employer
+                    // First, we need an Employer for our new Offer. The Process
+                    // method will either find an existing Employer or create a
+                    // new one.
                     final EmployerEntity employer = process(authentication, csvOffer.getEmployer());
 
                     // Add the Group to the Offer, otherwise our refno checks will fail
@@ -291,7 +288,7 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
                 processingResult.put(refNo, OfferCSVUploadResponse.ProcessingResult.Error);
                 errors.put(refNo, validationErrors);
             }
-        } catch (IllegalArgumentException|IWSException e) {
+        } catch (IllegalArgumentException | IWSException e) {
             processingResult.put(refNo, OfferCSVUploadResponse.ProcessingResult.Error);
             if (errors.containsKey(refNo)) {
                 errors.get(refNo).put("general", e.getMessage());
@@ -306,15 +303,24 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
         }
     }
 
+    /**
+     * Processes an Employer from the CSV file. This is done by first trying to
+     * lookup the Employer via the unique characteristica for an Employer - and
+     * only of no existing records is found, will a new record be created. If
+     * a record is found, the changes will be merged and potentially also
+     * persisted.<br />
+     *   If more than one Employer is found, then an Identification Exception is
+     * thrown.
+     *
+     * @param authentication The users Authentication information
+     * @param employer       The Employer to find / create
+     * @return Employer Entity found or created
+     * @throws IdentificationException if more than one Employer exists
+     */
     private EmployerEntity process(final Authentication authentication, final Employer employer) {
-        EmployerEntity entity;
-        try {
-            entity = dao.findEmployer(employer.getEmployerId());
-        } catch (IdentificationException e) {
-            //no or multiple employers
-            entity = null;
-            employer.setEmployerId(null);
-        }
+        // First, lets see if we can find an existing Employer, in which
+        // case we will use this instead of creating a new
+        EmployerEntity entity = dao.findUniqueEmployer(authentication, employer);
 
         if (entity == null) {
             entity = ExchangeTransformer.transform(employer);
@@ -327,20 +333,8 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
             processAddress(authentication, entity.getAddress(), employer.getAddress());
             dao.persist(authentication, entity, updated);
         }
-        return entity;
-    }
 
-    private AddressEntity process(final Authentication authentication, final Address address, final AddressEntity existingEntity) {
-        AddressEntity result;
-        final AddressEntity newAddress = CommonTransformer.transform(address);
-        if (existingEntity == null) {
-            dao.persist(authentication, newAddress);
-            result = newAddress;
-        } else {
-            dao.persist(authentication, existingEntity, newAddress);
-            result = existingEntity;
-        }
-        return result;
+        return entity;
     }
 
     private List<String> createForeignFirstRow() {

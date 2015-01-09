@@ -17,9 +17,13 @@ package net.iaeste.iws.client.spring;
 import net.iaeste.iws.api.Storage;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.FetchFileRequest;
+import net.iaeste.iws.api.requests.FetchFolderRequest;
 import net.iaeste.iws.api.requests.FileRequest;
+import net.iaeste.iws.api.requests.FolderRequest;
 import net.iaeste.iws.api.responses.FetchFileResponse;
+import net.iaeste.iws.api.responses.FetchFolderResponse;
 import net.iaeste.iws.api.responses.FileResponse;
+import net.iaeste.iws.api.responses.FolderResponse;
 import net.iaeste.iws.client.notifications.NotificationSpy;
 import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.ejb.NotificationManagerBean;
@@ -71,6 +75,22 @@ public class StorageSpringClient implements Storage {
     // =========================================================================
     // Implementation of methods from Storage in the API
     // =========================================================================
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public FolderResponse processFolder(final AuthenticationToken token, final FolderRequest request) {
+        return client.processFolder(token, request);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public FetchFolderResponse fetchFolder(final AuthenticationToken token, final FetchFolderRequest request) {
+        return client.fetchFolder(token, request);
+    }
 
     /**
      * {@inheritDoc}

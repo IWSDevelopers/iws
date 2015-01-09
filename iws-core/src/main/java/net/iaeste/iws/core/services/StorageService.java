@@ -19,10 +19,15 @@ import static net.iaeste.iws.core.transformers.StorageTransformer.transform;
 import net.iaeste.iws.api.dtos.File;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.enums.StorageType;
+import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.api.requests.FetchFileRequest;
+import net.iaeste.iws.api.requests.FetchFolderRequest;
 import net.iaeste.iws.api.requests.FileRequest;
+import net.iaeste.iws.api.requests.FolderRequest;
 import net.iaeste.iws.api.responses.FetchFileResponse;
+import net.iaeste.iws.api.responses.FetchFolderResponse;
 import net.iaeste.iws.api.responses.FileResponse;
+import net.iaeste.iws.api.responses.FolderResponse;
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
@@ -42,6 +47,14 @@ public final class StorageService extends CommonService<AccessDao> {
 
     public StorageService(final Settings settings, final AccessDao accessDao) {
         super(settings, accessDao);
+    }
+
+    public FolderResponse processFolder(final Authentication authentication, final FolderRequest request) {
+        throw new NotImplementedException("Method pending implementation, see Trac #946.");
+    }
+
+    public FetchFolderResponse fetchFolder(final Authentication authentication, final FetchFolderRequest request) {
+        throw new NotImplementedException("Method pending implementation, see Trac #946.");
     }
 
     public FileResponse processFile(final Authentication authentication, final FileRequest request) {

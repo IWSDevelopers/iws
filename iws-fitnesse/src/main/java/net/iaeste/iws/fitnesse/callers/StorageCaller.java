@@ -17,9 +17,13 @@ package net.iaeste.iws.fitnesse.callers;
 import net.iaeste.iws.api.Storage;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.FetchFileRequest;
+import net.iaeste.iws.api.requests.FetchFolderRequest;
 import net.iaeste.iws.api.requests.FileRequest;
+import net.iaeste.iws.api.requests.FolderRequest;
 import net.iaeste.iws.api.responses.FetchFileResponse;
+import net.iaeste.iws.api.responses.FetchFolderResponse;
 import net.iaeste.iws.api.responses.FileResponse;
+import net.iaeste.iws.api.responses.FolderResponse;
 import net.iaeste.iws.client.StorageClient;
 import net.iaeste.iws.fitnesse.exceptions.StopTestException;
 
@@ -41,6 +45,30 @@ public final class StorageCaller implements Storage {
     // =========================================================================
     // Implementation of methods from Storage in the API
     // =========================================================================
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public FolderResponse processFolder(final AuthenticationToken token, final FolderRequest request) {
+        try {
+            return caller.processFolder(token, request);
+        } catch (RuntimeException e) {
+            throw new StopTestException(e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public FetchFolderResponse fetchFolder(final AuthenticationToken token, final FetchFolderRequest request) {
+        try {
+            return caller.fetchFolder(token, request);
+        } catch (RuntimeException e) {
+            throw new StopTestException(e);
+        }
+    }
 
     /**
      * {@inheritDoc}

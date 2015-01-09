@@ -63,7 +63,7 @@ public final class FetchFileRequest extends AbstractVerification {
 
     /**
      * The FileId is a mandatory field, and must be a proper Id, otherwise the
-     * method will throw an {£code IllegalArgumentException}.
+     * method will throw an {@code IllegalArgumentException}.
      *
      * @param fileId Id of the file to fetch
      * @throws IllegalArgumentException if null or an invalid Id

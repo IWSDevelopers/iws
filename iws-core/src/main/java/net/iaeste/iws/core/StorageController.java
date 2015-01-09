@@ -21,9 +21,13 @@ import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.requests.FetchFileRequest;
+import net.iaeste.iws.api.requests.FetchFolderRequest;
 import net.iaeste.iws.api.requests.FileRequest;
+import net.iaeste.iws.api.requests.FolderRequest;
 import net.iaeste.iws.api.responses.FetchFileResponse;
+import net.iaeste.iws.api.responses.FetchFolderResponse;
 import net.iaeste.iws.api.responses.FileResponse;
+import net.iaeste.iws.api.responses.FolderResponse;
 import net.iaeste.iws.core.services.ServiceFactory;
 import net.iaeste.iws.core.services.StorageService;
 import net.iaeste.iws.persistence.Authentication;
@@ -47,6 +51,58 @@ public final class StorageController extends CommonController implements Storage
      */
     public StorageController(final ServiceFactory factory) {
         super(factory);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public FolderResponse processFolder(final AuthenticationToken token, final FolderRequest request) {
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Starting processFolder()"));
+        }
+        FolderResponse response;
+
+        try {
+            verify(request);
+            final Authentication authentication = verifyAccess(token, Permission.PROCESS_FOLDER);
+
+            final StorageService service = factory.prepareStorageService();
+            response = service.processFolder(authentication, request);
+        } catch (IWSException e) {
+            response = new FolderResponse(e.getError(), e.getMessage());
+        }
+
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Finished processFolder()"));
+        }
+        return response;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public FetchFolderResponse fetchFolder(final AuthenticationToken token, final FetchFolderRequest request) {
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Starting processFile()"));
+        }
+        FetchFolderResponse response;
+
+        try {
+            verify(request);
+            final Authentication authentication = verifyAccess(token, Permission.FETCH_FOLDER);
+
+            final StorageService service = factory.prepareStorageService();
+            response = service.fetchFolder(authentication, request);
+        } catch (IWSException e) {
+            response = new FetchFolderResponse(e.getError(), e.getMessage());
+        }
+
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Finished processFile()"));
+        }
+        return response;
     }
 
     /**

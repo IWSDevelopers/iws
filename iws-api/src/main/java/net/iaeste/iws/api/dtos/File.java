@@ -15,6 +15,7 @@
 package net.iaeste.iws.api.dtos;
 
 import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.api.enums.Privacy;
 import net.iaeste.iws.api.util.AbstractVerification;
 import net.iaeste.iws.api.util.Date;
 
@@ -32,6 +33,7 @@ public final class File extends AbstractVerification {
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     private String fileId = null;
+    private Privacy privacy = null;
     private Group group = null;
     private User user = null;
     private String filename = null;
@@ -65,6 +67,7 @@ public final class File extends AbstractVerification {
     public File(final File file) {
         if (file != null) {
             fileId = file.fileId;
+            privacy = file.privacy;
             group = new Group(file.group);
             user = new User(file.user);
             filename = file.filename;
@@ -99,6 +102,14 @@ public final class File extends AbstractVerification {
 
     public String getFileId() {
         return fileId;
+    }
+
+    public void setPrivacy(final Privacy privacy) {
+        this.privacy = privacy;
+    }
+
+    public Privacy getPrivacy() {
+        return privacy;
     }
 
     /**
@@ -298,9 +309,6 @@ public final class File extends AbstractVerification {
         return validation;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean equals(final Object obj) {
         if (this == obj) {
@@ -312,38 +320,40 @@ public final class File extends AbstractVerification {
 
         final File file = (File) obj;
 
-        if ((checksum != null) ? !checksum.equals(file.checksum) : (file.checksum != null)) {
+        if (fileId != null ? !fileId.equals(file.fileId) : file.fileId != null) {
             return false;
         }
-        if ((created != null) ? !created.equals(file.created) : (file.created != null)) {
+        if (privacy != file.privacy) {
             return false;
         }
-        if ((description != null) ? !description.equals(file.description) : (file.description != null)) {
+        if (group != null ? !group.equals(file.group) : file.group != null) {
             return false;
         }
-        if ((fileId != null) ? !fileId.equals(file.fileId) : (file.fileId != null)) {
+        if (user != null ? !user.equals(file.user) : file.user != null) {
             return false;
         }
-        if ((filename != null) ? !filename.equals(file.filename) : (file.filename != null)) {
+        if (filename != null ? !filename.equals(file.filename) : file.filename != null) {
             return false;
         }
-        if ((filesize != null) ? !filesize.equals(file.filesize) : (file.filesize != null)) {
+        if (filesize != null ? !filesize.equals(file.filesize) : file.filesize != null) {
             return false;
         }
-        if ((group != null) ? !group.equals(file.group) : (file.group != null)) {
+        if (mimetype != null ? !mimetype.equals(file.mimetype) : file.mimetype != null) {
             return false;
         }
-        if ((keywords != null) ? !keywords.equals(file.keywords) : (file.keywords != null)) {
+        if (description != null ? !description.equals(file.description) : file.description != null) {
             return false;
         }
-        if ((mimetype != null) ? !mimetype.equals(file.mimetype) : (file.mimetype != null)) {
+        if (keywords != null ? !keywords.equals(file.keywords) : file.keywords != null) {
             return false;
         }
-        if ((modified != null) ? !modified.equals(file.modified) : (file.modified != null)) {
+        if (checksum != null ? !checksum.equals(file.checksum) : file.checksum != null) {
             return false;
         }
-
-        return !((user != null) ? !user.equals(file.user) : (file.user != null));
+        if (modified != null ? !modified.equals(file.modified) : file.modified != null) {
+            return false;
+        }
+        return !(created != null ? !created.equals(file.created) : file.created != null);
     }
 
     /**
@@ -354,6 +364,7 @@ public final class File extends AbstractVerification {
         int result = IWSConstants.HASHCODE_INITIAL_VALUE;
 
         result = IWSConstants.HASHCODE_MULTIPLIER * result + ((fileId != null) ? fileId.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((privacy != null) ? privacy.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + ((group != null) ? group.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + ((user != null) ? user.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + ((filename != null) ? filename.hashCode() : 0);
@@ -375,6 +386,7 @@ public final class File extends AbstractVerification {
     public String toString() {
         return "File{" +
                 "fileId='" + fileId + '\'' +
+                ", privacy=" + privacy +
                 ", group=" + group +
                 ", user=" + user +
                 ", filename='" + filename + '\'' +

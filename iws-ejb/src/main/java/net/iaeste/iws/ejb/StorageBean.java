@@ -18,9 +18,13 @@ import net.iaeste.iws.api.Storage;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.FetchFileRequest;
+import net.iaeste.iws.api.requests.FetchFolderRequest;
 import net.iaeste.iws.api.requests.FileRequest;
+import net.iaeste.iws.api.requests.FolderRequest;
 import net.iaeste.iws.api.responses.FetchFileResponse;
+import net.iaeste.iws.api.responses.FetchFolderResponse;
 import net.iaeste.iws.api.responses.FileResponse;
+import net.iaeste.iws.api.responses.FolderResponse;
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.core.StorageController;
 import net.iaeste.iws.core.notifications.Notifications;
@@ -111,6 +115,44 @@ public class StorageBean extends AbstractBean implements Storage {
     // =========================================================================
     // Implementation of methods from Storage in the API
     // =========================================================================
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Interceptors(Profiler.class)
+    public FolderResponse processFolder(final AuthenticationToken token, final FolderRequest request) {
+        FolderResponse response;
+
+        try {
+            response = controller.processFolder(token, request);
+            log.info(generateResponseLog(response, token));
+        } catch (RuntimeException e) {
+            log.error(generateErrorLog(e, token));
+            response = new FolderResponse(IWSErrors.ERROR, e.getMessage());
+        }
+
+        return response;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Interceptors(Profiler.class)
+    public FetchFolderResponse fetchFolder(final AuthenticationToken token, final FetchFolderRequest request) {
+        FetchFolderResponse response;
+
+        try {
+            response = controller.fetchFolder(token, request);
+            log.info(generateResponseLog(response, token));
+        } catch (RuntimeException e) {
+            log.error(generateErrorLog(e, token));
+            response = new FetchFolderResponse(IWSErrors.ERROR, e.getMessage());
+        }
+
+        return response;
+    }
 
     /**
      * {@inheritDoc}

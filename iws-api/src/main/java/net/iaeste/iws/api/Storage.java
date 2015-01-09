@@ -16,9 +16,13 @@ package net.iaeste.iws.api;
 
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.FetchFileRequest;
+import net.iaeste.iws.api.requests.FetchFolderRequest;
 import net.iaeste.iws.api.requests.FileRequest;
+import net.iaeste.iws.api.requests.FolderRequest;
 import net.iaeste.iws.api.responses.FetchFileResponse;
+import net.iaeste.iws.api.responses.FetchFolderResponse;
 import net.iaeste.iws.api.responses.FileResponse;
+import net.iaeste.iws.api.responses.FolderResponse;
 
 /**
  * Storage Functionality.
@@ -28,6 +32,9 @@ import net.iaeste.iws.api.responses.FileResponse;
  * @since   IWS 1.0
  */
 public interface Storage {
+
+    FolderResponse processFolder(AuthenticationToken token, FolderRequest request);
+    FetchFolderResponse fetchFolder(AuthenticationToken token, FetchFolderRequest request);
 
     /**
      * Processes a File.

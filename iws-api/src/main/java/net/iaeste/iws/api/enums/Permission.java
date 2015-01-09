@@ -99,6 +99,8 @@ public enum Permission {
     // File related Permissions
     // =========================================================================
 
+    PROCESS_FOLDER("Process Folder", Storage.class, "processFolder"),
+    FETCH_FOLDER("Fetch Folder", Storage.class, "fetchFolder"),
     PROCESS_FILE("Process File", Storage.class, "processFile"),
     FETCH_FILE("Fetch File", Storage.class, "fetchFile"),
 

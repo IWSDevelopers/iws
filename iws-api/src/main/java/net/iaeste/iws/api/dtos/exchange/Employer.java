@@ -171,18 +171,18 @@ public final class Employer extends AbstractVerification {
     }
 
     /**
-     * Sets the Employer Department. There are no rules applies to the Employer
-     * Department, meaning that it any value, as long as it doesn't exceed the
-     * maximum length.<br />
+     * Sets the Employer Department. The Department is part of the uniqueness
+     * criteria for the Employer, it may be empty but cannot be null or too
+     * long.<br />
      *   The method will throw an {@code IllegalArgumentException} if the
-     * Department is not valid.
+     * Department is not valid, i.e. null or too long.
      *
      * @param department Employer Department
-     * @throws IllegalArgumentException if not valid, i.e. too long
+     * @throws IllegalArgumentException if not valid, i.e. null or too long
      * @see #FIELD_LENGTH
      */
     public void setDepartment(final String department) throws IllegalArgumentException {
-        ensureNotTooLong("department", department, FIELD_LENGTH);
+        ensureNotNullOrTooLong("department", department, FIELD_LENGTH);
         this.department = department;
     }
 
@@ -247,18 +247,18 @@ public final class Employer extends AbstractVerification {
     }
 
     /**
-     * Sets the Employer Working Place. There are no rules applies to the
-     * Employer Working Place, meaning that it any value, as long as it doesn't
-     * exceed the maximum length.<br />
+     * Sets the Employer Working Place. The Working Place is part of the
+     * uniqueness criteria for the Employer, it may be empty but cannot be null
+     * or too long.<br />
      *   The method will throw an {@code IllegalArgumentException} if the
-     * Working Place is not valid.
+     * Working Place is not valid, i.e. null or too long.
      *
      * @param workingPlace Employer Working Place
-     * @throws IllegalArgumentException if not valid, i.e. too long
+     * @throws IllegalArgumentException if not valid, i.e. null or too long
      * @see #FIELD_LENGTH
      */
     public void setWorkingPlace(final String workingPlace) throws IllegalArgumentException {
-        ensureNotTooLong("workingPlace", workingPlace, FIELD_LENGTH);
+        ensureNotNullOrTooLong("workingPlace", workingPlace, FIELD_LENGTH);
         this.workingPlace = workingPlace;
     }
 

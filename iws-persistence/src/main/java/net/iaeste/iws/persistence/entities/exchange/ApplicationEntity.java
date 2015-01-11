@@ -567,34 +567,34 @@ public class ApplicationEntity extends AbstractUpdateable<ApplicationEntity> imp
     public void merge(final ApplicationEntity obj) {
         // don't merge if objects are not the same entity
         if ((id != null) && (obj != null) && externalId.equals(obj.externalId)) {
-            status = obj.status;
-            nominatedAt = obj.nominatedAt;
-            fieldOfStudies = obj.fieldOfStudies;
-            specializations = obj.specializations;
-            email = obj.email;
-            phoneNumber = obj.phoneNumber;
-            dateOfBirth = obj.dateOfBirth;
-            university = obj.university;
-            placeOfBirth = obj.placeOfBirth;
-            nationality = obj.nationality;
-            gender = obj.gender;
-            completedYearsOfStudy = obj.completedYearsOfStudy;
-            totalYearsOfStudy = obj.totalYearsOfStudy;
-            lodgingByIaeste = obj.lodgingByIaeste;
-            language1 = obj.language1;
-            language1Level = obj.language1Level;
-            language2 = obj.language2;
-            language2Level = obj.language2Level;
-            language3 = obj.language3;
-            language3Level = obj.language3Level;
-            internshipStart = obj.internshipStart;
-            internshipEnd = obj.internshipEnd;
-            passportNumber = obj.passportNumber;
-            passportPlaceOfIssue = obj.passportPlaceOfIssue;
-            passportValidUntil = obj.passportValidUntil;
-            rejectByEmployerReason = obj.rejectByEmployerReason;
-            rejectDescription = obj.rejectDescription;
-            rejectInternalComment = obj.rejectInternalComment;
+            status = which(status, obj.status);
+            nominatedAt = which(nominatedAt, obj.nominatedAt);
+            fieldOfStudies = which(fieldOfStudies, obj.fieldOfStudies);
+            specializations = which(specializations, obj.specializations);
+            email = which(email, obj.email);
+            phoneNumber = which(phoneNumber, obj.phoneNumber);
+            dateOfBirth = which(dateOfBirth, obj.dateOfBirth);
+            university = which(university, obj.university);
+            placeOfBirth = which(placeOfBirth, obj.placeOfBirth);
+            nationality = which(nationality, obj.nationality);
+            gender = which(gender, obj.gender);
+            completedYearsOfStudy = which(completedYearsOfStudy, obj.completedYearsOfStudy);
+            totalYearsOfStudy = which(totalYearsOfStudy, obj.totalYearsOfStudy);
+            lodgingByIaeste = which(lodgingByIaeste, obj.lodgingByIaeste);
+            language1 = which(language1, obj.language1);
+            language1Level = which(language1Level, obj.language1Level);
+            language2 = which(language2, obj.language2);
+            language2Level = which(language2Level, obj.language2Level);
+            language3 = which(language3, obj.language3);
+            language3Level = which(language3Level, obj.language3Level);
+            internshipStart = which(internshipStart, obj.internshipStart);
+            internshipEnd = which(internshipEnd, obj.internshipEnd);
+            passportNumber = which(passportNumber, obj.passportNumber);
+            passportPlaceOfIssue = which(passportPlaceOfIssue, obj.passportPlaceOfIssue);
+            passportValidUntil = which(passportValidUntil, obj.passportValidUntil);
+            rejectByEmployerReason = which(rejectByEmployerReason, obj.rejectByEmployerReason);
+            rejectDescription = which(rejectDescription, obj.rejectDescription);
+            rejectInternalComment = which(rejectInternalComment, obj.rejectInternalComment);
         }
     }
 }

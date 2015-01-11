@@ -58,7 +58,7 @@ import java.util.Date;
 @Entity
 @Table(name = "countries")
 @Monitored(name = "Country", level = MonitoringLevel.DETAILED)
-public class CountryEntity implements Externable<CountryEntity> {
+public class CountryEntity extends AbstractUpdateable<CountryEntity> implements Externable<CountryEntity> {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -322,16 +322,16 @@ public class CountryEntity implements Externable<CountryEntity> {
     @Override
     public void merge(final CountryEntity obj) {
         if ((obj != null) && (id != null) && id.equals(obj.id)) {
-            countryName = obj.countryName;
-            countryNameFull = obj.countryNameFull;
-            countryNameNative = obj.countryNameNative;
-            nationality = obj.nationality;
-            citizens = obj.citizens;
-            phonecode = obj.phonecode;
-            currency = obj.currency;
-            languages = obj.languages;
-            membership = obj.membership;
-            memberSince = obj.memberSince;
+            countryName = which(countryName, obj.countryName);
+            countryNameFull = which(countryNameFull, obj.countryNameFull);
+            countryNameNative = which(countryNameNative, obj.countryNameNative);
+            nationality = which(nationality, obj.nationality);
+            citizens = which(citizens, obj.citizens);
+            phonecode = which(phonecode, obj.phonecode);
+            currency = which(currency, obj.currency);
+            languages = which(languages, obj.languages);
+            membership = which(membership, obj.membership);
+            memberSince = which(memberSince, obj.memberSince);
         }
     }
 }

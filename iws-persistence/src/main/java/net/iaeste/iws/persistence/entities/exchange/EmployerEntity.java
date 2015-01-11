@@ -15,12 +15,12 @@
 package net.iaeste.iws.persistence.entities.exchange;
 
 import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.persistence.monitoring.Monitored;
 import net.iaeste.iws.api.enums.MonitoringLevel;
 import net.iaeste.iws.persistence.Externable;
 import net.iaeste.iws.persistence.entities.AbstractUpdateable;
 import net.iaeste.iws.persistence.entities.AddressEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
+import net.iaeste.iws.persistence.monitoring.Monitored;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -94,16 +94,16 @@ public class EmployerEntity extends AbstractUpdateable<EmployerEntity> implement
     private String name = null;
 
     @Monitored(name="Employer department", level = MonitoringLevel.DETAILED)
-    @Column(name = "department", length = 255)
-    private String department = null;
+    @Column(name = "department", length = 255, nullable = false)
+    private String department = "";
 
     @Monitored(name="Employer business", level = MonitoringLevel.DETAILED)
     @Column(name = "business", length = 255)
     private String business = null;
 
     @Monitored(name="Employer working place", level = MonitoringLevel.DETAILED)
-    @Column(name = "working_place", length = 255)
-    private String workingPlace = null;
+    @Column(name = "working_place", length = 255, nullable = false)
+    private String workingPlace = "";
 
     @ManyToOne(targetEntity = AddressEntity.class)
     @JoinColumn(name = "address_id", referencedColumnName = "id")
@@ -351,15 +351,15 @@ public class EmployerEntity extends AbstractUpdateable<EmployerEntity> implement
     public void merge(final EmployerEntity obj) {
         // don't merge if objects are not the same entity
         if ((id != null) && (obj != null) && externalId.equals(obj.externalId)) {
-            name = obj.name;
-            department = obj.department;
-            business = obj.business;
-            workingPlace = obj.workingPlace;
-            numberOfEmployees = obj.numberOfEmployees;
-            website = obj.website;
-            canteen = obj.canteen;
-            nearestAirport = obj.nearestAirport;
-            nearestPublicTransport = obj.nearestPublicTransport;
+            name = which(name, obj.name);
+            department = which(department, obj.department);
+            business = which(business, obj.business);
+            workingPlace = which(workingPlace, obj.workingPlace);
+            numberOfEmployees = which(numberOfEmployees, obj.numberOfEmployees);
+            website = which(website, obj.website);
+            canteen = which(canteen, obj.canteen);
+            nearestAirport = which(nearestAirport, obj.nearestAirport);
+            nearestPublicTransport = which(nearestPublicTransport, obj.nearestPublicTransport);
         }
     }
 }

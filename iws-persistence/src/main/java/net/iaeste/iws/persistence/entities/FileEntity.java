@@ -60,7 +60,7 @@ import java.util.Date;
 @Entity
 @Table(name = "files")
 @Monitored(name = "File", level = MonitoringLevel.DETAILED)
-public class FileEntity implements Externable<FileEntity> {
+public class FileEntity extends AbstractUpdateable<FileEntity> implements Externable<FileEntity> {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -297,16 +297,16 @@ public class FileEntity implements Externable<FileEntity> {
         // don't merge if objects are not the same entity
         if ((id != null) && (obj != null) && externalId.equals(obj.externalId)) {
             // Note; Id & ExternalId are *not* allowed to be updated!
-            filename = obj.filename;
+            filename = which(filename, obj.filename);
             // The filedata is stored in the filesystem, so the name stored here
             // is simply just the reference. Hence, we do not allow it to be
             // updated
-            checksum = obj.checksum;
-            filesize = obj.filesize;
-            mimetype = obj.mimetype;
-            description = obj.description;
-            keywords = obj.keywords;
-            checksum = obj.checksum;
+            checksum = which(checksum, obj.checksum);
+            filesize = which(filesize, obj.filesize);
+            mimetype = which(mimetype, obj.mimetype);
+            description = which(description, obj.description);
+            keywords = which(keywords, obj.keywords);
+            checksum = which(checksum, obj.checksum);
         }
     }
 }

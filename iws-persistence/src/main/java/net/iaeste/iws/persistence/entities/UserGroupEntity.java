@@ -192,7 +192,7 @@ import java.util.Map;
 @Entity
 @Table(name = "user_to_group")
 @Monitored(name = "User2Group", level = MonitoringLevel.DETAILED)
-public class UserGroupEntity implements Externable<UserGroupEntity>, Notifiable {
+public class UserGroupEntity extends AbstractUpdateable<UserGroupEntity> implements Externable<UserGroupEntity>, Notifiable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -427,10 +427,10 @@ public class UserGroupEntity implements Externable<UserGroupEntity>, Notifiable 
     @Override
     public void merge(final UserGroupEntity obj) {
         if ((obj != null) && (id != null) && id.equals(obj.id)) {
-            title = obj.title;
-            onPublicList = obj.onPublicList;
-            onPrivateList = obj.onPrivateList;
-            writeToPrivateList = obj.writeToPrivateList;
+            title = which(title, obj.title);
+            onPublicList = which(onPublicList, obj.onPublicList);
+            onPrivateList = which(onPrivateList, obj.onPrivateList);
+            writeToPrivateList = which(writeToPrivateList, obj.writeToPrivateList);
         }
     }
 

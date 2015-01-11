@@ -76,7 +76,7 @@ import java.util.Date;
 })
 @Entity
 @Table(name = "roles")
-public class RoleEntity implements Externable<RoleEntity> {
+public class RoleEntity extends AbstractUpdateable<RoleEntity> implements Externable<RoleEntity> {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -309,8 +309,8 @@ public class RoleEntity implements Externable<RoleEntity> {
     @Override
     public void merge(final RoleEntity obj) {
         if ((obj != null) && (id != null) && id.equals(obj.id)) {
-            role = obj.role;
-            description = obj.description;
+            role = which(role, obj.role);
+            description = which(description, obj.description);
         }
     }
 }

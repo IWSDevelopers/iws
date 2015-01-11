@@ -56,7 +56,17 @@ public abstract class AbstractUpdateable<T> implements Updateable<T> {
         }
 
         return result;
+    }
 
-        //return (first != null ? first.equals(second) : second == null) ? 0 : 1;
+    /**
+     * Determines which value should be updated. If the changes is not null,
+     * then they are returned, otherwise the existing is returned.
+     *
+     * @param existing Existing value to use if changes is null
+     * @param changes  Updated value to use if not null
+     * @return Changes if they are not null, otherwise the existing
+     */
+    protected <E> E which(final E existing, final E changes) {
+        return changes != null ? changes : existing;
     }
 }

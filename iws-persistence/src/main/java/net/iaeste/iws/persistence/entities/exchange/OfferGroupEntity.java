@@ -211,17 +211,17 @@ public class OfferGroupEntity extends AbstractUpdateable<OfferGroupEntity> imple
      */
     public OfferGroupEntity(final OfferGroupEntity entity) {
         if (entity != null) {
-            this.setExternalId(entity.getExternalId());
-            this.setOffer(entity.getOffer());
-            this.setGroup(entity.getGroup());
-            this.setComment(entity.getComment());
-            this.setStatus(entity.getStatus());
-            this.setHasApplication(entity.getHasApplication());
-            this.setHidden(entity.getHidden());
-            this.setModifiedBy(entity.getModifiedBy());
-            this.setCreatedBy(entity.getCreatedBy());
-            this.setModified(entity.getModified());
-            this.setCreated(entity.getCreated());
+            externalId = entity.externalId;
+            offer = entity.offer;
+            group = entity.group;
+            comment = entity.comment;
+            status = entity.status;
+            hasApplication = entity.hasApplication;
+            hidden = entity.hidden;
+            modifiedBy = entity.modifiedBy;
+            createdBy = entity.createdBy;
+            modified = entity.modified;
+            created = entity.created;
         }
     }
 
@@ -381,8 +381,8 @@ public class OfferGroupEntity extends AbstractUpdateable<OfferGroupEntity> imple
     public void merge(final OfferGroupEntity obj) {
         // don't merge if objects are not the same entity
         if ((id != null) && (obj != null) && externalId.equals(obj.externalId)) {
-            comment = obj.comment;
-            status = obj.status;
+            comment = which(comment, obj.comment);
+            status = which(status, obj.status);
         }
     }
 }

@@ -39,7 +39,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "persons")
-public class PersonEntity implements Updateable<PersonEntity> {
+public class PersonEntity extends AbstractUpdateable<PersonEntity> {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -227,13 +227,13 @@ public class PersonEntity implements Updateable<PersonEntity> {
     @Override
     public void merge(final PersonEntity obj) {
         if (obj != null) {
-            address = obj.address;
-            email = obj.email;
-            phone = obj.phone;
-            mobile = obj.mobile;
-            fax = obj.fax;
-            birthday = obj.birthday;
-            gender = obj.gender;
+            address = which(address, obj.address);
+            email = which(email, obj.email);
+            phone = which(phone, obj.phone);
+            mobile = which(mobile, obj.mobile);
+            fax = which(fax, obj.fax);
+            birthday = which(birthday, obj.birthday);
+            gender = which(gender, obj.gender);
         }
     }
 }

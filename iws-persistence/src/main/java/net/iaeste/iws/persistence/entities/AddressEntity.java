@@ -37,7 +37,6 @@ import java.util.Date;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
- * @noinspection AssignmentToDateFieldFromParameter
  */
 @NamedQueries(@NamedQuery(name = "address.findById",
         query = "select a from AddressEntity a " +
@@ -262,12 +261,12 @@ public class AddressEntity extends AbstractUpdateable<AddressEntity> {
         // cannot compare external id, as the Addresses are embedded and not
         // independent Objects.
         if (obj != null) {
-            street1 = obj.street1;
-            street2 = obj.street2;
-            postalCode = obj.postalCode;
-            city = obj.city;
-            state = obj.state;
-            pobox = obj.pobox;
+            street1 = which(street1, obj.street1);
+            street2 = which(street2, obj.street2);
+            postalCode = which(postalCode, obj.postalCode);
+            city = which(city, obj.city);
+            state = which(state, obj.state);
+            pobox = which(pobox, obj.pobox);
         }
     }
 }

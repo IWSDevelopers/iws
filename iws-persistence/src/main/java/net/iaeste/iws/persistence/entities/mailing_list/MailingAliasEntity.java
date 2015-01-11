@@ -121,9 +121,4 @@ public class MailingAliasEntity implements IWSEntity {
     public Date getCreated() {
         return created;
     }
-
-    // =========================================================================
-    // Other Methods required for this Entity
-    // =========================================================================
-
 }

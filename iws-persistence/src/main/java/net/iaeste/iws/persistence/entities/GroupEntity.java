@@ -163,7 +163,7 @@ import java.util.Map;
 @Entity
 @Table(name = "groups")
 @Monitored(name = "Group", level = MonitoringLevel.DETAILED)
-public class GroupEntity implements Externable<GroupEntity>, Notifiable {
+public class GroupEntity extends AbstractUpdateable<GroupEntity> implements Externable<GroupEntity>, Notifiable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -469,13 +469,13 @@ public class GroupEntity implements Externable<GroupEntity>, Notifiable {
     @Override
     public void merge(final GroupEntity obj) {
         if (obj != null) {
-            groupName = obj.groupName;
-            fullName = obj.fullName;
-            description = obj.description;
-            listName = obj.listName;
-            privateList = obj.privateList;
-            publicList = obj.publicList;
-            monitoringLevel = obj.monitoringLevel;
+            groupName = which(groupName, obj.groupName);
+            fullName = which(fullName, obj.fullName);
+            description = which(description, obj.description);
+            listName = which(listName, obj.listName);
+            privateList = which(privateList, obj.privateList);
+            publicList = which(publicList, obj.publicList);
+            monitoringLevel = which(monitoringLevel, obj.monitoringLevel);
         }
     }
 

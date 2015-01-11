@@ -76,7 +76,7 @@ import java.util.Date;
 })
 @Entity
 @Table(name = "sessions")
-public class SessionEntity implements Externable<SessionEntity> {
+public class SessionEntity extends AbstractUpdateable<SessionEntity> implements Externable<SessionEntity> {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -255,8 +255,8 @@ public class SessionEntity implements Externable<SessionEntity> {
     @Override
     public void merge(final SessionEntity obj) {
         if ((obj != null) && (id != null) && id.equals(obj.id)) {
-            deprecated = obj.deprecated;
-            sessionData = obj.sessionData;
+            deprecated = which(deprecated, obj.deprecated);
+            sessionData = which(sessionData, obj.sessionData);
         }
     }
 }

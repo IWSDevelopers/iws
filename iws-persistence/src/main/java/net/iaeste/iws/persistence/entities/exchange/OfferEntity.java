@@ -24,6 +24,7 @@ import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.api.enums.exchange.OfferType;
 import net.iaeste.iws.api.enums.exchange.PaymentFrequency;
 import net.iaeste.iws.api.enums.exchange.TypeOfWork;
+import net.iaeste.iws.persistence.entities.AbstractUpdateable;
 import net.iaeste.iws.persistence.monitoring.Monitored;
 import net.iaeste.iws.api.enums.MonitoringLevel;
 import net.iaeste.iws.common.notification.Notifiable;
@@ -106,11 +107,10 @@ import java.util.Map;
                 query = "update OfferEntity o " +
                         "set o.status = :status " +
                         "where o.id in :ids")})
-
 @Entity
 @Table(name = "offers")
 @Monitored(name = "Offer", level = MonitoringLevel.DETAILED)
-public class OfferEntity implements Externable<OfferEntity>, Notifiable {
+public class OfferEntity extends AbstractUpdateable<OfferEntity> implements Externable<OfferEntity>, Notifiable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -833,58 +833,58 @@ public class OfferEntity implements Externable<OfferEntity>, Notifiable {
         if ((id != null) && (obj != null) && externalId.equals(obj.externalId)) {
             // Note, Id, ExternalId & refno are *not* allowed to be updated!
             // Also note, oldOfferId and oldRefNo are *not* allowed to be updated!
-            offerType = obj.offerType;
-            exchangeType = obj.exchangeType;
+            offerType = which(offerType, obj.offerType);
+            exchangeType = which(exchangeType, obj.exchangeType);
 
             // General Work Description
-            workDescription = obj.workDescription;
-            typeOfWork = obj.typeOfWork;
-            studyLevels = obj.studyLevels;
-            weeklyHours = obj.weeklyHours;
-            dailyHours = obj.dailyHours;
-            weeklyWorkDays = obj.weeklyWorkDays;
-            fieldOfStudies = obj.fieldOfStudies;
-            specializations = obj.specializations;
-            prevTrainingRequired = obj.prevTrainingRequired;
-            otherRequirements = obj.otherRequirements;
+            workDescription = which(workDescription, obj.workDescription);
+            typeOfWork = which(typeOfWork, obj.typeOfWork);
+            studyLevels = which(studyLevels, obj.studyLevels);
+            weeklyHours = which(weeklyHours, obj.weeklyHours);
+            dailyHours = which(dailyHours, obj.dailyHours);
+            weeklyWorkDays = which(weeklyHours, obj.weeklyWorkDays);
+            fieldOfStudies = which(fieldOfStudies, obj.fieldOfStudies);
+            specializations = which(specializations, obj.specializations);
+            prevTrainingRequired = which(prevTrainingRequired, obj.prevTrainingRequired);
+            otherRequirements = which(otherRequirements, obj.otherRequirements);
 
             // DatePeriod for the Offer
-            minimumWeeks = obj.minimumWeeks;
-            maximumWeeks = obj.maximumWeeks;
-            fromDate = obj.fromDate;
-            toDate = obj.toDate;
-            fromDate2 = obj.fromDate2;
-            toDate2 = obj.toDate2;
-            unavailableFrom = obj.unavailableFrom;
-            unavailableTo = obj.unavailableTo;
+            minimumWeeks = which(minimumWeeks, obj.minimumWeeks);
+            maximumWeeks = which(maximumWeeks, obj.maximumWeeks);
+            fromDate = which(fromDate, obj.fromDate);
+            toDate = which(toDate, obj.toDate);
+            fromDate2 = which(fromDate2, obj.fromDate2);
+            toDate2 = which(toDate2, obj.toDate2);
+            unavailableFrom = which(unavailableFrom, obj.unavailableFrom);
+            unavailableTo = which(unavailableTo, obj.unavailableTo);
 
             // Language restrictions
-            language1 = obj.language1;
-            language1Level = obj.language1Level;
-            language1Operator = obj.language1Operator;
-            language2 = obj.language2;
-            language2Level = obj.language2Level;
-            language2Operator = obj.language2Operator;
-            language3 = obj.language3;
-            language3Level = obj.language3Level;
+            language1 = which(language1, obj.language1);
+            language1Level = which(language1Level, obj.language1Level);
+            language1Operator = which(language1Operator, obj.language1Operator);
+            language2 = which(language2, obj.language2);
+            language2Level = which(language2Level, obj.language2Level);
+            language2Operator = which(language2Operator, obj.language2Operator);
+            language3 = which(language3, obj.language3);
+            language3Level = which(language3Level, obj.language3Level);
 
             // Payment & Cost information
-            payment = obj.payment;
-            paymentFrequency = obj.paymentFrequency;
-            currency = obj.currency;
-            deduction = obj.deduction;
-            livingCost = obj.livingCost;
-            livingCostFrequency = obj.livingCostFrequency;
-            lodgingBy = obj.lodgingBy;
-            lodgingCost = obj.lodgingCost;
-            lodgingCostFrequency = obj.lodgingCostFrequency;
+            payment = which(payment, obj.payment);
+            paymentFrequency = which(paymentFrequency, obj.paymentFrequency);
+            currency = which(currency, obj.currency);
+            deduction = which(deduction, obj.deduction);
+            livingCost = which(livingCost, obj.livingCost);
+            livingCostFrequency = which(livingCostFrequency, obj.livingCostFrequency);
+            lodgingBy = which(lodgingBy, obj.lodgingBy);
+            lodgingCost = which(lodgingCost, obj.lodgingCost);
+            lodgingCostFrequency = which(lodgingCostFrequency, obj.lodgingCostFrequency);
 
             // Other things
-            nominationDeadline = obj.nominationDeadline;
-            numberOfHardCopies = obj.numberOfHardCopies;
-            additionalInformation = obj.additionalInformation;
-            privateComment = obj.privateComment;
-            status = obj.status;
+            nominationDeadline = which(nominationDeadline, obj.nominationDeadline);
+            numberOfHardCopies = which(numberOfHardCopies, obj.numberOfHardCopies);
+            additionalInformation = which(additionalInformation, obj.additionalInformation);
+            privateComment = which(privateComment, obj.privateComment);
+            status = which(status, obj.status);
         }
     }
 

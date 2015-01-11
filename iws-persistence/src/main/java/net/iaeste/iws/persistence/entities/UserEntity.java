@@ -113,7 +113,7 @@ import java.util.Map;
 @Entity
 @Table(name = "users")
 @Monitored(name = "User", level = MonitoringLevel.DETAILED)
-public class UserEntity implements Externable<UserEntity>, Notifiable {
+public class UserEntity extends AbstractUpdateable<UserEntity> implements Externable<UserEntity>, Notifiable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -522,8 +522,8 @@ public class UserEntity implements Externable<UserEntity>, Notifiable {
     @Override
     public void merge(final UserEntity obj) {
         if ((obj != null) && id.equals(obj.id)) {
-            privateData = obj.privateData;
-            notifications = obj.notifications;
+            privateData = which(privateData, obj.privateData);
+            notifications = which(notifications, obj.notifications);
         }
     }
 

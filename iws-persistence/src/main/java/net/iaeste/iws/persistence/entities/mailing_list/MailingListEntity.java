@@ -15,7 +15,7 @@
 package net.iaeste.iws.persistence.entities.mailing_list;
 
 import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.persistence.entities.Updateable;
+import net.iaeste.iws.persistence.entities.AbstractUpdateable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -50,7 +50,7 @@ import java.util.Date;
 })
 @Entity
 @Table(name = "mailing_lists")
-public class MailingListEntity implements Updateable<MailingListEntity> {
+public class MailingListEntity extends AbstractUpdateable<MailingListEntity> {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -202,8 +202,8 @@ public class MailingListEntity implements Updateable<MailingListEntity> {
     @Override
     public void merge(final MailingListEntity obj) {
         if ((obj != null) && id.equals(obj.id)) {
-            listAddress = obj.listAddress;
-            active = obj.active;
+            listAddress = which(listAddress, obj.listAddress);
+            active = which(active, obj.active);
         }
     }
 }

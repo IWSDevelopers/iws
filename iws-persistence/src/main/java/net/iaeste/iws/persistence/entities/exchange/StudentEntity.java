@@ -16,12 +16,12 @@ package net.iaeste.iws.persistence.entities.exchange;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.Language;
+import net.iaeste.iws.api.enums.MonitoringLevel;
 import net.iaeste.iws.api.enums.exchange.LanguageLevel;
 import net.iaeste.iws.api.enums.exchange.StudyLevel;
-import net.iaeste.iws.persistence.monitoring.Monitored;
-import net.iaeste.iws.api.enums.MonitoringLevel;
-import net.iaeste.iws.persistence.entities.Updateable;
+import net.iaeste.iws.persistence.entities.AbstractUpdateable;
 import net.iaeste.iws.persistence.entities.UserEntity;
+import net.iaeste.iws.persistence.monitoring.Monitored;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -61,7 +61,7 @@ import java.util.Date;
 @Entity
 @Table(name = "students")
 @Monitored(name = "Student", level = MonitoringLevel.DETAILED)
-public class StudentEntity implements Updateable<StudentEntity> {
+public class StudentEntity extends AbstractUpdateable<StudentEntity> {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -333,17 +333,17 @@ public class StudentEntity implements Updateable<StudentEntity> {
         // don't merge if objects are not the same entity
         //if ((id != null) && (obj != null) && id.equals(obj.id)) {
         if ((id != null) && (obj != null) && (user != null) && (user.getExternalId() != null) && user.getExternalId().equals(obj.user.getExternalId())) {
-            studyLevel = obj.studyLevel;
-            fieldOfStudies = obj.fieldOfStudies;
-            specializations = obj.specializations;
-            availableFrom = obj.availableFrom;
-            availableTo = obj.availableTo;
-            language1 = obj.language1;
-            language1Level = obj.language1Level;
-            language2 = obj.language2;
-            language2Level = obj.language2Level;
-            language3 = obj.language3;
-            language3Level = obj.language3Level;
+            studyLevel = which(studyLevel, obj.studyLevel);
+            fieldOfStudies = which(fieldOfStudies, obj.fieldOfStudies);
+            specializations = which(specializations, obj.specializations);
+            availableFrom = which(availableFrom, obj.availableFrom);
+            availableTo = which(availableTo, obj.availableTo);
+            language1 = which(language1, obj.language1);
+            language1Level = which(language1Level, obj.language1Level);
+            language2 = which(language2, obj.language2);
+            language2Level = which(language2Level, obj.language2Level);
+            language3 = which(language3, obj.language3);
+            language3Level = which(language3Level, obj.language3Level);
         }
     }
 }

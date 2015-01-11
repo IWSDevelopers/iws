@@ -64,7 +64,7 @@ public final class FolderRequest extends AbstractVerification {
      * Sets the File to be processed. The method will thrown an
      * {@code IllegalArgumentException} if the Object is not verifiable.
      *
-     * @param file File Object to be processed
+     * @param folder Folder Object to be processed
      * @throws IllegalArgumentException if the File Object is not verifiable
      */
     public void setFolder(final Folder folder) throws IllegalArgumentException {

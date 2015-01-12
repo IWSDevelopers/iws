@@ -69,7 +69,7 @@ public final class FetchFolderResponse extends FallibleResponse {
         this.folder = new Folder(folder);
     }
 
-    public Folder getFile() {
+    public Folder getFolder() {
         return new Folder(folder);
     }
 

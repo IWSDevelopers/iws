@@ -42,7 +42,7 @@ public final class Employer extends AbstractVerification {
     private String employerId = null;
     private Group group = null;
     private String name = null;
-    private String department = null;
+    private String department = "";
     private String business = null;
     private Address address = null;
     private String employeesCount = null;
@@ -332,6 +332,8 @@ public final class Employer extends AbstractVerification {
         final Map<String, String> validation = new HashMap<>(0);
 
         isNotNull(validation, "name", name);
+        isNotNull(validation, "department", department);
+        isNotNull(validation, "workingPlace", workingPlace);
         isVerifiable(validation, "address", address);
         isVerifiable(validation, "group", group);
 

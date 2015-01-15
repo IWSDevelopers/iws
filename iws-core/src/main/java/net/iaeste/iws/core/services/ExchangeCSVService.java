@@ -318,9 +318,19 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
      * @throws IdentificationException if more than one Employer exists
      */
     private EmployerEntity process(final Authentication authentication, final Employer employer) {
-        // First, lets see if we can find an existing Employer, in which
-        // case we will use this instead of creating a new
-        EmployerEntity entity = dao.findUniqueEmployer(authentication, employer);
+        // If the Employer provided is having an Id set - then we need to update
+        // the existing record, otherwise we will try to see if we can find a
+        // similar Employer and update it. If we can neither find an Employer by
+        // the Id, not the unique information - then we will create a new one.
+        EmployerEntity entity;
+        if (employer.getEmployerId() != null) {
+            // Id exists, so we simply find the Employer based on that
+            entity = dao.findEmployer(employer.getEmployerId());
+        } else {
+            // No Id was set, so we're trying to find the Employer based on the
+            // Unique information
+            entity = dao.findUniqueEmployer(authentication, employer);
+        }
 
         if (entity == null) {
             entity = ExchangeTransformer.transform(employer);

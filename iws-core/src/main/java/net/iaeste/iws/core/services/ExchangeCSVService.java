@@ -337,7 +337,7 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
             // No Id was set, so we're trying to find the Employer based on the
             // Unique information
             entity = dao.findUniqueEmployer(authentication, employer);
-            log.debug("Unique Employer for name {} gave {}.", employer.getName(), entity.getName());
+            log.debug("Unique Employer for name {} gave {}.", employer.getName(), entity != null ? entity.getName() : "null");
         }
 
         if (entity == null) {

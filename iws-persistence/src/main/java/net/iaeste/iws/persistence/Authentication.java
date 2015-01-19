@@ -15,6 +15,7 @@
 package net.iaeste.iws.persistence;
 
 import net.iaeste.iws.api.dtos.AuthenticationToken;
+import net.iaeste.iws.api.util.Traceable;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
 
@@ -31,7 +32,7 @@ import net.iaeste.iws.persistence.entities.UserEntity;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
-public final class Authentication {
+public final class Authentication implements Traceable {
 
     private final AuthenticationToken token;
     private final UserEntity user;
@@ -94,6 +95,10 @@ public final class Authentication {
         return group;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getTraceId() {
         return traceId;
     }

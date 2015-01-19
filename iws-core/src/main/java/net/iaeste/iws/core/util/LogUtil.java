@@ -14,8 +14,7 @@
  */
 package net.iaeste.iws.core.util;
 
-import net.iaeste.iws.api.dtos.AuthenticationToken;
-import net.iaeste.iws.persistence.Authentication;
+import net.iaeste.iws.api.util.Traceable;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -33,20 +32,21 @@ public final class LogUtil {
     /**
      * Prepares the log message, by adding the required transferticket
      * information to the given Message, and returns the formatted result. Note,
-     * that the Transferticket is part of the Authentication Object.
+     * that the Transferticket is part of the Authentication Object.<br />
+     *   The method uses the String format method to prepare the log message.
      *
-     * @param authentication User that is invoking the request
-     * @param message        String to format with the provided arguments
-     * @param args           Arguments for the String to format
+     * @param trace   The User's trace Id
+     * @param message String to format with the provided arguments
+     * @param args    Arguments for the String to format
      * @return Formatted Log message
      */
-    public static String formatLogMessage(final Authentication authentication, final String message, final Object... args) {
+    public static String formatLogMessage(final Traceable trace, final String message, final Object... args) {
         // The default format for our log messages starts with a Transferticket
         final String rawMessage = "[traceId = %s] " + message;
 
         // Now, we need to prepend the Transferticket to the formatting parameters
         final Object[] parameters = new Object[1 + (args != null ? args.length : 0)];
-        parameters[0] = authentication.getTraceId();
+        parameters[0] = trace != null ? trace.getTraceId() : "none";
 
         // Expand the Parameters with the provided arguments
         if (args != null) {
@@ -55,45 +55,6 @@ public final class LogUtil {
                 parameters[i] = obj;
                 i++;
             }
-        }
-
-        // Return the formatted string with the parameter arguments
-        return String.format(rawMessage, parameters);
-    }
-
-    /**
-     * Prepares the log message, by adding the required transferticket
-     * information to the given Message, and returns the formatted result. Note,
-     * that the Transferticket is part of the Authentication Object.
-     *
-     * @param token   User Authentication Token
-     * @param message String to format with the provided arguments
-     * @param args    Arguments for the String to format
-     * @return Formatted Log message
-     */
-    public static String formatLogMessage(final AuthenticationToken token, final String message, final Object... args) {
-        // The default format for our log messages starts with a Transferticket
-        final String rawMessage;
-        final Object[] parameters;
-
-        if (token != null) {
-            rawMessage = "[traceId = %s] " + message;
-
-            // Now, we need to prepend the Transferticket to the formatting parameters
-            parameters = new Object[1 + (args != null ? args.length : 0)];
-            parameters[0] = token.getTraceId();
-
-            // Expand the Parameters with the provided arguments
-            if (args != null) {
-                int i = 1;
-                for (final Object obj : args) {
-                    parameters[i] = obj;
-                    i++;
-                }
-            }
-        } else {
-            rawMessage = message;
-            parameters = args;
         }
 
         // Return the formatted string with the parameter arguments

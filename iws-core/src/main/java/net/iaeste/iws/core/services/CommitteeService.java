@@ -426,14 +426,14 @@ public final class CommitteeService extends CommonService<CommitteeDao> {
                     if (staffs.size() == 1) {
                         country.setMembership(Membership.ASSOCIATE_MEMBER);
                         dao.persist(authentication, country);
-                        log.info("Country {} has been upgraded from {} to {}.", country.getCountryName(), Membership.COOPERATING_INSTITUTION, Membership.ASSOCIATE_MEMBER);
+                        log.info(formatLogMessage(authentication, "Country %s has been upgraded from %s to %s.", country.getCountryName(), Membership.COOPERATING_INSTITUTION, Membership.ASSOCIATE_MEMBER));
                     } else {
                         throw new IllegalActionException("Attempting to updgrade a Cooperating Institution to Associate Membership, while other Cooperating Institutions still exist for the Country.");
                     }
                 } else if (country.getMembership() == Membership.ASSOCIATE_MEMBER) {
                     country.setMembership(Membership.FULL_MEMBER);
                     dao.persist(authentication, country);
-                    log.info("Country {} has been upgraded from {} to {}.", country.getCountryName(), Membership.ASSOCIATE_MEMBER, Membership.FULL_MEMBER);
+                    log.info(formatLogMessage(authentication, "Country %s has been upgraded from %s to %s.", country.getCountryName(), Membership.ASSOCIATE_MEMBER, Membership.FULL_MEMBER));
                 } else {
                     throw new IllegalActionException("Attempting to updgrade a Committee, which is already a Full Member.");
                 }
@@ -613,7 +613,7 @@ public final class CommitteeService extends CommonService<CommitteeDao> {
             try {
                 deletePrivateData(authentication, user);
             } catch (IWSException e) {
-                log.warn("Unable to delete the Account for {} {} <{}>, reason: {}", user.getFirstname(), user.getLastname(), user.getUsername(), e.getMessage());
+                log.warn(formatLogMessage(authentication, "Unable to delete the Account for %s %s <%s>, reason: %s", user.getFirstname(), user.getLastname(), user.getUsername(), e.getMessage()));
             }
         }
     }

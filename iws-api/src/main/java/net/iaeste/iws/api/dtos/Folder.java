@@ -33,6 +33,8 @@ public final class Folder extends AbstractVerification {
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     private String folderId = null;
+    private String parentId = null;
+    private Group group = null;
     private String foldername = null;
     private List<Folder> folders = null;
     private List<File> files = null;
@@ -57,6 +59,8 @@ public final class Folder extends AbstractVerification {
     public Folder(final Folder folder) {
         if (folder != null) {
             this.folderId = folder.folderId;
+            this.parentId = folder.parentId;
+            this.group = new Group(folder.group);
             this.foldername = folder.foldername;
             this.folders = folder.folders;
             this.files = folder.files;
@@ -74,6 +78,22 @@ public final class Folder extends AbstractVerification {
 
     public String getFolderId() {
         return folderId;
+    }
+
+    public void setParentId(final String parentId) {
+        this.parentId = parentId;
+    }
+
+    public String getParentId() {
+        return parentId;
+    }
+
+    public void setGroup(final Group group) {
+        this.group = group;
+    }
+
+    public Group getGroup() {
+        return group;
     }
 
     public void setFoldername(final String foldername) {
@@ -120,6 +140,7 @@ public final class Folder extends AbstractVerification {
         final Map<String, String> validation = new HashMap<>(0);
 
         isNotNull(validation, "foldername", foldername);
+        isNotNull(validation, "group", group);
 
         return validation;
     }
@@ -139,6 +160,12 @@ public final class Folder extends AbstractVerification {
         final Folder folder = (Folder) obj;
 
         if (folderId != null ? !folderId.equals(folder.folderId) : folder.folderId != null) {
+            return false;
+        }
+        if (parentId != null ? !parentId.equals(folder.parentId) : folder.parentId != null) {
+            return false;
+        }
+        if (group != null ? !group.equals(folder.group) : folder.group != null) {
             return false;
         }
         if (foldername != null ? !foldername.equals(folder.foldername) : folder.foldername != null) {
@@ -161,6 +188,8 @@ public final class Folder extends AbstractVerification {
         int result = IWSConstants.HASHCODE_INITIAL_VALUE;
 
         result = IWSConstants.HASHCODE_MULTIPLIER * result + ((folderId != null) ? folderId.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((parentId != null) ? parentId.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((group != null) ? group.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (foldername != null ? foldername.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (folders != null ? folders.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (files != null ? files.hashCode() : 0);
@@ -176,6 +205,8 @@ public final class Folder extends AbstractVerification {
     public String toString() {
         return "Folder{" +
                 "folderId='" + folderId + '\'' +
+                ", parentId='" + parentId + '\'' +
+                ", group='" + group + '\'' +
                 ", foldername='" + foldername + '\'' +
                 ", folders=" + folders +
                 ", files=" + files +

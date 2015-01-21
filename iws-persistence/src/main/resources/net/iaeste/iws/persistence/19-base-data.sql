@@ -53,6 +53,9 @@ insert into permissions (id, permission) values (230, 'CREATE_STUDENT_ACCOUNT');
 -- Storage 3xx
 insert into permissions (id, permission) values (300, 'PROCESS_FILE');
 insert into permissions (id, permission) values (301, 'FETCH_FILE');
+insert into permissions (id, permission) values (310, 'PROCESS_FOLDER');
+insert into permissions (id, permission) values (311, 'FETCH_FOLDER');
+
 -- Exchange: 4xx
 insert into permissions (id, permission) values (400, 'FETCH_OFFER_STATISTICS');
 insert into permissions (id, permission) values (410, 'PROCESS_EMPLOYER');
@@ -312,6 +315,31 @@ insert into permission_to_role (role_id, permission_id) values (2, 301);
 insert into permission_to_role (role_id, permission_id) values (3, 301);
 insert into permission_to_role (role_id, permission_id) values (5, 301);
 
+-- Permission: 310 - Process Folder
+--   -> GroupTypes: All
+--   -> Roles:      1 Owner
+--                  2 Moderator
+insert into permission_to_grouptype (grouptype_id, permission_id) values (0, 310);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (1, 310);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (2, 310);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (3, 310);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (4, 310);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (5, 310);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (6, 310);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (7, 310);
+insert into permission_to_role (role_id, permission_id) values (1, 310);
+insert into permission_to_role (role_id, permission_id) values (2, 310);
+
+-- Permission: 311 - Fetch Folder
+--   -> GroupTypes: 2 Member
+--   -> Roles:      1 Owner
+--                  2 Moderator
+--                  3 Member
+insert into permission_to_grouptype (grouptype_id, permission_id) values (2, 311);
+insert into permission_to_role (role_id, permission_id) values (1, 311);
+insert into permission_to_role (role_id, permission_id) values (2, 311);
+insert into permission_to_role (role_id, permission_id) values (3, 311);
+
 -- Permission: 400 - Fetch Offer Statistics
 --   -> GroupTypes: 4 National
 --                  5 Local
@@ -497,7 +525,7 @@ insert into groups (id, external_id, old_iw3_id, grouptype_id, parent_id, group_
 -- -- =============================================================================
 -- -- Default Folders for file handling
 -- -- =============================================================================
--- insert into files (id, external_id, group_id, filetype, availability, folder_id, filename) VALUES ( 1, 'afec3bc0-296b-4bf2-8a9e-c2d7b74e93a0', null, 'FOLDER', 'PUBLIC',  1, 'Root');
+insert into folders (id, external_id, group_id, parent_id, foldername) VALUES ( 1, 'afec3bc0-296b-4bf2-8a9e-c2d7b74e93a0', 3, 1, 'Root');
 -- insert into files (id, external_id, group_id, filetype, availability, folder_id, filename) VALUES ( 2, '0a0260bd-244d-4a87-a53e-b613dbbaf265', null, 'FOLDER', 'PUBLIC',  1, 'Library');
 -- insert into files (id, external_id, group_id, filetype, availability, folder_id, filename) VALUES ( 3, '59d02455-1537-49cb-9bf8-77a3aa755d18', null, 'FOLDER', 'PRIVATE', 1, 'Private');
 -- insert into files (id, external_id, group_id, filetype, availability, folder_id, filename) VALUES ( 4, '770ccaff-e739-43f2-b812-f30be84442bf', null, 'FOLDER', 'PRIVATE', 1, 'Committees');

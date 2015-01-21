@@ -23,7 +23,6 @@ import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.exchange.Employer;
 import net.iaeste.iws.api.dtos.exchange.Offer;
-import net.iaeste.iws.api.dtos.exchange.OfferGroup;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.api.exceptions.NotImplementedException;
@@ -81,14 +80,12 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
     private final Notifications notifications;
 
     private final AccessDao accessDao;
-    private final StudentDao studentDao;
 
     public ExchangeService(final Settings settings, final ExchangeDao dao, final AccessDao accessDao, final StudentDao studentDao, final Notifications notifications) {
         super(settings, dao);
 
         this.notifications = notifications;
         this.accessDao = accessDao;
-        this.studentDao = studentDao;
     }
 
     public EmployerResponse processEmployer(final Authentication authentication, final ProcessEmployerRequest request) {
@@ -268,16 +265,6 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
         } else {
             throw new IdentificationException("Cannot delete Offer with OfferId " + request.getOfferId());
         }
-    }
-
-    private static List<OfferGroup> convertOfferGroupEntityList(final List<OfferGroupEntity> found) {
-        final List<OfferGroup> result = new ArrayList<>(found.size());
-
-        for (final OfferGroupEntity entity : found) {
-            result.add(transform(entity));
-        }
-
-        return result;
     }
 
     public void processOfferTemplates(final Authentication authentication, final OfferTemplateRequest request) {
@@ -573,8 +560,8 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
 
     private static void verifyNotSharingToItself(final Authentication authentication, final List<GroupEntity> groupEntities) {
         // All operations in the Exchange module requires that a user is a
-        // member of either a National or SAR group. As it is only possible to
-        // be member of one, then the Authentication/Authorization module can
+        // member of a National or LocalCommittee group. As it is only possible
+        // to be member of one, then the Authentication/Authorization module can
         // easily extract this information, and does it as well. The Group from
         // the Authentication Object is the users National / SAR Group
         final GroupEntity nationalGroup = authentication.getGroup();

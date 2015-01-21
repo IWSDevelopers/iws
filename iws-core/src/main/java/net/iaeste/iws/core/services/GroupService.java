@@ -128,7 +128,7 @@ public final class GroupService {
                 }
             } else {
                 final Group theGroup = request.getGroup();
-                log.info("Group Updated was made for the restricted group {} of type {}. Only selected fields have been updated!", theGroup.getGroupName(), theGroup.getGroupType().getDescription());
+                log.info(formatLogMessage(authentication, "Group Updated was made for the restricted group %s of type %s. Only selected fields have been updated!", theGroup.getGroupName(), theGroup.getGroupType().getDescription()));
                 limitedGroupUpdate(authentication, entity, theGroup);
             }
         }

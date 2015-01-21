@@ -40,9 +40,9 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 /**
- * @author Kim Jensen / last $Author:$
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since IWS 1.0
+ * @since   IWS 1.0
  */
 public final class ContactsService {
 

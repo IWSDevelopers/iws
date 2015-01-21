@@ -15,12 +15,15 @@
 package net.iaeste.iws.persistence.entities;
 
 import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.persistence.monitoring.Monitored;
 import net.iaeste.iws.api.enums.MonitoringLevel;
+import net.iaeste.iws.api.enums.Privacy;
 import net.iaeste.iws.persistence.Externable;
+import net.iaeste.iws.persistence.monitoring.Monitored;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -83,6 +86,15 @@ public class FileEntity extends AbstractUpdateable<FileEntity> implements Extern
     private String externalId = null;
 
     /**
+     * All files may be shared, but the Privacy determines who may view/process
+     * them. Files marked Public is for everyone to see, files marked Private or
+     * Protected is for the Group only.
+     */
+    @Enumerated(EnumType.STRING)
+    @Column(name = "privacy", length = 10, nullable = false)
+    private Privacy privacy = Privacy.PRIVATE;
+
+    /**
      * Some Files are of a general Purpose nature, and thus cannot have a Group
      * associated, which will otherwise limit the viewing.
      */
@@ -93,6 +105,10 @@ public class FileEntity extends AbstractUpdateable<FileEntity> implements Extern
     @ManyToOne(targetEntity = UserEntity.class)
     @JoinColumn(name = "user_id", referencedColumnName = "id", updatable = false)
     private UserEntity user = null;
+
+    @ManyToOne(targetEntity = FolderEntity.class)
+    @JoinColumn(name = "folder_id", referencedColumnName = "id")
+    private FolderEntity folder = null;
 
     @Monitored(name="File Name", level = MonitoringLevel.DETAILED)
     @Column(name = "filename", length = 100, nullable = false)
@@ -171,6 +187,14 @@ public class FileEntity extends AbstractUpdateable<FileEntity> implements Extern
         return externalId;
     }
 
+    public void setPrivacy(final Privacy privacy) {
+        this.privacy = privacy;
+    }
+
+    public Privacy getPrivacy() {
+        return privacy;
+    }
+
     public void setGroup(final GroupEntity group) {
         this.group = group;
     }
@@ -185,6 +209,14 @@ public class FileEntity extends AbstractUpdateable<FileEntity> implements Extern
 
     public UserEntity getUser() {
         return user;
+    }
+
+    public void setFolder(final FolderEntity folder) {
+        this.folder = folder;
+    }
+
+    public FolderEntity getFolder() {
+        return folder;
     }
 
     public void setFilename(final String filename) {
@@ -297,6 +329,7 @@ public class FileEntity extends AbstractUpdateable<FileEntity> implements Extern
         // don't merge if objects are not the same entity
         if ((id != null) && (obj != null) && externalId.equals(obj.externalId)) {
             // Note; Id & ExternalId are *not* allowed to be updated!
+            privacy = which(privacy, obj.privacy);
             filename = which(filename, obj.filename);
             // The filedata is stored in the filesystem, so the name stored here
             // is simply just the reference. Hence, we do not allow it to be

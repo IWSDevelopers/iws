@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.core.services;
 
+import static net.iaeste.iws.core.util.LogUtil.formatLogMessage;
+
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.Address;
@@ -263,7 +265,7 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
 
                     newEntity.setExternalId(existingEntity.getExternalId());
                     dao.persist(authentication, existingEntity, newEntity);
-                    log.info("CSV Update of Offer with RefNo '{}' completed.", newEntity.getRefNo());
+                    log.info(formatLogMessage(authentication, "CSV Update of Offer with RefNo '%s' completed.", newEntity.getRefNo()));
                     processingResult.put(refNo, OfferCSVUploadResponse.ProcessingResult.Updated);
                 } else {
                     // First, we need an Employer for our new Offer. The Process
@@ -286,7 +288,7 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
 
                     // Persist the Offer with history
                     dao.persist(authentication, newEntity);
-                    log.info("CSV Import of Offer with RefNo '{}' completed.", newEntity.getRefNo());
+                    log.info(formatLogMessage(authentication, "CSV Import of Offer with RefNo '%s' completed.", newEntity.getRefNo()));
                     processingResult.put(refNo, OfferCSVUploadResponse.ProcessingResult.Added);
                 }
             } else {
@@ -331,12 +333,12 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
         if (employer.getEmployerId() != null) {
             // Id exists, so we simply find the Employer based on that
             entity = dao.findEmployer(employer.getEmployerId());
-            log.debug("Employer lookup for Id '{}' gave '{}'.", employer.getEmployerId(), entity.getName());
+            log.debug(formatLogMessage(authentication, "Employer lookup for Id '%s' gave '%s'.", employer.getEmployerId(), entity.getName()));
         } else {
             // No Id was set, so we're trying to find the Employer based on the
             // Unique information
             entity = dao.findUniqueEmployer(authentication, employer);
-            log.debug("Unique Employer for name '{}' gave '{}'.", employer.getName(), entity != null ? entity.getName() : "null");
+            log.debug(formatLogMessage(authentication, "Unique Employer for name '%s' gave '%s'.", employer.getName(), entity != null ? entity.getName() : "null"));
         }
 
         if (entity == null) {
@@ -345,12 +347,12 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
             entity.setGroup(nationalGroup);
             processAddress(authentication, entity.getAddress());
             dao.persist(authentication, entity);
-            log.info("Have added the Employer '{}' for '{}'.", employer.getName(), authentication.getGroup().getGroupName());
+            log.info(formatLogMessage(authentication, "Have added the Employer '%s' for '%s'.", employer.getName(), authentication.getGroup().getGroupName()));
         } else {
             final EmployerEntity updated = ExchangeTransformer.transform(employer);
             processAddress(authentication, entity.getAddress(), employer.getAddress());
             dao.persist(authentication, entity, updated);
-            log.info("Have updated the Employer '{}' for '{}'.", employer.getName(), authentication.getGroup().getGroupName());
+            log.info(formatLogMessage(authentication, "Have updated the Employer '%s' for '%s'.", employer.getName(), authentication.getGroup().getGroupName()));
         }
 
         return entity;

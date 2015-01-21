@@ -33,9 +33,10 @@ public final class File extends AbstractVerification {
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     private String fileId = null;
-    private Privacy privacy = null;
+    private Privacy privacy = Privacy.PRIVATE;
     private Group group = null;
     private User user = null;
+    private Folder folder = null;
     private String filename = null;
     // Filedata is omitted for equals, hashCode and toString, since the data
     // can be rather large
@@ -70,6 +71,7 @@ public final class File extends AbstractVerification {
             privacy = file.privacy;
             group = new Group(file.group);
             user = new User(file.user);
+            folder = new Folder(file.folder);
             filename = file.filename;
             filedata = file.filedata;
             filesize = file.filesize;
@@ -104,7 +106,18 @@ public final class File extends AbstractVerification {
         return fileId;
     }
 
+    /**
+     * Sets the files privacy level. Files marked Public can be read by anyone
+     * but only processed by the owning Group, files marked Protected can only
+     * be viewed or processed by by the owning Group, and files marked Private
+     * can be viewed by the Group, but only processed by the owning User.<br />
+     *   Note, that if the privacy information must be set, if set to null, the
+     * method will throw an {@code IllegalArgumentException}.
+     *
+     * @param privacy The File's privacy setting
+     */
     public void setPrivacy(final Privacy privacy) {
+        ensureNotNull("privacy", privacy);
         this.privacy = privacy;
     }
 
@@ -145,6 +158,23 @@ public final class File extends AbstractVerification {
 
     public User getUser() {
         return user;
+    }
+
+    /**
+     * Sets the Folder for the File, i.e. the location where the file can be
+     * viewed from.<br />
+     *   If set, then the folder must be a valid folder, otherwise the method
+     * will throw an {@code IllegalArgumentException}.
+     *
+     * @param folder Folder for the File
+     */
+    public void setFolder(final Folder folder) {
+        ensureVerifiable("folder", folder);
+        this.folder = folder;
+    }
+
+    public Folder getFolder() {
+        return folder;
     }
 
     /**
@@ -305,6 +335,7 @@ public final class File extends AbstractVerification {
         final Map<String, String> validation = new HashMap<>(0);
 
         isNotNull(validation, "filename", filename);
+        isNotNull(validation, "privacy", privacy);
 
         return validation;
     }
@@ -330,6 +361,9 @@ public final class File extends AbstractVerification {
             return false;
         }
         if (user != null ? !user.equals(file.user) : file.user != null) {
+            return false;
+        }
+        if (folder != null ? !folder.equals(file.folder) : file.folder != null) {
             return false;
         }
         if (filename != null ? !filename.equals(file.filename) : file.filename != null) {
@@ -367,6 +401,7 @@ public final class File extends AbstractVerification {
         result = IWSConstants.HASHCODE_MULTIPLIER * result + ((privacy != null) ? privacy.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + ((group != null) ? group.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + ((user != null) ? user.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((folder != null) ? folder.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + ((filename != null) ? filename.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + ((filesize != null) ? filesize.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + ((mimetype != null) ? mimetype.hashCode() : 0);
@@ -389,6 +424,7 @@ public final class File extends AbstractVerification {
                 ", privacy=" + privacy +
                 ", group=" + group +
                 ", user=" + user +
+                ", folder=" + folder +
                 ", filename='" + filename + '\'' +
                 ", filesize=" + filesize +
                 ", mimetype='" + mimetype + '\'' +

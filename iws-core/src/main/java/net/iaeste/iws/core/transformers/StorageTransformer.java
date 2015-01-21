@@ -17,7 +17,9 @@ package net.iaeste.iws.core.transformers;
 import static net.iaeste.iws.core.transformers.CommonTransformer.convert;
 
 import net.iaeste.iws.api.dtos.File;
+import net.iaeste.iws.api.dtos.Folder;
 import net.iaeste.iws.persistence.entities.FileEntity;
+import net.iaeste.iws.persistence.entities.FolderEntity;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -39,6 +41,7 @@ public final class StorageTransformer {
             result = new File();
 
             result.setFileId(entity.getExternalId());
+            result.setPrivacy(entity.getPrivacy());
             result.setGroup(CommonTransformer.transform(entity.getGroup()));
             result.setUser(AdministrationTransformer.transform(entity.getUser()));
             result.setFilename(entity.getFilename());
@@ -61,6 +64,7 @@ public final class StorageTransformer {
             entity = new FileEntity();
 
             entity.setExternalId(file.getFileId());
+            entity.setPrivacy(file.getPrivacy());
             entity.setGroup(CommonTransformer.transform(file.getGroup()));
             entity.setUser(AdministrationTransformer.transform(file.getUser()));
             entity.setFilename(file.getFilename());
@@ -69,6 +73,35 @@ public final class StorageTransformer {
             entity.setDescription(file.getDescription());
             entity.setKeywords(file.getKeywords());
             entity.setChecksum(file.getChecksum());
+        }
+
+        return entity;
+    }
+
+    public static Folder transform(FolderEntity entity) {
+        Folder result = null;
+
+        if (entity != null) {
+            result = new Folder();
+
+            result.setFolderId(entity.getExternalId());
+            result.setGroup(CommonTransformer.transform(entity.getGroup()));
+            result.setFoldername(entity.getFoldername());
+            result.setCreated(convert(entity.getCreated()));
+        }
+
+        return result;
+    }
+
+    public static FolderEntity transform(Folder folder) {
+        FolderEntity entity = null;
+
+        if (folder != null) {
+            entity = new FolderEntity();
+
+            entity.setExternalId(folder.getFolderId());
+            entity.setFoldername(folder.getFoldername());
+            entity.setGroup(CommonTransformer.transform(folder.getGroup()));
         }
 
         return entity;

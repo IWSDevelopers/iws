@@ -65,6 +65,11 @@ public final class StorageController extends CommonController implements Storage
 
         try {
             verify(request);
+            // Although we have to make a permission check, we will make it
+            // once we have resolved the ownership of the folder. So the
+            // permission check can be made against the correct Group, and
+            // not an assumed Group.
+            token.setGroupId(request.getFolder().getGroup().getGroupId());
             final Authentication authentication = verifyAccess(token, Permission.PROCESS_FOLDER);
 
             final StorageService service = factory.prepareStorageService();

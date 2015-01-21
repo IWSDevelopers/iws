@@ -18,6 +18,7 @@ import static net.iaeste.iws.common.utils.HashcodeGenerator.generateHash;
 import static net.iaeste.iws.common.utils.PasswordGenerator.generatePassword;
 import static net.iaeste.iws.common.utils.StringUtils.toLower;
 import static net.iaeste.iws.core.transformers.StorageTransformer.transform;
+import static net.iaeste.iws.core.util.LogUtil.formatLogMessage;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
@@ -401,7 +402,7 @@ public class CommonService<T extends BasicDao> {
             final int attachmentsDeleted = dao.deleteAttachmentRecord(entity);
             dao.delete(entity);
 
-            log.info("File {}, Attached {} times, has been successfully deleted from the IWS.", filename, attachmentsDeleted);
+            log.info(formatLogMessage(authentication, "File %s, Attached %d times, has been successfully deleted from the IWS.", filename, attachmentsDeleted));
         } else {
             throw new AuthorizationException("The user is not authorized to process this file.");
         }

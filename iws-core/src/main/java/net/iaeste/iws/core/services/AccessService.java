@@ -17,6 +17,7 @@ package net.iaeste.iws.core.services;
 import static net.iaeste.iws.common.utils.HashcodeGenerator.generateHash;
 import static net.iaeste.iws.common.utils.StringUtils.toLower;
 import static net.iaeste.iws.core.transformers.AdministrationTransformer.transform;
+import static net.iaeste.iws.core.util.LogUtil.formatLogMessage;
 
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
@@ -105,12 +106,12 @@ public final class AccessService extends CommonService<AccessDao> {
         final SessionEntity activeSession = dao.findActiveSession(user);
 
         if ((activeSession == null) && !activeSessions.hasMaximumRegisteredSessions()) {
-            log.info("Creating a new Session for the user " + user);
             final String key = generateAndPersistSessionKey(user);
             activeSessions.registerToken(key);
             loginRetries.removeAuthenticatedUser(request.getUsername());
 
             final AuthenticationToken token = new AuthenticationToken(key);
+            log.info(formatLogMessage(token, "Created a new Session for the user " + user));
             return new AuthenticationResponse(token);
         } else {
             final String msg = "An Active Session for user %s %s already exists.";
@@ -223,7 +224,7 @@ public final class AccessService extends CommonService<AccessDao> {
         final SessionEntity session = dao.findActiveSession(token);
         dao.deprecateSession(session);
         activeSessions.removeToken(token.getToken());
-        log.info("Deprecated session for user: " + session.getUser());
+        log.info(formatLogMessage(token, "Deprecated session for user: " + session.getUser()));
     }
 
     /**

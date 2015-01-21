@@ -31,10 +31,18 @@ public final class FolderRequest extends AbstractVerification {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    /**
-     * The Folder Object to process.
-     */
+    private enum Action { PROCESS, CLEAR, DELETE }
+
+    private Action action = null;
+
+    /** The Folder Object to process. */
     private Folder folder = null;
+
+    /**
+     * The Id of the Parent Folder, if nothing given - the Group's root folder
+     * is used. This value is only used when creating new Folders.
+     */
+    private String parentId = null;
 
     // =========================================================================
     // Object Constructors
@@ -45,6 +53,7 @@ public final class FolderRequest extends AbstractVerification {
      * for WebServices to work properly.
      */
     public FolderRequest() {
+        action = Action.PROCESS;
     }
 
     /**
@@ -68,12 +77,29 @@ public final class FolderRequest extends AbstractVerification {
      * @throws IllegalArgumentException if the File Object is not verifiable
      */
     public void setFolder(final Folder folder) throws IllegalArgumentException {
-        ensureVerifiable("folder", folder);
+        ensureNotNullAndVerifiable("folder", folder);
         this.folder = new Folder(folder);
     }
 
     public Folder getFolder() {
         return new Folder(folder);
+    }
+
+    public void setAction(final Action action) {
+        ensureNotNull("action", action);
+        this.action = action;
+    }
+
+    public Action getAction() {
+        return action;
+    }
+
+    public void setParentId(final String parentId) {
+        this.parentId = parentId;
+    }
+
+    public String getParentId() {
+        return parentId;
     }
 
     // =========================================================================
@@ -86,6 +112,9 @@ public final class FolderRequest extends AbstractVerification {
     @Override
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(1);
+
+        isNotNull(validation, "folder", folder);
+        isNotNull(validation, "action", action);
 
         return validation;
     }

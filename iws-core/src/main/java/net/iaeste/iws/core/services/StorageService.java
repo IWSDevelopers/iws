@@ -49,6 +49,18 @@ public final class StorageService extends CommonService<AccessDao> {
         super(settings, accessDao);
     }
 
+    /**
+     * The implementation of the processFolder request. The request will first
+     * read the Folder from the system, and then apply checks permission checks
+     * against it. It is needed to do it this way, since a Folder may be
+     * published from a different Group, so it is publicly accessible.<br />
+     *   There is a couple of rules which apply to the Folders. Folders  follow the rule of the GroupType for the root folder, and the information is inherited down the hierarchy. So a Folder belonging to a Members Group, is not published, but a Folder belonging to the National Group is.<br />
+     *   Files within a public folder is by default marked protected.
+     *   Folders belong to Groups, and use the Groups publicList field, to determine if it is publicly available or not, if
+     * @param authentication
+     * @param request
+     * @return
+     */
     public FolderResponse processFolder(final Authentication authentication, final FolderRequest request) {
         throw new NotImplementedException("Method pending implementation, see Trac #946.");
     }
@@ -72,6 +84,7 @@ public final class StorageService extends CommonService<AccessDao> {
         return response;
     }
 
+    // TODO Extend the method with the possibility to read files from a public folder. Provided that the user has access to the folder (see GroupType) and the file is either public (all) or protected (member of file group).
     public FetchFileResponse fetchFile(final Authentication authentication, final FetchFileRequest request) {
         final String externalGroupId = request.getGroupId();
         final StorageType type = request.getType();

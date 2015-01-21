@@ -33,6 +33,13 @@ import net.iaeste.iws.api.responses.FolderResponse;
  */
 public interface Storage {
 
+    /**
+     * Folders within the IWS is a placeholder for either sub-folders or files.
+     *
+     * @param token
+     * @param request
+     * @return
+     */
     FolderResponse processFolder(AuthenticationToken token, FolderRequest request);
     FetchFolderResponse fetchFolder(AuthenticationToken token, FetchFolderRequest request);
 

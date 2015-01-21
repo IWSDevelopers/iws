@@ -33,9 +33,12 @@ public enum GroupType {
      * avoid data corruption, it is not allowed for users to change their first
      * and lastnames. However, there are cases where you wish to change them,
      * such as marriage where the family name is changed.<br />
+     *   This GroupType will have both a public Mailing list and a public file
+     * folder for others to view the content of, if the files have been marked
+     * public, otherwise only the Group may access the files.<br />
      *   There can only exists 1 Administration Group.
      */
-    ADMINISTRATION("Administration", WhoMayJoin.All, true, true),
+    ADMINISTRATION("Administration", WhoMayJoin.All, true, true, FolderType.Public),
 
     /**
      * All user accounts have a private group assigned, with this type. It is
@@ -43,9 +46,10 @@ public enum GroupType {
      * simpler logic when handling data.<br />
      *   The Private group is also there to ensure that if a user is removed
      * from the system, then the private data can be easily removed as
-     * well.
+     * well. Among the private data is also users files. A user may store files
+     * for private purposes.
      */
-    PRIVATE("Private", WhoMayJoin.None, false, true),
+    PRIVATE("Private", WhoMayJoin.None, false, true, FolderType.Private),
 
     /**
      * All members are assigned to this type, which gives the rights to the
@@ -56,9 +60,11 @@ public enum GroupType {
      * national organization - another group exists called "Global", for all
      * other members. Mostly this consists of the General Secretary, Ombudsman,
      * IDT members, etc.<br />
+     *   The GroupType will have only a private mailinglist and also only a
+     * private folder for files.<br />
      *   Note; users can only be member of 1 Members Group!
      */
-    MEMBER("Members", WhoMayJoin.Members, true, false),
+    MEMBER("Members", WhoMayJoin.Members, true, false, FolderType.Private),
 
     /**
      * International Groups, are Groups which share members across Country
@@ -97,9 +103,13 @@ public enum GroupType {
      *   </li>
      * </ul>
      *   Regardless of the purpose, any group which purpose is not bound to a
-     * Single country, is an International Group.
+     * Single country, is an International Group.<br />
+     *   International Groups will have both a public and a private mailinglist
+     * available. The Group will also have a public folder with information that
+     * can be shared to others, if the containing files have been marked public,
+     * otherwise only the group members may view them.
      */
-    INTERNATIONAL("International", WhoMayJoin.All, true, true),
+    INTERNATIONAL("International", WhoMayJoin.All, true, true, FolderType.Public),
 
     /**
      * All Countries have both a Members group, where all the people who are a
@@ -109,23 +119,35 @@ public enum GroupType {
      *   The type of functionality will consists of access to certain sections
      * of the IntraWeb, and only some of the members of the Staff group will
      * be allowed to join the NC's Mailinglist.<br />
+     *   The National Committees will also have a public folder for files, for
+     * sharing of important information. All files in the folder marked public
+     * will be accessible for others, files marked protected will only be
+     * accessible by the group members.<br />
      *   Note; users can only be member of 1 National Group!
      */
-    NATIONAL("Staff", WhoMayJoin.Members, false, true),
+    NATIONAL("Staff", WhoMayJoin.Members, false, true, FolderType.Public),
 
     /**
      * Local Groups are for Local Committees around the Country. Local Groups
-     * will have a National Group as parent Group.
+     * will have a National Group as parent Group.<br />
+     *   Although Local Committees is allowed to have public mailing lists, they
+     * will not have a public folder for sharing files, this is reserved to one
+     * of the top level groups, Administration, International &amp; National.
+     * However, the Local Committees may have private sharing of files.
      */
-    LOCAL("Local Committee", WhoMayJoin.Members, true, true),
+    LOCAL("Local Committee", WhoMayJoin.Members, true, true, FolderType.Private),
 
     /**
      * For Groups, where you need only to have a common mailinglist as well as
      * some other means of sharing information, the Workgroups will serve this
      * purpose well.<br />
+     *   Although WorkGroups is allowed to have public mailing lists, they
+     * will not have a public folder for sharing files, this is reserved to one
+     * of the top level groups, Administration, International &amp; National.
+     * However, WorkGroups may have private sharing of files.<br />
      *   Workgroups can be assigned as a sub-group to any of the other groups.
      */
-    WORKGROUP("WorkGroup", WhoMayJoin.Inherited, true, true),
+    WORKGROUP("WorkGroup", WhoMayJoin.Inherited, true, true, FolderType.Private),
 
     /**
      * The Student Group is for Offer Applicants, meaning that if a person
@@ -137,9 +159,10 @@ public enum GroupType {
      *   When creating "new" Student Accounts, the user is automatically
      * assigned to the Country's Student Group, and additionally to the Members
      * group (with role Student). Normal members who wishes to apply for Offers,
-     * must also be added to the Student Group.
+     * must also be added to the Student Group.<br />
+     *   Student Groups may also not have file sharing, neither public not private.
      */
-    STUDENT("Students", WhoMayJoin.Members, false, false);
+    STUDENT("Students", WhoMayJoin.Members, false, false, FolderType.None);
 
     // =========================================================================
     // Private Constructor & functionality
@@ -164,10 +187,17 @@ public enum GroupType {
         Inherited
     }
 
+    private enum FolderType {
+        Private,
+        Public,
+        None
+    }
+
     private final String description;
     private final WhoMayJoin whoMayJoin;
     private final Boolean mayHavePrivateMailinglist;
     private final Boolean mayHavePublicMailinglist;
+    private final FolderType folderType;
 
     /**
      * Constructor for this enumerated type. GroupTypes is there to handle meta
@@ -181,15 +211,17 @@ public enum GroupType {
      * who's on either.
      *
      * @param description               Display name for this GroupType
-     * @param whoMayJoin                The membmers who may join
+     * @param whoMayJoin                The members who may join
      * @param mayHavePrivateMailinglist May this GroupType have private lists
      * @param mayHavePublicMailinglist  May this GroupType have public lists
+     * @param folderType                What type of folder the GroupType allows
      */
-    GroupType(final String description, final WhoMayJoin whoMayJoin, final Boolean mayHavePrivateMailinglist, final Boolean mayHavePublicMailinglist) {
+    GroupType(final String description, final WhoMayJoin whoMayJoin, final Boolean mayHavePrivateMailinglist, final Boolean mayHavePublicMailinglist, final FolderType folderType) {
         this.description = description;
         this.whoMayJoin = whoMayJoin;
         this.mayHavePrivateMailinglist = mayHavePrivateMailinglist;
         this.mayHavePublicMailinglist = mayHavePublicMailinglist;
+        this.folderType = folderType;
     }
 
     public String getDescription() {
@@ -206,5 +238,9 @@ public enum GroupType {
 
     public Boolean getMayHavePublicMailinglist() {
         return mayHavePublicMailinglist;
+    }
+
+    public FolderType getFolderType() {
+        return folderType;
     }
 }

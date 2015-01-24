@@ -91,7 +91,7 @@ public final class ServiceFactory {
     }
 
     public StorageService prepareStorageService() {
-        return new StorageService(settings, accessDao);
+        return new StorageService(settings, accessDao, entityManager);
     }
 
     public AccessService prepareAuthenticationService() {

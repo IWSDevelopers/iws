@@ -38,6 +38,7 @@ import net.iaeste.iws.persistence.BasicDao;
 import net.iaeste.iws.persistence.entities.AddressEntity;
 import net.iaeste.iws.persistence.entities.CountryEntity;
 import net.iaeste.iws.persistence.entities.FileEntity;
+import net.iaeste.iws.persistence.entities.FolderEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.PersonEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
@@ -340,7 +341,7 @@ public class CommonService<T extends BasicDao> {
     // Common Attachment Methods
     // =========================================================================
 
-    protected FileEntity processFile(final Authentication authentication, final File file) {
+    protected FileEntity processFile(final Authentication authentication, final File file, final FolderEntity... folder) {
         final String externalId = file.getFileId();
         final byte[] data = file.getFiledata();
         final FileEntity entity;
@@ -356,6 +357,12 @@ public class CommonService<T extends BasicDao> {
             entity.setFilesize((data != null) ? data.length : 0);
             entity.setUser(authentication.getUser());
             entity.setGroup(authentication.getGroup());
+            // TODO The Storage Service & Common Service needs to be updated to better control how and where files are handled
+            if (folder != null && folder.length == 1) {
+                entity.setFolder(folder[0]);
+            } else {
+                entity.setFolder(null);
+            }
 
             writeFileToSystem(storedNamed, data);
             dao.persist(authentication, entity);

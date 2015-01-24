@@ -44,6 +44,7 @@ public final class StorageTransformer {
             result.setPrivacy(entity.getPrivacy());
             result.setGroup(CommonTransformer.transform(entity.getGroup()));
             result.setUser(AdministrationTransformer.transform(entity.getUser()));
+            result.setFolder(transform(entity.getFolder()));
             result.setFilename(entity.getFilename());
             result.setFilesize(entity.getFilesize());
             result.setMimetype(entity.getMimetype());
@@ -67,6 +68,7 @@ public final class StorageTransformer {
             entity.setPrivacy(file.getPrivacy());
             entity.setGroup(CommonTransformer.transform(file.getGroup()));
             entity.setUser(AdministrationTransformer.transform(file.getUser()));
+            entity.setFolder(transform(file.getFolder()));
             entity.setFilename(file.getFilename());
             entity.setFilesize(file.getFilesize());
             entity.setMimetype(file.getMimetype());
@@ -87,6 +89,7 @@ public final class StorageTransformer {
             result.setFolderId(entity.getExternalId());
             result.setGroup(CommonTransformer.transform(entity.getGroup()));
             result.setFoldername(entity.getFoldername());
+            result.setModified(convert(entity.getModified()));
             result.setCreated(convert(entity.getCreated()));
         }
 

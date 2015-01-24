@@ -31,7 +31,7 @@ public final class FolderRequest extends AbstractVerification {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    private enum Action { PROCESS, CLEAR, DELETE }
+    private enum Action { PROCESS, DELETE }
 
     private Action action = null;
 

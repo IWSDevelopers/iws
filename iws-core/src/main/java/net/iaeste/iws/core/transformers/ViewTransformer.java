@@ -48,9 +48,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author  Kim Jensen / last $Author:$
+ * @author Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   IWS 1.0
+ * @since IWS 1.0
  */
 public final class ViewTransformer {
 
@@ -312,10 +312,16 @@ public final class ViewTransformer {
         boolean studyEnd = false;
 
         for (StudyLevel sl : CollectionTransformer.explodeEnumSet(StudyLevel.class, embeddedOffer.getStudyLevels())) {
-            switch(sl) {
-                case B:studyBeginning = true; break;
-                case M:studyMiddle = true; break;
-                case E:studyEnd = true; break;
+            switch (sl) {
+                case B:
+                    studyBeginning = true;
+                    break;
+                case M:
+                    studyMiddle = true;
+                    break;
+                case E:
+                    studyEnd = true;
+                    break;
             }
         }
         result.add(CommonTransformer.convertToYesNo(studyBeginning));
@@ -375,7 +381,6 @@ public final class ViewTransformer {
         result.add(embeddedOffer.getUnavailableTo());
 
         result.add(StringUtils.removeLineBreaks(embeddedOffer.getAdditionalInformation()));
-
         result.add(embeddedOfferGroup.getCreated());
 
         result.add(embeddedOfferGroup.getModified());
@@ -462,10 +467,16 @@ public final class ViewTransformer {
         boolean studyEnd = false;
 
         for (StudyLevel sl : CollectionTransformer.explodeEnumSet(StudyLevel.class, embeddedOffer.getStudyLevels())) {
-            switch(sl) {
-                case B:studyBeginning = true; break;
-                case M:studyMiddle = true; break;
-                case E:studyEnd = true; break;
+            switch (sl) {
+                case B:
+                    studyBeginning = true;
+                    break;
+                case M:
+                    studyMiddle = true;
+                    break;
+                case E:
+                    studyEnd = true;
+                    break;
             }
         }
         result.add(CommonTransformer.convertToYesNo(studyBeginning));
@@ -541,6 +552,7 @@ public final class ViewTransformer {
 
         result.add(StringUtils.removeLineBreaks(embeddedOffer.getAdditionalInformation()));
 
+        //TODO: Add The name of the country to whom this offer is shared once available in the embeddedOfferView
         result.add(null);
 
         result.add(embeddedOffer.getModified() != null ? IWSConstants.FORMATTER.format(embeddedOffer.getModified()) : "");

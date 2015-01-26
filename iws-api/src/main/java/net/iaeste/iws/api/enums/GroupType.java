@@ -64,7 +64,7 @@ public enum GroupType {
      * private folder for files.<br />
      *   Note; users can only be member of 1 Members Group!
      */
-    MEMBER("Members", WhoMayJoin.Members, true, false, FolderType.Private),
+    MEMBER("Members", WhoMayJoin.None, true, false, FolderType.Private),
 
     /**
      * International Groups, are Groups which share members across Country
@@ -172,7 +172,7 @@ public enum GroupType {
      * This enum contains the rules regarding who may join a Group, since it
      * depends on the specific type.
      */
-    private enum WhoMayJoin {
+    public enum WhoMayJoin {
 
         /** Only users belonging to the Member Group may join. */
         Members,
@@ -187,7 +187,7 @@ public enum GroupType {
         Inherited
     }
 
-    private enum FolderType {
+    public enum FolderType {
         Private,
         Public,
         None

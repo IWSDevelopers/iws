@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.core.transformers;
 
+import static net.iaeste.iws.common.utils.StringUtils.toLower;
 import static net.iaeste.iws.core.transformers.EmbeddedConverter.convert;
 
 import net.iaeste.iws.api.constants.IWSConstants;
@@ -48,9 +49,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author Kim Jensen / last $Author:$
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since IWS 1.0
+ * @since   IWS 1.0
  */
 public final class ViewTransformer {
 
@@ -287,10 +288,9 @@ public final class ViewTransformer {
         }
         result.add(fieldOfStudiesString);
 
-
         String specializationsString = "";
         for (String spe : CollectionTransformer.explodeStringSet(embeddedOffer.getSpecializations())) {
-            String toPut = spe.charAt(0) + spe.toLowerCase().replace('_', ' ').substring(1);
+            String toPut = spe.charAt(0) + toLower(spe).replace('_', ' ').substring(1);
             if (!specializationsString.isEmpty()) {
                 specializationsString = specializationsString + ", " + toPut;
             } else {
@@ -328,17 +328,17 @@ public final class ViewTransformer {
         result.add(CommonTransformer.convertToYesNo(studyMiddle));
         result.add(CommonTransformer.convertToYesNo(studyEnd));
 
-        if (TypeOfWork.R.equals(embeddedOffer.getTypeOfWork())) {
+        if (embeddedOffer.getTypeOfWork() == TypeOfWork.R) {
             result.add(CommonTransformer.convertToYesNo(true));
             result.add(CommonTransformer.convertToYesNo(false));
             result.add(CommonTransformer.convertToYesNo(false));
             result.add(CommonTransformer.convertToYesNo(false));
-        } else if (TypeOfWork.O.equals(embeddedOffer.getTypeOfWork())) {
+        } else if (embeddedOffer.getTypeOfWork() == TypeOfWork.O) {
             result.add(CommonTransformer.convertToYesNo(false));
             result.add(CommonTransformer.convertToYesNo(true));
             result.add(CommonTransformer.convertToYesNo(false));
             result.add(CommonTransformer.convertToYesNo(false));
-        } else if (TypeOfWork.F.equals(embeddedOffer.getTypeOfWork())) {
+        } else if (embeddedOffer.getTypeOfWork() == TypeOfWork.F) {
             result.add(CommonTransformer.convertToYesNo(false));
             result.add(CommonTransformer.convertToYesNo(false));
             result.add(CommonTransformer.convertToYesNo(true));
@@ -372,7 +372,6 @@ public final class ViewTransformer {
         result.add(embeddedOffer.getLivingCostFrequency() != null ? embeddedOffer.getLivingCostFrequency().getDescription() : null);
         result.add(embeddedOffer.getNumberOfHardCopies());
         result.add(embeddedOfferGroup.getStatus() != null ? embeddedOfferGroup.getStatus().getDescription() : null);
-
 
         result.add(embeddedOffer.getFromDate2());
         result.add(embeddedOffer.getToDate2());
@@ -483,17 +482,17 @@ public final class ViewTransformer {
         result.add(CommonTransformer.convertToYesNo(studyMiddle));
         result.add(CommonTransformer.convertToYesNo(studyEnd));
 
-        if (TypeOfWork.R.equals(embeddedOffer.getTypeOfWork())) {
+        if (embeddedOffer.getTypeOfWork() == TypeOfWork.R) {
             result.add(CommonTransformer.convertToYesNo(true));
             result.add(CommonTransformer.convertToYesNo(false));
             result.add(CommonTransformer.convertToYesNo(false));
             result.add(CommonTransformer.convertToYesNo(false));
-        } else if (TypeOfWork.O.equals(embeddedOffer.getTypeOfWork())) {
+        } else if (embeddedOffer.getTypeOfWork() == TypeOfWork.O) {
             result.add(CommonTransformer.convertToYesNo(false));
             result.add(CommonTransformer.convertToYesNo(true));
             result.add(CommonTransformer.convertToYesNo(false));
             result.add(CommonTransformer.convertToYesNo(false));
-        } else if (TypeOfWork.F.equals(embeddedOffer.getTypeOfWork())) {
+        } else if (embeddedOffer.getTypeOfWork() == TypeOfWork.F) {
             result.add(CommonTransformer.convertToYesNo(false));
             result.add(CommonTransformer.convertToYesNo(false));
             result.add(CommonTransformer.convertToYesNo(true));
@@ -542,7 +541,6 @@ public final class ViewTransformer {
         result.add(embeddedOffer.getLivingCostFrequency());
         result.add(embeddedOffer.getNumberOfHardCopies());
         result.add(embeddedOffer.getStatus() != null ? embeddedOffer.getStatus().getDescription() : null);
-
 
         result.add(embeddedOffer.getFromDate2() != null ? IWSConstants.FORMATTER.format(embeddedOffer.getFromDate2()) : "");
         result.add(embeddedOffer.getToDate2() != null ? IWSConstants.FORMATTER.format(embeddedOffer.getToDate2()) : "");

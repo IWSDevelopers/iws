@@ -11,6 +11,7 @@
         <class>net.iaeste.iws.persistence.entities.AttachmentEntity</class>
         <class>net.iaeste.iws.persistence.entities.CountryEntity</class>
         <class>net.iaeste.iws.persistence.entities.FileEntity</class>
+        <class>net.iaeste.iws.persistence.entities.FolderEntity</class>
         <class>net.iaeste.iws.persistence.entities.GroupEntity</class>
         <class>net.iaeste.iws.persistence.entities.GroupTypeEntity</class>
         <class>net.iaeste.iws.persistence.entities.MonitoringEntity</class>

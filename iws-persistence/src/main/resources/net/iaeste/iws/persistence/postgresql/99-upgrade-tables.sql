@@ -12,7 +12,7 @@ insert into versions (db_version, iws_version) values (4, '1.1.6');
 -- =============================================================================
 create sequence folder_sequence start with 10 increment by 1 no cycle;
 create table folders (
-    id               integer default nextval('file_sequence'),
+    id               integer default nextval('folder_sequence'),
     external_id      varchar(36),
     parent_id        integer,
     group_id         integer,
@@ -42,8 +42,24 @@ alter table files add column folder_id integer;
 alter table files add constraint file_fk_folder_id foreign key (folder_id) references folders (id);
 alter table files add constraint file_notnull_privacy check (privacy is not null);
 
+insert into folders (id, external_id, group_id, parent_id, foldername) VALUES ( 1, 'afec3bc0-296b-4bf2-8a9e-c2d7b74e93a0', 3, 1, 'Root');
+
+-- Need to update the GroupTypes with the new information here ...
+alter table grouptypes add column who_may_join varchar(10);
+alter table grouptypes add column folder_type  varchar(10);
+update grouptypes set who_may_join = 'Members' where grouptype in ('NATIONAL', 'LOCAL', 'STUDENT');
+update grouptypes set who_may_join = 'All' where grouptype in ('ADMINISTRATION', 'INTERNATIONAL');
+update grouptypes set who_may_join = 'None' where grouptype in ('PRIVATE', 'MEMBER');
+update grouptypes set who_may_join = 'Inherited' where grouptype in ('WORKGROUP');
+update grouptypes set folder_type = 'Private' where grouptype in ('PRIVATE', 'MEMBER', 'LOCAL', 'WORKGROUP');
+update grouptypes set folder_type = 'Public' where grouptype in ('ADMINISTRATION', 'INTERNATIONAL', 'NATIONAL');
+update grouptypes set folder_type = 'None' where grouptype in ('STUDENT');
+alter table grouptypes add constraint grouptype_notnull_who_may_join  check (who_may_join is not null);
+alter table grouptypes add constraint grouptype_notnull_folder_type   check (folder_type is not null);
+
+
 insert into permissions (id, permission) values (310, 'PROCESS_FOLDER');
-insert into permissions (id, permission) values (311, 'PROCESS_FOLDER');
+insert into permissions (id, permission) values (311, 'FETCH_FOLDER');
 
 -- Permission: 310 - Process Folder
 --   -> GroupTypes: All

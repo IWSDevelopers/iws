@@ -58,8 +58,22 @@ public class GroupTypeEntity implements IWSEntity {
     @Enumerated(EnumType.STRING)
     private GroupType grouptype = null;
 
+    @Column(name = "who_may_join", length = 10, nullable = false, updatable = false)
+    @Enumerated(EnumType.STRING)
+    private GroupType.WhoMayJoin whoMayJoin = null;
+
     @Column(name = "description", length = 2048, nullable = false, updatable = false)
     private String description = null;
+
+    @Column(name = "private_list", nullable = false, updatable = false)
+    private Boolean privateList = null;
+
+    @Column(name = "public_list", nullable = false, updatable = false)
+    private Boolean publicList = null;
+
+    @Column(name = "folder_type", length = 10, nullable = false, updatable = false)
+    @Enumerated(EnumType.STRING)
+    private GroupType.FolderType folderType = null;
 
     /**
      * This field is just a placeholder, to allow that we can use the normal IWS
@@ -96,12 +110,44 @@ public class GroupTypeEntity implements IWSEntity {
         return grouptype;
     }
 
+    public void setWhoMayJoin(final GroupType.WhoMayJoin whoMayJoin) {
+        this.whoMayJoin = whoMayJoin;
+    }
+
+    public GroupType.WhoMayJoin getWhoMayJoin() {
+        return whoMayJoin;
+    }
+
     public void setDescription(final String description) {
         this.description = description;
     }
 
     public String getDescription() {
         return description;
+    }
+
+    public void setPrivateList(final Boolean privateList) {
+        this.privateList = privateList;
+    }
+
+    public Boolean getPrivateList() {
+        return privateList;
+    }
+
+    public void setPublicList(final Boolean publicList) {
+        this.publicList = publicList;
+    }
+
+    public Boolean getPublicList() {
+        return publicList;
+    }
+
+    public void setFolderType(final GroupType.FolderType folderType) {
+        this.folderType = folderType;
+    }
+
+    public GroupType.FolderType getFolderType() {
+        return folderType;
     }
 
     /**

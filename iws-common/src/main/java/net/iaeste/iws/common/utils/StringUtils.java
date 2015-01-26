@@ -16,6 +16,8 @@ package net.iaeste.iws.common.utils;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 
+import java.util.regex.Pattern;
+
 /**
  * Wrapper for the Apache Commons Lang3 StringUtils.
  *
@@ -27,6 +29,7 @@ public final class StringUtils {
 
     public static final String EMPTY_STRING = "";
     public static final String[] EMPTY_STRING_ARRAY = new String[0];
+    private static final Pattern PATTERN_NEWLINE = Pattern.compile("\\r\\n|\\r|\\n");
 
     /**
      * Private Constructor, this is a utility class.
@@ -149,44 +152,44 @@ public final class StringUtils {
         //return Normalizer.normalize(input, Normalizer.Form.NFD).replaceAll("[\\p{InCombiningDiacriticalMarks}]", "").replaceAll(" ", "_");
         //TODO: what is the representation of &nbsp; in Java's String? simple space, &nbsp;, \u00a0, ...?
         return input.replaceAll("[ \\u00a0]", "_")
-                          .replaceAll("[ÀÁÂÃĀĂĄàáâãāăą]", "a")
-                          .replaceAll("[Åå]", "aa")
-                          .replaceAll("[ÄäÆæ]", "ae")
-                          .replaceAll("[ÇĆĈĊČçćĉċč]", "c")
-                          .replaceAll("[ÐĎĐďđ]", "d")
-                          .replaceAll("[ÈÉÊËĒĔĖĘĚèéêëēĕėęě]", "e")
-                          .replaceAll("[ĜĞĠĢĝğġģ]", "g")
-                          .replaceAll("[ĤĦĥħ]", "h")
-                          .replaceAll("[ÌÍÎÏĨĪĬĮİìíîïĩīĭįı]", "i")
-                          .replaceAll("[Ĳĳ]", "ij")
-                          .replaceAll("[Ĵĵ]", "j")
-                          .replaceAll("[Ķķĸ]", "k")
-                          .replaceAll("[ĹĻĽĿŁĺļľŀł]", "l")
-                          .replaceAll("[ÑŃŅŇŊñńņňŉŋ]", "n")
-                          .replaceAll("[ÒÓÔÕŌŎŐðòóôõōŏő]", "o")
-                          .replaceAll("[ŒÖØœöø]", "oe")
-                          .replaceAll("[ŔŖŘŕŗř]", "r")
-                          .replaceAll("[ŚŜŞŠśŝşšſ]", "s")
-                          .replaceAll("[ß]", "ss")
-                          .replaceAll("[ŢŤŦţťŧ]", "t")
-                          .replaceAll("[Þþ]", "th")
-                          .replaceAll("[ÙÚÛŨŪŬŮŰŲùúûũūŭůűų]", "u")
-                          .replaceAll("[Üü]", "ue")
-                          .replaceAll("[Ŵŵ]", "w")
-                          .replaceAll("[ÝŶŸýÿŷ]", "y")
-                          .replaceAll("[ŹŻŽŽźżž]", "z")
-                          .replaceAll("[×÷]", "")
-                          .replaceAll("[^a-zA-Z0-9_'\\.@]", "_")
-                          .toLowerCase();
+                    .replaceAll("[ÀÁÂÃĀĂĄàáâãāăą]", "a")
+                    .replaceAll("[Åå]", "aa")
+                    .replaceAll("[ÄäÆæ]", "ae")
+                    .replaceAll("[ÇĆĈĊČçćĉċč]", "c")
+                    .replaceAll("[ÐĎĐďđ]", "d")
+                    .replaceAll("[ÈÉÊËĒĔĖĘĚèéêëēĕėęě]", "e")
+                    .replaceAll("[ĜĞĠĢĝğġģ]", "g")
+                    .replaceAll("[ĤĦĥħ]", "h")
+                    .replaceAll("[ÌÍÎÏĨĪĬĮİìíîïĩīĭįı]", "i")
+                    .replaceAll("[Ĳĳ]", "ij")
+                    .replaceAll("[Ĵĵ]", "j")
+                    .replaceAll("[Ķķĸ]", "k")
+                    .replaceAll("[ĹĻĽĿŁĺļľŀł]", "l")
+                    .replaceAll("[ÑŃŅŇŊñńņňŉŋ]", "n")
+                    .replaceAll("[ÒÓÔÕŌŎŐðòóôõōŏő]", "o")
+                    .replaceAll("[ŒÖØœöø]", "oe")
+                    .replaceAll("[ŔŖŘŕŗř]", "r")
+                    .replaceAll("[ŚŜŞŠśŝşšſ]", "s")
+                    .replaceAll("[ß]", "ss")
+                    .replaceAll("[ŢŤŦţťŧ]", "t")
+                    .replaceAll("[Þþ]", "th")
+                    .replaceAll("[ÙÚÛŨŪŬŮŰŲùúûũūŭůűų]", "u")
+                    .replaceAll("[Üü]", "ue")
+                    .replaceAll("[Ŵŵ]", "w")
+                    .replaceAll("[ÝŶŸýÿŷ]", "y")
+                    .replaceAll("[ŹŻŽŽźżž]", "z")
+                    .replaceAll("[×÷]", "")
+                    .replaceAll("[^a-zA-Z0-9_'\\.@]", "_")
+                    .toLowerCase(IWSConstants.DEFAULT_LOCALE);
     }
 
     public static String removeLineBreaks(final String input) {
         String result = null;
+
         if (input != null) {
-            result = input.replaceAll("\\r\\n|\\r|\\n", " ");
+            result = PATTERN_NEWLINE.matcher(input).replaceAll(" ");
         }
+
         return result;
     }
-
-
 }

@@ -15,6 +15,7 @@
 package net.iaeste.iws.core.transformers;
 
 import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.api.constants.exchange.IWSExchangeConstants;
 import net.iaeste.iws.api.enums.exchange.OfferFields;
 import net.iaeste.iws.api.enums.exchange.StudyLevel;
 import net.iaeste.iws.api.enums.exchange.TypeOfWork;
@@ -31,9 +32,9 @@ import java.util.Set;
 /**
  * CSV Transformer
  *
- * @author  Pavel Fiala / last $Author:$
+ * @author Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   IWS 1.1
+ * @since IWS 1.1
  */
 public final class CsvTransformer {
 
@@ -203,7 +204,14 @@ public final class CsvTransformer {
 
     public static Set<String> toStringSet(final Map<String, String> errors, final CSVRecord record, final OfferFields field) {
         final String input = record.get(field.getField());
+
         Set<String> result = CollectionTransformer.explodeStringSet(input);
+
+        if (field.equals(OfferFields.SPECIALIZATION)) {
+            if (result.size() > IWSExchangeConstants.MAX_OFFER_SPECIALIZATIONS) {
+                errors.put(field.getField(), "Maximum number of specializations per offer is " + IWSExchangeConstants.MAX_OFFER_SPECIALIZATIONS);
+            }
+        }
 
         return result;
     }

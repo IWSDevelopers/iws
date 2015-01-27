@@ -22,6 +22,7 @@ import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.persistence.Externable;
 import net.iaeste.iws.persistence.entities.CountryEntity;
+import net.iaeste.iws.persistence.entities.FolderEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.GroupTypeEntity;
 import net.iaeste.iws.persistence.entities.IWSEntity;
@@ -122,7 +123,12 @@ public class IWSJpaDao implements IWSDao {
      */
     @Override
     public List<GroupEntity> findAllGroups() {
-        return entityManager.createNamedQuery("group.findAll").getResultList();
+        final String jql =
+                "select g " +
+                "from GroupEntity g";
+        final Query query = entityManager.createQuery(jql);
+
+        return query.getResultList();
     }
 
     /**
@@ -130,7 +136,11 @@ public class IWSJpaDao implements IWSDao {
      */
     @Override
     public List<GroupEntity> findAllGroups(final GroupType type) {
-        final Query query = entityManager.createNamedQuery("group.findAllGroupType");
+        final String jql =
+                "select g " +
+                "from GroupEntity g " +
+                "where g.groupType.grouptype = :type";
+        final Query query = entityManager.createQuery(jql);
         query.setParameter("type", type);
 
         return query.getResultList();
@@ -164,7 +174,11 @@ public class IWSJpaDao implements IWSDao {
      */
     @Override
     public GroupEntity findGroupByIW3Id(final Integer oldId) {
-        final Query query = entityManager.createNamedQuery("group.findByIW3Id");
+        final String jql =
+                "select g " +
+                "from GroupEntity g " +
+                "where g.oldId = :oldid";
+        final Query query = entityManager.createQuery(jql);
         query.setParameter("oldid", oldId);
 
         return findSingleResult(query, "Group");
@@ -204,7 +218,10 @@ public class IWSJpaDao implements IWSDao {
      */
     @Override
     public OfferEntity findOfferByOldOfferId(final Integer oldOfferId) {
-        final Query query = entityManager.createNamedQuery("offer.findByOldOfferId");
+        final String jql =
+                "select o from OfferEntity o " +
+                "where o.oldOfferId = :ooid";
+        final Query query = entityManager.createQuery(jql);
         query.setParameter("ooid", oldOfferId);
 
         return findSingleResult(query, "Offer");
@@ -215,8 +232,14 @@ public class IWSJpaDao implements IWSDao {
      */
     @Override
     public Long countRefNos(final String countryCode, final String year, final String serialNumber) {
-        final Query query = entityManager.createQuery("select count(refNo) from OfferEntity where refNo like '" + countryCode + "-20" + year + '%' + serialNumber + '\'');
+        final String jql =
+                "select count(refNo) " +
+                "from OfferEntity " +
+                "where refNo like :refno";
+        final Query query = entityManager.createQuery(jql);
+        query.setParameter("refno", countryCode + "-20" + year + '%' + serialNumber);
         final Long count = (Long) query.getResultList().get(0);
+
         return count;
     }
 
@@ -245,6 +268,36 @@ public class IWSJpaDao implements IWSDao {
         query.setParameter("gid", groupId);
 
         return query.getResultList();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public FolderEntity findFolderByIW3Id(final Long iw3FolderId) {
+        final String jql =
+                "select f from FolderEntity f " +
+                "where oldIW3FileId = :iw3Id";
+        final Query query = entityManager.createQuery(jql);
+        query.setParameter("iw3Id", iw3FolderId);
+
+        return findSingleResult(query, "Folder");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserEntity findGroupOwner(final GroupEntity group) {
+        final String jql =
+                "select ug.user " +
+                "from UserGroupEntity ug " +
+                "where ug.group.id = :gid" +
+                "  and ug.role.id = " + IWSConstants.ROLE_OWNER;
+        final Query query = entityManager.createQuery(jql);
+        query.setParameter("gid", group.getId());
+
+        return findSingleResult(query, "UserGroup");
     }
 
     // =========================================================================

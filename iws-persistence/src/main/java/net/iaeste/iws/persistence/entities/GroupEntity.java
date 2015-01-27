@@ -49,17 +49,6 @@ import java.util.Map;
  * @since   IWS 1.0
  */
 @NamedQueries({
-        // Query is used by the Migration Tool
-        @NamedQuery(name = "group.findAll",
-                query = "select g from GroupEntity g"),
-        // Query is used by the Migration Tool
-        @NamedQuery(name = "group.findAllGroupType",
-                query = "select g from GroupEntity g " +
-                        "where g.groupType.grouptype = :type"),
-        // Query is used by the Migration Tool
-        @NamedQuery(name = "group.findByIW3Id",
-                query = "select g from GroupEntity g " +
-                        "where g.oldId = :oldid"),
         @NamedQuery(name = "group.findById",
                 query = "select g from GroupEntity g " +
                         "where g.status = " + EntityConstants.GROUP_STATUS_ACTIVE +

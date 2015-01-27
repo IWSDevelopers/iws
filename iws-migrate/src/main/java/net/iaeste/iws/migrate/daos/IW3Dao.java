@@ -15,6 +15,7 @@
 package net.iaeste.iws.migrate.daos;
 
 import net.iaeste.iws.migrate.entities.IW3CountriesEntity;
+import net.iaeste.iws.migrate.entities.IW3FileEntity;
 import net.iaeste.iws.migrate.entities.IW3GroupsEntity;
 import net.iaeste.iws.migrate.entities.IW3Offer2GroupEntity;
 import net.iaeste.iws.migrate.entities.IW3OffersEntity;
@@ -45,4 +46,7 @@ public interface IW3Dao {
 
     Long countOfferGroups();
     List<IW3Offer2GroupEntity> findOfferGroups(int page);
+
+    Long countFiles();
+    List<IW3FileEntity> findFiles(int page);
 }

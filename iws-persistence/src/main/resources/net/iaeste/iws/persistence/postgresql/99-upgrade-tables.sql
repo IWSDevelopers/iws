@@ -45,7 +45,7 @@ alter table files add column old_iw3_file_id integer;
 alter table files add constraint file_fk_folder_id foreign key (folder_id) references folders (id);
 alter table files add constraint file_notnull_privacy check (privacy is not null);
 
-insert into folders (id, external_id, group_id, parent_id, foldername) VALUES ( 1, 'afec3bc0-296b-4bf2-8a9e-c2d7b74e93a0', 3, 1, 'Root');
+insert into folders (id, external_id, group_id, parent_id, foldername, old_iw3_file_id) VALUES ( 1, 'afec3bc0-296b-4bf2-8a9e-c2d7b74e93a0', 3, 1, 'Root', 2);
 
 -- Need to update the GroupTypes with the new information here ...
 alter table grouptypes add column who_may_join varchar(10);

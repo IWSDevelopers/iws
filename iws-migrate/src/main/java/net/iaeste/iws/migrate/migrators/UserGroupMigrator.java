@@ -113,7 +113,7 @@ public class UserGroupMigrator implements Migrator<IW3User2GroupEntity> {
 
     private UserGroupEntity convertOldEntity(final IW3User2GroupEntity oldUserGroupEntity, final UserEntity user) {
         final GroupEntity group = iwsDao.findGroupByIW3Id(oldUserGroupEntity.getGroup().getGroupid());
-        final RoleEntity role = iwsDao.findRoleById(0L + oldUserGroupEntity.getRole().getRoleid());
+        final RoleEntity role = iwsDao.findRoleById(Long.valueOf(oldUserGroupEntity.getRole().getRoleid()));
 
         final UserGroupEntity entity = new UserGroupEntity(user, group, role);
         entity.setTitle(convert(oldUserGroupEntity.getUsertitle()));
@@ -135,7 +135,7 @@ public class UserGroupMigrator implements Migrator<IW3User2GroupEntity> {
                 iwsDao.persist(toPersist);
             } catch (IllegalArgumentException | VerificationException e) {
                 log.error("Cannot process UserGroup {} => {}", dto, e.getMessage());
-            } catch (final RuntimeException e) {
+            } catch (RuntimeException e) {
                 log.error("Unknown problem while migrating UserGroup {} => {}", dto, e.getMessage());
             }
         }

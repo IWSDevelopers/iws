@@ -58,10 +58,6 @@ import java.util.Map;
  * @since   IWS 1.0
  */
 @NamedQueries({
-        // Query is used by the Migration Tool
-        @NamedQuery(name = "offer.findByOldOfferId",
-                query = "select o from OfferEntity o " +
-                        "where o.oldOfferId = :ooid"),
         @NamedQuery(name = "offer.findAllForGroup",
                 query = "select o from OfferEntity o " +
                         "where o.employer.group.id = :gid"),

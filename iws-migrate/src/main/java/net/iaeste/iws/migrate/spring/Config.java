@@ -17,6 +17,7 @@ package net.iaeste.iws.migrate.spring;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.migrate.migrators.CountryMigrator;
+import net.iaeste.iws.migrate.migrators.FileMigrator;
 import net.iaeste.iws.migrate.migrators.GroupMigrator;
 import net.iaeste.iws.migrate.migrators.MailMigrator;
 import net.iaeste.iws.migrate.migrators.OfferGroupMigrator;
@@ -194,6 +195,12 @@ public class Config {
     @Bean(name = "countryMigrator")
     public CountryMigrator countryMigrator() {
         return new CountryMigrator();
+    }
+
+    @Scope("prototype")
+    @Bean(name = "fileMigrator")
+    public FileMigrator fileMigrator() {
+        return new FileMigrator();
     }
 
     @Scope("prototype")

@@ -17,6 +17,8 @@ package net.iaeste.iws.migrate;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
+import net.iaeste.iws.migrate.daos.IW3Dao;
+import net.iaeste.iws.migrate.entities.IW3FileEntity;
 import net.iaeste.iws.migrate.migrators.MigrationResult;
 import net.iaeste.iws.migrate.migrators.Migrator;
 import net.iaeste.iws.migrate.spring.ContextProvider;
@@ -29,9 +31,9 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -44,14 +46,15 @@ public class MigrateTest {
     private static final Logger log = LoggerFactory.getLogger(MigrateTest.class);
     private static final ContextProvider context = ContextProvider.getInstance();
 
+    private Migrator fileMigrator;
     //private Migrator countryMigrator;
     //private Migrator groupMigrator;
     //private Migrator userMigrator;
     //private Migrator userGroupMigrator;
-    private Migrator mailMigrator;
+    //private Migrator mailMigrator;
     //private Migrator offerMigrator;
     //private Migrator offerGroupMigrator;
-    //private IW3Dao iw3Dao;
+    private IW3Dao iw3Dao;
 
     private static Long start = null;
 
@@ -71,12 +74,13 @@ public class MigrateTest {
 
     @Before
     public void before() {
-        //iw3Dao = context.getBean("iw3Dao");
+        iw3Dao = context.getBean("iw3Dao");
         //countryMigrator = context.getBean("countryMigrator");
         //groupMigrator = context.getBean("groupMigrator");
+        fileMigrator = context.getBean("fileMigrator");
         //userMigrator = context.getBean("userMigrator");
         //userGroupMigrator = context.getBean("userGroupMigrator");
-        mailMigrator = context.getBean("mailMigrator");
+        //mailMigrator = context.getBean("mailMigrator");
         //offerMigrator = context.getBean("offerMigrator");
         //offerGroupMigrator = context.getBean("offerGroupMigrator");
     }
@@ -84,6 +88,23 @@ public class MigrateTest {
     // =========================================================================
     // Migration is done using the following test methods, in order
     // =========================================================================
+
+    @Test
+    public void test8ReadingWritingFiles() {
+        final Long count = iw3Dao.countFiles();
+        final long blocks = (count / Migrator.BLOCK_SIZE) + 1;
+        log.info("Found {} Files to migrate.", count);
+        MigrationResult result = new MigrationResult();
+
+        for (int page = 0; page < blocks; page ++) {
+            log.debug("Migrating File block {} of {}.", page + 1, blocks);
+            final List<IW3FileEntity> userGroups = iw3Dao.findFiles(page);
+            result = result.merge(fileMigrator.migrate(userGroups));
+        }
+
+        assertThat(result.getPersisted() + result.getSkipped(), is(count));
+        log.info("Completed Migrating Files; Persisted {} & Skipped {}.", result.getPersisted(), result.getSkipped());
+    }
 
     // Following is commented out, since the initial migration is over. The code
     // is only present to provide examples for future migrations, once other
@@ -158,17 +179,17 @@ public class MigrateTest {
     //    log.info("Completed Migrating UserGroups; Persisted {} & Skipped {}.", result.getPersisted(), result.getSkipped());
     //}
 
-    @Test
-    @Transactional("transactionManagerMail")
-    public void test5ReadingWritingMail() {
-        log.info("Starting migration of Mail settings.");
-
-        final MigrationResult result = mailMigrator.migrate();
-        final long persisted = result.getPersisted();
-
-        assertThat(persisted > 0, is(true));
-        log.info("Completed Migrating Mail.");
-    }
+    //@Test
+    //@Transactional("transactionManagerMail")
+    //public void test5ReadingWritingMail() {
+    //    log.info("Starting migration of Mail settings.");
+    //
+    //    final MigrationResult result = mailMigrator.migrate();
+    //    final long persisted = result.getPersisted();
+    //
+    //    assertThat(persisted > 0, is(true));
+    //    log.info("Completed Migrating Mail.");
+    //}
 
     // Following is commented out, since the initial migration is over. The code
     // is only present to provide examples for future migrations, once other

@@ -16,6 +16,7 @@ package net.iaeste.iws.migrate.daos;
 
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.persistence.entities.CountryEntity;
+import net.iaeste.iws.persistence.entities.FolderEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.GroupTypeEntity;
 import net.iaeste.iws.persistence.entities.RoleEntity;
@@ -77,4 +78,8 @@ public interface IWSDao {
     List<UserGroupEntity> findNCs();
 
     List<UserGroupEntity> findGroupMembers(Long groupId);
+
+    FolderEntity findFolderByIW3Id(Long iw3FolderId);
+
+    UserEntity findGroupOwner(GroupEntity group);
 }

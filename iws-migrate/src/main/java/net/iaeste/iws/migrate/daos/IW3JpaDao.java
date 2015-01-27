@@ -15,6 +15,7 @@
 package net.iaeste.iws.migrate.daos;
 
 import net.iaeste.iws.migrate.entities.IW3CountriesEntity;
+import net.iaeste.iws.migrate.entities.IW3FileEntity;
 import net.iaeste.iws.migrate.entities.IW3GroupsEntity;
 import net.iaeste.iws.migrate.entities.IW3Offer2GroupEntity;
 import net.iaeste.iws.migrate.entities.IW3OffersEntity;
@@ -132,6 +133,28 @@ public class IW3JpaDao implements IW3Dao {
     @Override
     public List<IW3Offer2GroupEntity> findOfferGroups(final int page) {
         final Query query = entityManager.createNamedQuery("offergroup.findAll");
+        return fetchList(query, page);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Long countFiles() {
+        final String jql = "select count(f.id) from IW3FileEntity f";
+        final Query query = entityManager.createQuery(jql);
+
+        return (Long) query.getSingleResult();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<IW3FileEntity> findFiles(final int page) {
+        final String jql = "select f from IW3FileEntity f order by id asc";
+        final Query query = entityManager.createQuery(jql);
+
         return fetchList(query, page);
     }
 

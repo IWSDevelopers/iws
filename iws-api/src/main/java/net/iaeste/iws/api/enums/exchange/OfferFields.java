@@ -26,84 +26,86 @@ package net.iaeste.iws.api.enums.exchange;
  */
 public enum OfferFields {
 
-    REFNO("Ref.No", true, true),
-    OFFER_TYPE("OfferType", true, false),
-    EXCHANGE_TYPE("ExchangeType", true, false),
-    DEADLINE("Deadline",true, true),
-    COMMENT("Comment", true, true),
-    EMPLOYER("Employer", true, true),
-    STREET_1("Street1", true, true),
-    STREET_2("Street2", true, true),
-    POST_BOX("PostBox", true, true),
-    POSTAL_CODE("PostalCode", true, true),
-    CITY("City", true, true),
-    STATE("State", true, true),
-    COUNTRY("Country", true, true),
-    WEBSITE("Website", true, true),
-    WORKPLACE("Workplace", true, true),
-    BUSINESS("Business", true, true),
-    RESPONSIBLE("Responsible", true, true),
-    AIRPORT("Airport", true, true),
-    TRANSPORT("Transport", true, true),
-    EMPLOYEES("Employees", true, true),
-    HOURS_WEEKLY("HoursWeekly", true, true),
-    HOURS_DAILY("HoursDaily", true, true),
-    CANTEEN("Canteen", true, true),
-    FACULTY("Faculty", true, true),
-    SPECIALIZATION("Specialization", true, true),
-    TRAINING_REQUIRED("TrainingRequired", true, true),
-    OTHER_REQUIREMENTS("OtherRequirements", true, true),
-    WORKKIND("Workkind", true, true),
-    WEEKS_MIN("WeeksMin", true, true),
-    WEEKS_MAX("WeeksMax", true, true),
-    FROM("From", true, true),
-    TO("To", true, true),
-    STUDY_COMPLETED_BEGINNING("StudyCompleted_Beginning", true, true),
-    STUDY_COMPLETED_MIDDLE("StudyCompleted_Middle", true, true),
-    STUDY_COMPLETED_END("StudyCompleted_End", true, true),
-    WORK_TYPE_P("WorkType_P", true, true),
-    WORK_TYPE_R("WorkType_R", true, true),
-    WORK_TYPE_W("WorkType_W", true, true),
-    WORK_TYPE_N("WorkType_N", true, true),
-    LANGUAGE_1("Language1", true, true),
-    LANGUAGE_1_LEVEL("Language1Level", true, true),
-    LANGUAGE_1_OR("Language1Or", true, true),
-    LANGUAGE_2("Language2", true, true),
-    LANGUAGE_2_LEVEL("Language2Level", true, true),
-    LANGUAGE_2_OR("Language2Or", true, true),
-    LANGUAGE_3("Language3", true, true),
-    LANGUAGE_3_LEVEL("Language3Level", true, true),
-    CURRENCY("Currency", true, true),
-    PAYMENT("Payment", true, true),
-    PAYMENT_FREQUENCY("PaymentFrequency", true, true),
-    DEDUCTION("Deduction", true, true),
-    LODGING("Lodging", true, true),
-    LODGING_COST("LodgingCost", true, true),
-    LODGING_COST_FREQUENCY("LodgingCostFrequency", true, true),
-    LIVING_COST("LivingCost", true, true),
-    LIVING_COST_FREQUENCY("LivingCostFrequency", true, true),
-    NO_HARD_COPIES("NoHardCopies", true, true),
-    STATUS("Status", true, true),
-    PERIOD_2_FROM("Period2_From", true, true),
-    PERIOD_2_TO("Period2_To", true, true),
-    HOLIDAYS_FROM("Holidays_From", true, true),
-    HOLIDAYS_TO("Holidays_To", true, true),
-    ADDITIONAL_INFO("Additional_Info", true, true),
-    SHARED("Shared", true, true),
-    LAST_MODIFIED("Last modified", false, true),
-    NS_FIRST_NAME("NS First Name", false, true),
-    NS_LAST_NAME("NS Last Name", false, true);
+    REFNO("Ref.No", "setRefNo", true, true),
+    OFFER_TYPE("OfferType", "setOfferType", true, false),
+    EXCHANGE_TYPE("ExchangeType", "setExchangeType", true, false),
+    DEADLINE("Deadline", "setNominationDeadline", true, true),
+    COMMENT("Comment", "setPrivateComment", true, true),
+    EMPLOYER("Employer", "setName", true, true),
+    STREET_1("Street1", "setStreet1", true, true),
+    STREET_2("Street2", "setStreet2", true, true),
+    POST_BOX("PostBox", "setPobox", true, true),
+    POSTAL_CODE("PostalCode", "setPostalCode", true, true),
+    CITY("City", "setCity", true, true),
+    STATE("State", "setState", true, true),
+    COUNTRY("Country", null, true, true),
+    WEBSITE("Website", "setWebsite", true, true),
+    WORKPLACE("Workplace", "setWorkingPlace", true, true),
+    BUSINESS("Business", "setBusiness", true, true),
+    RESPONSIBLE("Responsible", null, true, true),
+    AIRPORT("Airport", "setNearestAirport", true, true),
+    TRANSPORT("Transport", "setNearestPublicTransport", true, true),
+    EMPLOYEES("Employees", "setEmployeesCount", true, true),
+    HOURS_WEEKLY("HoursWeekly", "setWeeklyHours", true, true),
+    HOURS_DAILY("HoursDaily", "setDailyHours", true, true),
+    CANTEEN("Canteen", "setCanteen", true, true),
+    FACULTY("Faculty", "setFieldOfStudies", true, true),
+    SPECIALIZATION("Specialization", "setSpecializations", true, true),
+    TRAINING_REQUIRED("TrainingRequired", "setPreviousTrainingRequired", true, true),
+    OTHER_REQUIREMENTS("OtherRequirements", "OTHER_REQUIREMENTS", true, true),
+    WORKKIND("Workkind", null, true, true),
+    WEEKS_MIN("WeeksMin", "setMinimumWeeks", true, true),
+    WEEKS_MAX("WeeksMax", "setMaximumWeeks", true, true),
+    FROM("From", "setPeriod1", true, true),
+    TO("To", "setPeriod1", true, true),
+    STUDY_COMPLETED_BEGINNING("StudyCompleted_Beginning", "setStudyLevels", true, true),
+    STUDY_COMPLETED_MIDDLE("StudyCompleted_Middle", "setStudyLevels", true, true),
+    STUDY_COMPLETED_END("StudyCompleted_End", "setStudyLevels", true, true),
+    WORK_TYPE_P("WorkType_P", "setTypeOfWork", true, true),
+    WORK_TYPE_R("WorkType_R", "setTypeOfWork", true, true),
+    WORK_TYPE_W("WorkType_W", "setTypeOfWork", true, true),
+    WORK_TYPE_N("WorkType_N", "setTypeOfWork", true, true),
+    LANGUAGE_1("Language1", "setLanguage1", true, true),
+    LANGUAGE_1_LEVEL("Language1Level", "setLanguage1Level", true, true),
+    LANGUAGE_1_OR("Language1Or", "setLanguage1Operator", true, true),
+    LANGUAGE_2("Language2", "setLanguage2", true, true),
+    LANGUAGE_2_LEVEL("Language2Level", "setLanguage2Level", true, true),
+    LANGUAGE_2_OR("Language2Or", "setLanguage2Operator", true, true),
+    LANGUAGE_3("Language3", "setLanguage3", true, true),
+    LANGUAGE_3_LEVEL("Language3Level", "setLanguage3Level", true, true),
+    CURRENCY("Currency", "setCurrency", true, true),
+    PAYMENT("Payment", "setPayment", true, true),
+    PAYMENT_FREQUENCY("PaymentFrequency", "setPaymentFrequency", true, true),
+    DEDUCTION("Deduction", "setDeduction", true, true),
+    LODGING("Lodging", "setLodgingBy", true, true),
+    LODGING_COST("LodgingCost", "setLodgingCost", true, true),
+    LODGING_COST_FREQUENCY("LodgingCostFrequency", "setLodgingCostFrequency", true, true),
+    LIVING_COST("LivingCost", "setLivingCost", true, true),
+    LIVING_COST_FREQUENCY("LivingCostFrequency", "setLivingCostFrequency", true, true),
+    NO_HARD_COPIES("NoHardCopies", "setNumberOfHardCopies", true, true),
+    STATUS("Status", null, true, true),
+    PERIOD_2_FROM("Period2_From", "setPeriod2", true, true),
+    PERIOD_2_TO("Period2_To", "setPeriod2", true, true),
+    HOLIDAYS_FROM("Holidays_From", "setUnavailable", true, true),
+    HOLIDAYS_TO("Holidays_To", "setUnavailable", true, true),
+    ADDITIONAL_INFO("Additional_Info", "setAdditionalInformation", true, true),
+    SHARED("Shared", null, true, true),
+    LAST_MODIFIED("Last modified", null, false, true),
+    NS_FIRST_NAME("NS First Name", null, false, true),
+    NS_LAST_NAME("NS Last Name", null, false, true);
 
     // =========================================================================
     // Private Constructor & functionality
     // =========================================================================
 
     private final String field;
+    private final String method;
     private final boolean forDomesticCSVOffer;
     private final boolean forForeignCSVOffer;
 
-    OfferFields(final String field, final boolean forDomesticCSVOffer, final boolean forForeignCSVOffer) {
+    OfferFields(final String field, final String method, final boolean forDomesticCSVOffer, final boolean forForeignCSVOffer) {
         this.field = field;
+        this.method = method;
         this.forDomesticCSVOffer = forDomesticCSVOffer;
         this.forForeignCSVOffer = forForeignCSVOffer;
     }
@@ -118,5 +120,9 @@ public enum OfferFields {
 
     public boolean isForForeignCSVOffer() {
         return forForeignCSVOffer;
+    }
+
+    public String getMethod() {
+        return method;
     }
 }

@@ -15,6 +15,8 @@
 package net.iaeste.iws.core.transformers;
 
 import net.iaeste.iws.common.utils.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,6 +37,8 @@ import java.util.regex.Pattern;
  * @since   IWS 1.0
  */
 public final class CollectionTransformer {
+
+    public static final Logger log = LoggerFactory.getLogger(CollectionTransformer.class);
 
     public static final String DELIMITER = "|";
     private static final String DELIMITER_REG_EXP = "\\|";
@@ -85,7 +89,8 @@ public final class CollectionTransformer {
                 try {
                     final T v = Enum.valueOf(enumType, s);
                     result.add(v);
-                } catch (IllegalArgumentException ignored) {
+                } catch (IllegalArgumentException e) {
+                    log.info(e.getMessage(), e);
                 }
             }
         }

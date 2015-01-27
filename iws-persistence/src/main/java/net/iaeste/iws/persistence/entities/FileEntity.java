@@ -143,6 +143,9 @@ public class FileEntity extends AbstractUpdateable<FileEntity> implements Extern
     @Column(name = "checksum", length = 128)
     private Long checksum = null;
 
+    @Column(name = "old_iw3_file_id")
+    private Long oldIW3FileId = null;
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "modified", nullable = false)
     private Date modified = new Date();
@@ -273,6 +276,14 @@ public class FileEntity extends AbstractUpdateable<FileEntity> implements Extern
 
     public Long getChecksum() {
         return checksum;
+    }
+
+    public void setOldIW3FileId(final Long oldIW3FileId) {
+        this.oldIW3FileId = oldIW3FileId;
+    }
+
+    public Long getOldIW3FileId() {
+        return oldIW3FileId;
     }
 
     /**

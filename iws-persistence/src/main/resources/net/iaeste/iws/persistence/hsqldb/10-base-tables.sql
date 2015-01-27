@@ -637,6 +637,7 @@ create table folders (
     parent_id        integer,
     group_id         integer,
     foldername       varchar(100),
+    old_iw3_file_id  integer,
     modified         timestamp   default now(),
     created          timestamp   default now(),
 
@@ -686,6 +687,7 @@ create table files (
     description      varchar(250),
     keywords         varchar(250),
     checksum         bigint,
+    old_iw3_file_id  integer,
     modified         timestamp   default now(),
     created          timestamp   default now(),
 

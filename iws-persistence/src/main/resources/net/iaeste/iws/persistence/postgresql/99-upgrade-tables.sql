@@ -17,6 +17,7 @@ create table folders (
     parent_id        integer,
     group_id         integer,
     foldername       varchar(100),
+    old_iw3_file_id  integer,
     modified         timestamp   default now(),
     created          timestamp   default now(),
 
@@ -39,6 +40,8 @@ create table folders (
 
 alter table files add column privacy varchar(10) default 'PRIVATE';
 alter table files add column folder_id integer;
+alter table files add column old_iw3_file_id integer;
+
 alter table files add constraint file_fk_folder_id foreign key (folder_id) references folders (id);
 alter table files add constraint file_notnull_privacy check (privacy is not null);
 

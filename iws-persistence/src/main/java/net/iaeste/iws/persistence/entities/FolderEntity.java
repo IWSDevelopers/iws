@@ -42,7 +42,7 @@ import java.util.Date;
 @Monitored(name = "Folder", level = MonitoringLevel.DETAILED)
 public class FolderEntity extends AbstractUpdateable<FolderEntity> implements Externable<FolderEntity> {
 
-    /** {@link net.iaeste.iws.api.constants.IWSConstants#SERIAL_VERSION_UID}. */
+    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     @Id
@@ -76,6 +76,9 @@ public class FolderEntity extends AbstractUpdateable<FolderEntity> implements Ex
     @Monitored(name="Folder Name", level = MonitoringLevel.DETAILED)
     @Column(name = "foldername", length = 100, nullable = false)
     private String foldername = null;
+
+    @Column(name = "old_iw3_file_id")
+    private Long oldIW3FileId = null;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "modified", nullable = false)
@@ -143,6 +146,14 @@ public class FolderEntity extends AbstractUpdateable<FolderEntity> implements Ex
 
     public String getFoldername() {
         return foldername;
+    }
+
+    public void setOldIW3FileId(final Long oldIW3FileId) {
+        this.oldIW3FileId = oldIW3FileId;
+    }
+
+    public Long getOldIW3FileId() {
+        return oldIW3FileId;
     }
 
     /**

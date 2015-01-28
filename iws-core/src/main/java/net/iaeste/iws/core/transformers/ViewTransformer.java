@@ -289,12 +289,14 @@ public final class ViewTransformer {
         result.add(fieldOfStudiesString);
 
         String specializationsString = "";
-        for (String spe : CollectionTransformer.explodeStringSet(embeddedOffer.getSpecializations())) {
-            String toPut = spe.charAt(0) + toLower(spe).replace('_', ' ').substring(1);
-            if (!specializationsString.isEmpty()) {
-                specializationsString = specializationsString + ", " + toPut;
-            } else {
-                specializationsString = toPut;
+        for (String specialization : CollectionTransformer.explodeStringSet(embeddedOffer.getSpecializations())) {
+            if ((specialization != null) && !specialization.isEmpty()) {
+                String parsed = specialization.charAt(0) + toLower(specialization).replace('_', ' ').substring(1);
+                if (!specializationsString.isEmpty()) {
+                    specializationsString = specializationsString + ", " + parsed;
+                } else {
+                    specializationsString = parsed;
+                }
             }
         }
         result.add(specializationsString);

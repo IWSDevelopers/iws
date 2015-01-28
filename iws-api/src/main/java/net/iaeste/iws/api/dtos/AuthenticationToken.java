@@ -20,7 +20,6 @@ import net.iaeste.iws.api.util.Traceable;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * All requests (with the exception of the initial Authorization request) is
@@ -47,13 +46,6 @@ public final class AuthenticationToken extends AbstractVerification implements T
 
     /** For Group Authorization, the GroupId must also be provided. */
     private String groupId = null;
-
-    /**
-     * The Transfer Ticket is not used in the standard methods, it is
-     * independent of the internal logic, and is purely for the purpose of
-     * tracing log messages.
-     */
-    private String traceId = UUID.randomUUID().toString().substring(0, 8);
 
     // =========================================================================
     // Object Constructors
@@ -105,7 +97,6 @@ public final class AuthenticationToken extends AbstractVerification implements T
         // Object, we're not going to invoke the setters here.
         setToken(token.token);
         groupId = token.groupId;
-        traceId = token.traceId;
     }
 
     // =========================================================================
@@ -174,26 +165,11 @@ public final class AuthenticationToken extends AbstractVerification implements T
     }
 
     /**
-     * If the TraceId is set, then the IWS will use this value for all logging,
-     * making it easier for a third-party system to request log results to see
-     * what was going wrong and why.<br />
-     *   If the value is not a proper Id, then the method will thrown an
-     * {@code IllegalArgumentException}.
-     *
-     * @param traceId TraceId for logging purposes
-     * @throws IllegalArgumentException if the value is not a proper Id
-     */
-    public void setTraceId(final String traceId) throws IllegalArgumentException {
-        ensureValidId("traceId", traceId);
-        this.traceId = traceId;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
     public String getTraceId() {
-        return traceId;
+        return token.substring(0, 8);
     }
 
     // =========================================================================

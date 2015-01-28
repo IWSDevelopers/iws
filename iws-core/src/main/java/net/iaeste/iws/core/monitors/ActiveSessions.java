@@ -15,6 +15,7 @@
 package net.iaeste.iws.core.monitors;
 
 import net.iaeste.iws.api.constants.IWSErrors;
+import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.core.exceptions.SessionException;
 import org.slf4j.Logger;
@@ -130,7 +131,7 @@ public final class ActiveSessions {
      * @param token Session Token
      */
     public void registerToken(final String token) {
-        log.info("Registering Token {} in the Active Session Monitor.", token);
+        log.debug("{}Registering Token in the Active Session Monitor.", readTrace(token));
         synchronized (lock) {
             if (tokens.containsKey(token)) {
                 tokens.put(token, new Date());
@@ -162,7 +163,7 @@ public final class ActiveSessions {
             }
         }
 
-        log.debug("The token {} was last used {}.", token, lastAccess);
+        log.trace("{}The token was last used {}.", readTrace(token), lastAccess);
         return lastAccess;
     }
 
@@ -172,7 +173,7 @@ public final class ActiveSessions {
      * @param token Session Token
      */
     public void removeToken(final String token) {
-        log.info("Removing token {} from the Active Session Monitor.", token);
+        log.debug("{}Removing token from the Active Session Monitor.", readTrace(token));
         synchronized (lock) {
             tokens.remove(token);
         }
@@ -193,7 +194,7 @@ public final class ActiveSessions {
         if (lastAccess != null) {
             result = lastAccess.after(mustBeAfter);
         } else {
-            log.debug("Token {} has expired, it is {} ms since last access.", token, maxMillisToLive);
+            log.info("{}Token has expired, it is {} ms since last access.", readTrace(token), maxMillisToLive);
             result = false;
         }
 
@@ -207,7 +208,7 @@ public final class ActiveSessions {
      * @param token Token to update
      */
     public void updateToken(final String token) {
-        log.debug("Updating the last access for the token {} to now.", token);
+        log.trace("{}Updating the last access for the token to now.", readTrace(token));
         synchronized (lock) {
             if (tokens.containsKey(token)) {
                 tokens.put(token, new Date());
@@ -227,7 +228,7 @@ public final class ActiveSessions {
      * @return List of Sessions that have expired
      */
     public List<String> findAndRemoveExpiredTokens() {
-        log.info("Attempting to find and remove expired Tokens.");
+        log.debug("Attempting to find and remove expired Tokens.");
         final List<String> expiredTokens = new ArrayList<>(10);
         // Although we always should narrow the scope of variables, we also have
         // to remember that the Synchronized block is a special case, that
@@ -258,6 +259,18 @@ public final class ActiveSessions {
     // =========================================================================
     // Internal Methods
     // =========================================================================
+
+    private static String readTrace(final String token) {
+        final String trace;
+
+        if (token != null) {
+            return String.format("[traceId = %s] ", new AuthenticationToken(token).getTraceId());
+        } else {
+            trace = "";
+        }
+
+        return trace;
+    }
 
     /**
      * Removes a list of Tokens from the Session map.

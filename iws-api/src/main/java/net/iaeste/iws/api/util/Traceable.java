@@ -27,10 +27,10 @@ package net.iaeste.iws.api.util;
 public interface Traceable {
 
     /**
-     * Returns the Users TraceId, which is build uniquely for each Session. The
-     * information is build uniquely for each Session, and is purely used for
-     * logging, so it is possible to trace actions that led to errors. The
-     * TraceId is not saved in the database.
+     * Returns a unique Session based TraceId for a user. The traceId will
+     * together with other information be able to see what a User has been
+     * doing, and thus help with resolving production problems. All IWS log
+     * requests is made with the TraceId, if possible.
      *
      * @return The Users Session based TraceId
      */

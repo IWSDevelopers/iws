@@ -14,7 +14,7 @@
  */
 package net.iaeste.iws.ejb;
 
-import static net.iaeste.iws.core.util.LogUtil.formatLogMessage;
+import static net.iaeste.iws.api.util.LogUtil.formatLogMessage;
 
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.util.Fallible;

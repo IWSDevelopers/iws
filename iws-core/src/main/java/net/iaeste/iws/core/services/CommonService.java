@@ -18,7 +18,7 @@ import static net.iaeste.iws.common.utils.HashcodeGenerator.generateHash;
 import static net.iaeste.iws.common.utils.PasswordGenerator.generatePassword;
 import static net.iaeste.iws.common.utils.StringUtils.toLower;
 import static net.iaeste.iws.core.transformers.StorageTransformer.transform;
-import static net.iaeste.iws.core.util.LogUtil.formatLogMessage;
+import static net.iaeste.iws.api.util.LogUtil.formatLogMessage;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;

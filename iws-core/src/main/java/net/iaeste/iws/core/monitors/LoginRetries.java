@@ -108,7 +108,7 @@ public final class LoginRetries {
      * @param user User to register
      */
     public void registerUser(final String user) {
-        log.info("Registering User {} in the Login Retry Monitor.", user);
+        log.debug("Registering User {} in the Login Retry Monitor.", user);
         final DateFormat format = new SimpleDateFormat(IWSConstants.DATE_TIME_FORMAT, IWSConstants.DEFAULT_LOCALE);
         final Date when = new Date(new Date().getTime() - blockedPeriod);
         final String key = toLower(user);
@@ -212,7 +212,7 @@ public final class LoginRetries {
      * @param user User to remove
      */
     public void removeAuthenticatedUser(final String user) {
-        log.info("Removing User {} from the Login Retry Monitor.", user);
+        log.debug("Removing User {} from the Login Retry Monitor.", user);
         synchronized (lock) {
             users.remove(user);
         }

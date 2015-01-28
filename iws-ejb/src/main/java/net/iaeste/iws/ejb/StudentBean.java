@@ -134,7 +134,7 @@ public class StudentBean extends AbstractBean implements Students {
             response = controller.createStudent(token, request);
             log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token));
+            log.error(generateErrorLog(e, token), e);
             response = new CreateUserResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -153,7 +153,7 @@ public class StudentBean extends AbstractBean implements Students {
             response = controller.processStudent(token, request);
             log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token));
+            log.error(generateErrorLog(e, token), e);
             response = new StudentResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -172,7 +172,7 @@ public class StudentBean extends AbstractBean implements Students {
             response = controller.fetchStudents(token, request);
             log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token));
+            log.error(generateErrorLog(e, token), e);
             response = new FetchStudentsResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -191,7 +191,7 @@ public class StudentBean extends AbstractBean implements Students {
             response = controller.processStudentApplication(token, request);
             log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token));
+            log.error(generateErrorLog(e, token), e);
             response = new StudentApplicationResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -210,7 +210,7 @@ public class StudentBean extends AbstractBean implements Students {
             response = controller.fetchStudentApplications(token, request);
             log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token));
+            log.error(generateErrorLog(e, token), e);
             response = new FetchStudentApplicationsResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -228,7 +228,7 @@ public class StudentBean extends AbstractBean implements Students {
             response = controller.processApplicationStatus(token, request);
             log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token));
+            log.error(generateErrorLog(e, token), e);
             response = new StudentApplicationResponse(IWSErrors.ERROR, e.getMessage());
         }
 

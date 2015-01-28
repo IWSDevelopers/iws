@@ -14,7 +14,7 @@
  */
 package net.iaeste.iws.core;
 
-import static net.iaeste.iws.core.util.LogUtil.formatLogMessage;
+import static net.iaeste.iws.api.util.LogUtil.formatLogMessage;
 
 import net.iaeste.iws.api.Exchange;
 import net.iaeste.iws.api.dtos.AuthenticationToken;

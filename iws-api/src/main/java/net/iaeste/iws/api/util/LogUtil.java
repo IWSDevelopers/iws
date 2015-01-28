@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2015, IAESTE Internet Development Team. All rights reserved.
  * ----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-core) - net.iaeste.iws.core.util.LogUtil
+ * Project: IntraWeb Services (iws-core) - net.iaeste.iws.api.util.LogUtil
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -12,9 +12,7 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-package net.iaeste.iws.core.util;
-
-import net.iaeste.iws.api.util.Traceable;
+package net.iaeste.iws.api.util;
 
 /**
  * @author  Kim Jensen / last $Author:$

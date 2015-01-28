@@ -586,8 +586,7 @@ public class UserEntity extends AbstractUpdateable<UserEntity> implements Extern
     @Override
     public String toString() {
         return "UserEntity{" +
-                "id='" + externalId + '\'' +
-                ", firstname='" + firstname + '\'' +
+                " firstname='" + firstname + '\'' +
                 ", lastname='" + lastname + '\'' +
                 '}';
     }

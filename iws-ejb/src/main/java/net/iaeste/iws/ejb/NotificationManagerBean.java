@@ -228,14 +228,14 @@ public class NotificationManagerBean implements NotificationManagerLocal {
         //TODO remove log messages when the processing works correctly, i.e. there is no need of timer rescheduling.
         //     the problem is that consumers doesn't see their tasks when they are called just after tasks' creation
         this.timer = null;
-        log.info("processJobsScheduled started at " + new DateTime());
+        log.trace("processJobsScheduled started at " + new DateTime());
         notifications.processJobs();
     }
 
     // Commented for now, since this causes huge stack traces!
     @Schedule(second = "*/30",minute = "*", hour = "*", info="Every 30 seconds", persistent = false)
     private void processJobsScheduled() {
-        log.info("processJobsScheduled started at " + new DateTime());
+        log.trace("processJobsScheduled started at " + new DateTime());
         final boolean run;
         synchronized (lock) {
             if (!processingIsRunning) {
@@ -249,7 +249,7 @@ public class NotificationManagerBean implements NotificationManagerLocal {
         if (run) {
             try {
                 notifications.processJobs();
-            } catch (Exception e) {
+            } catch (RuntimeException e) {
                 log.error("Exception caught in notification processing", e);
             } finally {
                 synchronized (lock) {

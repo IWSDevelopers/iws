@@ -164,7 +164,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
             response = controller.fetchOfferStatistics(token, request);
             log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token));
+            log.error(generateErrorLog(e, token), e);
             response = new OfferStatisticsResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -187,7 +187,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
             response = controller.processEmployer(token, request);
             log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token));
+            log.error(generateErrorLog(e, token), e);
             response = new EmployerResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -211,7 +211,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
             response = controller.fetchEmployers(token, request);
             log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token));
+            log.error(generateErrorLog(e, token), e);
             response = new FetchEmployerResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -234,7 +234,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
             response = controller.processOffer(token, request);
             log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token));
+            log.error(generateErrorLog(e, token), e);
             response = new OfferResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -254,7 +254,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
             response = controller.deleteOffer(token, request);
             log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token));
+            log.error(generateErrorLog(e, token), e);
             response = new OfferResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -274,7 +274,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
             response = controller.uploadOffers(token, request);
             log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token));
+            log.error(generateErrorLog(e, token), e);
             response = new OfferCSVUploadResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -298,7 +298,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
             response = controller.fetchOffers(token, request);
             log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token));
+            log.error(generateErrorLog(e, token), e);
             response = new FetchOffersResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -319,7 +319,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
             response = controller.downloadOffers(token, request);
             log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token));
+            log.error(generateErrorLog(e, token), e);
             response = new OfferCSVDownloadResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -340,7 +340,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
             response = controller.fetchGroupsForSharing(token);
             log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token));
+            log.error(generateErrorLog(e, token), e);
             response = new FetchGroupsForSharingResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -360,7 +360,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
             response = controller.processOfferTemplate(token, request);
             log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token));
+            log.error(generateErrorLog(e, token), e);
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -381,7 +381,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
             response = controller.fetchOfferTemplates(token, request);
             log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token));
+            log.error(generateErrorLog(e, token), e);
             response = new FetchOfferTemplateResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -401,7 +401,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
             response = controller.processPublishingGroup(token, request);
             log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token));
+            log.error(generateErrorLog(e, token), e);
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -422,7 +422,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
             response = controller.fetchPublishingGroups(token, request);
             log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token));
+            log.error(generateErrorLog(e, token), e);
             response = new FetchPublishingGroupResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -443,7 +443,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
             response = controller.deletePublishingGroup(token, request);
             log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token));
+            log.error(generateErrorLog(e, token), e);
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -463,7 +463,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
             response = controller.processPublishOffer(token, request);
             log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token));
+            log.error(generateErrorLog(e, token), e);
             response = new PublishOfferResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -484,7 +484,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
             response = controller.fetchPublishedGroups(token, request);
             log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token));
+            log.error(generateErrorLog(e, token), e);
             response = new FetchPublishedGroupsResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -504,7 +504,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
             response = controller.processHideForeignOffers(token, request);
             log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token));
+            log.error(generateErrorLog(e, token), e);
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -524,7 +524,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
             response = controller.rejectOffer(token, request);
             log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token));
+            log.error(generateErrorLog(e, token), e);
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 

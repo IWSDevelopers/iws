@@ -240,9 +240,9 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
         if (groups.size() == 1) {
             return groups.get(0);
         } else if (groups.isEmpty()) {
-            throw new AuthorizationException("User '" + user.getExternalId() + "' is not permitted to perform action '" + permission.getName() + "'.");
+            throw new AuthorizationException("User is not permitted to perform action '" + permission.getName() + "'.");
         } else {
-            throw new AuthorizationException("User permission " + permission.getName() + " could not be uniquely identified for user '" + user.getExternalId() + "', please provide the Group for the user.");
+            throw new AuthorizationException("User permission " + permission.getName() + " could not be uniquely identified for user, please provide the Group for the user.");
         }
     }
 
@@ -266,17 +266,6 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
         query.setParameter("oldid", oldId);
 
         return findSingleResult(query, "User");
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public GroupEntity findGroupByIW3Id(final Integer oldId) {
-        final Query query = entityManager.createNamedQuery("group.findByIW3Id");
-        query.setParameter("oldid", oldId);
-
-        return findSingleResult(query, "Group");
     }
 
     /**

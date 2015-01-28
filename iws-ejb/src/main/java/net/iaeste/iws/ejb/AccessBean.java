@@ -200,7 +200,7 @@ public class AccessBean extends AbstractBean implements Access {
             response = controller.saveSessionData(token, request);
             log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token));
+            log.error(generateErrorLog(e, token), e);
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -219,7 +219,7 @@ public class AccessBean extends AbstractBean implements Access {
             response = controller.readSessionData(token);
             log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token));
+            log.error(generateErrorLog(e, token), e);
             response = new SessionDataResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -240,7 +240,7 @@ public class AccessBean extends AbstractBean implements Access {
             response = controller.verifySession(token);
             log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token));
+            log.error(generateErrorLog(e, token), e);
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -260,7 +260,7 @@ public class AccessBean extends AbstractBean implements Access {
             response = controller.deprecateSession(token);
             log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token));
+            log.error(generateErrorLog(e, token), e);
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -320,7 +320,7 @@ public class AccessBean extends AbstractBean implements Access {
             response = controller.updatePassword(token, password);
             log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token));
+            log.error(generateErrorLog(e, token), e);
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -342,7 +342,7 @@ public class AccessBean extends AbstractBean implements Access {
             response = controller.fetchPermissions(token);
             log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token));
+            log.error(generateErrorLog(e, token), e);
             response = new FetchPermissionResponse(IWSErrors.ERROR, e.getMessage());
         }
 

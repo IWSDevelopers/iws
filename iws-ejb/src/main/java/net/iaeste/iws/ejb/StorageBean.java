@@ -128,7 +128,7 @@ public class StorageBean extends AbstractBean implements Storage {
             response = controller.processFolder(token, request);
             log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token));
+            log.error(generateErrorLog(e, token), e);
             response = new FolderResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -147,7 +147,7 @@ public class StorageBean extends AbstractBean implements Storage {
             response = controller.fetchFolder(token, request);
             log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token));
+            log.error(generateErrorLog(e, token), e);
             response = new FetchFolderResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -166,7 +166,7 @@ public class StorageBean extends AbstractBean implements Storage {
             response = controller.processFile(token, request);
             log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token));
+            log.error(generateErrorLog(e, token), e);
             response = new FileResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -185,7 +185,7 @@ public class StorageBean extends AbstractBean implements Storage {
             response = controller.fetchFile(token, request);
             log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token));
+            log.error(generateErrorLog(e, token), e);
             response = new FetchFileResponse(IWSErrors.ERROR, e.getMessage());
         }
 

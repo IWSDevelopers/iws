@@ -123,8 +123,6 @@ public interface AccessDao extends BasicDao {
 
     UserEntity findUserByIW3Id(Integer oldId);
 
-    GroupEntity findGroupByIW3Id(Integer oldId);
-
     GroupEntity findGroup(UserEntity user, String externalGroupId);
 
     UserGroupEntity findIw3UserGroup(Integer iw3UserId, Integer iw3GroupId);

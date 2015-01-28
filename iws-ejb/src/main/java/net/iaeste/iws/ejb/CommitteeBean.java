@@ -131,7 +131,7 @@ public class CommitteeBean extends AbstractBean implements Committees {
             response = controller.fetchCommittees(token, request);
             log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token));
+            log.error(generateErrorLog(e, token), e);
             response = new FetchCommitteeResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -150,7 +150,7 @@ public class CommitteeBean extends AbstractBean implements Committees {
             response = controller.processCommittee(token, request);
             log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token));
+            log.error(generateErrorLog(e, token), e);
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -169,7 +169,7 @@ public class CommitteeBean extends AbstractBean implements Committees {
             response = controller.fetchInternationalGroups(token, request);
             log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token));
+            log.error(generateErrorLog(e, token), e);
             response = new FetchInternationalGroupResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -188,7 +188,7 @@ public class CommitteeBean extends AbstractBean implements Committees {
             response = controller.processInternationalGroup(token, request);
             log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token));
+            log.error(generateErrorLog(e, token), e);
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -207,7 +207,7 @@ public class CommitteeBean extends AbstractBean implements Committees {
             response = controller.fetchSurveyOfCountry(token, request);
             log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token));
+            log.error(generateErrorLog(e, token), e);
             response = new FetchSurveyOfCountryRespose(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -226,7 +226,7 @@ public class CommitteeBean extends AbstractBean implements Committees {
             response = controller.processSurveyOfCountry(token, request);
             log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token));
+            log.error(generateErrorLog(e, token), e);
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 

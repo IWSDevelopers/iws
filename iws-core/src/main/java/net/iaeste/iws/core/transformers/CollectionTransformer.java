@@ -85,15 +85,18 @@ public final class CollectionTransformer {
         final List<T> result = new ArrayList<>(10);
         if (value != null) {
             final String[] array = SPLIT_PATTERN.split(value);
-            for (final String s : array) {
-                try {
-                    final T v = Enum.valueOf(enumType, s);
-                    result.add(v);
-                } catch (IllegalArgumentException e) {
-                    log.info(e.getMessage(), e);
+            for (final String str : array) {
+                if (!str.isEmpty()) {
+                    try {
+                        final T v = Enum.valueOf(enumType, str);
+                        result.add(v);
+                    } catch (IllegalArgumentException e) {
+                        log.info("Error converting value '" + str + "' to enum of type '" + enumType.getName() + "': " + e.getMessage(), e);
+                    }
                 }
             }
         }
+
         return result;
     }
 

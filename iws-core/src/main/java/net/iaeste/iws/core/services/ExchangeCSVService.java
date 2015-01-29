@@ -292,10 +292,12 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
                     processingResult.put(refNo, OfferCSVUploadResponse.ProcessingResult.Added);
                 }
             } else {
+                log.warn(formatLogMessage(authentication, "CSV Offer with RefNo " + refNo + " has some Problems: " + validationErrors));
                 processingResult.put(refNo, OfferCSVUploadResponse.ProcessingResult.Error);
                 errors.put(refNo, validationErrors);
             }
         } catch (IllegalArgumentException | IWSException e) {
+            log.warn(formatLogMessage(authentication, "CSV Offer with RefNo " + refNo + " has a Problem: " + e.getMessage()), e);
             processingResult.put(refNo, OfferCSVUploadResponse.ProcessingResult.Error);
             if (errors.containsKey(refNo)) {
                 errors.get(refNo).put("general", e.getMessage());

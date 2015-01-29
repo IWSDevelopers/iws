@@ -18,7 +18,6 @@ import static net.iaeste.iws.common.utils.StringUtils.toLower;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
-import net.iaeste.iws.api.constants.exchange.IWSExchangeConstants;
 import net.iaeste.iws.api.enums.exchange.OfferFields;
 import net.iaeste.iws.api.enums.exchange.StudyLevel;
 import net.iaeste.iws.api.enums.exchange.TypeOfWork;
@@ -223,16 +222,19 @@ public final class CsvTransformer {
         // how it can be done better, using the information we have in the
         // OfferFields enum type, and using a reflective invocation of the
         // Object setter to invoke the error checks.
-        //   Having the error check here is disturbing, but can be conidered an
-        // extra safeguard. What would be better, is of the CSV from Korea that
+        //   Having the error check here is disturbing, but can be considered an
+        // extra safeguard. What would be better, is if the CSV from Korea that
         // caused the problem could be found. It will enlighten precisely how
         // it was possible to circumvent the IWS safeguards.
-        if (field == OfferFields.SPECIALIZATION) {
-            final int max = IWSExchangeConstants.MAX_OFFER_SPECIALIZATIONS;
-            if (result.size() > max) {
-                errors.put(field.getField(), "The field specializations may not containt more than " + max + " Objects.");
-            }
-        }
+        //   Update; Korea informed that they simply added the extra
+        // Specializations within the Offer Form, meaning that it was *not* a
+        // via the CSV upload mechanism. Please see ticket #971.
+        //if (field == OfferFields.SPECIALIZATION) {
+        //    final int max = IWSExchangeConstants.MAX_OFFER_SPECIALIZATIONS;
+        //    if (result.size() > max) {
+        //        errors.put(field.getField(), "The field specializations may not containt more than " + max + " Objects.");
+        //    }
+        //}
 
         return result;
     }
@@ -423,6 +425,7 @@ public final class CsvTransformer {
                 final Method implementation = obj.getClass().getMethod(field.getField());
                 implementation.invoke(obj, args);
             } catch (IllegalArgumentException e) {
+                log.debug("Setter " + field.getMethod() + " Invocation Error: " + e.getMessage());
                 errors.put(field.getField(), e.getMessage());
             } catch (SecurityException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
                 // The Reflection framework forces a check for the NoSuchMethod

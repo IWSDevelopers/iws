@@ -133,6 +133,8 @@ public interface IWSErrors {
 
     IWSError ILLEGAL_ACTION = new IWSError(507, "User attempted to perform an illegal action.");
 
+    IWSError STORAGE_ERROR = new IWSError(508, "Internal Storage Problem.");
+
     IWSError USER_ACCOUNT_EXISTS = new IWSError(601, "User Account Already exists.");
 
     IWSError NO_USER_ACCOUNT_FOUND = new IWSError(602, "No User Account exists.");

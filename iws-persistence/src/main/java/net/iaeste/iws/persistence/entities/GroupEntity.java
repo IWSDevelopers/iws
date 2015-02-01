@@ -442,6 +442,36 @@ public class GroupEntity extends AbstractUpdateable<GroupEntity> implements Exte
     // Other Methods required for this Entity
     // =========================================================================
 
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(final Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof GroupEntity)) {
+            return false;
+        }
+
+        final GroupEntity that = (GroupEntity) obj;
+
+        // The ExternalId is sufficient to compare two internal GroupEntity
+        // Objects, and even to compare if a not found external Group Object
+        // matches an internal.
+        return !(externalId != null ? !externalId.equals(that.externalId) : that.externalId != null);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        // The External Id is sufficient for the HashCode value of this Object
+        return externalId != null ? externalId.hashCode() : 0;
+    }
+
     /**
      * {@inheritDoc}
      */

@@ -213,4 +213,17 @@ public class FolderEntity extends AbstractUpdateable<FolderEntity> implements Ex
             foldername = which(foldername, obj.foldername);
         }
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return "FolderEntity{" +
+                "externalId='" + externalId + '\'' +
+                ", parentId=" + parentId +
+                ", group=" + group +
+                ", foldername='" + foldername + '\'' +
+                '}';
+    }
 }

@@ -31,18 +31,18 @@ public final class FolderRequest extends AbstractVerification {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    private enum Action { PROCESS, DELETE }
-
-    private Action action = null;
-
-    /** The Folder Object to process. */
-    private Folder folder = null;
-
     /**
      * The Id of the Parent Folder, if nothing given - the Group's root folder
      * is used. This value is only used when creating new Folders.
      */
     private String parentId = null;
+
+    /** The Folder Object to process. */
+    private Folder folder = null;
+
+    private Action action = null;
+
+    public enum Action { PROCESS, DELETE }
 
     // =========================================================================
     // Object Constructors

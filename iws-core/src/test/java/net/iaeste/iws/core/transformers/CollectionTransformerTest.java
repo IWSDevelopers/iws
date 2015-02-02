@@ -107,37 +107,4 @@ public class CollectionTransformerTest {
         assertThat(resultList, is(expectedList));
         assertThat(resultSet, is(expectedSet));
     }
-
-    ///**
-    // * The Offer only allows that the Specializations field is 3 element long,
-    // * however an Offer was uploaded via the CSV, which was longer. Meaning,
-    // * that CSV transformer failed.<br />
-    // *   This test is here to first debug and verify the error, and secondly to
-    // * prove that the fix is correct.
-    // */
-    //@Test
-    //public void testLongStringSetsTicket966() {
-    //    final String delimiter = CollectionTransformer.DELIMITER;
-    //    final String input = "alfa" + delimiter + "beta" + delimiter + "gamma" + delimiter + "delta" + delimiter + "epsilon";
-    //    final Map<String, String> errors = new HashMap<>(0);
-    //    final OfferFields field = OfferFields.SPECIALIZATION;
-    //
-    //    // First, we use the transformer to get the Set back. The set is then
-    //    // used as input in the Offer, just as how it is donw in the Exchange
-    //    // CSV Service, when processing an uploaded CSV file
-    //    final Set<String> specializations = CsvTransformer.toStringSet(errors, input, field);
-    //
-    //    // Now, we create an Offer, and add the Specializations. The Input
-    //    // validation check in the Offer setSpecialization method should throw
-    //    // an IllegalArgument Exception, when invoking it with a parameter with
-    //    // too many values in the set.
-    //    final Offer offer = new Offer();
-    //    try {
-    //        offer.setSpecializations(specializations);
-    //        fail("The Offer setter should fail, and didn't.");
-    //    } catch (IllegalArgumentException e) {
-    //        // If we get this Exception, then everything is perfect.
-    //        assertThat(e.getMessage(), is("The field specializations may not containt more than 3 Objects."));
-    //    }
-    //}
 }

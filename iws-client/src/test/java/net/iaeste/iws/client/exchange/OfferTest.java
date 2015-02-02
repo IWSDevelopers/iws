@@ -1354,6 +1354,36 @@ public final class OfferTest extends AbstractTest {
         }
     }
 
+    /**
+     * During the 2015 Annual Conference an Offer was inserted in into the IW,
+     * and caused subsequent problems as it contained 5 Specializations,
+     * although only 3 is allowed. After inquiring the delegation who created
+     * the Offer, they informed that they had read the CSV upload documentation
+     * stating that the Specializations must be delimited by pipes "|". So
+     * instead of using the normal Form in IW4 to upload the offers, they added
+     * all of them with pipes.<br />
+     *   The result was that the Offer DTO had a set of Strings with only one
+     * value (the delimited specializations), thus omitting the standard checks
+     * in the Offer DTO. When inserted. the Set is expanded into a pipe "|"
+     * delimited String and that all worked fine, but reading it out again
+     * caused an error.<br />
+     *   This test is replicating the issue and will demonstrate the flaw, and
+     * also the fix. For more information, see Trac ticket #971 (#966).
+     */
+    @Test
+    @Ignore("Test is made in preparation for Trac task #971, remove this ignore once completed.")
+    public void testLongStringSetsTicket971() {
+        final Offer offer = TestData.prepareMinimalOffer(PL_YEAR + "-SPECIAL", "Specialization Employer", "PL");
+        final Set<String> specializations = new HashSet<>();
+        final String specialization = "First | Second | Third | Fourth | Fifth";
+        specializations.add(specialization);
+        offer.setSpecializations(specializations);
+
+        final ProcessOfferRequest request = new ProcessOfferRequest(offer);
+        final OfferResponse response = exchange.processOffer(token, request);
+        assertThat(response.isOk(), is(true));
+    }
+
     private static Offer findOfferFromResponse(final String refno, final FetchOffersResponse response) {
         // As the IWS is replacing the new Reference Number with the correct
         // year, the only valid information to go on is the running number.

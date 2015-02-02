@@ -16,8 +16,10 @@ package net.iaeste.iws.api.requests;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.dtos.Folder;
-import net.iaeste.iws.api.util.AbstractVerification;
+import net.iaeste.iws.api.enums.Action;
+import net.iaeste.iws.api.util.AbstractActionable;
 
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,7 +28,7 @@ import java.util.Map;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.1
  */
-public final class FolderRequest extends AbstractVerification {
+public final class FolderRequest extends AbstractActionable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -40,10 +42,6 @@ public final class FolderRequest extends AbstractVerification {
     /** The Folder Object to process. */
     private Folder folder = null;
 
-    private Action action = null;
-
-    public enum Action { PROCESS, DELETE }
-
     // =========================================================================
     // Object Constructors
     // =========================================================================
@@ -53,7 +51,7 @@ public final class FolderRequest extends AbstractVerification {
      * for WebServices to work properly.
      */
     public FolderRequest() {
-        action = Action.PROCESS;
+        super(EnumSet.of(Action.Process, Action.Process));
     }
 
     /**
@@ -62,6 +60,7 @@ public final class FolderRequest extends AbstractVerification {
      * @param folder Meta data for the folder
      */
     public FolderRequest(final Folder folder) {
+        super(EnumSet.of(Action.Process, Action.Process));
         setFolder(folder);
     }
 
@@ -85,16 +84,8 @@ public final class FolderRequest extends AbstractVerification {
         return new Folder(folder);
     }
 
-    public void setAction(final Action action) {
-        ensureNotNull("action", action);
-        this.action = action;
-    }
-
-    public Action getAction() {
-        return action;
-    }
-
-    public void setParentId(final String parentId) {
+    public void setParentId(final String parentId) throws IllegalArgumentException {
+        ensureValidId("parentId", parentId);
         this.parentId = parentId;
     }
 

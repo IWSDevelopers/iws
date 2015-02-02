@@ -21,6 +21,7 @@ import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.File;
 import net.iaeste.iws.api.dtos.Folder;
 import net.iaeste.iws.api.dtos.Group;
+import net.iaeste.iws.api.enums.Action;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.enums.Privacy;
@@ -91,7 +92,7 @@ public final class StorageService extends CommonService<AccessDao> {
         final String folderExternalId = request.getFolder().getFolderId();
         final Folder folder;
 
-        if (request.getAction() == FolderRequest.Action.PROCESS) {
+        if (request.getAction() == Action.Process) {
             if (folderExternalId == null) {
                 // Check the parentId, if it is null - it means we're about to
                 // create a new root folder for a Group. Only one such Group may
@@ -400,7 +401,7 @@ public final class StorageService extends CommonService<AccessDao> {
     public FileResponse processFile(final Authentication authentication, final FileRequest request) {
         final FileResponse response;
 
-        if (request.getDeleteFile()) {
+        if (request.getAction() == Action.Delete) {
             deleteFile(authentication, request.getFile(), request.getType());
             response = new FileResponse();
         } else {
@@ -437,7 +438,6 @@ public final class StorageService extends CommonService<AccessDao> {
         return found.isEmpty() ? null : found.get(0);
     }
 
-    // TODO Extend the method with the possibility to read files from a public folder. Provided that the user has access to the folder (see GroupType) and the file is either public (all) or protected (member of file group).
     public FetchFileResponse fetchFile(final Authentication authentication, final FetchFileRequest request) {
         final String externalGroupId = request.getGroupId();
         final StorageType type = request.getType();
@@ -455,6 +455,10 @@ public final class StorageService extends CommonService<AccessDao> {
                 // Read the allowed file
                 entity = dao.findFileByUserGroupAndExternalId(authentication.getUser(), group, request.getFileId());
             }
+        } else if (type == StorageType.FOLDER) {
+            entity = readFile(authentication, request.getFileId());
+            // Just to ensure that the data is read out during transformation below
+            request.setReadFileData(true);
         } else {
             entity = dao.findAttachedFile(request.getFileId(), externalGroupId, type);
         }
@@ -465,5 +469,34 @@ public final class StorageService extends CommonService<AccessDao> {
         }
 
         return new FetchFileResponse(file);
+    }
+
+    private FileEntity readFile(final Authentication authentication, final String externalFileId) {
+        final String jql =
+                "select f from FileEntity f, UserGroupEntity u2g " +
+                "where f.id = :fid" +
+                "  and (f.privacy = " + Privacy.PUBLIC +
+                "    or (f.privacy = " + Privacy.PROTECTED +
+                "      and f.group.id = u2g.group.id" +
+                "      and u2g.user.id = :uid)" +
+                "    or (f.privacy = " + Privacy.PRIVATE +
+                "      and f.user.id = :uid))";
+        final Query query = entityManager.createQuery(jql);
+        query.setParameter("efid", externalFileId);
+        query.setParameter("uid", authentication.getUser().getId());
+
+        final List<FileEntity> found = query.getResultList();
+        final FileEntity entity;
+
+        if (found.size() == 1) {
+            entity = found.get(0);
+        } else if (found.isEmpty()) {
+            entity = null;
+        } else {
+            log.error(formatLogMessage(authentication, "Multiple files with the same Id '%s' was found.", externalFileId));
+            entity = null;
+        }
+
+        return entity;
     }
 }

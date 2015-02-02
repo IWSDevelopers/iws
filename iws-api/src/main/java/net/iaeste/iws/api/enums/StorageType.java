@@ -31,6 +31,12 @@ public enum StorageType {
     OWNER("Owner"),
 
     /**
+     * If reading a file from a public folder, then this Storage Type must be
+     * used.
+     */
+    FOLDER("Folder"),
+
+    /**
      * Attached to an Offer, meaning that the rule that applies is that the
      * provided File Id must be belong to an attachment, which the retrieving
      * person has access to.

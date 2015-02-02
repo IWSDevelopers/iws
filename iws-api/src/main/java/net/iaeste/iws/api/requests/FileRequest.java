@@ -16,9 +16,11 @@ package net.iaeste.iws.api.requests;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.dtos.File;
+import net.iaeste.iws.api.enums.Action;
 import net.iaeste.iws.api.enums.StorageType;
-import net.iaeste.iws.api.util.AbstractVerification;
+import net.iaeste.iws.api.util.AbstractActionable;
 
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,7 +29,7 @@ import java.util.Map;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
-public final class FileRequest extends AbstractVerification {
+public final class FileRequest extends AbstractActionable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -37,7 +39,6 @@ public final class FileRequest extends AbstractVerification {
      */
     private File file = null;
     private StorageType type = StorageType.OWNER;
-    private Boolean deleteFile = false;
 
     // =========================================================================
     // Object Constructors
@@ -48,6 +49,7 @@ public final class FileRequest extends AbstractVerification {
      * for WebServices to work properly.
      */
     public FileRequest() {
+        super(EnumSet.of(Action.Process, Action.Delete));
     }
 
     /**
@@ -56,6 +58,7 @@ public final class FileRequest extends AbstractVerification {
      * @param file Meta data for the newly created file.
      */
     public FileRequest(final File file) {
+        super(EnumSet.of(Action.Process, Action.Delete));
         setFile(file);
     }
 
@@ -97,26 +100,6 @@ public final class FileRequest extends AbstractVerification {
 
     public StorageType getType() {
         return type;
-    }
-
-    /**
-     * Sets the Delete File flag. If the file exists and this flag is set, then
-     * the file will be removed from the system. The deleting operation will
-     * wipe the data from the system, and later recovery will not be possible.
-     * By default, the value of this flag is set to false.<br />
-     *   The method will throw an {@code IllegalArgumentException} if the value
-     * is set to null.
-     *
-     * @param deleteFile True if the file should be deleted, otherwise false
-     * @throws IllegalArgumentException if the value is null
-     */
-    public void setDeleteFile(final Boolean deleteFile) throws IllegalArgumentException {
-        ensureNotNull("deleteFile", deleteFile);
-        this.deleteFile = deleteFile;
-    }
-
-    public Boolean getDeleteFile() {
-        return deleteFile;
     }
 
     // =========================================================================

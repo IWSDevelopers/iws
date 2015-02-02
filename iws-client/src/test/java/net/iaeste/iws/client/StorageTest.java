@@ -21,6 +21,7 @@ import net.iaeste.iws.api.Storage;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.File;
 import net.iaeste.iws.api.dtos.Group;
+import net.iaeste.iws.api.enums.Action;
 import net.iaeste.iws.api.requests.FetchFileRequest;
 import net.iaeste.iws.api.requests.FileRequest;
 import net.iaeste.iws.api.responses.FetchFileResponse;
@@ -97,7 +98,7 @@ public class StorageTest extends AbstractTest {
 
         // Delete the File
         final FileRequest deleteRequest = new FileRequest(response.getFile());
-        deleteRequest.setDeleteFile(true);
+        deleteRequest.setAction(Action.Delete);
         token.setGroupId(nationalGroup.getGroupId());
         final FileResponse deleteResponse = storage.processFile(token, deleteRequest);
         assertThat(deleteResponse.isOk(), is(true));

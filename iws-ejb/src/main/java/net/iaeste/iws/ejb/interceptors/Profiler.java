@@ -14,8 +14,8 @@
  */
 package net.iaeste.iws.ejb.interceptors;
 
-import net.iaeste.iws.api.util.Traceable;
 import net.iaeste.iws.api.util.LogUtil;
+import net.iaeste.iws.api.util.Traceable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,10 +30,14 @@ import java.text.DecimalFormat;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
+//@TransactionAttribute(TransactionAttributeType.REQUIRED)
+//@TransactionManagement(TransactionManagementType.CONTAINER)
 public class Profiler {
 
     private static final Logger log = LoggerFactory.getLogger(Profiler.class);
     private static final DecimalFormat format = new DecimalFormat("###,###.##");
+
+    //@Inject @IWSBean private EntityManager entityManager;
 
     @AroundInvoke
     public Object profile(final InvocationContext invocation) throws Exception {
@@ -47,9 +51,22 @@ public class Profiler {
             final String duration = format.format(time);
             Traceable trace = findTraceable(invocation);
 
+            //updateSession(trace);
             log.debug(LogUtil.formatLogMessage(trace, "Profile: Method %s took %s ms.", name, duration));
         }
     }
+
+    //public void updateSession(final Traceable traceable) {
+    //    if (traceable instanceof AuthenticationToken) {
+    //        final AuthenticationToken token = (AuthenticationToken) traceable;
+    //        final String jql =
+    //                "update SessionEntity " +
+    //                "set modified = current_timestamp " +
+    //                "where sessionKey = :key";
+    //        final Query query = entityManager.createQuery(jql);
+    //        query.setParameter("key", token.getToken());
+    //    }
+    //}
 
     /**
      * For our logging, it helps if we can add more tracing. The Session Objects

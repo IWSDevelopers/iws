@@ -17,6 +17,7 @@ package net.iaeste.iws.core.transformers;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
+import net.iaeste.iws.api.constants.exchange.IWSExchangeConstants;
 import net.iaeste.iws.api.enums.Language;
 import org.junit.Test;
 
@@ -38,8 +39,8 @@ public class CollectionTransformerTest {
     public void testConcatEnumCollection() {
         // Collection is unordered
         final Language[] languages = { Language.FRENCH, Language.ENGLISH };
-        final String expectedString1 = String.format("%s%s%s", languages[0], CollectionTransformer.DELIMITER, languages[1]);
-        final String expectedString2 = String.format("%s%s%s", languages[1], CollectionTransformer.DELIMITER, languages[0]);
+        final String expectedString1 = String.format("%s%s%s", languages[0], IWSExchangeConstants.SET_DELIMITER, languages[1]);
+        final String expectedString2 = String.format("%s%s%s", languages[1], IWSExchangeConstants.SET_DELIMITER, languages[0]);
 
         final List<Language> list = Arrays.asList(languages);
         final Set<Language> set = EnumSet.copyOf(list);
@@ -58,7 +59,7 @@ public class CollectionTransformerTest {
         expectedList.add(Language.FRENCH);
         final Set<Language> expectedSet = EnumSet.copyOf(expectedList);
 
-        final String stringArgument = String.format("%s%s%s", Language.ENGLISH.name(), CollectionTransformer.DELIMITER, Language.FRENCH.name());
+        final String stringArgument = String.format("%s%s%s", Language.ENGLISH.name(), IWSExchangeConstants.SET_DELIMITER, Language.FRENCH.name());
 
         final List<Language> resultList = CollectionTransformer.explodeEnumList(Language.class, stringArgument);
         final Set<Language> resultSet = CollectionTransformer.explodeEnumSet(Language.class, stringArgument);
@@ -71,8 +72,8 @@ public class CollectionTransformerTest {
     public void testJoin() {
         final String[] elementsToJoin = { "str1", "str2" };
         // Collection is unordered
-        final String expectedString1 = String.format("%s%s%s", elementsToJoin[0], CollectionTransformer.DELIMITER, elementsToJoin[1]);
-        final String expectedString2 = String.format("%s%s%s", elementsToJoin[1], CollectionTransformer.DELIMITER, elementsToJoin[0]);
+        final String expectedString1 = String.format("%s%s%s", elementsToJoin[0], IWSExchangeConstants.SET_DELIMITER, elementsToJoin[1]);
+        final String expectedString2 = String.format("%s%s%s", elementsToJoin[1], IWSExchangeConstants.SET_DELIMITER, elementsToJoin[0]);
         final List<String> stringList = Arrays.asList(elementsToJoin);
 
         final String result = CollectionTransformer.join(stringList);
@@ -83,7 +84,7 @@ public class CollectionTransformerTest {
     @Test
     public void testExplodeStringListAndSet() {
         final String[] strings = { "str1", "str2" };
-        final String stringToExplode = String.format("%s%s%s", strings[0], CollectionTransformer.DELIMITER, strings[1]);
+        final String stringToExplode = String.format("%s%s%s", strings[0], IWSExchangeConstants.SET_DELIMITER, strings[1]);
         final List<String> expectedList = Arrays.asList(strings);
         final Set<String> expectedSet = new HashSet<>(expectedList);
 

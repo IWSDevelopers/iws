@@ -374,6 +374,7 @@ public final class Offer extends AbstractVerification {
     public void setStudyLevels(final Set<StudyLevel> studyLevels) throws IllegalArgumentException {
         ensureNotNull("studyLevels", studyLevels);
         ensureNotTooLong("studyLevels", studyLevels.toString(), 25);
+        ensureNotContaining("studyLevels", studyLevels, IWSExchangeConstants.SET_DELIMITER);
         this.studyLevels = studyLevels;
     }
 
@@ -394,6 +395,7 @@ public final class Offer extends AbstractVerification {
      */
     public void setFieldOfStudies(final Set<FieldOfStudy> fieldOfStudies) throws IllegalArgumentException {
         ensureNotNullOrTooLong("fieldOfStudies", fieldOfStudies, IWSExchangeConstants.MAX_OFFER_FIELDS_OF_STUDY);
+        ensureNotContaining("fieldOfStudies", fieldOfStudies, IWSExchangeConstants.SET_DELIMITER);
         this.fieldOfStudies = fieldOfStudies;
     }
 
@@ -414,6 +416,7 @@ public final class Offer extends AbstractVerification {
      */
     public void setSpecializations(final Set<String> specializations) throws IllegalArgumentException {
         ensureNotNullOrTooLong("specializations", specializations, IWSExchangeConstants.MAX_OFFER_SPECIALIZATIONS);
+        ensureNotContaining("specializations", specializations, IWSExchangeConstants.SET_DELIMITER);
         this.specializations = specializations;
     }
 

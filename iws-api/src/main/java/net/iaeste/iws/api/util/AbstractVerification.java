@@ -50,6 +50,7 @@ public abstract class AbstractVerification implements Verifiable {
     private static final String ERROR_MINIMUM_VALUE = "The field %s must be at least %d.";
     private static final String ERROR_NOT_WITHIN_LIMITS = "The field %s is not within the required limits from %s to %d.";
     private static final String ERROR_ILLEGAL_VALUES = "The field %s contain illegal value %s.";
+    private static final String ERROR_DELIMITER_FOUND = "THe field %s contains the internally used delimiter '%s'.";
     private static final String ERROR_INVALID = "The field %s is invalid.";
     private static final String ERROR_INVALID_REGEX = "The field %s does not follow the required format %s.";
     private static final String ERROR_NOT_VERIFABLE = "The field %s is not verifiable.";
@@ -320,6 +321,20 @@ public abstract class AbstractVerification implements Verifiable {
 
         if (!acceptable.contains(value)) {
             throw new IllegalArgumentException(format(ERROR_ILLEGAL_VALUES, field, value));
+        }
+    }
+
+    protected <E> void ensureNotContaining(final String field, final Collection<E> value, String... forbidden) throws IllegalArgumentException {
+        if ((value != null) && !value.isEmpty() && (forbidden != null) && (forbidden.length > 0)) {
+            for (final E collectionField : value) {
+                for (final String forbiddenValue : forbidden) {
+                    final String collectionValue = collectionField.toString().toLowerCase(IWSConstants.DEFAULT_LOCALE);
+                    final String toFind = forbiddenValue.toLowerCase(IWSConstants.DEFAULT_LOCALE);
+                    if (collectionValue.contains(toFind)) {
+                        throw new IllegalArgumentException(format(ERROR_DELIMITER_FOUND, field, forbiddenValue));
+                    }
+                }
+            }
         }
     }
 

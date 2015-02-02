@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.core.transformers;
 
+import net.iaeste.iws.api.constants.exchange.IWSExchangeConstants;
 import net.iaeste.iws.common.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,8 +41,7 @@ public final class CollectionTransformer {
 
     public static final Logger log = LoggerFactory.getLogger(CollectionTransformer.class);
 
-    public static final String DELIMITER = "|";
-    private static final String DELIMITER_REG_EXP = "\\|";
+    private static final String DELIMITER_REG_EXP = '\\' + IWSExchangeConstants.SET_DELIMITER;
     private static final Pattern SPLIT_PATTERN = Pattern.compile(DELIMITER_REG_EXP);
 
     /**
@@ -66,7 +66,7 @@ public final class CollectionTransformer {
                 final T item = iterator.next();
                 sb.append(item.name());
                 if (iterator.hasNext()) {
-                    sb.append(DELIMITER);
+                    sb.append(IWSExchangeConstants.SET_DELIMITER);
                 }
             }
         }
@@ -127,7 +127,7 @@ public final class CollectionTransformer {
      * @return concatenated String
      */
     public static String join(final Collection<String> collection) {
-        return StringUtils.join(collection, DELIMITER);
+        return StringUtils.join(collection, IWSExchangeConstants.SET_DELIMITER);
     }
 
     /**
@@ -140,7 +140,7 @@ public final class CollectionTransformer {
         List<String> result = new ArrayList<>(10);
 
         if (value != null) {
-            result = Arrays.asList(StringUtils.split(value, DELIMITER));
+            result = Arrays.asList(StringUtils.split(value, IWSExchangeConstants.SET_DELIMITER));
         }
 
         return result;

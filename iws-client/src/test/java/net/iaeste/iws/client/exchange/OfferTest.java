@@ -1370,8 +1370,7 @@ public final class OfferTest extends AbstractTest {
      *   This test is replicating the issue and will demonstrate the flaw, and
      * also the fix. For more information, see Trac ticket #971 (#966).
      */
-    @Test
-    @Ignore("Test is made in preparation for Trac task #971, remove this ignore once completed.")
+    @Test(expected = IllegalArgumentException.class)
     public void testLongStringSetsTicket971() {
         final Offer offer = TestData.prepareMinimalOffer(PL_YEAR + "-SPECIAL", "Specialization Employer", "PL");
         final Set<String> specializations = new HashSet<>();

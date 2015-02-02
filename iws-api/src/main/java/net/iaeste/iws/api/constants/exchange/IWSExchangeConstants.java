@@ -47,6 +47,13 @@ public interface IWSExchangeConstants {
     int MAX_OFFER_SPECIALIZATIONS = 3;
 
     /**
+     * Sets are converted into Strings internally, using this constant as
+     * delimiter. For this reason, it is not allowed to use this in the String
+     * given as it will cause errors.
+     */
+    String SET_DELIMITER = "|";
+
+    /**
      * Defines the maximum number of {@link net.iaeste.iws.api.enums.Language}
      * for an {@link net.iaeste.iws.api.dtos.exchange.Offer}
      */

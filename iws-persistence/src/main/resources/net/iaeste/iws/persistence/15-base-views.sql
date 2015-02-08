@@ -8,15 +8,18 @@
 -- =============================================================================
 create view view_user_group as
   select
-    u.id          as user_id,
-    g.id          as group_id,
-    u.firstname   as firstname,
-    u.lastname    as lastname,
-    u.username    as username,
-    u.status      as user_status,
-    g.group_name  as groupname,
-    gt.grouptype  as grouptype,
-    r.role        as role
+    u.id                as user_id,
+    g.id                as group_id,
+    u.firstname         as firstname,
+    u.lastname          as lastname,
+    u.username          as username,
+    u.status            as user_status,
+    g.group_name        as groupname,
+    gt.grouptype        as grouptype,
+    r.role              as role,
+    u2g.on_public_list  as public_list,
+    u2g.on_private_list as private_list,
+    u2g.created         as created
   from
     users u,
     groups g,
@@ -188,6 +191,28 @@ create view notification_job_task_details as
     notification_job_tasks njt
     left join notification_jobs nj  on njt.job_id = nj.id
   where njt.processed = false;
+
+-- The following view is finding Groups, which is not having an Owner or having
+-- too many Owners. Either way it is problematic, since a Group may *only* have
+-- a single Owner.
+create view problem_groups as
+  with gids as (select g.id as ids
+                from groups g left join user_to_group u2g on g.id = u2g.group_id
+                where u2g.role_id = 1 group by g.id having count(u2g.id) <> 1)
+  select
+    id,
+    parent_id,
+    grouptype_id,
+    group_name,
+    full_name,
+    list_name,
+    private_list,
+    public_list,
+    status,
+    modified,
+    created
+  from groups
+  where id in (select ids from gids);
 
 -- =============================================================================
 -- Following Views are commented out, as HyperSQL doesn't support them

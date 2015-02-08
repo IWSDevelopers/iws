@@ -31,7 +31,7 @@ create table folders (
     /* Not Null Constraints */
     constraint folder_notnull_id           check (id is not null),
     constraint folder_notnull_external_id  check (external_id is not null),
-    constraint folder_notnull_parent_id    check (parent_id = 1 or parent_id < id),
+    constraint folder_notnull_parent_id    check (parent_id < id),
     constraint folder_notnull_group_id     check (group_id is not null),
     constraint folder_notnull_filename     check (foldername is not null),
     constraint folder_notnull_modified     check (modified is not null),
@@ -45,7 +45,7 @@ alter table files add column old_iw3_file_id integer;
 alter table files add constraint file_fk_folder_id foreign key (folder_id) references folders (id);
 alter table files add constraint file_notnull_privacy check (privacy is not null);
 
-insert into folders (id, external_id, group_id, parent_id, foldername, old_iw3_file_id) VALUES ( 1, 'afec3bc0-296b-4bf2-8a9e-c2d7b74e93a0', 3, 1, 'Root', 2);
+insert into folders (id, external_id, group_id, parent_id, foldername, old_iw3_file_id) VALUES ( 1, 'afec3bc0-296b-4bf2-8a9e-c2d7b74e93a0', 3, 0, 'Root', 2);
 
 -- Need to update the GroupTypes with the new information here ...
 alter table grouptypes add column who_may_join varchar(10);
@@ -80,18 +80,11 @@ insert into permission_to_role (role_id, permission_id) values (1, 310);
 insert into permission_to_role (role_id, permission_id) values (2, 310);
 
 -- Permission: 311 - Fetch Folder
---   -> GroupTypes: All
+--   -> GroupTypes: 2 Members
 --   -> Roles:      1 Owner
 --                  2 Moderator
 --                  3 Member
-insert into permission_to_grouptype (grouptype_id, permission_id) values (0, 311);
-insert into permission_to_grouptype (grouptype_id, permission_id) values (1, 311);
 insert into permission_to_grouptype (grouptype_id, permission_id) values (2, 311);
-insert into permission_to_grouptype (grouptype_id, permission_id) values (3, 311);
-insert into permission_to_grouptype (grouptype_id, permission_id) values (4, 311);
-insert into permission_to_grouptype (grouptype_id, permission_id) values (5, 311);
-insert into permission_to_grouptype (grouptype_id, permission_id) values (6, 311);
-insert into permission_to_grouptype (grouptype_id, permission_id) values (7, 311);
 insert into permission_to_role (role_id, permission_id) values (1, 311);
 insert into permission_to_role (role_id, permission_id) values (2, 311);
 insert into permission_to_role (role_id, permission_id) values (3, 311);

@@ -305,32 +305,30 @@ public final class StorageService extends CommonService<AccessDao> {
 
     public FetchFolderResponse fetchFolder(final Authentication authentication, final FetchFolderRequest request) {
         final String folderId = request.getFolderId();
-        final Folder folder;
-        final List<Folder> folders;
-        final List<File> files;
+        final FolderEntity folderEntity;
 
         if (folderId == null) {
             log.info(formatLogMessage(authentication, "Reading the Root Folder."));
             // Fetch the root folder
-            folder = transform(readFolder(authentication, ROOT_FOLDER_EID));
-            folders = readRootFolders();
-            files = new ArrayList<>(0);
+            folderEntity = readFolder(authentication, ROOT_FOLDER_EID);
         } else {
             log.info(formatLogMessage(authentication, "Reading the Folder with Id {}.", folderId));
             // Fetch the content of the desired folder, including the files.
-            final FolderEntity folderEntity = readFolder(authentication, folderId);
-            if (folderEntity != null) {
-                folder = transform(folderEntity);
-                folders = readFolders(folderEntity.getId());
-                files = readFiles(authentication, folderEntity.getId());
-            } else {
+            folderEntity = readFolder(authentication, folderId);
+            if (folderEntity == null) {
                 throw new IWSException(IWSErrors.ILLEGAL_ACTION, "User attempted to access a Folder that is not publicly available.");
             }
         }
 
+        // Prepare the Folder to be returned with subfolders
+        final Folder folder = transform(folderEntity);
+        folder.setFolders(readFolders(authentication, folderEntity));
+        //folder.setFiles(readFiles(authentication, folderEntity));
+        // For now, we're forcing an empty result, since the complexity of the
+        // query requires that we add a View that can handle it properly
+        folder.setFiles(new ArrayList<File>(0));
+        // Now set the result
         final FetchFolderResponse response = new FetchFolderResponse();
-        folder.setFolders(folders);
-        folder.setFiles(files);
         response.setFolder(folder);
 
         return response;
@@ -340,7 +338,7 @@ public final class StorageService extends CommonService<AccessDao> {
         final String jql =
                 "select f from FolderEntity f, UserGroupEntity u2g " +
                 "where f.externalId = :eid" +
-                "  and (f.group.groupType.folderType = " + GroupType.FolderType.Public +
+                "  and (f.group.groupType.folderType = '" + GroupType.FolderType.Public + '\'' +
                 "   or (f.group.id = u2g.group.id and u2g.user.id = :uid))";
         final Query query = entityManager.createQuery(jql);
         query.setParameter("eid", externalId);
@@ -350,49 +348,42 @@ public final class StorageService extends CommonService<AccessDao> {
         return folders.isEmpty() ? null : folders.get(0);
     }
 
-    private List<Folder> readRootFolders() {
+    private List<Folder> readFolders(final Authentication authentication, final FolderEntity parentFolderEntity) {
         final String jql =
                 "select f from FolderEntity f " +
-                "where parentId = " + ROOT_FOLDER_ID +
-                "  and f.group.groupType = " + GroupType.FolderType.Public;
+                "where f.parentId = :pid" +
+                "  and f.group.groupType.folderType = '" + GroupType.FolderType.Public + '\'';
         final Query query = entityManager.createQuery(jql);
+        query.setParameter("pid", parentFolderEntity.getId());
 
-        return readAndConvertEntities(query);
+        return readAndConvertEntities(query, parentFolderEntity.getExternalId());
     }
 
-    private List<Folder> readFolders(final Long folderId) {
-        final String jql =
-                "select f from FolderEntity f, UserGroupEntity u2g " +
-                "where f.externalId = :id";
-        final Query query = entityManager.createQuery(jql);
-        query.setParameter("id", folderId);
-
-        return readAndConvertEntities(query);
-    }
-
-    private List<Folder> readAndConvertEntities(final Query query) {
+    private List<Folder> readAndConvertEntities(final Query query, final String externalParentId) {
         final List<FolderEntity> entities = query.getResultList();
 
         final List<Folder> folders = new ArrayList<>(entities.size());
         for (final FolderEntity entity : entities) {
-            folders.add(transform(entity));
+            final Folder folder = transform(entity);
+            folder.setParentId(externalParentId);
+            folders.add(folder);
         }
 
         return folders;
     }
 
-    private List<File> readFiles(final Authentication authentication, final Long folderId) {
+    private List<File> readFiles(final Authentication authentication, final FolderEntity parentFolderEntity) {
         final String jql =
                 "select f from FileEntity f, UserGroupEntity u2g " +
                 "where f.folder.id = :fid" +
-                "  and (f.privacy = " + Privacy.PUBLIC +
-                "    or (f.privacy = " + Privacy.PROTECTED +
+                "  and (f.privacy = '" + Privacy.PUBLIC + '\'' +
+                "    or (f.privacy = '" + Privacy.PROTECTED + '\'' +
                 "      and f.group.id = u2g.group.id" +
                 "      and u2g.user.id = :uid)" +
-                "    or (f.privacy = " + Privacy.PRIVATE +
+                "    or (f.privacy = '" + Privacy.PRIVATE + '\'' +
                 "      and f.user.id = :uid))";
         final Query query = entityManager.createQuery(jql);
-        query.setParameter("fid", folderId);
+        query.setParameter("fid", parentFolderEntity.getId());
         query.setParameter("uid", authentication.getUser().getId());
 
         return query.getResultList();

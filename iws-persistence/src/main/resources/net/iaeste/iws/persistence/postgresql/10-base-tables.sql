@@ -661,7 +661,7 @@ create table folders (
     /* Not Null Constraints */
     constraint folder_notnull_id           check (id is not null),
     constraint folder_notnull_external_id  check (external_id is not null),
-    constraint folder_notnull_parent_id    check (parent_id = 1 or parent_id < id),
+    constraint folder_notnull_parent_id    check (parent_id < id),
     constraint folder_notnull_group_id     check (group_id is not null),
     constraint folder_notnull_filename     check (foldername is not null),
     constraint folder_notnull_modified     check (modified is not null),

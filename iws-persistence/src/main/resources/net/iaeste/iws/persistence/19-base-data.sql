@@ -525,7 +525,7 @@ insert into groups (id, external_id, old_iw3_id, grouptype_id, parent_id, group_
 -- -- =============================================================================
 -- -- Default Folders for file handling
 -- -- =============================================================================
-insert into folders (id, external_id, group_id, parent_id, foldername, old_iw3_file_id) VALUES ( 1, 'afec3bc0-296b-4bf2-8a9e-c2d7b74e93a0', 3, 1, 'Root', 2);
+insert into folders (id, external_id, group_id, parent_id, foldername, old_iw3_file_id) VALUES ( 1, 'afec3bc0-296b-4bf2-8a9e-c2d7b74e93a0', 3, 0, 'Root', 2);
 -- insert into files (id, external_id, group_id, filetype, availability, folder_id, filename) VALUES ( 2, '0a0260bd-244d-4a87-a53e-b613dbbaf265', null, 'FOLDER', 'PUBLIC',  1, 'Library');
 -- insert into files (id, external_id, group_id, filetype, availability, folder_id, filename) VALUES ( 3, '59d02455-1537-49cb-9bf8-77a3aa755d18', null, 'FOLDER', 'PRIVATE', 1, 'Private');
 -- insert into files (id, external_id, group_id, filetype, availability, folder_id, filename) VALUES ( 4, '770ccaff-e739-43f2-b812-f30be84442bf', null, 'FOLDER', 'PRIVATE', 1, 'Committees');

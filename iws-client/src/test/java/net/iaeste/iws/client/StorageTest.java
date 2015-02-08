@@ -23,8 +23,10 @@ import net.iaeste.iws.api.dtos.File;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.enums.Action;
 import net.iaeste.iws.api.requests.FetchFileRequest;
+import net.iaeste.iws.api.requests.FetchFolderRequest;
 import net.iaeste.iws.api.requests.FileRequest;
 import net.iaeste.iws.api.responses.FetchFileResponse;
+import net.iaeste.iws.api.responses.FetchFolderResponse;
 import net.iaeste.iws.api.responses.FileResponse;
 import org.junit.Test;
 
@@ -47,6 +49,13 @@ public class StorageTest extends AbstractTest {
     @Override
     public void tearDown() {
         logout(token);
+    }
+
+    @Test
+    public void testReadingFolders() {
+        final FetchFolderRequest request = new FetchFolderRequest();
+        final FetchFolderResponse response = storage.fetchFolder(token, request);
+        assertThat(response.isOk(), is(true));
     }
 
     @Test

@@ -122,7 +122,7 @@ public class FileMigrator implements Migrator<IW3FileEntity> {
             entity.setExternalId(UUID.randomUUID().toString());
             entity.setParentId(folderEntity != null ? folderEntity.getId() : null);
             entity.setGroup(findGroup(oldEntity));
-            entity.setFoldername(oldEntity.getFilename());
+            entity.setFoldername(oldEntity.getFilename().trim());
             entity.setOldIW3FileId(oldEntity.getFileid());
             entity.setModified(readDate(oldEntity.getModified(), new Date()));
             entity.setCreated(readDate(entity.getCreated(), entity.getModified()));
@@ -148,18 +148,18 @@ public class FileMigrator implements Migrator<IW3FileEntity> {
         } else {
             final FileEntity entity = new FileEntity();
             entity.setExternalId(UUID.randomUUID().toString());
-            // For now, we're assuming that all files are Private. Later, we can
-            // try to change that when we know more about them.
-            entity.setPrivacy(Privacy.PRIVATE);
+            // For now, we're assuming that all files are Protected. Later, we
+            // can try to change that when we know more about them.
+            entity.setPrivacy(Privacy.PROTECTED);
             entity.setGroup(findGroup(oldEntity));
             entity.setUser(findUser(oldEntity));
             entity.setFolder(findFolder(oldEntity));
-            entity.setFilename(oldEntity.getFilename());
+            entity.setFilename(oldEntity.getFilename().trim());
             entity.setStoredFilename(oldEntity.getSystemname());
             entity.setFilesize(oldEntity.getFilesize());
             entity.setMimetype(oldEntity.getMimetype().getMimetype());
-            entity.setDescription(oldEntity.getDescription());
-            entity.setKeywords(oldEntity.getKeywords());
+            entity.setDescription(oldEntity.getDescription().trim());
+            entity.setKeywords(oldEntity.getKeywords().trim());
             entity.setChecksum(convertChecksum(oldEntity.getChecksum()));
             entity.setOldIW3FileId(oldEntity.getFileid());
             entity.setModified(readDate(oldEntity.getModified(), new Date()));

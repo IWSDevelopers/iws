@@ -60,13 +60,13 @@ public final class Folder extends AbstractVerification {
      */
     public Folder(final Folder folder) {
         if (folder != null) {
-            this.folderId = folder.folderId;
-            this.parentId = folder.parentId;
-            this.group = new Group(folder.group);
-            this.foldername = folder.foldername;
-            this.folders = folder.folders;
-            this.files = folder.files;
-            this.created = folder.created;
+            folderId = folder.folderId;
+            parentId = folder.parentId;
+            group = new Group(folder.group);
+            foldername = folder.foldername;
+            folders = folder.folders;
+            files = folder.files;
+            created = folder.created;
         }
     }
 
@@ -218,15 +218,15 @@ public final class Folder extends AbstractVerification {
      * {@inheritDoc}
      */
     @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
+    public boolean equals(final Object obj) {
+        if (this == obj) {
             return true;
         }
-        if (!(o instanceof Folder)) {
+        if (!(obj instanceof Folder)) {
             return false;
         }
 
-        final Folder folder = (Folder) o;
+        final Folder folder = (Folder) obj;
 
         if (folderId != null ? !folderId.equals(folder.folderId) : folder.folderId != null) {
             return false;
@@ -249,11 +249,7 @@ public final class Folder extends AbstractVerification {
         if (modified != null ? !modified.equals(folder.modified) : folder.modified != null) {
             return false;
         }
-        if (created != null ? !created.equals(folder.created) : folder.created != null) {
-            return false;
-        }
-
-        return true;
+        return !(created != null ? !created.equals(folder.created) : folder.created != null);
     }
 
     /**

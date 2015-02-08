@@ -30,6 +30,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
+import java.util.Properties;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -59,8 +60,8 @@ public class Beans {
 
         dataSource.setServerName("localhost");
         dataSource.setDatabaseName("iws");
-        dataSource.setUser("kim");
-        //dataSource.setPassword("iws");
+        dataSource.setUser("iws_user");
+        dataSource.setPassword("iws");
 
         return dataSource;
     }
@@ -86,8 +87,21 @@ public class Beans {
         factoryBean.setPackagesToScan("net.iaeste.iws.persistence");
         factoryBean.setDataSource(dataSource());
         factoryBean.setJpaVendorAdapter(vendorAdapter);
+        factoryBean.setJpaProperties(jpaProperties());
 
         return factoryBean;
+    }
+
+    @Bean
+    protected Properties jpaProperties() {
+        final Properties properties = new Properties();
+
+        // For testing the result, it is helpful to be able to see the queries
+        // executed against the database, preferably formatted as well :-)
+        properties.setProperty("hibernate.show_sql", "false");
+        properties.setProperty("hibernate.format_sql", "true");
+
+        return properties;
     }
 
     @Bean(name = "transactionManager")

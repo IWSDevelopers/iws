@@ -33,6 +33,7 @@ import net.iaeste.iws.core.CommitteeController;
 import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.core.services.ServiceFactory;
 import net.iaeste.iws.ejb.cdi.IWSBean;
+import net.iaeste.iws.ejb.cdi.SessionRequestBean;
 import net.iaeste.iws.ejb.interceptors.Profiler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,6 +48,7 @@ import javax.ejb.TransactionManagementType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
+import java.io.Serializable;
 
 /**
  * Committee Bean, serves as the default EJB for the IWS Committee interface.
@@ -73,6 +75,7 @@ public class CommitteeBean extends AbstractBean implements Committees {
     @Inject @IWSBean private EntityManager entityManager;
     @Inject @IWSBean private Notifications notifications;
     @Inject @IWSBean private Settings settings;
+    @Inject @IWSBean private SessionRequestBean session;
     private Committees controller = null;
 
     /**
@@ -135,6 +138,8 @@ public class CommitteeBean extends AbstractBean implements Committees {
             response = new FetchCommitteeResponse(IWSErrors.ERROR, e.getMessage());
         }
 
+        // Save the request information before returning to improve error handling
+        saveRequest("fetchCommittees", token, response, request);
         return response;
     }
 
@@ -154,6 +159,8 @@ public class CommitteeBean extends AbstractBean implements Committees {
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
+        // Save the request information before returning to improve error handling
+        saveRequest("processCommittee", token, response, request);
         return response;
     }
 
@@ -173,6 +180,8 @@ public class CommitteeBean extends AbstractBean implements Committees {
             response = new FetchInternationalGroupResponse(IWSErrors.ERROR, e.getMessage());
         }
 
+        // Save the request information before returning to improve error handling
+        saveRequest("fetchInternationalGroups", token, response, request);
         return response;
     }
 
@@ -192,6 +201,8 @@ public class CommitteeBean extends AbstractBean implements Committees {
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
+        // Save the request information before returning to improve error handling
+        saveRequest("processInternationalGroup", token, response, request);
         return response;
     }
 
@@ -211,6 +222,8 @@ public class CommitteeBean extends AbstractBean implements Committees {
             response = new FetchSurveyOfCountryRespose(IWSErrors.ERROR, e.getMessage());
         }
 
+        // Save the request information before returning to improve error handling
+        saveRequest("fetchSurveyOfCountry", token, response, request);
         return response;
     }
 
@@ -230,6 +243,18 @@ public class CommitteeBean extends AbstractBean implements Committees {
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
+        // Save the request information before returning to improve error handling
+        saveRequest("processSurveyOfCountry", token, response, request);
         return response;
+    }
+
+    // =========================================================================
+    // Internal methods
+    // =========================================================================
+
+    private void saveRequest(final String method, final AuthenticationToken token, final Fallible response, final Serializable request) {
+        if (session != null) {
+            session.saveRequest(method, token, response, request);
+        }
     }
 }

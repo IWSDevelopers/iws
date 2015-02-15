@@ -176,6 +176,54 @@ create view file_attachments as
 
 
 -- =============================================================================
+-- View to See Files for a specific Folder
+-- =============================================================================
+create view view_folder_files as
+  select
+    f.id                 as file_id,
+    f.external_id        as file_external_id,
+    f.privacy            as file_privacy,
+    f.folder_id          as file_folder_id,
+    f.filename           as file_name,
+    f.stored_filename    as file_stored_name,
+    f.filesize           as file_size,
+    f.mimetype           as file_mimetype,
+    f.description        as file_description,
+    f.keywords           as file_keywords,
+    f.checksum           as file_checksum,
+    f.modified           as file_modified,
+    f.created            as file_created,
+    g.id                 as group_id,
+    g.external_id        as group_external_id,
+    g.grouptype_id       as group_grouptype,
+    g.parent_id          as group_parent_id,
+    g.group_name         as group_groupname,
+    g.list_name          as group_list_name,
+    g.private_list       as group_private_list,
+    g.public_list        as group_public_list,
+    g.status             as group_status,
+    g.monitoring_level   as group_monitoring_level,
+    g.modified           as group_modified,
+    g.created            as group_created,
+    u.id                 as user_id,
+    u.external_id        as user_external_id,
+    u.username           as user_username,
+    u.firstname          as user_firstname,
+    u.lastname           as user_lastname,
+    u.status             as user_status,
+    u.modified           as user_modified,
+    u.created            as user_created
+  from
+    attachments a,
+    files f,
+    groups g,
+    users u
+  where f.id = a.attached_file_id
+    and g.id = f.group_id
+    and u.id = f.user_id;
+
+
+-- =============================================================================
 -- List the Notification job tasks with their Notfication type
 -- and Notifiable object
 -- Note; only unprocessed job tasks are included in the view

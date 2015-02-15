@@ -1,7 +1,7 @@
 -- Before being able to update, we need to know who to grant ownership of the
 -- database views, i.e. the primary IWS user.
 
--- This is the 1.1.2 release script to update the database to newest state.
+-- This is the 1.1.6 release script to update the database to newest state.
 -- The changes makes the system incompatible with earlier versions of the IWS,
 -- so let's add the information that this is the second DB version, and the IWS
 -- version it is related to.
@@ -38,10 +38,31 @@ create table folders (
     constraint folder_notnull_created      check (created is not null)
 );
 
+create sequence request_sequence start with 1 increment by 1;
+create table requests (
+    id                integer default nextval('request_sequence'),
+    session_id        integer,
+    request           varchar(100),
+    errorcode         integer,
+    errormessage      varchar(512),
+    request_object    bytea,
+    created           timestamp default now(),
+
+    /* Primary & Foreign Keys */
+    constraint request_pk         primary key (id),
+    constraint request_session_id foreign key (session_id) references sessions (id),
+
+    /* Not Null Constraints */
+    constraint request_notnull_id            check (id is not null),
+    constraint request_notnull_request       check (request is not null),
+    constraint request_notnull_errorcode     check (errorcode is not null),
+    constraint request_notnull_errormessage  check (errormessage is not null),
+    constraint request_notnull_created       check (created is not null)
+);
+
 alter table files add column privacy varchar(10) default 'PRIVATE';
 alter table files add column folder_id integer;
 alter table files add column old_iw3_file_id integer;
-
 alter table files add constraint file_fk_folder_id foreign key (folder_id) references folders (id);
 alter table files add constraint file_notnull_privacy check (privacy is not null);
 
@@ -60,6 +81,49 @@ update grouptypes set folder_type = 'None' where grouptype in ('STUDENT');
 alter table grouptypes add constraint grouptype_notnull_who_may_join  check (who_may_join is not null);
 alter table grouptypes add constraint grouptype_notnull_folder_type   check (folder_type is not null);
 
+create view view_folder_files as
+  select
+    f.id                 as file_id,
+    f.external_id        as file_external_id,
+    f.privacy            as file_privacy,
+    f.folder_id          as file_folder_id,
+    f.filename           as file_name,
+    f.stored_filename    as file_stored_name,
+    f.filesize           as file_size,
+    f.mimetype           as file_mimetype,
+    f.description        as file_description,
+    f.keywords           as file_keywords,
+    f.checksum           as file_checksum,
+    f.modified           as file_modified,
+    f.created            as file_created,
+    g.id                 as group_id,
+    g.external_id        as group_external_id,
+    g.grouptype_id       as group_grouptype,
+    g.parent_id          as group_parent_id,
+    g.group_name         as group_groupname,
+    g.list_name          as group_list_name,
+    g.private_list       as group_private_list,
+    g.public_list        as group_public_list,
+    g.status             as group_status,
+    g.monitoring_level   as group_monitoring_level,
+    g.modified           as group_modified,
+    g.created            as group_created,
+    u.id                 as user_id,
+    u.external_id        as user_external_id,
+    u.username           as user_username,
+    u.firstname          as user_firstname,
+    u.lastname           as user_lastname,
+    u.status             as user_status,
+    u.modified           as user_modified,
+    u.created            as user_created
+  from
+    attachments a,
+    files f,
+    groups g,
+    users u
+  where f.id = a.attached_file_id
+    and g.id = f.group_id
+    and u.id = f.user_id;
 
 insert into permissions (id, permission) values (310, 'PROCESS_FOLDER');
 insert into permissions (id, permission) values (311, 'FETCH_FOLDER');

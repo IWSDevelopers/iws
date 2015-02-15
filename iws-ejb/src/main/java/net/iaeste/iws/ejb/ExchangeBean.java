@@ -53,6 +53,7 @@ import net.iaeste.iws.core.ExchangeController;
 import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.core.services.ServiceFactory;
 import net.iaeste.iws.ejb.cdi.IWSBean;
+import net.iaeste.iws.ejb.cdi.SessionRequestBean;
 import net.iaeste.iws.ejb.interceptors.Profiler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -72,6 +73,7 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.persistence.EntityManager;
+import java.io.Serializable;
 
 /**
  * Exchange Bean, serves as the default EJB for the IWS Exchange interface. It
@@ -100,6 +102,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
     @Inject @IWSBean private EntityManager entityManager;
     @Inject @IWSBean private Notifications notifications;
     @Inject @IWSBean private Settings settings;
+    @Inject @IWSBean private SessionRequestBean session;
     private Exchange controller = null;
 
     /**
@@ -156,7 +159,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
     @Override
     @WebMethod(exclude = true)
     @Interceptors(Profiler.class)
-    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public OfferStatisticsResponse fetchOfferStatistics(final AuthenticationToken token, final OfferStatisticsRequest request) {
         OfferStatisticsResponse response;
 
@@ -168,6 +171,8 @@ public class ExchangeBean extends AbstractBean implements Exchange {
             response = new OfferStatisticsResponse(IWSErrors.ERROR, e.getMessage());
         }
 
+        // Save the request information before returning to improve error handling
+        saveRequest("fetchOfferStatistics", token, response, request);
         return response;
     }
 
@@ -191,6 +196,8 @@ public class ExchangeBean extends AbstractBean implements Exchange {
             response = new EmployerResponse(IWSErrors.ERROR, e.getMessage());
         }
 
+        // Save the request information before returning to improve error handling
+        saveRequest("processEmployer", token, response, request);
         return response;
     }
 
@@ -201,7 +208,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
     @WebMethod
     @WebResult(name = "response")
     @Interceptors(Profiler.class)
-    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public FetchEmployerResponse fetchEmployers(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final FetchEmployerRequest request) {
@@ -215,6 +222,8 @@ public class ExchangeBean extends AbstractBean implements Exchange {
             response = new FetchEmployerResponse(IWSErrors.ERROR, e.getMessage());
         }
 
+        // Save the request information before returning to improve error handling
+        saveRequest("fetchEmployers", token, response, request);
         return response;
     }
 
@@ -238,6 +247,8 @@ public class ExchangeBean extends AbstractBean implements Exchange {
             response = new OfferResponse(IWSErrors.ERROR, e.getMessage());
         }
 
+        // Save the request information before returning to improve error handling
+        saveRequest("processOffer", token, response, request);
         return response;
     }
 
@@ -258,6 +269,8 @@ public class ExchangeBean extends AbstractBean implements Exchange {
             response = new OfferResponse(IWSErrors.ERROR, e.getMessage());
         }
 
+        // Save the request information before returning to improve error handling
+        saveRequest("deleteOffer", token, response, request);
         return response;
     }
 
@@ -278,6 +291,8 @@ public class ExchangeBean extends AbstractBean implements Exchange {
             response = new OfferCSVUploadResponse(IWSErrors.ERROR, e.getMessage());
         }
 
+        // Save the request information before returning to improve error handling
+        saveRequest("uploadOffers", token, response, request);
         return response;
     }
 
@@ -288,7 +303,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
     @WebMethod
     @WebResult(name = "response")
     @Interceptors(Profiler.class)
-    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public FetchOffersResponse fetchOffers(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final FetchOffersRequest request) {
@@ -302,6 +317,8 @@ public class ExchangeBean extends AbstractBean implements Exchange {
             response = new FetchOffersResponse(IWSErrors.ERROR, e.getMessage());
         }
 
+        // Save the request information before returning to improve error handling
+        saveRequest("fetchOffers", token, response, request);
         return response;
     }
 
@@ -311,7 +328,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
     @Override
     @WebMethod(exclude = true)
     @Interceptors(Profiler.class)
-    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public OfferCSVDownloadResponse downloadOffers(final AuthenticationToken token, final OfferCSVDownloadRequest request) {
         OfferCSVDownloadResponse response;
 
@@ -323,6 +340,8 @@ public class ExchangeBean extends AbstractBean implements Exchange {
             response = new OfferCSVDownloadResponse(IWSErrors.ERROR, e.getMessage());
         }
 
+        // Save the request information before returning to improve error handling
+        saveRequest("downloadOffers", token, response, request);
         return response;
     }
 
@@ -332,7 +351,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
     @Override
     @WebMethod(exclude = true)
     @Interceptors(Profiler.class)
-    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public FetchGroupsForSharingResponse fetchGroupsForSharing(final AuthenticationToken token) {
         FetchGroupsForSharingResponse response;
 
@@ -344,6 +363,8 @@ public class ExchangeBean extends AbstractBean implements Exchange {
             response = new FetchGroupsForSharingResponse(IWSErrors.ERROR, e.getMessage());
         }
 
+        // Save the request information before returning to improve error handling
+        saveRequest("fetchGroupsForSharing", token, response);
         return response;
     }
 
@@ -364,6 +385,8 @@ public class ExchangeBean extends AbstractBean implements Exchange {
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
+        // Save the request information before returning to improve error handling
+        saveRequest("processOfferTemplate", token, response, request);
         return response;
     }
 
@@ -373,7 +396,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
     @Override
     @WebMethod(exclude = true)
     @Interceptors(Profiler.class)
-    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public FetchOfferTemplateResponse fetchOfferTemplates(final AuthenticationToken token, final FetchOfferTemplatesRequest request) {
         FetchOfferTemplateResponse response;
 
@@ -385,6 +408,8 @@ public class ExchangeBean extends AbstractBean implements Exchange {
             response = new FetchOfferTemplateResponse(IWSErrors.ERROR, e.getMessage());
         }
 
+        // Save the request information before returning to improve error handling
+        saveRequest("fetchOfferTemplates", token, response, request);
         return response;
     }
 
@@ -405,6 +430,8 @@ public class ExchangeBean extends AbstractBean implements Exchange {
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
+        // Save the request information before returning to improve error handling
+        saveRequest("processPublishingGroup", token, response, request);
         return response;
     }
 
@@ -414,7 +441,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
     @Override
     @WebMethod(exclude = true)
     @Interceptors(Profiler.class)
-    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public FetchPublishingGroupResponse fetchPublishingGroups(final AuthenticationToken token, final FetchPublishGroupsRequest request) {
         FetchPublishingGroupResponse response;
 
@@ -426,6 +453,8 @@ public class ExchangeBean extends AbstractBean implements Exchange {
             response = new FetchPublishingGroupResponse(IWSErrors.ERROR, e.getMessage());
         }
 
+        // Save the request information before returning to improve error handling
+        saveRequest("fetchPublishingGroups", token, response, request);
         return response;
     }
 
@@ -447,6 +476,8 @@ public class ExchangeBean extends AbstractBean implements Exchange {
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
+        // Save the request information before returning to improve error handling
+        saveRequest("deletePublishingGroup", token, response, request);
         return response;
     }
 
@@ -467,6 +498,8 @@ public class ExchangeBean extends AbstractBean implements Exchange {
             response = new PublishOfferResponse(IWSErrors.ERROR, e.getMessage());
         }
 
+        // Save the request information before returning to improve error handling
+        saveRequest("processPublishOffer", token, response, request);
         return response;
     }
 
@@ -476,7 +509,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
     @Override
     @WebMethod(exclude = true)
     @Interceptors(Profiler.class)
-    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public FetchPublishedGroupsResponse fetchPublishedGroups(final AuthenticationToken token, final FetchPublishedGroupsRequest request) {
         FetchPublishedGroupsResponse response;
 
@@ -488,6 +521,8 @@ public class ExchangeBean extends AbstractBean implements Exchange {
             response = new FetchPublishedGroupsResponse(IWSErrors.ERROR, e.getMessage());
         }
 
+        // Save the request information before returning to improve error handling
+        saveRequest("fetchPublishedGroups", token, response, request);
         return response;
     }
 
@@ -508,6 +543,8 @@ public class ExchangeBean extends AbstractBean implements Exchange {
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
+        // Save the request information before returning to improve error handling
+        saveRequest("processHideForeignOffers", token, response, request);
         return response;
     }
 
@@ -528,6 +565,24 @@ public class ExchangeBean extends AbstractBean implements Exchange {
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
+        // Save the request information before returning to improve error handling
+        saveRequest("rejectOffer", token, response, request);
         return response;
+    }
+
+    // =========================================================================
+    // Internal methods
+    // =========================================================================
+
+    private void saveRequest(final String method, final AuthenticationToken token, final Fallible response, final Serializable request) {
+        if (session != null) {
+            session.saveRequest(method, token, response, request);
+        }
+    }
+
+    private void saveRequest(final String method, final AuthenticationToken token, final Fallible response) {
+        if (session != null) {
+            session.saveRequest(method, token, response);
+        }
     }
 }

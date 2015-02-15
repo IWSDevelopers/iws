@@ -47,6 +47,7 @@ import net.iaeste.iws.core.AdministrationController;
 import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.core.services.ServiceFactory;
 import net.iaeste.iws.ejb.cdi.IWSBean;
+import net.iaeste.iws.ejb.cdi.SessionRequestBean;
 import net.iaeste.iws.ejb.interceptors.Profiler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,6 +62,7 @@ import javax.ejb.TransactionManagementType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
+import java.io.Serializable;
 
 /**
  * Administration Bean, serves as the default EJB for the IWS Administration
@@ -87,6 +89,7 @@ public class AdministrationBean extends AbstractBean implements Administration {
     @Inject @IWSBean private EntityManager entityManager;
     @Inject @IWSBean private Notifications notifications;
     @Inject @IWSBean private Settings settings;
+    @Inject @IWSBean private SessionRequestBean session;
     private Administration controller = null;
 
     /**
@@ -149,6 +152,8 @@ public class AdministrationBean extends AbstractBean implements Administration {
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
+        // Save the request information before returning to improve error handling
+        saveRequest("processCountry", token, response, request);
         return response;
     }
 
@@ -157,7 +162,7 @@ public class AdministrationBean extends AbstractBean implements Administration {
      */
     @Override
     @Interceptors(Profiler.class)
-    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public FetchCountryResponse fetchCountries(final AuthenticationToken token, final FetchCountryRequest request) {
         FetchCountryResponse response;
 
@@ -169,6 +174,8 @@ public class AdministrationBean extends AbstractBean implements Administration {
             response = new FetchCountryResponse(IWSErrors.ERROR, e.getMessage());
         }
 
+        // Save the request information before returning to improve error handling
+        saveRequest("fetchCountries", token, response, request);
         return response;
     }
 
@@ -188,6 +195,8 @@ public class AdministrationBean extends AbstractBean implements Administration {
             response = new CreateUserResponse(IWSErrors.ERROR, e.getMessage());
         }
 
+        // Save the request information before returning to improve error handling
+        saveRequest("createUser", token, response, request);
         return response;
     }
 
@@ -245,6 +254,8 @@ public class AdministrationBean extends AbstractBean implements Administration {
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
+        // Save the request information before returning to improve error handling
+        saveRequest("controlUserAccount", token, response, request);
         return response;
     }
 
@@ -264,6 +275,8 @@ public class AdministrationBean extends AbstractBean implements Administration {
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
+        // Save the request information before returning to improve error handling
+        saveRequest("changeAccountName", token, response, request);
         return response;
     }
 
@@ -272,7 +285,7 @@ public class AdministrationBean extends AbstractBean implements Administration {
      */
     @Override
     @Interceptors(Profiler.class)
-    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public FetchUserResponse fetchUser(final AuthenticationToken token, final FetchUserRequest request) {
         FetchUserResponse response;
 
@@ -284,6 +297,8 @@ public class AdministrationBean extends AbstractBean implements Administration {
             response = new FetchUserResponse(IWSErrors.ERROR, e.getMessage());
         }
 
+        // Save the request information before returning to improve error handling
+        saveRequest("fetchUser", token, response, request);
         return response;
     }
 
@@ -291,7 +306,7 @@ public class AdministrationBean extends AbstractBean implements Administration {
      * {@inheritDoc}
      */
     @Override
-    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public FetchRoleResponse fetchRoles(final AuthenticationToken token, final FetchRoleRequest request) {
         FetchRoleResponse response;
 
@@ -303,6 +318,8 @@ public class AdministrationBean extends AbstractBean implements Administration {
             response = new FetchRoleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
+        // Save the request information before returning to improve error handling
+        saveRequest("fetchRoles", token, response, request);
         return response;
     }
 
@@ -322,6 +339,8 @@ public class AdministrationBean extends AbstractBean implements Administration {
             response = new ProcessGroupResponse(IWSErrors.ERROR, e.getMessage());
         }
 
+        // Save the request information before returning to improve error handling
+        saveRequest("processGroup", token, response, request);
         return response;
     }
 
@@ -341,6 +360,8 @@ public class AdministrationBean extends AbstractBean implements Administration {
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
+        // Save the request information before returning to improve error handling
+        saveRequest("deleteSubGroup", token, response, request);
         return response;
     }
 
@@ -349,7 +370,7 @@ public class AdministrationBean extends AbstractBean implements Administration {
      */
     @Override
     @Interceptors(Profiler.class)
-    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public FetchGroupResponse fetchGroup(final AuthenticationToken token, final FetchGroupRequest request) {
         FetchGroupResponse response;
 
@@ -361,6 +382,8 @@ public class AdministrationBean extends AbstractBean implements Administration {
             response = new FetchGroupResponse(IWSErrors.ERROR, e.getMessage());
         }
 
+        // Save the request information before returning to improve error handling
+        saveRequest("fetchGroup", token, response, request);
         return response;
     }
 
@@ -380,6 +403,8 @@ public class AdministrationBean extends AbstractBean implements Administration {
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
+        // Save the request information before returning to improve error handling
+        saveRequest("changeGroupOwner", token, response, request);
         return response;
     }
 
@@ -399,6 +424,8 @@ public class AdministrationBean extends AbstractBean implements Administration {
             response = new ProcessUserGroupResponse(IWSErrors.ERROR, e.getMessage());
         }
 
+        // Save the request information before returning to improve error handling
+        saveRequest("processUserGroupAssignment", token, response, request);
         return response;
     }
 
@@ -407,7 +434,7 @@ public class AdministrationBean extends AbstractBean implements Administration {
      */
     @Override
     @Interceptors(Profiler.class)
-    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public SearchUserResponse searchUsers(final AuthenticationToken token, final SearchUserRequest request) {
         SearchUserResponse response;
 
@@ -419,6 +446,8 @@ public class AdministrationBean extends AbstractBean implements Administration {
             response = new SearchUserResponse(IWSErrors.ERROR, e.getMessage());
         }
 
+        // Save the request information before returning to improve error handling
+        saveRequest("searchUsers", token, response, request);
         return response;
     }
 
@@ -427,7 +456,7 @@ public class AdministrationBean extends AbstractBean implements Administration {
      */
     @Override
     @Interceptors(Profiler.class)
-    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public EmergencyListResponse fetchEmergencyList(final AuthenticationToken token) {
         EmergencyListResponse response;
 
@@ -439,6 +468,8 @@ public class AdministrationBean extends AbstractBean implements Administration {
             response = new EmergencyListResponse(IWSErrors.ERROR, e.getMessage());
         }
 
+        // Save the request information before returning to improve error handling
+        saveRequest("fetchEmergencyList", token, response);
         return response;
     }
 
@@ -447,7 +478,7 @@ public class AdministrationBean extends AbstractBean implements Administration {
      */
     @Override
     @Interceptors(Profiler.class)
-    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public ContactsResponse fetchContacts(final AuthenticationToken token, final ContactsRequest request) {
         ContactsResponse response;
 
@@ -459,6 +490,24 @@ public class AdministrationBean extends AbstractBean implements Administration {
             response = new ContactsResponse(IWSErrors.ERROR, e.getMessage());
         }
 
+        // Save the request information before returning to improve error handling
+        saveRequest("fetchContacts", token, response, request);
         return response;
+    }
+
+    // =========================================================================
+    // Internal methods
+    // =========================================================================
+
+    private void saveRequest(final String method, final AuthenticationToken token, final Fallible response, final Serializable request) {
+        if (session != null) {
+            session.saveRequest(method, token, response, request);
+        }
+    }
+
+    private void saveRequest(final String method, final AuthenticationToken token, final Fallible response) {
+        if (session != null) {
+            session.saveRequest(method, token, response);
+        }
     }
 }

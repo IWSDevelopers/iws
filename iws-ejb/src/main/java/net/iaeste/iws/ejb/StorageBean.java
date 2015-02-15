@@ -25,11 +25,13 @@ import net.iaeste.iws.api.responses.FetchFileResponse;
 import net.iaeste.iws.api.responses.FetchFolderResponse;
 import net.iaeste.iws.api.responses.FileResponse;
 import net.iaeste.iws.api.responses.FolderResponse;
+import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.core.StorageController;
 import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.core.services.ServiceFactory;
 import net.iaeste.iws.ejb.cdi.IWSBean;
+import net.iaeste.iws.ejb.cdi.SessionRequestBean;
 import net.iaeste.iws.ejb.interceptors.Profiler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,6 +46,7 @@ import javax.ejb.TransactionManagementType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
+import java.io.Serializable;
 
 /**
  * Committee Bean, serves as the default EJB for the IWS Committee interface.
@@ -70,6 +73,7 @@ public class StorageBean extends AbstractBean implements Storage {
     @Inject @IWSBean private EntityManager entityManager;
     @Inject @IWSBean private Notifications notifications;
     @Inject @IWSBean private Settings settings;
+    @Inject @IWSBean private SessionRequestBean session;
     private Storage controller = null;
 
     /**
@@ -132,6 +136,8 @@ public class StorageBean extends AbstractBean implements Storage {
             response = new FolderResponse(IWSErrors.ERROR, e.getMessage());
         }
 
+        // Save the request information before returning to improve error handling
+        saveRequest("processFolder", token, response, request);
         return response;
     }
 
@@ -151,6 +157,8 @@ public class StorageBean extends AbstractBean implements Storage {
             response = new FetchFolderResponse(IWSErrors.ERROR, e.getMessage());
         }
 
+        // Save the request information before returning to improve error handling
+        saveRequest("fetchFolder", token, response, request);
         return response;
     }
 
@@ -170,6 +178,8 @@ public class StorageBean extends AbstractBean implements Storage {
             response = new FileResponse(IWSErrors.ERROR, e.getMessage());
         }
 
+        // Save the request information before returning to improve error handling
+        saveRequest("processFile", token, response, request);
         return response;
     }
 
@@ -189,6 +199,18 @@ public class StorageBean extends AbstractBean implements Storage {
             response = new FetchFileResponse(IWSErrors.ERROR, e.getMessage());
         }
 
+        // Save the request information before returning to improve error handling
+        saveRequest("fetchFile", token, response, request);
         return response;
+    }
+
+    // =========================================================================
+    // Internal methods
+    // =========================================================================
+
+    private void saveRequest(final String method, final AuthenticationToken token, final Fallible response, final Serializable request) {
+        if (session != null) {
+            session.saveRequest(method, token, response, request);
+        }
     }
 }

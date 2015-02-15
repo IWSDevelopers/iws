@@ -19,6 +19,7 @@
         <class>net.iaeste.iws.persistence.entities.PermissionEntity</class>
         <class>net.iaeste.iws.persistence.entities.PermissionRoleEntity</class>
         <class>net.iaeste.iws.persistence.entities.RoleEntity</class>
+        <class>net.iaeste.iws.persistence.entities.RequestEntity</class>
         <class>net.iaeste.iws.persistence.entities.SessionEntity</class>
         <class>net.iaeste.iws.persistence.entities.UserEntity</class>
         <class>net.iaeste.iws.persistence.entities.UserGroupEntity</class>

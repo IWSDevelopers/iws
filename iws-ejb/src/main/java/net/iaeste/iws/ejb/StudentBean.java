@@ -28,11 +28,13 @@ import net.iaeste.iws.api.responses.student.FetchStudentApplicationsResponse;
 import net.iaeste.iws.api.responses.student.FetchStudentsResponse;
 import net.iaeste.iws.api.responses.student.StudentApplicationResponse;
 import net.iaeste.iws.api.responses.student.StudentResponse;
+import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.core.StudentController;
 import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.core.services.ServiceFactory;
 import net.iaeste.iws.ejb.cdi.IWSBean;
+import net.iaeste.iws.ejb.cdi.SessionRequestBean;
 import net.iaeste.iws.ejb.interceptors.Profiler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,6 +51,7 @@ import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.io.Serializable;
 
 /**
  * Exchange Bean, serves as the default EJB for the IWS Exchange interface. It
@@ -75,6 +78,7 @@ public class StudentBean extends AbstractBean implements Students {
     @Inject @IWSBean private EntityManager entityManager;
     @Inject @IWSBean private Notifications notifications;
     @Inject @IWSBean private Settings settings;
+    @Inject @IWSBean private SessionRequestBean session;
     private Students controller = null;
 
     /**
@@ -138,6 +142,8 @@ public class StudentBean extends AbstractBean implements Students {
             response = new CreateUserResponse(IWSErrors.ERROR, e.getMessage());
         }
 
+        // Save the request information before returning to improve error handling
+        saveRequest("createStudent", token, response, request);
         return response;
     }
 
@@ -157,6 +163,8 @@ public class StudentBean extends AbstractBean implements Students {
             response = new StudentResponse(IWSErrors.ERROR, e.getMessage());
         }
 
+        // Save the request information before returning to improve error handling
+        saveRequest("processStudent", token, response, request);
         return response;
     }
 
@@ -176,6 +184,8 @@ public class StudentBean extends AbstractBean implements Students {
             response = new FetchStudentsResponse(IWSErrors.ERROR, e.getMessage());
         }
 
+        // Save the request information before returning to improve error handling
+        saveRequest("fetchStudents", token, response, request);
         return response;
     }
 
@@ -195,6 +205,8 @@ public class StudentBean extends AbstractBean implements Students {
             response = new StudentApplicationResponse(IWSErrors.ERROR, e.getMessage());
         }
 
+        // Save the request information before returning to improve error handling
+        saveRequest("processStudentApplication", token, response, request);
         return response;
     }
 
@@ -214,6 +226,8 @@ public class StudentBean extends AbstractBean implements Students {
             response = new FetchStudentApplicationsResponse(IWSErrors.ERROR, e.getMessage());
         }
 
+        // Save the request information before returning to improve error handling
+        saveRequest("fetchStudentApplications", token, response, request);
         return response;
     }
 
@@ -232,6 +246,18 @@ public class StudentBean extends AbstractBean implements Students {
             response = new StudentApplicationResponse(IWSErrors.ERROR, e.getMessage());
         }
 
+        // Save the request information before returning to improve error handling
+        saveRequest("processApplicationStatus", token, response, request);
         return response;
+    }
+
+    // =========================================================================
+    // Internal methods
+    // =========================================================================
+
+    private void saveRequest(final String method, final AuthenticationToken token, final Fallible response, final Serializable request) {
+        if (session != null) {
+            session.saveRequest(method, token, response, request);
+        }
     }
 }

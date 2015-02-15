@@ -30,6 +30,7 @@ import net.iaeste.iws.core.AccessController;
 import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.core.services.ServiceFactory;
 import net.iaeste.iws.ejb.cdi.IWSBean;
+import net.iaeste.iws.ejb.cdi.SessionRequestBean;
 import net.iaeste.iws.ejb.interceptors.Profiler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -78,6 +79,7 @@ public class AccessBean extends AbstractBean implements Access {
     @Inject @IWSBean private EntityManager entityManager;
     @Inject @IWSBean private Notifications notifications;
     @Inject @IWSBean private Settings settings;
+    @Inject @IWSBean private SessionRequestBean session;
     private Access controller = null;
 
     /**
@@ -204,6 +206,8 @@ public class AccessBean extends AbstractBean implements Access {
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
+        // Save the request information before returning to improve error handling
+        saveRequest("saveSessionData", token, response, request);
         return response;
     }
 
@@ -223,6 +227,8 @@ public class AccessBean extends AbstractBean implements Access {
             response = new SessionDataResponse(IWSErrors.ERROR, e.getMessage());
         }
 
+        // Save the request information before returning to improve error handling
+        saveRequest("readSessionData", token, response);
         return response;
     }
 
@@ -244,8 +250,11 @@ public class AccessBean extends AbstractBean implements Access {
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
+        // Save the request information before returning to improve error handling
+        saveRequest("verifySession", token, response);
         return response;
     }
+
     /**
      * {@inheritDoc}
      */
@@ -324,6 +333,8 @@ public class AccessBean extends AbstractBean implements Access {
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
+        // Save the request information before returning to improve error handling
+        saveRequest("updatePassword", token, response);
         return response;
     }
 
@@ -346,6 +357,24 @@ public class AccessBean extends AbstractBean implements Access {
             response = new FetchPermissionResponse(IWSErrors.ERROR, e.getMessage());
         }
 
+        // Save the request information before returning to improve error handling
+        saveRequest("fetchPermissions", token, response);
         return response;
+    }
+
+    // =========================================================================
+    // Internal methods
+    // =========================================================================
+
+    private void saveRequest(final String method, final AuthenticationToken token, final Fallible response, final Serializable request) {
+        if (session != null) {
+            session.saveRequest(method, token, response, request);
+        }
+    }
+
+    private void saveRequest(final String method, final AuthenticationToken token, final Fallible response) {
+        if (session != null) {
+            session.saveRequest(method, token, response);
+        }
     }
 }

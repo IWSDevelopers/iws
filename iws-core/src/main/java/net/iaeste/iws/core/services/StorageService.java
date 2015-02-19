@@ -42,6 +42,7 @@ import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.entities.FileEntity;
 import net.iaeste.iws.persistence.entities.FolderEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
+import net.iaeste.iws.persistence.entities.UserGroupEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -59,12 +60,21 @@ import java.util.Objects;
 public final class StorageService extends CommonService<AccessDao> {
 
     private static final Logger log = LoggerFactory.getLogger(StorageService.class);
-    private static final int ROOT_FOLDER_ID = 3;
+    // The root folder is having the internal Id 3. However, since we're only
+    // getting the ExternalId for all other folders, it makes more sense to the
+    // existing ExternalId for the Root folder instead of the Id.
     private static final String ROOT_FOLDER_EID = "afec3bc0-296b-4bf2-8a9e-c2d7b74e93a0";
+
     // The EntityManager is temporarily present here, until the CommonService &
     // StorageService can both be cleaned up. The addition of the Library means
     // that we have two different approaches to dealing with files.
     // So, refactoring awaits once all is finalized and tested.
+    //   Note; JPA Prefers Named Queries over Dynamic Queries - since Named
+    // Queries can be better Cached. Criteria Queries is a more type-safe way to
+    // do things, but it makes the code loads harder to read and understand - so
+    // we're disencouraging the usage thereof. Also because modern IDE's like
+    // IntelliJ is capable at parsing and reading the Named and Dynamic Queries
+    // and thus ensuring that they're not containing mistakes.
     private final EntityManager entityManager;
 
     public StorageService(final Settings settings, final AccessDao accessDao, final EntityManager entityManager) {
@@ -323,7 +333,7 @@ public final class StorageService extends CommonService<AccessDao> {
         // Prepare the Folder to be returned with subfolders
         final Folder folder = transform(folderEntity);
         folder.setFolders(readFolders(authentication, folderEntity));
-        //folder.setFiles(readFiles(authentication, folderEntity));
+        folder.setFiles(readFiles(authentication, folderEntity));
         // For now, we're forcing an empty result, since the complexity of the
         // query requires that we add a View that can handle it properly
         folder.setFiles(new ArrayList<File>(0));
@@ -335,6 +345,10 @@ public final class StorageService extends CommonService<AccessDao> {
     }
 
     private FolderEntity readFolder(final Authentication authentication, final String externalId) {
+        // Reading a specific folder is paramount to finding content. However,
+        // we need to ensure that the user is allowed to see it. The query below
+        // will handle this, by testing that the folder is either public or
+        // belongs to a group that the user is a member of.
         final String jql =
                 "select f from FolderEntity f, UserGroupEntity u2g " +
                 "where f.externalId = :eid" +
@@ -349,44 +363,154 @@ public final class StorageService extends CommonService<AccessDao> {
     }
 
     private List<Folder> readFolders(final Authentication authentication, final FolderEntity parentFolderEntity) {
+        // Let's fetch all Folders for a given parent, and then we'll iterate
+        // over them to see if the user is allowed to see the folder or not
         final String jql =
                 "select f from FolderEntity f " +
-                "where f.parentId = :pid" +
-                "  and f.group.groupType.folderType = '" + GroupType.FolderType.Public + '\'';
+                "where f.parentId = :pid";
         final Query query = entityManager.createQuery(jql);
         query.setParameter("pid", parentFolderEntity.getId());
+        final List<FolderEntity> found = query.getResultList();
 
-        return readAndConvertEntities(query, parentFolderEntity.getExternalId());
+        final List<Folder> folders = new ArrayList<>(found.size());
+        for (final FolderEntity entity : found) {
+            if (entity.getGroup().getGroupType().getFolderType() == GroupType.FolderType.Public) {
+                final Folder folder = transform(entity);
+                folder.setParentId(parentFolderEntity.getExternalId());
+                folders.add(folder);
+
+            }
+        }
+
+        folders.addAll(resolveFolders(authentication, found, parentFolderEntity.getExternalId()));
+
+        return folders;
     }
 
-    private List<Folder> readAndConvertEntities(final Query query, final String externalParentId) {
-        final List<FolderEntity> entities = query.getResultList();
+    private List<Folder> resolveFolders(final Authentication authentication, final List<FolderEntity> found, final String externalParentId) {
+        final List<Folder> folders = new ArrayList<>(found.size());
 
-        final List<Folder> folders = new ArrayList<>(entities.size());
-        for (final FolderEntity entity : entities) {
-            final Folder folder = transform(entity);
-            folder.setParentId(externalParentId);
-            folders.add(folder);
+        if (!found.isEmpty()) {
+            // First, fetch the list of UserGroup relations that we have for the
+            // user. It is needed to iterate over. Unfortunately, we need to do
+            // this either by sorting the lists according to Groups, or simply
+            // using double iterations. Sorting will be costly for very small
+            // sets of data. But the double iteration should be less problematic
+            // regardlessly.
+            final List<UserGroupEntity> u2gList = dao.findAllUserGroups(authentication.getUser());
+
+            // Now, let's start iterating over the two lists
+            for (final FolderEntity entity : found) {
+                // I know that Goto labels is a bad idea, but for the sake of
+                // clarity, it makes it easier to understand where we're our
+                // inner break will go to:
+                startUserGroupLoop:
+                for (final UserGroupEntity u2g : u2gList) {
+                    if (u2g.getGroup().getId().equals(entity.getGroup().getId())) {
+                        // Yeah, we found one :-)
+                        final Folder folder = transform(entity);
+                        folder.setParentId(externalParentId);
+                        folders.add(folder);
+                        // As we found one - no need to continue the run in the
+                        // inner loop. Let's just break out to our label
+                        break startUserGroupLoop;
+                    }
+                }
+            }
         }
 
         return folders;
     }
 
+    /**
+     * Reads out the list of Files for a given Folder. The method is making the
+     * assumption that the folder is one that the user is allowed to read. I.e.
+     * that it is either a public folder (via GroupType) or a folder belonging
+     * to a Group, which the user is a member of.
+     *
+     * @param authentication     User Authentication Information
+     * @param parentFolderEntity Folder to read the content of
+     * @return List of Files to be shown
+     */
     private List<File> readFiles(final Authentication authentication, final FolderEntity parentFolderEntity) {
+        // First step, read in all files that is present in the folder. Since
+        // no data is read out at this point (and yes, we should move to a file
+        // view) - we're simply not concerned about the amount. Rather one
+        // simple query with more than required data than an extremely complex
+        // and error prone query.
         final String jql =
-                "select f from FileEntity f, UserGroupEntity u2g " +
-                "where f.folder.id = :fid" +
-                "  and (f.privacy = '" + Privacy.PUBLIC + '\'' +
-                "    or (f.privacy = '" + Privacy.PROTECTED + '\'' +
-                "      and f.group.id = u2g.group.id" +
-                "      and u2g.user.id = :uid)" +
-                "    or (f.privacy = '" + Privacy.PRIVATE + '\'' +
-                "      and f.user.id = :uid))";
+                "select f from FileEntity f " +
+                "where f.folder.id = :fid";
         final Query query = entityManager.createQuery(jql);
         query.setParameter("fid", parentFolderEntity.getId());
-        query.setParameter("uid", authentication.getUser().getId());
+        final List<FileEntity> found = query.getResultList();
 
-        return query.getResultList();
+        // Now the checks. These are very complex as we have to follow a set of
+        // rules, to ensure that the data protection and privacy requirements
+        // are upheld.
+        //   A) If the file is marked PRIVATE, then the current user *must* be
+        //      the owner, otherwise the file is not shown
+        //   B) If the file is marked PROTECTED, then the user must be a member
+        //      of the Group the file belongs to
+        //   C) If the file is marked PUBLIC
+        final List<FileEntity> protectedFiles = new ArrayList<>();
+        final List<File> files = new ArrayList<>(found.size());
+        for (final FileEntity entity : found) {
+            final Privacy privacy = entity.getPrivacy();
+            if (privacy == Privacy.PUBLIC) {
+                // Public file - add
+                files.add(transform(entity));
+            } else if (privacy == Privacy.PROTECTED) {
+                // Protected files is being dealt with separately. If no such
+                // files exists in the folder - no need to handle them, and thus
+                // we can save a DB lookup. Otherwise, we'll deal with them
+                // later.
+                protectedFiles.add(entity);
+            } else if (entity.getUser().getId().equals(authentication.getUser().getId())) {
+                // We're down to the Private file, so only relevant information
+                // is to compare the Owners. If they don't match, we don't add
+                files.add(transform(entity));
+            }
+        }
+
+        // Now, let's resolve the files and simply append the result
+        files.addAll(resolveProtectedFiles(authentication, protectedFiles));
+
+        // Done
+        return files;
+    }
+
+    private List<File> resolveProtectedFiles(final Authentication authentication, final List<FileEntity> found) {
+        final List<File> files = new ArrayList<>(found.size());
+
+        if (!found.isEmpty()) {
+            // First, fetch the list of UserGroup relations that we have for the
+            // user. It is needed to iterate over. Unfortunately, we need to do
+            // this either by sorting the lists according to Groups, or simply
+            // using double iterations. Sorting will be costly for very small
+            // sets of data. But the double iteration should be less problematic
+            // regardlessly.
+            final List<UserGroupEntity> u2gList = dao.findAllUserGroups(authentication.getUser());
+
+            // Now, let's start iterating over the two lists
+            for (final FileEntity entity : found) {
+                // I know that Goto labels is a bad idea, but for the sake of
+                // clarity, it makes it easier to understand where we're our
+                // inner break will go to:
+                startUserGroupLoop:
+                for (final UserGroupEntity u2g : u2gList) {
+                    if (u2g.getGroup().getId().equals(entity.getGroup().getId())) {
+                        // Yeah, we found one :-)
+                        files.add(transform(entity));
+                        // As we found one - no need to continue the run in the
+                        // inner loop. Let's just break out to our label
+                        break startUserGroupLoop;
+                    }
+                }
+            }
+        }
+
+        return files;
     }
 
     public FileResponse processFile(final Authentication authentication, final FileRequest request) {
@@ -464,17 +588,10 @@ public final class StorageService extends CommonService<AccessDao> {
 
     private FileEntity readFile(final Authentication authentication, final String externalFileId) {
         final String jql =
-                "select f from FileEntity f, UserGroupEntity u2g " +
-                "where f.id = :fid" +
-                "  and (f.privacy = " + Privacy.PUBLIC +
-                "    or (f.privacy = " + Privacy.PROTECTED +
-                "      and f.group.id = u2g.group.id" +
-                "      and u2g.user.id = :uid)" +
-                "    or (f.privacy = " + Privacy.PRIVATE +
-                "      and f.user.id = :uid))";
+                "select f from FileEntity f " +
+                "where f.id = :efid";
         final Query query = entityManager.createQuery(jql);
         query.setParameter("efid", externalFileId);
-        query.setParameter("uid", authentication.getUser().getId());
 
         final List<FileEntity> found = query.getResultList();
         final FileEntity entity;

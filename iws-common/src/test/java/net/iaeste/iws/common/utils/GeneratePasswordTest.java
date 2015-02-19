@@ -17,6 +17,8 @@ package net.iaeste.iws.common.utils;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
+import net.iaeste.iws.api.constants.IWSConstants;
+import org.hamcrest.core.Is;
 import org.junit.Test;
 
 import java.util.UUID;
@@ -42,5 +44,21 @@ public final class GeneratePasswordTest {
             System.out.println(String.format(sql, generateHashedPassword, salt, username));
         }
         assertThat(true, is(Boolean.TRUE));
+    }
+
+    /**
+     * The Password Generator, is an independent function, that takes known and
+     * valid input data and provides a random password with a simple collision
+     * check. This is a simple positive test of this functionality.
+     */
+    @Test
+    public void testPasswordGenerator() {
+        final String password = PasswordGenerator.generatePassword();
+        assertThat(password.length(), Is.is(IWSConstants.GENERATED_PASSWORD_LENGTH));
+
+        final char[] chars = password.toCharArray();
+        for (final char c : chars) {
+            assertThat(IWSConstants.PASSWORD_GENERATOR_CHARACTERS.contains(Character.toString(c)), Is.is(true));
+        }
     }
 }

@@ -30,6 +30,7 @@ import net.iaeste.iws.client.notifications.NotificationSpy;
 import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.ejb.CommitteeBean;
 import net.iaeste.iws.ejb.NotificationManagerBean;
+import net.iaeste.iws.ejb.SessionRequestBean;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -62,10 +63,16 @@ public class CommitteeSpringClient implements Committees {
         final NotificationManagerBean notificationBean = new NotificationManagerBean();
         notificationBean.setNotifications(notitications);
 
+        // Create a new SessionRequestBean instance wiht out entityManager
+        final SessionRequestBean sessionRequestBean = new SessionRequestBean();
+        sessionRequestBean.setEntityManager(entityManager);
+        sessionRequestBean.postConstruct();
+
         // Create an Committees EJB, and inject the EntityManager & Notification Spy
         final CommitteeBean committeeBean = new CommitteeBean();
         committeeBean.setEntityManager(entityManager);
         committeeBean.setNotificationManager(notificationBean);
+        committeeBean.setSessionRequestBean(sessionRequestBean);
         committeeBean.setSettings(Beans.settings());
         committeeBean.postConstruct();
 

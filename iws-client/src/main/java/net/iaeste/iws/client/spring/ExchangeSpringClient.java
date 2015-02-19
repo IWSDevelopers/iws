@@ -50,6 +50,7 @@ import net.iaeste.iws.client.notifications.NotificationSpy;
 import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.ejb.ExchangeBean;
 import net.iaeste.iws.ejb.NotificationManagerBean;
+import net.iaeste.iws.ejb.SessionRequestBean;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -86,10 +87,16 @@ public final class ExchangeSpringClient implements Exchange {
         final NotificationManagerBean notificationBean = new NotificationManagerBean();
         notificationBean.setNotifications(notitications);
 
+        // Create a new SessionRequestBean instance wiht out entityManager
+        final SessionRequestBean sessionRequestBean = new SessionRequestBean();
+        sessionRequestBean.setEntityManager(entityManager);
+        sessionRequestBean.postConstruct();
+
         // Create an Exchange EJB, and inject the EntityManager & Notification Spy
         final ExchangeBean exchangeBean = new ExchangeBean();
         exchangeBean.setEntityManager(entityManager);
         exchangeBean.setNotificationManager(notificationBean);
+        exchangeBean.setSessionRequestBean(sessionRequestBean);
         exchangeBean.setSettings(Beans.settings());
         exchangeBean.postConstruct();
 

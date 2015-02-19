@@ -28,14 +28,11 @@ import net.iaeste.iws.api.responses.student.FetchStudentApplicationsResponse;
 import net.iaeste.iws.api.responses.student.FetchStudentsResponse;
 import net.iaeste.iws.api.responses.student.StudentApplicationResponse;
 import net.iaeste.iws.api.responses.student.StudentResponse;
-import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.core.StudentController;
 import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.core.services.ServiceFactory;
 import net.iaeste.iws.ejb.cdi.IWSBean;
-import net.iaeste.iws.ejb.cdi.SessionRequestBean;
-import net.iaeste.iws.ejb.interceptors.Profiler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,10 +45,8 @@ import javax.ejb.TransactionAttributeType;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 import javax.inject.Inject;
-import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.io.Serializable;
 
 /**
  * Exchange Bean, serves as the default EJB for the IWS Exchange interface. It
@@ -72,13 +67,13 @@ import java.io.Serializable;
 @Remote(Students.class)
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 @TransactionManagement(TransactionManagementType.CONTAINER)
-public class StudentBean extends AbstractBean implements Students {
+public class StudentBean implements Students {
 
     private static final Logger log = LoggerFactory.getLogger(StudentBean.class);
     @Inject @IWSBean private EntityManager entityManager;
     @Inject @IWSBean private Notifications notifications;
-    @Inject @IWSBean private Settings settings;
     @Inject @IWSBean private SessionRequestBean session;
+    @Inject @IWSBean private Settings settings;
     private Students controller = null;
 
     /**
@@ -104,6 +99,16 @@ public class StudentBean extends AbstractBean implements Students {
     }
 
     /**
+     * Setter for the JNDI injected Session Request bean. This allows us to also
+     * test the code, by invoking these setters on the instantiated Object.
+     *
+     * @param sessionRequestBean Session Request Bean
+     */
+    public void setSessionRequestBean(final SessionRequestBean sessionRequestBean) {
+        this.session = sessionRequestBean;
+    }
+
+    /**
      * Setter for the JNDI injected Settings bean. This allows us to also test
      * the code, by invoking these setters on the instantiated Object.
      *
@@ -113,10 +118,6 @@ public class StudentBean extends AbstractBean implements Students {
         this.settings = settings;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     @PostConstruct
     public void postConstruct() {
         final ServiceFactory factory = new ServiceFactory(entityManager, notifications, settings);
@@ -131,19 +132,19 @@ public class StudentBean extends AbstractBean implements Students {
      * {@inheritDoc}
      */
     @Override
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public CreateUserResponse createStudent(final AuthenticationToken token, final CreateUserRequest request) {
+        final long start = System.nanoTime();
         CreateUserResponse response;
 
         try {
             response = controller.createStudent(token, request);
-            log.info(generateResponseLog(response, token));
+            log.info(session.generateLogAndUpdateSession("createStudent", start, response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token), e);
+            log.error(session.generateLogAndSaveRequest("createStudent", start, e, token, request), e);
             response = new CreateUserResponse(IWSErrors.ERROR, e.getMessage());
         }
 
-        // Save the request information before returning to improve error handling
-        saveRequest("createStudent", token, response, request);
         return response;
     }
 
@@ -151,20 +152,19 @@ public class StudentBean extends AbstractBean implements Students {
      * {@inheritDoc}
      */
     @Override
-    @Interceptors(Profiler.class)
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public StudentResponse processStudent(final AuthenticationToken token, final StudentRequest request) {
+        final long start = System.nanoTime();
         StudentResponse response;
 
         try {
             response = controller.processStudent(token, request);
-            log.info(generateResponseLog(response, token));
+            log.info(session.generateLogAndUpdateSession("processStudent", start, response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token), e);
+            log.error(session.generateLogAndSaveRequest("processStudent", start, e, token, request), e);
             response = new StudentResponse(IWSErrors.ERROR, e.getMessage());
         }
 
-        // Save the request information before returning to improve error handling
-        saveRequest("processStudent", token, response, request);
         return response;
     }
 
@@ -172,20 +172,19 @@ public class StudentBean extends AbstractBean implements Students {
      * {@inheritDoc}
      */
     @Override
-    @Interceptors(Profiler.class)
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public FetchStudentsResponse fetchStudents(final AuthenticationToken token, final FetchStudentsRequest request) {
+        final long start = System.nanoTime();
         FetchStudentsResponse response;
 
         try {
             response = controller.fetchStudents(token, request);
-            log.info(generateResponseLog(response, token));
+            log.info(session.generateLogAndUpdateSession("fetchStudents", start, response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token), e);
+            log.error(session.generateLogAndSaveRequest("fetchStudents", start, e, token, request), e);
             response = new FetchStudentsResponse(IWSErrors.ERROR, e.getMessage());
         }
 
-        // Save the request information before returning to improve error handling
-        saveRequest("fetchStudents", token, response, request);
         return response;
     }
 
@@ -193,20 +192,19 @@ public class StudentBean extends AbstractBean implements Students {
      * {@inheritDoc}
      */
     @Override
-    @Interceptors(Profiler.class)
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public StudentApplicationResponse processStudentApplication(final AuthenticationToken token, final ProcessStudentApplicationsRequest request) {
+        final long start = System.nanoTime();
         StudentApplicationResponse response;
 
         try {
             response = controller.processStudentApplication(token, request);
-            log.info(generateResponseLog(response, token));
+            log.info(session.generateLogAndUpdateSession("processStudentApplication", start, response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token), e);
+            log.error(session.generateLogAndSaveRequest("processStudentApplication", start, e, token, request), e);
             response = new StudentApplicationResponse(IWSErrors.ERROR, e.getMessage());
         }
 
-        // Save the request information before returning to improve error handling
-        saveRequest("processStudentApplication", token, response, request);
         return response;
     }
 
@@ -214,20 +212,19 @@ public class StudentBean extends AbstractBean implements Students {
      * {@inheritDoc}
      */
     @Override
-    @Interceptors(Profiler.class)
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public FetchStudentApplicationsResponse fetchStudentApplications(final AuthenticationToken token, final FetchStudentApplicationsRequest request) {
+        final long start = System.nanoTime();
         FetchStudentApplicationsResponse response;
 
         try {
             response = controller.fetchStudentApplications(token, request);
-            log.info(generateResponseLog(response, token));
+            log.info(session.generateLogAndUpdateSession("fetchStudentApplications", start, response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token), e);
+            log.error(session.generateLogAndSaveRequest("fetchStudentApplications", start, e, token, request), e);
             response = new FetchStudentApplicationsResponse(IWSErrors.ERROR, e.getMessage());
         }
 
-        // Save the request information before returning to improve error handling
-        saveRequest("fetchStudentApplications", token, response, request);
         return response;
     }
 
@@ -235,29 +232,19 @@ public class StudentBean extends AbstractBean implements Students {
      * {@inheritDoc}
      */
     @Override
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public StudentApplicationResponse processApplicationStatus(final AuthenticationToken token, final StudentApplicationRequest request) {
+        final long start = System.nanoTime();
         StudentApplicationResponse response;
 
         try {
             response = controller.processApplicationStatus(token, request);
-            log.info(generateResponseLog(response, token));
+            log.info(session.generateLogAndUpdateSession("processApplicationStatus", start, response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token), e);
+            log.error(session.generateLogAndSaveRequest("processApplicationStatus", start, e, token, request), e);
             response = new StudentApplicationResponse(IWSErrors.ERROR, e.getMessage());
         }
 
-        // Save the request information before returning to improve error handling
-        saveRequest("processApplicationStatus", token, response, request);
         return response;
-    }
-
-    // =========================================================================
-    // Internal methods
-    // =========================================================================
-
-    private void saveRequest(final String method, final AuthenticationToken token, final Fallible response, final Serializable request) {
-        if (session != null) {
-            session.saveRequest(method, token, response, request);
-        }
     }
 }

@@ -47,8 +47,6 @@ import net.iaeste.iws.core.AdministrationController;
 import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.core.services.ServiceFactory;
 import net.iaeste.iws.ejb.cdi.IWSBean;
-import net.iaeste.iws.ejb.cdi.SessionRequestBean;
-import net.iaeste.iws.ejb.interceptors.Profiler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -60,9 +58,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 import javax.inject.Inject;
-import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
-import java.io.Serializable;
 
 /**
  * Administration Bean, serves as the default EJB for the IWS Administration
@@ -83,13 +79,13 @@ import java.io.Serializable;
 @Remote(Administration.class)
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 @TransactionManagement(TransactionManagementType.CONTAINER)
-public class AdministrationBean extends AbstractBean implements Administration {
+public class AdministrationBean implements Administration {
 
     private static final Logger log = LoggerFactory.getLogger(AdministrationBean.class);
     @Inject @IWSBean private EntityManager entityManager;
     @Inject @IWSBean private Notifications notifications;
-    @Inject @IWSBean private Settings settings;
     @Inject @IWSBean private SessionRequestBean session;
+    @Inject @IWSBean private Settings settings;
     private Administration controller = null;
 
     /**
@@ -113,6 +109,16 @@ public class AdministrationBean extends AbstractBean implements Administration {
     }
 
     /**
+     * Setter for the JNDI injected Session Request bean. This allows us to also
+     * test the code, by invoking these setters on the instantiated Object.
+     *
+     * @param sessionRequestBean Session Request Bean
+     */
+    public void setSessionRequestBean(final SessionRequestBean sessionRequestBean) {
+        this.session = sessionRequestBean;
+    }
+
+    /**
      * Setter for the JNDI injected Settings bean. This allows us to also test
      * the code, by invoking these setters on the instantiated Object.
      *
@@ -122,10 +128,6 @@ public class AdministrationBean extends AbstractBean implements Administration {
         this.settings = settings;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     @PostConstruct
     public void postConstruct() {
         final ServiceFactory factory = new ServiceFactory(entityManager, notifications, settings);
@@ -140,20 +142,18 @@ public class AdministrationBean extends AbstractBean implements Administration {
      * {@inheritDoc}
      */
     @Override
-    @Interceptors(Profiler.class)
     public Fallible processCountry(final AuthenticationToken token, final CountryRequest request) {
+        final long start = System.nanoTime();
         Fallible response;
 
         try {
             response = controller.processCountry(token, request);
-            log.info(generateResponseLog(response, token));
+            log.info(session.generateLogAndUpdateSession("processCountry", start, response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token), e);
+            log.error(session.generateLogAndSaveRequest("processCountry", start, e, token, request), e);
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
-        // Save the request information before returning to improve error handling
-        saveRequest("processCountry", token, response, request);
         return response;
     }
 
@@ -161,21 +161,19 @@ public class AdministrationBean extends AbstractBean implements Administration {
      * {@inheritDoc}
      */
     @Override
-    @Interceptors(Profiler.class)
     @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public FetchCountryResponse fetchCountries(final AuthenticationToken token, final FetchCountryRequest request) {
+        final long start = System.nanoTime();
         FetchCountryResponse response;
 
         try {
             response = controller.fetchCountries(token, request);
-            log.info(generateResponseLog(response, token));
+            log.info(session.generateLogAndUpdateSession("fetchCountries", start, response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token), e);
+            log.error(session.generateLogAndSaveRequest("fetchCountries", start, e, token, request), e);
             response = new FetchCountryResponse(IWSErrors.ERROR, e.getMessage());
         }
 
-        // Save the request information before returning to improve error handling
-        saveRequest("fetchCountries", token, response, request);
         return response;
     }
 
@@ -183,20 +181,18 @@ public class AdministrationBean extends AbstractBean implements Administration {
      * {@inheritDoc}
      */
     @Override
-    @Interceptors(Profiler.class)
     public CreateUserResponse createUser(final AuthenticationToken token, final CreateUserRequest request) {
+        final long start = System.nanoTime();
         CreateUserResponse response;
 
         try {
             response = controller.createUser(token, request);
-            log.info(generateResponseLog(response, token));
+            log.info(session.generateLogAndUpdateSession("createUser", start, response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token), e);
+            log.error(session.generateLogAndSaveRequest("createUser", start, e, token, request), e);
             response = new CreateUserResponse(IWSErrors.ERROR, e.getMessage());
         }
 
-        // Save the request information before returning to improve error handling
-        saveRequest("createUser", token, response, request);
         return response;
     }
 
@@ -204,15 +200,15 @@ public class AdministrationBean extends AbstractBean implements Administration {
      * {@inheritDoc}
      */
     @Override
-    @Interceptors(Profiler.class)
     public Fallible activateUser(final String activationString) {
+        final long start = System.nanoTime();
         Fallible response;
 
         try {
             response = controller.activateUser(activationString);
-            log.info(generateResponseLog(response));
+            log.info(session.generateLog("activateUser", start, response));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e));
+            log.error(session.generateLog("activateUser", start, e), e);
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -223,15 +219,15 @@ public class AdministrationBean extends AbstractBean implements Administration {
      * {@inheritDoc}
      */
     @Override
-    @Interceptors(Profiler.class)
     public Fallible updateUsername(final String updateCode) {
+        final long start = System.nanoTime();
         Fallible response;
 
         try {
             response = controller.updateUsername(updateCode);
-            log.info(generateResponseLog(response));
+            log.info(session.generateLog("updateUsername", start, response));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e));
+            log.error(session.generateLog("updateUsername", start, e), e);
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -242,20 +238,18 @@ public class AdministrationBean extends AbstractBean implements Administration {
      * {@inheritDoc}
      */
     @Override
-    @Interceptors(Profiler.class)
     public Fallible controlUserAccount(final AuthenticationToken token, final UserRequest request) {
+        final long start = System.nanoTime();
         Fallible response;
 
         try {
             response = controller.controlUserAccount(token, request);
-            log.info(generateResponseLog(response, token));
+            log.info(session.generateLogAndUpdateSession("controlUserAccount", start, response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token), e);
+            log.error(session.generateLogAndSaveRequest("controlUserAccount", start, e, token, request), e);
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
-        // Save the request information before returning to improve error handling
-        saveRequest("controlUserAccount", token, response, request);
         return response;
     }
 
@@ -263,20 +257,18 @@ public class AdministrationBean extends AbstractBean implements Administration {
      * {@inheritDoc}
      */
     @Override
-    @Interceptors(Profiler.class)
     public Fallible changeAccountName(final AuthenticationToken token, final AccountNameRequest request) {
+        final long start = System.nanoTime();
         Fallible response;
 
         try {
             response = controller.changeAccountName(token, request);
-            log.info(generateResponseLog(response, token));
+            log.info(session.generateLogAndUpdateSession("changeAccountName", start, response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token), e);
+            log.error(session.generateLogAndSaveRequest("changeAccountName", start, e, token, request), e);
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
-        // Save the request information before returning to improve error handling
-        saveRequest("changeAccountName", token, response, request);
         return response;
     }
 
@@ -284,21 +276,19 @@ public class AdministrationBean extends AbstractBean implements Administration {
      * {@inheritDoc}
      */
     @Override
-    @Interceptors(Profiler.class)
     @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public FetchUserResponse fetchUser(final AuthenticationToken token, final FetchUserRequest request) {
+        final long start = System.nanoTime();
         FetchUserResponse response;
 
         try {
             response = controller.fetchUser(token, request);
-            log.info(generateResponseLog(response, token));
+            log.info(session.generateLogAndUpdateSession("fetchUser", start, response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token), e);
+            log.error(session.generateLogAndSaveRequest("fetchUser", start, e, token, request), e);
             response = new FetchUserResponse(IWSErrors.ERROR, e.getMessage());
         }
 
-        // Save the request information before returning to improve error handling
-        saveRequest("fetchUser", token, response, request);
         return response;
     }
 
@@ -308,18 +298,17 @@ public class AdministrationBean extends AbstractBean implements Administration {
     @Override
     @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public FetchRoleResponse fetchRoles(final AuthenticationToken token, final FetchRoleRequest request) {
+        final long start = System.nanoTime();
         FetchRoleResponse response;
 
         try {
             response = controller.fetchRoles(token, request);
-            log.info(generateResponseLog(response, token));
+            log.info(session.generateLogAndUpdateSession("fetchRoles", start, response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token), e);
+            log.error(session.generateLogAndSaveRequest("fetchRoles", start, e, token, request), e);
             response = new FetchRoleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
-        // Save the request information before returning to improve error handling
-        saveRequest("fetchRoles", token, response, request);
         return response;
     }
 
@@ -327,20 +316,18 @@ public class AdministrationBean extends AbstractBean implements Administration {
      * {@inheritDoc}
      */
     @Override
-    @Interceptors(Profiler.class)
     public ProcessGroupResponse processGroup(final AuthenticationToken token, final GroupRequest request) {
+        final long start = System.nanoTime();
         ProcessGroupResponse response;
 
         try {
             response = controller.processGroup(token, request);
-            log.info(generateResponseLog(response, token));
+            log.info(session.generateLogAndUpdateSession("processGroup", start, response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token), e);
+            log.error(session.generateLogAndSaveRequest("processGroup", start, e, token, request), e);
             response = new ProcessGroupResponse(IWSErrors.ERROR, e.getMessage());
         }
 
-        // Save the request information before returning to improve error handling
-        saveRequest("processGroup", token, response, request);
         return response;
     }
 
@@ -348,20 +335,18 @@ public class AdministrationBean extends AbstractBean implements Administration {
      * {@inheritDoc}
      */
     @Override
-    @Interceptors(Profiler.class)
     public Fallible deleteSubGroup(final AuthenticationToken token, final GroupRequest request) {
+        final long start = System.nanoTime();
         Fallible response;
 
         try {
             response = controller.deleteSubGroup(token, request);
-            log.info(generateResponseLog(response, token));
+            log.info(session.generateLogAndUpdateSession("deleteSubGroup", start, response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token), e);
+            log.error(session.generateLogAndSaveRequest("deleteSubGroup", start, e, token, request), e);
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
-        // Save the request information before returning to improve error handling
-        saveRequest("deleteSubGroup", token, response, request);
         return response;
     }
 
@@ -369,21 +354,19 @@ public class AdministrationBean extends AbstractBean implements Administration {
      * {@inheritDoc}
      */
     @Override
-    @Interceptors(Profiler.class)
     @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public FetchGroupResponse fetchGroup(final AuthenticationToken token, final FetchGroupRequest request) {
+        final long start = System.nanoTime();
         FetchGroupResponse response;
 
         try {
             response = controller.fetchGroup(token, request);
-            log.info(generateResponseLog(response, token));
+            log.info(session.generateLogAndUpdateSession("fetchGroup", start, response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token), e);
+            log.error(session.generateLogAndSaveRequest("fetchGroup", start, e, token, request), e);
             response = new FetchGroupResponse(IWSErrors.ERROR, e.getMessage());
         }
 
-        // Save the request information before returning to improve error handling
-        saveRequest("fetchGroup", token, response, request);
         return response;
     }
 
@@ -391,20 +374,18 @@ public class AdministrationBean extends AbstractBean implements Administration {
      * {@inheritDoc}
      */
     @Override
-    @Interceptors(Profiler.class)
     public Fallible changeGroupOwner(final AuthenticationToken token, final OwnerRequest request) {
+        final long start = System.nanoTime();
         Fallible response;
 
         try {
             response = controller.changeGroupOwner(token, request);
-            log.info(generateResponseLog(response, token));
+            log.info(session.generateLogAndUpdateSession("changeGroupOwner", start, response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token), e);
+            log.error(session.generateLogAndSaveRequest("changeGroupOwner", start, e, token, request), e);
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
-        // Save the request information before returning to improve error handling
-        saveRequest("changeGroupOwner", token, response, request);
         return response;
     }
 
@@ -412,20 +393,18 @@ public class AdministrationBean extends AbstractBean implements Administration {
      * {@inheritDoc}
      */
     @Override
-    @Interceptors(Profiler.class)
     public ProcessUserGroupResponse processUserGroupAssignment(final AuthenticationToken token, final UserGroupAssignmentRequest request) {
+        final long start = System.nanoTime();
         ProcessUserGroupResponse response;
 
         try {
             response = controller.processUserGroupAssignment(token, request);
-            log.info(generateResponseLog(response, token));
+            log.info(session.generateLogAndUpdateSession("processUserGroupAssignment", start, response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token), e);
+            log.error(session.generateLogAndSaveRequest("processUserGroupAssignment", start, e, token, request), e);
             response = new ProcessUserGroupResponse(IWSErrors.ERROR, e.getMessage());
         }
 
-        // Save the request information before returning to improve error handling
-        saveRequest("processUserGroupAssignment", token, response, request);
         return response;
     }
 
@@ -433,21 +412,19 @@ public class AdministrationBean extends AbstractBean implements Administration {
      * {@inheritDoc}
      */
     @Override
-    @Interceptors(Profiler.class)
     @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public SearchUserResponse searchUsers(final AuthenticationToken token, final SearchUserRequest request) {
+        final long start = System.nanoTime();
         SearchUserResponse response;
 
         try {
             response = controller.searchUsers(token, request);
-            log.info(generateResponseLog(response, token));
+            log.info(session.generateLogAndUpdateSession("searchUsers", start, response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token), e);
+            log.error(session.generateLogAndSaveRequest("searchUsers", start, e, token, request), e);
             response = new SearchUserResponse(IWSErrors.ERROR, e.getMessage());
         }
 
-        // Save the request information before returning to improve error handling
-        saveRequest("searchUsers", token, response, request);
         return response;
     }
 
@@ -455,21 +432,19 @@ public class AdministrationBean extends AbstractBean implements Administration {
      * {@inheritDoc}
      */
     @Override
-    @Interceptors(Profiler.class)
     @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public EmergencyListResponse fetchEmergencyList(final AuthenticationToken token) {
+        final long start = System.nanoTime();
         EmergencyListResponse response;
 
         try {
             response = controller.fetchEmergencyList(token);
-            log.info(generateResponseLog(response, token));
+            log.info(session.generateLogAndUpdateSession("fetchEmergencyList", start, response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token), e);
+            log.error(session.generateLogAndSaveRequest("fetchEmergencyList", start, e, token), e);
             response = new EmergencyListResponse(IWSErrors.ERROR, e.getMessage());
         }
 
-        // Save the request information before returning to improve error handling
-        saveRequest("fetchEmergencyList", token, response);
         return response;
     }
 
@@ -477,37 +452,19 @@ public class AdministrationBean extends AbstractBean implements Administration {
      * {@inheritDoc}
      */
     @Override
-    @Interceptors(Profiler.class)
     @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public ContactsResponse fetchContacts(final AuthenticationToken token, final ContactsRequest request) {
+        final long start = System.nanoTime();
         ContactsResponse response;
 
         try {
             response = controller.fetchContacts(token, request);
-            log.info(generateResponseLog(response, token));
+            log.info(session.generateLogAndUpdateSession("fetchContacts", start, response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token), e);
+            log.error(session.generateLogAndSaveRequest("fetchContacts", start, e, token, request), e);
             response = new ContactsResponse(IWSErrors.ERROR, e.getMessage());
         }
 
-        // Save the request information before returning to improve error handling
-        saveRequest("fetchContacts", token, response, request);
         return response;
-    }
-
-    // =========================================================================
-    // Internal methods
-    // =========================================================================
-
-    private void saveRequest(final String method, final AuthenticationToken token, final Fallible response, final Serializable request) {
-        if (session != null) {
-            session.saveRequest(method, token, response, request);
-        }
-    }
-
-    private void saveRequest(final String method, final AuthenticationToken token, final Fallible response) {
-        if (session != null) {
-            session.saveRequest(method, token, response);
-        }
     }
 }

@@ -30,8 +30,6 @@ import net.iaeste.iws.core.AccessController;
 import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.core.services.ServiceFactory;
 import net.iaeste.iws.ejb.cdi.IWSBean;
-import net.iaeste.iws.ejb.cdi.SessionRequestBean;
-import net.iaeste.iws.ejb.interceptors.Profiler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,7 +41,6 @@ import javax.ejb.TransactionAttributeType;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 import javax.inject.Inject;
-import javax.interceptor.Interceptors;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
@@ -69,11 +66,11 @@ import java.io.Serializable;
  */
 @Stateless
 @Remote(Access.class)
-@WebService(serviceName = "access")
+@WebService(serviceName = "access", targetNamespace = "http://ws.iws.iaeste.net/", name = "iws")
 @SOAPBinding(style = SOAPBinding.Style.RPC)
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 @TransactionManagement(TransactionManagementType.CONTAINER)
-public class AccessBean extends AbstractBean implements Access {
+public class AccessBean implements Access {
 
     private static final Logger log = LoggerFactory.getLogger(AccessBean.class);
     @Inject @IWSBean private EntityManager entityManager;
@@ -116,9 +113,16 @@ public class AccessBean extends AbstractBean implements Access {
     }
 
     /**
-     * {@inheritDoc}
+     * Setter for the JNDI injected Session Request bean. This allows us to also
+     * test the code, by invoking these setters on the instantiated Object.
+     *
+     * @param sessionRequestBean Session Request Bean
      */
-    @Override
+    @WebMethod(exclude = true)
+    public void setSessionRequestBean(final SessionRequestBean sessionRequestBean) {
+        this.session = sessionRequestBean;
+    }
+
     @PostConstruct
     @WebMethod(exclude = true)
     public void postConstruct() {
@@ -136,16 +140,16 @@ public class AccessBean extends AbstractBean implements Access {
     @Override
     @WebMethod
     @WebResult(name = "response")
-    @Interceptors(Profiler.class)
     public AuthenticationResponse generateSession(
             @WebParam(name="request") final AuthenticationRequest request) {
+        final long start = System.nanoTime();
         AuthenticationResponse response;
 
         try {
             response = controller.generateSession(request);
-            log.info(generateResponseLog(response));
+            log.info(session.generateLog("generateSession", start, response, response.getToken()));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e));
+            log.error(session.generateLog("generateSession", start, e));
             response = new AuthenticationResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -158,13 +162,14 @@ public class AccessBean extends AbstractBean implements Access {
     @Override
     @WebMethod(exclude = true)
     public Fallible requestResettingSession(final AuthenticationRequest request) {
+        final long start = System.nanoTime();
         Fallible response;
 
         try {
             response = controller.requestResettingSession(request);
-            log.info(generateResponseLog(response));
+            log.info(session.generateLog("requestResettingSession", start, response));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e));
+            log.error(session.generateLog("requestResettingSession", start, e));
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -177,13 +182,14 @@ public class AccessBean extends AbstractBean implements Access {
     @Override
     @WebMethod(exclude = true)
     public AuthenticationResponse resetSession(final String resetSessionToken) {
+        final long start = System.nanoTime();
         AuthenticationResponse response;
 
         try {
             response = controller.resetSession(resetSessionToken);
-            log.info(generateResponseLog(response));
+            log.info(session.generateLog("resetSession", start, response));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e));
+            log.error(session.generateLog("resetSession", start, e));
             response = new AuthenticationResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -196,18 +202,17 @@ public class AccessBean extends AbstractBean implements Access {
     @Override
     @WebMethod(exclude = true)
     public <T extends Serializable> Fallible saveSessionData(final AuthenticationToken token, final SessionDataRequest<T> request) {
+        final long start = System.nanoTime();
         Fallible response;
 
         try {
             response = controller.saveSessionData(token, request);
-            log.info(generateResponseLog(response, token));
+            log.info(session.generateLogAndUpdateSession("saveSessionData", start, response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token), e);
+            log.error(session.generateLogAndSaveRequest("saveSessionData", start, e, token, request), e);
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
-        // Save the request information before returning to improve error handling
-        saveRequest("saveSessionData", token, response, request);
         return response;
     }
 
@@ -217,18 +222,17 @@ public class AccessBean extends AbstractBean implements Access {
     @Override
     @WebMethod(exclude = true)
     public <T extends Serializable> SessionDataResponse<T> readSessionData(final AuthenticationToken token) {
+        final long start = System.nanoTime();
         SessionDataResponse<T> response;
 
         try {
             response = controller.readSessionData(token);
-            log.info(generateResponseLog(response, token));
+            log.info(session.generateLogAndUpdateSession("readSessionData", start, response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token), e);
+            log.error(session.generateLogAndSaveRequest("readSessionData", start, e, token), e);
             response = new SessionDataResponse(IWSErrors.ERROR, e.getMessage());
         }
 
-        // Save the request information before returning to improve error handling
-        saveRequest("readSessionData", token, response);
         return response;
     }
 
@@ -240,18 +244,17 @@ public class AccessBean extends AbstractBean implements Access {
     @WebResult(name = "response")
     public FallibleResponse verifySession(
             @WebParam(name = "token") final AuthenticationToken token) {
+        final long start = System.nanoTime();
         FallibleResponse response;
 
         try {
             response = controller.verifySession(token);
-            log.info(generateResponseLog(response, token));
+            log.info(session.generateLogAndUpdateSession("verifySession", start, response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token), e);
+            log.error(session.generateLogAndSaveRequest("verifySession", start, e, token), e);
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
-        // Save the request information before returning to improve error handling
-        saveRequest("verifySession", token, response);
         return response;
     }
 
@@ -263,13 +266,14 @@ public class AccessBean extends AbstractBean implements Access {
     @WebResult(name = "response")
     public FallibleResponse deprecateSession(
             @WebParam(name="token") final AuthenticationToken token) {
+        final long start = System.nanoTime();
         FallibleResponse response;
 
         try {
             response = controller.deprecateSession(token);
-            log.info(generateResponseLog(response, token));
+            log.info(session.generateLogAndUpdateSession("deprecateSession", start, response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token), e);
+            log.error(session.generateLogAndSaveRequest("deprecateSession", start, e, token), e);
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -282,13 +286,14 @@ public class AccessBean extends AbstractBean implements Access {
     @Override
     @WebMethod(exclude = true)
     public Fallible forgotPassword(final String username) {
+        final long start = System.nanoTime();
         Fallible response;
 
         try {
             response = controller.forgotPassword(username);
-            log.info(generateResponseLog(response));
+            log.info(session.generateLog("forgotPassword", start, response));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e));
+            log.error(session.generateLog("forgotPassword", start, e));
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -301,13 +306,14 @@ public class AccessBean extends AbstractBean implements Access {
     @Override
     @WebMethod(exclude = true)
     public Fallible resetPassword(final String resetPasswordToken, final Password password) {
+        final long start = System.nanoTime();
         Fallible response;
 
         try {
             response = controller.resetPassword(resetPasswordToken, password);
-            log.info(generateResponseLog(response));
+            log.info(session.generateLog("resetPassword", start, response));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e));
+            log.error(session.generateLog("resetPassword", start, e), e);
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -323,18 +329,17 @@ public class AccessBean extends AbstractBean implements Access {
     public FallibleResponse updatePassword(
             @WebParam(name="token") final AuthenticationToken token,
             @WebParam(name="password") final Password password) {
+        final long start = System.nanoTime();
         FallibleResponse response;
 
         try {
             response = controller.updatePassword(token, password);
-            log.info(generateResponseLog(response, token));
+            log.info(session.generateLogAndUpdateSession("updatePassword", start, response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token), e);
+            log.error(session.generateLogAndSaveRequest("updatePassword", start, e, token), e);
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
-        // Save the request information before returning to improve error handling
-        saveRequest("updatePassword", token, response);
         return response;
     }
 
@@ -347,34 +352,17 @@ public class AccessBean extends AbstractBean implements Access {
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public FetchPermissionResponse fetchPermissions(
             @WebParam(name="token") final AuthenticationToken token) {
+        final long start = System.nanoTime();
         FetchPermissionResponse response;
 
         try {
             response = controller.fetchPermissions(token);
-            log.info(generateResponseLog(response, token));
+            log.info(session.generateLogAndUpdateSession("fetchPermissions", start, response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token), e);
+            log.error(session.generateLogAndSaveRequest("fetchPermissions", start, e, token), e);
             response = new FetchPermissionResponse(IWSErrors.ERROR, e.getMessage());
         }
 
-        // Save the request information before returning to improve error handling
-        saveRequest("fetchPermissions", token, response);
         return response;
-    }
-
-    // =========================================================================
-    // Internal methods
-    // =========================================================================
-
-    private void saveRequest(final String method, final AuthenticationToken token, final Fallible response, final Serializable request) {
-        if (session != null) {
-            session.saveRequest(method, token, response, request);
-        }
-    }
-
-    private void saveRequest(final String method, final AuthenticationToken token, final Fallible response) {
-        if (session != null) {
-            session.saveRequest(method, token, response);
-        }
     }
 }

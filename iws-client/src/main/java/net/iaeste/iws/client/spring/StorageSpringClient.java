@@ -27,6 +27,7 @@ import net.iaeste.iws.api.responses.FolderResponse;
 import net.iaeste.iws.client.notifications.NotificationSpy;
 import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.ejb.NotificationManagerBean;
+import net.iaeste.iws.ejb.SessionRequestBean;
 import net.iaeste.iws.ejb.StorageBean;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -60,10 +61,16 @@ public class StorageSpringClient implements Storage {
         final NotificationManagerBean notificationBean = new NotificationManagerBean();
         notificationBean.setNotifications(notitications);
 
+        // Create a new SessionRequestBean instance wiht out entityManager
+        final SessionRequestBean sessionRequestBean = new SessionRequestBean();
+        sessionRequestBean.setEntityManager(entityManager);
+        sessionRequestBean.postConstruct();
+
         // Create an Committees EJB, and inject the EntityManager & Notification Spy
         final StorageBean storageBean = new StorageBean();
         storageBean.setEntityManager(entityManager);
         storageBean.setNotificationManager(notificationBean);
+        storageBean.setSessionRequestBean(sessionRequestBean);
         storageBean.setSettings(Beans.settings());
         storageBean.postConstruct();
 

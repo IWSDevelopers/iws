@@ -25,14 +25,11 @@ import net.iaeste.iws.api.responses.FetchFileResponse;
 import net.iaeste.iws.api.responses.FetchFolderResponse;
 import net.iaeste.iws.api.responses.FileResponse;
 import net.iaeste.iws.api.responses.FolderResponse;
-import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.core.StorageController;
 import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.core.services.ServiceFactory;
 import net.iaeste.iws.ejb.cdi.IWSBean;
-import net.iaeste.iws.ejb.cdi.SessionRequestBean;
-import net.iaeste.iws.ejb.interceptors.Profiler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,9 +41,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 import javax.inject.Inject;
-import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
-import java.io.Serializable;
 
 /**
  * Committee Bean, serves as the default EJB for the IWS Committee interface.
@@ -67,13 +62,13 @@ import java.io.Serializable;
 @Remote(Storage.class)
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 @TransactionManagement(TransactionManagementType.CONTAINER)
-public class StorageBean extends AbstractBean implements Storage {
+public class StorageBean implements Storage {
 
     private static final Logger log = LoggerFactory.getLogger(StorageBean.class);
     @Inject @IWSBean private EntityManager entityManager;
     @Inject @IWSBean private Notifications notifications;
-    @Inject @IWSBean private Settings settings;
     @Inject @IWSBean private SessionRequestBean session;
+    @Inject @IWSBean private Settings settings;
     private Storage controller = null;
 
     /**
@@ -97,6 +92,16 @@ public class StorageBean extends AbstractBean implements Storage {
     }
 
     /**
+     * Setter for the JNDI injected Session Request bean. This allows us to also
+     * test the code, by invoking these setters on the instantiated Object.
+     *
+     * @param sessionRequestBean Session Request Bean
+     */
+    public void setSessionRequestBean(final SessionRequestBean sessionRequestBean) {
+        this.session = sessionRequestBean;
+    }
+
+    /**
      * Setter for the JNDI injected Settings bean. This allows us to also test
      * the code, by invoking these setters on the instantiated Object.
      *
@@ -106,10 +111,6 @@ public class StorageBean extends AbstractBean implements Storage {
         this.settings = settings;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     @PostConstruct
     public void postConstruct() {
         final ServiceFactory factory = new ServiceFactory(entityManager, notifications, settings);
@@ -124,20 +125,19 @@ public class StorageBean extends AbstractBean implements Storage {
      * {@inheritDoc}
      */
     @Override
-    @Interceptors(Profiler.class)
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public FolderResponse processFolder(final AuthenticationToken token, final FolderRequest request) {
+        final long start = System.nanoTime();
         FolderResponse response;
 
         try {
             response = controller.processFolder(token, request);
-            log.info(generateResponseLog(response, token));
+            log.info(session.generateLogAndUpdateSession("processFolder", start, response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token), e);
+            log.error(session.generateLogAndSaveRequest("processFolder", start, e, token, request), e);
             response = new FolderResponse(IWSErrors.ERROR, e.getMessage());
         }
 
-        // Save the request information before returning to improve error handling
-        saveRequest("processFolder", token, response, request);
         return response;
     }
 
@@ -145,20 +145,19 @@ public class StorageBean extends AbstractBean implements Storage {
      * {@inheritDoc}
      */
     @Override
-    @Interceptors(Profiler.class)
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public FetchFolderResponse fetchFolder(final AuthenticationToken token, final FetchFolderRequest request) {
+        final long start = System.nanoTime();
         FetchFolderResponse response;
 
         try {
             response = controller.fetchFolder(token, request);
-            log.info(generateResponseLog(response, token));
+            log.info(session.generateLogAndUpdateSession("fetchFolder", start, response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token), e);
+            log.error(session.generateLogAndSaveRequest("fetchFolder", start, e, token, request), e);
             response = new FetchFolderResponse(IWSErrors.ERROR, e.getMessage());
         }
 
-        // Save the request information before returning to improve error handling
-        saveRequest("fetchFolder", token, response, request);
         return response;
     }
 
@@ -166,20 +165,19 @@ public class StorageBean extends AbstractBean implements Storage {
      * {@inheritDoc}
      */
     @Override
-    @Interceptors(Profiler.class)
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public FileResponse processFile(final AuthenticationToken token, final FileRequest request) {
+        final long start = System.nanoTime();
         FileResponse response;
 
         try {
             response = controller.processFile(token, request);
-            log.info(generateResponseLog(response, token));
+            log.info(session.generateLogAndUpdateSession("processFile", start, response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token), e);
+            log.error(session.generateLogAndSaveRequest("processFile", start, e, token, request), e);
             response = new FileResponse(IWSErrors.ERROR, e.getMessage());
         }
 
-        // Save the request information before returning to improve error handling
-        saveRequest("processFile", token, response, request);
         return response;
     }
 
@@ -187,30 +185,19 @@ public class StorageBean extends AbstractBean implements Storage {
      * {@inheritDoc}
      */
     @Override
-    @Interceptors(Profiler.class)
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public FetchFileResponse fetchFile(final AuthenticationToken token, final FetchFileRequest request) {
+        final long start = System.nanoTime();
         FetchFileResponse response;
 
         try {
             response = controller.fetchFile(token, request);
-            log.info(generateResponseLog(response, token));
+            log.info(session.generateLogAndUpdateSession("fetchFile", start, response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token), e);
+            log.error(session.generateLogAndSaveRequest("fetchFile", start, e, token, request), e);
             response = new FetchFileResponse(IWSErrors.ERROR, e.getMessage());
         }
 
-        // Save the request information before returning to improve error handling
-        saveRequest("fetchFile", token, response, request);
         return response;
-    }
-
-    // =========================================================================
-    // Internal methods
-    // =========================================================================
-
-    private void saveRequest(final String method, final AuthenticationToken token, final Fallible response, final Serializable request) {
-        if (session != null) {
-            session.saveRequest(method, token, response, request);
-        }
     }
 }

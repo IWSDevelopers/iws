@@ -33,8 +33,6 @@ import net.iaeste.iws.core.CommitteeController;
 import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.core.services.ServiceFactory;
 import net.iaeste.iws.ejb.cdi.IWSBean;
-import net.iaeste.iws.ejb.cdi.SessionRequestBean;
-import net.iaeste.iws.ejb.interceptors.Profiler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,9 +44,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 import javax.inject.Inject;
-import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
-import java.io.Serializable;
 
 /**
  * Committee Bean, serves as the default EJB for the IWS Committee interface.
@@ -69,13 +65,13 @@ import java.io.Serializable;
 @Remote(Committees.class)
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 @TransactionManagement(TransactionManagementType.CONTAINER)
-public class CommitteeBean extends AbstractBean implements Committees {
+public class CommitteeBean implements Committees {
 
     private static final Logger log = LoggerFactory.getLogger(CommitteeBean.class);
     @Inject @IWSBean private EntityManager entityManager;
     @Inject @IWSBean private Notifications notifications;
-    @Inject @IWSBean private Settings settings;
     @Inject @IWSBean private SessionRequestBean session;
+    @Inject @IWSBean private Settings settings;
     private Committees controller = null;
 
     /**
@@ -99,6 +95,16 @@ public class CommitteeBean extends AbstractBean implements Committees {
     }
 
     /**
+     * Setter for the JNDI injected Session Request bean. This allows us to also
+     * test the code, by invoking these setters on the instantiated Object.
+     *
+     * @param sessionRequestBean Session Request Bean
+     */
+    public void setSessionRequestBean(final SessionRequestBean sessionRequestBean) {
+        this.session = sessionRequestBean;
+    }
+
+    /**
      * Setter for the JNDI injected Settings bean. This allows us to also test
      * the code, by invoking these setters on the instantiated Object.
      *
@@ -108,10 +114,6 @@ public class CommitteeBean extends AbstractBean implements Committees {
         this.settings = settings;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     @PostConstruct
     public void postConstruct() {
         final ServiceFactory factory = new ServiceFactory(entityManager, notifications, settings);
@@ -126,20 +128,18 @@ public class CommitteeBean extends AbstractBean implements Committees {
      * {@inheritDoc}
      */
     @Override
-    @Interceptors(Profiler.class)
     public FetchCommitteeResponse fetchCommittees(final AuthenticationToken token, final FetchCommitteeRequest request) {
+        final long start = System.nanoTime();
         FetchCommitteeResponse response;
 
         try {
             response = controller.fetchCommittees(token, request);
-            log.info(generateResponseLog(response, token));
+            log.info(session.generateLogAndUpdateSession("fetchCommittees", start, response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token), e);
+            log.error(session.generateLogAndSaveRequest("fetchCommittees", start, e, token, request), e);
             response = new FetchCommitteeResponse(IWSErrors.ERROR, e.getMessage());
         }
 
-        // Save the request information before returning to improve error handling
-        saveRequest("fetchCommittees", token, response, request);
         return response;
     }
 
@@ -147,20 +147,18 @@ public class CommitteeBean extends AbstractBean implements Committees {
      * {@inheritDoc}
      */
     @Override
-    @Interceptors(Profiler.class)
     public Fallible processCommittee(final AuthenticationToken token, final CommitteeRequest request) {
+        final long start = System.nanoTime();
         Fallible response;
 
         try {
             response = controller.processCommittee(token, request);
-            log.info(generateResponseLog(response, token));
+            log.info(session.generateLogAndUpdateSession("processCommittee", start, response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token), e);
+            log.error(session.generateLogAndSaveRequest("processCommittee", start, e, token, request), e);
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
-        // Save the request information before returning to improve error handling
-        saveRequest("processCommittee", token, response, request);
         return response;
     }
 
@@ -168,20 +166,18 @@ public class CommitteeBean extends AbstractBean implements Committees {
      * {@inheritDoc}
      */
     @Override
-    @Interceptors(Profiler.class)
     public FetchInternationalGroupResponse fetchInternationalGroups(final AuthenticationToken token, final FetchInternationalGroupRequest request) {
+        final long start = System.nanoTime();
         FetchInternationalGroupResponse response;
 
         try {
             response = controller.fetchInternationalGroups(token, request);
-            log.info(generateResponseLog(response, token));
+            log.info(session.generateLogAndUpdateSession("fetchInternationalGroups", start, response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token), e);
+            log.error(session.generateLogAndSaveRequest("fetchInternationalGroups", start, e, token, request), e);
             response = new FetchInternationalGroupResponse(IWSErrors.ERROR, e.getMessage());
         }
 
-        // Save the request information before returning to improve error handling
-        saveRequest("fetchInternationalGroups", token, response, request);
         return response;
     }
 
@@ -189,20 +185,18 @@ public class CommitteeBean extends AbstractBean implements Committees {
      * {@inheritDoc}
      */
     @Override
-    @Interceptors(Profiler.class)
     public Fallible processInternationalGroup(final AuthenticationToken token, final InternationalGroupRequest request) {
+        final long start = System.nanoTime();
         Fallible response;
 
         try {
             response = controller.processInternationalGroup(token, request);
-            log.info(generateResponseLog(response, token));
+            log.info(session.generateLogAndUpdateSession("processInternationalGroup", start, response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token), e);
+            log.error(session.generateLogAndSaveRequest("processInternationalGroup", start, e, token, request), e);
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
-        // Save the request information before returning to improve error handling
-        saveRequest("processInternationalGroup", token, response, request);
         return response;
     }
 
@@ -210,20 +204,18 @@ public class CommitteeBean extends AbstractBean implements Committees {
      * {@inheritDoc}
      */
     @Override
-    @Interceptors(Profiler.class)
     public FetchSurveyOfCountryRespose fetchSurveyOfCountry(final AuthenticationToken token, final FetchSurveyOfCountryRequest request) {
+        final long start = System.nanoTime();
         FetchSurveyOfCountryRespose response;
 
         try {
             response = controller.fetchSurveyOfCountry(token, request);
-            log.info(generateResponseLog(response, token));
+            log.info(session.generateLogAndUpdateSession("fetchSurveyOfCountry", start, response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token), e);
+            log.error(session.generateLogAndSaveRequest("fetchSurveyOfCountry", start, e, token, request), e);
             response = new FetchSurveyOfCountryRespose(IWSErrors.ERROR, e.getMessage());
         }
 
-        // Save the request information before returning to improve error handling
-        saveRequest("fetchSurveyOfCountry", token, response, request);
         return response;
     }
 
@@ -231,30 +223,18 @@ public class CommitteeBean extends AbstractBean implements Committees {
      * {@inheritDoc}
      */
     @Override
-    @Interceptors(Profiler.class)
     public Fallible processSurveyOfCountry(final AuthenticationToken token, final SurveyOfCountryRequest request) {
+        final long start = System.nanoTime();
         Fallible response;
 
         try {
             response = controller.processSurveyOfCountry(token, request);
-            log.info(generateResponseLog(response, token));
+            log.info(session.generateLogAndUpdateSession("processSurveyOfCountry", start, response, token));
         } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token), e);
+            log.error(session.generateLogAndSaveRequest("processSurveyOfCountry", start, e, token, request), e);
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
-        // Save the request information before returning to improve error handling
-        saveRequest("processSurveyOfCountry", token, response, request);
         return response;
-    }
-
-    // =========================================================================
-    // Internal methods
-    // =========================================================================
-
-    private void saveRequest(final String method, final AuthenticationToken token, final Fallible response, final Serializable request) {
-        if (session != null) {
-            session.saveRequest(method, token, response, request);
-        }
     }
 }

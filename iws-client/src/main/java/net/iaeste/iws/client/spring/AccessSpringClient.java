@@ -28,6 +28,7 @@ import net.iaeste.iws.client.notifications.NotificationSpy;
 import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.ejb.AccessBean;
 import net.iaeste.iws.ejb.NotificationManagerBean;
+import net.iaeste.iws.ejb.SessionRequestBean;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -65,10 +66,16 @@ public final class AccessSpringClient implements Access {
         final NotificationManagerBean notificationBean = new NotificationManagerBean();
         notificationBean.setNotifications(notitications);
 
+        // Create a new SessionRequestBean instance wiht out entityManager
+        final SessionRequestBean sessionRequestBean = new SessionRequestBean();
+        sessionRequestBean.setEntityManager(entityManager);
+        sessionRequestBean.postConstruct();
+
         // Create an Access EJB, and inject the EntityManager & Notification Spy
         final AccessBean accessBean = new AccessBean();
         accessBean.setEntityManager(entityManager);
         accessBean.setNotificationManager(notificationBean);
+        accessBean.setSessionRequestBean(sessionRequestBean);
         accessBean.setSettings(Beans.settings());
         accessBean.postConstruct();
 

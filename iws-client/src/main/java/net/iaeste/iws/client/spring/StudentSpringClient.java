@@ -30,6 +30,7 @@ import net.iaeste.iws.api.responses.student.StudentResponse;
 import net.iaeste.iws.client.notifications.NotificationSpy;
 import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.ejb.NotificationManagerBean;
+import net.iaeste.iws.ejb.SessionRequestBean;
 import net.iaeste.iws.ejb.StudentBean;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -66,10 +67,16 @@ public final class StudentSpringClient implements Students {
         final NotificationManagerBean notificationBean = new NotificationManagerBean();
         notificationBean.setNotifications(notitications);
 
+        // Create a new SessionRequestBean instance wiht out entityManager
+        final SessionRequestBean sessionRequestBean = new SessionRequestBean();
+        sessionRequestBean.setEntityManager(entityManager);
+        sessionRequestBean.postConstruct();
+
         // Create an Exchange EJB, and inject the EntityManager & Notification Spy
         final StudentBean studentBean = new StudentBean();
         studentBean.setEntityManager(entityManager);
         studentBean.setNotificationManager(notificationBean);
+        studentBean.setSessionRequestBean(sessionRequestBean);
         studentBean.setSettings(Beans.settings());
         studentBean.postConstruct();
 

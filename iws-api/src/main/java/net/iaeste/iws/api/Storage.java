@@ -34,13 +34,21 @@ import net.iaeste.iws.api.responses.FolderResponse;
 public interface Storage {
 
     /**
-     * Folders within the IWS is a placeholder for either sub-folders or files.
+     * Processes a folder, meaning either creating, renaming or deleting.
      *
-     * @param token
-     * @param request
-     * @return
+     * @param token   User Authentication Token
+     * @param request Folder Request Object
+     * @return Folder Response, including error information
      */
     FolderResponse processFolder(AuthenticationToken token, FolderRequest request);
+
+    /**
+     * Fetches a folder with subfolders and files meta data (no content).
+     *
+     * @param token   User Authentication Token
+     * @param request FetchFolder Request Object
+     * @return FetchFolder Response, including error information
+     */
     FetchFolderResponse fetchFolder(AuthenticationToken token, FetchFolderRequest request);
 
     /**

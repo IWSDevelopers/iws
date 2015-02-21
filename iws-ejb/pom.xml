@@ -96,19 +96,19 @@
 
     <dependencies>
         <dependency>
-            <groupId>net.iaeste.iws</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>iws-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>net.iaeste.iws</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>iws-common</artifactId>
         </dependency>
         <dependency>
-            <groupId>net.iaeste.iws</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>iws-core</artifactId>
         </dependency>
         <dependency>
-            <groupId>net.iaeste.iws</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>iws-persistence</artifactId>
         </dependency>
         <dependency>

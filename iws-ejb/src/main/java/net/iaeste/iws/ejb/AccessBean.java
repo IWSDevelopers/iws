@@ -41,11 +41,6 @@ import javax.ejb.TransactionAttributeType;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 import javax.inject.Inject;
-import javax.jws.WebMethod;
-import javax.jws.WebParam;
-import javax.jws.WebResult;
-import javax.jws.WebService;
-import javax.jws.soap.SOAPBinding;
 import javax.persistence.EntityManager;
 import java.io.Serializable;
 
@@ -64,10 +59,9 @@ import java.io.Serializable;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
+@IWSBean
 @Stateless
 @Remote(Access.class)
-@WebService(serviceName = "access", targetNamespace = "http://ws.iws.iaeste.net/", name = "iws")
-@SOAPBinding(style = SOAPBinding.Style.RPC)
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 @TransactionManagement(TransactionManagementType.CONTAINER)
 public class AccessBean implements Access {
@@ -85,7 +79,6 @@ public class AccessBean implements Access {
      *
      * @param entityManager Transactional Entity Manager instance
      */
-    @WebMethod(exclude = true)
     public void setEntityManager(final EntityManager entityManager) {
         this.entityManager = entityManager;
     }
@@ -96,7 +89,6 @@ public class AccessBean implements Access {
      *
      * @param notificationManager Notification Manager Bean
      */
-    @WebMethod(exclude = true)
     public void setNotificationManager(final NotificationManagerLocal notificationManager) {
         this.notifications = notificationManager;
     }
@@ -107,7 +99,6 @@ public class AccessBean implements Access {
      *
      * @param settings Settings Bean
      */
-    @WebMethod(exclude = true)
     public void setSettings(final Settings settings) {
         this.settings = settings;
     }
@@ -118,13 +109,11 @@ public class AccessBean implements Access {
      *
      * @param sessionRequestBean Session Request Bean
      */
-    @WebMethod(exclude = true)
     public void setSessionRequestBean(final SessionRequestBean sessionRequestBean) {
         this.session = sessionRequestBean;
     }
 
     @PostConstruct
-    @WebMethod(exclude = true)
     public void postConstruct() {
         final ServiceFactory factory = new ServiceFactory(entityManager, notifications, settings);
         controller = new AccessController(factory);
@@ -138,10 +127,7 @@ public class AccessBean implements Access {
      * {@inheritDoc}
      */
     @Override
-    @WebMethod
-    @WebResult(name = "response")
-    public AuthenticationResponse generateSession(
-            @WebParam(name="request") final AuthenticationRequest request) {
+    public AuthenticationResponse generateSession(final AuthenticationRequest request) {
         final long start = System.nanoTime();
         AuthenticationResponse response;
 
@@ -160,7 +146,6 @@ public class AccessBean implements Access {
      * {@inheritDoc}
      */
     @Override
-    @WebMethod(exclude = true)
     public Fallible requestResettingSession(final AuthenticationRequest request) {
         final long start = System.nanoTime();
         Fallible response;
@@ -180,7 +165,6 @@ public class AccessBean implements Access {
      * {@inheritDoc}
      */
     @Override
-    @WebMethod(exclude = true)
     public AuthenticationResponse resetSession(final String resetSessionToken) {
         final long start = System.nanoTime();
         AuthenticationResponse response;
@@ -200,7 +184,6 @@ public class AccessBean implements Access {
      * {@inheritDoc}
      */
     @Override
-    @WebMethod(exclude = true)
     public <T extends Serializable> Fallible saveSessionData(final AuthenticationToken token, final SessionDataRequest<T> request) {
         final long start = System.nanoTime();
         Fallible response;
@@ -220,7 +203,6 @@ public class AccessBean implements Access {
      * {@inheritDoc}
      */
     @Override
-    @WebMethod(exclude = true)
     public <T extends Serializable> SessionDataResponse<T> readSessionData(final AuthenticationToken token) {
         final long start = System.nanoTime();
         SessionDataResponse<T> response;
@@ -240,10 +222,7 @@ public class AccessBean implements Access {
      * {@inheritDoc}
      */
     @Override
-    @WebMethod
-    @WebResult(name = "response")
-    public FallibleResponse verifySession(
-            @WebParam(name = "token") final AuthenticationToken token) {
+    public FallibleResponse verifySession(final AuthenticationToken token) {
         final long start = System.nanoTime();
         FallibleResponse response;
 
@@ -262,10 +241,7 @@ public class AccessBean implements Access {
      * {@inheritDoc}
      */
     @Override
-    @WebMethod
-    @WebResult(name = "response")
-    public FallibleResponse deprecateSession(
-            @WebParam(name="token") final AuthenticationToken token) {
+    public FallibleResponse deprecateSession(final AuthenticationToken token) {
         final long start = System.nanoTime();
         FallibleResponse response;
 
@@ -284,7 +260,6 @@ public class AccessBean implements Access {
      * {@inheritDoc}
      */
     @Override
-    @WebMethod(exclude = true)
     public Fallible forgotPassword(final String username) {
         final long start = System.nanoTime();
         Fallible response;
@@ -304,7 +279,6 @@ public class AccessBean implements Access {
      * {@inheritDoc}
      */
     @Override
-    @WebMethod(exclude = true)
     public Fallible resetPassword(final String resetPasswordToken, final Password password) {
         final long start = System.nanoTime();
         Fallible response;
@@ -324,11 +298,7 @@ public class AccessBean implements Access {
      * {@inheritDoc}
      */
     @Override
-    @WebMethod
-    @WebResult(name = "response")
-    public FallibleResponse updatePassword(
-            @WebParam(name="token") final AuthenticationToken token,
-            @WebParam(name="password") final Password password) {
+    public FallibleResponse updatePassword(final AuthenticationToken token, final Password password) {
         final long start = System.nanoTime();
         FallibleResponse response;
 
@@ -347,11 +317,8 @@ public class AccessBean implements Access {
      * {@inheritDoc}
      */
     @Override
-    @WebMethod
-    @WebResult(name = "response")
-    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-    public FetchPermissionResponse fetchPermissions(
-            @WebParam(name="token") final AuthenticationToken token) {
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+    public FetchPermissionResponse fetchPermissions(final AuthenticationToken token) {
         final long start = System.nanoTime();
         FetchPermissionResponse response;
 

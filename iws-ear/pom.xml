@@ -23,10 +23,15 @@
                     <generateApplicationXml>true</generateApplicationXml>
                     <modules>
                         <ejbModule>
-                            <groupId>net.iaeste.iws</groupId>
+                            <groupId>${project.groupId}</groupId>
                             <artifactId>iws-ejb</artifactId>
                             <bundleFileName>iws-ejb.jar</bundleFileName>
                         </ejbModule>
+                        <webModule>
+                            <groupId>${project.groupId}</groupId>
+                            <artifactId>iws-ws</artifactId>
+                            <bundleFileName>iws-ws.war</bundleFileName>
+                        </webModule>
                     </modules>
                 </configuration>
             </plugin>
@@ -53,7 +58,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-surefire-plugin</artifactId>
-                        <version>2.14</version>
+                        <version>2.15</version>
                         <configuration>
                             <parallel>none</parallel>
                         </configuration>
@@ -65,27 +70,21 @@
 
     <dependencies>
         <dependency>
-            <groupId>net.iaeste.iws</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>iws-ejb</artifactId>
 	        <version>${project.version}</version>
             <type>ejb</type>
         </dependency>
         <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>iws-ws</artifactId>
+	        <version>${project.version}</version>
+            <type>war</type>
+        </dependency>
+        <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
         </dependency>
-        <!--<dependency>-->
-            <!--<groupId>org.slf4j</groupId>-->
-            <!--<artifactId>jul-to-slf4j</artifactId>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>ch.qos.logback</groupId>-->
-            <!--<artifactId>logback-core</artifactId>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>ch.qos.logback</groupId>-->
-            <!--<artifactId>logback-classic</artifactId>-->
-        <!--</dependency>-->
     </dependencies>
 
 </project>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>iws-parent</artifactId>
+        <groupId>net.iaeste.iws</groupId>
+        <version>1.1-SNAPSHOT</version>
+        <relativePath>../iws-parent/pom.xml</relativePath>
+    </parent>
+    <artifactId>iws-ws</artifactId>
+    <packaging>war</packaging>
+    <name>IWS - WebService</name>
+    <description>IntraWeb Services - WS Module</description>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/webapp</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <packagingExcludes>WEB-INF/lib/*.jar</packagingExcludes>
+                    <warName>${project.artifactId}</warName>
+                    <!-- Java EE 6+ doesn't require web.xml, Maven needs to catch up! -->
+                    <!--<failOnMissingWebXml>false</failOnMissingWebXml>-->
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>iws-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>iws-ejb</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+</project>

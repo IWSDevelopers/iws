@@ -64,11 +64,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 import javax.inject.Inject;
-import javax.jws.WebMethod;
 import javax.jws.WebParam;
-import javax.jws.WebResult;
-import javax.jws.WebService;
-import javax.jws.soap.SOAPBinding;
 import javax.persistence.EntityManager;
 
 /**
@@ -86,10 +82,9 @@ import javax.persistence.EntityManager;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
+@IWSBean
 @Stateless
 @Remote(Exchange.class)
-@WebService(serviceName = "exchange")
-@SOAPBinding(style = SOAPBinding.Style.RPC)
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 @TransactionManagement(TransactionManagementType.CONTAINER)
 public class ExchangeBean implements Exchange {
@@ -107,7 +102,6 @@ public class ExchangeBean implements Exchange {
      *
      * @param entityManager Transactional Entity Manager instance
      */
-    @WebMethod(exclude = true)
     public void setEntityManager(final EntityManager entityManager) {
         this.entityManager = entityManager;
     }
@@ -118,7 +112,6 @@ public class ExchangeBean implements Exchange {
      *
      * @param notificationManager Notification Manager Bean
      */
-    @WebMethod(exclude = true)
     public void setNotificationManager(final NotificationManagerLocal notificationManager) {
         this.notifications = notificationManager;
     }
@@ -129,7 +122,6 @@ public class ExchangeBean implements Exchange {
      *
      * @param sessionRequestBean Session Request Bean
      */
-    @WebMethod(exclude = true)
     public void setSessionRequestBean(final SessionRequestBean sessionRequestBean) {
         this.session = sessionRequestBean;
     }
@@ -140,13 +132,11 @@ public class ExchangeBean implements Exchange {
      *
      * @param settings Settings Bean
      */
-    @WebMethod(exclude = true)
     public void setSettings(final Settings settings) {
         this.settings = settings;
     }
 
     @PostConstruct
-    @WebMethod(exclude = true)
     public void postConstruct() {
         final ServiceFactory factory = new ServiceFactory(entityManager, notifications, settings);
         controller = new ExchangeController(factory);
@@ -160,7 +150,6 @@ public class ExchangeBean implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    @WebMethod(exclude = true)
     @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public OfferStatisticsResponse fetchOfferStatistics(final AuthenticationToken token, final OfferStatisticsRequest request) {
         final long start = System.nanoTime();
@@ -181,11 +170,8 @@ public class ExchangeBean implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    @WebMethod
-    @WebResult(name = "response")
-    public EmployerResponse processEmployer(
-            @WebParam(name = "token") final AuthenticationToken token,
-            @WebParam(name = "request") final ProcessEmployerRequest request) {
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public EmployerResponse processEmployer(final AuthenticationToken token, final ProcessEmployerRequest request) {
         final long start = System.nanoTime();
         EmployerResponse response;
 
@@ -204,12 +190,8 @@ public class ExchangeBean implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    @WebMethod
-    @WebResult(name = "response")
     @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-    public FetchEmployerResponse fetchEmployers(
-            @WebParam(name = "token") final AuthenticationToken token,
-            @WebParam(name = "request") final FetchEmployerRequest request) {
+    public FetchEmployerResponse fetchEmployers(final AuthenticationToken token, final FetchEmployerRequest request) {
         final long start = System.nanoTime();
         FetchEmployerResponse response;
 
@@ -228,11 +210,8 @@ public class ExchangeBean implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    @WebMethod
-    @WebResult(name = "response")
-    public OfferResponse processOffer(
-            @WebParam(name = "token") final AuthenticationToken token,
-            @WebParam(name = "request") final ProcessOfferRequest request) {
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public OfferResponse processOffer(final AuthenticationToken token, final ProcessOfferRequest request) {
         final long start = System.nanoTime();
         OfferResponse response;
 
@@ -251,7 +230,7 @@ public class ExchangeBean implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    @WebMethod(exclude = true)
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public OfferResponse deleteOffer(final AuthenticationToken token, final DeleteOfferRequest request) {
         final long start = System.nanoTime();
         OfferResponse response;
@@ -271,7 +250,7 @@ public class ExchangeBean implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    @WebMethod(exclude = true)
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public OfferCSVUploadResponse uploadOffers(final AuthenticationToken token, final OfferCSVUploadRequest request) {
         final long start = System.nanoTime();
         OfferCSVUploadResponse response;
@@ -291,8 +270,6 @@ public class ExchangeBean implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    @WebMethod
-    @WebResult(name = "response")
     @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public FetchOffersResponse fetchOffers(
             @WebParam(name = "token") final AuthenticationToken token,
@@ -315,7 +292,6 @@ public class ExchangeBean implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    @WebMethod(exclude = true)
     @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public OfferCSVDownloadResponse downloadOffers(final AuthenticationToken token, final OfferCSVDownloadRequest request) {
         final long start = System.nanoTime();
@@ -336,7 +312,6 @@ public class ExchangeBean implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    @WebMethod(exclude = true)
     @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public FetchGroupsForSharingResponse fetchGroupsForSharing(final AuthenticationToken token) {
         final long start = System.nanoTime();
@@ -357,7 +332,7 @@ public class ExchangeBean implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    @WebMethod(exclude = true)
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public Fallible processOfferTemplate(final AuthenticationToken token, final OfferTemplateRequest request) {
         final long start = System.nanoTime();
         Fallible response;
@@ -377,7 +352,6 @@ public class ExchangeBean implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    @WebMethod(exclude = true)
     @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public FetchOfferTemplateResponse fetchOfferTemplates(final AuthenticationToken token, final FetchOfferTemplatesRequest request) {
         final long start = System.nanoTime();
@@ -398,7 +372,7 @@ public class ExchangeBean implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    @WebMethod(exclude = true)
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public Fallible processPublishingGroup(final AuthenticationToken token, final ProcessPublishingGroupRequest request) {
         final long start = System.nanoTime();
         Fallible response;
@@ -418,7 +392,6 @@ public class ExchangeBean implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    @WebMethod(exclude = true)
     @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public FetchPublishingGroupResponse fetchPublishingGroups(final AuthenticationToken token, final FetchPublishGroupsRequest request) {
         final long start = System.nanoTime();
@@ -440,7 +413,7 @@ public class ExchangeBean implements Exchange {
      */
     @Override
     @Deprecated
-    @WebMethod(exclude = true)
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public Fallible deletePublishingGroup(final AuthenticationToken token, final DeletePublishingGroupRequest request) {
         final long start = System.nanoTime();
         Fallible response;
@@ -460,7 +433,7 @@ public class ExchangeBean implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    @WebMethod(exclude = true)
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public PublishOfferResponse processPublishOffer(final AuthenticationToken token, final PublishOfferRequest request) {
         final long start = System.nanoTime();
         PublishOfferResponse response;
@@ -480,7 +453,6 @@ public class ExchangeBean implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    @WebMethod(exclude = true)
     @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public FetchPublishedGroupsResponse fetchPublishedGroups(final AuthenticationToken token, final FetchPublishedGroupsRequest request) {
         final long start = System.nanoTime();
@@ -501,7 +473,7 @@ public class ExchangeBean implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    @WebMethod(exclude = true)
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public Fallible processHideForeignOffers(final AuthenticationToken token, final HideForeignOffersRequest request) {
         final long start = System.nanoTime();
         Fallible response;
@@ -521,7 +493,7 @@ public class ExchangeBean implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    @WebMethod(exclude = true)
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public Fallible rejectOffer(final AuthenticationToken token, final RejectOfferRequest request) {
         final long start = System.nanoTime();
         Fallible response;

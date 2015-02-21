@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" version="3.0">
+    <!-- For Java 7:
+    <web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+             version="3.1">
+     -->
+    <display-name>iws-ws</display-name>
+
+    <servlet>
+        <servlet-name>AccessWS</servlet-name>
+        <servlet-class>net.iaeste.iws.ws.AccessWS</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AccessWS</servlet-name>
+        <url-pattern>/AccessWS</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ExchangeWS</servlet-name>
+        <servlet-class>net.iaeste.iws.ws.ExchangeWS</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ExchangeWS</servlet-name>
+        <url-pattern>/ExchangeWS</url-pattern>
+    </servlet-mapping>
+</web-app>

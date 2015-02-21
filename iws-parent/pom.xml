@@ -14,6 +14,7 @@
         <module>../iws-persistence</module>
         <module>../iws-core</module>
         <module>../iws-ejb</module>
+        <module>../iws-ws</module>
         <module>../iws-ear</module>
         <module>../iws-client</module>
         <module>../iws-fitnesse</module>
@@ -213,32 +214,37 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>net.iaeste.iws</groupId>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>iws-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>net.iaeste.iws</groupId>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>iws-common</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>net.iaeste.iws</groupId>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>iws-persistence</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>net.iaeste.iws</groupId>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>iws-core</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>net.iaeste.iws</groupId>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>iws-ejb</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>net.iaeste.iws</groupId>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>iws-ws</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>iws-client</artifactId>
                 <version>${project.version}</version>
             </dependency>

@@ -107,11 +107,11 @@
 
     <dependencies>
         <dependency>
-            <groupId>net.iaeste.iws</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>iws-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>net.iaeste.iws</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>iws-common</artifactId>
         </dependency>
         <dependency>

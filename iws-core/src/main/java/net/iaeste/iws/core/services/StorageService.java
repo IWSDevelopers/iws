@@ -37,6 +37,7 @@ import net.iaeste.iws.api.responses.FileResponse;
 import net.iaeste.iws.api.responses.FolderResponse;
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.core.exceptions.StorageException;
+import net.iaeste.iws.core.exceptions.UnsupportedOperationException;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.entities.FileEntity;
@@ -263,104 +264,6 @@ public final class StorageService extends CommonService<AccessDao> {
         return response;
     }
 
-    private List<Folder> readFolders(final List<UserGroupEntity> u2gList, final FolderEntity parentFolderEntity) {
-        final List<FolderEntity> found = readSubFolders(parentFolderEntity);
-
-        final List<Folder> folders = new ArrayList<>(found.size());
-        for (final FolderEntity entity : found) {
-            final GroupType.FolderType type = entity.getGroup().getGroupType().getFolderType();
-            if (type == GroupType.FolderType.Public) {
-                final Folder folder = transform(entity);
-                folder.setParentId(parentFolderEntity.getExternalId());
-                folders.add(folder);
-            } else if (type == GroupType.FolderType.Private) {
-                final long gid = entity.getGroup().getId();
-                for (final UserGroupEntity u2g : u2gList) {
-                    if (gid == u2g.getGroup().getId()) {
-                        final Folder folder = transform(entity);
-                        folder.setParentId(parentFolderEntity.getExternalId());
-                        folders.add(folder);
-                    }
-                }
-            }
-        }
-
-        return folders;
-    }
-
-    /**
-     * Reads out the list of Files for a given Folder. The method is making the
-     * assumption that the folder is one that the user is allowed to read. I.e.
-     * that it is either a public folder (via GroupType) or a folder belonging
-     * to a Group, which the user is a member of.
-     *
-     * @param authentication     User Authentication Information
-     * @param parentFolderEntity Folder to read the content of
-     * @return List of Files to be shown
-     */
-    private List<File> readFiles(final Authentication authentication, final List<UserGroupEntity> u2gList, final FolderEntity parentFolderEntity) {
-        final List<FileEntity> found = findFiles(parentFolderEntity);
-
-        // Now the checks. These are very complex as we have to follow a set of
-        // rules, to ensure that the data protection and privacy requirements
-        // are upheld.
-        //   A) If the file is marked PRIVATE, then the current user *must* be
-        //      the owner, otherwise the file is not shown
-        //   B) If the file is marked PROTECTED, then the user must be a member
-        //      of the Group the file belongs to
-        //   C) If the file is marked PUBLIC
-        final List<FileEntity> protectedFiles = new ArrayList<>();
-        final List<File> files = new ArrayList<>(found.size());
-        for (final FileEntity entity : found) {
-            final Privacy privacy = entity.getPrivacy();
-            if (privacy == Privacy.PUBLIC) {
-                // Public file - add
-                files.add(transform(entity));
-            } else if (privacy == Privacy.PROTECTED) {
-                // Protected files is being dealt with separately. If no such
-                // files exists in the folder - no need to handle them, and thus
-                // we can save a DB lookup. Otherwise, we'll deal with them
-                // later.
-                protectedFiles.add(entity);
-            } else if (entity.getUser().getId().equals(authentication.getUser().getId())) {
-                // We're down to the Private file, so only relevant information
-                // is to compare the Owners. If they don't match, we don't add
-                files.add(transform(entity));
-            }
-        }
-
-        // Now, let's resolve the files and simply append the result
-        files.addAll(resolveProtectedFiles(u2gList, protectedFiles));
-
-        // Done
-        return files;
-    }
-
-    private List<File> resolveProtectedFiles(final List<UserGroupEntity> u2gList, final List<FileEntity> found) {
-        final List<File> files = new ArrayList<>(found.size());
-
-        if (!found.isEmpty()) {
-            // Now, let's start iterating over the two lists
-            for (final FileEntity entity : found) {
-                // I know that Goto labels is a bad idea, but for the sake of
-                // clarity, it makes it easier to understand where we're our
-                // inner break will go to:
-                startUserGroupLoop:
-                for (final UserGroupEntity u2g : u2gList) {
-                    if (u2g.getGroup().getId().equals(entity.getGroup().getId())) {
-                        // Yeah, we found one :-)
-                        files.add(transform(entity));
-                        // As we found one - no need to continue the run in the
-                        // inner loop. Let's just break out to our label
-                        break startUserGroupLoop;
-                    }
-                }
-            }
-        }
-
-        return files;
-    }
-
     public FileResponse processFile(final Authentication authentication, final FileRequest request) {
         final FileResponse response;
         // TODO Current processing needs to be rethought, since the Library will allow users who have protected access to a file that is marked public or protected, to also make changes.
@@ -404,12 +307,17 @@ public final class StorageService extends CommonService<AccessDao> {
                 entity = dao.findFileByUserGroupAndExternalId(authentication.getUser(), group, request.getFileId());
             }
         } else if (type == StorageType.FOLDER) {
-            // TODO Expand on this one. so it is possible to check if the file is allowed to be viewed.
-            entity = readFile(request.getFileId());
+            FileEntity toCheck = readFile(request.getFileId());
+            final List<UserGroupEntity> u2gList = dao.findAllUserGroups(authentication.getUser());
+            entity = checkFile(authentication, toCheck, u2gList);
+
             // Just to ensure that the data is read out during transformation below
             request.setReadFileData(true);
-        } else {
+        } else if (type == StorageType.ATTACHED_TO_APPLICATION) {
             entity = dao.findAttachedFile(request.getFileId(), externalGroupId, type);
+        } else {
+            // Just in case...
+            throw new UnsupportedOperationException("This operation is not implemented.");
         }
 
         file = transform(entity);
@@ -418,6 +326,150 @@ public final class StorageService extends CommonService<AccessDao> {
         }
 
         return new FetchFileResponse(file);
+    }
+
+    // =========================================================================
+    //  Internal Helper Methods
+    // =========================================================================
+
+    /**
+     * Reads out a list of Sub-folders for a given Folder. All folders belonging
+     * to the current User can be read, as can all folders which belong Groups
+     * with Public folders.
+     *
+     * @param u2gList User Group Relations
+     * @param folder  Parent Folder to find sub folders for
+     * @return
+     */
+    private List<Folder> readFolders(final List<UserGroupEntity> u2gList, final FolderEntity folder) {
+        final List<FolderEntity> found = readSubFolders(folder);
+
+        final List<Folder> folders = new ArrayList<>(found.size());
+        for (final FolderEntity entity : found) {
+            final GroupType.FolderType type = entity.getGroup().getGroupType().getFolderType();
+            if (type == GroupType.FolderType.Public) {
+                final Folder subFolder = transform(entity);
+                subFolder.setParentId(folder.getExternalId());
+                folders.add(subFolder);
+            } else if (type == GroupType.FolderType.Private) {
+                final long gid = entity.getGroup().getId();
+                for (final UserGroupEntity u2g : u2gList) {
+                    if (gid == u2g.getGroup().getId()) {
+                        final Folder subFolder = transform(entity);
+                        subFolder.setParentId(folder.getExternalId());
+                        folders.add(subFolder);
+                    }
+                }
+            }
+        }
+
+        return folders;
+    }
+
+    /**
+     * Reads out the list of Files for a given Folder. The method is making the
+     * assumption that the folder is one that the user is allowed to read. I.e.
+     * that it is either a public folder (via GroupType) or a folder belonging
+     * to a Group, which the user is a member of.
+     *
+     * @param authentication     User Authentication Information
+     * @param parentFolderEntity Folder to read the content of
+     * @return List of Files to be shown
+     */
+    private List<File> readFiles(final Authentication authentication, final List<UserGroupEntity> u2gList, final FolderEntity parentFolderEntity) {
+        final List<FileEntity> found = findFiles(parentFolderEntity);
+
+        // Now the checks. These are very complex as we have to follow a set of
+        // rules, to ensure that the data protection and privacy requirements
+        // are upheld.
+        //   A) If the file is marked PRIVATE, then the current user *must* be
+        //      the owner, otherwise the file is not shown
+        //   B) If the file is marked PROTECTED, then the user must be a member
+        //      of the Group the file belongs to
+        //   C) If the file is marked PUBLIC
+        final List<File> files = new ArrayList<>(found.size());
+        for (final FileEntity entity : found) {
+            final FileEntity file = checkFile(authentication, entity, u2gList);
+            if (file != null) {
+                files.add(transform(file));
+            }
+        }
+
+        return files;
+    }
+
+    /**
+     * This method applies the rules regarding Public, Private and Protected to
+     * a particular File Entity. The check follows the following Rules:
+     * <ul>
+     *   <li><b>File is Public</b>
+     *     <ul>
+     *       <li>The file must belong to a Public Folder, or</li>
+     *       <li>The file must belong to a Group the User is member of, or</li>
+     *       <li>The file must belong to the current User</li>
+     *     </ul>
+     *   </li>
+     *   <li><b>B</b> File is Protected
+     *     <ul>
+     *       <li>The file must belong to a Group the User is member of, or</li>
+     *       <li>The file must belong to the current User</li>
+     *     </ul>
+     *   </li>
+     *   <li><b>C</b> File is Private
+     *     <ul>
+     *       <li>The file must belong to the current User</li>
+     *     </ul>
+     *   </li>
+     * </ul>
+     *
+     * @param authentication User Authentication Information
+     * @param entity         Current File Entity to check
+     * @param u2gList        User Group Relations
+     * @return
+     */
+    private FileEntity checkFile(final Authentication authentication, final FileEntity entity, final List<UserGroupEntity> u2gList) {
+        FileEntity file = null;
+
+        if (entity != null) {
+            // Per the documentation for the Data Privacy rules, which is also
+            // part of the JavaDoc for this method. We can either follow the
+            // documented rules or reverse the Order checks, and thus have
+            // clearer rules. We're doing the latter to make our method easier
+            // to read and understand.
+            if (entity.getUser().getId().equals(authentication.getUser().getId())) {
+                // If the current user is also the owner of the file, then there
+                // is no need to perform any other checks. Owners can always do
+                // whatever they wish with their files.
+                file = entity;
+            } else if (entity.getPrivacy() != Privacy.PRIVATE) {
+                // Private files is for owners only. And as the Owners were
+                // handled in the first check above - we can focus on files
+                // which have either status Public or Protected.
+                //   For all non-private files the rule applies, that if the
+                // user is member of the Group, which owns the file, then the
+                // file can be viewed.
+                for (final UserGroupEntity u2g : u2gList) {
+                    if (u2g.getGroup().getId().equals(entity.getGroup().getId())) {
+                        file = entity;
+                    }
+                }
+
+                // If still not allowed, then we're down to the last option,
+                // that the file is public and belongs to a public folder.
+                if ((entity == null) && (entity.getPrivacy() == Privacy.PUBLIC)) {
+                    // First, check that the Parent Folder exists
+                    if (entity.getFolder() != null) {
+                        // check that the file belongs to a Group with a public Folder.
+                        final GroupType.FolderType folderType = entity.getFolder().getGroup().getGroupType().getFolderType();
+                        if (folderType == GroupType.FolderType.Public) {
+                            file = entity;
+                        }
+                    }
+                }
+            }
+        }
+
+        return file;
     }
 
     // =========================================================================

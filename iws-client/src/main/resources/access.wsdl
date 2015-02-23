@@ -1,0 +1,620 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://ws.iws.iaeste.net/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="accessWSService" targetNamespace="http://ws.iws.iaeste.net/">
+  <wsdl:types>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://ws.iws.iaeste.net/" targetNamespace="http://ws.iws.iaeste.net/" version="1.0">
+
+  <xs:complexType final="extension restriction" name="authenticationToken">
+    <xs:complexContent>
+      <xs:extension base="tns:abstractVerification">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="groupId" type="xs:string"/>
+          <xs:element minOccurs="0" name="token" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType abstract="true" name="abstractVerification">
+    <xs:sequence/>
+  </xs:complexType>
+
+  <xs:complexType name="FallibleResponse">
+    <xs:sequence>
+      <xs:element name="error" type="tns:IWSError"/>
+      <xs:element name="message" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="IWSError">
+    <xs:sequence>
+      <xs:element name="error" type="xs:int"/>
+      <xs:element name="description" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="fetchPermissionResponse">
+    <xs:complexContent>
+      <xs:extension base="tns:FallibleResponse">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="authorizations" nillable="true" type="tns:authorization"/>
+          <xs:element minOccurs="0" name="userId" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="authorization">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="userGroup" type="tns:userGroup"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="userGroup">
+    <xs:complexContent>
+      <xs:extension base="tns:abstractVerification">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="group" type="tns:group"/>
+          <xs:element minOccurs="0" name="memberSince" type="tns:date"/>
+          <xs:element name="onPrivateList" type="xs:boolean"/>
+          <xs:element name="onPublicList" type="xs:boolean"/>
+          <xs:element minOccurs="0" name="role" type="tns:role"/>
+          <xs:element minOccurs="0" name="title" type="xs:string"/>
+          <xs:element minOccurs="0" name="user" type="tns:user"/>
+          <xs:element minOccurs="0" name="userGroupId" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="group">
+    <xs:complexContent>
+      <xs:extension base="tns:abstractVerification">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="country" type="tns:country"/>
+          <xs:element minOccurs="0" name="description" type="xs:string"/>
+          <xs:element minOccurs="0" name="fullName" type="xs:string"/>
+          <xs:element minOccurs="0" name="groupId" type="xs:string"/>
+          <xs:element minOccurs="0" name="groupName" type="xs:string"/>
+          <xs:element minOccurs="0" name="groupType" type="tns:groupType"/>
+          <xs:element minOccurs="0" name="listName" type="xs:string"/>
+          <xs:element minOccurs="0" name="monitoringLevel" type="tns:monitoringLevel"/>
+          <xs:element minOccurs="0" name="privateList" type="xs:boolean"/>
+          <xs:element minOccurs="0" name="publicList" type="xs:boolean"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="country">
+    <xs:complexContent>
+      <xs:extension base="tns:abstractVerification">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="citizens" type="xs:string"/>
+          <xs:element minOccurs="0" name="countryCode" type="xs:string"/>
+          <xs:element minOccurs="0" name="countryName" type="xs:string"/>
+          <xs:element minOccurs="0" name="countryNameFull" type="xs:string"/>
+          <xs:element minOccurs="0" name="countryNameNative" type="xs:string"/>
+          <xs:element minOccurs="0" name="currency" type="tns:currency"/>
+          <xs:element minOccurs="0" name="languages" type="xs:string"/>
+          <xs:element minOccurs="0" name="memberSince" type="xs:int"/>
+          <xs:element minOccurs="0" name="membership" type="tns:membership"/>
+          <xs:element minOccurs="0" name="nationality" type="xs:string"/>
+          <xs:element minOccurs="0" name="phonecode" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="date">
+    <xs:sequence/>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="role">
+    <xs:complexContent>
+      <xs:extension base="tns:abstractVerification">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="permissions" nillable="true" type="tns:permission"/>
+          <xs:element minOccurs="0" name="roleId" type="xs:string"/>
+          <xs:element minOccurs="0" name="roleName" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="user">
+    <xs:complexContent>
+      <xs:extension base="tns:abstractDto">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="alias" type="xs:string"/>
+          <xs:element minOccurs="0" name="firstname" type="xs:string"/>
+          <xs:element minOccurs="0" name="lastname" type="xs:string"/>
+          <xs:element minOccurs="0" name="notifications" type="tns:notificationFrequency"/>
+          <xs:element minOccurs="0" name="person" type="tns:person"/>
+          <xs:element minOccurs="0" name="privacy" type="tns:privacy"/>
+          <xs:element minOccurs="0" name="status" type="tns:userStatus"/>
+          <xs:element minOccurs="0" name="userId" type="xs:string"/>
+          <xs:element minOccurs="0" name="username" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType abstract="true" name="abstractDto">
+    <xs:complexContent>
+      <xs:extension base="tns:abstractVerification">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="person">
+    <xs:complexContent>
+      <xs:extension base="tns:abstractVerification">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="address" type="tns:address"/>
+          <xs:element minOccurs="0" name="alternateEmail" type="xs:string"/>
+          <xs:element minOccurs="0" name="birthday" type="tns:date"/>
+          <xs:element minOccurs="0" name="fax" type="xs:string"/>
+          <xs:element minOccurs="0" name="gender" type="tns:gender"/>
+          <xs:element minOccurs="0" name="mobile" type="xs:string"/>
+          <xs:element minOccurs="0" name="nationality" type="tns:country"/>
+          <xs:element minOccurs="0" name="phone" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="address">
+    <xs:complexContent>
+      <xs:extension base="tns:abstractVerification">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="city" type="xs:string"/>
+          <xs:element minOccurs="0" name="country" type="tns:country"/>
+          <xs:element minOccurs="0" name="pobox" type="xs:string"/>
+          <xs:element minOccurs="0" name="postalCode" type="xs:string"/>
+          <xs:element minOccurs="0" name="state" type="xs:string"/>
+          <xs:element minOccurs="0" name="street1" type="xs:string"/>
+          <xs:element minOccurs="0" name="street2" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="authenticationRequest">
+    <xs:complexContent>
+      <xs:extension base="tns:abstractVerification">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="password" type="xs:string"/>
+          <xs:element minOccurs="0" name="username" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="authenticationResponse">
+    <xs:complexContent>
+      <xs:extension base="tns:FallibleResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="token" type="tns:authenticationToken"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="password">
+    <xs:complexContent>
+      <xs:extension base="tns:abstractVerification">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="newPassword" type="xs:string"/>
+          <xs:element minOccurs="0" name="oldPassword" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:simpleType name="currency">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="AED"/>
+      <xs:enumeration value="AFN"/>
+      <xs:enumeration value="ALL"/>
+      <xs:enumeration value="AMD"/>
+      <xs:enumeration value="ANG"/>
+      <xs:enumeration value="AOA"/>
+      <xs:enumeration value="ARS"/>
+      <xs:enumeration value="AUD"/>
+      <xs:enumeration value="AWG"/>
+      <xs:enumeration value="AZN"/>
+      <xs:enumeration value="BAM"/>
+      <xs:enumeration value="BBD"/>
+      <xs:enumeration value="BDT"/>
+      <xs:enumeration value="BGN"/>
+      <xs:enumeration value="BHD"/>
+      <xs:enumeration value="BIF"/>
+      <xs:enumeration value="BMD"/>
+      <xs:enumeration value="BND"/>
+      <xs:enumeration value="BOB"/>
+      <xs:enumeration value="BRL"/>
+      <xs:enumeration value="BSD"/>
+      <xs:enumeration value="BTN"/>
+      <xs:enumeration value="BWP"/>
+      <xs:enumeration value="BYR"/>
+      <xs:enumeration value="BZD"/>
+      <xs:enumeration value="CAD"/>
+      <xs:enumeration value="CDF"/>
+      <xs:enumeration value="CHF"/>
+      <xs:enumeration value="CLP"/>
+      <xs:enumeration value="CNY"/>
+      <xs:enumeration value="COP"/>
+      <xs:enumeration value="CRC"/>
+      <xs:enumeration value="CUC"/>
+      <xs:enumeration value="CUP"/>
+      <xs:enumeration value="CVE"/>
+      <xs:enumeration value="CZK"/>
+      <xs:enumeration value="DJF"/>
+      <xs:enumeration value="DKK"/>
+      <xs:enumeration value="DOP"/>
+      <xs:enumeration value="DZD"/>
+      <xs:enumeration value="EGP"/>
+      <xs:enumeration value="ERN"/>
+      <xs:enumeration value="ETB"/>
+      <xs:enumeration value="EUR"/>
+      <xs:enumeration value="FJD"/>
+      <xs:enumeration value="FKP"/>
+      <xs:enumeration value="GBP"/>
+      <xs:enumeration value="GEL"/>
+      <xs:enumeration value="GGP"/>
+      <xs:enumeration value="GHS"/>
+      <xs:enumeration value="GIP"/>
+      <xs:enumeration value="GMD"/>
+      <xs:enumeration value="GNF"/>
+      <xs:enumeration value="GTQ"/>
+      <xs:enumeration value="GYD"/>
+      <xs:enumeration value="HKD"/>
+      <xs:enumeration value="HNL"/>
+      <xs:enumeration value="HRK"/>
+      <xs:enumeration value="HTG"/>
+      <xs:enumeration value="HUF"/>
+      <xs:enumeration value="IDR"/>
+      <xs:enumeration value="ILS"/>
+      <xs:enumeration value="IMP"/>
+      <xs:enumeration value="INR"/>
+      <xs:enumeration value="IQD"/>
+      <xs:enumeration value="IRR"/>
+      <xs:enumeration value="ISK"/>
+      <xs:enumeration value="JEP"/>
+      <xs:enumeration value="JMD"/>
+      <xs:enumeration value="JOD"/>
+      <xs:enumeration value="JPY"/>
+      <xs:enumeration value="KES"/>
+      <xs:enumeration value="KGS"/>
+      <xs:enumeration value="KHR"/>
+      <xs:enumeration value="KMF"/>
+      <xs:enumeration value="KPW"/>
+      <xs:enumeration value="KRW"/>
+      <xs:enumeration value="KWD"/>
+      <xs:enumeration value="KYD"/>
+      <xs:enumeration value="KZT"/>
+      <xs:enumeration value="LAK"/>
+      <xs:enumeration value="LBP"/>
+      <xs:enumeration value="LKR"/>
+      <xs:enumeration value="LRD"/>
+      <xs:enumeration value="LSL"/>
+      <xs:enumeration value="LTL"/>
+      <xs:enumeration value="LVL"/>
+      <xs:enumeration value="LYD"/>
+      <xs:enumeration value="MAD"/>
+      <xs:enumeration value="MDL"/>
+      <xs:enumeration value="MGA"/>
+      <xs:enumeration value="MKD"/>
+      <xs:enumeration value="MMK"/>
+      <xs:enumeration value="MNT"/>
+      <xs:enumeration value="MOP"/>
+      <xs:enumeration value="MRO"/>
+      <xs:enumeration value="MUR"/>
+      <xs:enumeration value="MVR"/>
+      <xs:enumeration value="MWK"/>
+      <xs:enumeration value="MXN"/>
+      <xs:enumeration value="MYR"/>
+      <xs:enumeration value="MZN"/>
+      <xs:enumeration value="NAD"/>
+      <xs:enumeration value="NGN"/>
+      <xs:enumeration value="NIO"/>
+      <xs:enumeration value="NOK"/>
+      <xs:enumeration value="NPR"/>
+      <xs:enumeration value="NZD"/>
+      <xs:enumeration value="OMR"/>
+      <xs:enumeration value="PAB"/>
+      <xs:enumeration value="PEN"/>
+      <xs:enumeration value="PGK"/>
+      <xs:enumeration value="PHP"/>
+      <xs:enumeration value="PKR"/>
+      <xs:enumeration value="PLN"/>
+      <xs:enumeration value="PYG"/>
+      <xs:enumeration value="QAR"/>
+      <xs:enumeration value="RON"/>
+      <xs:enumeration value="RSD"/>
+      <xs:enumeration value="RUB"/>
+      <xs:enumeration value="RWF"/>
+      <xs:enumeration value="SAR"/>
+      <xs:enumeration value="SBD"/>
+      <xs:enumeration value="SCR"/>
+      <xs:enumeration value="SDG"/>
+      <xs:enumeration value="SEK"/>
+      <xs:enumeration value="SGD"/>
+      <xs:enumeration value="SHP"/>
+      <xs:enumeration value="SLL"/>
+      <xs:enumeration value="SOS"/>
+      <xs:enumeration value="SPL"/>
+      <xs:enumeration value="SRD"/>
+      <xs:enumeration value="STD"/>
+      <xs:enumeration value="SVC"/>
+      <xs:enumeration value="SYP"/>
+      <xs:enumeration value="SZL"/>
+      <xs:enumeration value="THB"/>
+      <xs:enumeration value="TJS"/>
+      <xs:enumeration value="TMT"/>
+      <xs:enumeration value="TND"/>
+      <xs:enumeration value="TOP"/>
+      <xs:enumeration value="TRY"/>
+      <xs:enumeration value="TTD"/>
+      <xs:enumeration value="TVD"/>
+      <xs:enumeration value="TWD"/>
+      <xs:enumeration value="TZS"/>
+      <xs:enumeration value="UAH"/>
+      <xs:enumeration value="UGX"/>
+      <xs:enumeration value="USD"/>
+      <xs:enumeration value="UYU"/>
+      <xs:enumeration value="UZS"/>
+      <xs:enumeration value="VEF"/>
+      <xs:enumeration value="VND"/>
+      <xs:enumeration value="VUV"/>
+      <xs:enumeration value="WST"/>
+      <xs:enumeration value="XAF"/>
+      <xs:enumeration value="XCD"/>
+      <xs:enumeration value="XDR"/>
+      <xs:enumeration value="XOF"/>
+      <xs:enumeration value="XPF"/>
+      <xs:enumeration value="YER"/>
+      <xs:enumeration value="ZAR"/>
+      <xs:enumeration value="ZMW"/>
+      <xs:enumeration value="ZWD"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="membership">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="UNKNOWN"/>
+      <xs:enumeration value="FULL_MEMBER"/>
+      <xs:enumeration value="ASSOCIATE_MEMBER"/>
+      <xs:enumeration value="COOPERATING_INSTITUTION"/>
+      <xs:enumeration value="FORMER_MEMBER"/>
+      <xs:enumeration value="LISTED"/>
+      <xs:enumeration value="UNLISTED"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="groupType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="ADMINISTRATION"/>
+      <xs:enumeration value="PRIVATE"/>
+      <xs:enumeration value="MEMBER"/>
+      <xs:enumeration value="INTERNATIONAL"/>
+      <xs:enumeration value="NATIONAL"/>
+      <xs:enumeration value="LOCAL"/>
+      <xs:enumeration value="WORKGROUP"/>
+      <xs:enumeration value="STUDENT"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="monitoringLevel">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="NONE"/>
+      <xs:enumeration value="MARKED"/>
+      <xs:enumeration value="DETAILED"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="permission">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="FETCH_COUNTRIES"/>
+      <xs:enumeration value="PROCESS_COUNTRY"/>
+      <xs:enumeration value="CONTROL_USER_ACCOUNT"/>
+      <xs:enumeration value="CREATE_STUDENT_ACCOUNT"/>
+      <xs:enumeration value="FETCH_USER"/>
+      <xs:enumeration value="CHANGE_ACCOUNT_NAME"/>
+      <xs:enumeration value="PROCESS_GROUP"/>
+      <xs:enumeration value="CHANGE_GROUP_OWNER"/>
+      <xs:enumeration value="DELETE_GROUP"/>
+      <xs:enumeration value="PROCESS_USER_GROUP_ASSIGNMENT"/>
+      <xs:enumeration value="FETCH_EMERGENCY_LIST"/>
+      <xs:enumeration value="FETCH_COMMITTEES"/>
+      <xs:enumeration value="PROCESS_COMMITTEE"/>
+      <xs:enumeration value="FETCH_INTERNATIONAL_GROUPS"/>
+      <xs:enumeration value="PROCESS_INTERNATIONAL_GROUP"/>
+      <xs:enumeration value="FETCH_SURVEY_OF_COUNTRIES"/>
+      <xs:enumeration value="PROCESS_SURVEY_OF_COUNTRIES"/>
+      <xs:enumeration value="PROCESS_FILE"/>
+      <xs:enumeration value="FETCH_FILE"/>
+      <xs:enumeration value="PROCESS_FOLDER"/>
+      <xs:enumeration value="FETCH_FOLDER"/>
+      <xs:enumeration value="FETCH_OFFER_STATISTICS"/>
+      <xs:enumeration value="PROCESS_EMPLOYER"/>
+      <xs:enumeration value="FETCH_EMPLOYERS"/>
+      <xs:enumeration value="PROCESS_OFFER"/>
+      <xs:enumeration value="FETCH_OFFERS"/>
+      <xs:enumeration value="FETCH_GROUPS_FOR_SHARING"/>
+      <xs:enumeration value="PROCESS_OFFER_TEMPLATES"/>
+      <xs:enumeration value="FETCH_OFFER_TEMPLATES"/>
+      <xs:enumeration value="PROCESS_PUBLISH_OFFER"/>
+      <xs:enumeration value="FETCH_PUBLISH_GROUPS"/>
+      <xs:enumeration value="APPLY_FOR_OPEN_OFFER"/>
+      <xs:enumeration value="PROCESS_STUDENT"/>
+      <xs:enumeration value="FETCH_STUDENTS"/>
+      <xs:enumeration value="FETCH_STUDENT_APPLICATION"/>
+      <xs:enumeration value="PROCESS_STUDENT_APPLICATION"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="notificationFrequency">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="IMMEDIATELY"/>
+      <xs:enumeration value="DAILY"/>
+      <xs:enumeration value="WEEKLY"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="gender">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="MALE"/>
+      <xs:enumeration value="FEMALE"/>
+      <xs:enumeration value="UNKNOWN"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="privacy">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="PUBLIC"/>
+      <xs:enumeration value="PROTECTED"/>
+      <xs:enumeration value="PRIVATE"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="userStatus">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="NEW"/>
+      <xs:enumeration value="ACTIVE"/>
+      <xs:enumeration value="SUSPENDED"/>
+      <xs:enumeration value="DELETED"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="updatePasswordResponse">
+    <wsdl:part name="response" type="tns:FallibleResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="verifySessionResponse">
+    <wsdl:part name="response" type="tns:FallibleResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="deprecateSessionResponse">
+    <wsdl:part name="response" type="tns:FallibleResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="deprecateSession">
+    <wsdl:part name="token" type="tns:authenticationToken">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="updatePassword">
+    <wsdl:part name="token" type="tns:authenticationToken">
+    </wsdl:part>
+    <wsdl:part name="password" type="tns:password">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="fetchPermissions">
+    <wsdl:part name="token" type="tns:authenticationToken">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="generateSessionResponse">
+    <wsdl:part name="response" type="tns:authenticationResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="verifySession">
+    <wsdl:part name="token" type="tns:authenticationToken">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="fetchPermissionsResponse">
+    <wsdl:part name="response" type="tns:fetchPermissionResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="generateSession">
+    <wsdl:part name="request" type="tns:authenticationRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="accessWS">
+    <wsdl:operation name="verifySession">
+      <wsdl:input message="tns:verifySession" name="verifySession">
+    </wsdl:input>
+      <wsdl:output message="tns:verifySessionResponse" name="verifySessionResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="fetchPermissions">
+      <wsdl:input message="tns:fetchPermissions" name="fetchPermissions">
+    </wsdl:input>
+      <wsdl:output message="tns:fetchPermissionsResponse" name="fetchPermissionsResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deprecateSession">
+      <wsdl:input message="tns:deprecateSession" name="deprecateSession">
+    </wsdl:input>
+      <wsdl:output message="tns:deprecateSessionResponse" name="deprecateSessionResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="generateSession">
+      <wsdl:input message="tns:generateSession" name="generateSession">
+    </wsdl:input>
+      <wsdl:output message="tns:generateSessionResponse" name="generateSessionResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="updatePassword">
+      <wsdl:input message="tns:updatePassword" name="updatePassword">
+    </wsdl:input>
+      <wsdl:output message="tns:updatePasswordResponse" name="updatePasswordResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="accessWSServiceSoapBinding" type="tns:accessWS">
+    <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="verifySession">
+      <soap:operation soapAction="" style="rpc"/>
+      <wsdl:input name="verifySession">
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="verifySessionResponse">
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="fetchPermissions">
+      <soap:operation soapAction="" style="rpc"/>
+      <wsdl:input name="fetchPermissions">
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="fetchPermissionsResponse">
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deprecateSession">
+      <soap:operation soapAction="" style="rpc"/>
+      <wsdl:input name="deprecateSession">
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="deprecateSessionResponse">
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="generateSession">
+      <soap:operation soapAction="" style="rpc"/>
+      <wsdl:input name="generateSession">
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="generateSessionResponse">
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="updatePassword">
+      <soap:operation soapAction="" style="rpc"/>
+      <wsdl:input name="updatePassword">
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="updatePasswordResponse">
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="accessWSService">
+    <wsdl:port binding="tns:accessWSServiceSoapBinding" name="accessWS">
+      <soap:address location="http://localhost:8080/iws-ws/AccessWS"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

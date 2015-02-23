@@ -42,7 +42,7 @@ import java.io.Serializable;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.1
  */
-@WebService(serviceName = "access", targetNamespace = "http://ws.iws.iaeste.net/", name = "access")
+@WebService(name = "accessWS", serviceName = "accessWSService", portName = "accessWS", targetNamespace = "http://ws.iws.iaeste.net/")
 @SOAPBinding(style = SOAPBinding.Style.RPC)
 public class AccessWS implements Access {
 

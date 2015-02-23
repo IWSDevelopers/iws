@@ -1,0 +1,942 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://ws.iws.iaeste.net/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="exchangeWSService" targetNamespace="http://ws.iws.iaeste.net/">
+  <wsdl:types>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://ws.iws.iaeste.net/" targetNamespace="http://ws.iws.iaeste.net/" version="1.0">
+
+  <xs:complexType final="extension restriction" name="authenticationToken">
+    <xs:complexContent>
+      <xs:extension base="tns:abstractVerification">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="groupId" type="xs:string"/>
+          <xs:element minOccurs="0" name="token" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType abstract="true" name="abstractVerification">
+    <xs:sequence/>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="processOfferRequest">
+    <xs:complexContent>
+      <xs:extension base="tns:abstractVerification">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="offer" type="tns:offer"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="offer">
+    <xs:complexContent>
+      <xs:extension base="tns:abstractVerification">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="additionalInformation" type="xs:string"/>
+          <xs:element minOccurs="0" name="created" type="tns:dateTime"/>
+          <xs:element minOccurs="0" name="currency" type="tns:currency"/>
+          <xs:element minOccurs="0" name="dailyHours" type="xs:float"/>
+          <xs:element minOccurs="0" name="deduction" type="xs:string"/>
+          <xs:element minOccurs="0" name="employer" type="tns:employer"/>
+          <xs:element minOccurs="0" name="exchangeType" type="tns:exchangeType"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="fieldOfStudies" nillable="true" type="tns:fieldOfStudy"/>
+          <xs:element name="hidden" type="xs:boolean"/>
+          <xs:element minOccurs="0" name="language1" type="tns:language"/>
+          <xs:element minOccurs="0" name="language1Level" type="tns:languageLevel"/>
+          <xs:element minOccurs="0" name="language1Operator" type="tns:languageOperator"/>
+          <xs:element minOccurs="0" name="language2" type="tns:language"/>
+          <xs:element minOccurs="0" name="language2Level" type="tns:languageLevel"/>
+          <xs:element minOccurs="0" name="language2Operator" type="tns:languageOperator"/>
+          <xs:element minOccurs="0" name="language3" type="tns:language"/>
+          <xs:element minOccurs="0" name="language3Level" type="tns:languageLevel"/>
+          <xs:element minOccurs="0" name="livingCost" type="xs:decimal"/>
+          <xs:element minOccurs="0" name="livingCostFrequency" type="tns:paymentFrequency"/>
+          <xs:element minOccurs="0" name="lodgingBy" type="xs:string"/>
+          <xs:element minOccurs="0" name="lodgingCost" type="xs:decimal"/>
+          <xs:element minOccurs="0" name="lodgingCostFrequency" type="tns:paymentFrequency"/>
+          <xs:element minOccurs="0" name="maximumWeeks" type="xs:int"/>
+          <xs:element minOccurs="0" name="minimumWeeks" type="xs:int"/>
+          <xs:element minOccurs="0" name="modified" type="tns:dateTime"/>
+          <xs:element minOccurs="0" name="nominationDeadline" type="tns:date"/>
+          <xs:element minOccurs="0" name="nsFirstname" type="xs:string"/>
+          <xs:element minOccurs="0" name="nsLastname" type="xs:string"/>
+          <xs:element minOccurs="0" name="numberOfHardCopies" type="xs:int"/>
+          <xs:element minOccurs="0" name="offerId" type="xs:string"/>
+          <xs:element minOccurs="0" name="offerType" type="tns:offerType"/>
+          <xs:element minOccurs="0" name="oldRefNo" type="xs:string"/>
+          <xs:element minOccurs="0" name="otherRequirements" type="xs:string"/>
+          <xs:element minOccurs="0" name="payment" type="xs:decimal"/>
+          <xs:element minOccurs="0" name="paymentFrequency" type="tns:paymentFrequency"/>
+          <xs:element minOccurs="0" name="period1" type="tns:datePeriod"/>
+          <xs:element minOccurs="0" name="period2" type="tns:datePeriod"/>
+          <xs:element minOccurs="0" name="previousTrainingRequired" type="xs:boolean"/>
+          <xs:element minOccurs="0" name="privateComment" type="xs:string"/>
+          <xs:element minOccurs="0" name="refNo" type="xs:string"/>
+          <xs:element minOccurs="0" name="shared" type="tns:dateTime"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="specializations" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="status" type="tns:offerState"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="studyLevels" nillable="true" type="tns:studyLevel"/>
+          <xs:element minOccurs="0" name="typeOfWork" type="tns:typeOfWork"/>
+          <xs:element minOccurs="0" name="unavailable" type="tns:datePeriod"/>
+          <xs:element minOccurs="0" name="weeklyHours" type="xs:float"/>
+          <xs:element minOccurs="0" name="weeklyWorkDays" type="xs:float"/>
+          <xs:element minOccurs="0" name="workDescription" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="dateTime">
+    <xs:sequence/>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="employer">
+    <xs:complexContent>
+      <xs:extension base="tns:abstractVerification">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="address" type="tns:address"/>
+          <xs:element minOccurs="0" name="business" type="xs:string"/>
+          <xs:element minOccurs="0" name="canteen" type="xs:boolean"/>
+          <xs:element minOccurs="0" name="department" type="xs:string"/>
+          <xs:element minOccurs="0" name="employeesCount" type="xs:string"/>
+          <xs:element minOccurs="0" name="employerId" type="xs:string"/>
+          <xs:element minOccurs="0" name="group" type="tns:group"/>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+          <xs:element minOccurs="0" name="nearestAirport" type="xs:string"/>
+          <xs:element minOccurs="0" name="nearestPublicTransport" type="xs:string"/>
+          <xs:element minOccurs="0" name="website" type="xs:string"/>
+          <xs:element minOccurs="0" name="workingPlace" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="address">
+    <xs:complexContent>
+      <xs:extension base="tns:abstractVerification">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="city" type="xs:string"/>
+          <xs:element minOccurs="0" name="country" type="tns:country"/>
+          <xs:element minOccurs="0" name="pobox" type="xs:string"/>
+          <xs:element minOccurs="0" name="postalCode" type="xs:string"/>
+          <xs:element minOccurs="0" name="state" type="xs:string"/>
+          <xs:element minOccurs="0" name="street1" type="xs:string"/>
+          <xs:element minOccurs="0" name="street2" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="country">
+    <xs:complexContent>
+      <xs:extension base="tns:abstractVerification">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="citizens" type="xs:string"/>
+          <xs:element minOccurs="0" name="countryCode" type="xs:string"/>
+          <xs:element minOccurs="0" name="countryName" type="xs:string"/>
+          <xs:element minOccurs="0" name="countryNameFull" type="xs:string"/>
+          <xs:element minOccurs="0" name="countryNameNative" type="xs:string"/>
+          <xs:element minOccurs="0" name="currency" type="tns:currency"/>
+          <xs:element minOccurs="0" name="languages" type="xs:string"/>
+          <xs:element minOccurs="0" name="memberSince" type="xs:int"/>
+          <xs:element minOccurs="0" name="membership" type="tns:membership"/>
+          <xs:element minOccurs="0" name="nationality" type="xs:string"/>
+          <xs:element minOccurs="0" name="phonecode" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="group">
+    <xs:complexContent>
+      <xs:extension base="tns:abstractVerification">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="country" type="tns:country"/>
+          <xs:element minOccurs="0" name="description" type="xs:string"/>
+          <xs:element minOccurs="0" name="fullName" type="xs:string"/>
+          <xs:element minOccurs="0" name="groupId" type="xs:string"/>
+          <xs:element minOccurs="0" name="groupName" type="xs:string"/>
+          <xs:element minOccurs="0" name="groupType" type="tns:groupType"/>
+          <xs:element minOccurs="0" name="listName" type="xs:string"/>
+          <xs:element minOccurs="0" name="monitoringLevel" type="tns:monitoringLevel"/>
+          <xs:element minOccurs="0" name="privateList" type="xs:boolean"/>
+          <xs:element minOccurs="0" name="publicList" type="xs:boolean"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="date">
+    <xs:sequence/>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="datePeriod">
+    <xs:complexContent>
+      <xs:extension base="tns:abstractVerification">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="fromDate" type="tns:date"/>
+          <xs:element minOccurs="0" name="toDate" type="tns:date"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="offerResponse">
+    <xs:complexContent>
+      <xs:extension base="tns:FallibleResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="offer" type="tns:offer"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="FallibleResponse">
+    <xs:sequence>
+      <xs:element name="error" type="tns:IWSError"/>
+      <xs:element name="message" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="IWSError">
+    <xs:sequence>
+      <xs:element name="error" type="xs:int"/>
+      <xs:element name="description" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="processEmployerRequest">
+    <xs:complexContent>
+      <xs:extension base="tns:abstractVerification">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="employer" type="tns:employer"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="employerResponse">
+    <xs:complexContent>
+      <xs:extension base="tns:FallibleResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="employer" type="tns:employer"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="fetchEmployerRequest">
+    <xs:complexContent>
+      <xs:extension base="tns:abstractPaginatable">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType abstract="true" name="abstractPaginatable">
+    <xs:complexContent>
+      <xs:extension base="tns:abstractVerification">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="fetchEmployerResponse">
+    <xs:complexContent>
+      <xs:extension base="tns:FallibleResponse">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="employers" nillable="true" type="tns:employer"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="fetchOffersRequest">
+    <xs:complexContent>
+      <xs:extension base="tns:abstractPaginatable">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="exchangeYear" type="xs:int"/>
+          <xs:element minOccurs="0" name="fetchType" type="tns:fetchType"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="fetchOffersResponse">
+    <xs:complexContent>
+      <xs:extension base="tns:FallibleResponse">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="offers" nillable="true" type="tns:offer"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:simpleType name="currency">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="AED"/>
+      <xs:enumeration value="AFN"/>
+      <xs:enumeration value="ALL"/>
+      <xs:enumeration value="AMD"/>
+      <xs:enumeration value="ANG"/>
+      <xs:enumeration value="AOA"/>
+      <xs:enumeration value="ARS"/>
+      <xs:enumeration value="AUD"/>
+      <xs:enumeration value="AWG"/>
+      <xs:enumeration value="AZN"/>
+      <xs:enumeration value="BAM"/>
+      <xs:enumeration value="BBD"/>
+      <xs:enumeration value="BDT"/>
+      <xs:enumeration value="BGN"/>
+      <xs:enumeration value="BHD"/>
+      <xs:enumeration value="BIF"/>
+      <xs:enumeration value="BMD"/>
+      <xs:enumeration value="BND"/>
+      <xs:enumeration value="BOB"/>
+      <xs:enumeration value="BRL"/>
+      <xs:enumeration value="BSD"/>
+      <xs:enumeration value="BTN"/>
+      <xs:enumeration value="BWP"/>
+      <xs:enumeration value="BYR"/>
+      <xs:enumeration value="BZD"/>
+      <xs:enumeration value="CAD"/>
+      <xs:enumeration value="CDF"/>
+      <xs:enumeration value="CHF"/>
+      <xs:enumeration value="CLP"/>
+      <xs:enumeration value="CNY"/>
+      <xs:enumeration value="COP"/>
+      <xs:enumeration value="CRC"/>
+      <xs:enumeration value="CUC"/>
+      <xs:enumeration value="CUP"/>
+      <xs:enumeration value="CVE"/>
+      <xs:enumeration value="CZK"/>
+      <xs:enumeration value="DJF"/>
+      <xs:enumeration value="DKK"/>
+      <xs:enumeration value="DOP"/>
+      <xs:enumeration value="DZD"/>
+      <xs:enumeration value="EGP"/>
+      <xs:enumeration value="ERN"/>
+      <xs:enumeration value="ETB"/>
+      <xs:enumeration value="EUR"/>
+      <xs:enumeration value="FJD"/>
+      <xs:enumeration value="FKP"/>
+      <xs:enumeration value="GBP"/>
+      <xs:enumeration value="GEL"/>
+      <xs:enumeration value="GGP"/>
+      <xs:enumeration value="GHS"/>
+      <xs:enumeration value="GIP"/>
+      <xs:enumeration value="GMD"/>
+      <xs:enumeration value="GNF"/>
+      <xs:enumeration value="GTQ"/>
+      <xs:enumeration value="GYD"/>
+      <xs:enumeration value="HKD"/>
+      <xs:enumeration value="HNL"/>
+      <xs:enumeration value="HRK"/>
+      <xs:enumeration value="HTG"/>
+      <xs:enumeration value="HUF"/>
+      <xs:enumeration value="IDR"/>
+      <xs:enumeration value="ILS"/>
+      <xs:enumeration value="IMP"/>
+      <xs:enumeration value="INR"/>
+      <xs:enumeration value="IQD"/>
+      <xs:enumeration value="IRR"/>
+      <xs:enumeration value="ISK"/>
+      <xs:enumeration value="JEP"/>
+      <xs:enumeration value="JMD"/>
+      <xs:enumeration value="JOD"/>
+      <xs:enumeration value="JPY"/>
+      <xs:enumeration value="KES"/>
+      <xs:enumeration value="KGS"/>
+      <xs:enumeration value="KHR"/>
+      <xs:enumeration value="KMF"/>
+      <xs:enumeration value="KPW"/>
+      <xs:enumeration value="KRW"/>
+      <xs:enumeration value="KWD"/>
+      <xs:enumeration value="KYD"/>
+      <xs:enumeration value="KZT"/>
+      <xs:enumeration value="LAK"/>
+      <xs:enumeration value="LBP"/>
+      <xs:enumeration value="LKR"/>
+      <xs:enumeration value="LRD"/>
+      <xs:enumeration value="LSL"/>
+      <xs:enumeration value="LTL"/>
+      <xs:enumeration value="LVL"/>
+      <xs:enumeration value="LYD"/>
+      <xs:enumeration value="MAD"/>
+      <xs:enumeration value="MDL"/>
+      <xs:enumeration value="MGA"/>
+      <xs:enumeration value="MKD"/>
+      <xs:enumeration value="MMK"/>
+      <xs:enumeration value="MNT"/>
+      <xs:enumeration value="MOP"/>
+      <xs:enumeration value="MRO"/>
+      <xs:enumeration value="MUR"/>
+      <xs:enumeration value="MVR"/>
+      <xs:enumeration value="MWK"/>
+      <xs:enumeration value="MXN"/>
+      <xs:enumeration value="MYR"/>
+      <xs:enumeration value="MZN"/>
+      <xs:enumeration value="NAD"/>
+      <xs:enumeration value="NGN"/>
+      <xs:enumeration value="NIO"/>
+      <xs:enumeration value="NOK"/>
+      <xs:enumeration value="NPR"/>
+      <xs:enumeration value="NZD"/>
+      <xs:enumeration value="OMR"/>
+      <xs:enumeration value="PAB"/>
+      <xs:enumeration value="PEN"/>
+      <xs:enumeration value="PGK"/>
+      <xs:enumeration value="PHP"/>
+      <xs:enumeration value="PKR"/>
+      <xs:enumeration value="PLN"/>
+      <xs:enumeration value="PYG"/>
+      <xs:enumeration value="QAR"/>
+      <xs:enumeration value="RON"/>
+      <xs:enumeration value="RSD"/>
+      <xs:enumeration value="RUB"/>
+      <xs:enumeration value="RWF"/>
+      <xs:enumeration value="SAR"/>
+      <xs:enumeration value="SBD"/>
+      <xs:enumeration value="SCR"/>
+      <xs:enumeration value="SDG"/>
+      <xs:enumeration value="SEK"/>
+      <xs:enumeration value="SGD"/>
+      <xs:enumeration value="SHP"/>
+      <xs:enumeration value="SLL"/>
+      <xs:enumeration value="SOS"/>
+      <xs:enumeration value="SPL"/>
+      <xs:enumeration value="SRD"/>
+      <xs:enumeration value="STD"/>
+      <xs:enumeration value="SVC"/>
+      <xs:enumeration value="SYP"/>
+      <xs:enumeration value="SZL"/>
+      <xs:enumeration value="THB"/>
+      <xs:enumeration value="TJS"/>
+      <xs:enumeration value="TMT"/>
+      <xs:enumeration value="TND"/>
+      <xs:enumeration value="TOP"/>
+      <xs:enumeration value="TRY"/>
+      <xs:enumeration value="TTD"/>
+      <xs:enumeration value="TVD"/>
+      <xs:enumeration value="TWD"/>
+      <xs:enumeration value="TZS"/>
+      <xs:enumeration value="UAH"/>
+      <xs:enumeration value="UGX"/>
+      <xs:enumeration value="USD"/>
+      <xs:enumeration value="UYU"/>
+      <xs:enumeration value="UZS"/>
+      <xs:enumeration value="VEF"/>
+      <xs:enumeration value="VND"/>
+      <xs:enumeration value="VUV"/>
+      <xs:enumeration value="WST"/>
+      <xs:enumeration value="XAF"/>
+      <xs:enumeration value="XCD"/>
+      <xs:enumeration value="XDR"/>
+      <xs:enumeration value="XOF"/>
+      <xs:enumeration value="XPF"/>
+      <xs:enumeration value="YER"/>
+      <xs:enumeration value="ZAR"/>
+      <xs:enumeration value="ZMW"/>
+      <xs:enumeration value="ZWD"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="membership">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="UNKNOWN"/>
+      <xs:enumeration value="FULL_MEMBER"/>
+      <xs:enumeration value="ASSOCIATE_MEMBER"/>
+      <xs:enumeration value="COOPERATING_INSTITUTION"/>
+      <xs:enumeration value="FORMER_MEMBER"/>
+      <xs:enumeration value="LISTED"/>
+      <xs:enumeration value="UNLISTED"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="groupType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="ADMINISTRATION"/>
+      <xs:enumeration value="PRIVATE"/>
+      <xs:enumeration value="MEMBER"/>
+      <xs:enumeration value="INTERNATIONAL"/>
+      <xs:enumeration value="NATIONAL"/>
+      <xs:enumeration value="LOCAL"/>
+      <xs:enumeration value="WORKGROUP"/>
+      <xs:enumeration value="STUDENT"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="monitoringLevel">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="NONE"/>
+      <xs:enumeration value="MARKED"/>
+      <xs:enumeration value="DETAILED"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="exchangeType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="IW"/>
+      <xs:enumeration value="AC"/>
+      <xs:enumeration value="COBE"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="fieldOfStudy">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="AERONAUTIC_ENGINEERING"/>
+      <xs:enumeration value="AGRICULTURE"/>
+      <xs:enumeration value="APPLIED_ARTS"/>
+      <xs:enumeration value="AQUA_CULTURE"/>
+      <xs:enumeration value="ARCHITECTURE"/>
+      <xs:enumeration value="BIOLOGY"/>
+      <xs:enumeration value="BIOMEDICAL_SCIENCE"/>
+      <xs:enumeration value="BIOTECHNOLOGY"/>
+      <xs:enumeration value="CHEMISTRY"/>
+      <xs:enumeration value="CIVIL_ENGINEERING"/>
+      <xs:enumeration value="ECONOMY_AND_MANAGEMENT"/>
+      <xs:enumeration value="EDUCATION"/>
+      <xs:enumeration value="ELECTRICAL_ENGINEERING"/>
+      <xs:enumeration value="ENERGY_ENGINEERING"/>
+      <xs:enumeration value="ENVIRONMENTAL_ENGINEERING"/>
+      <xs:enumeration value="FOOD_SCIENCE"/>
+      <xs:enumeration value="GEOSCIENCE"/>
+      <xs:enumeration value="INDUSTRIAL_ENGINEERING"/>
+      <xs:enumeration value="IT"/>
+      <xs:enumeration value="MATERIAL_SCIENCE"/>
+      <xs:enumeration value="MATHEMATICS"/>
+      <xs:enumeration value="MECHANICAL_ENGINEERING"/>
+      <xs:enumeration value="MEDIA_AND_MARKETING"/>
+      <xs:enumeration value="PHYSICS"/>
+      <xs:enumeration value="VETERINARY_SCIENCE"/>
+      <xs:enumeration value="OTHER"/>
+      <xs:enumeration value="ANY"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="language">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="ENGLISH"/>
+      <xs:enumeration value="ARABIC"/>
+      <xs:enumeration value="BELARUSIAN"/>
+      <xs:enumeration value="BULGARIAN"/>
+      <xs:enumeration value="CANTONESE_YUE_CHINESE"/>
+      <xs:enumeration value="CROATIAN"/>
+      <xs:enumeration value="CZECH"/>
+      <xs:enumeration value="DANISH"/>
+      <xs:enumeration value="DUTCH"/>
+      <xs:enumeration value="ESTONIAN"/>
+      <xs:enumeration value="FINNISH"/>
+      <xs:enumeration value="FRENCH"/>
+      <xs:enumeration value="GERMAN"/>
+      <xs:enumeration value="GREEK"/>
+      <xs:enumeration value="HUNGARIAN"/>
+      <xs:enumeration value="INDONESIAN"/>
+      <xs:enumeration value="ITALIAN"/>
+      <xs:enumeration value="JAPANESE"/>
+      <xs:enumeration value="KOREAN"/>
+      <xs:enumeration value="LATVIAN"/>
+      <xs:enumeration value="LITHUANIAN"/>
+      <xs:enumeration value="MANDARIN_CHINESE"/>
+      <xs:enumeration value="NORWEGIAN"/>
+      <xs:enumeration value="PERSIAN"/>
+      <xs:enumeration value="POLISH"/>
+      <xs:enumeration value="PORTUGUESE"/>
+      <xs:enumeration value="ROMANIAN"/>
+      <xs:enumeration value="RUSSIAN"/>
+      <xs:enumeration value="SERBIAN"/>
+      <xs:enumeration value="SLOVAKIAN"/>
+      <xs:enumeration value="SLOVENIAN"/>
+      <xs:enumeration value="SPANISH"/>
+      <xs:enumeration value="SWEDISH"/>
+      <xs:enumeration value="TAJIK"/>
+      <xs:enumeration value="THAI"/>
+      <xs:enumeration value="TURKISH"/>
+      <xs:enumeration value="VIETNAMESE"/>
+      <xs:enumeration value="UKRAINIAN"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="languageLevel">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="E"/>
+      <xs:enumeration value="G"/>
+      <xs:enumeration value="F"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="languageOperator">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="A"/>
+      <xs:enumeration value="O"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="paymentFrequency">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="DAILY"/>
+      <xs:enumeration value="WEEKLY"/>
+      <xs:enumeration value="BYWEEKLY"/>
+      <xs:enumeration value="MONTHLY"/>
+      <xs:enumeration value="YEARLY"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="offerType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="OPEN"/>
+      <xs:enumeration value="LIMITED"/>
+      <xs:enumeration value="RESERVED"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="offerState">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="NEW"/>
+      <xs:enumeration value="OPEN"/>
+      <xs:enumeration value="SHARED"/>
+      <xs:enumeration value="APPLICATIONS"/>
+      <xs:enumeration value="NOMINATIONS"/>
+      <xs:enumeration value="DELETED"/>
+      <xs:enumeration value="CLOSED"/>
+      <xs:enumeration value="COMPLETED"/>
+      <xs:enumeration value="AT_EMPLOYER"/>
+      <xs:enumeration value="ACCEPTED"/>
+      <xs:enumeration value="EXPIRED"/>
+      <xs:enumeration value="REJECTED"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="studyLevel">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="B"/>
+      <xs:enumeration value="M"/>
+      <xs:enumeration value="E"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="typeOfWork">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="R"/>
+      <xs:enumeration value="O"/>
+      <xs:enumeration value="F"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="specialization">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="ADMINISTRATION"/>
+      <xs:enumeration value="AEROSPACE_ENGINEERING"/>
+      <xs:enumeration value="AGRIBUSINESS"/>
+      <xs:enumeration value="AGRONOMY_AGRO_ECOLOGY"/>
+      <xs:enumeration value="ANALYTICAL_CHEMISTRY"/>
+      <xs:enumeration value="ANIMAL_BEHAVIOUR"/>
+      <xs:enumeration value="ANIMAL_BIOLOGY"/>
+      <xs:enumeration value="ANIMAL_HUSBANDRY"/>
+      <xs:enumeration value="ANIMAL_SCIENCE"/>
+      <xs:enumeration value="APPLIED_MATHEMATICS"/>
+      <xs:enumeration value="APPLIED_STATISTICS"/>
+      <xs:enumeration value="AQUACULTURE_AQUAFARMING"/>
+      <xs:enumeration value="ARTIFICIAL_INTELLIGENCE"/>
+      <xs:enumeration value="ASTROPHYSICS"/>
+      <xs:enumeration value="AUDIO_TECHNOLOGY"/>
+      <xs:enumeration value="AUTOMATION"/>
+      <xs:enumeration value="AUTOMOTIVE_ENGINEERING"/>
+      <xs:enumeration value="AVIONICS"/>
+      <xs:enumeration value="BIOCHEMISTRY"/>
+      <xs:enumeration value="BIODIVERSITY"/>
+      <xs:enumeration value="BIOENGINEERING"/>
+      <xs:enumeration value="BIOINFORMATICS"/>
+      <xs:enumeration value="BIOINSTRUMENTATION"/>
+      <xs:enumeration value="BIOMATERIALS"/>
+      <xs:enumeration value="BIOMECHANICS"/>
+      <xs:enumeration value="BIONICS"/>
+      <xs:enumeration value="BIOPHYSICS"/>
+      <xs:enumeration value="BIOVETERINARY_SCIENCE"/>
+      <xs:enumeration value="BOTANY"/>
+      <xs:enumeration value="BREWING"/>
+      <xs:enumeration value="BUSINESS_INFORMATICS"/>
+      <xs:enumeration value="BUSINESS_INTELLIGENCE"/>
+      <xs:enumeration value="CALCULUS"/>
+      <xs:enumeration value="CELL_BIOLOGY"/>
+      <xs:enumeration value="CHEMICAL_ENGINEERING"/>
+      <xs:enumeration value="COMMERCE"/>
+      <xs:enumeration value="COMMUNICATIONS_TECHNOLOGY"/>
+      <xs:enumeration value="COMPUTATIONAL_PHYSICS"/>
+      <xs:enumeration value="COMPUTER_ENGINEERING"/>
+      <xs:enumeration value="COMPUTER_SCIENCE"/>
+      <xs:enumeration value="CONSTRUCTION"/>
+      <xs:enumeration value="CYBERNETICS"/>
+      <xs:enumeration value="DAIRY_FARMING"/>
+      <xs:enumeration value="DATABASE_ADMINISTRATION"/>
+      <xs:enumeration value="DESIGN"/>
+      <xs:enumeration value="DEVELOPMENT_STUDIES"/>
+      <xs:enumeration value="DIGITAL_MEDIA"/>
+      <xs:enumeration value="DISCRETE_MATHEMATICS"/>
+      <xs:enumeration value="DRAWING"/>
+      <xs:enumeration value="EARTH_SCIENCE"/>
+      <xs:enumeration value="ECOLOGY"/>
+      <xs:enumeration value="ECONOMIC_GEOGRAPHY"/>
+      <xs:enumeration value="ECONOMICS"/>
+      <xs:enumeration value="ELECTRIC_MOBILITY"/>
+      <xs:enumeration value="ELECTRONICS"/>
+      <xs:enumeration value="ENERGY_AND_PROCESS_ENGINEERING"/>
+      <xs:enumeration value="ENERGY_SYSTEMS_PLANNING"/>
+      <xs:enumeration value="ENTERPRISE_ENGINEERING"/>
+      <xs:enumeration value="ENTOMOLOGY"/>
+      <xs:enumeration value="ETHOLOGY"/>
+      <xs:enumeration value="FACILITY_SURVEYING"/>
+      <xs:enumeration value="FINANCIAL_MATHEMATICS"/>
+      <xs:enumeration value="FISHERIES"/>
+      <xs:enumeration value="FLUID_MECHANICS"/>
+      <xs:enumeration value="FOOD_CHEMISTRY"/>
+      <xs:enumeration value="FOOD_QUALITY_AND_SAFETY"/>
+      <xs:enumeration value="FOOD_TECHNOLOGY"/>
+      <xs:enumeration value="FOREST_ENGINEERING"/>
+      <xs:enumeration value="FORESTRY"/>
+      <xs:enumeration value="GENETICS"/>
+      <xs:enumeration value="GEOCHEMISTRY"/>
+      <xs:enumeration value="GEODESY_AND_CARTOGRAPHY"/>
+      <xs:enumeration value="GEOECOLOGY"/>
+      <xs:enumeration value="GEOGRAPHY"/>
+      <xs:enumeration value="GEOLOGY"/>
+      <xs:enumeration value="GEOMATICS"/>
+      <xs:enumeration value="GEOMETRY"/>
+      <xs:enumeration value="GEOPHYSICS"/>
+      <xs:enumeration value="GEOTECHNOLOGY"/>
+      <xs:enumeration value="GIS"/>
+      <xs:enumeration value="GRAPHIC_DESIGN"/>
+      <xs:enumeration value="GRAPHICS_AND_PRINTING"/>
+      <xs:enumeration value="HORTICULTURE"/>
+      <xs:enumeration value="HOTEL_MANAGEMENT"/>
+      <xs:enumeration value="HYDRAULICS"/>
+      <xs:enumeration value="IMMUNOLOGY"/>
+      <xs:enumeration value="INDUSTRIAL_DESIGN"/>
+      <xs:enumeration value="INDUSTRIAL_ECONOMICS"/>
+      <xs:enumeration value="INDUSTRIAL_LOGISTICS"/>
+      <xs:enumeration value="INFORMATICS"/>
+      <xs:enumeration value="INFORMATION_SYSTEMS"/>
+      <xs:enumeration value="INFORMATION_TECHNOLOGY"/>
+      <xs:enumeration value="INNOVATION_MANAGEMENT"/>
+      <xs:enumeration value="INNOVATION_STRATEGY"/>
+      <xs:enumeration value="INORGANIC_CHEMISTRY"/>
+      <xs:enumeration value="INSTRUMENTATION"/>
+      <xs:enumeration value="INTERIOR_DESIGN"/>
+      <xs:enumeration value="LAND_SURVEYING"/>
+      <xs:enumeration value="LANDSCAPE_ARCHITECTURE"/>
+      <xs:enumeration value="LANGUAGE"/>
+      <xs:enumeration value="LIMNOLOGY"/>
+      <xs:enumeration value="LOGISTICS"/>
+      <xs:enumeration value="MACHINE_TECHNOLOGY"/>
+      <xs:enumeration value="MARINE_AND_OFFSHORE_ENGINEERING"/>
+      <xs:enumeration value="MARINE_BIOLOGY"/>
+      <xs:enumeration value="MARINE_GEOLOGY"/>
+      <xs:enumeration value="MARINE_TECHNOLOGY"/>
+      <xs:enumeration value="MARKETING"/>
+      <xs:enumeration value="MATERIAL_TECHNOLOGY"/>
+      <xs:enumeration value="MECHATRONICS"/>
+      <xs:enumeration value="MEDIA_TECHNOLOGY"/>
+      <xs:enumeration value="MEDICAL_ENGINEERING"/>
+      <xs:enumeration value="MEDICAL_PHYSICS"/>
+      <xs:enumeration value="METALLURGY"/>
+      <xs:enumeration value="MICROBIOLOGY"/>
+      <xs:enumeration value="MILLING"/>
+      <xs:enumeration value="MINERAL_PROCESSING"/>
+      <xs:enumeration value="MINERALOGY"/>
+      <xs:enumeration value="MINING"/>
+      <xs:enumeration value="MOLECULAR_BIOLOGY"/>
+      <xs:enumeration value="MYCOLOGY"/>
+      <xs:enumeration value="NANOBIOTECHNOLOGY"/>
+      <xs:enumeration value="NANOELECTRONICS"/>
+      <xs:enumeration value="NANOMATERIALS"/>
+      <xs:enumeration value="NANOTECHNOLOGY"/>
+      <xs:enumeration value="NATURAL_RESOURCE_MANAGEMENT"/>
+      <xs:enumeration value="NAVAL_ENGINEERING"/>
+      <xs:enumeration value="NETWORKS"/>
+      <xs:enumeration value="NEUROSCIENCE"/>
+      <xs:enumeration value="NUCLEAR_ENERGY_ENGINEERING"/>
+      <xs:enumeration value="NUTRITIONAL_SCIENCE"/>
+      <xs:enumeration value="OCEANOGRAPHY"/>
+      <xs:enumeration value="OECOTROPHOLOGY"/>
+      <xs:enumeration value="OPTICS"/>
+      <xs:enumeration value="OPTIMIZATION"/>
+      <xs:enumeration value="ORGANIC_CHEMISTRY"/>
+      <xs:enumeration value="PETROLEUM_ENGINEERING"/>
+      <xs:enumeration value="PHARMACY"/>
+      <xs:enumeration value="PHASE_TRANSITIONS"/>
+      <xs:enumeration value="PHOTONICS"/>
+      <xs:enumeration value="PHYSICAL_CHEMISTRY"/>
+      <xs:enumeration value="PLANT_BIOLOGY"/>
+      <xs:enumeration value="PLANT_SCIENCE"/>
+      <xs:enumeration value="POLYMER_ENGINEERING"/>
+      <xs:enumeration value="POLYMER_SCIENCE"/>
+      <xs:enumeration value="PORT_LOGISTICS"/>
+      <xs:enumeration value="POWER_ENGINEERING"/>
+      <xs:enumeration value="POWER_GENERATION"/>
+      <xs:enumeration value="PROCESS_ENGINEERING"/>
+      <xs:enumeration value="PRODUCT_DESIGN"/>
+      <xs:enumeration value="PRODUCT_DEVELOPMENT"/>
+      <xs:enumeration value="PRODUCTION_MANAGEMENT"/>
+      <xs:enumeration value="PROJECT_MANAGEMENT"/>
+      <xs:enumeration value="PROTEOMICS"/>
+      <xs:enumeration value="QUANTUM_MECHANICS"/>
+      <xs:enumeration value="RENEWABLE_ENERGY"/>
+      <xs:enumeration value="ROBOTICS"/>
+      <xs:enumeration value="SCIENCE"/>
+      <xs:enumeration value="SEAFOOD"/>
+      <xs:enumeration value="SECURITY"/>
+      <xs:enumeration value="SEISMOLOGY"/>
+      <xs:enumeration value="SHIPBUILDING"/>
+      <xs:enumeration value="SIMULATION"/>
+      <xs:enumeration value="SOCIAL_MEDIA"/>
+      <xs:enumeration value="SOFTWARE_DEVELOPMENT"/>
+      <xs:enumeration value="SOFTWARE_ENGINEERING"/>
+      <xs:enumeration value="SOIL_AND_AIR_POLLUTION"/>
+      <xs:enumeration value="STATISTICAL_PHYSICS"/>
+      <xs:enumeration value="STATISTICS"/>
+      <xs:enumeration value="STRUCTURAL_ENGINEERING"/>
+      <xs:enumeration value="SUSTAINABILITY"/>
+      <xs:enumeration value="SYSTEM_ADMINISTRATION"/>
+      <xs:enumeration value="SYSTEM_DEVELOPMENT"/>
+      <xs:enumeration value="SYSTEM_ENGINEERING"/>
+      <xs:enumeration value="TELECOMMUNICATIONS"/>
+      <xs:enumeration value="TESTING"/>
+      <xs:enumeration value="TEXTILE_TECHNOLOGY"/>
+      <xs:enumeration value="THERMODYNAMICS"/>
+      <xs:enumeration value="TOPOLOGY"/>
+      <xs:enumeration value="TOXICOLOGY"/>
+      <xs:enumeration value="TRAFFIC_ENGINEERING"/>
+      <xs:enumeration value="URBAN_PLANNING"/>
+      <xs:enumeration value="VETERINARY_MEDICINE"/>
+      <xs:enumeration value="VETERINARY_SCIENCE"/>
+      <xs:enumeration value="WASTEWATER_TREATMENT"/>
+      <xs:enumeration value="WATER_ENGINEERING"/>
+      <xs:enumeration value="WEB_DESIGN"/>
+      <xs:enumeration value="WEB_DEVELOPMENT"/>
+      <xs:enumeration value="WINERY"/>
+      <xs:enumeration value="WOOD_AND_PAPER_ENGINEERING"/>
+      <xs:enumeration value="WOOD_SCIENCE"/>
+      <xs:enumeration value="ZOOLOGY"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="fetchType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="DOMESTIC"/>
+      <xs:enumeration value="SHARED"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="fetchEmployers">
+    <wsdl:part name="token" type="tns:authenticationToken">
+    </wsdl:part>
+    <wsdl:part name="request" type="tns:fetchEmployerRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="fetchOffers">
+    <wsdl:part name="token" type="tns:authenticationToken">
+    </wsdl:part>
+    <wsdl:part name="request" type="tns:fetchOffersRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="processEmployer">
+    <wsdl:part name="token" type="tns:authenticationToken">
+    </wsdl:part>
+    <wsdl:part name="request" type="tns:processEmployerRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="processOfferResponse">
+    <wsdl:part name="response" type="tns:offerResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="fetchOffersResponse">
+    <wsdl:part name="response" type="tns:fetchOffersResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="processEmployerResponse">
+    <wsdl:part name="response" type="tns:employerResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="processOffer">
+    <wsdl:part name="token" type="tns:authenticationToken">
+    </wsdl:part>
+    <wsdl:part name="request" type="tns:processOfferRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="fetchEmployersResponse">
+    <wsdl:part name="response" type="tns:fetchEmployerResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="exchangeWS">
+    <wsdl:operation name="processOffer">
+      <wsdl:input message="tns:processOffer" name="processOffer">
+    </wsdl:input>
+      <wsdl:output message="tns:processOfferResponse" name="processOfferResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processEmployer">
+      <wsdl:input message="tns:processEmployer" name="processEmployer">
+    </wsdl:input>
+      <wsdl:output message="tns:processEmployerResponse" name="processEmployerResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="fetchEmployers">
+      <wsdl:input message="tns:fetchEmployers" name="fetchEmployers">
+    </wsdl:input>
+      <wsdl:output message="tns:fetchEmployersResponse" name="fetchEmployersResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="fetchOffers">
+      <wsdl:input message="tns:fetchOffers" name="fetchOffers">
+    </wsdl:input>
+      <wsdl:output message="tns:fetchOffersResponse" name="fetchOffersResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="exchangeWSServiceSoapBinding" type="tns:exchangeWS">
+    <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="processOffer">
+      <soap:operation soapAction="" style="rpc"/>
+      <wsdl:input name="processOffer">
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="processOfferResponse">
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="fetchEmployers">
+      <soap:operation soapAction="" style="rpc"/>
+      <wsdl:input name="fetchEmployers">
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="fetchEmployersResponse">
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processEmployer">
+      <soap:operation soapAction="" style="rpc"/>
+      <wsdl:input name="processEmployer">
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="processEmployerResponse">
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="fetchOffers">
+      <soap:operation soapAction="" style="rpc"/>
+      <wsdl:input name="fetchOffers">
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="fetchOffersResponse">
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="exchangeWSService">
+    <wsdl:port binding="tns:exchangeWSServiceSoapBinding" name="exchangeWS">
+      <soap:address location="http://localhost:8080/iws-ws/ExchangeWS"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

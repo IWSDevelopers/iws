@@ -213,7 +213,7 @@ public class SessionRequestBean {
                 entity.setSessionData(serialize(obj));
             }
             log.info("Saving Requests information with the request Object.");
-            entityManager.persist(entity);
+            dao.persist(entity);
         } else {
             log.warn("Attempted to save request information for deprecated Session.");
         }
@@ -226,7 +226,7 @@ public class SessionRequestBean {
             if (session != null) {
                 final RequestEntity entity = prepareEntity(session, response, request);
                 log.info("Saving Requests information.");
-                entityManager.persist(entity);
+                dao.persist(entity);
             }
         }
     }
@@ -289,25 +289,4 @@ public class SessionRequestBean {
 
         return result;
     }
-
-    // Note; The following was dropped, since building a general lookup was
-    // problematic, since the index value dependend upon the call structure. So
-    // the initial method calling it had to bring an offset. So although it is
-    // a nice feature to be able to read out the correct name - we can just as
-    // well provide the name as a parameter.
-    //// The index value to use when looking up the calling method name from the
-    //// stack trace, 0 = this point, 1 = lookup method, 2 = log method,
-    //// 3 = calling method.
-    //private static final int STACKTRACE_INDEX = 3;
-
-    ///**
-    // * Retrieves the method used to call the logmethods in this class, by
-    // * looking at the stacktrace from the current thread.
-    // *
-    // * @return Name of the calling method
-    // */
-    //private String getCallingMethod() {
-    //    final StackTraceElement[] trace = Thread.currentThread().getStackTrace();
-    //    return trace[STACKTRACE_INDEX].getMethodName();
-    //}
 }

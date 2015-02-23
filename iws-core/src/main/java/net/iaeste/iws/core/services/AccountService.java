@@ -48,6 +48,7 @@ import net.iaeste.iws.persistence.entities.RoleEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.UserGroupEntity;
 import net.iaeste.iws.persistence.entities.exchange.StudentEntity;
+import net.iaeste.iws.persistence.exceptions.IdentificationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -449,18 +450,22 @@ public final class AccountService extends CommonService<AccessDao> {
         // throws an Exception, if the user is not allowed
         dao.findGroupByPermission(authentication.getUser(), null, Permission.CONTROL_USER_ACCOUNT);
 
-        if (!role.getId().equals(IWSConstants.ROLE_OWNER)) {
-            final UserEntity user = dao.findUserByExternalId(request.getUser().getUserId());
-            final String username = request.getNewUsername();
+        if (role != null) {
+            if (!role.getId().equals(IWSConstants.ROLE_OWNER)) {
+                final UserEntity user = dao.findUserByExternalId(request.getUser().getUserId());
+                final String username = request.getNewUsername();
 
-            // Okay, we have a ball game - let's update the record with the
-            // demanded changes. Note, we only allow that someone can perform
-            // either if two operations: Update Username or Status
-            if (username != null) {
-                prepareUsernameUpdate(user, username);
-            } else if (request.getNewStatus() != null) {
-                updateUserStatus(authentication, user, request.getNewStatus());
+                // Okay, we have a ball game - let's update the record with the
+                // demanded changes. Note, we only allow that someone can perform
+                // either if two operations: Update Username or Status
+                if (username != null) {
+                    prepareUsernameUpdate(user, username);
+                } else if (request.getNewStatus() != null) {
+                    updateUserStatus(authentication, user, request.getNewStatus());
+                }
             }
+        } else {
+            throw new IdentificationException("Could not find the user to process[" + request.getUser() + "].");
         }
     }
 

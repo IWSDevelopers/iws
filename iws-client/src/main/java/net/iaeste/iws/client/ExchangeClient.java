@@ -33,19 +33,19 @@ import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessPublishingGroupRequest;
 import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
 import net.iaeste.iws.api.requests.exchange.RejectOfferRequest;
+import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.exchange.EmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchEmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchGroupsForSharingResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOfferTemplateResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
-import net.iaeste.iws.api.responses.exchange.FetchPublishingGroupResponse;
 import net.iaeste.iws.api.responses.exchange.FetchPublishedGroupsResponse;
+import net.iaeste.iws.api.responses.exchange.FetchPublishingGroupResponse;
 import net.iaeste.iws.api.responses.exchange.OfferCSVDownloadResponse;
 import net.iaeste.iws.api.responses.exchange.OfferCSVUploadResponse;
 import net.iaeste.iws.api.responses.exchange.OfferResponse;
 import net.iaeste.iws.api.responses.exchange.OfferStatisticsResponse;
 import net.iaeste.iws.api.responses.exchange.PublishOfferResponse;
-import net.iaeste.iws.api.util.Fallible;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -135,7 +135,7 @@ public final class ExchangeClient implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    public Fallible processOfferTemplate(final AuthenticationToken token, final OfferTemplateRequest request) {
+    public FallibleResponse processOfferTemplate(final AuthenticationToken token, final OfferTemplateRequest request) {
         return client.processOfferTemplate(token, request);
     }
 
@@ -151,7 +151,7 @@ public final class ExchangeClient implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    public Fallible processPublishingGroup(final AuthenticationToken token, final ProcessPublishingGroupRequest request) {
+    public FallibleResponse processPublishingGroup(final AuthenticationToken token, final ProcessPublishingGroupRequest request) {
         return client.processPublishingGroup(token, request);
     }
 
@@ -168,7 +168,7 @@ public final class ExchangeClient implements Exchange {
      */
     @Override
     @Deprecated
-    public Fallible deletePublishingGroup(final AuthenticationToken token, final DeletePublishingGroupRequest request) {
+    public FallibleResponse deletePublishingGroup(final AuthenticationToken token, final DeletePublishingGroupRequest request) {
         return client.deletePublishingGroup(token, request);
     }
 
@@ -200,7 +200,7 @@ public final class ExchangeClient implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    public Fallible processHideForeignOffers(final AuthenticationToken token, final HideForeignOffersRequest request) {
+    public FallibleResponse processHideForeignOffers(final AuthenticationToken token, final HideForeignOffersRequest request) {
         return client.processHideForeignOffers(token, request);
     }
 
@@ -208,7 +208,7 @@ public final class ExchangeClient implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    public Fallible rejectOffer(final AuthenticationToken token, final RejectOfferRequest request) {
+    public FallibleResponse rejectOffer(final AuthenticationToken token, final RejectOfferRequest request) {
         return client.rejectOffer(token, request);
     }
 }

@@ -24,14 +24,15 @@ import net.iaeste.iws.api.requests.exchange.FetchPublishGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishedGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.HideForeignOffersRequest;
 import net.iaeste.iws.api.requests.exchange.OfferCSVDownloadRequest;
+import net.iaeste.iws.api.requests.exchange.OfferCSVUploadRequest;
 import net.iaeste.iws.api.requests.exchange.OfferStatisticsRequest;
 import net.iaeste.iws.api.requests.exchange.OfferTemplateRequest;
-import net.iaeste.iws.api.requests.exchange.OfferCSVUploadRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessEmployerRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessPublishingGroupRequest;
 import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
 import net.iaeste.iws.api.requests.exchange.RejectOfferRequest;
+import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.exchange.EmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchEmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchGroupsForSharingResponse;
@@ -44,7 +45,6 @@ import net.iaeste.iws.api.responses.exchange.OfferCSVUploadResponse;
 import net.iaeste.iws.api.responses.exchange.OfferResponse;
 import net.iaeste.iws.api.responses.exchange.OfferStatisticsResponse;
 import net.iaeste.iws.api.responses.exchange.PublishOfferResponse;
-import net.iaeste.iws.api.util.Fallible;
 
 /**
  * Exchange related functionality is covered with this interface. Only exception
@@ -177,7 +177,7 @@ public interface Exchange {
      * @param request Request Object
      * @return Response Object
      */
-    Fallible processOfferTemplate(AuthenticationToken token, OfferTemplateRequest request);
+    FallibleResponse processOfferTemplate(AuthenticationToken token, OfferTemplateRequest request);
 
     /**
      * Not implemented
@@ -194,7 +194,7 @@ public interface Exchange {
      * @param request contains name of the Publishing Group and list of Groups the Publishing Group consists of
      * @return Standard Error Object
      */
-    Fallible processPublishingGroup(AuthenticationToken token, ProcessPublishingGroupRequest request);
+    FallibleResponse processPublishingGroup(AuthenticationToken token, ProcessPublishingGroupRequest request);
 
     /**
      * Retrieve tha Publishing Groups for user's national group
@@ -213,7 +213,7 @@ public interface Exchange {
      * @deprecated please use the delete flag for the processPublishingGroup requst
      */
     @Deprecated
-    Fallible deletePublishingGroup(AuthenticationToken token, DeletePublishingGroupRequest request);
+    FallibleResponse deletePublishingGroup(AuthenticationToken token, DeletePublishingGroupRequest request);
 
     /**
      * Retrieves the list of groups to which offers are shared to. A list of offers is
@@ -249,7 +249,7 @@ public interface Exchange {
      * @param request contains a list of offer
      * @return Response Object
      */
-    Fallible processHideForeignOffers(AuthenticationToken token, HideForeignOffersRequest request);
+    FallibleResponse processHideForeignOffers(AuthenticationToken token, HideForeignOffersRequest request);
 
     /**
      * Performs a rejection of the shared offer.
@@ -258,5 +258,5 @@ public interface Exchange {
      * @param request contains a field with the offer id
      * @return Response Object
      */
-    Fallible rejectOffer(AuthenticationToken token, RejectOfferRequest request);
+    FallibleResponse rejectOffer(AuthenticationToken token, RejectOfferRequest request);
 }

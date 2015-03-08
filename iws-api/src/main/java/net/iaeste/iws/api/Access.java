@@ -22,7 +22,6 @@ import net.iaeste.iws.api.responses.AuthenticationResponse;
 import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchPermissionResponse;
 import net.iaeste.iws.api.responses.SessionDataResponse;
-import net.iaeste.iws.api.util.Fallible;
 
 import java.io.Serializable;
 
@@ -83,7 +82,7 @@ public interface Access {
      * @param request  User Authentication Request object
      * @return Standard Error object
      */
-    Fallible requestResettingSession(AuthenticationRequest request);
+    FallibleResponse requestResettingSession(AuthenticationRequest request);
 
     /**
      * Handles the second part of Session Resetting. It will check if there
@@ -102,7 +101,7 @@ public interface Access {
      * @param request  SessionData Request Object
      * @return Standard Error object
      */
-    <T extends Serializable> Fallible saveSessionData(AuthenticationToken token, SessionDataRequest<T> request);
+    <T extends Serializable> FallibleResponse saveSessionData(AuthenticationToken token, SessionDataRequest<T> request);
 
     /**
      * Verifies the current Session and returns the associated Session Data in
@@ -145,7 +144,7 @@ public interface Access {
      * @param username The users username, i.e. e-mail address
      * @return Standard Error object
      */
-    Fallible forgotPassword(String username);
+    FallibleResponse forgotPassword(String username);
 
     /**
      * Resets a users password in the system.
@@ -154,7 +153,7 @@ public interface Access {
      * @param password           Password Object for the user
      * @return Standard Error object
      */
-    Fallible resetPassword(String resetPasswordToken, Password password);
+    FallibleResponse resetPassword(String resetPasswordToken, Password password);
 
     /**
      * Updates a users password in the system.

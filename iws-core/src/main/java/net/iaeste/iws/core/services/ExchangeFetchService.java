@@ -280,7 +280,7 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
         final List<OfferSharedToGroupView> shared = viewsDao.findSharedToGroup(parentId, exchangeYear, externalOfferIds);
 
         // Prepare resulting map, and iterate over the list and fill in the details
-        final Map<String, List<Group>> result = prepareResultingMap(externalOfferIds);
+        final HashMap<String, List<Group>> result = prepareResultingMap(externalOfferIds);
         for (final OfferSharedToGroupView view : shared) {
             final String offerId = view.getOfferExternalId();
             final Group group = transform(view);
@@ -316,8 +316,8 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
      * @param externalOfferIds List of ExternalOfferIds to find results for
      * @return Result Map with empty data structure
      */
-    private static Map<String, List<Group>> prepareResultingMap(final List<String> externalOfferIds) {
-        final Map<String, List<Group>> result = new HashMap<>(externalOfferIds.size());
+    private static HashMap<String, List<Group>> prepareResultingMap(final List<String> externalOfferIds) {
+        final HashMap<String, List<Group>> result = new HashMap<>(externalOfferIds.size());
 
         for (final String externalOfferId : externalOfferIds) {
             final List<Group> groups = new ArrayList<>(80);

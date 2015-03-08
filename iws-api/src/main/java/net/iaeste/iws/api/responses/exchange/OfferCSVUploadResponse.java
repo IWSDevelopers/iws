@@ -18,6 +18,7 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.responses.FallibleResponse;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -41,14 +42,14 @@ public class OfferCSVUploadResponse extends FallibleResponse {
      * processed. The map contain the Offer Reference Number as key, and the
      * result of the processing as the value.
      */
-    private Map<String, ProcessingResult> processingResult;
+    private HashMap<String, ProcessingResult> processingResult;
 
     /**
      * Map with the error information related to the processing. The map contain
      * the Offer Reference Number as key, and the validation result as the
      * value.
      */
-    private Map<String, Map<String, String>> errors;
+    private HashMap<String, Map<String, String>> errors;
 
     // =========================================================================
     // Object Constructors
@@ -76,7 +77,7 @@ public class OfferCSVUploadResponse extends FallibleResponse {
     // Standard Setters & Getters
     // =========================================================================
 
-    public void setProcessingResult(final Map<String, ProcessingResult> processingResult) {
+    public void setProcessingResult(final HashMap<String, ProcessingResult> processingResult) {
         this.processingResult = processingResult;
     }
 
@@ -84,11 +85,11 @@ public class OfferCSVUploadResponse extends FallibleResponse {
         return processingResult;
     }
 
-    public void setErrors(final Map<String, Map<String, String>> errors) {
+    public void setErrors(final HashMap<String, Map<String, String>> errors) {
         this.errors = errors;
     }
 
-    public Map<String, Map<String, String>> getErrors() {
+    public HashMap<String, Map<String, String>> getErrors() {
         return errors;
     }
 

@@ -23,7 +23,6 @@ import net.iaeste.iws.api.responses.AuthenticationResponse;
 import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchPermissionResponse;
 import net.iaeste.iws.api.responses.SessionDataResponse;
-import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.client.AccessClient;
 import net.iaeste.iws.fitnesse.exceptions.StopTestException;
 
@@ -64,7 +63,7 @@ public final class AccessCaller implements Access {
      * {@inheritDoc}
      */
     @Override
-    public Fallible requestResettingSession(final AuthenticationRequest request) {
+    public FallibleResponse requestResettingSession(final AuthenticationRequest request) {
         try {
             return caller.requestResettingSession(request);
         } catch (RuntimeException e) {
@@ -88,7 +87,7 @@ public final class AccessCaller implements Access {
      * {@inheritDoc}
      */
     @Override
-    public <T extends Serializable> Fallible saveSessionData(final AuthenticationToken token, final SessionDataRequest<T> request) {
+    public <T extends Serializable> FallibleResponse saveSessionData(final AuthenticationToken token, final SessionDataRequest<T> request) {
         try {
             return caller.saveSessionData(token, request);
         } catch (RuntimeException e) {
@@ -136,7 +135,7 @@ public final class AccessCaller implements Access {
      * {@inheritDoc}
      */
     @Override
-    public Fallible forgotPassword(final String username) {
+    public FallibleResponse forgotPassword(final String username) {
         try {
             return caller.forgotPassword(username);
         } catch (RuntimeException e) {
@@ -148,7 +147,7 @@ public final class AccessCaller implements Access {
      * {@inheritDoc}
      */
     @Override
-    public Fallible resetPassword(final String resetPasswordToken, final Password password) {
+    public FallibleResponse resetPassword(final String resetPasswordToken, final Password password) {
         try {
             return caller.resetPassword(resetPasswordToken, password);
         } catch (RuntimeException e) {

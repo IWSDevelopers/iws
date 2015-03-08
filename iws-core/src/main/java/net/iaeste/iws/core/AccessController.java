@@ -26,7 +26,6 @@ import net.iaeste.iws.api.responses.AuthenticationResponse;
 import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchPermissionResponse;
 import net.iaeste.iws.api.responses.SessionDataResponse;
-import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.core.services.AccessService;
 import net.iaeste.iws.core.services.ServiceFactory;
 import net.iaeste.iws.persistence.Authentication;
@@ -93,11 +92,11 @@ public final class AccessController extends CommonController implements Access {
      * {@inheritDoc}
      */
     @Override
-    public Fallible requestResettingSession(final AuthenticationRequest request) {
+    public FallibleResponse requestResettingSession(final AuthenticationRequest request) {
         if (log.isTraceEnabled()) {
             log.trace("Starting requestResettingSession()");
         }
-        Fallible response;
+        FallibleResponse response;
 
         try {
             verify(request, AUTHENTICATION_REQUEST_ERROR);
@@ -144,11 +143,11 @@ public final class AccessController extends CommonController implements Access {
      * {@inheritDoc}
      */
     @Override
-    public <T extends Serializable> Fallible saveSessionData(final AuthenticationToken token, final SessionDataRequest<T> request) {
+    public <T extends Serializable> FallibleResponse saveSessionData(final AuthenticationToken token, final SessionDataRequest<T> request) {
         if (log.isTraceEnabled()) {
             log.trace(formatLogMessage(token, "Starting saveSessionData()"));
         }
-        Fallible response;
+        FallibleResponse response;
 
         try {
             verifyPrivateAccess(token);
@@ -242,11 +241,11 @@ public final class AccessController extends CommonController implements Access {
      * {@inheritDoc}
      */
     @Override
-    public Fallible forgotPassword(final String username) {
+    public FallibleResponse forgotPassword(final String username) {
         if (log.isTraceEnabled()) {
             log.trace("Starting forgotPassword()");
         }
-        Fallible response;
+        FallibleResponse response;
 
         try {
             final AccessService service = factory.prepareAuthenticationService();
@@ -266,11 +265,11 @@ public final class AccessController extends CommonController implements Access {
      * {@inheritDoc}
      */
     @Override
-    public Fallible resetPassword(final String resetPasswordToken, final Password password) {
+    public FallibleResponse resetPassword(final String resetPasswordToken, final Password password) {
         if (log.isTraceEnabled()) {
             log.trace("Starting resetPassword()");
         }
-        Fallible response;
+        FallibleResponse response;
 
         try {
             verifyCode(resetPasswordToken, "The ResetPassword Token is invalid.");

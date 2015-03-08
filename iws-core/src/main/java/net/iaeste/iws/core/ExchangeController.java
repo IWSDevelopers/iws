@@ -43,14 +43,13 @@ import net.iaeste.iws.api.responses.exchange.FetchEmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchGroupsForSharingResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOfferTemplateResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
-import net.iaeste.iws.api.responses.exchange.FetchPublishingGroupResponse;
 import net.iaeste.iws.api.responses.exchange.FetchPublishedGroupsResponse;
+import net.iaeste.iws.api.responses.exchange.FetchPublishingGroupResponse;
 import net.iaeste.iws.api.responses.exchange.OfferCSVDownloadResponse;
 import net.iaeste.iws.api.responses.exchange.OfferCSVUploadResponse;
 import net.iaeste.iws.api.responses.exchange.OfferResponse;
 import net.iaeste.iws.api.responses.exchange.OfferStatisticsResponse;
 import net.iaeste.iws.api.responses.exchange.PublishOfferResponse;
-import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.core.services.ExchangeCSVService;
 import net.iaeste.iws.core.services.ExchangeFetchService;
 import net.iaeste.iws.core.services.ExchangeService;
@@ -291,11 +290,11 @@ public final class ExchangeController extends CommonController implements Exchan
      * {@inheritDoc}
      */
     @Override
-    public Fallible processOfferTemplate(final AuthenticationToken token, final OfferTemplateRequest request) {
+    public FallibleResponse processOfferTemplate(final AuthenticationToken token, final OfferTemplateRequest request) {
         if (log.isTraceEnabled()) {
             log.trace(formatLogMessage(token, "Starting processOfferTemplate()"));
         }
-        Fallible response;
+        FallibleResponse response;
 
         try {
             verify(request);
@@ -344,11 +343,11 @@ public final class ExchangeController extends CommonController implements Exchan
      * {@inheritDoc}
      */
     @Override
-    public Fallible processPublishingGroup(final AuthenticationToken token, final ProcessPublishingGroupRequest request) {
+    public FallibleResponse processPublishingGroup(final AuthenticationToken token, final ProcessPublishingGroupRequest request) {
         if (log.isTraceEnabled()) {
             log.trace(formatLogMessage(token, "Starting processPublishGroup()"));
         }
-        Fallible response;
+        FallibleResponse response;
 
         try {
             verify(request);
@@ -398,11 +397,11 @@ public final class ExchangeController extends CommonController implements Exchan
      */
     @Override
     @Deprecated
-    public Fallible deletePublishingGroup(final AuthenticationToken token, final DeletePublishingGroupRequest request) {
+    public FallibleResponse deletePublishingGroup(final AuthenticationToken token, final DeletePublishingGroupRequest request) {
         if (log.isTraceEnabled()) {
             log.trace(formatLogMessage(token, "Starting processPublishGroup()"));
         }
-        Fallible response;
+        FallibleResponse response;
 
         try {
             verify(request);
@@ -503,11 +502,11 @@ public final class ExchangeController extends CommonController implements Exchan
      * {@inheritDoc}
      */
     @Override
-    public Fallible processHideForeignOffers(final AuthenticationToken token, final HideForeignOffersRequest request) {
+    public FallibleResponse processHideForeignOffers(final AuthenticationToken token, final HideForeignOffersRequest request) {
         if (log.isTraceEnabled()) {
             log.trace(formatLogMessage(token, "Starting processHideForeignOffers()"));
         }
-        Fallible response;
+        FallibleResponse response;
 
         try {
             verify(request);
@@ -530,11 +529,11 @@ public final class ExchangeController extends CommonController implements Exchan
      * {@inheritDoc}
      */
     @Override
-    public Fallible rejectOffer(final AuthenticationToken token, final RejectOfferRequest request) {
+    public FallibleResponse rejectOffer(final AuthenticationToken token, final RejectOfferRequest request) {
         if (log.isTraceEnabled()) {
             log.trace(formatLogMessage(token, "Starting rejectOffer()"));
         }
-        Fallible response;
+        FallibleResponse response;
 
         try {
             verify(request);

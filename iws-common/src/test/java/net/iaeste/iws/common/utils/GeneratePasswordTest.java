@@ -46,6 +46,15 @@ public final class GeneratePasswordTest {
         assertThat(true, is(Boolean.TRUE));
     }
 
+    @Test
+    public void testGenerateUUIDs() {
+        for (int i = 0; i < 5; i++) {
+            System.out.println(UUID.randomUUID().toString());
+        }
+
+        assertThat(true, is(Boolean.TRUE));
+    }
+
     /**
      * The Password Generator, is an independent function, that takes known and
      * valid input data and provides a random password with a simple collision

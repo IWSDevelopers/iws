@@ -25,7 +25,6 @@ import net.iaeste.iws.api.responses.AuthenticationResponse;
 import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchPermissionResponse;
 import net.iaeste.iws.api.responses.SessionDataResponse;
-import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.ws.AccessWS;
 import org.apache.cxf.frontend.ClientProxy;
 import org.apache.cxf.transport.http.HTTPConduit;
@@ -44,20 +43,6 @@ import java.net.URL;
  * @since   IWS 1.1
  */
 public class AccessWSClient extends Service implements Access {
-
-    //public static void main(String[] args) throws MalformedURLException {
-    //    final Access client = new AccessWSClient("http://localhost:8080/iws-ws/AccessWS?wsdl");
-    //    final AuthenticationRequest request = new AuthenticationRequest();
-    //    request.setUsername("test@iaeste.net");
-    //    request.setPassword("tester");
-    //    final AuthenticationResponse response = client.generateSession(request);
-    //    if (response.isOk()) {
-    //        System.out.println(response.toString());
-    //    } else {
-    //        System.out.println(response.getError());
-    //        System.out.println(response.getMessage());
-    //    }
-    //}
 
     // =========================================================================
     // Constructor & Setup of WS Client
@@ -113,7 +98,7 @@ public class AccessWSClient extends Service implements Access {
      * {@inheritDoc}
      */
     @Override
-    public Fallible requestResettingSession(final AuthenticationRequest request) {
+    public FallibleResponse requestResettingSession(final AuthenticationRequest request) {
         return null;
     }
 
@@ -129,7 +114,7 @@ public class AccessWSClient extends Service implements Access {
      * {@inheritDoc}
      */
     @Override
-    public <T extends Serializable> Fallible saveSessionData(final AuthenticationToken token, final SessionDataRequest<T> request) {
+    public <T extends Serializable> FallibleResponse saveSessionData(final AuthenticationToken token, final SessionDataRequest<T> request) {
         return null;
     }
 
@@ -161,7 +146,7 @@ public class AccessWSClient extends Service implements Access {
      * {@inheritDoc}
      */
     @Override
-    public Fallible forgotPassword(final String username) {
+    public FallibleResponse forgotPassword(final String username) {
         return null;
     }
 
@@ -169,7 +154,7 @@ public class AccessWSClient extends Service implements Access {
      * {@inheritDoc}
      */
     @Override
-    public Fallible resetPassword(final String resetPasswordToken, final Password password) {
+    public FallibleResponse resetPassword(final String resetPasswordToken, final Password password) {
         return null;
     }
 

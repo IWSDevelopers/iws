@@ -16,9 +16,36 @@ package net.iaeste.iws.fitnesse.callers;
 
 import net.iaeste.iws.api.Exchange;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
-import net.iaeste.iws.api.requests.exchange.*;
-import net.iaeste.iws.api.responses.exchange.*;
-import net.iaeste.iws.api.util.Fallible;
+import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
+import net.iaeste.iws.api.requests.exchange.DeletePublishingGroupRequest;
+import net.iaeste.iws.api.requests.exchange.FetchEmployerRequest;
+import net.iaeste.iws.api.requests.exchange.FetchOfferTemplatesRequest;
+import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
+import net.iaeste.iws.api.requests.exchange.FetchPublishGroupsRequest;
+import net.iaeste.iws.api.requests.exchange.FetchPublishedGroupsRequest;
+import net.iaeste.iws.api.requests.exchange.HideForeignOffersRequest;
+import net.iaeste.iws.api.requests.exchange.OfferCSVDownloadRequest;
+import net.iaeste.iws.api.requests.exchange.OfferCSVUploadRequest;
+import net.iaeste.iws.api.requests.exchange.OfferStatisticsRequest;
+import net.iaeste.iws.api.requests.exchange.OfferTemplateRequest;
+import net.iaeste.iws.api.requests.exchange.ProcessEmployerRequest;
+import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
+import net.iaeste.iws.api.requests.exchange.ProcessPublishingGroupRequest;
+import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
+import net.iaeste.iws.api.requests.exchange.RejectOfferRequest;
+import net.iaeste.iws.api.responses.FallibleResponse;
+import net.iaeste.iws.api.responses.exchange.EmployerResponse;
+import net.iaeste.iws.api.responses.exchange.FetchEmployerResponse;
+import net.iaeste.iws.api.responses.exchange.FetchGroupsForSharingResponse;
+import net.iaeste.iws.api.responses.exchange.FetchOfferTemplateResponse;
+import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
+import net.iaeste.iws.api.responses.exchange.FetchPublishedGroupsResponse;
+import net.iaeste.iws.api.responses.exchange.FetchPublishingGroupResponse;
+import net.iaeste.iws.api.responses.exchange.OfferCSVDownloadResponse;
+import net.iaeste.iws.api.responses.exchange.OfferCSVUploadResponse;
+import net.iaeste.iws.api.responses.exchange.OfferResponse;
+import net.iaeste.iws.api.responses.exchange.OfferStatisticsResponse;
+import net.iaeste.iws.api.responses.exchange.PublishOfferResponse;
 import net.iaeste.iws.client.ExchangeClient;
 import net.iaeste.iws.fitnesse.exceptions.StopTestException;
 
@@ -141,7 +168,7 @@ public final class ExchangeCaller implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    public Fallible processOfferTemplate(final AuthenticationToken token, final OfferTemplateRequest request) {
+    public FallibleResponse processOfferTemplate(final AuthenticationToken token, final OfferTemplateRequest request) {
         try {
             return caller.processOfferTemplate(token, request);
         } catch (RuntimeException e) {
@@ -165,7 +192,7 @@ public final class ExchangeCaller implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    public Fallible processPublishingGroup(final AuthenticationToken token, final ProcessPublishingGroupRequest request) {
+    public FallibleResponse processPublishingGroup(final AuthenticationToken token, final ProcessPublishingGroupRequest request) {
         try {
             return caller.processPublishingGroup(token, request);
         } catch (RuntimeException e) {
@@ -190,7 +217,7 @@ public final class ExchangeCaller implements Exchange {
      */
     @Override
     @Deprecated
-    public Fallible deletePublishingGroup(final AuthenticationToken token, final DeletePublishingGroupRequest request) {
+    public FallibleResponse deletePublishingGroup(final AuthenticationToken token, final DeletePublishingGroupRequest request) {
         try {
             return caller.deletePublishingGroup(token, request);
         } catch (RuntimeException e) {
@@ -238,7 +265,7 @@ public final class ExchangeCaller implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    public Fallible processHideForeignOffers(final AuthenticationToken token, final HideForeignOffersRequest request) {
+    public FallibleResponse processHideForeignOffers(final AuthenticationToken token, final HideForeignOffersRequest request) {
         try {
             return caller.processHideForeignOffers(token, request);
         } catch (RuntimeException e) {
@@ -250,7 +277,7 @@ public final class ExchangeCaller implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    public Fallible rejectOffer(final AuthenticationToken token, final RejectOfferRequest request) {
+    public FallibleResponse rejectOffer(final AuthenticationToken token, final RejectOfferRequest request) {
         try {
             return caller.rejectOffer(token, request);
         } catch (RuntimeException e) {

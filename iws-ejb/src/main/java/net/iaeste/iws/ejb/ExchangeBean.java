@@ -47,7 +47,6 @@ import net.iaeste.iws.api.responses.exchange.OfferCSVUploadResponse;
 import net.iaeste.iws.api.responses.exchange.OfferResponse;
 import net.iaeste.iws.api.responses.exchange.OfferStatisticsResponse;
 import net.iaeste.iws.api.responses.exchange.PublishOfferResponse;
-import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.core.ExchangeController;
 import net.iaeste.iws.core.notifications.Notifications;
@@ -333,9 +332,9 @@ public class ExchangeBean implements Exchange {
      */
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public Fallible processOfferTemplate(final AuthenticationToken token, final OfferTemplateRequest request) {
+    public FallibleResponse processOfferTemplate(final AuthenticationToken token, final OfferTemplateRequest request) {
         final long start = System.nanoTime();
-        Fallible response;
+        FallibleResponse response;
 
         try {
             response = controller.processOfferTemplate(token, request);
@@ -373,9 +372,9 @@ public class ExchangeBean implements Exchange {
      */
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public Fallible processPublishingGroup(final AuthenticationToken token, final ProcessPublishingGroupRequest request) {
+    public FallibleResponse processPublishingGroup(final AuthenticationToken token, final ProcessPublishingGroupRequest request) {
         final long start = System.nanoTime();
-        Fallible response;
+        FallibleResponse response;
 
         try {
             response = controller.processPublishingGroup(token, request);
@@ -414,9 +413,9 @@ public class ExchangeBean implements Exchange {
     @Override
     @Deprecated
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public Fallible deletePublishingGroup(final AuthenticationToken token, final DeletePublishingGroupRequest request) {
+    public FallibleResponse deletePublishingGroup(final AuthenticationToken token, final DeletePublishingGroupRequest request) {
         final long start = System.nanoTime();
-        Fallible response;
+        FallibleResponse response;
 
         try {
             response = controller.deletePublishingGroup(token, request);
@@ -474,9 +473,9 @@ public class ExchangeBean implements Exchange {
      */
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public Fallible processHideForeignOffers(final AuthenticationToken token, final HideForeignOffersRequest request) {
+    public FallibleResponse processHideForeignOffers(final AuthenticationToken token, final HideForeignOffersRequest request) {
         final long start = System.nanoTime();
-        Fallible response;
+        FallibleResponse response;
 
         try {
             response = controller.processHideForeignOffers(token, request);
@@ -494,9 +493,9 @@ public class ExchangeBean implements Exchange {
      */
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public Fallible rejectOffer(final AuthenticationToken token, final RejectOfferRequest request) {
+    public FallibleResponse rejectOffer(final AuthenticationToken token, final RejectOfferRequest request) {
         final long start = System.nanoTime();
-        Fallible response;
+        FallibleResponse response;
 
         try {
             response = controller.rejectOffer(token, request);

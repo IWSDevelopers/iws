@@ -19,8 +19,8 @@ import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.responses.FallibleResponse;
 
+import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Response Object for returning sharing info for specified list of offers.
@@ -36,7 +36,7 @@ public final class FetchPublishedGroupsResponse extends FallibleResponse {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    private Map<String, List<Group>> offersGroups = null;
+    private HashMap<String, List<Group>> offersGroups = null;
 
     // =========================================================================
     // Object Constructors
@@ -54,7 +54,7 @@ public final class FetchPublishedGroupsResponse extends FallibleResponse {
      *
      * @param offersGroups List of Offers found
      */
-    public FetchPublishedGroupsResponse(final Map<String, List<Group>> offersGroups) {
+    public FetchPublishedGroupsResponse(final HashMap<String, List<Group>> offersGroups) {
         this.offersGroups = offersGroups;
     }
 
@@ -72,11 +72,11 @@ public final class FetchPublishedGroupsResponse extends FallibleResponse {
     // Standard Setters & Getters
     // =========================================================================
 
-    public void setOffersGroups(final Map<String, List<Group>> offersGroups) {
+    public void setOffersGroups(final HashMap<String, List<Group>> offersGroups) {
         this.offersGroups = offersGroups;
     }
 
-    public Map<String, List<Group>> getOffersGroups() {
+    public HashMap<String, List<Group>> getOffersGroups() {
         return offersGroups;
     }
 

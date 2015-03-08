@@ -47,7 +47,6 @@ import net.iaeste.iws.api.responses.exchange.OfferCSVUploadResponse;
 import net.iaeste.iws.api.responses.exchange.OfferResponse;
 import net.iaeste.iws.api.responses.exchange.OfferStatisticsResponse;
 import net.iaeste.iws.api.responses.exchange.PublishOfferResponse;
-import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.ejb.ExchangeBean;
 
 import javax.ejb.EJB;
@@ -89,8 +88,12 @@ public class ExchangeWS implements Exchange {
      * {@inheritDoc}
      */
     @Override
+    // TODO For now this method is excluded, due to the enummap used. It must be verified what is a better option.
     @WebMethod(exclude = true)
-    public OfferStatisticsResponse fetchOfferStatistics(final AuthenticationToken token, final OfferStatisticsRequest request) {
+    @WebResult(name = "response")
+    public OfferStatisticsResponse fetchOfferStatistics(
+            @WebParam(name = "token") final AuthenticationToken token,
+            @WebParam(name = "request") final OfferStatisticsRequest request) {
         return new OfferStatisticsResponse(IWSErrors.ILLEGAL_ACTION, "Method is not accessible via WebServices.");
     }
 
@@ -134,8 +137,11 @@ public class ExchangeWS implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    @WebMethod(exclude = true)
-    public OfferResponse deleteOffer(final AuthenticationToken token, final DeleteOfferRequest request) {
+    @WebMethod
+    @WebResult(name = "response")
+    public OfferResponse deleteOffer(
+            @WebParam(name = "token") final AuthenticationToken token,
+            @WebParam(name = "request") final DeleteOfferRequest request) {
         return new OfferResponse(IWSErrors.ILLEGAL_ACTION, "Method is not accessible via WebServices.");
     }
 
@@ -143,8 +149,11 @@ public class ExchangeWS implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    @WebMethod(exclude = true)
-    public OfferCSVUploadResponse uploadOffers(final AuthenticationToken token, final OfferCSVUploadRequest request) {
+    @WebMethod
+    @WebResult(name = "response")
+    public OfferCSVUploadResponse uploadOffers(
+            @WebParam(name = "token") final AuthenticationToken token,
+            @WebParam(name = "request") final OfferCSVUploadRequest request) {
         return new OfferCSVUploadResponse(IWSErrors.ILLEGAL_ACTION, "Method is not accessible via WebServices.");
     }
 
@@ -164,8 +173,11 @@ public class ExchangeWS implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    @WebMethod(exclude = true)
-    public OfferCSVDownloadResponse downloadOffers(final AuthenticationToken token, final OfferCSVDownloadRequest request) {
+    @WebMethod
+    @WebResult(name = "response")
+    public OfferCSVDownloadResponse downloadOffers(
+            @WebParam(name = "token") final AuthenticationToken token,
+            @WebParam(name = "request") final OfferCSVDownloadRequest request) {
         return new OfferCSVDownloadResponse(IWSErrors.ILLEGAL_ACTION, "Method is not accessible via WebServices.");
     }
 
@@ -173,8 +185,10 @@ public class ExchangeWS implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    @WebMethod(exclude = true)
-    public FetchGroupsForSharingResponse fetchGroupsForSharing(final AuthenticationToken token) {
+    @WebMethod
+    @WebResult(name = "response")
+    public FetchGroupsForSharingResponse fetchGroupsForSharing(
+            @WebParam(name = "token") final AuthenticationToken token) {
         return new FetchGroupsForSharingResponse(IWSErrors.ILLEGAL_ACTION, "Method is not accessible via WebServices.");
     }
 
@@ -182,8 +196,11 @@ public class ExchangeWS implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    @WebMethod(exclude = true)
-    public Fallible processOfferTemplate(final AuthenticationToken token, final OfferTemplateRequest request) {
+    @WebMethod
+    @WebResult(name = "response")
+    public FallibleResponse processOfferTemplate(
+            @WebParam(name = "token") final AuthenticationToken token,
+            @WebParam(name = "request") final OfferTemplateRequest request) {
         return new FallibleResponse(IWSErrors.ILLEGAL_ACTION, "Method is not accessible via WebServices.");
     }
 
@@ -191,8 +208,11 @@ public class ExchangeWS implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    @WebMethod(exclude = true)
-    public FetchOfferTemplateResponse fetchOfferTemplates(final AuthenticationToken token, final FetchOfferTemplatesRequest request) {
+    @WebMethod
+    @WebResult(name = "response")
+    public FetchOfferTemplateResponse fetchOfferTemplates(
+            @WebParam(name = "token") final AuthenticationToken token,
+            @WebParam(name = "request") final FetchOfferTemplatesRequest request) {
         return new FetchOfferTemplateResponse(IWSErrors.ILLEGAL_ACTION, "Method is not accessible via WebServices.");
     }
 
@@ -200,8 +220,11 @@ public class ExchangeWS implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    @WebMethod(exclude = true)
-    public Fallible processPublishingGroup(final AuthenticationToken token, final ProcessPublishingGroupRequest request) {
+    @WebMethod
+    @WebResult(name = "response")
+    public FallibleResponse processPublishingGroup(
+            @WebParam(name = "token") final AuthenticationToken token,
+            @WebParam(name = "request") final ProcessPublishingGroupRequest request) {
         return new FallibleResponse(IWSErrors.ILLEGAL_ACTION, "Method is not accessible via WebServices.");
     }
 
@@ -209,8 +232,11 @@ public class ExchangeWS implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    @WebMethod(exclude = true)
-    public FetchPublishingGroupResponse fetchPublishingGroups(final AuthenticationToken token, final FetchPublishGroupsRequest request) {
+    @WebMethod
+    @WebResult(name = "response")
+    public FetchPublishingGroupResponse fetchPublishingGroups(
+            @WebParam(name = "token") final AuthenticationToken token,
+            @WebParam(name = "request") final FetchPublishGroupsRequest request) {
         return new FetchPublishingGroupResponse(IWSErrors.ILLEGAL_ACTION, "Method is not accessible via WebServices.");
     }
 
@@ -219,8 +245,10 @@ public class ExchangeWS implements Exchange {
      */
     @Override
     @Deprecated
-    @WebMethod(exclude = true)
-    public Fallible deletePublishingGroup(final AuthenticationToken token, final DeletePublishingGroupRequest request) {
+    @WebMethod
+    @WebResult(name = "response")
+    public FallibleResponse deletePublishingGroup(
+            @WebParam(name = "token") final AuthenticationToken token, final DeletePublishingGroupRequest request) {
         return new FallibleResponse(IWSErrors.ILLEGAL_ACTION, "Method is not accessible via WebServices.");
     }
 
@@ -228,8 +256,11 @@ public class ExchangeWS implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    @WebMethod(exclude = true)
-    public PublishOfferResponse processPublishOffer(final AuthenticationToken token, final PublishOfferRequest request) {
+    @WebMethod
+    @WebResult(name = "response")
+    public PublishOfferResponse processPublishOffer(
+            @WebParam(name = "token") final AuthenticationToken token,
+            @WebParam(name = "request") final PublishOfferRequest request) {
         return new PublishOfferResponse(IWSErrors.ILLEGAL_ACTION, "Method is not accessible via WebServices.");
     }
 
@@ -237,8 +268,11 @@ public class ExchangeWS implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    @WebMethod(exclude = true)
-    public FetchPublishedGroupsResponse fetchPublishedGroups(final AuthenticationToken token, final FetchPublishedGroupsRequest request) {
+    @WebMethod
+    @WebResult(name = "response")
+    public FetchPublishedGroupsResponse fetchPublishedGroups(
+            @WebParam(name = "token") final AuthenticationToken token,
+            @WebParam(name = "request") final FetchPublishedGroupsRequest request) {
         return new FetchPublishedGroupsResponse(IWSErrors.ILLEGAL_ACTION, "Method is not accessible via WebServices.");
     }
 
@@ -246,8 +280,11 @@ public class ExchangeWS implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    @WebMethod(exclude = true)
-    public Fallible processHideForeignOffers(final AuthenticationToken token, final HideForeignOffersRequest request) {
+    @WebMethod
+    @WebResult(name = "response")
+    public FallibleResponse processHideForeignOffers(
+            @WebParam(name = "token") final AuthenticationToken token,
+            @WebParam(name = "request") final HideForeignOffersRequest request) {
         return new FallibleResponse(IWSErrors.ILLEGAL_ACTION, "Method is not accessible via WebServices.");
     }
 
@@ -255,8 +292,11 @@ public class ExchangeWS implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    @WebMethod(exclude = true)
-    public Fallible rejectOffer(final AuthenticationToken token, final RejectOfferRequest request) {
+    @WebMethod
+    @WebResult(name = "response")
+    public FallibleResponse rejectOffer(
+            @WebParam(name = "token") final AuthenticationToken token,
+            @WebParam(name = "request") final RejectOfferRequest request) {
         return new FallibleResponse(IWSErrors.ILLEGAL_ACTION, "Method is not accessible via WebServices.");
     }
 }

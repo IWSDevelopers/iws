@@ -23,7 +23,6 @@ import net.iaeste.iws.api.responses.AuthenticationResponse;
 import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchPermissionResponse;
 import net.iaeste.iws.api.responses.SessionDataResponse;
-import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.client.notifications.NotificationSpy;
 import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.ejb.AccessBean;
@@ -100,7 +99,7 @@ public final class AccessSpringClient implements Access {
      * {@inheritDoc}
      */
     @Override
-    public Fallible requestResettingSession(final AuthenticationRequest request) {
+    public FallibleResponse requestResettingSession(final AuthenticationRequest request) {
         return client.requestResettingSession(request);
     }
 
@@ -116,7 +115,7 @@ public final class AccessSpringClient implements Access {
      * {@inheritDoc}
      */
     @Override
-    public <T extends Serializable> Fallible saveSessionData(final AuthenticationToken token, final SessionDataRequest<T> request) {
+    public <T extends Serializable> FallibleResponse saveSessionData(final AuthenticationToken token, final SessionDataRequest<T> request) {
         return client.saveSessionData(token, request);
     }
 
@@ -148,7 +147,7 @@ public final class AccessSpringClient implements Access {
      * {@inheritDoc}
      */
     @Override
-    public Fallible forgotPassword(final String username) {
+    public FallibleResponse forgotPassword(final String username) {
         return client.forgotPassword(username);
     }
 
@@ -156,7 +155,7 @@ public final class AccessSpringClient implements Access {
      * {@inheritDoc}
      */
     @Override
-    public Fallible resetPassword(final String resetPasswordToken, final Password password) {
+    public FallibleResponse resetPassword(final String resetPasswordToken, final Password password) {
         return client.resetPassword(resetPasswordToken, password);
     }
 

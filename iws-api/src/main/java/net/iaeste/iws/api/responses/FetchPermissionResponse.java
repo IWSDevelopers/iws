@@ -40,7 +40,6 @@ public final class FetchPermissionResponse extends FallibleResponse {
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
     private String userId;
     private List<Authorization> authorizations;
-    private Map<Permission, List<Group>> permissionMap = null;
 
     // =========================================================================
     // Object Constructors
@@ -163,11 +162,8 @@ public final class FetchPermissionResponse extends FallibleResponse {
      * @return
      */
     public List<Group> getGroups(final Permission permission) {
+        final Map<Permission, List<Group>> permissionMap = convertPermissions();
         final List<Group> groups;
-
-        // Before checking the map, let's ensure that it has been generated.
-        // Otherwise we'll get a NullPointerException
-        convertPermissions();
 
         if (permissionMap.containsKey(permission)) {
             groups = permissionMap.get(permission);
@@ -186,24 +182,28 @@ public final class FetchPermissionResponse extends FallibleResponse {
      *   By having this list, it is possible to quickly extract the actually
      * required information such as if a person is allowed to perform a given
      * action. The Actions are listed in the description of each Permission in
-     * the Permission enum.
+     * the Permission enum.<br />
+     *   Note, this method will re-generate the map each time it is invoked, and
+     * other methods in this class, such as #hasPermission, #getGroup &amp;
+     * #getGroups will all invoke it as well. Meaning that a careless usage of
+     * this method can be costly. It was decided to leave it as such, since the
+     * IWS is exposing these Objects purely as an example, and not as Maps
+     * aren't Serializable, it will remain so.
      *
      * @return Map with Permissions and Groups
      */
     public Map<Permission, List<Group>> convertPermissions() {
-        if (permissionMap == null) {
-            permissionMap = new EnumMap<>(Permission.class);
+        final Map<Permission, List<Group>> permissionMap = new EnumMap<>(Permission.class);
 
-            for (Authorization authorization : authorizations) {
-                final Role role = authorization.getUserGroup().getRole();
-                final Group group = authorization.getUserGroup().getGroup();
+        for (Authorization authorization : authorizations) {
+            final Role role = authorization.getUserGroup().getRole();
+            final Group group = authorization.getUserGroup().getGroup();
 
-                for (Permission permission : role.getPermissions()) {
-                    if (!permissionMap.containsKey(permission)) {
-                        permissionMap.put(permission, new ArrayList<Group>(1));
-                    }
-                    permissionMap.get(permission).add(group);
+            for (Permission permission : role.getPermissions()) {
+                if (!permissionMap.containsKey(permission)) {
+                    permissionMap.put(permission, new ArrayList<Group>(1));
                 }
+                permissionMap.get(permission).add(group);
             }
         }
 

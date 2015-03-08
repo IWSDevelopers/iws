@@ -89,8 +89,8 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
 
     public OfferCSVUploadResponse uploadOffers(final Authentication authentication, final OfferCSVUploadRequest request) {
         final OfferCSVUploadResponse response = new OfferCSVUploadResponse();
-        Map<String, OfferCSVUploadResponse.ProcessingResult> processingResult = new HashMap<>();
-        final Map<String, Map<String, String>> errors = new HashMap<>();
+        HashMap<String, OfferCSVUploadResponse.ProcessingResult> processingResult = new HashMap<>();
+        final HashMap<String, Map<String, String>> errors = new HashMap<>();
 
         final char fieldDelimiter = request.getDelimiter() != null ? request.getDelimiter().getDescription() : DELIMITER;
 
@@ -234,7 +234,7 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
         }
     }
 
-    private void process(final Map<String, OfferCSVUploadResponse.ProcessingResult> processingResult, final Map<String, Map<String, String>> errors, final Authentication authentication, final CSVRecord record) {
+    private void process(final Map<String, OfferCSVUploadResponse.ProcessingResult> processingResult, final HashMap<String, Map<String, String>> errors, final Authentication authentication, final CSVRecord record) {
         String refNo = "";
         final Map<String, String> conversionErrors = new HashMap<>(0);
         try {
@@ -302,7 +302,7 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
             if (errors.containsKey(refNo)) {
                 errors.get(refNo).put("general", e.getMessage());
             } else {
-                final Map<String, String> generalError = new HashMap<>(1);
+                final HashMap<String, String> generalError = new HashMap<>(1);
                 generalError.put("general", e.getMessage());
                 if (!conversionErrors.isEmpty()) {
                     generalError.putAll(conversionErrors);

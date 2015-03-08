@@ -24,7 +24,6 @@ import net.iaeste.iws.api.responses.AuthenticationResponse;
 import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchPermissionResponse;
 import net.iaeste.iws.api.responses.SessionDataResponse;
-import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.core.AccessController;
 import net.iaeste.iws.core.notifications.Notifications;
@@ -146,9 +145,9 @@ public class AccessBean implements Access {
      * {@inheritDoc}
      */
     @Override
-    public Fallible requestResettingSession(final AuthenticationRequest request) {
+    public FallibleResponse requestResettingSession(final AuthenticationRequest request) {
         final long start = System.nanoTime();
-        Fallible response;
+        FallibleResponse response;
 
         try {
             response = controller.requestResettingSession(request);
@@ -184,9 +183,9 @@ public class AccessBean implements Access {
      * {@inheritDoc}
      */
     @Override
-    public <T extends Serializable> Fallible saveSessionData(final AuthenticationToken token, final SessionDataRequest<T> request) {
+    public <T extends Serializable> FallibleResponse saveSessionData(final AuthenticationToken token, final SessionDataRequest<T> request) {
         final long start = System.nanoTime();
-        Fallible response;
+        FallibleResponse response;
 
         try {
             response = controller.saveSessionData(token, request);
@@ -260,9 +259,9 @@ public class AccessBean implements Access {
      * {@inheritDoc}
      */
     @Override
-    public Fallible forgotPassword(final String username) {
+    public FallibleResponse forgotPassword(final String username) {
         final long start = System.nanoTime();
-        Fallible response;
+        FallibleResponse response;
 
         try {
             response = controller.forgotPassword(username);
@@ -279,9 +278,9 @@ public class AccessBean implements Access {
      * {@inheritDoc}
      */
     @Override
-    public Fallible resetPassword(final String resetPasswordToken, final Password password) {
+    public FallibleResponse resetPassword(final String resetPasswordToken, final Password password) {
         final long start = System.nanoTime();
-        Fallible response;
+        FallibleResponse response;
 
         try {
             response = controller.resetPassword(resetPasswordToken, password);

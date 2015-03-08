@@ -25,7 +25,7 @@ insert into grouptypes (id, grouptype, description, who_may_join, private_list, 
 insert into roles (id, external_id, role, description) values (1, '4a63d04d-f63f-4608-93b6-b85065a9cfb1', 'Owner', 'Each group may have 1 owner, that has access to all the data and permissions.');
 insert into roles (id, external_id, role, description) values (2, 'a3e8a831-2ae7-4751-9668-dfd0f25274dc', 'Moderator', 'Moderators have access to all data and permissions, with the exception of being allowed to change the owner.');
 insert into roles (id, external_id, role, description) values (3, '21bff3b2-ca3b-48ac-b7ea-28c1f0c06f2c', 'Member', 'Standard role for users, granted access to all data, and most common permissions that are related to administration of the Group.');
-insert into roles (id, external_id, role, description) values (4, '15ac2e49-7142-43f1-b66a-adc87e628b02', 'Guest', 'Guests are only allowed to view or observe, they may not perform any operations, nor will be on the mailinglists.');
+--insert into roles (id, external_id, role, description) values (4, '15ac2e49-7142-43f1-b66a-adc87e628b02', 'Guest', 'Guests are only allowed to view or observe, they may not perform any operations, nor will be on the mailinglists.');
 insert into roles (id, external_id, role, description) values (5, '29ee5196-0db1-401a-b4d3-f81518a62b9c', 'Student', 'Students are granted permission to apply for open offers.');
 
 -- =============================================================================
@@ -94,7 +94,6 @@ insert into permissions (id, permission) values (453, 'FETCH_STUDENT_APPLICATION
 --   -> Roles:      1 Owner
 --                  2 Moderator
 --                  3 Member
---                  4 Guest
 --                  5 Student
 insert into permission_to_grouptype (grouptype_id, permission_id) values (0, 100);
 insert into permission_to_grouptype (grouptype_id, permission_id) values (2, 100);
@@ -106,7 +105,6 @@ insert into permission_to_grouptype (grouptype_id, permission_id) values (7, 100
 insert into permission_to_role (role_id, permission_id) values (1, 100);
 insert into permission_to_role (role_id, permission_id) values (2, 100);
 insert into permission_to_role (role_id, permission_id) values (3, 100);
-insert into permission_to_role (role_id, permission_id) values (4, 100);
 insert into permission_to_role (role_id, permission_id) values (5, 100);
 
 -- Permission 101 - Process Country
@@ -316,7 +314,7 @@ insert into permission_to_role (role_id, permission_id) values (3, 301);
 insert into permission_to_role (role_id, permission_id) values (5, 301);
 
 -- Permission: 310 - Process Folder
---   -> GroupTypes: All
+--   -> GroupTypes: All except Student
 --   -> Roles:      1 Owner
 --                  2 Moderator
 insert into permission_to_grouptype (grouptype_id, permission_id) values (0, 310);
@@ -326,7 +324,8 @@ insert into permission_to_grouptype (grouptype_id, permission_id) values (3, 310
 insert into permission_to_grouptype (grouptype_id, permission_id) values (4, 310);
 insert into permission_to_grouptype (grouptype_id, permission_id) values (5, 310);
 insert into permission_to_grouptype (grouptype_id, permission_id) values (6, 310);
-insert into permission_to_grouptype (grouptype_id, permission_id) values (7, 310);
+-- TODO Remove Student from this listing!
+--insert into permission_to_grouptype (grouptype_id, permission_id) values (7, 310);
 insert into permission_to_role (role_id, permission_id) values (1, 310);
 insert into permission_to_role (role_id, permission_id) values (2, 310);
 
@@ -346,13 +345,11 @@ insert into permission_to_role (role_id, permission_id) values (3, 311);
 --   -> Roles:      1 Owner
 --                  2 Moderator
 --                  3 Member
---                  4 Guest
 insert into permission_to_grouptype (grouptype_id, permission_id) values (4, 400);
 insert into permission_to_grouptype (grouptype_id, permission_id) values (5, 400);
 insert into permission_to_role (role_id, permission_id) values (1, 400);
 insert into permission_to_role (role_id, permission_id) values (2, 400);
 insert into permission_to_role (role_id, permission_id) values (3, 400);
-insert into permission_to_role (role_id, permission_id) values (4, 400);
 
 -- Permission: 410 - Process Employer
 --   -> GroupTypes: 4 National

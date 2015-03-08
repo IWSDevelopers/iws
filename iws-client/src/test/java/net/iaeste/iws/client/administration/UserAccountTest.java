@@ -568,7 +568,7 @@ public final class UserAccountTest extends AbstractAdministration {
         // Create the new User Request Object
         final CreateUserRequest createUserRequest = new CreateUserRequest();
         createUserRequest.setUsername("gamma@beta.net");
-        createUserRequest.setFirstname("Gamme");
+        createUserRequest.setFirstname("Gamma");
         createUserRequest.setLastname("Beta");
 
         // First, we create the User account that we wish to delete
@@ -597,7 +597,7 @@ public final class UserAccountTest extends AbstractAdministration {
         final FetchRoleResponse response = administration.fetchRoles(token, request);
         assertThat(response, is(not(nullValue())));
         assertThat(response.isOk(), is(true));
-        // There should be a total of 5 roles for this Group
-        assertThat(response.getRoles().size(), is(5));
+        // There should be a total of 4 roles for this Group
+        assertThat(response.getRoles().size(), is(4));
     }
 }

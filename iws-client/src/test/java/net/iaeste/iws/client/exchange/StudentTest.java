@@ -80,9 +80,7 @@ public final class StudentTest extends AbstractTest {
     private AuthenticationToken austriaToken = null;
     private AuthenticationToken croatiaToken = null;
 
-    private Group tokenNationallGroup = null;
     private Group austriaTokenNationallGroup = null;
-    private Group croatiaTokenNationallGroup = null;
 
     @Override
     public void setup() {
@@ -90,9 +88,7 @@ public final class StudentTest extends AbstractTest {
         austriaToken = login("austria@iaeste.at", "austria");
         croatiaToken = login("croatia@iaeste.hr", "croatia");
 
-        tokenNationallGroup = findNationalGroup(token);
         austriaTokenNationallGroup = findNationalGroup(austriaToken);
-        croatiaTokenNationallGroup = findNationalGroup(croatiaToken);
     }
 
     @Override
@@ -110,7 +106,7 @@ public final class StudentTest extends AbstractTest {
         }
 
         final Date nominationDeadline = new Date().plusDays(20);
-        final Offer offer = TestData.prepareMinimalOffer("PL-" + exchangeYear + "-001001", "Employer", "PL");
+        final Offer offer = TestData.prepareMinimalOffer("PL-" + exchangeYear + "-001001", "Employer");
 
         final ProcessOfferRequest offerRequest = new ProcessOfferRequest(offer);
         final OfferResponse saveResponse = exchange.processOffer(token, offerRequest);
@@ -191,7 +187,7 @@ public final class StudentTest extends AbstractTest {
         }
 
         final Date nominationDeadline = new Date().plusDays(20);
-        final Offer offer = TestData.prepareMinimalOffer("PL-" + exchangeYear + "-001003", "Employer", "PL");
+        final Offer offer = TestData.prepareMinimalOffer("PL-" + exchangeYear + "-001003", "Employer");
 
         final ProcessOfferRequest offerRequest = new ProcessOfferRequest(offer);
         final OfferResponse saveResponse = exchange.processOffer(token, offerRequest);
@@ -280,7 +276,7 @@ public final class StudentTest extends AbstractTest {
     @Test
     public void testUpdateStudentApplication() {
         final Date nominationDeadline = new Date().plusDays(20);
-        final Offer offer = TestData.prepareMinimalOffer("PL-2014-001002", "Employer", "PL");
+        final Offer offer = TestData.prepareMinimalOffer("PL-2014-001002", "Employer");
 
         final ProcessOfferRequest offerRequest = new ProcessOfferRequest(offer);
         final OfferResponse saveResponse = exchange.processOffer(token, offerRequest);
@@ -369,7 +365,7 @@ public final class StudentTest extends AbstractTest {
         }
 
         final Date nominationDeadline = new Date().plusDays(20);
-        final Offer offer = TestData.prepareMinimalOffer("PL-" + exchangeYear + "-001004", "Employer", "PL");
+        final Offer offer = TestData.prepareMinimalOffer("PL-" + exchangeYear + "-001004", "Employer");
 
         final OfferResponse saveResponse = exchange.processOffer(token, new ProcessOfferRequest(offer));
         assertThat("Offer has been saved", saveResponse.isOk(), is(true));
@@ -460,7 +456,7 @@ public final class StudentTest extends AbstractTest {
         }
 
         final Date nominationDeadline = new Date().plusDays(20);
-        final Offer offer = TestData.prepareMinimalOffer("PL-" + exchangeYear + "-001005", "Employer", "PL");
+        final Offer offer = TestData.prepareMinimalOffer("PL-" + exchangeYear + "-001005", "Employer");
 
         final OfferResponse saveResponse = exchange.processOffer(token, new ProcessOfferRequest(offer));
         assertThat("Offer has been saved", saveResponse.isOk(), is(true));
@@ -536,7 +532,7 @@ public final class StudentTest extends AbstractTest {
 
         //Sending country is only allowed to reject applied application
         final Date nominationDeadline = new Date().plusDays(20);
-        final Offer offer = TestData.prepareMinimalOffer("PL-" + exchangeYear + "-001065", "Employer", "PL");
+        final Offer offer = TestData.prepareMinimalOffer("PL-" + exchangeYear + "-001065", "Employer");
 
         final OfferResponse saveResponse = exchange.processOffer(token, new ProcessOfferRequest(offer));
         assertThat("Offer has been saved", saveResponse.isOk(), is(true));
@@ -602,7 +598,7 @@ public final class StudentTest extends AbstractTest {
 
         //Sending country is only allowed to reject applied application
         final Date nominationDeadline = new Date().plusDays(20);
-        final Offer offer = TestData.prepareMinimalOffer("PL-" + exchangeYear + "-001064", "Employer", "PL");
+        final Offer offer = TestData.prepareMinimalOffer("PL-" + exchangeYear + "-001064", "Employer");
 
         final OfferResponse saveResponse = exchange.processOffer(token, new ProcessOfferRequest(offer));
         assertThat("Offer has been saved", saveResponse.isOk(), is(true));
@@ -672,7 +668,7 @@ public final class StudentTest extends AbstractTest {
         }
 
         final Date nominationDeadline = new Date().plusDays(20);
-        final Offer offer = TestData.prepareMinimalOffer("PL-" + exchangeYear + "-001006", "Employer", "PL");
+        final Offer offer = TestData.prepareMinimalOffer("PL-" + exchangeYear + "-001006", "Employer");
 
         final OfferResponse saveResponse = exchange.processOffer(token, new ProcessOfferRequest(offer));
         assertThat("Offer has been saved", saveResponse.isOk(), is(true));
@@ -737,7 +733,7 @@ public final class StudentTest extends AbstractTest {
     @Test
     public void testApplyCancelledApplication() {
         final Date nominationDeadline = new Date().plusDays(20);
-        final Offer offer = TestData.prepareMinimalOffer("PL-" + exchangeYear + "-001007", "Employer", "PL");
+        final Offer offer = TestData.prepareMinimalOffer("PL-" + exchangeYear + "-001007", "Employer");
 
         final OfferResponse saveResponse = exchange.processOffer(token, new ProcessOfferRequest(offer));
         assertThat("Offer has been saved", saveResponse.isOk(), is(true));
@@ -812,7 +808,7 @@ public final class StudentTest extends AbstractTest {
         }
 
         final Date nominationDeadline = new Date().plusDays(20);
-        final Offer offer = TestData.prepareMinimalOffer("PL-" + exchangeYear + "-001008", "Employer", "PL");
+        final Offer offer = TestData.prepareMinimalOffer("PL-" + exchangeYear + "-001008", "Employer");
 
         final OfferResponse saveResponse = exchange.processOffer(token, new ProcessOfferRequest(offer));
         assertThat("Offer has been saved", saveResponse.isOk(), is(true));
@@ -889,7 +885,7 @@ public final class StudentTest extends AbstractTest {
         }
 
         final Date nominationDeadline = new Date().plusDays(20);
-        final Offer offer = TestData.prepareMinimalOffer("PL-" + exchangeYear + "-001009", "Employer", "PL");
+        final Offer offer = TestData.prepareMinimalOffer("PL-" + exchangeYear + "-001009", "Employer");
 
         final OfferResponse saveResponse = exchange.processOffer(token, new ProcessOfferRequest(offer));
         assertThat("Offer has been saved", saveResponse.isOk(), is(true));
@@ -975,7 +971,7 @@ public final class StudentTest extends AbstractTest {
 
         final Date nominationDeadline = new Date().plusDays(20);
         final String refNo = "AT-" + exchangeYear + "-000003";
-        final Offer offer = TestData.prepareMinimalOffer(refNo, "Employer", "PL");
+        final Offer offer = TestData.prepareMinimalOffer(refNo, "Employer");
 
         offer.setPrivateComment("austria");
 

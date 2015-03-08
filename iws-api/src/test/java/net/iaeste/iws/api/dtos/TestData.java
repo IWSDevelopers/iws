@@ -45,7 +45,6 @@ import java.util.Set;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
- * @noinspection PublicStaticCollectionField
  */
 public final class TestData {
 
@@ -130,6 +129,11 @@ public final class TestData {
         return AbstractVerification.calculateExchangeYear();
     }
 
+    public static Offer prepareMinimalOffer(final String refNo, final String employerName) {
+        final String countryCode = refNo.substring(0, 2).toUpperCase(IWSConstants.DEFAULT_LOCALE);
+        return prepareMinimalOffer(refNo, employerName, countryCode);
+    }
+
     public static Offer prepareMinimalOffer(final String refNo, final String employerName, final String countryCode) {
         final Offer offer = new Offer();
 
@@ -150,8 +154,8 @@ public final class TestData {
         return offer;
     }
 
-    public static Offer prepareFullOffer(final String refNo, final String employerName, final String countryCode) {
-        final Offer offer = prepareMinimalOffer(refNo, employerName, countryCode);
+    public static Offer prepareFullOffer(final String refNo, final String employerName) {
+        final Offer offer = prepareMinimalOffer(refNo, employerName);
 
         offer.setTypeOfWork(OFFER_TYPE_OF_WORK);
         offer.setWeeklyHours(OFFER_WEEKLY_HOURS);
@@ -183,7 +187,6 @@ public final class TestData {
         return offer;
     }
 
-
     public static Employer prepareEmployer(final String employerName, final String countryCode) {
         final Employer employer = new Employer();
 
@@ -197,8 +200,6 @@ public final class TestData {
         employer.setCanteen(EMPLOYER_CANTEEN);
         employer.setNearestAirport(EMPLOYER_NEAREAST_AIRPORT);
         employer.setNearestPublicTransport(EMPLOYER_NEAREST_PUBLIC_TRANSPORT);
-        //employer.setWeeklyHours(OFFER_WEEKLY_HOURS);
-        //employer.setDailyHours(OFFER_DAILY_HOURS);
 
         return employer;
     }
@@ -238,6 +239,12 @@ public final class TestData {
                 country.setMembership(Membership.FULL_MEMBER);
                 country.setCountryName("Denmark");
                 country.setCurrency(Currency.DKK);
+                country.setMemberSince(1948);
+                break;
+            case "GB":
+                country.setMembership(Membership.FULL_MEMBER);
+                country.setCountryName("United Kingdon");
+                country.setCurrency(Currency.GBP);
                 country.setMemberSince(1948);
                 break;
             case "PL":

@@ -149,7 +149,8 @@ public class ExchangeWS implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    @WebMethod
+    // TODO For now this method is excluded, due to the enummap used. It must be verified what is a better option.
+    @WebMethod(exclude = true)
     @WebResult(name = "response")
     public OfferCSVUploadResponse uploadOffers(
             @WebParam(name = "token") final AuthenticationToken token,
@@ -268,7 +269,8 @@ public class ExchangeWS implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    @WebMethod
+    // TODO For now this method is excluded, due to the enummap used. It must be verified what is a better option.
+    @WebMethod(exclude = true)
     @WebResult(name = "response")
     public FetchPublishedGroupsResponse fetchPublishedGroups(
             @WebParam(name = "token") final AuthenticationToken token,

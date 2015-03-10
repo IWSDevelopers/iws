@@ -44,7 +44,6 @@ import net.iaeste.iws.api.responses.FetchUserResponse;
 import net.iaeste.iws.api.responses.ProcessGroupResponse;
 import net.iaeste.iws.api.responses.ProcessUserGroupResponse;
 import net.iaeste.iws.api.responses.SearchUserResponse;
-import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.core.services.AccountService;
 import net.iaeste.iws.core.services.ContactsService;
 import net.iaeste.iws.core.services.CountryService;
@@ -105,11 +104,11 @@ public final class AdministrationController extends CommonController implements 
      * {@inheritDoc}
      */
     @Override
-    public Fallible processCountry(final AuthenticationToken token, final CountryRequest request) {
+    public FallibleResponse processCountry(final AuthenticationToken token, final CountryRequest request) {
         if (log.isTraceEnabled()) {
             log.trace(formatLogMessage(token, "Starting processCountry()"));
         }
-        Fallible response;
+        FallibleResponse response;
 
         try {
             verify(request);
@@ -158,11 +157,11 @@ public final class AdministrationController extends CommonController implements 
      * {@inheritDoc}
      */
     @Override
-    public Fallible activateUser(final String activationString) {
+    public FallibleResponse activateUser(final String activationString) {
         if (log.isTraceEnabled()) {
             log.trace("Starting activateUser()");
         }
-        Fallible response;
+        FallibleResponse response;
 
         try {
             verifyCode(activationString, "Provided Activation String is invalid.");
@@ -184,11 +183,11 @@ public final class AdministrationController extends CommonController implements 
      * {@inheritDoc}
      */
     @Override
-    public Fallible updateUsername(final String updateCode) {
+    public FallibleResponse updateUsername(final String updateCode) {
         if (log.isTraceEnabled()) {
             log.trace("Starting updateUsername()");
         }
-        Fallible response;
+        FallibleResponse response;
 
         try {
             verifyCode(updateCode, "The UpdateCode is invalid.");
@@ -210,11 +209,11 @@ public final class AdministrationController extends CommonController implements 
      * {@inheritDoc}
      */
     @Override
-    public Fallible controlUserAccount(final AuthenticationToken token, final UserRequest request) {
+    public FallibleResponse controlUserAccount(final AuthenticationToken token, final UserRequest request) {
         if (log.isTraceEnabled()) {
             log.trace(formatLogMessage(token, "Starting controlUserAccount()"));
         }
-        Fallible response;
+        FallibleResponse response;
 
         try {
             // The Permission check for this request, is moved into the service
@@ -241,11 +240,11 @@ public final class AdministrationController extends CommonController implements 
      * {@inheritDoc}
      */
     @Override
-    public Fallible changeAccountName(final AuthenticationToken token, final AccountNameRequest request) {
+    public FallibleResponse changeAccountName(final AuthenticationToken token, final AccountNameRequest request) {
         if (log.isTraceEnabled()) {
             log.trace(formatLogMessage(token, "Starting changeAccountName()"));
         }
-        Fallible response;
+        FallibleResponse response;
 
         try {
             verify(request);
@@ -350,11 +349,11 @@ public final class AdministrationController extends CommonController implements 
      * {@inheritDoc}
      */
     @Override
-    public Fallible deleteSubGroup(final AuthenticationToken token, final GroupRequest request) {
+    public FallibleResponse deleteSubGroup(final AuthenticationToken token, final GroupRequest request) {
         if (log.isTraceEnabled()) {
             log.trace(formatLogMessage(token, "Starting deleteSubGroup()"));
         }
-        Fallible response;
+        FallibleResponse response;
 
         try {
             verify(request);
@@ -412,11 +411,11 @@ public final class AdministrationController extends CommonController implements 
      * {@inheritDoc}
      */
     @Override
-    public Fallible changeGroupOwner(final AuthenticationToken token, final OwnerRequest request) {
+    public FallibleResponse changeGroupOwner(final AuthenticationToken token, final OwnerRequest request) {
         if (log.isTraceEnabled()) {
             log.trace(formatLogMessage(token, "Starting changeGroupOwner()"));
         }
-        Fallible response;
+        FallibleResponse response;
 
         try {
             verify(request);

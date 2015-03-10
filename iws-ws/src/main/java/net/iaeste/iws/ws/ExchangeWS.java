@@ -48,8 +48,9 @@ import net.iaeste.iws.api.responses.exchange.OfferResponse;
 import net.iaeste.iws.api.responses.exchange.OfferStatisticsResponse;
 import net.iaeste.iws.api.responses.exchange.PublishOfferResponse;
 import net.iaeste.iws.ejb.ExchangeBean;
+import net.iaeste.iws.ejb.cdi.IWSBean;
 
-import javax.ejb.EJB;
+import javax.inject.Inject;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
@@ -65,9 +66,11 @@ import javax.jws.soap.SOAPBinding;
 @SOAPBinding(style = SOAPBinding.Style.RPC)
 public class ExchangeWS implements Exchange {
 
-    @EJB(beanInterface = Exchange.class, lookup = "java:global/iws/iws-ejb/ExchangeBean!net.iaeste.iws.api.Exchange")
-    //@Inject @IWSBean
-    private Exchange bean = null;
+    /**
+     * Injection of the IWS Exchange Bean Instance, which embeds the
+     * Transactional logic and itself invokes the actual Implemenation.
+     */
+    @Inject @IWSBean private Exchange bean = null;
 
     /**
      * Setter for the JNDI injected Bean context. This allows us to also

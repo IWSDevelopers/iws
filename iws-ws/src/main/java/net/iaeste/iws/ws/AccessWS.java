@@ -24,8 +24,9 @@ import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchPermissionResponse;
 import net.iaeste.iws.api.responses.SessionDataResponse;
 import net.iaeste.iws.ejb.AccessBean;
+import net.iaeste.iws.ejb.cdi.IWSBean;
 
-import javax.ejb.EJB;
+import javax.inject.Inject;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
@@ -42,9 +43,11 @@ import java.io.Serializable;
 @SOAPBinding(style = SOAPBinding.Style.RPC)
 public class AccessWS implements Access {
 
-    @EJB(beanInterface = Access.class, lookup = "java:global/iws/iws-ejb/AccessBean!net.iaeste.iws.api.Access")
-    //@Inject @IWSBean
-    private Access bean = null;
+    /**
+     * Injection of the IWS Access Bean Instance, which embeds the Transactional
+     * logic and itself invokes the actual Implemenation.
+     */
+    @Inject @IWSBean private Access bean = null;
 
     /**
      * Setter for the JNDI injected Bean context. This allows us to also

@@ -22,10 +22,10 @@ import net.iaeste.iws.api.requests.FetchInternationalGroupRequest;
 import net.iaeste.iws.api.requests.FetchSurveyOfCountryRequest;
 import net.iaeste.iws.api.requests.InternationalGroupRequest;
 import net.iaeste.iws.api.requests.SurveyOfCountryRequest;
+import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchCommitteeResponse;
 import net.iaeste.iws.api.responses.FetchInternationalGroupResponse;
 import net.iaeste.iws.api.responses.FetchSurveyOfCountryRespose;
-import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.client.notifications.NotificationSpy;
 import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.ejb.CommitteeBean;
@@ -97,7 +97,7 @@ public class CommitteeSpringClient implements Committees {
      * {@inheritDoc}
      */
     @Override
-    public Fallible processCommittee(final AuthenticationToken token, final CommitteeRequest request) {
+    public FallibleResponse processCommittee(final AuthenticationToken token, final CommitteeRequest request) {
         return client.processCommittee(token, request);
     }
 
@@ -113,7 +113,7 @@ public class CommitteeSpringClient implements Committees {
      * {@inheritDoc}
      */
     @Override
-    public Fallible processInternationalGroup(final AuthenticationToken token, final InternationalGroupRequest request) {
+    public FallibleResponse processInternationalGroup(final AuthenticationToken token, final InternationalGroupRequest request) {
         return client.processInternationalGroup(token, request);
     }
 
@@ -129,7 +129,7 @@ public class CommitteeSpringClient implements Committees {
      * {@inheritDoc}
      */
     @Override
-    public Fallible processSurveyOfCountry(final AuthenticationToken token, final SurveyOfCountryRequest request) {
+    public FallibleResponse processSurveyOfCountry(final AuthenticationToken token, final SurveyOfCountryRequest request) {
         return client.processSurveyOfCountry(token, request);
     }
 }

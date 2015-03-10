@@ -21,10 +21,10 @@ import net.iaeste.iws.api.requests.FetchInternationalGroupRequest;
 import net.iaeste.iws.api.requests.FetchSurveyOfCountryRequest;
 import net.iaeste.iws.api.requests.InternationalGroupRequest;
 import net.iaeste.iws.api.requests.SurveyOfCountryRequest;
+import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchCommitteeResponse;
 import net.iaeste.iws.api.responses.FetchInternationalGroupResponse;
 import net.iaeste.iws.api.responses.FetchSurveyOfCountryRespose;
-import net.iaeste.iws.api.util.Fallible;
 
 /**
  * Control of National Committees and International Groups is done via the
@@ -159,7 +159,7 @@ public interface Committees {
      * @param request Committee Request Object
      * @return Standard Error object
      */
-    Fallible processCommittee(AuthenticationToken token, CommitteeRequest request);
+    FallibleResponse processCommittee(AuthenticationToken token, CommitteeRequest request);
 
     /**
      * Working with International Groups involve working with more details than
@@ -200,7 +200,7 @@ public interface Committees {
      * @param request International Group Request Object
      * @return Standard Error object
      */
-    Fallible processInternationalGroup(AuthenticationToken token, InternationalGroupRequest request);
+    FallibleResponse processInternationalGroup(AuthenticationToken token, InternationalGroupRequest request);
 
     /**
      * Retrieves the Survey for a given Country. The survey is a rather
@@ -222,5 +222,5 @@ public interface Committees {
      * @param request Survey of Country Request Object
      * @return Standard Error object
      */
-    Fallible processSurveyOfCountry(AuthenticationToken token, SurveyOfCountryRequest request);
+    FallibleResponse processSurveyOfCountry(AuthenticationToken token, SurveyOfCountryRequest request);
 }

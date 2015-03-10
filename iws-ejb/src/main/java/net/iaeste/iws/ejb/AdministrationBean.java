@@ -41,7 +41,6 @@ import net.iaeste.iws.api.responses.FetchUserResponse;
 import net.iaeste.iws.api.responses.ProcessGroupResponse;
 import net.iaeste.iws.api.responses.ProcessUserGroupResponse;
 import net.iaeste.iws.api.responses.SearchUserResponse;
-import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.core.AdministrationController;
 import net.iaeste.iws.core.notifications.Notifications;
@@ -142,9 +141,9 @@ public class AdministrationBean implements Administration {
      * {@inheritDoc}
      */
     @Override
-    public Fallible processCountry(final AuthenticationToken token, final CountryRequest request) {
+    public FallibleResponse processCountry(final AuthenticationToken token, final CountryRequest request) {
         final long start = System.nanoTime();
-        Fallible response;
+        FallibleResponse response;
 
         try {
             response = controller.processCountry(token, request);
@@ -200,9 +199,9 @@ public class AdministrationBean implements Administration {
      * {@inheritDoc}
      */
     @Override
-    public Fallible activateUser(final String activationString) {
+    public FallibleResponse activateUser(final String activationString) {
         final long start = System.nanoTime();
-        Fallible response;
+        FallibleResponse response;
 
         try {
             response = controller.activateUser(activationString);
@@ -219,9 +218,9 @@ public class AdministrationBean implements Administration {
      * {@inheritDoc}
      */
     @Override
-    public Fallible updateUsername(final String updateCode) {
+    public FallibleResponse updateUsername(final String updateCode) {
         final long start = System.nanoTime();
-        Fallible response;
+        FallibleResponse response;
 
         try {
             response = controller.updateUsername(updateCode);
@@ -238,9 +237,9 @@ public class AdministrationBean implements Administration {
      * {@inheritDoc}
      */
     @Override
-    public Fallible controlUserAccount(final AuthenticationToken token, final UserRequest request) {
+    public FallibleResponse controlUserAccount(final AuthenticationToken token, final UserRequest request) {
         final long start = System.nanoTime();
-        Fallible response;
+        FallibleResponse response;
 
         try {
             response = controller.controlUserAccount(token, request);
@@ -257,9 +256,9 @@ public class AdministrationBean implements Administration {
      * {@inheritDoc}
      */
     @Override
-    public Fallible changeAccountName(final AuthenticationToken token, final AccountNameRequest request) {
+    public FallibleResponse changeAccountName(final AuthenticationToken token, final AccountNameRequest request) {
         final long start = System.nanoTime();
-        Fallible response;
+        FallibleResponse response;
 
         try {
             response = controller.changeAccountName(token, request);
@@ -335,9 +334,9 @@ public class AdministrationBean implements Administration {
      * {@inheritDoc}
      */
     @Override
-    public Fallible deleteSubGroup(final AuthenticationToken token, final GroupRequest request) {
+    public FallibleResponse deleteSubGroup(final AuthenticationToken token, final GroupRequest request) {
         final long start = System.nanoTime();
-        Fallible response;
+        FallibleResponse response;
 
         try {
             response = controller.deleteSubGroup(token, request);
@@ -374,9 +373,9 @@ public class AdministrationBean implements Administration {
      * {@inheritDoc}
      */
     @Override
-    public Fallible changeGroupOwner(final AuthenticationToken token, final OwnerRequest request) {
+    public FallibleResponse changeGroupOwner(final AuthenticationToken token, final OwnerRequest request) {
         final long start = System.nanoTime();
-        Fallible response;
+        FallibleResponse response;
 
         try {
             response = controller.changeGroupOwner(token, request);

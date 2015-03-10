@@ -56,6 +56,6 @@ public @interface IWSBean {
         PRIMARY,
 
         /** For secondary or external Resources / Beans. */
-        SECONDARY
+        SECONDARY,
     }
 }

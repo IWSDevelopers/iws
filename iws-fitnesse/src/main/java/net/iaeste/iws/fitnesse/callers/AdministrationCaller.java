@@ -32,6 +32,7 @@ import net.iaeste.iws.api.requests.UserRequest;
 import net.iaeste.iws.api.responses.ContactsResponse;
 import net.iaeste.iws.api.responses.CreateUserResponse;
 import net.iaeste.iws.api.responses.EmergencyListResponse;
+import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchCountryResponse;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchRoleResponse;
@@ -39,7 +40,6 @@ import net.iaeste.iws.api.responses.FetchUserResponse;
 import net.iaeste.iws.api.responses.ProcessGroupResponse;
 import net.iaeste.iws.api.responses.ProcessUserGroupResponse;
 import net.iaeste.iws.api.responses.SearchUserResponse;
-import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.client.AdministrationClient;
 import net.iaeste.iws.fitnesse.exceptions.StopTestException;
 
@@ -78,7 +78,7 @@ public final class AdministrationCaller implements Administration {
      * {@inheritDoc}
      */
     @Override
-    public Fallible activateUser(final String activationString) {
+    public FallibleResponse activateUser(final String activationString) {
         try {
             return caller.activateUser(activationString);
         } catch (RuntimeException e) {
@@ -90,7 +90,7 @@ public final class AdministrationCaller implements Administration {
      * {@inheritDoc}
      */
     @Override
-    public Fallible updateUsername(final String updateCode) {
+    public FallibleResponse updateUsername(final String updateCode) {
         try {
             return caller.updateUsername(updateCode);
         } catch (RuntimeException e) {
@@ -102,7 +102,7 @@ public final class AdministrationCaller implements Administration {
      * {@inheritDoc}
      */
     @Override
-    public Fallible controlUserAccount(final AuthenticationToken token, final UserRequest request) {
+    public FallibleResponse controlUserAccount(final AuthenticationToken token, final UserRequest request) {
         try {
             return caller.controlUserAccount(token, request);
         } catch (RuntimeException e) {
@@ -114,7 +114,7 @@ public final class AdministrationCaller implements Administration {
      * {@inheritDoc}
      */
     @Override
-    public Fallible changeAccountName(final AuthenticationToken token, final AccountNameRequest request) {
+    public FallibleResponse changeAccountName(final AuthenticationToken token, final AccountNameRequest request) {
         try {
             return caller.changeAccountName(token, request);
         } catch (RuntimeException e) {
@@ -162,7 +162,7 @@ public final class AdministrationCaller implements Administration {
      * {@inheritDoc}
      */
     @Override
-    public Fallible deleteSubGroup(final AuthenticationToken token, final GroupRequest request) {
+    public FallibleResponse deleteSubGroup(final AuthenticationToken token, final GroupRequest request) {
         try {
             return caller.deleteSubGroup(token, request);
         } catch (RuntimeException e) {
@@ -186,7 +186,7 @@ public final class AdministrationCaller implements Administration {
      * {@inheritDoc}
      */
     @Override
-    public Fallible changeGroupOwner(final AuthenticationToken token, final OwnerRequest request) {
+    public FallibleResponse changeGroupOwner(final AuthenticationToken token, final OwnerRequest request) {
         try {
             return caller.changeGroupOwner(token, request);
         } catch (RuntimeException e) {
@@ -222,7 +222,7 @@ public final class AdministrationCaller implements Administration {
      * {@inheritDoc}
      */
     @Override
-    public Fallible processCountry(final AuthenticationToken token, final CountryRequest request) {
+    public FallibleResponse processCountry(final AuthenticationToken token, final CountryRequest request) {
         try {
             return caller.processCountry(token, request);
         } catch (RuntimeException e) {

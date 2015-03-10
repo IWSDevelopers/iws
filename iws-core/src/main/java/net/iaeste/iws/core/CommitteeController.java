@@ -30,7 +30,6 @@ import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchCommitteeResponse;
 import net.iaeste.iws.api.responses.FetchInternationalGroupResponse;
 import net.iaeste.iws.api.responses.FetchSurveyOfCountryRespose;
-import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.core.services.CommitteeService;
 import net.iaeste.iws.core.services.ServiceFactory;
 import net.iaeste.iws.persistence.Authentication;
@@ -86,11 +85,11 @@ public final class CommitteeController extends CommonController implements Commi
      * {@inheritDoc}
      */
     @Override
-    public Fallible processCommittee(final AuthenticationToken token, final CommitteeRequest request) {
+    public FallibleResponse processCommittee(final AuthenticationToken token, final CommitteeRequest request) {
         if (log.isTraceEnabled()) {
             log.trace(formatLogMessage(token, "Starting processCommittee()"));
         }
-        Fallible response;
+        FallibleResponse response;
 
         try {
             verify(request);
@@ -139,11 +138,11 @@ public final class CommitteeController extends CommonController implements Commi
      * {@inheritDoc}
      */
     @Override
-    public Fallible processInternationalGroup(final AuthenticationToken token, final InternationalGroupRequest request) {
+    public FallibleResponse processInternationalGroup(final AuthenticationToken token, final InternationalGroupRequest request) {
         if (log.isTraceEnabled()) {
             log.trace(formatLogMessage(token, "Starting processInternationalGroup()"));
         }
-        Fallible response;
+        FallibleResponse response;
 
         try {
             verify(request);
@@ -192,11 +191,11 @@ public final class CommitteeController extends CommonController implements Commi
      * {@inheritDoc}
      */
     @Override
-    public Fallible processSurveyOfCountry(final AuthenticationToken token, final SurveyOfCountryRequest request) {
+    public FallibleResponse processSurveyOfCountry(final AuthenticationToken token, final SurveyOfCountryRequest request) {
         if (log.isTraceEnabled()) {
             log.trace(formatLogMessage(token, "Starting processSurveyOfCountry()"));
         }
-        Fallible response;
+        FallibleResponse response;
 
         try {
             verify(request);

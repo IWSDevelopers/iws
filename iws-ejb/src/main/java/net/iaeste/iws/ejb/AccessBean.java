@@ -58,7 +58,6 @@ import java.io.Serializable;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
-@IWSBean
 @Stateless
 @Remote(Access.class)
 @TransactionAttribute(TransactionAttributeType.REQUIRED)

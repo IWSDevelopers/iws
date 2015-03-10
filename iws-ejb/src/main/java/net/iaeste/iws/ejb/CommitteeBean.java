@@ -27,7 +27,6 @@ import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchCommitteeResponse;
 import net.iaeste.iws.api.responses.FetchInternationalGroupResponse;
 import net.iaeste.iws.api.responses.FetchSurveyOfCountryRespose;
-import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.core.CommitteeController;
 import net.iaeste.iws.core.notifications.Notifications;
@@ -147,9 +146,9 @@ public class CommitteeBean implements Committees {
      * {@inheritDoc}
      */
     @Override
-    public Fallible processCommittee(final AuthenticationToken token, final CommitteeRequest request) {
+    public FallibleResponse processCommittee(final AuthenticationToken token, final CommitteeRequest request) {
         final long start = System.nanoTime();
-        Fallible response;
+        FallibleResponse response;
 
         try {
             response = controller.processCommittee(token, request);
@@ -185,9 +184,9 @@ public class CommitteeBean implements Committees {
      * {@inheritDoc}
      */
     @Override
-    public Fallible processInternationalGroup(final AuthenticationToken token, final InternationalGroupRequest request) {
+    public FallibleResponse processInternationalGroup(final AuthenticationToken token, final InternationalGroupRequest request) {
         final long start = System.nanoTime();
-        Fallible response;
+        FallibleResponse response;
 
         try {
             response = controller.processInternationalGroup(token, request);
@@ -223,9 +222,9 @@ public class CommitteeBean implements Committees {
      * {@inheritDoc}
      */
     @Override
-    public Fallible processSurveyOfCountry(final AuthenticationToken token, final SurveyOfCountryRequest request) {
+    public FallibleResponse processSurveyOfCountry(final AuthenticationToken token, final SurveyOfCountryRequest request) {
         final long start = System.nanoTime();
-        Fallible response;
+        FallibleResponse response;
 
         try {
             response = controller.processSurveyOfCountry(token, request);

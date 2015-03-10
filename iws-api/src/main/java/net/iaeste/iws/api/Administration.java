@@ -31,6 +31,7 @@ import net.iaeste.iws.api.requests.UserRequest;
 import net.iaeste.iws.api.responses.ContactsResponse;
 import net.iaeste.iws.api.responses.CreateUserResponse;
 import net.iaeste.iws.api.responses.EmergencyListResponse;
+import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchCountryResponse;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchRoleResponse;
@@ -38,7 +39,6 @@ import net.iaeste.iws.api.responses.FetchUserResponse;
 import net.iaeste.iws.api.responses.ProcessGroupResponse;
 import net.iaeste.iws.api.responses.ProcessUserGroupResponse;
 import net.iaeste.iws.api.responses.SearchUserResponse;
-import net.iaeste.iws.api.util.Fallible;
 
 /**
  * Handles Administration of User Accounts, Groups, Roles and Countries.
@@ -62,7 +62,7 @@ public interface Administration {
      * @param request Request data, must contain the Country Record
      * @return Standard Error Object
      */
-    Fallible processCountry(AuthenticationToken token, CountryRequest request);
+    FallibleResponse processCountry(AuthenticationToken token, CountryRequest request);
 
     /**
      * Retrieves a list of Countries from the internal UN listing of Countries,
@@ -130,7 +130,7 @@ public interface Administration {
      *                state for it
      * @return Standard Error Object
      */
-    Fallible controlUserAccount(AuthenticationToken token, UserRequest request);
+    FallibleResponse controlUserAccount(AuthenticationToken token, UserRequest request);
 
     /**
      * Users cannot access the IWS, until their account has been activated, this
@@ -145,7 +145,7 @@ public interface Administration {
      * @param activationString Code used to activate the Account with
      * @return Standard Error Object
      */
-    Fallible activateUser(String activationString);
+    FallibleResponse activateUser(String activationString);
 
     /**
      * Users who have changed their username, can invoke the controlUserAccount
@@ -159,7 +159,7 @@ public interface Administration {
      * @param updateCode Code used for updating the username for the account
      * @return Standard Error Object
      */
-    Fallible updateUsername(String updateCode);
+    FallibleResponse updateUsername(String updateCode);
 
     /**
      * The request will allow an update of the name of an Account, i.e. updating
@@ -175,7 +175,7 @@ public interface Administration {
      *                name for it
      * @return Standard Error Object
      */
-    Fallible changeAccountName(AuthenticationToken token, AccountNameRequest request);
+    FallibleResponse changeAccountName(AuthenticationToken token, AccountNameRequest request);
 
     /**
      * Retrieves the details about a user. The amount of details depends upon
@@ -211,7 +211,7 @@ public interface Administration {
      * @param request Fetch Group Request Object
      * @return Standard Error Object
      */
-    Fallible deleteSubGroup(AuthenticationToken token, GroupRequest request);
+    FallibleResponse deleteSubGroup(AuthenticationToken token, GroupRequest request);
 
     /**
      * Retrieves the requested Group and the depending on the flags, it will
@@ -243,7 +243,7 @@ public interface Administration {
      * @param request Fetch Group Request Object
      * @return Standard Error Object
      */
-    Fallible changeGroupOwner(AuthenticationToken token, OwnerRequest request);
+    FallibleResponse changeGroupOwner(AuthenticationToken token, OwnerRequest request);
 
     /**
      * Processes a users relation to a Group, either by creating a new, deleting

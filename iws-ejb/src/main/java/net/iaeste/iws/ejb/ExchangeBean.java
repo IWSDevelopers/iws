@@ -81,7 +81,6 @@ import javax.persistence.EntityManager;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
-@IWSBean
 @Stateless
 @Remote(Exchange.class)
 @TransactionAttribute(TransactionAttributeType.REQUIRED)

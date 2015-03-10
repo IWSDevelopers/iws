@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://ws.iws.iaeste.net/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="accessWSService" targetNamespace="http://ws.iws.iaeste.net/">
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://ws.iws.iaeste.net/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="storageWSService" targetNamespace="http://ws.iws.iaeste.net/">
   <wsdl:types>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://ws.iws.iaeste.net/" targetNamespace="http://ws.iws.iaeste.net/" version="1.0">
 
@@ -18,6 +18,29 @@
     <xs:sequence/>
   </xs:complexType>
 
+  <xs:complexType final="extension restriction" name="fetchFileRequest">
+    <xs:complexContent>
+      <xs:extension base="tns:abstractVerification">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="fileId" type="xs:string"/>
+          <xs:element minOccurs="0" name="groupId" type="xs:string"/>
+          <xs:element minOccurs="0" name="readFileData" type="xs:boolean"/>
+          <xs:element minOccurs="0" name="type" type="tns:storageType"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="fetchFileResponse">
+    <xs:complexContent>
+      <xs:extension base="tns:FallibleResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="file" type="tns:file"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
   <xs:complexType name="FallibleResponse">
     <xs:sequence>
       <xs:element name="error" type="tns:IWSError"/>
@@ -25,42 +48,45 @@
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="IWSError">
-    <xs:sequence>
-      <xs:element name="error" type="xs:int"/>
-      <xs:element name="description" type="xs:string"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType final="extension restriction" name="fetchPermissionResponse">
+  <xs:complexType final="extension restriction" name="file">
     <xs:complexContent>
-      <xs:extension base="tns:FallibleResponse">
+      <xs:extension base="tns:abstractVerification">
         <xs:sequence>
-          <xs:element maxOccurs="unbounded" minOccurs="0" name="authorizations" nillable="true" type="tns:authorization"/>
-          <xs:element minOccurs="0" name="userId" type="xs:string"/>
+          <xs:element minOccurs="0" name="checksum" type="xs:long"/>
+          <xs:element minOccurs="0" name="created" type="tns:date"/>
+          <xs:element minOccurs="0" name="description" type="xs:string"/>
+          <xs:element minOccurs="0" name="fileId" type="xs:string"/>
+          <xs:element minOccurs="0" name="filedata" type="xs:base64Binary"/>
+          <xs:element minOccurs="0" name="filename" type="xs:string"/>
+          <xs:element minOccurs="0" name="filesize" type="xs:int"/>
+          <xs:element minOccurs="0" name="folder" type="tns:folder"/>
+          <xs:element minOccurs="0" name="group" type="tns:group"/>
+          <xs:element minOccurs="0" name="keywords" type="xs:string"/>
+          <xs:element minOccurs="0" name="mimetype" type="xs:string"/>
+          <xs:element minOccurs="0" name="modified" type="tns:date"/>
+          <xs:element minOccurs="0" name="privacy" type="tns:privacy"/>
+          <xs:element minOccurs="0" name="user" type="tns:user"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="authorization">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="userGroup" type="tns:userGroup"/>
-    </xs:sequence>
+  <xs:complexType final="extension restriction" name="date">
+    <xs:sequence/>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="userGroup">
+  <xs:complexType final="extension restriction" name="folder">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
+          <xs:element minOccurs="0" name="created" type="tns:date"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="files" nillable="true" type="tns:file"/>
+          <xs:element minOccurs="0" name="folderId" type="xs:string"/>
+          <xs:element minOccurs="0" name="foldername" type="xs:string"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="folders" nillable="true" type="tns:folder"/>
           <xs:element minOccurs="0" name="group" type="tns:group"/>
-          <xs:element minOccurs="0" name="memberSince" type="tns:date"/>
-          <xs:element name="onPrivateList" type="xs:boolean"/>
-          <xs:element name="onPublicList" type="xs:boolean"/>
-          <xs:element minOccurs="0" name="role" type="tns:role"/>
-          <xs:element minOccurs="0" name="title" type="xs:string"/>
-          <xs:element minOccurs="0" name="user" type="tns:user"/>
-          <xs:element minOccurs="0" name="userGroupId" type="xs:string"/>
+          <xs:element minOccurs="0" name="modified" type="tns:date"/>
+          <xs:element minOccurs="0" name="parentId" type="xs:string"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -100,22 +126,6 @@
           <xs:element minOccurs="0" name="membership" type="tns:membership"/>
           <xs:element minOccurs="0" name="nationality" type="xs:string"/>
           <xs:element minOccurs="0" name="phonecode" type="xs:string"/>
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
-  <xs:complexType final="extension restriction" name="date">
-    <xs:sequence/>
-  </xs:complexType>
-
-  <xs:complexType final="extension restriction" name="role">
-    <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
-        <xs:sequence>
-          <xs:element maxOccurs="unbounded" minOccurs="0" name="permissions" nillable="true" type="tns:permission"/>
-          <xs:element minOccurs="0" name="roleId" type="xs:string"/>
-          <xs:element minOccurs="0" name="roleName" type="xs:string"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -180,60 +190,90 @@
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="authenticationRequest">
+  <xs:complexType final="extension restriction" name="IWSError">
+    <xs:sequence>
+      <xs:element name="error" type="xs:int"/>
+      <xs:element name="description" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="fetchFolderRequest">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
-          <xs:element minOccurs="0" name="password" type="xs:string"/>
-          <xs:element minOccurs="0" name="username" type="xs:string"/>
+          <xs:element minOccurs="0" name="folderId" type="xs:string"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="sessionDataRequest">
+  <xs:complexType final="extension restriction" name="fetchFolderResponse">
+    <xs:complexContent>
+      <xs:extension base="tns:FallibleResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="folder" type="tns:folder"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="folderRequest">
+    <xs:complexContent>
+      <xs:extension base="tns:abstractActionable">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="folder" type="tns:folder"/>
+          <xs:element minOccurs="0" name="parentId" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType abstract="true" name="abstractActionable">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="action" type="tns:action"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="folderResponse">
+    <xs:complexContent>
+      <xs:extension base="tns:FallibleResponse">
         <xs:sequence/>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="password">
+  <xs:complexType final="extension restriction" name="fileRequest">
     <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
+      <xs:extension base="tns:abstractActionable">
         <xs:sequence>
-          <xs:element minOccurs="0" name="newPassword" type="xs:string"/>
-          <xs:element minOccurs="0" name="oldPassword" type="xs:string"/>
+          <xs:element minOccurs="0" name="file" type="tns:file"/>
+          <xs:element minOccurs="0" name="type" type="tns:storageType"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="sessionDataResponse">
-    <xs:complexContent>
-      <xs:extension base="tns:FallibleResponse">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="created" type="tns:dateTime"/>
-          <xs:element minOccurs="0" name="modified" type="tns:dateTime"/>
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
-  <xs:complexType name="dateTime">
-    <xs:sequence/>
-  </xs:complexType>
-
-  <xs:complexType final="extension restriction" name="authenticationResponse">
+  <xs:complexType final="extension restriction" name="fileResponse">
     <xs:complexContent>
       <xs:extension base="tns:FallibleResponse">
         <xs:sequence>
-          <xs:element minOccurs="0" name="token" type="tns:authenticationToken"/>
+          <xs:element minOccurs="0" name="file" type="tns:file"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
+
+  <xs:simpleType name="storageType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="OWNER"/>
+      <xs:enumeration value="FOLDER"/>
+      <xs:enumeration value="ATTACHED_TO_APPLICATION"/>
+    </xs:restriction>
+  </xs:simpleType>
 
   <xs:simpleType name="currency">
     <xs:restriction base="xs:string">
@@ -437,44 +477,11 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="permission">
+  <xs:simpleType name="privacy">
     <xs:restriction base="xs:string">
-      <xs:enumeration value="FETCH_COUNTRIES"/>
-      <xs:enumeration value="PROCESS_COUNTRY"/>
-      <xs:enumeration value="CONTROL_USER_ACCOUNT"/>
-      <xs:enumeration value="CREATE_STUDENT_ACCOUNT"/>
-      <xs:enumeration value="FETCH_USER"/>
-      <xs:enumeration value="CHANGE_ACCOUNT_NAME"/>
-      <xs:enumeration value="PROCESS_GROUP"/>
-      <xs:enumeration value="CHANGE_GROUP_OWNER"/>
-      <xs:enumeration value="DELETE_GROUP"/>
-      <xs:enumeration value="PROCESS_USER_GROUP_ASSIGNMENT"/>
-      <xs:enumeration value="FETCH_EMERGENCY_LIST"/>
-      <xs:enumeration value="FETCH_COMMITTEES"/>
-      <xs:enumeration value="PROCESS_COMMITTEE"/>
-      <xs:enumeration value="FETCH_INTERNATIONAL_GROUPS"/>
-      <xs:enumeration value="PROCESS_INTERNATIONAL_GROUP"/>
-      <xs:enumeration value="FETCH_SURVEY_OF_COUNTRIES"/>
-      <xs:enumeration value="PROCESS_SURVEY_OF_COUNTRIES"/>
-      <xs:enumeration value="PROCESS_FILE"/>
-      <xs:enumeration value="FETCH_FILE"/>
-      <xs:enumeration value="PROCESS_FOLDER"/>
-      <xs:enumeration value="FETCH_FOLDER"/>
-      <xs:enumeration value="FETCH_OFFER_STATISTICS"/>
-      <xs:enumeration value="PROCESS_EMPLOYER"/>
-      <xs:enumeration value="FETCH_EMPLOYERS"/>
-      <xs:enumeration value="PROCESS_OFFER"/>
-      <xs:enumeration value="FETCH_OFFERS"/>
-      <xs:enumeration value="FETCH_GROUPS_FOR_SHARING"/>
-      <xs:enumeration value="PROCESS_OFFER_TEMPLATES"/>
-      <xs:enumeration value="FETCH_OFFER_TEMPLATES"/>
-      <xs:enumeration value="PROCESS_PUBLISH_OFFER"/>
-      <xs:enumeration value="FETCH_PUBLISH_GROUPS"/>
-      <xs:enumeration value="APPLY_FOR_OPEN_OFFER"/>
-      <xs:enumeration value="PROCESS_STUDENT"/>
-      <xs:enumeration value="FETCH_STUDENTS"/>
-      <xs:enumeration value="FETCH_STUDENT_APPLICATION"/>
-      <xs:enumeration value="PROCESS_STUDENT_APPLICATION"/>
+      <xs:enumeration value="PUBLIC"/>
+      <xs:enumeration value="PROTECTED"/>
+      <xs:enumeration value="PRIVATE"/>
     </xs:restriction>
   </xs:simpleType>
 
@@ -494,14 +501,6 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="privacy">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="PUBLIC"/>
-      <xs:enumeration value="PROTECTED"/>
-      <xs:enumeration value="PRIVATE"/>
-    </xs:restriction>
-  </xs:simpleType>
-
   <xs:simpleType name="userStatus">
     <xs:restriction base="xs:string">
       <xs:enumeration value="NEW"/>
@@ -511,275 +510,123 @@
     </xs:restriction>
   </xs:simpleType>
 
+  <xs:simpleType name="action">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Process"/>
+      <xs:enumeration value="Delete"/>
+    </xs:restriction>
+  </xs:simpleType>
+
 </xs:schema>
   </wsdl:types>
-  <wsdl:message name="requestResettingSessionResponse">
-    <wsdl:part name="response" type="tns:FallibleResponse">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="deprecateSessionResponse">
-    <wsdl:part name="response" type="tns:FallibleResponse">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="updatePassword">
+  <wsdl:message name="processFolder">
     <wsdl:part name="token" type="tns:authenticationToken">
     </wsdl:part>
-    <wsdl:part name="password" type="tns:password">
+    <wsdl:part name="request" type="tns:folderRequest">
     </wsdl:part>
   </wsdl:message>
-  <wsdl:message name="resetPasswordResponse">
-    <wsdl:part name="response" type="tns:FallibleResponse">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="fetchPermissions">
+  <wsdl:message name="processFile">
     <wsdl:part name="token" type="tns:authenticationToken">
     </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="requestResettingSession">
-    <wsdl:part name="request" type="tns:authenticationRequest">
+    <wsdl:part name="request" type="tns:fileRequest">
     </wsdl:part>
   </wsdl:message>
-  <wsdl:message name="generateSessionResponse">
-    <wsdl:part name="response" type="tns:authenticationResponse">
+  <wsdl:message name="processFolderResponse">
+    <wsdl:part name="response" type="tns:folderResponse">
     </wsdl:part>
   </wsdl:message>
-  <wsdl:message name="resetSession">
-    <wsdl:part name="resetSessionToken" type="xsd:string">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="readSessionData">
+  <wsdl:message name="fetchFile">
     <wsdl:part name="token" type="tns:authenticationToken">
     </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="forgotPasswordResponse">
-    <wsdl:part name="response" type="tns:FallibleResponse">
+    <wsdl:part name="request" type="tns:fetchFileRequest">
     </wsdl:part>
   </wsdl:message>
-  <wsdl:message name="saveSessionData">
+  <wsdl:message name="fetchFolder">
     <wsdl:part name="token" type="tns:authenticationToken">
     </wsdl:part>
-    <wsdl:part name="request" type="tns:sessionDataRequest">
+    <wsdl:part name="request" type="tns:fetchFolderRequest">
     </wsdl:part>
   </wsdl:message>
-  <wsdl:message name="fetchPermissionsResponse">
-    <wsdl:part name="response" type="tns:fetchPermissionResponse">
+  <wsdl:message name="fetchFolderResponse">
+    <wsdl:part name="response" type="tns:fetchFolderResponse">
     </wsdl:part>
   </wsdl:message>
-  <wsdl:message name="readSessionDataResponse">
-    <wsdl:part name="response" type="tns:sessionDataResponse">
+  <wsdl:message name="processFileResponse">
+    <wsdl:part name="response" type="tns:fileResponse">
     </wsdl:part>
   </wsdl:message>
-  <wsdl:message name="updatePasswordResponse">
-    <wsdl:part name="response" type="tns:FallibleResponse">
+  <wsdl:message name="fetchFileResponse">
+    <wsdl:part name="response" type="tns:fetchFileResponse">
     </wsdl:part>
   </wsdl:message>
-  <wsdl:message name="verifySessionResponse">
-    <wsdl:part name="response" type="tns:FallibleResponse">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="deprecateSession">
-    <wsdl:part name="token" type="tns:authenticationToken">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="forgotPassword">
-    <wsdl:part name="username" type="xsd:string">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="saveSessionDataResponse">
-    <wsdl:part name="response" type="tns:FallibleResponse">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="resetSessionResponse">
-    <wsdl:part name="response" type="tns:authenticationResponse">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="verifySession">
-    <wsdl:part name="token" type="tns:authenticationToken">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="generateSession">
-    <wsdl:part name="request" type="tns:authenticationRequest">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="resetPassword">
-    <wsdl:part name="resetPasswordToken" type="xsd:string">
-    </wsdl:part>
-    <wsdl:part name="password" type="tns:password">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:portType name="accessWS">
-    <wsdl:operation name="verifySession">
-      <wsdl:input message="tns:verifySession" name="verifySession">
+  <wsdl:portType name="storageWS">
+    <wsdl:operation name="fetchFile">
+      <wsdl:input message="tns:fetchFile" name="fetchFile">
     </wsdl:input>
-      <wsdl:output message="tns:verifySessionResponse" name="verifySessionResponse">
+      <wsdl:output message="tns:fetchFileResponse" name="fetchFileResponse">
     </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="fetchPermissions">
-      <wsdl:input message="tns:fetchPermissions" name="fetchPermissions">
+    <wsdl:operation name="fetchFolder">
+      <wsdl:input message="tns:fetchFolder" name="fetchFolder">
     </wsdl:input>
-      <wsdl:output message="tns:fetchPermissionsResponse" name="fetchPermissionsResponse">
+      <wsdl:output message="tns:fetchFolderResponse" name="fetchFolderResponse">
     </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="requestResettingSession">
-      <wsdl:input message="tns:requestResettingSession" name="requestResettingSession">
+    <wsdl:operation name="processFolder">
+      <wsdl:input message="tns:processFolder" name="processFolder">
     </wsdl:input>
-      <wsdl:output message="tns:requestResettingSessionResponse" name="requestResettingSessionResponse">
+      <wsdl:output message="tns:processFolderResponse" name="processFolderResponse">
     </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="saveSessionData">
-      <wsdl:input message="tns:saveSessionData" name="saveSessionData">
+    <wsdl:operation name="processFile">
+      <wsdl:input message="tns:processFile" name="processFile">
     </wsdl:input>
-      <wsdl:output message="tns:saveSessionDataResponse" name="saveSessionDataResponse">
-    </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="deprecateSession">
-      <wsdl:input message="tns:deprecateSession" name="deprecateSession">
-    </wsdl:input>
-      <wsdl:output message="tns:deprecateSessionResponse" name="deprecateSessionResponse">
-    </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="resetPassword">
-      <wsdl:input message="tns:resetPassword" name="resetPassword">
-    </wsdl:input>
-      <wsdl:output message="tns:resetPasswordResponse" name="resetPasswordResponse">
-    </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="updatePassword">
-      <wsdl:input message="tns:updatePassword" name="updatePassword">
-    </wsdl:input>
-      <wsdl:output message="tns:updatePasswordResponse" name="updatePasswordResponse">
-    </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="readSessionData">
-      <wsdl:input message="tns:readSessionData" name="readSessionData">
-    </wsdl:input>
-      <wsdl:output message="tns:readSessionDataResponse" name="readSessionDataResponse">
-    </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="generateSession">
-      <wsdl:input message="tns:generateSession" name="generateSession">
-    </wsdl:input>
-      <wsdl:output message="tns:generateSessionResponse" name="generateSessionResponse">
-    </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="forgotPassword">
-      <wsdl:input message="tns:forgotPassword" name="forgotPassword">
-    </wsdl:input>
-      <wsdl:output message="tns:forgotPasswordResponse" name="forgotPasswordResponse">
-    </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="resetSession">
-      <wsdl:input message="tns:resetSession" name="resetSession">
-    </wsdl:input>
-      <wsdl:output message="tns:resetSessionResponse" name="resetSessionResponse">
+      <wsdl:output message="tns:processFileResponse" name="processFileResponse">
     </wsdl:output>
     </wsdl:operation>
   </wsdl:portType>
-  <wsdl:binding name="accessWSServiceSoapBinding" type="tns:accessWS">
+  <wsdl:binding name="storageWSServiceSoapBinding" type="tns:storageWS">
     <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
-    <wsdl:operation name="verifySession">
+    <wsdl:operation name="fetchFile">
       <soap:operation soapAction="" style="rpc"/>
-      <wsdl:input name="verifySession">
+      <wsdl:input name="fetchFile">
         <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
-      <wsdl:output name="verifySessionResponse">
+      <wsdl:output name="fetchFileResponse">
         <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="fetchPermissions">
+    <wsdl:operation name="fetchFolder">
       <soap:operation soapAction="" style="rpc"/>
-      <wsdl:input name="fetchPermissions">
+      <wsdl:input name="fetchFolder">
         <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
-      <wsdl:output name="fetchPermissionsResponse">
+      <wsdl:output name="fetchFolderResponse">
         <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="requestResettingSession">
+    <wsdl:operation name="processFile">
       <soap:operation soapAction="" style="rpc"/>
-      <wsdl:input name="requestResettingSession">
+      <wsdl:input name="processFile">
         <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
-      <wsdl:output name="requestResettingSessionResponse">
+      <wsdl:output name="processFileResponse">
         <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="saveSessionData">
+    <wsdl:operation name="processFolder">
       <soap:operation soapAction="" style="rpc"/>
-      <wsdl:input name="saveSessionData">
+      <wsdl:input name="processFolder">
         <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
-      <wsdl:output name="saveSessionDataResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="deprecateSession">
-      <soap:operation soapAction="" style="rpc"/>
-      <wsdl:input name="deprecateSession">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
-      </wsdl:input>
-      <wsdl:output name="deprecateSessionResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="resetPassword">
-      <soap:operation soapAction="" style="rpc"/>
-      <wsdl:input name="resetPassword">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
-      </wsdl:input>
-      <wsdl:output name="resetPasswordResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="updatePassword">
-      <soap:operation soapAction="" style="rpc"/>
-      <wsdl:input name="updatePassword">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
-      </wsdl:input>
-      <wsdl:output name="updatePasswordResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="forgotPassword">
-      <soap:operation soapAction="" style="rpc"/>
-      <wsdl:input name="forgotPassword">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
-      </wsdl:input>
-      <wsdl:output name="forgotPasswordResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="generateSession">
-      <soap:operation soapAction="" style="rpc"/>
-      <wsdl:input name="generateSession">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
-      </wsdl:input>
-      <wsdl:output name="generateSessionResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="readSessionData">
-      <soap:operation soapAction="" style="rpc"/>
-      <wsdl:input name="readSessionData">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
-      </wsdl:input>
-      <wsdl:output name="readSessionDataResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="resetSession">
-      <soap:operation soapAction="" style="rpc"/>
-      <wsdl:input name="resetSession">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
-      </wsdl:input>
-      <wsdl:output name="resetSessionResponse">
+      <wsdl:output name="processFolderResponse">
         <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
   </wsdl:binding>
-  <wsdl:service name="accessWSService">
-    <wsdl:port binding="tns:accessWSServiceSoapBinding" name="accessWS">
-      <soap:address location="http://localhost:8080/iws-ws/AccessWS"/>
+  <wsdl:service name="storageWSService">
+    <wsdl:port binding="tns:storageWSServiceSoapBinding" name="storageWS">
+      <soap:address location="http://localhost:8080/iws-ws/StorageWS"/>
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

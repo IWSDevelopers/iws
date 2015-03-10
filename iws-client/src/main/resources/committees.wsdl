@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://ws.iws.iaeste.net/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="accessWSService" targetNamespace="http://ws.iws.iaeste.net/">
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://ws.iws.iaeste.net/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="committeeWSService" targetNamespace="http://ws.iws.iaeste.net/">
   <wsdl:types>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://ws.iws.iaeste.net/" targetNamespace="http://ws.iws.iaeste.net/" version="1.0">
 
@@ -18,11 +18,39 @@
     <xs:sequence/>
   </xs:complexType>
 
+  <xs:complexType final="extension restriction" name="fetchSurveyOfCountryRequest">
+    <xs:complexContent>
+      <xs:extension base="tns:abstractVerification">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="groupId" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="fetchSurveyOfCountryRespose">
+    <xs:complexContent>
+      <xs:extension base="tns:FallibleResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="survey" type="tns:surveyOfCountry"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
   <xs:complexType name="FallibleResponse">
     <xs:sequence>
       <xs:element name="error" type="tns:IWSError"/>
       <xs:element name="message" type="xs:string"/>
     </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="surveyOfCountry">
+    <xs:complexContent>
+      <xs:extension base="tns:abstractVerification">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
   </xs:complexType>
 
   <xs:complexType final="extension restriction" name="IWSError">
@@ -32,21 +60,34 @@
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="fetchPermissionResponse">
+  <xs:complexType name="fetchCommitteeRequest">
     <xs:complexContent>
-      <xs:extension base="tns:FallibleResponse">
+      <xs:extension base="tns:abstractPaginatable">
         <xs:sequence>
-          <xs:element maxOccurs="unbounded" minOccurs="0" name="authorizations" nillable="true" type="tns:authorization"/>
-          <xs:element minOccurs="0" name="userId" type="xs:string"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="countryIds" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="membership" type="tns:membership"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="statuses" nillable="true" type="tns:groupStatus"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="authorization">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="userGroup" type="tns:userGroup"/>
-    </xs:sequence>
+  <xs:complexType abstract="true" name="abstractPaginatable">
+    <xs:complexContent>
+      <xs:extension base="tns:abstractVerification">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="fetchCommitteeResponse">
+    <xs:complexContent>
+      <xs:extension base="tns:FallibleResponse">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="committees" nillable="true" type="tns:userGroup"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
   </xs:complexType>
 
   <xs:complexType final="extension restriction" name="userGroup">
@@ -180,60 +221,85 @@
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="authenticationRequest">
+  <xs:complexType final="extension restriction" name="fetchInternationalGroupRequest">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
-          <xs:element minOccurs="0" name="password" type="xs:string"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="statuses" nillable="true" type="tns:groupStatus"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="fetchInternationalGroupResponse">
+    <xs:complexContent>
+      <xs:extension base="tns:FallibleResponse">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="groups" nillable="true" type="tns:userGroup"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="surveyOfCountryRequest">
+    <xs:complexContent>
+      <xs:extension base="tns:abstractVerification">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="survey" type="tns:surveyOfCountry"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="internationalGroupRequest">
+    <xs:complexContent>
+      <xs:extension base="tns:abstractVerification">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="group" type="tns:group"/>
+          <xs:element minOccurs="0" name="status" type="tns:groupStatus"/>
+          <xs:element minOccurs="0" name="user" type="tns:user"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="committeeRequest">
+    <xs:complexContent>
+      <xs:extension base="tns:abstractVerification">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="action" type="tns:action"/>
+          <xs:element minOccurs="0" name="countryId" type="xs:string"/>
+          <xs:element minOccurs="0" name="firstname" type="xs:string"/>
+          <xs:element minOccurs="0" name="institutionAbbreviation" type="xs:string"/>
+          <xs:element minOccurs="0" name="institutionName" type="xs:string"/>
+          <xs:element minOccurs="0" name="lastname" type="xs:string"/>
+          <xs:element minOccurs="0" name="nationalCommittee" type="tns:group"/>
+          <xs:element minOccurs="0" name="nationalSecretary" type="tns:user"/>
           <xs:element minOccurs="0" name="username" type="xs:string"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="sessionDataRequest">
-    <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
-        <xs:sequence/>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
+  <xs:simpleType name="membership">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="UNKNOWN"/>
+      <xs:enumeration value="FULL_MEMBER"/>
+      <xs:enumeration value="ASSOCIATE_MEMBER"/>
+      <xs:enumeration value="COOPERATING_INSTITUTION"/>
+      <xs:enumeration value="FORMER_MEMBER"/>
+      <xs:enumeration value="LISTED"/>
+      <xs:enumeration value="UNLISTED"/>
+    </xs:restriction>
+  </xs:simpleType>
 
-  <xs:complexType final="extension restriction" name="password">
-    <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="newPassword" type="xs:string"/>
-          <xs:element minOccurs="0" name="oldPassword" type="xs:string"/>
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
-  <xs:complexType final="extension restriction" name="sessionDataResponse">
-    <xs:complexContent>
-      <xs:extension base="tns:FallibleResponse">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="created" type="tns:dateTime"/>
-          <xs:element minOccurs="0" name="modified" type="tns:dateTime"/>
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
-  <xs:complexType name="dateTime">
-    <xs:sequence/>
-  </xs:complexType>
-
-  <xs:complexType final="extension restriction" name="authenticationResponse">
-    <xs:complexContent>
-      <xs:extension base="tns:FallibleResponse">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="token" type="tns:authenticationToken"/>
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
+  <xs:simpleType name="groupStatus">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="ACTIVE"/>
+      <xs:enumeration value="SUSPENDED"/>
+      <xs:enumeration value="DELETED"/>
+    </xs:restriction>
+  </xs:simpleType>
 
   <xs:simpleType name="currency">
     <xs:restriction base="xs:string">
@@ -404,18 +470,6 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="membership">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="UNKNOWN"/>
-      <xs:enumeration value="FULL_MEMBER"/>
-      <xs:enumeration value="ASSOCIATE_MEMBER"/>
-      <xs:enumeration value="COOPERATING_INSTITUTION"/>
-      <xs:enumeration value="FORMER_MEMBER"/>
-      <xs:enumeration value="LISTED"/>
-      <xs:enumeration value="UNLISTED"/>
-    </xs:restriction>
-  </xs:simpleType>
-
   <xs:simpleType name="groupType">
     <xs:restriction base="xs:string">
       <xs:enumeration value="ADMINISTRATION"/>
@@ -511,275 +565,179 @@
     </xs:restriction>
   </xs:simpleType>
 
+  <xs:simpleType name="action">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="CREATE"/>
+      <xs:enumeration value="UPDATE"/>
+      <xs:enumeration value="CHANGE_NS"/>
+      <xs:enumeration value="MERGE"/>
+      <xs:enumeration value="UPGRADE"/>
+      <xs:enumeration value="ACTIVATE"/>
+      <xs:enumeration value="SUSPEND"/>
+      <xs:enumeration value="DELETE"/>
+    </xs:restriction>
+  </xs:simpleType>
+
 </xs:schema>
   </wsdl:types>
-  <wsdl:message name="requestResettingSessionResponse">
+  <wsdl:message name="processCommitteeResponse">
     <wsdl:part name="response" type="tns:FallibleResponse">
     </wsdl:part>
   </wsdl:message>
-  <wsdl:message name="deprecateSessionResponse">
-    <wsdl:part name="response" type="tns:FallibleResponse">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="updatePassword">
+  <wsdl:message name="fetchCommittees">
     <wsdl:part name="token" type="tns:authenticationToken">
     </wsdl:part>
-    <wsdl:part name="password" type="tns:password">
+    <wsdl:part name="request" type="tns:fetchCommitteeRequest">
     </wsdl:part>
   </wsdl:message>
-  <wsdl:message name="resetPasswordResponse">
+  <wsdl:message name="processInternationalGroupResponse">
     <wsdl:part name="response" type="tns:FallibleResponse">
     </wsdl:part>
   </wsdl:message>
-  <wsdl:message name="fetchPermissions">
+  <wsdl:message name="fetchInternationalGroupsResponse">
+    <wsdl:part name="response" type="tns:fetchInternationalGroupResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="fetchSurveyOfCountryResponse">
+    <wsdl:part name="response" type="tns:fetchSurveyOfCountryRespose">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="processSurveyOfCountry">
     <wsdl:part name="token" type="tns:authenticationToken">
     </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="requestResettingSession">
-    <wsdl:part name="request" type="tns:authenticationRequest">
+    <wsdl:part name="request" type="tns:surveyOfCountryRequest">
     </wsdl:part>
   </wsdl:message>
-  <wsdl:message name="generateSessionResponse">
-    <wsdl:part name="response" type="tns:authenticationResponse">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="resetSession">
-    <wsdl:part name="resetSessionToken" type="xsd:string">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="readSessionData">
+  <wsdl:message name="fetchInternationalGroups">
     <wsdl:part name="token" type="tns:authenticationToken">
     </wsdl:part>
+    <wsdl:part name="request" type="tns:fetchInternationalGroupRequest">
+    </wsdl:part>
   </wsdl:message>
-  <wsdl:message name="forgotPasswordResponse">
+  <wsdl:message name="fetchSurveyOfCountry">
+    <wsdl:part name="token" type="tns:authenticationToken">
+    </wsdl:part>
+    <wsdl:part name="request" type="tns:fetchSurveyOfCountryRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="processCommittee">
+    <wsdl:part name="token" type="tns:authenticationToken">
+    </wsdl:part>
+    <wsdl:part name="request" type="tns:committeeRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="processSurveyOfCountryResponse">
     <wsdl:part name="response" type="tns:FallibleResponse">
     </wsdl:part>
   </wsdl:message>
-  <wsdl:message name="saveSessionData">
+  <wsdl:message name="fetchCommitteesResponse">
+    <wsdl:part name="response" type="tns:fetchCommitteeResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="processInternationalGroup">
     <wsdl:part name="token" type="tns:authenticationToken">
     </wsdl:part>
-    <wsdl:part name="request" type="tns:sessionDataRequest">
+    <wsdl:part name="request" type="tns:internationalGroupRequest">
     </wsdl:part>
   </wsdl:message>
-  <wsdl:message name="fetchPermissionsResponse">
-    <wsdl:part name="response" type="tns:fetchPermissionResponse">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="readSessionDataResponse">
-    <wsdl:part name="response" type="tns:sessionDataResponse">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="updatePasswordResponse">
-    <wsdl:part name="response" type="tns:FallibleResponse">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="verifySessionResponse">
-    <wsdl:part name="response" type="tns:FallibleResponse">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="deprecateSession">
-    <wsdl:part name="token" type="tns:authenticationToken">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="forgotPassword">
-    <wsdl:part name="username" type="xsd:string">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="saveSessionDataResponse">
-    <wsdl:part name="response" type="tns:FallibleResponse">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="resetSessionResponse">
-    <wsdl:part name="response" type="tns:authenticationResponse">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="verifySession">
-    <wsdl:part name="token" type="tns:authenticationToken">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="generateSession">
-    <wsdl:part name="request" type="tns:authenticationRequest">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="resetPassword">
-    <wsdl:part name="resetPasswordToken" type="xsd:string">
-    </wsdl:part>
-    <wsdl:part name="password" type="tns:password">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:portType name="accessWS">
-    <wsdl:operation name="verifySession">
-      <wsdl:input message="tns:verifySession" name="verifySession">
+  <wsdl:portType name="committeeWS">
+    <wsdl:operation name="fetchSurveyOfCountry">
+      <wsdl:input message="tns:fetchSurveyOfCountry" name="fetchSurveyOfCountry">
     </wsdl:input>
-      <wsdl:output message="tns:verifySessionResponse" name="verifySessionResponse">
+      <wsdl:output message="tns:fetchSurveyOfCountryResponse" name="fetchSurveyOfCountryResponse">
     </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="fetchPermissions">
-      <wsdl:input message="tns:fetchPermissions" name="fetchPermissions">
+    <wsdl:operation name="fetchCommittees">
+      <wsdl:input message="tns:fetchCommittees" name="fetchCommittees">
     </wsdl:input>
-      <wsdl:output message="tns:fetchPermissionsResponse" name="fetchPermissionsResponse">
+      <wsdl:output message="tns:fetchCommitteesResponse" name="fetchCommitteesResponse">
     </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="requestResettingSession">
-      <wsdl:input message="tns:requestResettingSession" name="requestResettingSession">
+    <wsdl:operation name="fetchInternationalGroups">
+      <wsdl:input message="tns:fetchInternationalGroups" name="fetchInternationalGroups">
     </wsdl:input>
-      <wsdl:output message="tns:requestResettingSessionResponse" name="requestResettingSessionResponse">
+      <wsdl:output message="tns:fetchInternationalGroupsResponse" name="fetchInternationalGroupsResponse">
     </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="saveSessionData">
-      <wsdl:input message="tns:saveSessionData" name="saveSessionData">
+    <wsdl:operation name="processSurveyOfCountry">
+      <wsdl:input message="tns:processSurveyOfCountry" name="processSurveyOfCountry">
     </wsdl:input>
-      <wsdl:output message="tns:saveSessionDataResponse" name="saveSessionDataResponse">
+      <wsdl:output message="tns:processSurveyOfCountryResponse" name="processSurveyOfCountryResponse">
     </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="deprecateSession">
-      <wsdl:input message="tns:deprecateSession" name="deprecateSession">
+    <wsdl:operation name="processInternationalGroup">
+      <wsdl:input message="tns:processInternationalGroup" name="processInternationalGroup">
     </wsdl:input>
-      <wsdl:output message="tns:deprecateSessionResponse" name="deprecateSessionResponse">
+      <wsdl:output message="tns:processInternationalGroupResponse" name="processInternationalGroupResponse">
     </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="resetPassword">
-      <wsdl:input message="tns:resetPassword" name="resetPassword">
+    <wsdl:operation name="processCommittee">
+      <wsdl:input message="tns:processCommittee" name="processCommittee">
     </wsdl:input>
-      <wsdl:output message="tns:resetPasswordResponse" name="resetPasswordResponse">
-    </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="updatePassword">
-      <wsdl:input message="tns:updatePassword" name="updatePassword">
-    </wsdl:input>
-      <wsdl:output message="tns:updatePasswordResponse" name="updatePasswordResponse">
-    </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="readSessionData">
-      <wsdl:input message="tns:readSessionData" name="readSessionData">
-    </wsdl:input>
-      <wsdl:output message="tns:readSessionDataResponse" name="readSessionDataResponse">
-    </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="generateSession">
-      <wsdl:input message="tns:generateSession" name="generateSession">
-    </wsdl:input>
-      <wsdl:output message="tns:generateSessionResponse" name="generateSessionResponse">
-    </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="forgotPassword">
-      <wsdl:input message="tns:forgotPassword" name="forgotPassword">
-    </wsdl:input>
-      <wsdl:output message="tns:forgotPasswordResponse" name="forgotPasswordResponse">
-    </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="resetSession">
-      <wsdl:input message="tns:resetSession" name="resetSession">
-    </wsdl:input>
-      <wsdl:output message="tns:resetSessionResponse" name="resetSessionResponse">
+      <wsdl:output message="tns:processCommitteeResponse" name="processCommitteeResponse">
     </wsdl:output>
     </wsdl:operation>
   </wsdl:portType>
-  <wsdl:binding name="accessWSServiceSoapBinding" type="tns:accessWS">
+  <wsdl:binding name="committeeWSServiceSoapBinding" type="tns:committeeWS">
     <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
-    <wsdl:operation name="verifySession">
+    <wsdl:operation name="fetchCommittees">
       <soap:operation soapAction="" style="rpc"/>
-      <wsdl:input name="verifySession">
+      <wsdl:input name="fetchCommittees">
         <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
-      <wsdl:output name="verifySessionResponse">
+      <wsdl:output name="fetchCommitteesResponse">
         <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="fetchPermissions">
+    <wsdl:operation name="fetchSurveyOfCountry">
       <soap:operation soapAction="" style="rpc"/>
-      <wsdl:input name="fetchPermissions">
+      <wsdl:input name="fetchSurveyOfCountry">
         <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
-      <wsdl:output name="fetchPermissionsResponse">
+      <wsdl:output name="fetchSurveyOfCountryResponse">
         <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="requestResettingSession">
+    <wsdl:operation name="fetchInternationalGroups">
       <soap:operation soapAction="" style="rpc"/>
-      <wsdl:input name="requestResettingSession">
+      <wsdl:input name="fetchInternationalGroups">
         <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
-      <wsdl:output name="requestResettingSessionResponse">
+      <wsdl:output name="fetchInternationalGroupsResponse">
         <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="saveSessionData">
+    <wsdl:operation name="processInternationalGroup">
       <soap:operation soapAction="" style="rpc"/>
-      <wsdl:input name="saveSessionData">
+      <wsdl:input name="processInternationalGroup">
         <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
-      <wsdl:output name="saveSessionDataResponse">
+      <wsdl:output name="processInternationalGroupResponse">
         <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="deprecateSession">
+    <wsdl:operation name="processSurveyOfCountry">
       <soap:operation soapAction="" style="rpc"/>
-      <wsdl:input name="deprecateSession">
+      <wsdl:input name="processSurveyOfCountry">
         <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
-      <wsdl:output name="deprecateSessionResponse">
+      <wsdl:output name="processSurveyOfCountryResponse">
         <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="resetPassword">
+    <wsdl:operation name="processCommittee">
       <soap:operation soapAction="" style="rpc"/>
-      <wsdl:input name="resetPassword">
+      <wsdl:input name="processCommittee">
         <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
-      <wsdl:output name="resetPasswordResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="updatePassword">
-      <soap:operation soapAction="" style="rpc"/>
-      <wsdl:input name="updatePassword">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
-      </wsdl:input>
-      <wsdl:output name="updatePasswordResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="forgotPassword">
-      <soap:operation soapAction="" style="rpc"/>
-      <wsdl:input name="forgotPassword">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
-      </wsdl:input>
-      <wsdl:output name="forgotPasswordResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="generateSession">
-      <soap:operation soapAction="" style="rpc"/>
-      <wsdl:input name="generateSession">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
-      </wsdl:input>
-      <wsdl:output name="generateSessionResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="readSessionData">
-      <soap:operation soapAction="" style="rpc"/>
-      <wsdl:input name="readSessionData">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
-      </wsdl:input>
-      <wsdl:output name="readSessionDataResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="resetSession">
-      <soap:operation soapAction="" style="rpc"/>
-      <wsdl:input name="resetSession">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
-      </wsdl:input>
-      <wsdl:output name="resetSessionResponse">
+      <wsdl:output name="processCommitteeResponse">
         <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
   </wsdl:binding>
-  <wsdl:service name="accessWSService">
-    <wsdl:port binding="tns:accessWSServiceSoapBinding" name="accessWS">
-      <soap:address location="http://localhost:8080/iws-ws/AccessWS"/>
+  <wsdl:service name="committeeWSService">
+    <wsdl:port binding="tns:committeeWSServiceSoapBinding" name="committeeWS">
+      <soap:address location="http://localhost:8080/iws-ws/CommitteeWS"/>
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

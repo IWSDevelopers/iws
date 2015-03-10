@@ -53,7 +53,7 @@ public class StorageWS implements Storage {
      * Setter for the JNDI injected Bean context. This allows us to also
      * test the code, by invoking these setters on the instantiated Object.
      *
-     * @param bean IWS Storage Bean instance
+     * @param bean IWS Exchange Bean instance
      */
     @WebMethod(exclude = true)
     public void setStorageBean(final StorageBean bean) {

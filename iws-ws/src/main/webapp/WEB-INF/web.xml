@@ -9,20 +9,56 @@
     <display-name>iws-ws</display-name>
 
     <servlet>
-        <servlet-name>AccessWS</servlet-name>
+        <servlet-name>accessWS</servlet-name>
         <servlet-class>net.iaeste.iws.ws.AccessWS</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>AccessWS</servlet-name>
-        <url-pattern>/AccessWS</url-pattern>
+        <servlet-name>accessWS</servlet-name>
+        <url-pattern>/accessWS</url-pattern>
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>ExchangeWS</servlet-name>
+        <servlet-name>administrationWS</servlet-name>
+        <servlet-class>net.iaeste.iws.ws.AdministrationWS</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>administrationWS</servlet-name>
+        <url-pattern>/administrationWS</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>committeeWS</servlet-name>
+        <servlet-class>net.iaeste.iws.ws.CommitteeWS</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>committeeWS</servlet-name>
+        <url-pattern>/committeeWS</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>exchangeWS</servlet-name>
         <servlet-class>net.iaeste.iws.ws.ExchangeWS</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>ExchangeWS</servlet-name>
-        <url-pattern>/ExchangeWS</url-pattern>
+        <servlet-name>exchangeWS</servlet-name>
+        <url-pattern>/exchangeWS</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>storageWS</servlet-name>
+        <servlet-class>net.iaeste.iws.ws.StorageWS</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>storageWS</servlet-name>
+        <url-pattern>/storageWS</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>studentWS</servlet-name>
+        <servlet-class>net.iaeste.iws.ws.StudentWS</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>studentWS</servlet-name>
+        <url-pattern>/studentWS</url-pattern>
     </servlet-mapping>
 </web-app>

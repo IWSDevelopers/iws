@@ -155,7 +155,7 @@ public class FileMigrator implements Migrator<IW3FileEntity> {
             entity.setUser(findUser(oldEntity));
             entity.setFolder(findFolder(oldEntity));
             entity.setFilename(oldEntity.getFilename().trim());
-            entity.setStoredFilename(oldEntity.getSystemname());
+            entity.setStoredFilename("files/" + oldEntity.getUserId() + '/' + oldEntity.getSystemname());
             entity.setFilesize(oldEntity.getFilesize());
             entity.setMimetype(oldEntity.getMimetype().getMimetype());
             entity.setDescription(oldEntity.getDescription().trim());

@@ -78,8 +78,8 @@ public class SessionRequestBean {
 
     // Success, Warning or Failure messages to print for each request.
     private static final String SUCCESS = "%s completed successfully in %s ms.";
-    private static final String WARINING = "%s completed in %s ms with warning: %s.";
-    private static final String FAILURE = "%s completed in %s ms with failure: %s.";
+    private static final String WARINING = "%s completed in %s ms with warning: %s";
+    private static final String FAILURE = "%s completed in %s ms with failure: %s";
 
     // The milliseconds that a request takes is converted from the date/time
     // format and into a nice printable number, via this formatter.

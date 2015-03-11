@@ -16,6 +16,7 @@ package net.iaeste.iws.client.ws;
 
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
+import net.iaeste.iws.api.dtos.Password;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
 import net.iaeste.iws.api.responses.FallibleResponse;
@@ -37,7 +38,7 @@ public class AccessMapper {
     }
 
     public static AuthenticationResponse map(final net.iaeste.iws.ws.AuthenticationResponse ws) {
-        final AuthenticationResponse api = new AuthenticationResponse();
+        final AuthenticationResponse api = new AuthenticationResponse(map(ws.getError()), ws.getMessage());
 
         api.setToken(map(ws.getToken()));
         return api;
@@ -71,4 +72,12 @@ public class AccessMapper {
         return new IWSError(ws.getError(), ws.getDescription());
     }
 
+    public static net.iaeste.iws.ws.Password map(final Password api) {
+        final net.iaeste.iws.ws.Password ws = new net.iaeste.iws.ws.Password();
+
+        ws.setNewPassword(api.getNewPassword());
+        ws.setOldPassword(api.getOldPassword());
+
+        return ws;
+    }
 }

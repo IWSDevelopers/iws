@@ -17,6 +17,7 @@ package net.iaeste.iws.client.ws;
 import static net.iaeste.iws.client.ws.AccessMapper.map;
 
 import net.iaeste.iws.api.Access;
+import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.dtos.Password;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
@@ -26,13 +27,13 @@ import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchPermissionResponse;
 import net.iaeste.iws.api.responses.SessionDataResponse;
 import net.iaeste.iws.ws.AccessWS;
+import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.frontend.ClientProxy;
 import org.apache.cxf.transport.http.HTTPConduit;
 import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
 
 import javax.xml.namespace.QName;
 import javax.xml.ws.BindingProvider;
-import javax.xml.ws.Service;
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -42,7 +43,7 @@ import java.net.URL;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.1
  */
-public class AccessWSClient extends Service implements Access {
+public class AccessWSClient extends AbstractClient implements Access {
 
     // =========================================================================
     // Constructor & Setup of WS Client
@@ -66,6 +67,8 @@ public class AccessWSClient extends Service implements Access {
         super(new URL(wsdlLocation), ACCESS_SERVICE_NAME);
         client = super.getPort(ACCESS_SERVICE_PORT, AccessWS.class);
 
+        // make sure to initialize tlsParams prior to this call somewhere
+        //http.setTlsClientParameters(getTlsParams());
         // The CXF will by default attempt to read the URL from the WSDL at the
         // Server, which is normally given with the server's name. However, as
         // we're running via a loadbalancer and/or proxies, this address may not
@@ -79,12 +82,35 @@ public class AccessWSClient extends Service implements Access {
         // default values, the Policy must be exposed. Which is done by setting
         // a new Policy Scheme which can be access externally.
         // Policy: http://cxf.apache.org/docs/client-http-transport-including-ssl-support.html#ClientHTTPTransport%28includingSSLsupport%29-HowtoconfiguretheHTTPConduitfortheSOAPClient?
-        ((HTTPConduit) ClientProxy.getClient(client).getConduit()).setClient(policy);
+        final Client proxy = ClientProxy.getClient(client);
+        final HTTPConduit conduit = (HTTPConduit) proxy.getConduit();
+
+        // If we're dealing with an HTTPS request, then we'll initialize and
+        // set the TLS Client Parameters. The check is primitive, but covers
+        // the general case.
+        if ("https://".equals(wsdlLocation.substring(0, 8).toLowerCase(IWSConstants.DEFAULT_LOCALE))) {
+            // Before doing anything else, we're initializing the SSL Conduit
+            initializeSSL();
+
+            // Add the TLS Client Parameters & our new Policy
+            conduit.setTlsClientParameters(tlsClientParameters);
+        }
+
+        // Finally, set the Policy into the HTTP Conduit.
+        conduit.setClient(policy);
     }
 
     // =========================================================================
     // Implementation of the Access Interface
     // =========================================================================
+
+    public static void main(String[] args) throws MalformedURLException {
+        final AccessWSClient client = new AccessWSClient("http://test.iaeste.net:8080/iws-ws/accessWS?wsdl");
+        final AuthenticationRequest authRequest = new AuthenticationRequest("test@bla.net", "test");
+        final AuthenticationResponse authResponse = client.generateSession(authRequest);
+        System.out.println(authResponse.getError());
+        System.out.println(authResponse.getMessage());
+    }
 
     /**
      * {@inheritDoc}
@@ -99,7 +125,7 @@ public class AccessWSClient extends Service implements Access {
      */
     @Override
     public FallibleResponse requestResettingSession(final AuthenticationRequest request) {
-        return null;
+        return map(client.requestResettingSession(map(request)));
     }
 
     /**
@@ -107,7 +133,7 @@ public class AccessWSClient extends Service implements Access {
      */
     @Override
     public AuthenticationResponse resetSession(final String resetSessionToken) {
-        return null;
+        return map(client.resetSession(resetSessionToken));
     }
 
     /**
@@ -147,7 +173,7 @@ public class AccessWSClient extends Service implements Access {
      */
     @Override
     public FallibleResponse forgotPassword(final String username) {
-        return null;
+        return map(client.forgotPassword(username));
     }
 
     /**
@@ -155,7 +181,7 @@ public class AccessWSClient extends Service implements Access {
      */
     @Override
     public FallibleResponse resetPassword(final String resetPasswordToken, final Password password) {
-        return null;
+        return map(client.resetPassword(resetPasswordToken, map(password)));
     }
 
     /**
@@ -163,7 +189,7 @@ public class AccessWSClient extends Service implements Access {
      */
     @Override
     public FallibleResponse updatePassword(final AuthenticationToken token, final Password password) {
-        return null;
+        return map(client.updatePassword(map(token), map(password)));
     }
 
     /**

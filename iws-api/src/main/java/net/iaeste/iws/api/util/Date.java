@@ -18,6 +18,8 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.exceptions.VerificationException;
 import org.joda.time.DateMidnight;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.util.Calendar;
@@ -30,35 +32,45 @@ import java.util.Calendar;
  * formats are also consisting with our needs. Which follows the
  * <a href="http://en.wikipedia.org/wiki/ISO_8601">ISO</a> standard.<br />
  * This class is a Date only class. Meaning that there is no time information
- * present.
+ * present.<br />
+ *   Note; there is a problem with JodaTime and WebServices, meaning that we
+ * need to create a special mapping or use a different internal Class for it.
+ * For this reason, the usage of JodaTime is used here to protect the internal
+ * Date. Thus hoping to trick the WS to disclose it.
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
+@XmlType(name = "Date")
 public final class Date implements Serializable, Comparable<Date> {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    /** The internal Date, implementation uses the JodaTime Classes. */
-    private final DateMidnight date;
+    /**
+     * The internal Date was based on JodaTime, but as it caused problems with
+     * WebServices, the implementation is changed to use the standard Java Date
+     * Object.
+     */
+    @XmlElement(required = true, nillable = false)
+    private final java.util.Date midnight;
 
     /**
      * Creates a new Date instance set to the Current Millisecond.
      */
     public Date() {
-        date = new DateMidnight();
+        midnight = new DateMidnight().toDate();
     }
 
     /**
-     * Creates a new Date instance, based on the given JodaTime DateMidnight
-     * Object.
-     *
-     * @param date {@code DateMidnight} instance, to base this instance on
-     */
+    * Creates a new Date instance, based on the given JodaTime DateMidnight
+    * Object.
+    *
+    * @param date {@code DateMidnight} instance, to base this instance on
+    */
     public Date(final DateMidnight date) {
-        this.date = date;
+        midnight = date.toDate();
     }
 
     /**
@@ -67,7 +79,7 @@ public final class Date implements Serializable, Comparable<Date> {
      * @param date {@code java.util.Date} instance, to base this instance on
      */
     public Date(final java.util.Date date) {
-        this.date = new DateMidnight(date);
+        midnight = new java.util.Date(date.getTime());
     }
 
     /**
@@ -80,7 +92,7 @@ public final class Date implements Serializable, Comparable<Date> {
      */
     public Date(final String date) {
         try {
-            this.date = new DateMidnight(IWSConstants.FORMATTER.parse(date));
+            midnight = new DateMidnight(IWSConstants.FORMATTER.parse(date)).toDate();
         } catch (ParseException e) {
             throw new VerificationException(e);
         }
@@ -94,7 +106,7 @@ public final class Date implements Serializable, Comparable<Date> {
      * @return True if the given Date is after the current, otherwise false
      */
     public Boolean isAfter(final Date date) {
-        return this.date.isAfter(date.date);
+        return midnight.after(date.midnight);
     }
 
     /**
@@ -105,7 +117,7 @@ public final class Date implements Serializable, Comparable<Date> {
      * @return True if the given Date is after the current, otherwise false
      */
     public Boolean isBefore(final Date date) {
-        return this.date.isBefore(date.date);
+        return midnight.before(date.midnight);
     }
 
     /**
@@ -115,7 +127,7 @@ public final class Date implements Serializable, Comparable<Date> {
      * @return {@code java.util.Date} instance for this Date
      */
     public java.util.Date toDate() {
-        return date.toDate();
+        return new java.util.Date(midnight.getTime());
     }
 
     /**
@@ -126,7 +138,7 @@ public final class Date implements Serializable, Comparable<Date> {
      * @return New Date instance with the given days added
      */
     public Date plusDays(final int days) {
-        return new Date(date.plusDays(days));
+        return new Date(new DateMidnight(midnight).plusDays(days));
     }
 
     /**
@@ -137,7 +149,7 @@ public final class Date implements Serializable, Comparable<Date> {
      * @return New Date instance with the given weeks added
      */
     public Date plusWeeks(final int weeks) {
-        return new Date(date.plusWeeks(weeks));
+        return new Date(new DateMidnight(midnight).plusWeeks(weeks));
     }
 
     /**
@@ -146,11 +158,11 @@ public final class Date implements Serializable, Comparable<Date> {
      * @return The year for this Date
      */
     public int getCurrentYear() {
-        return date.toGregorianCalendar().get(Calendar.YEAR);
+        return new DateMidnight(midnight).toGregorianCalendar().get(Calendar.YEAR);
     }
 
     public int getCurrentMonth() {
-        return date.toGregorianCalendar().get(Calendar.MONTH);
+        return new DateMidnight(midnight).toGregorianCalendar().get(Calendar.MONTH);
     }
 
     /**
@@ -167,7 +179,7 @@ public final class Date implements Serializable, Comparable<Date> {
         }
 
         final Date other = (Date) obj;
-        return !((date != null) ? !date.equals(other.date) : (other.date != null));
+        return !((midnight != null) ? !midnight.equals(other.midnight) : (other.midnight != null));
     }
 
     /**
@@ -175,7 +187,7 @@ public final class Date implements Serializable, Comparable<Date> {
      */
     @Override
     public int hashCode() {
-        return (date != null) ? date.hashCode() : 0;
+        return (midnight != null) ? midnight.hashCode() : 0;
     }
 
     /**
@@ -183,7 +195,7 @@ public final class Date implements Serializable, Comparable<Date> {
      */
     @Override
     public String toString() {
-        return IWSConstants.FORMATTER.format(date.toDate()).toUpperCase(IWSConstants.DEFAULT_LOCALE);
+        return IWSConstants.FORMATTER.format(midnight).toUpperCase(IWSConstants.DEFAULT_LOCALE);
     }
 
     /**

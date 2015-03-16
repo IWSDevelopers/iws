@@ -16,31 +16,45 @@ package net.iaeste.iws.api.util;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 import java.io.Serializable;
 import java.util.Date;
 
 /**
- * @author Kim Jensen / last $Author:$
+ * The IWS representation of Date and Time is handled with this Class, which
+ * serves as a wrapper using both the standard Java Date Class and the JodaTime
+ * DateTime class. It was initially written with JodaTime as internal DateTime
+ * representation in anticipation of the Java8 rework of the Calendar API.<br />
+ *   However, the expose of WebServices was causing problems, as the DateTime
+ * Object from JodaTime wasn't properly displayed. So instead the internal
+ * representation is made with the standard Java Date class, using JodaTime's
+ * DateTime Object to wrap certain features that otherwise would cause test
+ * problems.
+ *
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since IWS 1.0
+ * @since   IWS 1.0
  */
+@XmlType(name = "DateTime")
 public class DateTime implements Serializable, Comparable<DateTime> {
 
-    /**
-     * {@link IWSConstants#SERIAL_VERSION_UID}.
-     */
+    /**{@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     /**
-     * The internal Date, implementation uses the JodaTime Classes.
+     * The internal Date was initially based on JodaTime, but JodaTime is having
+     * a problem when it comes to WebServices, so instead the internal Date
+     * representation is based on the standard Java Date Class.
      */
-    private final org.joda.time.DateTime dateTime;
+    @XmlElement(required = true, nillable = false)
+    private final java.util.Date timestamp;
 
     /**
      * Creates a new Date instance set to the Current Millisecond.
      */
     public DateTime() {
-        dateTime = new org.joda.time.DateTime();
+        timestamp = new Date();
     }
 
     /**
@@ -50,7 +64,7 @@ public class DateTime implements Serializable, Comparable<DateTime> {
      * @param dateTime {@code org.joda.time.DateTime} instance, to base this instance on
      */
     public DateTime(final org.joda.time.DateTime dateTime) {
-        this.dateTime = dateTime;
+        timestamp = dateTime.toDate();
     }
 
     /**
@@ -59,7 +73,12 @@ public class DateTime implements Serializable, Comparable<DateTime> {
      * @param dateTime {@code java.util.Date} instance, to base this instance on
      */
     public DateTime(final Date dateTime) {
-        this.dateTime = new org.joda.time.DateTime(dateTime);
+        // Note, that there seems to be a difference between how JodaTime and
+        // Date is being instantiated, and this is causing a test problem. At
+        // the moment, the goal is to ensure that the builds are clean, so the
+        // JodaTime Object is used.
+        //timestamp = new Date(dateTime.getTime());
+        timestamp = new org.joda.time.DateTime(dateTime).toDate();
     }
 
     /**
@@ -70,7 +89,7 @@ public class DateTime implements Serializable, Comparable<DateTime> {
      * @return True if the given Date is after the current, otherwise false
      */
     public Boolean isAfter(final DateTime dateTime) {
-        return this.dateTime.isAfter(dateTime.dateTime);
+        return timestamp.after(dateTime.timestamp);
     }
 
     /**
@@ -81,7 +100,7 @@ public class DateTime implements Serializable, Comparable<DateTime> {
      * @return True if the given Date is after the current, otherwise false
      */
     public Boolean isBefore(final DateTime dateTime) {
-        return this.dateTime.isBefore(dateTime.dateTime);
+        return timestamp.before(dateTime.timestamp);
     }
 
     /**
@@ -91,7 +110,7 @@ public class DateTime implements Serializable, Comparable<DateTime> {
      * @return {@code java.util.Date} instance for this Date
      */
     public Date toDate() {
-        return dateTime.toDate();
+        return new Date(timestamp.getTime());
     }
 
     /**
@@ -108,7 +127,7 @@ public class DateTime implements Serializable, Comparable<DateTime> {
         }
 
         final DateTime other = (DateTime) obj;
-        return !((dateTime != null) ? !dateTime.equals(other.dateTime) : (other.dateTime != null));
+        return !((timestamp != null) ? !timestamp.equals(other.timestamp) : (other.timestamp != null));
     }
 
     /**
@@ -116,7 +135,7 @@ public class DateTime implements Serializable, Comparable<DateTime> {
      */
     @Override
     public int hashCode() {
-        return (dateTime != null) ? dateTime.hashCode() : 0;
+        return (timestamp != null) ? timestamp.hashCode() : 0;
     }
 
     /**
@@ -124,7 +143,7 @@ public class DateTime implements Serializable, Comparable<DateTime> {
      */
     @Override
     public String toString() {
-        return IWSConstants.FORMATTER.format(dateTime.toDate());
+        return IWSConstants.FORMATTER.format(timestamp);
     }
 
     /**

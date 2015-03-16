@@ -104,12 +104,23 @@ public class AccessWSClient extends AbstractClient implements Access {
     // Implementation of the Access Interface
     // =========================================================================
 
+    // -- Updating Password for user 'kim@dawn.dk' to 'faked'.
+    // update users set password = 'f6e593eb52d3c6032234b7be8b8e148010b4d3d9eaa273fb6286d6d21a8348e6', salt = 'c8926a8c-6874-4302-b6e2-c5ecc1b727f0', modified = now(), status = 'ACTIVE' where username = 'kim@dawn.dk';
     public static void main(String[] args) throws MalformedURLException {
-        final AccessWSClient client = new AccessWSClient("http://test.iaeste.net:8080/iws-ws/accessWS?wsdl");
-        final AuthenticationRequest authRequest = new AuthenticationRequest("test@bla.net", "test");
+        final AccessWSClient client = new AccessWSClient("http://localhost:8080/iws-ws/accessWS?wsdl");
+        final AuthenticationRequest authRequest = new AuthenticationRequest("kim@dawn.dk", "faked");
         final AuthenticationResponse authResponse = client.generateSession(authRequest);
-        System.out.println(authResponse.getError());
-        System.out.println(authResponse.getMessage());
+        System.out.println("CreateSession Error = " + authResponse.getError());
+        System.out.println("CreateSession Message = " + authResponse.getMessage());
+        if (authResponse.isOk()) {
+            final FetchPermissionResponse permResponse = client.fetchPermissions(authResponse.getToken());
+            // Following is uncovering a problem we have with the current IWS Date Object! It is simply not present in the WS.
+            System.out.println("PermissionResponse Error = " + permResponse.getError());
+            System.out.println("PermissionResponse Message = " + permResponse.getMessage());
+            final FallibleResponse deprResponse = client.deprecateSession(authResponse.getToken());
+            System.out.println("DeprecateSession Error = " + deprResponse.getError());
+            System.out.println("DeprecateSession Error = " + deprResponse.getMessage());
+        }
     }
 
     /**
@@ -197,6 +208,6 @@ public class AccessWSClient extends AbstractClient implements Access {
      */
     @Override
     public FetchPermissionResponse fetchPermissions(final AuthenticationToken token) {
-        return null;
+        return map(client.fetchPermissions(map(token)));
     }
 }

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://ws.iws.iaeste.net/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="accessWSService" targetNamespace="http://ws.iws.iaeste.net/">
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://ws.iws.iaeste.net/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="accessWSService" targetNamespace="http://ws.iws.iaeste.net/">
   <wsdl:types>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://ws.iws.iaeste.net/" targetNamespace="http://ws.iws.iaeste.net/" version="1.0">
 
@@ -54,7 +53,7 @@
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
           <xs:element minOccurs="0" name="group" type="tns:group"/>
-          <xs:element minOccurs="0" name="memberSince" type="tns:date"/>
+          <xs:element minOccurs="0" name="memberSince" type="tns:Date"/>
           <xs:element name="onPrivateList" type="xs:boolean"/>
           <xs:element name="onPublicList" type="xs:boolean"/>
           <xs:element minOccurs="0" name="role" type="tns:role"/>
@@ -105,8 +104,10 @@
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="date">
-    <xs:sequence/>
+  <xs:complexType final="extension restriction" name="Date">
+    <xs:sequence>
+      <xs:element name="midnight" type="xs:dateTime"/>
+    </xs:sequence>
   </xs:complexType>
 
   <xs:complexType final="extension restriction" name="role">
@@ -153,7 +154,7 @@
         <xs:sequence>
           <xs:element minOccurs="0" name="address" type="tns:address"/>
           <xs:element minOccurs="0" name="alternateEmail" type="xs:string"/>
-          <xs:element minOccurs="0" name="birthday" type="tns:date"/>
+          <xs:element minOccurs="0" name="birthday" type="tns:Date"/>
           <xs:element minOccurs="0" name="fax" type="xs:string"/>
           <xs:element minOccurs="0" name="gender" type="tns:gender"/>
           <xs:element minOccurs="0" name="mobile" type="xs:string"/>
@@ -214,15 +215,17 @@
     <xs:complexContent>
       <xs:extension base="tns:FallibleResponse">
         <xs:sequence>
-          <xs:element minOccurs="0" name="created" type="tns:dateTime"/>
-          <xs:element minOccurs="0" name="modified" type="tns:dateTime"/>
+          <xs:element minOccurs="0" name="created" type="tns:DateTime"/>
+          <xs:element minOccurs="0" name="modified" type="tns:DateTime"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType name="dateTime">
-    <xs:sequence/>
+  <xs:complexType name="DateTime">
+    <xs:sequence>
+      <xs:element name="timestamp" type="xs:dateTime"/>
+    </xs:sequence>
   </xs:complexType>
 
   <xs:complexType final="extension restriction" name="authenticationResponse">
@@ -779,7 +782,7 @@
   </wsdl:binding>
   <wsdl:service name="accessWSService">
     <wsdl:port binding="tns:accessWSServiceSoapBinding" name="accessWS">
-      <soap:address location="http://localhost:8080/iws-ws/AccessWS"/>
+      <soap:address location="http://localhost:8080/iws-ws/accessWS"/>
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

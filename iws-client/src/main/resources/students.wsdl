@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://ws.iws.iaeste.net/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="studentWSService" targetNamespace="http://ws.iws.iaeste.net/">
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://ws.iws.iaeste.net/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="studentWSService" targetNamespace="http://ws.iws.iaeste.net/">
   <wsdl:types>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://ws.iws.iaeste.net/" targetNamespace="http://ws.iws.iaeste.net/" version="1.0">
 
@@ -92,8 +91,8 @@
           <xs:element maxOccurs="unbounded" minOccurs="0" name="attachments" nillable="true" type="tns:file"/>
           <xs:element minOccurs="0" name="available" type="tns:datePeriod"/>
           <xs:element minOccurs="0" name="completedYearsOfStudy" type="xs:int"/>
-          <xs:element minOccurs="0" name="created" type="tns:dateTime"/>
-          <xs:element minOccurs="0" name="dateOfBirth" type="tns:date"/>
+          <xs:element minOccurs="0" name="created" type="tns:DateTime"/>
+          <xs:element minOccurs="0" name="dateOfBirth" type="tns:Date"/>
           <xs:element minOccurs="0" name="email" type="xs:string"/>
           <xs:element maxOccurs="unbounded" minOccurs="0" name="fieldOfStudies" nillable="true" type="tns:fieldOfStudy"/>
           <xs:element minOccurs="0" name="gender" type="tns:gender"/>
@@ -105,9 +104,9 @@
           <xs:element minOccurs="0" name="language2Level" type="tns:languageLevel"/>
           <xs:element minOccurs="0" name="language3" type="tns:language"/>
           <xs:element minOccurs="0" name="language3Level" type="tns:languageLevel"/>
-          <xs:element minOccurs="0" name="modified" type="tns:dateTime"/>
+          <xs:element minOccurs="0" name="modified" type="tns:DateTime"/>
           <xs:element minOccurs="0" name="nationality" type="tns:country"/>
-          <xs:element minOccurs="0" name="nominatedAt" type="tns:dateTime"/>
+          <xs:element minOccurs="0" name="nominatedAt" type="tns:DateTime"/>
           <xs:element minOccurs="0" name="offerId" type="xs:string"/>
           <xs:element minOccurs="0" name="offerState" type="tns:offerState"/>
           <xs:element minOccurs="0" name="passportNumber" type="xs:string"/>
@@ -139,7 +138,7 @@
           <xs:element minOccurs="0" name="contactPerson" type="xs:string"/>
           <xs:element minOccurs="0" name="contactPersonEmail" type="xs:string"/>
           <xs:element minOccurs="0" name="contactPersonPhone" type="xs:string"/>
-          <xs:element minOccurs="0" name="firstWorkingDay" type="tns:date"/>
+          <xs:element minOccurs="0" name="firstWorkingDay" type="tns:Date"/>
           <xs:element minOccurs="0" name="workingPlace" type="xs:string"/>
         </xs:sequence>
       </xs:extension>
@@ -150,15 +149,17 @@
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
-          <xs:element minOccurs="0" name="fromDate" type="tns:date"/>
-          <xs:element minOccurs="0" name="toDate" type="tns:date"/>
+          <xs:element minOccurs="0" name="fromDate" type="tns:Date"/>
+          <xs:element minOccurs="0" name="toDate" type="tns:Date"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="date">
-    <xs:sequence/>
+  <xs:complexType final="extension restriction" name="Date">
+    <xs:sequence>
+      <xs:element name="midnight" type="xs:dateTime"/>
+    </xs:sequence>
   </xs:complexType>
 
   <xs:complexType final="extension restriction" name="address">
@@ -202,7 +203,7 @@
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
           <xs:element minOccurs="0" name="checksum" type="xs:long"/>
-          <xs:element minOccurs="0" name="created" type="tns:date"/>
+          <xs:element minOccurs="0" name="created" type="tns:Date"/>
           <xs:element minOccurs="0" name="description" type="xs:string"/>
           <xs:element minOccurs="0" name="fileId" type="xs:string"/>
           <xs:element minOccurs="0" name="filedata" type="xs:base64Binary"/>
@@ -212,7 +213,7 @@
           <xs:element minOccurs="0" name="group" type="tns:group"/>
           <xs:element minOccurs="0" name="keywords" type="xs:string"/>
           <xs:element minOccurs="0" name="mimetype" type="xs:string"/>
-          <xs:element minOccurs="0" name="modified" type="tns:date"/>
+          <xs:element minOccurs="0" name="modified" type="tns:Date"/>
           <xs:element minOccurs="0" name="privacy" type="tns:privacy"/>
           <xs:element minOccurs="0" name="user" type="tns:user"/>
         </xs:sequence>
@@ -224,13 +225,13 @@
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
-          <xs:element minOccurs="0" name="created" type="tns:date"/>
+          <xs:element minOccurs="0" name="created" type="tns:Date"/>
           <xs:element maxOccurs="unbounded" minOccurs="0" name="files" nillable="true" type="tns:file"/>
           <xs:element minOccurs="0" name="folderId" type="xs:string"/>
           <xs:element minOccurs="0" name="foldername" type="xs:string"/>
           <xs:element maxOccurs="unbounded" minOccurs="0" name="folders" nillable="true" type="tns:folder"/>
           <xs:element minOccurs="0" name="group" type="tns:group"/>
-          <xs:element minOccurs="0" name="modified" type="tns:date"/>
+          <xs:element minOccurs="0" name="modified" type="tns:Date"/>
           <xs:element minOccurs="0" name="parentId" type="xs:string"/>
         </xs:sequence>
       </xs:extension>
@@ -288,7 +289,7 @@
         <xs:sequence>
           <xs:element minOccurs="0" name="address" type="tns:address"/>
           <xs:element minOccurs="0" name="alternateEmail" type="xs:string"/>
-          <xs:element minOccurs="0" name="birthday" type="tns:date"/>
+          <xs:element minOccurs="0" name="birthday" type="tns:Date"/>
           <xs:element minOccurs="0" name="fax" type="xs:string"/>
           <xs:element minOccurs="0" name="gender" type="tns:gender"/>
           <xs:element minOccurs="0" name="mobile" type="xs:string"/>
@@ -299,8 +300,10 @@
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType name="dateTime">
-    <xs:sequence/>
+  <xs:complexType name="DateTime">
+    <xs:sequence>
+      <xs:element name="timestamp" type="xs:dateTime"/>
+    </xs:sequence>
   </xs:complexType>
 
   <xs:complexType final="extension restriction" name="student">
@@ -308,7 +311,7 @@
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
           <xs:element minOccurs="0" name="available" type="tns:datePeriod"/>
-          <xs:element minOccurs="0" name="created" type="tns:dateTime"/>
+          <xs:element minOccurs="0" name="created" type="tns:DateTime"/>
           <xs:element maxOccurs="unbounded" minOccurs="0" name="fieldOfStudies" nillable="true" type="tns:fieldOfStudy"/>
           <xs:element minOccurs="0" name="language1" type="tns:language"/>
           <xs:element minOccurs="0" name="language1Level" type="tns:languageLevel"/>
@@ -316,7 +319,7 @@
           <xs:element minOccurs="0" name="language2Level" type="tns:languageLevel"/>
           <xs:element minOccurs="0" name="language3" type="tns:language"/>
           <xs:element minOccurs="0" name="language3Level" type="tns:languageLevel"/>
-          <xs:element minOccurs="0" name="modified" type="tns:dateTime"/>
+          <xs:element minOccurs="0" name="modified" type="tns:DateTime"/>
           <xs:element maxOccurs="unbounded" minOccurs="0" name="specializations" nillable="true" type="tns:specialization"/>
           <xs:element minOccurs="0" name="studyLevel" type="tns:studyLevel"/>
           <xs:element minOccurs="0" name="user" type="tns:user"/>
@@ -330,13 +333,13 @@
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
           <xs:element minOccurs="0" name="applicationId" type="xs:string"/>
-          <xs:element minOccurs="0" name="arrivalDateTime" type="tns:date"/>
-          <xs:element minOccurs="0" name="departure" type="tns:date"/>
+          <xs:element minOccurs="0" name="arrivalDateTime" type="tns:Date"/>
+          <xs:element minOccurs="0" name="departure" type="tns:Date"/>
           <xs:element minOccurs="0" name="departureFrom" type="xs:string"/>
           <xs:element minOccurs="0" name="insuranceCompany" type="xs:string"/>
           <xs:element minOccurs="0" name="insuranceReceiptNumber" type="xs:string"/>
-          <xs:element minOccurs="0" name="lodgingRequiredFrom" type="tns:date"/>
-          <xs:element minOccurs="0" name="lodgingRequiredTo" type="tns:date"/>
+          <xs:element minOccurs="0" name="lodgingRequiredFrom" type="tns:Date"/>
+          <xs:element minOccurs="0" name="lodgingRequiredTo" type="tns:Date"/>
           <xs:element minOccurs="0" name="otherInformation" type="xs:string"/>
           <xs:element minOccurs="0" name="phoneNumberDuringTravel" type="xs:string"/>
           <xs:element minOccurs="0" name="transportNumber" type="xs:string"/>
@@ -1136,7 +1139,7 @@
   </wsdl:binding>
   <wsdl:service name="studentWSService">
     <wsdl:port binding="tns:studentWSServiceSoapBinding" name="studentWS">
-      <soap:address location="http://localhost:8080/iws-ws/StudentWS"/>
+      <soap:address location="http://localhost:8080/iws-ws/studentWS"/>
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

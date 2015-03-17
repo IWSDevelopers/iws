@@ -4,7 +4,9 @@
 # WildFly Control Script
 # -----------------------------------------------------------------------------
 # History:
-#   Version 1.00 - 2014-08-19, Kim Jensen <Kim.Jensen@secunet.com>
+#   Version 1.01 - 2015-03-17, Kim Jensen <kim@dawn.dk>
+#     o Added support for deploying & logging
+#   Version 1.00 - 2014-08-19, Kim Jensen <kim@dawn.dk>
 #     o Initial version
 # -----------------------------------------------------------------------------
 # Methods:
@@ -15,6 +17,8 @@
 #     o doStop        ( Void )   :: Attempts to stop WildFly
 #     o doStatus      ( Void )   :: Retrieves the WildFly status
 #     o doClean       ( Void )   :: Cleans existing test results
+#     o doDeploy      ( Void )   :: Deploys latest IWS Snapshot
+#     o doLog         ( Void )   :: Tails the WildFly Server Log
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -25,11 +29,12 @@ readonly appDirectory="/opt/java/wildfly"
 export JBOSS_HOME=${appDirectory}
 readonly WildFlyPort=9990
 readonly WildFlyDebugPort=8787
-readonly consoleLog="${appDirectory}/standalone/log/console.log"
+readonly serverLog="${appDirectory}/standalone/log/server.log"
+readonly iwRoot="${HOME}/projects/Private/IDT"
 
 # Java Settings, with WildFly - we're initially using Java 7, but will upgrade to
 # Java 8 as part of release 1.2
-readonly JAVA_HOME=/opt/java/jdk-7
+readonly JAVA_HOME=/opt/java/jdk-8
 readonly PATH=${JAVA_HOME}/bin:${PATH}
 readonly java=${JAVA_HOME}/bin/java
 
@@ -40,7 +45,7 @@ readonly scriptLockFD="200"
 readonly scriptLock="/tmp/.`basename $0`.lock"
 
 # Script specific information, should only be altered, if logic is updated
-readonly scriptVersion="1.00"
+readonly scriptVersion="1.01"
 readonly scriptAuthor="Kim Jensen"
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
@@ -59,6 +64,8 @@ show_help () {
     echo "    stop    Attempts to stop WildFly"
     echo "    status  Retrieves the status of WildFly"
     echo "    clean   Cleanup of WildFly, removing all deployments & log files"
+    echo "    deploy  Deploying IWS"
+    echo "    log     Tail Log file"
     echo
 }
 
@@ -102,7 +109,7 @@ doStart () {
 
     if [ $? -eq 0 ]; then
         echo "Starting WildFly ..."
-        ${cmdStart} 2>&1 >>${consoleLog} &
+        ${cmdStart} 2>&1 >>${serverLog} &
     else
         echo "WildFly is already running"
     fi
@@ -120,9 +127,9 @@ doStop () {
     if [ $? -ge 1 ]; then
         echo "Stopping WildFly ..."
 
-        netstat -pant 2>/dev/null | grep ${WildFlyPort} | grep java | awk '{print $7;}' | cut -d'/' -f1 | xargs kill -15 2>&1 >>${consoleLog}
+        netstat -pant 2>/dev/null | grep ${WildFlyPort} | grep java | awk '{print $7;}' | cut -d'/' -f1 | xargs kill -15 2>&1 >>${serverLog}
         # If the debugging is running, the process may not be killed by the above command
-        netstat -pant 2>/dev/null | grep ${WildFlyDebugPort} | grep java | awk '{print $7;}' | cut -d'/' -f1 | xargs kill -15 2>&1 >>${consoleLog}
+        netstat -pant 2>/dev/null | grep ${WildFlyDebugPort} | grep java | awk '{print $7;}' | cut -d'/' -f1 | xargs kill -15 2>&1 >>${serverLog}
         pgrep wildfly | xargs kill -15 2>&1 >/dev/null
     else
         echo "WildFly is not running"
@@ -177,6 +184,28 @@ doClean () {
 }
 
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+# doDeploy - Deploys the IWS to WildFly
+# -----------------------------------------------------------------------------
+# Param  -> Void
+# Return -> Void
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+doDeploy () {
+    cp ${iwRoot}/iws/iws-ear/target/iws.ear ${appDirectory}/standalone/deployments
+}
+
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+# doLog - Tails the Glassfish Server Log
+# -----------------------------------------------------------------------------
+# Param  -> Void
+# Return -> Void
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+doLog() {
+    # In case the log file wasn't generated yet
+    touch ${serverLog}
+    tail -f ${serverLog}
+}
+
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 # Main part, please don't touch!
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 doLock
@@ -194,6 +223,10 @@ elif [ $# = 1 ]; then
         doStatus
     elif [ "${action}" = "clean" ]; then
         doClean
+    elif [ "${action}" = "deploy" ]; then
+        doDeploy
+    elif [ "${action}" = "log" ]; then
+        doLog
     else
         show_help
     fi

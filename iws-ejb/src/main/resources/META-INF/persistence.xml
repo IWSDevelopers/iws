@@ -52,6 +52,14 @@
         <properties>
             <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
+            <!-- Under WildFly, using the production database, the Sequences
+                 were causing problems. The cause of this problem is that JBoss
+                 has enabled an experimental Hibernate feature. By disabling
+                 this, we no longer have the problem.
+                 http://stackoverflow.com/questions/9861416/hibernate-generates-negative-id-values-when-using-a-sequence -->
+            <property name="hibernate.id.new_generator_mappings" value="false"/>
+            <property name="hibernate.show_sql" value="false"/>
+            <property name="hibernate.format_sql" value="true"/>
         </properties>
 
     </persistence-unit>
@@ -66,6 +74,14 @@
         <properties>
             <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
+            <!-- Under WildFly, using the production database, the Sequences
+                 were causing problems. The cause of this problem is that JBoss
+                 has enabled an experimental Hibernate feature. By disabling
+                 this, we no longer have the problem.
+                 http://stackoverflow.com/questions/9861416/hibernate-generates-negative-id-values-when-using-a-sequence -->
+            <property name="hibernate.id.new_generator_mappings" value="false"/>
+            <property name="hibernate.show_sql" value="false"/>
+            <property name="hibernate.format_sql" value="true"/>
         </properties>
 
     </persistence-unit>

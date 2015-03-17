@@ -20,6 +20,7 @@ import net.iaeste.iws.api.dtos.Address;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.dtos.Authorization;
 import net.iaeste.iws.api.dtos.Country;
+import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.Password;
 import net.iaeste.iws.api.dtos.Person;
 import net.iaeste.iws.api.dtos.Role;
@@ -27,8 +28,11 @@ import net.iaeste.iws.api.dtos.User;
 import net.iaeste.iws.api.dtos.UserGroup;
 import net.iaeste.iws.api.enums.Currency;
 import net.iaeste.iws.api.enums.Gender;
+import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.Membership;
+import net.iaeste.iws.api.enums.MonitoringLevel;
 import net.iaeste.iws.api.enums.NotificationFrequency;
+import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.enums.Privacy;
 import net.iaeste.iws.api.enums.UserStatus;
 import net.iaeste.iws.api.exceptions.IWSException;
@@ -43,8 +47,10 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -74,12 +80,12 @@ public final class AccessMapper {
         final FetchPermissionResponse api = new FetchPermissionResponse(map(ws.getError()), ws.getMessage());
 
         api.setUserId(ws.getUserId());
-        api.setAuthorizations(map(ws.getAuthorizations()));
+        api.setAuthorizations(mapAuthorizationList(ws.getAuthorizations()));
 
         return api;
     }
 
-    public static List<Authorization> map(final List<net.iaeste.iws.ws.Authorization> ws) {
+    public static List<Authorization> mapAuthorizationList(final List<net.iaeste.iws.ws.Authorization> ws) {
         List<Authorization> api = null;
 
         if (ws != null) {
@@ -99,11 +105,12 @@ public final class AccessMapper {
 
         api.setUserGroupId(ws.getUserGroupId());
         api.setUser(map(ws.getUser()));
-        //api.setGroup(map(ws.getGroup()));
+        api.setGroup(map(ws.getGroup()));
         api.setRole(map(ws.getRole()));
         api.setTitle(ws.getTitle());
         api.setOnPrivateList(ws.isOnPrivateList());
         api.setOnPublicList(ws.isOnPublicList());
+        // TODO Correct UserGroup, as the flag is not set. Assuming it is because the getter is called "may..."
         //api.setWriteToPrivateList(ws.isWriteToPrivateList());
         api.setMemberSince(map(ws.getMemberSince()));
 
@@ -115,9 +122,48 @@ public final class AccessMapper {
 
         api.setRoleId(ws.getRoleId());
         api.setRoleName(ws.getRoleName());
-        //api.setPermissions();
+        api.setPermissions(mapPermissionList(ws.getPermissions()));
 
         return api;
+    }
+
+    public static Set<Permission> mapPermissionList(List<net.iaeste.iws.ws.Permission> ws) {
+        final Set<Permission> api = EnumSet.noneOf(Permission.class);
+
+        for (final net.iaeste.iws.ws.Permission permission : ws) {
+            api.add(map(permission));
+        }
+
+        return api;
+    }
+
+    public static Permission map(final net.iaeste.iws.ws.Permission ws) {
+        return Permission.valueOf(ws.value());
+    }
+
+    public static Group map(final net.iaeste.iws.ws.Group ws) {
+        final Group api = new Group();
+
+        api.setGroupId(ws.getGroupId());
+        api.setGroupName(ws.getGroupName());
+        api.setFullName(ws.getFullName());
+        api.setListName(ws.getListName());
+        api.setPrivateList(ws.isPrivateList());
+        api.setPublicList(ws.isPublicList());
+        api.setGroupType(map(ws.getGroupType()));
+        api.setDescription(ws.getDescription());
+        api.setMonitoringLevel(map(ws.getMonitoringLevel()));
+        api.setCountry(map(ws.getCountry()));
+
+        return api;
+    }
+
+    public static GroupType map(final net.iaeste.iws.ws.GroupType ws) {
+        return GroupType.valueOf(ws.value());
+    }
+
+    public static MonitoringLevel map(final net.iaeste.iws.ws.MonitoringLevel ws) {
+        return MonitoringLevel.valueOf(ws.value());
     }
 
     public static User map(final net.iaeste.iws.ws.User ws) {
@@ -152,19 +198,25 @@ public final class AccessMapper {
     }
 
     public static Country map(final net.iaeste.iws.ws.Country ws) {
-        final Country api = new Country();
+        Country api = null;
 
-        api.setCountryCode(ws.getCountryCode());
-        api.setCountryName(ws.getCountryName());
-        api.setCountryNameFull(ws.getCountryNameFull());
-        api.setCountryNameNative(ws.getCountryNameNative());
-        api.setNationality(ws.getNationality());
-        api.setCitizens(ws.getCitizens());
-        api.setPhonecode(ws.getPhonecode());
-        api.setCurrency(Currency.valueOf(ws.getCurrency().name()));
-        api.setLanguages(ws.getLanguages());
-        api.setMembership(Membership.valueOf(ws.getMembership().name()));
-        api.setMemberSince(ws.getMemberSince());
+        // The CountryName may be null if it was a null Object returned, not
+        // sure why the CountryCode is set in that case.
+        if (ws != null && ws.getCountryName() != null) {
+            api = new Country();
+
+            api.setCountryCode(ws.getCountryCode());
+            api.setCountryName(ws.getCountryName());
+            api.setCountryNameFull(ws.getCountryNameFull());
+            api.setCountryNameNative(ws.getCountryNameNative());
+            api.setNationality(ws.getNationality());
+            api.setCitizens(ws.getCitizens());
+            api.setPhonecode(ws.getPhonecode());
+            api.setCurrency(Currency.valueOf(ws.getCurrency().name()));
+            api.setLanguages(ws.getLanguages());
+            api.setMembership(Membership.valueOf(ws.getMembership().name()));
+            api.setMemberSince(ws.getMemberSince());
+        }
 
         return api;
     }

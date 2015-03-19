@@ -236,11 +236,6 @@ public interface IWSConstants {
     String TIMESTAMP_FORMAT = "yyyyMMddHHmmssSSS";
 
     /**
-     * DateFormat Object for formatting and parsing Date Object.
-     */
-    DateFormat FORMATTER = new SimpleDateFormat(DATE_FORMAT, DEFAULT_LOCALE);
-
-    /**
      * By default, all CSV dates must follow the ISO-8601 format.
      */
     String CSV_DATE_FORMAT = "yyyy-MM-dd";

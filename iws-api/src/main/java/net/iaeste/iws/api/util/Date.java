@@ -21,7 +21,9 @@ import org.joda.time.DateMidnight;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 import java.io.Serializable;
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 /**
@@ -91,8 +93,9 @@ public final class Date implements Serializable, Comparable<Date> {
      * @see IWSConstants#DATE_FORMAT
      */
     public Date(final String date) {
+        final DateFormat formatter = new SimpleDateFormat(IWSConstants.DATE_FORMAT, IWSConstants.DEFAULT_LOCALE);
         try {
-            midnight = new DateMidnight(IWSConstants.FORMATTER.parse(date)).toDate();
+            midnight = new DateMidnight(formatter.parse(date)).toDate();
         } catch (ParseException e) {
             throw new VerificationException(e);
         }
@@ -195,7 +198,8 @@ public final class Date implements Serializable, Comparable<Date> {
      */
     @Override
     public String toString() {
-        return IWSConstants.FORMATTER.format(midnight).toUpperCase(IWSConstants.DEFAULT_LOCALE);
+        final DateFormat formatter = new SimpleDateFormat(IWSConstants.DATE_FORMAT, IWSConstants.DEFAULT_LOCALE);
+        return formatter.format(midnight).toUpperCase(IWSConstants.DEFAULT_LOCALE);
     }
 
     /**

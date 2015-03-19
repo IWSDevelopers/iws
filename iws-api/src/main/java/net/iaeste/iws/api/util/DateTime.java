@@ -19,6 +19,8 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -143,7 +145,8 @@ public class DateTime implements Serializable, Comparable<DateTime> {
      */
     @Override
     public String toString() {
-        return IWSConstants.FORMATTER.format(timestamp);
+        final DateFormat formatter = new SimpleDateFormat(IWSConstants.DATE_FORMAT, IWSConstants.DEFAULT_LOCALE);
+        return formatter.format(timestamp);
     }
 
     /**

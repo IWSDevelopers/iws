@@ -45,6 +45,8 @@ import net.iaeste.iws.persistence.views.OfferView;
 import net.iaeste.iws.persistence.views.SharedOfferView;
 import net.iaeste.iws.persistence.views.StudentView;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -398,7 +400,7 @@ public final class ViewTransformer {
      * @return List of offer objects to be exported to CSV
      */
     public static List<Object> transformToStringList(final OfferView view) {
-        //use following?
+        final DateFormat formatter = new SimpleDateFormat(IWSConstants.DATE_FORMAT, IWSConstants.DEFAULT_LOCALE);        //use following?
         //public static List<String> transformToStringList(final Class<List> list, final SharedOfferView view) {
         final List<Object> result = new ArrayList<>();
 
@@ -412,7 +414,7 @@ public final class ViewTransformer {
         result.add(exportedRefNo);
         result.add(embeddedOffer.getOfferType());
         result.add(embeddedOffer.getExchangeType());
-        result.add(embeddedOffer.getNominationDeadline() != null ? IWSConstants.FORMATTER.format(embeddedOffer.getNominationDeadline()) : "");
+        result.add(embeddedOffer.getNominationDeadline() != null ? formatter.format(embeddedOffer.getNominationDeadline()) : "");
         result.add(embeddedOffer.getPrivateComment());
         result.add(embeddedEmployer.getName());
         result.add(embeddedAddress.getStreet1());
@@ -460,8 +462,8 @@ public final class ViewTransformer {
         result.add(StringUtils.removeLineBreaks(embeddedOffer.getWorkDescription()));
         result.add(embeddedOffer.getMinimumWeeks());
         result.add(embeddedOffer.getMaximumWeeks());
-        result.add(embeddedOffer.getFromDate() != null ? IWSConstants.FORMATTER.format(embeddedOffer.getFromDate()) : "");
-        result.add(embeddedOffer.getToDate() != null ? IWSConstants.FORMATTER.format(embeddedOffer.getToDate()) : "");
+        result.add(embeddedOffer.getFromDate() != null ? formatter.format(embeddedOffer.getFromDate()) : "");
+        result.add(embeddedOffer.getToDate() != null ? formatter.format(embeddedOffer.getToDate()) : "");
 
         boolean studyBeginning = false;
         boolean studyMiddle = false;
@@ -544,18 +546,18 @@ public final class ViewTransformer {
         result.add(embeddedOffer.getNumberOfHardCopies());
         result.add(embeddedOffer.getStatus() != null ? embeddedOffer.getStatus().getDescription() : null);
 
-        result.add(embeddedOffer.getFromDate2() != null ? IWSConstants.FORMATTER.format(embeddedOffer.getFromDate2()) : "");
-        result.add(embeddedOffer.getToDate2() != null ? IWSConstants.FORMATTER.format(embeddedOffer.getToDate2()) : "");
+        result.add(embeddedOffer.getFromDate2() != null ? formatter.format(embeddedOffer.getFromDate2()) : "");
+        result.add(embeddedOffer.getToDate2() != null ? formatter.format(embeddedOffer.getToDate2()) : "");
 
-        result.add(embeddedOffer.getUnavailableFrom() != null ? IWSConstants.FORMATTER.format(embeddedOffer.getUnavailableFrom()) : "");
-        result.add(embeddedOffer.getUnavailableTo() != null ? IWSConstants.FORMATTER.format(embeddedOffer.getUnavailableTo()) : "");
+        result.add(embeddedOffer.getUnavailableFrom() != null ? formatter.format(embeddedOffer.getUnavailableFrom()) : "");
+        result.add(embeddedOffer.getUnavailableTo() != null ? formatter.format(embeddedOffer.getUnavailableTo()) : "");
 
         result.add(StringUtils.removeLineBreaks(embeddedOffer.getAdditionalInformation()));
 
         //TODO: Add The name of the country to whom this offer is shared once available in the embeddedOfferView
         result.add(null);
 
-        result.add(embeddedOffer.getModified() != null ? IWSConstants.FORMATTER.format(embeddedOffer.getModified()) : "");
+        result.add(embeddedOffer.getModified() != null ? formatter.format(embeddedOffer.getModified()) : "");
         result.add(view.getNsFirstname());
         result.add(view.getNsLastname());
 

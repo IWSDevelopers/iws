@@ -32,7 +32,9 @@ import org.slf4j.LoggerFactory;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Map;
@@ -123,8 +125,9 @@ public final class CsvTransformer {
         Date result = null;
 
         if (input != null && !input.isEmpty()) {
+            final DateFormat formatter = new SimpleDateFormat(IWSConstants.DATE_FORMAT, IWSConstants.DEFAULT_LOCALE);
             try {
-                result = new Date(IWSConstants.FORMATTER.parse(input));
+                result = new Date(formatter.parse(input));
             } catch (ParseException e) {
                 errors.put(field.getField(), e.getMessage());
             }
@@ -396,8 +399,9 @@ public final class CsvTransformer {
         Date result = null;
 
         if ((value != null) && !value.isEmpty()) {
+            final DateFormat formatter = new SimpleDateFormat(IWSConstants.DATE_FORMAT, IWSConstants.DEFAULT_LOCALE);
             try {
-                result = new Date(IWSConstants.FORMATTER.parse(value));
+                result = new Date(formatter.parse(value));
             } catch (ParseException e) {
                 errors.put(field.getField(), e.getMessage());
             }

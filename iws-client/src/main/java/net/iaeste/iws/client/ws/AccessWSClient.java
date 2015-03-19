@@ -14,7 +14,7 @@
  */
 package net.iaeste.iws.client.ws;
 
-import static net.iaeste.iws.client.ws.AccessMapper.map;
+import static net.iaeste.iws.client.ws.mappers.AccessMapper.map;
 
 import net.iaeste.iws.api.Access;
 import net.iaeste.iws.api.constants.IWSConstants;
@@ -43,7 +43,7 @@ import java.net.URL;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.1
  */
-public class AccessWSClient extends AbstractClient implements Access {
+public final class AccessWSClient extends AbstractClient implements Access {
 
     // =========================================================================
     // Constructor & Setup of WS Client
@@ -103,6 +103,25 @@ public class AccessWSClient extends AbstractClient implements Access {
     // =========================================================================
     // Implementation of the Access Interface
     // =========================================================================
+
+    // -- Updating Password for user 'kim@dawn.dk' to 'faked'.
+    // update users set password = 'f6e593eb52d3c6032234b7be8b8e148010b4d3d9eaa273fb6286d6d21a8348e6', salt = 'c8926a8c-6874-4302-b6e2-c5ecc1b727f0', modified = now(), status = 'ACTIVE' where username = 'kim@dawn.dk';
+    public static void main(String[] args) throws MalformedURLException {
+        final AccessWSClient client = new AccessWSClient("http://localhost:8080/iws-ws/accessWS?wsdl");
+        final AuthenticationRequest authenticationRequest = new AuthenticationRequest("kim@dawn.dk", "faked");
+        final AuthenticationResponse authenticationResponse = client.generateSession(authenticationRequest);
+        System.out.println("CreateSession Error = " + authenticationResponse.getError());
+        System.out.println("CreateSession Message = " + authenticationResponse.getMessage());
+        if (authenticationResponse.isOk()) {
+            final FetchPermissionResponse permissionResponse = client.fetchPermissions(authenticationResponse.getToken());
+            // Following is uncovering a problem we have with the current IWS Date Object! It is simply not present in the WS.
+            System.out.println("PermissionResponse Error = " + permissionResponse.getError());
+            System.out.println("PermissionResponse Message = " + permissionResponse.getMessage());
+            final FallibleResponse deprecationResponse = client.deprecateSession(authenticationResponse.getToken());
+            System.out.println("DeprecateSession Error = " + deprecationResponse.getError());
+            System.out.println("DeprecateSession Error = " + deprecationResponse.getMessage());
+        }
+    }
 
     /**
      * {@inheritDoc}

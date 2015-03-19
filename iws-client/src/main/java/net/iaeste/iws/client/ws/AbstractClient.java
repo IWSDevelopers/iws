@@ -34,7 +34,7 @@ public abstract class AbstractClient extends Service {
     // some consequences. We wish to expose the Client Parameters, so we can use
     // them without locking - as we would otherwise end up in a race-condition.
     // Solution is simple, pre-initialize it with default settings, and then use
-    // a Lock & Flag to complete the process. This way, we parameters can be
+    // a Lock & Flag to complete the process. This way the parameters can be
     // used regardlessly, provided we're checking and initializing it in all
     // Client Constructors.
     protected static final TLSClientParameters tlsClientParameters = new TLSClientParameters();

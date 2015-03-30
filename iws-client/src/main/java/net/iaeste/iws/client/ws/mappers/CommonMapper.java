@@ -42,6 +42,7 @@ import net.iaeste.iws.api.util.DateTime;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumSet;
 import java.util.GregorianCalendar;
@@ -314,6 +315,30 @@ abstract class CommonMapper {
         }
 
         return collection;
+    }
+
+    protected static Set<String> mapStringCollectionToSet(final Collection<String> source) {
+        final Set<String> set;
+
+        if (source != null) {
+            set = new HashSet<>(source);
+        } else {
+            set = new HashSet<>(0);
+        }
+
+        return set;
+    }
+
+    protected static List<String> mapStringCollectionToList(final Collection<String> source) {
+        final List<String> list;
+
+        if (source != null) {
+            list = new ArrayList<>(source);
+        } else {
+            list = new ArrayList<>(0);
+        }
+
+        return list;
     }
 
     // =========================================================================

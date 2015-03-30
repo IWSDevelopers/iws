@@ -20,7 +20,6 @@ import net.iaeste.iws.api.Exchange;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
-import net.iaeste.iws.api.enums.FetchType;
 import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
 import net.iaeste.iws.api.requests.exchange.DeletePublishingGroupRequest;
 import net.iaeste.iws.api.requests.exchange.FetchEmployerRequest;
@@ -85,7 +84,7 @@ public final class ExchangeWSClient extends AbstractClient implements Exchange {
      *   For example: https://iws.iaeste.net/iws-ws/AccessWS?wsdl
      *
      * @param wsdlLocation IWS Access WSDL URL
-     * @throws java.net.MalformedURLException if not a valid URL
+     * @throws MalformedURLException if not a valid URL
      */
     public ExchangeWSClient(final String wsdlLocation) throws MalformedURLException {
         super(new URL(wsdlLocation), ACCESS_SERVICE_NAME);
@@ -157,7 +156,7 @@ public final class ExchangeWSClient extends AbstractClient implements Exchange {
      */
     @Override
     public OfferResponse processOffer(final AuthenticationToken token, final ProcessOfferRequest request) {
-        return null;
+        return map(client.processOffer(map(token), map(request)));
     }
 
     /**
@@ -165,7 +164,7 @@ public final class ExchangeWSClient extends AbstractClient implements Exchange {
      */
     @Override
     public OfferResponse deleteOffer(final AuthenticationToken token, final DeleteOfferRequest request) {
-        return null;
+        return map(client.deleteOffer(map(token), map(request)));
     }
 
     /**
@@ -173,7 +172,7 @@ public final class ExchangeWSClient extends AbstractClient implements Exchange {
      */
     @Override
     public OfferCSVUploadResponse uploadOffers(final AuthenticationToken token, final OfferCSVUploadRequest request) {
-        return null;
+        return new OfferCSVUploadResponse(IWSErrors.NOT_IMPLEMENTED, "Functionality requires an API change, which has not yet been made.");
     }
 
     /**
@@ -189,7 +188,7 @@ public final class ExchangeWSClient extends AbstractClient implements Exchange {
      */
     @Override
     public OfferCSVDownloadResponse downloadOffers(final AuthenticationToken token, final OfferCSVDownloadRequest request) {
-        return null;
+        return map(client.downloadOffers(map(token), map(request)));
     }
 
     /**
@@ -197,7 +196,7 @@ public final class ExchangeWSClient extends AbstractClient implements Exchange {
      */
     @Override
     public FetchGroupsForSharingResponse fetchGroupsForSharing(final AuthenticationToken token) {
-        return null;
+        return map(client.fetchGroupsForSharing(map(token)));
     }
 
     /**
@@ -205,7 +204,7 @@ public final class ExchangeWSClient extends AbstractClient implements Exchange {
      */
     @Override
     public FallibleResponse processOfferTemplate(final AuthenticationToken token, final OfferTemplateRequest request) {
-        return null;
+        return map(client.processOfferTemplate(map(token), map(request)));
     }
 
     /**
@@ -213,7 +212,7 @@ public final class ExchangeWSClient extends AbstractClient implements Exchange {
      */
     @Override
     public FetchOfferTemplateResponse fetchOfferTemplates(final AuthenticationToken token, final FetchOfferTemplatesRequest request) {
-        return null;
+        return map(client.fetchOfferTemplates(map(token), map(request)));
     }
 
     /**
@@ -221,7 +220,7 @@ public final class ExchangeWSClient extends AbstractClient implements Exchange {
      */
     @Override
     public FallibleResponse processPublishingGroup(final AuthenticationToken token, final ProcessPublishingGroupRequest request) {
-        return null;
+        return map(client.processPublishingGroup(map(token), map(request)));
     }
 
     /**
@@ -229,7 +228,7 @@ public final class ExchangeWSClient extends AbstractClient implements Exchange {
      */
     @Override
     public FetchPublishingGroupResponse fetchPublishingGroups(final AuthenticationToken token, final FetchPublishGroupsRequest request) {
-        return null;
+        return map(client.fetchPublishingGroups(map(token), map(request)));
     }
 
     /**
@@ -238,7 +237,7 @@ public final class ExchangeWSClient extends AbstractClient implements Exchange {
     @Override
     @Deprecated
     public FallibleResponse deletePublishingGroup(final AuthenticationToken token, final DeletePublishingGroupRequest request) {
-        return null;
+        return map(client.deletePublishingGroup(map(token), map(request)));
     }
 
     /**
@@ -246,7 +245,7 @@ public final class ExchangeWSClient extends AbstractClient implements Exchange {
      */
     @Override
     public FetchPublishedGroupsResponse fetchPublishedGroups(final AuthenticationToken token, final FetchPublishedGroupsRequest request) {
-        return null;
+        return new FetchPublishedGroupsResponse(IWSErrors.NOT_IMPLEMENTED, "Functionality requires an API change, which has not yet been made.");
     }
 
     /**
@@ -254,7 +253,7 @@ public final class ExchangeWSClient extends AbstractClient implements Exchange {
      */
     @Override
     public PublishOfferResponse processPublishOffer(final AuthenticationToken token, final PublishOfferRequest request) {
-        return null;
+        return map(client.processPublishOffer(map(token), map(request)));
     }
 
     /**
@@ -262,7 +261,7 @@ public final class ExchangeWSClient extends AbstractClient implements Exchange {
      */
     @Override
     public FallibleResponse processHideForeignOffers(final AuthenticationToken token, final HideForeignOffersRequest request) {
-        return null;
+        return map(client.processHideForeignOffers(map(token), map(request)));
     }
 
     /**
@@ -270,6 +269,6 @@ public final class ExchangeWSClient extends AbstractClient implements Exchange {
      */
     @Override
     public FallibleResponse rejectOffer(final AuthenticationToken token, final RejectOfferRequest request) {
-        return null;
+        return map(client.rejectOffer(map(token), map(request)));
     }
 }

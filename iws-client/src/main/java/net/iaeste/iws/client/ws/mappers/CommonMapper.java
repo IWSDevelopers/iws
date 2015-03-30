@@ -36,13 +36,16 @@ import net.iaeste.iws.api.enums.UserStatus;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.util.Date;
+import net.iaeste.iws.api.util.DatePeriod;
 import net.iaeste.iws.api.util.DateTime;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
+import java.util.Collection;
 import java.util.EnumSet;
 import java.util.GregorianCalendar;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -127,14 +130,6 @@ abstract class CommonMapper {
         }
 
         return ws;
-    }
-
-    private static net.iaeste.iws.ws.Currency map(final Currency api) {
-        return api != null ? net.iaeste.iws.ws.Currency.valueOf(api.name()) : null;
-    }
-
-    private static net.iaeste.iws.ws.Membership map(final Membership api) {
-        return api != null ? net.iaeste.iws.ws.Membership.valueOf(api.name()) : null;
     }
 
     protected static Address map(final net.iaeste.iws.ws.Address ws) {
@@ -275,51 +270,54 @@ abstract class CommonMapper {
         return api;
     }
 
-    protected static net.iaeste.iws.ws.Date map(final Date api) {
-        net.iaeste.iws.ws.Date ws = null;
+    // =========================================================================
+    // Convertion of Collections
+    // =========================================================================
 
-        if (api != null) {
-            ws = new net.iaeste.iws.ws.Date();
-            final java.util.Date theDate = api.toDate();
-            if (theDate != null) {
-                GregorianCalendar calendar = new GregorianCalendar();
-                // Throws a NullPointerException without the null check
-                calendar.setTime(theDate);
+    protected static Collection<Group> mapWSGroupCollection(final Collection<net.iaeste.iws.ws.Group> ws) {
+        final Collection<Group> collection;
 
-                try {
-                    final XMLGregorianCalendar converted = DatatypeFactory.newInstance().newXMLGregorianCalendar(calendar);
-                    ws.setMidnight(converted);
-                } catch (DatatypeConfigurationException e) {
-                    throw new IWSException(IWSErrors.ERROR, e.getMessage(), e);
-                }
+        if (ws != null) {
+            collection = new HashSet<>(ws.size());
+            for (net.iaeste.iws.ws.Group group : ws) {
+                collection.add(map(group));
             }
+        } else {
+            collection = new HashSet<>(0);
         }
 
-        return ws;
+        return collection;
     }
 
-    protected static Date map(final net.iaeste.iws.ws.Date ws) {
-        Date api = null;
+    protected static Collection<net.iaeste.iws.ws.Group> mapAPIGroupCollection(final Collection<Group> ws) {
+        final Collection<net.iaeste.iws.ws.Group> collection;
 
         if (ws != null) {
-            api = new Date(map(ws.getMidnight()));
+            collection = new HashSet<>(ws.size());
+            for (Group group : ws) {
+                collection.add(map(group));
+            }
+        } else {
+            collection = new HashSet<>(0);
         }
 
-        return api;
+        return collection;
     }
 
-    protected static DateTime map(final net.iaeste.iws.ws.DateTime ws) {
-        DateTime api = null;
+    protected static Collection<String> mapStringCollection(final Collection<String> source) {
+        final Collection<String> collection;
 
-        if (ws != null) {
-            api = new DateTime(map(ws.getTimestamp()));
+        if (source != null) {
+            collection = new HashSet<>(source);
+        } else {
+            collection = new HashSet<>(0);
         }
 
-        return api;
+        return collection;
     }
 
     // =========================================================================
-    // Internal Convertion of Enums
+    // Convertion of Enums
     // =========================================================================
 
     private static Privacy map(final net.iaeste.iws.ws.Privacy ws) {
@@ -336,6 +334,18 @@ abstract class CommonMapper {
 
     private static net.iaeste.iws.ws.GroupType map(final GroupType api) {
         return api != null ? net.iaeste.iws.ws.GroupType.valueOf(api.name()) : null;
+    }
+
+    protected static Currency map(final net.iaeste.iws.ws.Currency ws) {
+        return ws != null ? Currency.valueOf(ws.value()) : null;
+    }
+
+    protected static net.iaeste.iws.ws.Currency map(final Currency api) {
+        return api != null ? net.iaeste.iws.ws.Currency.valueOf(api.name()) : null;
+    }
+
+    private static net.iaeste.iws.ws.Membership map(final Membership api) {
+        return api != null ? net.iaeste.iws.ws.Membership.valueOf(api.name()) : null;
     }
 
     private static MonitoringLevel map(final net.iaeste.iws.ws.MonitoringLevel ws) {
@@ -355,10 +365,81 @@ abstract class CommonMapper {
     }
 
     // =========================================================================
+    // Date & Time Conversion
+    // =========================================================================
+
+    protected static Date map(final net.iaeste.iws.ws.Date ws) {
+        Date api = null;
+
+        if (ws != null) {
+            api = new Date(map(ws.getMidnight()));
+        }
+
+        return api;
+    }
+
+    protected static net.iaeste.iws.ws.Date map(final Date api) {
+        net.iaeste.iws.ws.Date ws = null;
+
+        if (api != null) {
+            ws = new net.iaeste.iws.ws.Date();
+
+            ws.setMidnight(map(api.toDate()));
+        }
+
+        return ws;
+    }
+
+    protected static DateTime map(final net.iaeste.iws.ws.DateTime ws) {
+        DateTime api = null;
+
+        if (ws != null) {
+            api = new DateTime(map(ws.getTimestamp()));
+        }
+
+        return api;
+    }
+
+    protected static net.iaeste.iws.ws.DateTime map(final DateTime api) {
+        net.iaeste.iws.ws.DateTime ws = null;
+
+        if (api != null) {
+            ws = new net.iaeste.iws.ws.DateTime();
+
+            ws.setTimestamp(map(api.toDate()));
+        }
+
+        return ws;
+    }
+
+    protected static DatePeriod map(final net.iaeste.iws.ws.DatePeriod ws) {
+        DatePeriod api = null;
+
+        if (ws != null) {
+            api = new DatePeriod(map(ws.getFromDate()), map(ws.getToDate()));
+        }
+
+        return api;
+    }
+
+    protected static net.iaeste.iws.ws.DatePeriod map(final DatePeriod api) {
+        net.iaeste.iws.ws.DatePeriod ws = null;
+
+        if (api != null) {
+            ws = new net.iaeste.iws.ws.DatePeriod();
+
+            ws.setFromDate(map(api.getFromDate()));
+            ws.setToDate(map(api.getToDate()));
+        }
+
+        return ws;
+    }
+
+    // =========================================================================
     // Internal Convertion of some WebService specific things
     // =========================================================================
 
-    protected static java.util.Date map(final XMLGregorianCalendar calendar) {
+    private static java.util.Date map(final XMLGregorianCalendar calendar) {
         java.util.Date converted = null;
 
         if (calendar != null) {
@@ -368,7 +449,7 @@ abstract class CommonMapper {
         return converted;
     }
 
-    protected static XMLGregorianCalendar map(java.util.Date date) {
+    private static XMLGregorianCalendar map(java.util.Date date) {
         XMLGregorianCalendar converted = null;
 
         if (date != null) {

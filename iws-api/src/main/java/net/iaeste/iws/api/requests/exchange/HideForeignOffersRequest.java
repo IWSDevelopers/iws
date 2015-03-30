@@ -29,7 +29,7 @@ import java.util.Set;
  */
 public final class HideForeignOffersRequest extends AbstractVerification {
 
-    /** {@link net.iaeste.iws.api.constants.IWSConstants#SERIAL_VERSION_UID}. */
+    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     private Set<String> offers;

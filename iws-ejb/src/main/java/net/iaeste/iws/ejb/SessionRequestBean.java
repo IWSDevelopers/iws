@@ -246,7 +246,14 @@ public class SessionRequestBean {
         entity.setSession(session);
         entity.setRequest(request);
         entity.setErrorcode((long) IWSErrors.FATAL.getError());
-        entity.setErrormessage(cause.getMessage());
+        // To better facilitate Error analysis, we need the actual error
+        // message, hence, in the database this field is not allowed to be null.
+        //   However, from the production logs, there are cases where we do not
+        // get an error message. So to avoid seeing anymore SQL Constraint
+        // Violation Exceptions, we simply check the error message and if it is
+        // null - we'll set it to a default error that will hopefully help
+        // improving the internal error handling.
+        entity.setErrormessage(cause.getMessage() != null ? cause.getMessage() : "No Error Message!");
 
         return entity;
     }

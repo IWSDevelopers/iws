@@ -55,13 +55,13 @@ public final class Settings {
         this.properties = new Properties();
 
         properties.setProperty(PROPERTY_ROOT_FILE_PATH, System.getProperty("java.io.tmpdir"));
-        properties.setProperty(PROPERTY_MAX_ACTIVE_TOKENS, String.valueOf(IWSConstants.MAX_ACTIVE_TOKENS));
-        properties.setProperty(PROPERTY_MAX_LOGIN_RETRIES, String.valueOf(IWSConstants.MAX_LOGIN_RETRIES));
-        properties.setProperty(PROPERTY_MAX_IDLE_TIME_FOR_SESSIONS, String.valueOf(IWSConstants.MAX_SESSION_IDLE_PERIOD));
-        properties.setProperty(PROPERTY_LOGIN_BLOCKED_PERIOD, String.valueOf(IWSConstants.LOGIN_BLOCKING_PERIOD));
-        properties.setProperty(PROPERTY_ACCOUNT_UNUSED_REMOVED_DAYS, String.valueOf(IWSConstants.ACCOUNT_UNUSED_REMOVED_DAYS));
-        properties.setProperty(PROPERTY_ACCOUNT_INACTIVE_DAYS, String.valueOf(IWSConstants.ACCOUNT_INACTIVE_DAYS));
-        properties.setProperty(PROPERTY_ACCOUNT_SUSPENDED_DAYS, String.valueOf(IWSConstants.ACCOUNT_SUSPENDED_DAYS));
+        properties.setProperty(PROPERTY_MAX_ACTIVE_TOKENS, String.valueOf(InternalConstants.MAX_ACTIVE_TOKENS));
+        properties.setProperty(PROPERTY_MAX_LOGIN_RETRIES, String.valueOf(InternalConstants.MAX_LOGIN_RETRIES));
+        properties.setProperty(PROPERTY_MAX_IDLE_TIME_FOR_SESSIONS, String.valueOf(InternalConstants.MAX_SESSION_IDLE_PERIOD));
+        properties.setProperty(PROPERTY_LOGIN_BLOCKED_PERIOD, String.valueOf(InternalConstants.LOGIN_BLOCKING_PERIOD));
+        properties.setProperty(PROPERTY_ACCOUNT_UNUSED_REMOVED_DAYS, String.valueOf(InternalConstants.ACCOUNT_UNUSED_REMOVED_DAYS));
+        properties.setProperty(PROPERTY_ACCOUNT_INACTIVE_DAYS, String.valueOf(InternalConstants.ACCOUNT_INACTIVE_DAYS));
+        properties.setProperty(PROPERTY_ACCOUNT_SUSPENDED_DAYS, String.valueOf(InternalConstants.ACCOUNT_SUSPENDED_DAYS));
         properties.setProperty(PROPERTY_PUBLIC_EMAIL_ADDRESS, IWSConstants.PUBLIC_EMAIL_ADDRESS);
         properties.setProperty(PROPERTY_PRIVATE_EMAIL_ADDRESS, IWSConstants.PRIVATE_EMAIL_ADDRESS);
         properties.setProperty(PROPERTY_SENDING_EMAIL_ADDRESS, IWSConstants.IWS_EMAIL_SENDER);

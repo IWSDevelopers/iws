@@ -34,6 +34,7 @@ import net.iaeste.iws.api.responses.FetchPermissionResponse;
 import net.iaeste.iws.api.responses.SessionDataResponse;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.api.util.Fallible;
+import net.iaeste.iws.common.configuration.InternalConstants;
 import net.iaeste.iws.common.notification.NotificationField;
 import org.junit.Test;
 
@@ -150,7 +151,7 @@ public final class AccessClientTest extends AbstractTest {
     @Test
     public void testExceedingLoginAttempts() {
         final AuthenticationRequest request = new AuthenticationRequest("sweden@iaeste.se", "wrongPassword");
-        for (int i = 0; i < IWSConstants.MAX_LOGIN_RETRIES; i++) {
+        for (int i = 0; i < InternalConstants.MAX_LOGIN_RETRIES; i++) {
             assertThat(access.generateSession(request).getError(), is(IWSErrors.AUTHENTICATION_ERROR));
         }
 

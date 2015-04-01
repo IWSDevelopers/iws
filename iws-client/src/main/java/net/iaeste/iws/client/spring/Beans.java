@@ -14,7 +14,7 @@
  */
 package net.iaeste.iws.client.spring;
 
-import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.common.configuration.InternalConstants;
 import net.iaeste.iws.common.configuration.Settings;
 import org.postgresql.ds.PGSimpleDataSource;
 import org.springframework.context.annotation.Bean;
@@ -43,10 +43,10 @@ import java.util.Properties;
 public class Beans {
 
     // Following is used to configure the Settings
-    private static final Integer MAX_ACTIVE_TOKENS = IWSConstants.MAX_ACTIVE_TOKENS;
-    private static final Long MAX_IDLE_TIME_FOR_SESSIONS = IWSConstants.MAX_SESSION_IDLE_PERIOD;
-    private static final Integer MAX_LOGIN_RETRIES = IWSConstants.MAX_LOGIN_RETRIES;
-    private static final long LOGIN_BLOCKED_TIME = IWSConstants.LOGIN_BLOCKING_PERIOD;
+    private static final Integer MAX_ACTIVE_TOKENS = InternalConstants.MAX_ACTIVE_TOKENS;
+    private static final Long MAX_IDLE_TIME_FOR_SESSIONS = InternalConstants.MAX_SESSION_IDLE_PERIOD;
+    private static final Integer MAX_LOGIN_RETRIES = InternalConstants.MAX_LOGIN_RETRIES;
+    private static final long LOGIN_BLOCKED_TIME = InternalConstants.LOGIN_BLOCKING_PERIOD;
 
     private static final Boolean USE_INMEMORY_DATABASE = true;
 

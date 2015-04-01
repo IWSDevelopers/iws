@@ -14,12 +14,11 @@
  */
 package net.iaeste.iws.core.services;
 
+import static net.iaeste.iws.api.util.LogUtil.formatLogMessage;
 import static net.iaeste.iws.common.utils.HashcodeGenerator.generateHash;
 import static net.iaeste.iws.common.utils.StringUtils.toLower;
 import static net.iaeste.iws.core.transformers.AdministrationTransformer.transform;
-import static net.iaeste.iws.api.util.LogUtil.formatLogMessage;
 
-import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.Role;
 import net.iaeste.iws.api.dtos.User;
@@ -36,6 +35,7 @@ import net.iaeste.iws.api.requests.UserRequest;
 import net.iaeste.iws.api.responses.CreateUserResponse;
 import net.iaeste.iws.api.responses.FetchRoleResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
+import net.iaeste.iws.common.configuration.InternalConstants;
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.common.notification.NotificationType;
 import net.iaeste.iws.core.notifications.Notifications;
@@ -107,8 +107,8 @@ public final class AccountService extends CommonService<AccessDao> {
     }
 
     private UserEntity createUserAccount(final Authentication authentication, final CreateUserRequest request) {
-        final RoleEntity owner = dao.findRoleById(IWSConstants.ROLE_OWNER);
-        final RoleEntity member = dao.findRoleById(IWSConstants.ROLE_MEMBER);
+        final RoleEntity owner = dao.findRoleById(InternalConstants.ROLE_OWNER);
+        final RoleEntity member = dao.findRoleById(InternalConstants.ROLE_MEMBER);
 
         final String username = verifyUsernameNotInSystem(request.getUsername());
         final UserEntity user = createAndPersistUserEntity(authentication, username, request.getPassword(), request.getFirstname(), request.getLastname(), request.isStudent());
@@ -131,7 +131,7 @@ public final class AccountService extends CommonService<AccessDao> {
         final UserEntity user = createAndPersistUserEntity(authentication, username, request.getPassword(), request.getFirstname(), request.getLastname(), request.isStudent());
         final StudentEntity studentEntity = new StudentEntity(user);
         dao.persist(studentEntity);
-        final RoleEntity student = dao.findRoleById(IWSConstants.ROLE_STUDENT);
+        final RoleEntity student = dao.findRoleById(InternalConstants.ROLE_STUDENT);
 
         addUserToGroup(user, authentication.getGroup(), student, true);
         addUserToGroup(user, studentGroup, student, true);
@@ -451,7 +451,7 @@ public final class AccountService extends CommonService<AccessDao> {
         dao.findGroupByPermission(authentication.getUser(), null, Permission.CONTROL_USER_ACCOUNT);
 
         if (role != null) {
-            if (!role.getId().equals(IWSConstants.ROLE_OWNER)) {
+            if (!role.getId().equals(InternalConstants.ROLE_OWNER)) {
                 final UserEntity user = dao.findUserByExternalId(request.getUser().getUserId());
                 final String username = request.getNewUsername();
 
@@ -665,7 +665,7 @@ public final class AccountService extends CommonService<AccessDao> {
                 case INTERNATIONAL:
                 case NATIONAL:
                 case MEMBER:
-                    if (IWSConstants.ROLE_OWNER.equals(entity.getRole().getId())) {
+                    if (InternalConstants.ROLE_OWNER.equals(entity.getRole().getId())) {
                         throw new IWSException(IWSErrors.PROCESSING_FAILURE, "Users who are currently the Owner of a Group with type '" + type.getDescription() + "', cannot be deleted.");
                     }
             }

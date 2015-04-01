@@ -14,12 +14,11 @@
  */
 package net.iaeste.iws.core.services;
 
+import static net.iaeste.iws.api.util.LogUtil.formatLogMessage;
 import static net.iaeste.iws.common.utils.HashcodeGenerator.generateHash;
 import static net.iaeste.iws.common.utils.StringUtils.toLower;
 import static net.iaeste.iws.core.transformers.CommonTransformer.transform;
-import static net.iaeste.iws.api.util.LogUtil.formatLogMessage;
 
-import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.User;
 import net.iaeste.iws.api.dtos.UserGroup;
@@ -39,6 +38,7 @@ import net.iaeste.iws.api.requests.SurveyOfCountryRequest;
 import net.iaeste.iws.api.responses.FetchCommitteeResponse;
 import net.iaeste.iws.api.responses.FetchInternationalGroupResponse;
 import net.iaeste.iws.api.responses.FetchSurveyOfCountryRespose;
+import net.iaeste.iws.common.configuration.InternalConstants;
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.common.exceptions.IllegalActionException;
 import net.iaeste.iws.common.notification.NotificationType;
@@ -183,7 +183,7 @@ public final class CommitteeService extends CommonService<CommitteeDao> {
     }
 
     private void doCreateCommittee(final Authentication authentication, final CommitteeRequest request, final CountryEntity country, final String groupname) {
-        final RoleEntity owner = dao.findRole(IWSConstants.ROLE_OWNER);
+        final RoleEntity owner = dao.findRole(InternalConstants.ROLE_OWNER);
         final UserEntity ns = createNationalSecretary(authentication, owner, request);
         final GroupEntity members = createGroup(authentication, authentication.getGroup().getId(), country, GroupType.MEMBER, groupname, request.getInstitutionName());
         final GroupEntity staff = createGroup(authentication, members.getId(), country, GroupType.NATIONAL, groupname, request.getInstitutionName());
@@ -293,14 +293,14 @@ public final class CommitteeService extends CommonService<CommitteeDao> {
     private void makeUserNationalSecretary(final Authentication authentication, final UserEntity user, final GroupEntity member, final GroupEntity staff) {
         final UserGroupEntity memberEntity = dao.findUserGroupRelation(member, user);
         if (memberEntity != null) {
-            if (!Objects.equals(memberEntity.getRole().getId(), IWSConstants.ROLE_OWNER)) {
+            if (!Objects.equals(memberEntity.getRole().getId(), InternalConstants.ROLE_OWNER)) {
                 // First, we'll downgrade the existing Owner to Moderator
-                final RoleEntity moderator = dao.findRole(IWSConstants.ROLE_MODERATOR);
+                final RoleEntity moderator = dao.findRole(InternalConstants.ROLE_MODERATOR);
                 changeExistingOwnerRole(authentication, moderator, member, staff);
 
                 // Now we can upgrade the role for the new Owner
                 final UserGroupEntity staffEntity = dao.findUserGroupRelation(staff, user);
-                final RoleEntity owner = dao.findRole(IWSConstants.ROLE_OWNER);
+                final RoleEntity owner = dao.findRole(InternalConstants.ROLE_OWNER);
                 memberEntity.setRole(owner);
                 staffEntity.setRole(owner);
                 dao.persist(authentication, memberEntity);
@@ -315,10 +315,10 @@ public final class CommitteeService extends CommonService<CommitteeDao> {
 
     private void makeUserNationalSecretary(final Authentication authentication, final CommitteeRequest request, final GroupEntity member, final GroupEntity staff) {
         // First, we'll downgrade the existing Owner to Moderator
-        final RoleEntity moderator = dao.findRole(IWSConstants.ROLE_MODERATOR);
+        final RoleEntity moderator = dao.findRole(InternalConstants.ROLE_MODERATOR);
         changeExistingOwnerRole(authentication, moderator, member, staff);
 
-        final RoleEntity owner = dao.findRole(IWSConstants.ROLE_OWNER);
+        final RoleEntity owner = dao.findRole(InternalConstants.ROLE_OWNER);
         final UserEntity user = new UserEntity();
         // First, the Password. If no password is specified, then we'll generate
         // one. Regardlessly, the password is set in the UserEntity, for the
@@ -816,7 +816,7 @@ public final class CommitteeService extends CommonService<CommitteeDao> {
                 }
 
                 // Now we can downgrade the former Coordinator.
-                oldCoordinator.setRole(dao.findRole(IWSConstants.ROLE_MODERATOR));
+                oldCoordinator.setRole(dao.findRole(InternalConstants.ROLE_MODERATOR));
                 oldCoordinator.setTitle("Former " + oldCoordinator.getTitle());
                 dao.persist(authentication, oldCoordinator);
             }
@@ -837,7 +837,7 @@ public final class CommitteeService extends CommonService<CommitteeDao> {
         userGroup.setOnPublicList(true);
         userGroup.setOnPrivateList(true);
         userGroup.setWriteToPrivateList(true);
-        userGroup.setRole(dao.findRole(IWSConstants.ROLE_OWNER));
+        userGroup.setRole(dao.findRole(InternalConstants.ROLE_OWNER));
         userGroup.setTitle(group.getGroupName() + " Coordinator");
 
         dao.persist(authentication, userGroup);

@@ -14,8 +14,6 @@
  */
 package net.iaeste.iws.api.constants;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
@@ -75,6 +73,11 @@ public interface IWSConstants {
      */
     String EMAIL_REGEX = "^[a-zA-Z0-9_\\.\\-\\+ !#\\$%&'\\*/=\\?\\^`\\{\\}\\|~]+@([a-zA-Z0-9_\\-]+\\.)*[a-zA-Z0-9]{2,}$";
 
+    /**
+     * The compiled e-mail pattern to use. Note, that the Pattern class is safe
+     * to precompile into a Global constant, whereas the Matcher must be
+     * generated on a per-thread basis.
+     */
     Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX);
 
     /**
@@ -97,91 +100,12 @@ public interface IWSConstants {
      */
     String PASSWORD_REGEX = "^.{" + MINIMAL_PASSWORD_LENGTH + ",}$";
 
+    /**
+     * The compiled password pattern to use. Note, that the Pattern class is
+     * safe to precompile into a Global constant, whereas the Matcher must be
+     * generated on a per-thread basis.
+     */
     Pattern PASSWORD_PATTERN = Pattern.compile(PASSWORD_REGEX);
-
-    /**
-     * This is the length for generated Passwords. Meaning passwords for
-     * accounts where no initial password was given.
-     */
-    int GENERATED_PASSWORD_LENGTH = 8;
-
-    /**
-     * For the automatic password generator, we need a list of characters, that
-     * cannot be misinterpreted when read, i.e. l and 1 should not be in the
-     * list, since they can too easily be mistaken for each other.
-     */
-    String PASSWORD_GENERATOR_CHARACTERS = "abcdefghjkmnpqrstuvwxzy23456789";
-
-    /**
-     * The maximum number of concurrently active tokens in the system. Meaning
-     * that only so many people can be logged in at the same time.<br />
-     *   The number is added to prevent that too many simultaneous users may
-     * overload the system. The tokens are kept in-memory - since read-only
-     * requests cannot update the database.
-     */
-    int MAX_ACTIVE_TOKENS = 500;
-
-    /**
-     * Sessions will time-out after a number of minutes being idle. Meaning that
-     * no activity took place using the account. The value is set to 8 hours per
-     * default, so inactivity during a normal Office workday shouldn't cause any
-     * problems.
-     */
-    long MAX_SESSION_IDLE_PERIOD = 28800000L;  // 8 hours
-
-    /**
-     * The maximum number of times a user may attempt to login with incorrect
-     * password, before the system will close the account temporarily. The
-     * duration for the blocking is specified in {@link #LOGIN_BLOCKING_PERIOD}.
-     * Once the duration is over, the count is reset and the user may again
-     * attempt at login in.<br />
-     *   The maximum retries count is added, to prevent someone from performing
-     * Denial Of Server based brute force attacks against the system. All the
-     * requests are kept in memory, and nothing is persisted, meaning that only
-     * a restart of the system will reset these.
-     */
-    int MAX_LOGIN_RETRIES = 5;
-
-    /**
-     * The amount of minutes that a user account is blocked, if too many invalid
-     * requests were made. After this period of time, it is again possible to
-     * attempt to login.<br />
-     *   The time is specified in milli seconds.
-     */
-    long LOGIN_BLOCKING_PERIOD = 1800000L;
-
-    /**
-     * Accounts, which have been created but not activated before this number of
-     * days, is considered dead. If the user is unable to activate the account
-     * before this time - it is very unlikely that it will ever be activated,
-     * and it will be completely removed from the system.<br />
-     *   If the user later regrets activating the account, no harm has been done
-     * as no data was associated with the account. So it is a simple matter to
-     * create a new one.
-     */
-    long ACCOUNT_UNUSED_REMOVED_DAYS = 91;
-
-    /**
-     * Active accounts, which have not been used after this number of days, is
-     * considered deprecated, and will be suspended.<br />
-     *   Suspension of an account simply means that it cannot be used unless it
-     * is reactivated. The User account data is still there, but all the account
-     * will be removed from the mailing lists and the alias will also be
-     * removed. However, all personal data is still present.
-     */
-    long ACCOUNT_INACTIVE_DAYS = 365;
-
-    /**
-     * Accounts, which have been suspended this number of days, will be deleted.
-     * Deletion means that the account will change status and all private data
-     * will be removed. However, the account will still contain the meta data -
-     * so any place where the account was referenced will still have the data
-     * present.<br />
-     *   Deletion of an account is irreversible, as the username (e-mail used to
-     * login) will be replaced with an invalid random value, the password will
-     * also be removed.
-     */
-    long ACCOUNT_SUSPENDED_DAYS = 365;
 
     /**
      * The year that IAESTE was founded.
@@ -223,8 +147,8 @@ public interface IWSConstants {
     int HASHCODE_MULTIPLIER = 31;
 
     /**
-     * Default IWS Date Format. The format was chosen as it proves the fewest
-     * problems for used regarding understanding it.
+     * Default IWS Date Format. The format was chosen as it gives the fewest
+     * problems for users, regarding understanding it.
      */
     String DATE_FORMAT = "dd-MMM-yyyy";
 
@@ -233,27 +157,8 @@ public interface IWSConstants {
      */
     String DATE_TIME_FORMAT = DATE_FORMAT + " HH:mm:ss";
 
-    String TIMESTAMP_FORMAT = "yyyyMMddHHmmssSSS";
-
-    /**
-     * By default, all CSV dates must follow the ISO-8601 format.
-     */
-    String CSV_DATE_FORMAT = "yyyy-MM-dd";
-
-    /**
-     * DateFormat Object for formatting and parsing Date Object from/to CSV.
-     */
-    DateFormat CSV_FORMATTER = new SimpleDateFormat(CSV_DATE_FORMAT, DEFAULT_LOCALE);
-
     /**
      * Default IWS Success message.
      */
     String SUCCESS = "OK";
-
-    // These are only used internally, and should be dropped if possible, and
-    // replaced with correct usage of the Permissions
-    Long ROLE_OWNER = 1L;
-    Long ROLE_MODERATOR = 2L;
-    Long ROLE_MEMBER = 3L;
-    Long ROLE_STUDENT = 5L;
 }

@@ -14,11 +14,10 @@
  */
 package net.iaeste.iws.core.services;
 
+import static net.iaeste.iws.api.util.LogUtil.formatLogMessage;
 import static net.iaeste.iws.core.transformers.AdministrationTransformer.transform;
 import static net.iaeste.iws.core.transformers.AdministrationTransformer.transformMembers;
-import static net.iaeste.iws.api.util.LogUtil.formatLogMessage;
 
-import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.UserGroup;
@@ -32,6 +31,7 @@ import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.ProcessGroupResponse;
 import net.iaeste.iws.api.responses.ProcessUserGroupResponse;
+import net.iaeste.iws.common.configuration.InternalConstants;
 import net.iaeste.iws.common.notification.NotificationType;
 import net.iaeste.iws.core.exceptions.PermissionException;
 import net.iaeste.iws.core.notifications.Notifications;
@@ -346,7 +346,7 @@ public final class GroupService {
         }
 
         // First we update the new Owner. By default, the Owner is on all lists
-        newOwner.setRole(dao.findRoleById(IWSConstants.ROLE_OWNER));
+        newOwner.setRole(dao.findRoleById(InternalConstants.ROLE_OWNER));
         newOwner.setTitle(oldOwner.getTitle());
         newOwner.setOnPublicList(true);
         newOwner.setOnPrivateList(true);
@@ -356,7 +356,7 @@ public final class GroupService {
 
         // The old Owner will get the Moderator Role and have the title
         // removed, since it may no longer be valid
-        oldOwner.setRole(dao.findRoleById(IWSConstants.ROLE_MODERATOR));
+        oldOwner.setRole(dao.findRoleById(InternalConstants.ROLE_MODERATOR));
         oldOwner.setTitle(title);
         log.debug(formatLogMessage(authentication, "Old Owner: %s gets the role %s for group %s.", authentication.getUser().getFirstname() + ' ' + authentication.getUser().getLastname(), oldOwner.getRole().getRole(), group.getGroupName()));
         dao.persist(authentication, oldOwner);
@@ -399,7 +399,7 @@ public final class GroupService {
             final RoleEntity role = dao.findRoleByExternalIdAndGroup(roleExternalId, authentication.getGroup());
             final UserGroupEntity existingEntity = dao.findByGroupAndExternalUserId(authentication.getGroup(), externalUserId);
 
-            if ((existingEntity != null) && existingEntity.getRole().getId().equals(IWSConstants.ROLE_OWNER)) {
+            if ((existingEntity != null) && existingEntity.getRole().getId().equals(InternalConstants.ROLE_OWNER)) {
                 throw new PermissionException("It is not permitted to change the current Owner.");
             } else if (request.isDeleteUserRequest()) {
                 response = deleteUserGroupRelation(authentication, role, existingEntity);
@@ -444,8 +444,8 @@ public final class GroupService {
         final RoleEntity requestedRole = dao.findRoleByExternalId(request.getUserGroup().getRole().getRoleId());
         final boolean result;
 
-        if (IWSConstants.ROLE_OWNER.equals(requestedRole.getId())) {
-            if (IWSConstants.ROLE_OWNER.equals(invokingUser.getRole().getId())) {
+        if (InternalConstants.ROLE_OWNER.equals(requestedRole.getId())) {
+            if (InternalConstants.ROLE_OWNER.equals(invokingUser.getRole().getId())) {
                 result = true;
             } else {
                 throw new PermissionException("Illegal attempt at changing Ownership.");
@@ -563,7 +563,7 @@ public final class GroupService {
     }
 
     private void setGroupOwner(final Authentication authentication, final GroupEntity group) {
-        final RoleEntity role = dao.findRoleById(IWSConstants.ROLE_OWNER);
+        final RoleEntity role = dao.findRoleById(InternalConstants.ROLE_OWNER);
 
         final UserGroupEntity userGroup = new UserGroupEntity();
         userGroup.setGroup(group);

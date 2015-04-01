@@ -14,11 +14,11 @@
  */
 package net.iaeste.iws.persistence.jpa;
 
-import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.GroupStatus;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.Membership;
 import net.iaeste.iws.api.enums.UserStatus;
+import net.iaeste.iws.common.configuration.InternalConstants;
 import net.iaeste.iws.persistence.CommitteeDao;
 import net.iaeste.iws.persistence.entities.CountryEntity;
 import net.iaeste.iws.persistence.entities.EntityConstants;
@@ -191,7 +191,7 @@ public class CommitteeJpaDao extends BasicJpaDao implements CommitteeDao {
 
         final Query query = entityManager.createQuery(jql);
         query.setParameter("gid", groupEntity.getId());
-        query.setParameter("rid", IWSConstants.ROLE_OWNER);
+        query.setParameter("rid", InternalConstants.ROLE_OWNER);
 
         return findSingleResult(query, "UserGroup");
     }

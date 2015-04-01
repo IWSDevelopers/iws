@@ -17,7 +17,7 @@ package net.iaeste.iws.common.utils;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
-import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.common.configuration.InternalConstants;
 import org.hamcrest.core.Is;
 import org.junit.Test;
 
@@ -63,11 +63,11 @@ public final class GeneratePasswordTest {
     @Test
     public void testPasswordGenerator() {
         final String password = PasswordGenerator.generatePassword();
-        assertThat(password.length(), Is.is(IWSConstants.GENERATED_PASSWORD_LENGTH));
+        assertThat(password.length(), Is.is(InternalConstants.GENERATED_PASSWORD_LENGTH));
 
         final char[] chars = password.toCharArray();
         for (final char c : chars) {
-            assertThat(IWSConstants.PASSWORD_GENERATOR_CHARACTERS.contains(Character.toString(c)), Is.is(true));
+            assertThat(InternalConstants.PASSWORD_GENERATOR_CHARACTERS.contains(Character.toString(c)), Is.is(true));
         }
     }
 }

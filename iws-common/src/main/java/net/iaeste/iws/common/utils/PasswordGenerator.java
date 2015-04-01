@@ -15,6 +15,7 @@
 package net.iaeste.iws.common.utils;
 
 import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.common.configuration.InternalConstants;
 
 import java.security.SecureRandom;
 import java.util.Random;
@@ -45,8 +46,8 @@ public final class PasswordGenerator {
      * @see IWSConstants#GENERATED_PASSWORD_LENGTH
      */
     public static String generatePassword() {
-        final String allowedCharacters = IWSConstants.PASSWORD_GENERATOR_CHARACTERS;
-        final int length = IWSConstants.GENERATED_PASSWORD_LENGTH;
+        final String allowedCharacters = InternalConstants.PASSWORD_GENERATOR_CHARACTERS;
+        final int length = InternalConstants.GENERATED_PASSWORD_LENGTH;
 
         final char[] password = new char[length];
         final Random random = new SecureRandom();

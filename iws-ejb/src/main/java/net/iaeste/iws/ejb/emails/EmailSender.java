@@ -75,6 +75,7 @@ public class EmailSender implements MessageListener {
      * Log message could be delated once we are sure it's working properly
      */
     public EmailSender() {
+        // TODO figure out why 30 bean instances is started initially - we're not sending that many mails!
         log.info("Starting EmailSender");
     }
 

@@ -14,10 +14,9 @@
  */
 package net.iaeste.iws.migrate.migrators;
 
-import static net.iaeste.iws.migrate.migrators.Helpers.convert;
 import static net.iaeste.iws.common.utils.StringUtils.toUpper;
+import static net.iaeste.iws.migrate.migrators.Helpers.convert;
 
-import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.dtos.User;
 import net.iaeste.iws.api.enums.Gender;
 import net.iaeste.iws.api.enums.GroupType;
@@ -25,6 +24,7 @@ import net.iaeste.iws.api.enums.Privacy;
 import net.iaeste.iws.api.enums.UserStatus;
 import net.iaeste.iws.api.enums.UserType;
 import net.iaeste.iws.api.exceptions.VerificationException;
+import net.iaeste.iws.common.configuration.InternalConstants;
 import net.iaeste.iws.core.transformers.AdministrationTransformer;
 import net.iaeste.iws.migrate.daos.IWSDao;
 import net.iaeste.iws.migrate.entities.IW3ProfilesEntity;
@@ -87,7 +87,7 @@ public class UserMigrator implements Migrator<IW3ProfilesEntity> {
             final CountryEntity country = iwsDao.findExistingCountry(convert(profile.getUser().getCountry()));
             final CountryEntity nationality = iwsDao.findExistingCountry(profile.getUser().getNationality());
             final GroupTypeEntity groupType = iwsDao.findGroupType(GroupType.PRIVATE);
-            final RoleEntity role = iwsDao.findRoleById(IWSConstants.ROLE_OWNER);
+            final RoleEntity role = iwsDao.findRoleById(InternalConstants.ROLE_OWNER);
 
             final UserEntity userEntity = convertUser(profile);
             userEntity.getPerson().setNationality(nationality);

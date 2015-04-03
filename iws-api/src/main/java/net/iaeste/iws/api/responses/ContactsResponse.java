@@ -20,6 +20,10 @@ import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.User;
 import net.iaeste.iws.api.enums.ContactsType;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 import java.util.List;
 
 /**
@@ -27,14 +31,16 @@ import java.util.List;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "ContactsResponse", propOrder = { "users", "groups", "type" })
 public final class ContactsResponse extends FallibleResponse {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    private List<User> users = null;
-    private List<Group> groups = null;
-    private ContactsType type = null;
+    @XmlElement(required = true, nillable = true) private List<User> users = null;
+    @XmlElement(required = true, nillable = true) private List<Group> groups = null;
+    @XmlElement(required = true, nillable = true) private ContactsType type = null;
 
     // =========================================================================
     // Object Constructors

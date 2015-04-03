@@ -18,6 +18,10 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.ContactsType;
 import net.iaeste.iws.api.util.AbstractVerification;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,14 +30,16 @@ import java.util.Map;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "ContactsRequest", propOrder = { "userId", "groupId", "type" })
 public final class ContactsRequest extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    private String userId = null;
-    private String groupId = null;
-    private ContactsType type = ContactsType.OTHER;
+    @XmlElement(required = true, nillable = true) private String userId = null;
+    @XmlElement(required = true, nillable = true) private String groupId = null;
+    @XmlElement(required = true, nillable = true) private ContactsType type = ContactsType.OTHER;
 
     // =========================================================================
     // Object Constructors

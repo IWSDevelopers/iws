@@ -19,6 +19,10 @@ import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.UserGroup;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 import java.util.List;
 
 /**
@@ -26,15 +30,17 @@ import java.util.List;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "FetchGroupResponse", propOrder = { "group", "members", "students", "subGroups" })
 public final class FetchGroupResponse extends FallibleResponse {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    private Group group = null;
-    private List<UserGroup> members = null;
-    private List<UserGroup> students = null;
-    private List<Group> subGroups = null;
+    @XmlElement(required = true, nillable = true) private Group group = null;
+    @XmlElement(required = true, nillable = true) private List<UserGroup> members = null;
+    @XmlElement(required = true, nillable = true) private List<UserGroup> students = null;
+    @XmlElement(required = true, nillable = true) private List<Group> subGroups = null;
 
     // =========================================================================
     // Object Constructors

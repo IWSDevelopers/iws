@@ -17,6 +17,10 @@ package net.iaeste.iws.api.requests;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.util.AbstractVerification;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,6 +46,8 @@ import java.util.Map;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "CreateUserRequest", propOrder = { "username", "password", "firstname", "lastname", "studentAccount" })
 public final class CreateUserRequest extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
@@ -54,11 +60,11 @@ public final class CreateUserRequest extends AbstractVerification {
     /** The maximum length for a users lastname that is allowed. */
     public static final int USER_MAXIMUM_LASTNAME = 50;
 
-    private String username = null;
-    private String password = null;
-    private String firstname = null;
-    private String lastname = null;
-    private boolean studentAccount = false;
+    @XmlElement(required = true, nillable = false) private String username = null;
+    @XmlElement(required = true, nillable = true)  private String password = null;
+    @XmlElement(required = true, nillable = false) private String firstname = null;
+    @XmlElement(required = true, nillable = false) private String lastname = null;
+    @XmlElement(required = true, nillable = true)  private boolean studentAccount = false;
 
     // =========================================================================
     // Object Constructors

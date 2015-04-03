@@ -18,6 +18,10 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.dtos.UserGroup;
 import net.iaeste.iws.api.util.AbstractVerification;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,13 +30,15 @@ import java.util.Map;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "UserGroupAssignmentRequest", propOrder = { "userGroup", "deleteUser" })
 public final class UserGroupAssignmentRequest extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    private UserGroup userGroup = null;
-    private boolean deleteUser = false;
+    @XmlElement(required = true, nillable = false) private UserGroup userGroup = null;
+    @XmlElement(required = true, nillable = true)  private boolean deleteUser = false;
 
     // =========================================================================
     // Object Constructors

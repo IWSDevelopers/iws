@@ -18,6 +18,11 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.dtos.User;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
+
 /**
  * Response Object for a FetchUser request. Will return the found User Object.
  * If information returned depends on the users privacy settings, and the
@@ -27,12 +32,15 @@ import net.iaeste.iws.api.dtos.User;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "FetchUserResponse", propOrder = { "user" })
 public final class FetchUserResponse extends FallibleResponse {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     /** The List of Users, matching the request. */
+    @XmlElement(required = true, nillable = true)
     private User user = null;
 
     // =========================================================================

@@ -20,6 +20,10 @@ import net.iaeste.iws.api.enums.Membership;
 import net.iaeste.iws.api.enums.SortingField;
 import net.iaeste.iws.api.util.AbstractPaginatable;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,14 +45,16 @@ import java.util.Map;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "FetchCountryRequest", propOrder = { "countryIds", "membership", "countryType" })
 public final class FetchCountryRequest extends AbstractPaginatable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    private List<String> countryIds;
-    private Membership membership;
-    private CountryType countryType = CountryType.COMMITTEES;
+    @XmlElement(required = true, nillable = true)  private List<String> countryIds;
+    @XmlElement(required = true, nillable = true)  private Membership membership;
+    @XmlElement(required = true, nillable = false) private CountryType countryType = CountryType.COMMITTEES;
 
     // =========================================================================
     // Object Constructors

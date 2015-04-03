@@ -19,6 +19,10 @@ import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.User;
 import net.iaeste.iws.api.util.AbstractVerification;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,13 +31,15 @@ import java.util.Map;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "GroupRequest", propOrder = { "group", "user" })
 public final class GroupRequest extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    private Group group = null;
-    private User user = null;
+    @XmlElement(required = true, nillable = false) private Group group = null;
+    @XmlElement(required = true, nillable = true)  private User user = null;
 
     // =========================================================================
     // Object Constructors

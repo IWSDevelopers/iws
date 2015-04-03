@@ -19,6 +19,10 @@ import net.iaeste.iws.api.dtos.User;
 import net.iaeste.iws.api.enums.UserStatus;
 import net.iaeste.iws.api.util.AbstractVerification;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,16 +36,18 @@ import java.util.Map;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "UserRequest", propOrder = { "user", "newStatus", "newUsername", "newPassword", "password" })
 public final class UserRequest extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    private User user = null;
-    private UserStatus newStatus = null;
-    private String newUsername = null;
-    private String newPassword = null;
-    private String password = null;
+    @XmlElement(required = true, nillable = false) private User user = null;
+    @XmlElement(required = true, nillable = true)  private UserStatus newStatus = null;
+    @XmlElement(required = true, nillable = true)  private String newUsername = null;
+    @XmlElement(required = true, nillable = true)  private String newPassword = null;
+    @XmlElement(required = true, nillable = true)  private String password = null;
 
     // =========================================================================
     // Object Constructors

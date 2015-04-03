@@ -18,6 +18,10 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.util.AbstractVerification;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -34,14 +38,16 @@ import java.util.Set;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "Role", propOrder = { "roleId", "roleName", "permissions" })
 public final class Role extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    private String roleId = null;
-    private String roleName = null;
-    private Set<Permission> permissions = null;
+    @XmlElement(required = true, nillable = true)  private String roleId = null;
+    @XmlElement(required = true, nillable = false) private String roleName = null;
+    @XmlElement(required = true, nillable = false) private Set<Permission> permissions = null;
 
     // =========================================================================
     // Object Constructors

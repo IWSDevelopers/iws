@@ -18,6 +18,8 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.exceptions.VerificationException;
 import org.joda.time.DateMidnight;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 import java.io.Serializable;
@@ -44,7 +46,8 @@ import java.util.Calendar;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
-@XmlType(name = "Date")
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "Date", propOrder = { "midnight" })
 public final class Date implements Serializable, Comparable<Date> {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */

@@ -19,29 +19,37 @@ import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.MonitoringLevel;
 import net.iaeste.iws.api.util.AbstractVerification;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "Group", propOrder = { "groupId", "groupName", "fullName", "listName", "privateList", "publicList", "groupType", "description", "monitoringLevel", "country" })
 public final class Group extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
+    private static final Pattern PATTERN_STAFF = Pattern.compile("Staff", Pattern.LITERAL);
 
-    private String groupId = null;
-    private String groupName = null;
-    private String fullName = null;
-    private String listName = null;
-    private Boolean privateList = true;
-    private Boolean publicList = true;
-    private GroupType groupType = null;
-    private String description = null;
-    private MonitoringLevel monitoringLevel = MonitoringLevel.NONE;
-    private Country country = null;
+    @XmlElement(required = true, nillable = true)  private String groupId = null;
+    @XmlElement(required = true, nillable = false) private String groupName = null;
+    @XmlElement(required = true, nillable = true)  private String fullName = null;
+    @XmlElement(required = true, nillable = true)  private String listName = null;
+    @XmlElement(required = true, nillable = false) private Boolean privateList = true;
+    @XmlElement(required = true, nillable = false) private Boolean publicList = true;
+    @XmlElement(required = true, nillable = false) private GroupType groupType = null;
+    @XmlElement(required = true, nillable = true)  private String description = null;
+    @XmlElement(required = true, nillable = true)  private MonitoringLevel monitoringLevel = MonitoringLevel.NONE;
+    @XmlElement(required = true, nillable = true)  private Country country = null;
 
     // =========================================================================
     // Object Constructors
@@ -220,7 +228,7 @@ public final class Group extends AbstractVerification {
         final String committeeName;
 
         if (groupType == GroupType.NATIONAL) {
-            committeeName = groupName.replace("Staff", "").trim();
+            committeeName = PATTERN_STAFF.matcher(groupName).replaceAll("").trim();
         } else if (groupType == GroupType.MEMBER) {
             committeeName = groupName;
         } else if (groupType == GroupType.LOCAL) {
@@ -294,6 +302,7 @@ public final class Group extends AbstractVerification {
      * @param country The Country for this Group
      */
     public void setCountry(final Country country) {
+        //ensureVerifiable("country", country);
         this.country = new Country(country);
     }
 

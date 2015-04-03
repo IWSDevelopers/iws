@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.api.enums;
 
+import javax.xml.bind.annotation.XmlType;
+
 /**
  * All Groups in the IW has to be assigned an overall type, which determines its
  * basic functionality (permissions). Please note, that certain GroupTypes, are
@@ -25,6 +27,7 @@ package net.iaeste.iws.api.enums;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
+@XmlType(name = "GroupType")
 public enum GroupType {
 
     /**

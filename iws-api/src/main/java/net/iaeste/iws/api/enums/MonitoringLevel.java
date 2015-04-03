@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.api.enums;
 
+import javax.xml.bind.annotation.XmlType;
+
 /**
  * Whenever an Object is saved or updated, the information may be monitored,
  * using a combined set of information. Meaning, that the Object must allow
@@ -28,6 +30,7 @@ package net.iaeste.iws.api.enums;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
+@XmlType(name = "MonitoringLevel")
 public enum MonitoringLevel {
 
     /**

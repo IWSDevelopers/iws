@@ -19,6 +19,10 @@ import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.api.util.DateTime;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -38,14 +42,16 @@ import java.util.zip.GZIPInputStream;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "SessionDataResponse", propOrder = { "sessionData", "modified", "created" })
 public final class SessionDataResponse<T extends Serializable> extends FallibleResponse {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    private byte[] sessionData = null;
-    private DateTime created = null;
-    private DateTime modified = null;
+    @XmlElement(required = true, nillable = true) private byte[] sessionData = null;
+    @XmlElement(required = true, nillable = true) private DateTime modified = null;
+    @XmlElement(required = true, nillable = true) private DateTime created = null;
 
     // =========================================================================
     // Object Constructors
@@ -56,19 +62,6 @@ public final class SessionDataResponse<T extends Serializable> extends FallibleR
      * for WebServices to work properly.
      */
     public SessionDataResponse() {
-    }
-
-    /**
-     * Default Constructor, for setting all the data.
-     *
-     * @param sessionData Client specific Session Data
-     * @param created     Time of Creation for this session
-     * @param modified    Last update of the Session
-     */
-    public SessionDataResponse(final byte[] sessionData, final DateTime created, final DateTime modified) {
-        this.sessionData = sessionData;
-        this.created = created;
-        this.modified = modified;
     }
 
     /**
@@ -93,20 +86,20 @@ public final class SessionDataResponse<T extends Serializable> extends FallibleR
         return deserialize(sessionData);
     }
 
-    public void setCreated(final DateTime created) {
-        this.created = created;
-    }
-
-    public DateTime getCreated() {
-        return created;
-    }
-
     public void setModified(final DateTime modified) {
         this.modified = modified;
     }
 
     public DateTime getModified() {
         return modified;
+    }
+
+    public void setCreated(final DateTime created) {
+        this.created = created;
+    }
+
+    public DateTime getCreated() {
+        return created;
     }
 
     // =========================================================================
@@ -121,22 +114,23 @@ public final class SessionDataResponse<T extends Serializable> extends FallibleR
         if (this == obj) {
             return true;
         }
-
         if (!(obj instanceof SessionDataResponse)) {
+            return false;
+        }
+        if (!super.equals(obj)) {
             return false;
         }
 
         final SessionDataResponse<?> that = (SessionDataResponse<?>) obj;
 
-        if ((created != null) ? !created.equals(that.created) : (that.created != null)) {
+        if (!Arrays.equals(sessionData, that.sessionData)) {
+            return false;
+        }
+        if (modified != null ? !modified.equals(that.modified) : that.modified != null) {
             return false;
         }
 
-        if ((modified != null) ? !modified.equals(that.modified) : (that.modified != null)) {
-            return false;
-        }
-
-        return !((sessionData != null) ? !Arrays.equals(sessionData, that.sessionData) : (that.sessionData != null));
+        return !(created != null ? !created.equals(that.created) : that.created != null);
     }
 
     /**
@@ -147,8 +141,8 @@ public final class SessionDataResponse<T extends Serializable> extends FallibleR
         int result = super.hashCode();
 
         result = IWSConstants.HASHCODE_MULTIPLIER * result + ((sessionData != null) ? Arrays.hashCode(sessionData) : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((created != null) ? created.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + ((modified != null) ? modified.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((created != null) ? created.hashCode() : 0);
 
         return result;
     }
@@ -159,8 +153,8 @@ public final class SessionDataResponse<T extends Serializable> extends FallibleR
     @Override
     public String toString() {
         return "SessionDataResponse{" +
-                "created=" + created +
-                ", modified=" + modified +
+                "modified=" + modified +
+                ", created=" + created +
                 '}';
     }
 

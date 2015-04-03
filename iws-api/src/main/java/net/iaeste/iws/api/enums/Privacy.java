@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.api.enums;
 
+import javax.xml.bind.annotation.XmlType;
+
 /**
  * Data Privacy is a very important topic. The IWS provides a few settings,
  * which is combined with a restriction of fields, to ensure that the user can
@@ -23,6 +25,7 @@ package net.iaeste.iws.api.enums;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
+@XmlType(name = "Privacy")
 public enum Privacy {
 
     /**

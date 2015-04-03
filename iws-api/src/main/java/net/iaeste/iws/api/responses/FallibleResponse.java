@@ -19,6 +19,8 @@ import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.util.Fallible;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -30,7 +32,8 @@ import javax.xml.bind.annotation.XmlType;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
-@XmlType(name = "FallibleResponse")
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "FallibleResponse", propOrder = { "error", "message" })
 public class FallibleResponse implements Fallible {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */

@@ -18,6 +18,10 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.util.AbstractVerification;
 import net.iaeste.iws.api.util.Traceable;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,6 +34,8 @@ import java.util.Map;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "AuthenticationToken", propOrder = { "token", "groupId" })
 public final class AuthenticationToken extends AbstractVerification implements Traceable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
@@ -42,9 +48,11 @@ public final class AuthenticationToken extends AbstractVerification implements T
     private static final int LENGTH_MD5 = 32;
 
     /** The actual token, stored as an ASCII value. */
+    @XmlElement(required = true, nillable = false)
     private String token = null;
 
     /** For Group Authorization, the GroupId must also be provided. */
+    @XmlElement(required = true, nillable = true)
     private String groupId = null;
 
     // =========================================================================

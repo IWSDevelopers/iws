@@ -17,6 +17,10 @@ package net.iaeste.iws.api.requests;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.util.AbstractVerification;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,13 +29,24 @@ import java.util.Map;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "AuthenticationRequest", propOrder = { "username", "password" })
 public final class AuthenticationRequest extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    // User Authentication information, i.e. plaintext username & password
+    /**
+     * User Credential: Username (the user's private e-mail address).
+     */
+    @XmlElement(required = true, nillable = false)
     private String username;
+
+    /**
+     * User Credential: Password, must follow the requirements defined in the
+     * Constants.
+     */
+    @XmlElement(required = true, nillable = false)
     private String password;
 
     // =========================================================================
@@ -144,6 +159,9 @@ public final class AuthenticationRequest extends AbstractVerification {
      */
     @Override
     public String toString() {
-        return "AuthenticationRequest[username=" + username + ",password=" + password + ']';
+        return "AuthenticationRequest{" +
+                "username='" + username + '\'' +
+                ", password='xxxxxxxx'" +
+                '}';
     }
 }

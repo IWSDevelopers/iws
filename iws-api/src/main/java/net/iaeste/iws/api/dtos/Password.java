@@ -17,6 +17,10 @@ package net.iaeste.iws.api.dtos;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.util.AbstractVerification;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,6 +33,8 @@ import java.util.Map;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "Password", propOrder = { "newPassword", "oldPassword" })
 public final class Password extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
@@ -38,6 +44,7 @@ public final class Password extends AbstractVerification {
      * The new Password for the user. This field is mandatory for both the
      * update Password and reset Password requests.
      */
+    @XmlElement(required = true, nillable = false)
     private String newPassword = null;
 
     /**
@@ -47,6 +54,7 @@ public final class Password extends AbstractVerification {
      *   Note, this field is only used when invoking the update Password, if the
      * forgot password functionality was used, then it is a different matter.
      */
+    @XmlElement(required = true, nillable = false)
     private String oldPassword = null;
 
     // =========================================================================
@@ -160,6 +168,7 @@ public final class Password extends AbstractVerification {
         // As the Setters are verifying all given values, we only
         // need to run checks against nonnull fields here
         isNotNull(validation, "newPassword", newPassword);
+        isNotNull(validation, "oldPassword", oldPassword);
 
         return validation;
     }
@@ -197,6 +206,6 @@ public final class Password extends AbstractVerification {
         // compare this Object with something else, we wish to convey that it is
         // a sensitive Object, hence standards methods are returning negative
         // information only
-        return "Password{password='xxxxxxxx'}";
+        return "Password{...}";
     }
 }

@@ -18,6 +18,10 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.util.AbstractVerification;
 import net.iaeste.iws.api.util.Date;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,20 +36,22 @@ import java.util.Map;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "UserGroup", propOrder = { "userGroupId", "user", "group", "role", "title", "onPublicList", "onPrivateList", "writeToPrivateList", "memberSince" })
 public final class UserGroup extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    private String userGroupId = null;
-    private User user = null;
-    private Group group = null;
-    private Role role = null;
-    private String title = null;
-    private boolean onPublicList = false;
-    private boolean onPrivateList = false;
-    private boolean writeToPrivateList = false;
-    private Date memberSince = null;
+    @XmlElement(required = true, nillable = true)  private String userGroupId = null;
+    @XmlElement(required = true, nillable = false) private User user = null;
+    @XmlElement(required = true, nillable = false) private Group group = null;
+    @XmlElement(required = true, nillable = false) private Role role = null;
+    @XmlElement(required = true, nillable = true)  private String title = null;
+    @XmlElement(required = true, nillable = false) private boolean onPublicList = false;
+    @XmlElement(required = true, nillable = false) private boolean onPrivateList = false;
+    @XmlElement(required = true, nillable = false) private boolean writeToPrivateList = false;
+    @XmlElement(required = true, nillable = true)  private Date memberSince = null;
 
     // =========================================================================
     // Object Constructors

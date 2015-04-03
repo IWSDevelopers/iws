@@ -20,6 +20,10 @@ import net.iaeste.iws.api.enums.Membership;
 import net.iaeste.iws.api.util.AbstractVerification;
 import net.iaeste.iws.api.util.Date;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,22 +39,24 @@ import java.util.Map;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "Country", propOrder = { "countryCode", "countryName", "countryNameFull", "countryNameNative", "nationality", "citizens", "phonecode", "currency", "languages", "membership", "memberSince" })
 public final class Country extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    private String countryCode = null;
-    private String countryName = null;
-    private String countryNameFull = null;
-    private String countryNameNative = null;
-    private String nationality = null;
-    private String citizens = null;
-    private String phonecode = null;
-    private Currency currency = null;
-    private String languages = null;
-    private Membership membership = null;
-    private Integer memberSince = null;
+    @XmlElement(required = true, nillable = false) private String countryCode = null;
+    @XmlElement(required = true, nillable = false) private String countryName = null;
+    @XmlElement(required = true, nillable = true)  private String countryNameFull = null;
+    @XmlElement(required = true, nillable = true)  private String countryNameNative = null;
+    @XmlElement(required = true, nillable = true)  private String nationality = null;
+    @XmlElement(required = true, nillable = true)  private String citizens = null;
+    @XmlElement(required = true, nillable = true)  private String phonecode = null;
+    @XmlElement(required = true, nillable = false) private Currency currency = null;
+    @XmlElement(required = true, nillable = true)  private String languages = null;
+    @XmlElement(required = true, nillable = true)  private Membership membership = null;
+    @XmlElement(required = true, nillable = true)  private Integer memberSince = null;
 
     // =========================================================================
     // Object Constructors

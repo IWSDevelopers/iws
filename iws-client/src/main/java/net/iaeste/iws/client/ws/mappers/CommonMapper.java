@@ -134,77 +134,96 @@ abstract class CommonMapper {
     }
 
     protected static Address map(final net.iaeste.iws.ws.Address ws) {
-        final Address api = new Address();
+        Address api = null;
 
-        api.setStreet1(ws.getStreet1());
-        api.setStreet2(ws.getStreet2());
-        api.setPostalCode(ws.getPostalCode());
-        api.setCity(ws.getCity());
-        api.setState(ws.getState());
-        api.setPobox(ws.getPobox());
-        api.setCountry(map(ws.getCountry()));
+        if (ws != null) {
+            api = new Address();
+
+            api.setStreet1(ws.getStreet1());
+            api.setStreet2(ws.getStreet2());
+            api.setPostalCode(ws.getPostalCode());
+            api.setCity(ws.getCity());
+            api.setState(ws.getState());
+            api.setPobox(ws.getPobox());
+            api.setCountry(map(ws.getCountry()));
+        }
 
         return api;
     }
 
     protected static net.iaeste.iws.ws.Address map(final Address api) {
-        final net.iaeste.iws.ws.Address ws = new net.iaeste.iws.ws.Address();
+        net.iaeste.iws.ws.Address ws = null;
 
-        ws.setStreet1(api.getStreet1());
-        ws.setStreet2(api.getStreet2());
-        ws.setPostalCode(api.getPostalCode());
-        ws.setCity(api.getCity());
-        ws.setState(api.getState());
-        ws.setPobox(api.getPobox());
-        ws.setCountry(map(api.getCountry()));
+        if (api != null) {
+            ws = new net.iaeste.iws.ws.Address();
+
+            ws.setStreet1(api.getStreet1());
+            ws.setStreet2(api.getStreet2());
+            ws.setPostalCode(api.getPostalCode());
+            ws.setCity(api.getCity());
+            ws.setState(api.getState());
+            ws.setPobox(api.getPobox());
+            ws.setCountry(map(api.getCountry()));
+        }
 
         return ws;
     }
 
     protected static UserGroup map(final net.iaeste.iws.ws.UserGroup ws) {
-        final UserGroup api = new UserGroup();
+        UserGroup api = null;
 
-        api.setUserGroupId(ws.getUserGroupId());
-        api.setUser(map(ws.getUser()));
-        api.setGroup(map(ws.getGroup()));
-        api.setRole(map(ws.getRole()));
-        api.setTitle(ws.getTitle());
-        api.setOnPrivateList(ws.isOnPrivateList());
-        api.setOnPublicList(ws.isOnPublicList());
-        // TODO Correct UserGroup, as the flag is not set. Assuming it is because the getter is called "may..."
-        //api.setWriteToPrivateList(api.isWriteToPrivateList());
-        api.setMemberSince(map(ws.getMemberSince()));
+        if (ws != null) {
+            api = new UserGroup();
+
+            api.setUserGroupId(ws.getUserGroupId());
+            api.setUser(map(ws.getUser()));
+            api.setGroup(map(ws.getGroup()));
+            api.setRole(map(ws.getRole()));
+            api.setTitle(ws.getTitle());
+            api.setOnPrivateList(ws.isOnPrivateList());
+            api.setOnPublicList(ws.isOnPublicList());
+            api.setWriteToPrivateList(ws.isWriteToPrivateList());
+            api.setMemberSince(map(ws.getMemberSince()));
+        }
 
         return api;
     }
 
     protected static User map(final net.iaeste.iws.ws.User ws) {
-        final User api = new User();
+        User api = null;
 
-        api.setUserId(ws.getUserId());
-        api.setUsername(ws.getUsername());
-        api.setAlias(ws.getAlias());
-        api.setFirstname(ws.getFirstname());
-        api.setLastname(ws.getLastname());
-        api.setPerson(map(ws.getPerson()));
-        api.setStatus(map(ws.getStatus()));
-        api.setPrivacy(map(ws.getPrivacy()));
-        api.setNotifications(map(ws.getNotifications()));
+        if (ws != null) {
+            api = new User();
+
+            api.setUserId(ws.getUserId());
+            api.setUsername(ws.getUsername());
+            api.setAlias(ws.getAlias());
+            api.setFirstname(ws.getFirstname());
+            api.setLastname(ws.getLastname());
+            api.setPerson(map(ws.getPerson()));
+            api.setStatus(map(ws.getStatus()));
+            api.setPrivacy(map(ws.getPrivacy()));
+            api.setNotifications(map(ws.getNotifications()));
+        }
 
         return api;
     }
 
     protected static Person map(final net.iaeste.iws.ws.Person ws) {
-        final Person api = new Person();
+        Person api = null;
 
-        api.setNationality(map(ws.getNationality()));
-        api.setAddress(map(ws.getAddress()));
-        api.setAlternateEmail(ws.getAlternateEmail());
-        api.setMobile(ws.getMobile());
-        api.setPhone(ws.getPhone());
-        api.setFax(ws.getFax());
-        api.setBirthday(map(ws.getBirthday()));
-        api.setGender(Gender.valueOf(ws.getGender().name()));
+        if (ws != null) {
+            api = new Person();
+
+            api.setNationality(map(ws.getNationality()));
+            api.setAddress(map(ws.getAddress()));
+            api.setAlternateEmail(ws.getAlternateEmail());
+            api.setMobile(ws.getMobile());
+            api.setPhone(ws.getPhone());
+            api.setFax(ws.getFax());
+            api.setBirthday(map(ws.getBirthday()));
+            api.setGender(Gender.valueOf(ws.getGender().name()));
+        }
 
         return api;
     }

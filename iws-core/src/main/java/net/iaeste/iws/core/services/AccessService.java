@@ -206,8 +206,8 @@ public final class AccessService extends CommonService<AccessDao> {
 
         final SessionDataResponse<T> response = new SessionDataResponse<>();
         response.setSessionData(data);
-        response.setCreated(created);
         response.setModified(modified);
+        response.setCreated(created);
 
         return response;
     }

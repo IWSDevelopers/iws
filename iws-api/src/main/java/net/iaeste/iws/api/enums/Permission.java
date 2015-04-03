@@ -20,11 +20,14 @@ import net.iaeste.iws.api.Exchange;
 import net.iaeste.iws.api.Storage;
 import net.iaeste.iws.api.Students;
 
+import javax.xml.bind.annotation.XmlType;
+
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
+@XmlType(name = "Permission")
 public enum Permission {
 
     // =========================================================================

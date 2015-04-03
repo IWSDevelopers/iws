@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.api.enums;
 
+import javax.xml.bind.annotation.XmlType;
+
 /**
  * Notification Frequency - when the user wants to receive notification about an
  * IW action.
@@ -22,6 +24,7 @@ package net.iaeste.iws.api.enums;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
+@XmlType(name = "NotificationFrequency")
 public enum NotificationFrequency {
 
     /**

@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.api.enums;
 
+import javax.xml.bind.annotation.XmlType;
+
 /**
  * Users can have different status in the system, by default all users are
  * Active. However, a user can also be prevented from logging in - this is
@@ -27,6 +29,7 @@ package net.iaeste.iws.api.enums;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
+@XmlType(name = "UserStatus")
 public enum UserStatus {
 
     NEW,

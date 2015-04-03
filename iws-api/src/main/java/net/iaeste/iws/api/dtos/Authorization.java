@@ -16,6 +16,10 @@ package net.iaeste.iws.api.dtos;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 import java.io.Serializable;
 
 /**
@@ -25,11 +29,14 @@ import java.io.Serializable;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "Authorization", propOrder = { "userGroup" })
 public final class Authorization implements Serializable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
+    @XmlElement(required = true, nillable = false)
     private UserGroup userGroup = null;
 
     // =========================================================================

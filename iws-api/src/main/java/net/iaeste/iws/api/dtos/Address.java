@@ -17,6 +17,10 @@ package net.iaeste.iws.api.dtos;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.util.AbstractVerification;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,6 +29,8 @@ import java.util.Map;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "Address", propOrder = { "street1", "street2", "postalCode", "city", "state", "pobox", "country" })
 public final class Address extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
@@ -46,13 +52,13 @@ public final class Address extends AbstractVerification {
      */
     public static final int POSTAL_CODE_LENGTH = 12;
 
-    private String street1 = null;
-    private String street2 = null;
-    private String postalCode = null;
-    private String city = null;
-    private String state = null;
-    private String pobox = null;
-    private Country country = null;
+    @XmlElement(required = true, nillable = true) private String street1 = null;
+    @XmlElement(required = true, nillable = true) private String street2 = null;
+    @XmlElement(required = true, nillable = true) private String postalCode = null;
+    @XmlElement(required = true, nillable = true) private String city = null;
+    @XmlElement(required = true, nillable = true) private String state = null;
+    @XmlElement(required = true, nillable = true) private String pobox = null;
+    @XmlElement(required = true, nillable = true) private Country country = null;
 
     // =========================================================================
     // Object Constructors

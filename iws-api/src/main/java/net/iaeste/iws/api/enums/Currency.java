@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.api.enums;
 
+import javax.xml.bind.annotation.XmlType;
+
 /**
 *  All currencies that can be used in the system
 *
@@ -21,9 +23,8 @@ package net.iaeste.iws.api.enums;
 * @version $Revision:$ / $Date:$
 * @since   IWS 1.0
 */
+@XmlType(name = "Currency")
 public enum Currency {
-
-    // Country codes of the world, taken here: http://www.xe.com/iso4217.php#N
 
     AED("United Arab Emirates Dirham"),
     AFN("Afghanistan Afghani"),

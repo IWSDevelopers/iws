@@ -252,7 +252,7 @@ public final class AccessClientTest extends AbstractTest {
         final String newPassword = "newPassword";
         final Fallible update1 = access.updatePassword(userToken, new Password(newPassword));
         assertThat(update1.isOk(), is(false));
-        assertThat(update1.getError(), is(IWSErrors.CANNOT_UPDATE_PASSWORD));
+        assertThat(update1.getError(), is(IWSErrors.VERIFICATION_ERROR));
 
         // Now, we're trying to update the password by providing a false old password
         final Fallible update2 = access.updatePassword(userToken, new Password(newPassword, "bla"));

@@ -22,6 +22,10 @@ import net.iaeste.iws.api.dtos.Role;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.Permission;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
@@ -34,11 +38,24 @@ import java.util.Map;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "FetchPermissionResponse", propOrder = { "userId", "authorizations" })
 public final class FetchPermissionResponse extends FallibleResponse {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
+
+    /**
+     * The UserId for the User, who requested the Permission Response.
+     */
+    @XmlElement(required = true, nillable = false)
     private String userId;
+
+    /**
+     * List of all the Authorizations that the user has, complete with all the
+     * User Group relations.
+     */
+    @XmlElement(required = true, nillable = false)
     private List<Authorization> authorizations;
 
     // =========================================================================
@@ -98,7 +115,7 @@ public final class FetchPermissionResponse extends FallibleResponse {
     }
 
     // =========================================================================
-    // Additional helper method sto ease the work with finding permissions
+    // Additional helper methods to ease the work with finding permissions
     // =========================================================================
 
     /**
@@ -157,9 +174,11 @@ public final class FetchPermissionResponse extends FallibleResponse {
     }
 
     /**
+     * Returns a List of all the Groups, where the user has been granted the
+     * given Permission.
      *
-     * @param permission
-     * @return
+     * @param permission Permission to find matching Groups for
+     * @return List of Groups applicable to the given Permission
      */
     public List<Group> getGroups(final Permission permission) {
         final Map<Permission, List<Group>> permissionMap = convertPermissions();

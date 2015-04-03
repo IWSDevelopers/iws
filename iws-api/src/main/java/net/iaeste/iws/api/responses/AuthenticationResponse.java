@@ -18,6 +18,11 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
+
 /**
  * The Result Object from an Authentication Call, the object will either
  * contain a successful result, i.e. an AuthenticationToken for the requested
@@ -27,11 +32,14 @@ import net.iaeste.iws.api.dtos.AuthenticationToken;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "authenticationResponse", propOrder = { "token" })
 public final class AuthenticationResponse extends FallibleResponse {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
+    @XmlElement(required = true, nillable = false)
     private AuthenticationToken token;
 
     // =========================================================================

@@ -19,6 +19,10 @@ import net.iaeste.iws.api.enums.Gender;
 import net.iaeste.iws.api.util.AbstractVerification;
 import net.iaeste.iws.api.util.Date;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,19 +35,21 @@ import java.util.Map;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "Person", propOrder = { "nationality", "address", "alternateEmail", "phone", "mobile", "fax", "birthday", "gender" })
 public final class Person extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    private Country nationality = null;
-    private Address address = null;
-    private String alternateEmail = null;
-    private String phone = null;
-    private String mobile = null;
-    private String fax = null;
-    private Date birthday = null;
-    private Gender gender = null;
+    @XmlElement(required = true, nillable = true) private Country nationality = null;
+    @XmlElement(required = true, nillable = true) private Address address = null;
+    @XmlElement(required = true, nillable = true) private String alternateEmail = null;
+    @XmlElement(required = true, nillable = true) private String phone = null;
+    @XmlElement(required = true, nillable = true) private String mobile = null;
+    @XmlElement(required = true, nillable = true) private String fax = null;
+    @XmlElement(required = true, nillable = true) private Date birthday = null;
+    @XmlElement(required = true, nillable = true) private Gender gender = null;
 
     // =========================================================================
     // Object Constructors

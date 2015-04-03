@@ -113,7 +113,7 @@ public class Producer {
 
         if (dir != null) {
             final String file = dir + File.separator + PROPERTIES_FILE;
-            log.info("Reading the IWS Properties from '" + file + "'.");
+            log.debug("Reading the IWS Properties from '" + file + "'.");
 
             try (InputStream stream = new FileInputStream(file)) {
                 final Properties properties = new Properties();

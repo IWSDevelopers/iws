@@ -20,6 +20,7 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.exceptions.IWSException;
+import net.iaeste.iws.common.configuration.InternalConstants;
 import net.iaeste.iws.persistence.Externable;
 import net.iaeste.iws.persistence.entities.CountryEntity;
 import net.iaeste.iws.persistence.entities.FolderEntity;
@@ -293,7 +294,7 @@ public class IWSJpaDao implements IWSDao {
                 "select ug.user " +
                 "from UserGroupEntity ug " +
                 "where ug.group.id = :gid" +
-                "  and ug.role.id = " + IWSConstants.ROLE_OWNER;
+                "  and ug.role.id = " + InternalConstants.ROLE_OWNER;
         final Query query = entityManager.createQuery(jql);
         query.setParameter("gid", group.getId());
 

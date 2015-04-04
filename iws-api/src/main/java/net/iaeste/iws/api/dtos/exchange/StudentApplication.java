@@ -30,6 +30,10 @@ import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.api.util.DatePeriod;
 import net.iaeste.iws.api.util.DateTime;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -48,6 +52,8 @@ import java.util.Set;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "StudentApplication", propOrder = { "applicationId", "offerId", "offerState", "student", "status", "homeAddress", "email", "phoneNumber", "addressDuringTerms", "dateOfBirth", "university", "placeOfBirth", "nationality", "gender", "completedYearsOfStudy", "totalYearsOfStudy", "lodgingByIaeste", "language1", "language1Level", "language2", "language2Level", "language3", "language3Level", "available", "fieldOfStudies", "specializations", "passportNumber", "passportPlaceOfIssue", "passportValidUntil", "rejectByEmployerReason", "rejectDescription", "rejectInternalComment", "acceptance", "travelInformation", "nominatedAt", "attachments", "modified", "created" })
 public final class StudentApplication extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
@@ -61,43 +67,43 @@ public final class StudentApplication extends AbstractVerification {
      * Offer Id for the {@link Offer} that the {@link Student} is
      * applying for.
      */
-    private String offerId = null;
+    @XmlElement(required = true, nillable = false) private String offerId = null;
 
-    private OfferState offerState = null;
+    @XmlElement(required = true, nillable = true) private OfferState offerState = null;
 
     /** {@link Student} as User */
-    private Student student = null;
+    @XmlElement(required = true, nillable = false) private Student student = null;
 
     /** Status of the {@link StudentApplication} */
-    private ApplicationStatus status = null;
+    @XmlElement(required = true, nillable = true) private ApplicationStatus status = null;
 
-    private Address homeAddress = null;
-    private String email = null; // should be copied for an application if a student wants to use a different address for login
-    private String phoneNumber = null;
-    private Address addressDuringTerms = null;
-    private Date dateOfBirth = null;
-    private String university = null;
-    private String placeOfBirth = null;
-    private Country nationality = null;
-    private Gender gender = null;
-    private Integer completedYearsOfStudy = null;
-    private Integer totalYearsOfStudy = null;
-    private Boolean lodgingByIaeste = false;
+    @XmlElement(required = true, nillable = true) private Address homeAddress = null;
+    @XmlElement(required = true, nillable = true) private String email = null; // should be copied for an application if a student wants to use a different address for login
+    @XmlElement(required = true, nillable = true) private String phoneNumber = null;
+    @XmlElement(required = true, nillable = true) private Address addressDuringTerms = null;
+    @XmlElement(required = true, nillable = true) private Date dateOfBirth = null;
+    @XmlElement(required = true, nillable = true) private String university = null;
+    @XmlElement(required = true, nillable = true) private String placeOfBirth = null;
+    @XmlElement(required = true, nillable = true) private Country nationality = null;
+    @XmlElement(required = true, nillable = true) private Gender gender = null;
+    @XmlElement(required = true, nillable = true) private Integer completedYearsOfStudy = null;
+    @XmlElement(required = true, nillable = true) private Integer totalYearsOfStudy = null;
+    @XmlElement(required = true, nillable = true) private Boolean lodgingByIaeste = false;
 
     // Language is already part of the Student Object
-    private Language language1 = null;
-    private LanguageLevel language1Level = null;
-    private Language language2 = null;
-    private LanguageLevel language2Level = null;
-    private Language language3 = null;
-    private LanguageLevel language3Level = null;
+    @XmlElement(required = true, nillable = true) private Language language1 = null;
+    @XmlElement(required = true, nillable = true) private LanguageLevel language1Level = null;
+    @XmlElement(required = true, nillable = true) private Language language2 = null;
+    @XmlElement(required = true, nillable = true) private LanguageLevel language2Level = null;
+    @XmlElement(required = true, nillable = true) private Language language3 = null;
+    @XmlElement(required = true, nillable = true) private LanguageLevel language3Level = null;
 
     // The internshop period is added as an "availability period" in the Student Object
-    private DatePeriod available = null;
+    @XmlElement(required = true, nillable = true) private DatePeriod available = null;
 
     // Field of Studies & Specializations are part of the Student Object
-    private Set<FieldOfStudy> fieldOfStudies = EnumSet.noneOf(FieldOfStudy.class);
-    private List<String> specializations = new ArrayList<>(0);
+    @XmlElement(required = true, nillable = true) private Set<FieldOfStudy> fieldOfStudies = EnumSet.noneOf(FieldOfStudy.class);
+    @XmlElement(required = true, nillable = true) private List<String> specializations = new ArrayList<>(0);
 
     // TODO Critical information, what is the procedure to deal with this ?
     //   The problem is that certain countries have very strict rules regarding
@@ -112,27 +118,27 @@ public final class StudentApplication extends AbstractVerification {
     // critical information, it would be even better, if the operations were
     // performed client-side in a JavaScript. So all we store is the public keys
     // and the encrypted container.
-    private String passportNumber = null;
-    private String passportPlaceOfIssue = null;
-    private String passportValidUntil = null;
+    @XmlElement(required = true, nillable = true) private String passportNumber = null;
+    @XmlElement(required = true, nillable = true) private String passportPlaceOfIssue = null;
+    @XmlElement(required = true, nillable = true) private String passportValidUntil = null;
 
-    private String rejectByEmployerReason = null;
-    private String rejectDescription = null;
-    private String rejectInternalComment = null;
+    @XmlElement(required = true, nillable = true) private String rejectByEmployerReason = null;
+    @XmlElement(required = true, nillable = true) private String rejectDescription = null;
+    @XmlElement(required = true, nillable = true) private String rejectInternalComment = null;
 
-    private StudentAcceptance acceptance = null;
-    private StudentAcceptanceConfirmation travelInformation = null;
+    @XmlElement(required = true, nillable = true) private StudentAcceptance acceptance = null;
+    @XmlElement(required = true, nillable = true) private StudentAcceptanceConfirmation travelInformation = null;
 
-    private DateTime nominatedAt = null;
+    @XmlElement(required = true, nillable = true) private DateTime nominatedAt = null;
 
     /**
      * Files are attached to an Application as a List, meaning that it is
      * possible to have an arbitrary number of Files as part of the Application.
      */
-    private List<File> attachments = new ArrayList<>(0);
+    @XmlElement(required = true, nillable = true) private List<File> attachments = new ArrayList<>(0);
 
-    private DateTime modified = null;
-    private DateTime created = null;
+    @XmlElement(required = true, nillable = true) private DateTime modified = null;
+    @XmlElement(required = true, nillable = true) private DateTime created = null;
 
     // =========================================================================
     // Object Constructors

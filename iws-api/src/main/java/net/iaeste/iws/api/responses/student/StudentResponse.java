@@ -19,11 +19,18 @@ import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.dtos.exchange.Student;
 import net.iaeste.iws.api.responses.FallibleResponse;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
+
 /**
  * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "StudentResponse", propOrder = { "student" })
 public final class StudentResponse extends FallibleResponse {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
@@ -32,6 +39,7 @@ public final class StudentResponse extends FallibleResponse {
     /**
      * The newly created/update Studnet Object.
      */
+    @XmlElement(required = true, nillable = true)
     private Student student = null;
 
     // =========================================================================

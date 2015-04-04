@@ -16,6 +16,10 @@ package net.iaeste.iws.api.util;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,13 +32,15 @@ import java.util.Map;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "DatePeriod", propOrder = { "fromDate", "toDate" })
 public final class DatePeriod extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    private Date fromDate = null;
-    private Date toDate = null;
+    @XmlElement(required = true, nillable = false) private Date fromDate = null;
+    @XmlElement(required = true, nillable = false) private Date toDate = null;
 
     // =========================================================================
     // Object Constructors

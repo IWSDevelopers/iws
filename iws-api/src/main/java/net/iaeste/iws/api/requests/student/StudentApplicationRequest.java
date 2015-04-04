@@ -18,6 +18,10 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.exchange.ApplicationStatus;
 import net.iaeste.iws.api.util.AbstractVerification;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,17 +35,18 @@ import java.util.Map;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "", propOrder = { "applicationId", "status", "rejectByEmployerReason", "rejectDescription", "rejectInternalComment" })
 public final class StudentApplicationRequest extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    // TODO complete implementation, add fields for rejection messages and comments (see exchange mockups)
-    private String applicationId = null;
-    private ApplicationStatus status = null;
-    private String rejectByEmployerReason = null;
-    private String rejectDescription = null;
-    private String rejectInternalComment = null;
+    @XmlElement(required = true, nillable = false) private String applicationId = null;
+    @XmlElement(required = true, nillable = false) private ApplicationStatus status = null;
+    @XmlElement(required = true, nillable = true) private String rejectByEmployerReason = null;
+    @XmlElement(required = true, nillable = true) private String rejectDescription = null;
+    @XmlElement(required = true, nillable = true) private String rejectInternalComment = null;
 
     // =========================================================================
     // Object Constructors

@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.api.enums.exchange;
 
+import javax.xml.bind.annotation.XmlType;
+
 /**
  * Contains all predefined Specializations. Note, these values are mapped into
  * the database entities, and thus stored there. If a value is changed. The
@@ -37,6 +39,7 @@ package net.iaeste.iws.api.enums.exchange;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
+@XmlType(name = "Specialization")
 public enum Specialization {
 
     ADMINISTRATION("Administration"),

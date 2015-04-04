@@ -18,7 +18,7 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.exchange.OfferState;
 
 import java.io.Serializable;
-import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -31,7 +31,7 @@ public final class OfferStatistics implements Serializable {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    private Map<OfferState, Integer> statistics = new EnumMap<>(OfferState.class);
+    private HashMap<OfferState, Integer> statistics = new HashMap<>();
     private Integer exchangeYear = null;
 
     // =========================================================================
@@ -51,7 +51,7 @@ public final class OfferStatistics implements Serializable {
      * @param statistics   Offer Statistics
      * @param exchangeYear Exchange Year
      */
-    public OfferStatistics(final Map<OfferState, Integer> statistics, final Integer exchangeYear) {
+    public OfferStatistics(final HashMap<OfferState, Integer> statistics, final Integer exchangeYear) {
         this.statistics = statistics;
         this.exchangeYear = exchangeYear;
     }
@@ -60,7 +60,7 @@ public final class OfferStatistics implements Serializable {
     // Standard Setters & Getters
     // =========================================================================
 
-    public void setStatistics(final Map<OfferState, Integer> statistics) {
+    public void setStatistics(final HashMap<OfferState, Integer> statistics) {
         // Since the result is a pure read-only from the IWS, it is safe to
         // return it without a defensive copying first
         this.statistics = statistics;

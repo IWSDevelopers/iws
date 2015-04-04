@@ -19,6 +19,10 @@ import net.iaeste.iws.api.util.AbstractVerification;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.api.util.DatePeriod;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,21 +33,23 @@ import java.util.Map;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "", propOrder = { "applicationId", "firstWorkingDay", "workingPlace", "contactPerson", "contactPersonEmail", "contactPersonPhone", "confirmedPeriod", "additionalInformation" })
 public final class StudentAcceptance extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    private String applicationId = null;
-    private Date firstWorkingDay = null;
+    @XmlElement(required = true, nillable = true) private String applicationId = null;
+    @XmlElement(required = true, nillable = true) private Date firstWorkingDay = null;
     // is often different than the company address on the offer
-    private String workingPlace = null;
-    private String contactPerson = null;
-    private String contactPersonEmail = null;
-    private String contactPersonPhone = null;
-    private DatePeriod confirmedPeriod = null;
+    @XmlElement(required = true, nillable = true) private String workingPlace = null;
+    @XmlElement(required = true, nillable = true) private String contactPerson = null;
+    @XmlElement(required = true, nillable = true) private String contactPersonEmail = null;
+    @XmlElement(required = true, nillable = true) private String contactPersonPhone = null;
+    @XmlElement(required = true, nillable = true) private DatePeriod confirmedPeriod = null;
     // allow up to 5000 characters
-    private String additionalInformation = null;
+    @XmlElement(required = true, nillable = true) private String additionalInformation = null;
 
     // =========================================================================
     // Object Constructors

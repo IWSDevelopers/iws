@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.api.enums.exchange;
 
+import javax.xml.bind.annotation.XmlType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -41,6 +42,7 @@ import java.util.List;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
+@XmlType(name = "FieldOfStudy")
 public enum FieldOfStudy {
 
     AERONAUTIC_ENGINEERING("Aeronautic Engineering", Arrays.asList(

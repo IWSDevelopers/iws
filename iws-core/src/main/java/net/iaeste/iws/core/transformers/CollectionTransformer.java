@@ -22,7 +22,6 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -107,14 +106,12 @@ public final class CollectionTransformer {
      * @param value    String which is split into the list of enum values
      * @return Set of enum values
      */
-    public static <T extends Enum<T>> Set<T> explodeEnumSet(final Class<T> enumType, final String value) {
+    public static <T extends Enum<T>> HashSet<T> explodeEnumSet(final Class<T> enumType, final String value) {
         final List<T> list = explodeEnumList(enumType, value);
-        final Set<T> result;
+        final HashSet<T> result = new HashSet<>();
 
-        if (list.isEmpty()) {
-            result = EnumSet.noneOf(enumType);
-        } else {
-            result = EnumSet.copyOf(list);
+        if (!list.isEmpty()) {
+            result.addAll(list);
         }
 
         return result;

@@ -26,10 +26,13 @@ import net.iaeste.iws.api.util.AbstractVerification;
 import net.iaeste.iws.api.util.DatePeriod;
 import net.iaeste.iws.api.util.DateTime;
 
-import java.util.EnumSet;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Standard IAESTE Student.
@@ -38,24 +41,26 @@ import java.util.Set;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "", propOrder = { "user", "studyLevel", "fieldOfStudies", "specializations", "available", "language1", "language1Level", "language2", "language2Level", "language3", "language3Level", "modified", "created" })
 public final class Student extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    private User user = null;
-    private StudyLevel studyLevel = StudyLevel.B;
-    private Set<FieldOfStudy> fieldOfStudies = EnumSet.noneOf(FieldOfStudy.class);
-    private Set<Specialization> specializations = EnumSet.noneOf(Specialization.class);
-    private DatePeriod available = null;
-    private Language language1 = null;
-    private LanguageLevel language1Level = null;
-    private Language language2 = null;
-    private LanguageLevel language2Level = null;
-    private Language language3 = null;
-    private LanguageLevel language3Level = null;
-    private DateTime modified = null;
-    private DateTime created = null;
+    @XmlElement(required = true, nillable = false) private User user = null;
+    @XmlElement(required = true, nillable = true)  private StudyLevel studyLevel = StudyLevel.B;
+    @XmlElement(required = true, nillable = true)  private HashSet<FieldOfStudy> fieldOfStudies = null;
+    @XmlElement(required = true, nillable = true)  private HashSet<Specialization> specializations = null;
+    @XmlElement(required = true, nillable = true)  private DatePeriod available = null;
+    @XmlElement(required = true, nillable = true)  private Language language1 = null;
+    @XmlElement(required = true, nillable = true)  private LanguageLevel language1Level = null;
+    @XmlElement(required = true, nillable = true)  private Language language2 = null;
+    @XmlElement(required = true, nillable = true)  private LanguageLevel language2Level = null;
+    @XmlElement(required = true, nillable = true)  private Language language3 = null;
+    @XmlElement(required = true, nillable = true)  private LanguageLevel language3Level = null;
+    @XmlElement(required = true, nillable = true)  private DateTime modified = null;
+    @XmlElement(required = true, nillable = true)  private DateTime created = null;
 
     // =========================================================================
     // Object Constructors
@@ -115,7 +120,7 @@ public final class Student extends AbstractVerification {
      * @return Student (User) Id
      */
     public String getStudentId() {
-        return user.getUserId();
+        return user != null ? user.getUserId() : null;
     }
 
     public void setUser(final User user) throws IllegalArgumentException {
@@ -135,21 +140,21 @@ public final class Student extends AbstractVerification {
         return studyLevel;
     }
 
-    public void setFieldOfStudies(final Set<FieldOfStudy> fieldOfStudies) throws IllegalArgumentException {
+    public void setFieldOfStudies(final HashSet<FieldOfStudy> fieldOfStudies) throws IllegalArgumentException {
         ensureNotTooLong("fieldOfStudies", fieldOfStudies, IWSExchangeConstants.MAX_OFFER_FIELDS_OF_STUDY);
         this.fieldOfStudies = fieldOfStudies;
     }
 
-    public Set<FieldOfStudy> getFieldOfStudies() {
+    public HashSet<FieldOfStudy> getFieldOfStudies() {
         return fieldOfStudies;
     }
 
-    public void setSpecializations(final Set<Specialization> specializations) throws IllegalArgumentException {
+    public void setSpecializations(final HashSet<Specialization> specializations) throws IllegalArgumentException {
         ensureNotTooLong("specializations", specializations, IWSExchangeConstants.MAX_OFFER_SPECIALIZATIONS);
         this.specializations = specializations;
     }
 
-    public Set<Specialization> getSpecializations() {
+    public HashSet<Specialization> getSpecializations() {
         return specializations;
     }
 

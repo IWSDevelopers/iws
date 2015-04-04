@@ -19,6 +19,10 @@ import net.iaeste.iws.api.enums.exchange.TransportationType;
 import net.iaeste.iws.api.util.AbstractVerification;
 import net.iaeste.iws.api.util.Date;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,23 +33,25 @@ import java.util.Map;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "StudentAcceptanceConfirmation", propOrder = { "applicationId", "departure", "transportationType", "departureFrom", "transportNumber", "arrivalDateTime", "phoneNumberDuringTravel", "lodgingRequiredFrom", "lodgingRequiredTo", "otherInformation", "insuranceCompany", "insuranceReceiptNumber" })
 public final class StudentAcceptanceConfirmation extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    private String applicationId = null;
-    private Date departure = null;
-    private TransportationType transportationType = null;
-    private String departureFrom = null;
-    private String transportNumber = null;
-    private Date arrivalDateTime = null;
-    private String phoneNumberDuringTravel = null;
-    private Date lodgingRequiredFrom = null;
-    private Date lodgingRequiredTo = null;
-    private String otherInformation = null; // allow up to 5000 characters
-    private String insuranceCompany = null;
-    private String insuranceReceiptNumber = null;
+    @XmlElement(required = true, nillable = true) private String applicationId = null;
+    @XmlElement(required = true, nillable = true) private Date departure = null;
+    @XmlElement(required = true, nillable = true) private TransportationType transportationType = null;
+    @XmlElement(required = true, nillable = true) private String departureFrom = null;
+    @XmlElement(required = true, nillable = true) private String transportNumber = null;
+    @XmlElement(required = true, nillable = true) private Date arrivalDateTime = null;
+    @XmlElement(required = true, nillable = true) private String phoneNumberDuringTravel = null;
+    @XmlElement(required = true, nillable = true) private Date lodgingRequiredFrom = null;
+    @XmlElement(required = true, nillable = true) private Date lodgingRequiredTo = null;
+    @XmlElement(required = true, nillable = true) private String otherInformation = null; // allow up to 5000 characters
+    @XmlElement(required = true, nillable = true) private String insuranceCompany = null;
+    @XmlElement(required = true, nillable = true) private String insuranceReceiptNumber = null;
 
     // =========================================================================
     // Object Constructors

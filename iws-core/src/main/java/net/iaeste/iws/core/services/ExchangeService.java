@@ -15,9 +15,9 @@
 package net.iaeste.iws.core.services;
 
 import static net.iaeste.iws.api.util.AbstractVerification.calculateExchangeYear;
+import static net.iaeste.iws.api.util.LogUtil.formatLogMessage;
 import static net.iaeste.iws.common.utils.StringUtils.toUpper;
 import static net.iaeste.iws.core.transformers.ExchangeTransformer.transform;
-import static net.iaeste.iws.api.util.LogUtil.formatLogMessage;
 
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.Group;
@@ -25,13 +25,10 @@ import net.iaeste.iws.api.dtos.exchange.Employer;
 import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.exchange.OfferState;
-import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
 import net.iaeste.iws.api.requests.exchange.DeletePublishingGroupRequest;
-import net.iaeste.iws.api.requests.exchange.FetchOfferTemplatesRequest;
 import net.iaeste.iws.api.requests.exchange.HideForeignOffersRequest;
-import net.iaeste.iws.api.requests.exchange.OfferTemplateRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessEmployerRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessPublishingGroupRequest;
@@ -39,7 +36,6 @@ import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
 import net.iaeste.iws.api.requests.exchange.RejectOfferRequest;
 import net.iaeste.iws.api.responses.exchange.EmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchGroupsForSharingResponse;
-import net.iaeste.iws.api.responses.exchange.FetchOfferTemplateResponse;
 import net.iaeste.iws.api.responses.exchange.OfferResponse;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.common.configuration.Settings;
@@ -265,14 +261,6 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
         } else {
             throw new IdentificationException("Cannot delete Offer with OfferId " + request.getOfferId());
         }
-    }
-
-    public void processOfferTemplates(final Authentication authentication, final OfferTemplateRequest request) {
-        throw new NotImplementedException("Method pending implementation.");
-    }
-
-    public FetchOfferTemplateResponse fetchOfferTemplates(final Authentication authentication, final FetchOfferTemplatesRequest request) {
-        throw new NotImplementedException("Method pending implementation.");
     }
 
     public void processPublishingGroups(final Authentication authentication, final ProcessPublishingGroupRequest request) {

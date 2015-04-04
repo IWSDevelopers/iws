@@ -23,7 +23,6 @@ import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
 import net.iaeste.iws.api.requests.exchange.DeletePublishingGroupRequest;
 import net.iaeste.iws.api.requests.exchange.FetchEmployerRequest;
-import net.iaeste.iws.api.requests.exchange.FetchOfferTemplatesRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishedGroupsRequest;
@@ -31,7 +30,6 @@ import net.iaeste.iws.api.requests.exchange.HideForeignOffersRequest;
 import net.iaeste.iws.api.requests.exchange.OfferCSVDownloadRequest;
 import net.iaeste.iws.api.requests.exchange.OfferCSVUploadRequest;
 import net.iaeste.iws.api.requests.exchange.OfferStatisticsRequest;
-import net.iaeste.iws.api.requests.exchange.OfferTemplateRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessEmployerRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessPublishingGroupRequest;
@@ -41,7 +39,6 @@ import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.exchange.EmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchEmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchGroupsForSharingResponse;
-import net.iaeste.iws.api.responses.exchange.FetchOfferTemplateResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
 import net.iaeste.iws.api.responses.exchange.FetchPublishedGroupsResponse;
 import net.iaeste.iws.api.responses.exchange.FetchPublishingGroupResponse;
@@ -282,59 +279,6 @@ public final class ExchangeController extends CommonController implements Exchan
 
         if (log.isTraceEnabled()) {
             log.trace(formatLogMessage(token, "Finished downloadOffers()"));
-        }
-        return response;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public FallibleResponse processOfferTemplate(final AuthenticationToken token, final OfferTemplateRequest request) {
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting processOfferTemplate()"));
-        }
-        FallibleResponse response;
-
-        try {
-            verify(request);
-            final Authentication authentication = verifyAccess(token, Permission.PROCESS_OFFER_TEMPLATES);
-
-            final ExchangeService service = factory.prepareExchangeService();
-            service.processOfferTemplates(authentication, request);
-            response = new FetchOfferTemplateResponse();
-        } catch (IWSException e) {
-            response = new FetchOfferTemplateResponse(e.getError(), e.getMessage());
-        }
-
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished processOfferTemplate()"));
-        }
-        return response;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public FetchOfferTemplateResponse fetchOfferTemplates(final AuthenticationToken token, final FetchOfferTemplatesRequest request) {
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting fetchOfferTemplates()"));
-        }
-        FetchOfferTemplateResponse response;
-
-        try {
-            verify(request);
-            final Authentication authentication = verifyAccess(token, Permission.FETCH_OFFER_TEMPLATES);
-
-            final ExchangeFetchService service = factory.prepareExchangeFetchService();
-            response = service.fetchOfferTemplates(authentication, request);
-        } catch (IWSException e) {
-            response = new FetchOfferTemplateResponse(e.getError(), e.getMessage());
-        }
-
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished fetchOfferTemplates()"));
         }
         return response;
     }

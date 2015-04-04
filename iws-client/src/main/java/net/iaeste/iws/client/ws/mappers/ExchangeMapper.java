@@ -31,12 +31,10 @@ import net.iaeste.iws.api.enums.exchange.TypeOfWork;
 import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
 import net.iaeste.iws.api.requests.exchange.DeletePublishingGroupRequest;
 import net.iaeste.iws.api.requests.exchange.FetchEmployerRequest;
-import net.iaeste.iws.api.requests.exchange.FetchOfferTemplatesRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.HideForeignOffersRequest;
 import net.iaeste.iws.api.requests.exchange.OfferCSVDownloadRequest;
-import net.iaeste.iws.api.requests.exchange.OfferTemplateRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessEmployerRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessPublishingGroupRequest;
@@ -45,7 +43,6 @@ import net.iaeste.iws.api.requests.exchange.RejectOfferRequest;
 import net.iaeste.iws.api.responses.exchange.EmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchEmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchGroupsForSharingResponse;
-import net.iaeste.iws.api.responses.exchange.FetchOfferTemplateResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
 import net.iaeste.iws.api.responses.exchange.FetchPublishingGroupResponse;
 import net.iaeste.iws.api.responses.exchange.OfferCSVDownloadResponse;
@@ -196,26 +193,6 @@ public final class ExchangeMapper extends CommonMapper {
         return api;
     }
 
-    public static net.iaeste.iws.ws.OfferTemplateRequest map(final OfferTemplateRequest api) {
-        net.iaeste.iws.ws.OfferTemplateRequest ws = null;
-
-        if (api != null) {
-            ws = new net.iaeste.iws.ws.OfferTemplateRequest();
-        }
-
-        return ws;
-    }
-
-    public static net.iaeste.iws.ws.FetchOfferTemplatesRequest map(final FetchOfferTemplatesRequest api) {
-        net.iaeste.iws.ws.FetchOfferTemplatesRequest ws = null;
-
-        if (api != null) {
-            ws = new net.iaeste.iws.ws.FetchOfferTemplatesRequest();
-        }
-
-        return ws;
-    }
-
     public static net.iaeste.iws.ws.OfferCSVDownloadRequest map(final OfferCSVDownloadRequest api) {
         net.iaeste.iws.ws.OfferCSVDownloadRequest ws = null;
 
@@ -237,16 +214,6 @@ public final class ExchangeMapper extends CommonMapper {
             api = new OfferCSVDownloadResponse(map(ws.getError()), ws.getMessage());
 
             api.setData(ws.getData());
-        }
-
-        return api;
-    }
-
-    public static FetchOfferTemplateResponse map(final net.iaeste.iws.ws.FetchOfferTemplateResponse ws) {
-        FetchOfferTemplateResponse api = null;
-
-        if (ws != null) {
-            api = new FetchOfferTemplateResponse(map(ws.getError()), ws.getMessage());
         }
 
         return api;

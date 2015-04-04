@@ -23,16 +23,13 @@ import net.iaeste.iws.api.dtos.exchange.OfferStatistics;
 import net.iaeste.iws.api.dtos.exchange.PublishingGroup;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.exchange.OfferState;
-import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.api.requests.exchange.FetchEmployerRequest;
-import net.iaeste.iws.api.requests.exchange.FetchOfferTemplatesRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishedGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.OfferStatisticsRequest;
 import net.iaeste.iws.api.responses.exchange.FetchEmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchGroupsForSharingResponse;
-import net.iaeste.iws.api.responses.exchange.FetchOfferTemplateResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
 import net.iaeste.iws.api.responses.exchange.FetchPublishedGroupsResponse;
 import net.iaeste.iws.api.responses.exchange.FetchPublishingGroupResponse;
@@ -56,10 +53,8 @@ import net.iaeste.iws.persistence.views.OfferView;
 import net.iaeste.iws.persistence.views.SharedOfferView;
 
 import java.util.ArrayList;
-import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * This Service Class contains the read-only parts of the Exchange methods.
@@ -93,7 +88,7 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
     private OfferStatistics readDomesticStatistics(final GroupEntity nationalGroup, final Integer year) {
         final List<DomesticOfferStatisticsView> records = dao.findDomesticOfferStatistics(nationalGroup, year);
 
-        final Map<OfferState, Integer> statistics = new EnumMap<>(OfferState.class);
+        final HashMap<OfferState, Integer> statistics = new HashMap<>();
         for (final DomesticOfferStatisticsView stats : records) {
             statistics.put(stats.getId().getStatus(), stats.getRecords());
         }
@@ -104,7 +99,7 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
     private OfferStatistics readForeignStatistics(final GroupEntity nationalGroup, final Integer year) {
         final List<ForeignOfferStatisticsView> records = dao.findForeignOfferStatistics(nationalGroup, year);
 
-        final Map<OfferState, Integer> statistics = new EnumMap<>(OfferState.class);
+        final HashMap<OfferState, Integer> statistics = new HashMap<>();
         for (final ForeignOfferStatisticsView stats : records) {
             statistics.put(stats.getId().getStatus(), stats.getRecords());
         }
@@ -234,10 +229,6 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
         }
 
         return result;
-    }
-
-    public FetchOfferTemplateResponse fetchOfferTemplates(final Authentication authentication, final FetchOfferTemplatesRequest request) {
-        throw new NotImplementedException("Method pending implementation.");
     }
 
     public FetchPublishingGroupResponse fetchPublishGroups(final Authentication authentication, final FetchPublishGroupsRequest request) {

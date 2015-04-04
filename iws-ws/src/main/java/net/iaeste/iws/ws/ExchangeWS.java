@@ -20,7 +20,6 @@ import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
 import net.iaeste.iws.api.requests.exchange.DeletePublishingGroupRequest;
 import net.iaeste.iws.api.requests.exchange.FetchEmployerRequest;
-import net.iaeste.iws.api.requests.exchange.FetchOfferTemplatesRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishedGroupsRequest;
@@ -28,7 +27,6 @@ import net.iaeste.iws.api.requests.exchange.HideForeignOffersRequest;
 import net.iaeste.iws.api.requests.exchange.OfferCSVDownloadRequest;
 import net.iaeste.iws.api.requests.exchange.OfferCSVUploadRequest;
 import net.iaeste.iws.api.requests.exchange.OfferStatisticsRequest;
-import net.iaeste.iws.api.requests.exchange.OfferTemplateRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessEmployerRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessPublishingGroupRequest;
@@ -38,7 +36,6 @@ import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.exchange.EmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchEmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchGroupsForSharingResponse;
-import net.iaeste.iws.api.responses.exchange.FetchOfferTemplateResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
 import net.iaeste.iws.api.responses.exchange.FetchPublishedGroupsResponse;
 import net.iaeste.iws.api.responses.exchange.FetchPublishingGroupResponse;
@@ -91,8 +88,7 @@ public class ExchangeWS implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    // TODO For now this method is excluded, due to the enummap used. It must be verified what is a better option.
-    @WebMethod(exclude = true)
+    @WebMethod
     @WebResult(name = "response")
     public OfferStatisticsResponse fetchOfferStatistics(
             @WebParam(name = "token") final AuthenticationToken token,
@@ -194,30 +190,6 @@ public class ExchangeWS implements Exchange {
     public FetchGroupsForSharingResponse fetchGroupsForSharing(
             @WebParam(name = "token") final AuthenticationToken token) {
         return new FetchGroupsForSharingResponse(IWSErrors.ILLEGAL_ACTION, "Method is not accessible via WebServices.");
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @WebMethod
-    @WebResult(name = "response")
-    public FallibleResponse processOfferTemplate(
-            @WebParam(name = "token") final AuthenticationToken token,
-            @WebParam(name = "request") final OfferTemplateRequest request) {
-        return new FallibleResponse(IWSErrors.ILLEGAL_ACTION, "Method is not accessible via WebServices.");
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @WebMethod
-    @WebResult(name = "response")
-    public FetchOfferTemplateResponse fetchOfferTemplates(
-            @WebParam(name = "token") final AuthenticationToken token,
-            @WebParam(name = "request") final FetchOfferTemplatesRequest request) {
-        return new FetchOfferTemplateResponse(IWSErrors.ILLEGAL_ACTION, "Method is not accessible via WebServices.");
     }
 
     /**

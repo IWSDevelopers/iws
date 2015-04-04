@@ -20,7 +20,6 @@ import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
 import net.iaeste.iws.api.requests.exchange.DeletePublishingGroupRequest;
 import net.iaeste.iws.api.requests.exchange.FetchEmployerRequest;
-import net.iaeste.iws.api.requests.exchange.FetchOfferTemplatesRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishedGroupsRequest;
@@ -28,7 +27,6 @@ import net.iaeste.iws.api.requests.exchange.HideForeignOffersRequest;
 import net.iaeste.iws.api.requests.exchange.OfferCSVDownloadRequest;
 import net.iaeste.iws.api.requests.exchange.OfferCSVUploadRequest;
 import net.iaeste.iws.api.requests.exchange.OfferStatisticsRequest;
-import net.iaeste.iws.api.requests.exchange.OfferTemplateRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessEmployerRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessPublishingGroupRequest;
@@ -38,7 +36,6 @@ import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.exchange.EmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchEmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchGroupsForSharingResponse;
-import net.iaeste.iws.api.responses.exchange.FetchOfferTemplateResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
 import net.iaeste.iws.api.responses.exchange.FetchPublishedGroupsResponse;
 import net.iaeste.iws.api.responses.exchange.FetchPublishingGroupResponse;
@@ -321,46 +318,6 @@ public class ExchangeBean implements Exchange {
         } catch (RuntimeException e) {
             log.error(session.generateLogAndSaveRequest("fetchGroupsForSharing", start, e, token), e);
             response = new FetchGroupsForSharingResponse(IWSErrors.ERROR, e.getMessage());
-        }
-
-        return response;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public FallibleResponse processOfferTemplate(final AuthenticationToken token, final OfferTemplateRequest request) {
-        final long start = System.nanoTime();
-        FallibleResponse response;
-
-        try {
-            response = controller.processOfferTemplate(token, request);
-            log.info(session.generateLogAndUpdateSession("processOfferTemplate", start, response, token));
-        } catch (RuntimeException e) {
-            log.error(session.generateLogAndSaveRequest("processOfferTemplate", start, e, token, request), e);
-            response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
-        }
-
-        return response;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-    public FetchOfferTemplateResponse fetchOfferTemplates(final AuthenticationToken token, final FetchOfferTemplatesRequest request) {
-        final long start = System.nanoTime();
-        FetchOfferTemplateResponse response;
-
-        try {
-            response = controller.fetchOfferTemplates(token, request);
-            log.info(session.generateLogAndUpdateSession("fetchOfferTemplates", start, response, token));
-        } catch (RuntimeException e) {
-            log.error(session.generateLogAndSaveRequest("fetchOfferTemplates", start, e, token, request), e);
-            response = new FetchOfferTemplateResponse(IWSErrors.ERROR, e.getMessage());
         }
 
         return response;

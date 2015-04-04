@@ -18,6 +18,10 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.StorageType;
 import net.iaeste.iws.api.util.AbstractVerification;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,15 +30,17 @@ import java.util.Map;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "FetchFileRequest", propOrder = { "fileId", "groupId", "type", "readFileData" })
 public final class FetchFileRequest extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    private String fileId = null;
-    private String groupId = null;
-    private StorageType type = StorageType.OWNER;
-    private Boolean readFileData = false;
+    @XmlElement(required = true, nillable = false) private String fileId = null;
+    @XmlElement(required = true, nillable = true)  private String groupId = null;
+    @XmlElement(required = true, nillable = false) private StorageType type = StorageType.OWNER;
+    @XmlElement(required = true, nillable = true)  private Boolean readFileData = false;
 
     // =========================================================================
     // Object Constructors

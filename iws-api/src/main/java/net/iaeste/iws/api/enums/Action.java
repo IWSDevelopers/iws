@@ -14,11 +14,14 @@
  */
 package net.iaeste.iws.api.enums;
 
+import javax.xml.bind.annotation.XmlType;
+
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.1
  */
+@XmlType(name = "Action")
 public enum Action {
 
     Process,

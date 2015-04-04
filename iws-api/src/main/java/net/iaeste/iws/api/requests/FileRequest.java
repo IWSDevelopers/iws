@@ -18,26 +18,50 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.dtos.File;
 import net.iaeste.iws.api.enums.Action;
 import net.iaeste.iws.api.enums.StorageType;
-import net.iaeste.iws.api.util.AbstractActionable;
+import net.iaeste.iws.api.util.AbstractVerification;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
-public final class FileRequest extends AbstractActionable {
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "FileRequest", propOrder = { "action", "file", "type" })
+public final class FileRequest extends AbstractVerification implements Actionable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
+    /** Default allowed Actions for the Folder Request. */
+    private static final Set<Action> allowed = EnumSet.of(Action.Process, Action.Delete);
+
+    /** Action to perform against the given Folder. */
+    @XmlElement(required = true, nillable = false)
+    private Action action = Action.Process;
+
     /**
      * The File Object to process.
      */
+    @XmlElement(required = true, nillable = false)
     private File file = null;
+
+    /**
+     * The IWS supports different ways of working with Files. By default, all
+     * files are stored as private files, where the type is explicitly set to
+     * "Owner". To read files in different ways, i.e. if the file is an
+     * attachment, other internal criterias is used to determine if the user is
+     * allowed, hence - it is important that the type is set accordingly.
+     */
+    @XmlElement(required = true, nillable = false)
     private StorageType type = StorageType.OWNER;
 
     // =========================================================================
@@ -49,7 +73,6 @@ public final class FileRequest extends AbstractActionable {
      * for WebServices to work properly.
      */
     public FileRequest() {
-        super(EnumSet.of(Action.Process, Action.Delete));
     }
 
     /**
@@ -58,8 +81,36 @@ public final class FileRequest extends AbstractActionable {
      * @param file Meta data for the newly created file.
      */
     public FileRequest(final File file) {
-        super(EnumSet.of(Action.Process, Action.Delete));
         setFile(file);
+    }
+
+    // =========================================================================
+    // Implementation of the Actionable Interface
+    // =========================================================================
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Set<Action> allowedActions() {
+        return allowed;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setAction(final Action action) throws IllegalArgumentException {
+        ensureNotNullAndContains("action", action, allowed);
+        this.action = action;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Action getAction() {
+        return action;
     }
 
     // =========================================================================
@@ -113,6 +164,7 @@ public final class FileRequest extends AbstractActionable {
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(1);
 
+        isNotNull(validation, "action", action);
         isNotNull(validation, "file", file);
         isNotNull(validation, "type", type);
 

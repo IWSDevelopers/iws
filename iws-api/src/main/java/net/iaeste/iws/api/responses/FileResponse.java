@@ -18,11 +18,18 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.dtos.File;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
+
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "FileResponse", propOrder = { "file" })
 public final class FileResponse extends FallibleResponse {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
@@ -32,6 +39,7 @@ public final class FileResponse extends FallibleResponse {
      * The newly created File Object. The Object is containing the new File Id
      * together with other meta information.
      */
+    @XmlElement(required = true, nillable = true)
     private File file = null;
 
     // =========================================================================

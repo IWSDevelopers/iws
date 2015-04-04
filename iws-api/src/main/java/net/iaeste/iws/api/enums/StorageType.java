@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.api.enums;
 
+import javax.xml.bind.annotation.XmlType;
+
 /**
  * Files stored in the system can be either owned by someone or shared to
  * someone. In order for the reading of files to work properly, we need to
@@ -23,6 +25,7 @@ package net.iaeste.iws.api.enums;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
+@XmlType(name = "StorageType")
 public enum StorageType {
 
     /**

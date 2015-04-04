@@ -17,29 +17,45 @@ package net.iaeste.iws.api.requests;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.dtos.Folder;
 import net.iaeste.iws.api.enums.Action;
-import net.iaeste.iws.api.util.AbstractActionable;
+import net.iaeste.iws.api.util.AbstractVerification;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.1
  */
-public final class FolderRequest extends AbstractActionable {
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "FolderRequest", propOrder = { "action", "parentId", "folder" })
+public final class FolderRequest extends AbstractVerification implements Actionable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
+
+    /** Default allowed Actions for the Folder Request. */
+    private static final Set<Action> allowed = EnumSet.of(Action.Process, Action.Delete);
+
+    /** Action to perform against the given Folder. */
+    @XmlElement(required = true, nillable = false)
+    private Action action = Action.Process;
 
     /**
      * The Id of the Parent Folder, if nothing given - the Group's root folder
      * is used. This value is only used when creating new Folders.
      */
+    @XmlElement(required = true, nillable = true)
     private String parentId = null;
 
     /** The Folder Object to process. */
+    @XmlElement(required = true, nillable = true)
     private Folder folder = null;
 
     // =========================================================================
@@ -51,7 +67,6 @@ public final class FolderRequest extends AbstractActionable {
      * for WebServices to work properly.
      */
     public FolderRequest() {
-        super(EnumSet.of(Action.Process, Action.Process));
     }
 
     /**
@@ -60,8 +75,36 @@ public final class FolderRequest extends AbstractActionable {
      * @param folder Meta data for the folder
      */
     public FolderRequest(final Folder folder) {
-        super(EnumSet.of(Action.Process, Action.Process));
         setFolder(folder);
+    }
+
+    // =========================================================================
+    // Implementation of the Actionable Interface
+    // =========================================================================
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Set<Action> allowedActions() {
+        return allowed;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setAction(final Action action) throws IllegalArgumentException {
+        ensureNotNullAndContains("action", action, allowed);
+        this.action = action;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Action getAction() {
+        return action;
     }
 
     // =========================================================================

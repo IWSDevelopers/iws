@@ -17,6 +17,10 @@ package net.iaeste.iws.api.requests;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.util.AbstractVerification;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,11 +29,14 @@ import java.util.Map;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.1
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "FetchFolderRequest", propOrder = { "folderId" })
 public final class FetchFolderRequest extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
+    @XmlElement(required = true, nillable = true)
     private String folderId = null;
 
     // =========================================================================
@@ -62,10 +69,10 @@ public final class FetchFolderRequest extends AbstractVerification {
      * method will throw an {@code IllegalArgumentException}.
      *
      * @param folderId Id of the folder to fetch
-     * @throws IllegalArgumentException if null or an invalid Id
+     * @throws IllegalArgumentException if not an valid Id
      */
     public void setFolderId(final String folderId) throws IllegalArgumentException {
-        ensureNotNullAndValidId("folderId", folderId);
+        ensureValidId("folderId", folderId);
         this.folderId = folderId;
     }
 

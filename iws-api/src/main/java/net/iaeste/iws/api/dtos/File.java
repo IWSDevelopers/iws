@@ -19,6 +19,10 @@ import net.iaeste.iws.api.enums.Privacy;
 import net.iaeste.iws.api.util.AbstractVerification;
 import net.iaeste.iws.api.util.Date;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,27 +31,27 @@ import java.util.Map;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "File", propOrder = { "fileId", "privacy", "group", "user", "folder", "filename", "filedata", "filesize", "mimetype", "description", "keywords", "checksum", "modified", "created" })
 public final class File extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    private String fileId = null;
-    private Privacy privacy = Privacy.PRIVATE;
-    private Group group = null;
-    private User user = null;
-    private Folder folder = null;
-    private String filename = null;
-    // Filedata is omitted for equals, hashCode and toString, since the data
-    // can be rather large
-    private byte[] filedata = null;
-    private Integer filesize = null;
-    private String mimetype = null;
-    private String description = null;
-    private String keywords = null;
-    private Long checksum = null;
-    private Date modified = new Date();
-    private Date created = new Date();
+    @XmlElement(required = true, nillable = true) private String fileId = null;
+    @XmlElement(required = true, nillable = false) private Privacy privacy = Privacy.PRIVATE;
+    @XmlElement(required = true, nillable = true) private Group group = null;
+    @XmlElement(required = true, nillable = true) private User user = null;
+    @XmlElement(required = true, nillable = true) private Folder folder = null;
+    @XmlElement(required = true, nillable = false) private String filename = null;
+    @XmlElement(required = true, nillable = true) private byte[] filedata = null;
+    @XmlElement(required = true, nillable = true) private Integer filesize = null;
+    @XmlElement(required = true, nillable = true) private String mimetype = null;
+    @XmlElement(required = true, nillable = true) private String description = null;
+    @XmlElement(required = true, nillable = true) private String keywords = null;
+    @XmlElement(required = true, nillable = true) private Long checksum = null;
+    @XmlElement(required = true, nillable = true) private Date modified = new Date();
+    @XmlElement(required = true, nillable = true) private Date created = new Date();
 
     // =========================================================================
     // Object Constructors
@@ -232,7 +236,7 @@ public final class File extends AbstractVerification {
      * MIME Type is too long.
      *
      * @param mimetype File MIME Type
-     * @throws java.lang.IllegalArgumentException if the MIME Type value exceeds 50 characters
+     * @throws IllegalArgumentException if the MIME Type value exceeds 50 characters
      */
     public void setMimetype(final String mimetype) throws IllegalArgumentException {
         ensureNotTooLong("mimetype", mimetype, 50);

@@ -30,6 +30,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.EnumSet;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -73,7 +74,7 @@ public final class FetchInternationalGroupsTest extends AbstractTest {
     @Test
     public void testFetchingActiveInternationalGroups() {
         final Set<GroupStatus> statuses = EnumSet.of(GroupStatus.ACTIVE);
-        final FetchInternationalGroupRequest request = new FetchInternationalGroupRequest(statuses);
+        final FetchInternationalGroupRequest request = new FetchInternationalGroupRequest(new HashSet(statuses));
         final FetchInternationalGroupResponse response = committees.fetchInternationalGroups(token, request);
 
         // From the test data, we have a two Active International Groups: SID, IDT
@@ -84,7 +85,8 @@ public final class FetchInternationalGroupsTest extends AbstractTest {
 
     @Test
     public void testFetchingSuspendedInternationalGroups() {
-        final Set<GroupStatus> statuses = EnumSet.of(GroupStatus.SUSPENDED);
+        final HashSet<GroupStatus> statuses = new HashSet();
+        statuses.add(GroupStatus.SUSPENDED);
         final FetchInternationalGroupRequest request = new FetchInternationalGroupRequest(statuses);
         final FetchInternationalGroupResponse response = committees.fetchInternationalGroups(token, request);
 

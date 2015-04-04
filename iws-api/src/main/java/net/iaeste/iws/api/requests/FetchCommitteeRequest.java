@@ -20,8 +20,13 @@ import net.iaeste.iws.api.enums.Membership;
 import net.iaeste.iws.api.enums.SortingField;
 import net.iaeste.iws.api.util.AbstractPaginatable;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -31,15 +36,17 @@ import java.util.Set;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.1
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "FetchCommitteeRequest", propOrder = { "countryIds", "membership", "statuses" })
 public class FetchCommitteeRequest extends AbstractPaginatable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     private static final Set<GroupStatus> ALLOWED = EnumSet.of(GroupStatus.ACTIVE, GroupStatus.SUSPENDED);
-    private List<String> countryIds;
-    private Membership membership;
-    private Set<GroupStatus> statuses = ALLOWED;
+    @XmlElement(required = true, nillable = true) private List<String> countryIds;
+    @XmlElement(required = true, nillable = true) private Membership membership;
+    @XmlElement(required = true, nillable = true) private HashSet<GroupStatus> statuses = new HashSet<>(ALLOWED);
 
     // =========================================================================
     // Object Constructors
@@ -139,13 +146,13 @@ public class FetchCommitteeRequest extends AbstractPaginatable {
      * @param statuses Set of Status values to include in the lookup
      * @throws IllegalArgumentException if the statuses is null
      */
-    public void setStatuses(final Set<GroupStatus> statuses) throws IllegalArgumentException {
+    public void setStatuses(final HashSet<GroupStatus> statuses) throws IllegalArgumentException {
         ensureNotNullAndContains("statuses", statuses, ALLOWED);
 
         this.statuses = statuses;
     }
 
-    public Set<GroupStatus> getStatuses() {
+    public HashSet<GroupStatus> getStatuses() {
         return statuses;
     }
 

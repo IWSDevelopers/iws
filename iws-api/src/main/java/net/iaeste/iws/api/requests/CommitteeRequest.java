@@ -20,6 +20,10 @@ import net.iaeste.iws.api.dtos.User;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.util.AbstractVerification;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,30 +32,35 @@ import java.util.Map;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "CommitteeRequest", propOrder = { "countryId", "institutionName", "institutionAbbreviation", "firstname", "lastname", "username", "nationalCommittee", "nationalSecretary", "action" })
 public final class CommitteeRequest extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    // The Id of the Country to create a new Cooperating Institution for
-    private String countryId = null;
-    // The name of the Institution to use when creating a new Cooperating Institution
-    private String institutionName = null;
-    // The official Abbreviation for the Institution, for creating & updating
-    private String institutionAbbreviation = null;
-    // Firstname of the new National Secreraty for a new Cooperating Institution
-    private String firstname = null;
-    // Lastname of the new National Secreraty for a new Cooperating Institution
-    private String lastname = null;
-    // Username of the new National Secreraty for a new Cooperating Institution
-    private String username = null;
-    // National Committee (Staff) to update, upgrade, activate, suspend or delete
-    private Group nationalCommittee = null;
-    // New National Secretary for a given Committee
-    private User nationalSecretary = null;
-    // Action to perform on a Committee, by default we're assuming that it must
-    // be updated, i.e. that the National Secretary must be set
-    private Action action = Action.CHANGE_NS;
+    /** The Id of the Country to create a new Cooperating Institution for. */
+    @XmlElement(required = true, nillable = true) private String countryId = null;
+    /** The name of the Institution to use when creating a new Cooperating Institution. */
+    @XmlElement(required = true, nillable = true) private String institutionName = null;
+    /** The official Abbreviation for the Institution, for creating & updating. */
+    @XmlElement(required = true, nillable = true) private String institutionAbbreviation = null;
+    /** Firstname of the new National Secreraty for a new Cooperating Institution. */
+    @XmlElement(required = true, nillable = true) private String firstname = null;
+    /** Lastname of the new National Secreraty for a new Cooperating Institution. */
+    @XmlElement(required = true, nillable = true) private String lastname = null;
+    /** Username of the new National Secreraty for a new Cooperating Institution. */
+    @XmlElement(required = true, nillable = true) private String username = null;
+    /** National Committee (Staff) to update, upgrade, activate, suspend or delete. */
+    @XmlElement(required = true, nillable = true) private Group nationalCommittee = null;
+    /** New National Secretary for a given Committee. */
+    @XmlElement(required = true, nillable = true) private User nationalSecretary = null;
+
+    /**
+     * Action to perform on a Committee, by default we're assuming that it must
+     * be updated, i.e. that the National Secretary must be set.
+     */
+    @XmlElement(required = true, nillable = false) private Action action = Action.CHANGE_NS;
 
     /**
      * The actiona is needed to specify precisely which action is to be taken.

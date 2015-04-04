@@ -18,8 +18,12 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.GroupStatus;
 import net.iaeste.iws.api.util.AbstractVerification;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlType;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -28,13 +32,15 @@ import java.util.Set;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.1
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "FetchInternationalGroupRequest", propOrder = { "statuses" })
 public final class FetchInternationalGroupRequest extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     private static final Set<GroupStatus> ALLOWED = EnumSet.of(GroupStatus.ACTIVE, GroupStatus.SUSPENDED);
-    private Set<GroupStatus> statuses = ALLOWED;
+    private HashSet<GroupStatus> statuses = new HashSet<>(ALLOWED);
 
     // =========================================================================
     // Object Constructors
@@ -52,7 +58,7 @@ public final class FetchInternationalGroupRequest extends AbstractVerification {
      *
      * @param groupId Id of the Group Object to fetch Roles for
      */
-    public FetchInternationalGroupRequest(final Set<GroupStatus> statuses) {
+    public FetchInternationalGroupRequest(final HashSet<GroupStatus> statuses) {
         this.statuses = statuses;
     }
 
@@ -68,7 +74,7 @@ public final class FetchInternationalGroupRequest extends AbstractVerification {
      * @param statuses Set of Status values to include in the lookup
      * @throws IllegalArgumentException if the statuses is null
      */
-    public void setStatuses(final Set<GroupStatus> statuses) throws IllegalArgumentException {
+    public void setStatuses(final HashSet<GroupStatus> statuses) throws IllegalArgumentException {
         ensureNotNullAndContains("statuses", statuses, ALLOWED);
 
         this.statuses = statuses;

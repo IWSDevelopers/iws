@@ -17,6 +17,9 @@ package net.iaeste.iws.api.dtos;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.util.AbstractVerification;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlType;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,6 +28,8 @@ import java.util.Map;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.2
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "SurveyOfCountry", propOrder = {})
 public final class SurveyOfCountry extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */

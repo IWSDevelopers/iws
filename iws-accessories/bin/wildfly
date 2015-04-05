@@ -33,7 +33,7 @@ readonly serverLog="${appDirectory}/standalone/log/server.log"
 readonly iwRoot="${HOME}/projects/Private/IDT"
 
 # Java Settings, with WildFly - we're initially using Java 7, but will upgrade to
-# Java 8 as part of release 1.2
+# Java 8 as part of release 1.1
 readonly JAVA_HOME=/opt/java/jdk-8
 readonly PATH=${JAVA_HOME}/bin:${PATH}
 readonly java=${JAVA_HOME}/bin/java
@@ -129,7 +129,7 @@ doStop () {
 
         netstat -pant 2>/dev/null | grep ${WildFlyPort} | grep java | awk '{print $7;}' | cut -d'/' -f1 | xargs kill -15 2>&1 >>${serverLog}
         # If the debugging is running, the process may not be killed by the above command
-        netstat -pant 2>/dev/null | grep ${WildFlyDebugPort} | grep java | awk '{print $7;}' | cut -d'/' -f1 | xargs kill -15 2>&1 >>${serverLog}
+        netstat -pant 2>/dev/null | grep ${WildFlyDebugPort} | grep java | awk '{print $7;}' | cut -d'/' -f1 | xargs kill -9 2>&1 >> /dev/null
         pgrep wildfly | xargs kill -15 2>&1 >/dev/null
     else
         echo "WildFly is not running"

@@ -16,12 +16,12 @@
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="authenticationToken">
+  <xs:complexType final="extension restriction" name="AuthenticationToken">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
-          <xs:element minOccurs="0" name="groupId" type="xs:string"/>
-          <xs:element minOccurs="0" name="token" type="xs:string"/>
+          <xs:element name="token" type="xs:string"/>
+          <xs:element name="groupId" nillable="true" type="xs:string"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -31,81 +31,43 @@
     <xs:sequence/>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="fetchCountryRequest">
+  <xs:complexType final="extension restriction" name="CreateUserRequest">
     <xs:complexContent>
-      <xs:extension base="tns:abstractPaginatable">
+      <xs:extension base="tns:abstractVerification">
         <xs:sequence>
-          <xs:element maxOccurs="unbounded" minOccurs="0" name="countryIds" nillable="true" type="xs:string"/>
-          <xs:element minOccurs="0" name="countryType" type="tns:countryType"/>
-          <xs:element minOccurs="0" name="membership" type="tns:membership"/>
+          <xs:element name="username" type="xs:string"/>
+          <xs:element name="password" nillable="true" type="xs:string"/>
+          <xs:element name="firstname" type="xs:string"/>
+          <xs:element name="lastname" type="xs:string"/>
+          <xs:element name="studentAccount" nillable="true" type="xs:boolean"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType abstract="true" name="abstractPaginatable">
-    <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
-        <xs:sequence/>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
-  <xs:complexType final="extension restriction" name="fetchCountryResponse">
+  <xs:complexType final="extension restriction" name="CreateUserResponse">
     <xs:complexContent>
       <xs:extension base="tns:FallibleResponse">
         <xs:sequence>
-          <xs:element maxOccurs="unbounded" minOccurs="0" name="countries" nillable="true" type="tns:country"/>
+          <xs:element name="user" nillable="true" type="tns:User"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="country">
-    <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="citizens" type="xs:string"/>
-          <xs:element minOccurs="0" name="countryCode" type="xs:string"/>
-          <xs:element minOccurs="0" name="countryName" type="xs:string"/>
-          <xs:element minOccurs="0" name="countryNameFull" type="xs:string"/>
-          <xs:element minOccurs="0" name="countryNameNative" type="xs:string"/>
-          <xs:element minOccurs="0" name="currency" type="tns:currency"/>
-          <xs:element minOccurs="0" name="languages" type="xs:string"/>
-          <xs:element minOccurs="0" name="memberSince" type="xs:int"/>
-          <xs:element minOccurs="0" name="membership" type="tns:membership"/>
-          <xs:element minOccurs="0" name="nationality" type="xs:string"/>
-          <xs:element minOccurs="0" name="phonecode" type="xs:string"/>
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
-  <xs:complexType final="extension restriction" name="accountNameRequest">
-    <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="firstname" type="xs:string"/>
-          <xs:element minOccurs="0" name="lastname" type="xs:string"/>
-          <xs:element minOccurs="0" name="user" type="tns:user"/>
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
-  <xs:complexType final="extension restriction" name="user">
+  <xs:complexType final="extension restriction" name="User">
     <xs:complexContent>
       <xs:extension base="tns:abstractDto">
         <xs:sequence>
-          <xs:element minOccurs="0" name="alias" type="xs:string"/>
-          <xs:element minOccurs="0" name="firstname" type="xs:string"/>
-          <xs:element minOccurs="0" name="lastname" type="xs:string"/>
-          <xs:element minOccurs="0" name="notifications" type="tns:notificationFrequency"/>
-          <xs:element minOccurs="0" name="person" type="tns:person"/>
-          <xs:element minOccurs="0" name="privacy" type="tns:privacy"/>
-          <xs:element minOccurs="0" name="status" type="tns:userStatus"/>
-          <xs:element minOccurs="0" name="userId" type="xs:string"/>
-          <xs:element minOccurs="0" name="username" type="xs:string"/>
+          <xs:element name="userId" nillable="true" type="xs:string"/>
+          <xs:element name="username" nillable="true" type="xs:string"/>
+          <xs:element name="alias" nillable="true" type="xs:string"/>
+          <xs:element name="firstname" nillable="true" type="xs:string"/>
+          <xs:element name="lastname" nillable="true" type="xs:string"/>
+          <xs:element name="person" nillable="true" type="tns:Person"/>
+          <xs:element name="status" nillable="true" type="tns:UserStatus"/>
+          <xs:element name="privacy" type="tns:Privacy"/>
+          <xs:element name="notifications" type="tns:NotificationFrequency"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -119,34 +81,54 @@
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="person">
+  <xs:complexType final="extension restriction" name="Person">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
-          <xs:element minOccurs="0" name="address" type="tns:address"/>
-          <xs:element minOccurs="0" name="alternateEmail" type="xs:string"/>
-          <xs:element minOccurs="0" name="birthday" type="tns:Date"/>
-          <xs:element minOccurs="0" name="fax" type="xs:string"/>
-          <xs:element minOccurs="0" name="gender" type="tns:gender"/>
-          <xs:element minOccurs="0" name="mobile" type="xs:string"/>
-          <xs:element minOccurs="0" name="nationality" type="tns:country"/>
-          <xs:element minOccurs="0" name="phone" type="xs:string"/>
+          <xs:element name="nationality" nillable="true" type="tns:Country"/>
+          <xs:element name="address" nillable="true" type="tns:Address"/>
+          <xs:element name="alternateEmail" nillable="true" type="xs:string"/>
+          <xs:element name="phone" nillable="true" type="xs:string"/>
+          <xs:element name="mobile" nillable="true" type="xs:string"/>
+          <xs:element name="fax" nillable="true" type="xs:string"/>
+          <xs:element name="birthday" nillable="true" type="tns:Date"/>
+          <xs:element name="gender" nillable="true" type="tns:Gender"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="address">
+  <xs:complexType final="extension restriction" name="Country">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
-          <xs:element minOccurs="0" name="city" type="xs:string"/>
-          <xs:element minOccurs="0" name="country" type="tns:country"/>
-          <xs:element minOccurs="0" name="pobox" type="xs:string"/>
-          <xs:element minOccurs="0" name="postalCode" type="xs:string"/>
-          <xs:element minOccurs="0" name="state" type="xs:string"/>
-          <xs:element minOccurs="0" name="street1" type="xs:string"/>
-          <xs:element minOccurs="0" name="street2" type="xs:string"/>
+          <xs:element name="countryCode" type="xs:string"/>
+          <xs:element name="countryName" type="xs:string"/>
+          <xs:element name="countryNameFull" nillable="true" type="xs:string"/>
+          <xs:element name="countryNameNative" nillable="true" type="xs:string"/>
+          <xs:element name="nationality" nillable="true" type="xs:string"/>
+          <xs:element name="citizens" nillable="true" type="xs:string"/>
+          <xs:element name="phonecode" nillable="true" type="xs:string"/>
+          <xs:element name="currency" type="tns:Currency"/>
+          <xs:element name="languages" nillable="true" type="xs:string"/>
+          <xs:element name="membership" nillable="true" type="tns:Membership"/>
+          <xs:element name="memberSince" nillable="true" type="xs:int"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="Address">
+    <xs:complexContent>
+      <xs:extension base="tns:abstractVerification">
+        <xs:sequence>
+          <xs:element name="street1" nillable="true" type="xs:string"/>
+          <xs:element name="street2" nillable="true" type="xs:string"/>
+          <xs:element name="postalCode" nillable="true" type="xs:string"/>
+          <xs:element name="city" nillable="true" type="xs:string"/>
+          <xs:element name="state" nillable="true" type="xs:string"/>
+          <xs:element name="pobox" nillable="true" type="xs:string"/>
+          <xs:element name="country" nillable="true" type="tns:Country"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -158,295 +140,298 @@
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="countryRequest">
+  <xs:complexType final="extension restriction" name="FetchUserRequest">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
-          <xs:element minOccurs="0" name="country" type="tns:country"/>
+          <xs:element name="userId" type="xs:string"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="contactsRequest">
-    <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="groupId" type="xs:string"/>
-          <xs:element minOccurs="0" name="userId" type="xs:string"/>
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
-  <xs:complexType final="extension restriction" name="contactsResponse">
+  <xs:complexType final="extension restriction" name="FetchUserResponse">
     <xs:complexContent>
       <xs:extension base="tns:FallibleResponse">
         <xs:sequence>
-          <xs:element maxOccurs="unbounded" minOccurs="0" name="groups" nillable="true" type="tns:group"/>
-          <xs:element minOccurs="0" name="type" type="tns:contactsType"/>
-          <xs:element maxOccurs="unbounded" minOccurs="0" name="users" nillable="true" type="tns:user"/>
+          <xs:element name="user" nillable="true" type="tns:User"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="group">
+  <xs:complexType final="extension restriction" name="OwnerRequest">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
-          <xs:element minOccurs="0" name="country" type="tns:country"/>
-          <xs:element minOccurs="0" name="description" type="xs:string"/>
-          <xs:element minOccurs="0" name="fullName" type="xs:string"/>
-          <xs:element minOccurs="0" name="groupId" type="xs:string"/>
-          <xs:element minOccurs="0" name="groupName" type="xs:string"/>
-          <xs:element minOccurs="0" name="groupType" type="tns:groupType"/>
-          <xs:element minOccurs="0" name="listName" type="xs:string"/>
-          <xs:element minOccurs="0" name="monitoringLevel" type="tns:monitoringLevel"/>
-          <xs:element minOccurs="0" name="privateList" type="xs:boolean"/>
-          <xs:element minOccurs="0" name="publicList" type="xs:boolean"/>
+          <xs:element name="group" type="tns:Group"/>
+          <xs:element name="user" type="tns:User"/>
+          <xs:element name="title" nillable="true" type="xs:string"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="searchUserRequest">
+  <xs:complexType final="extension restriction" name="Group">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
-          <xs:element minOccurs="0" name="group" type="tns:group"/>
-          <xs:element minOccurs="0" name="name" type="xs:string"/>
+          <xs:element name="groupId" nillable="true" type="xs:string"/>
+          <xs:element name="groupName" type="xs:string"/>
+          <xs:element name="fullName" nillable="true" type="xs:string"/>
+          <xs:element name="listName" nillable="true" type="xs:string"/>
+          <xs:element name="privateList" type="xs:boolean"/>
+          <xs:element name="publicList" type="xs:boolean"/>
+          <xs:element name="groupType" type="tns:GroupType"/>
+          <xs:element name="description" nillable="true" type="xs:string"/>
+          <xs:element name="monitoringLevel" nillable="true" type="tns:MonitoringLevel"/>
+          <xs:element name="country" nillable="true" type="tns:Country"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="searchUserResponse">
+  <xs:complexType final="extension restriction" name="FetchCountryRequest">
+    <xs:complexContent>
+      <xs:extension base="tns:abstractPaginatable">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" name="countryIds" nillable="true" type="xs:string"/>
+          <xs:element name="membership" nillable="true" type="tns:Membership"/>
+          <xs:element name="countryType" type="tns:countryType"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType abstract="true" name="abstractPaginatable">
+    <xs:complexContent>
+      <xs:extension base="tns:abstractVerification">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="FetchCountryResponse">
     <xs:complexContent>
       <xs:extension base="tns:FallibleResponse">
         <xs:sequence>
-          <xs:element maxOccurs="unbounded" minOccurs="0" name="users" nillable="true" type="tns:userGroup"/>
+          <xs:element maxOccurs="unbounded" name="countries" nillable="true" type="tns:Country"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="userGroup">
+  <xs:complexType final="extension restriction" name="AccountNameRequest">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
-          <xs:element minOccurs="0" name="group" type="tns:group"/>
-          <xs:element minOccurs="0" name="memberSince" type="tns:Date"/>
-          <xs:element name="onPrivateList" type="xs:boolean"/>
+          <xs:element name="user" type="tns:User"/>
+          <xs:element name="firstname" nillable="true" type="xs:string"/>
+          <xs:element name="lastname" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="GroupRequest">
+    <xs:complexContent>
+      <xs:extension base="tns:abstractVerification">
+        <xs:sequence>
+          <xs:element name="group" type="tns:Group"/>
+          <xs:element name="user" nillable="true" type="tns:User"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="ContactsRequest">
+    <xs:complexContent>
+      <xs:extension base="tns:abstractVerification">
+        <xs:sequence>
+          <xs:element name="userId" nillable="true" type="xs:string"/>
+          <xs:element name="groupId" nillable="true" type="xs:string"/>
+          <xs:element name="type" nillable="true" type="tns:contactsType"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="ContactsResponse">
+    <xs:complexContent>
+      <xs:extension base="tns:FallibleResponse">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" name="users" nillable="true" type="tns:User"/>
+          <xs:element maxOccurs="unbounded" name="groups" nillable="true" type="tns:Group"/>
+          <xs:element name="type" nillable="true" type="tns:contactsType"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="UserRequest">
+    <xs:complexContent>
+      <xs:extension base="tns:abstractVerification">
+        <xs:sequence>
+          <xs:element name="user" type="tns:User"/>
+          <xs:element name="newStatus" nillable="true" type="tns:UserStatus"/>
+          <xs:element name="newUsername" nillable="true" type="xs:string"/>
+          <xs:element name="newPassword" nillable="true" type="xs:string"/>
+          <xs:element name="password" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="EmergencyListResponse">
+    <xs:complexContent>
+      <xs:extension base="tns:FallibleResponse">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" name="emergencyContacts" nillable="true" type="tns:UserGroup"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="UserGroup">
+    <xs:complexContent>
+      <xs:extension base="tns:abstractVerification">
+        <xs:sequence>
+          <xs:element name="userGroupId" nillable="true" type="xs:string"/>
+          <xs:element name="user" type="tns:User"/>
+          <xs:element name="group" type="tns:Group"/>
+          <xs:element name="role" type="tns:Role"/>
+          <xs:element name="title" nillable="true" type="xs:string"/>
           <xs:element name="onPublicList" type="xs:boolean"/>
-          <xs:element minOccurs="0" name="role" type="tns:role"/>
-          <xs:element minOccurs="0" name="title" type="xs:string"/>
-          <xs:element minOccurs="0" name="user" type="tns:user"/>
-          <xs:element minOccurs="0" name="userGroupId" type="xs:string"/>
+          <xs:element name="onPrivateList" type="xs:boolean"/>
+          <xs:element name="writeToPrivateList" type="xs:boolean"/>
+          <xs:element name="memberSince" nillable="true" type="tns:Date"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="role">
+  <xs:complexType final="extension restriction" name="Role">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
-          <xs:element maxOccurs="unbounded" minOccurs="0" name="permissions" nillable="true" type="tns:permission"/>
-          <xs:element minOccurs="0" name="roleId" type="xs:string"/>
-          <xs:element minOccurs="0" name="roleName" type="xs:string"/>
+          <xs:element name="roleId" nillable="true" type="xs:string"/>
+          <xs:element name="roleName" type="xs:string"/>
+          <xs:element maxOccurs="unbounded" name="permissions" type="tns:Permission"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="groupRequest">
-    <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="group" type="tns:group"/>
-          <xs:element minOccurs="0" name="user" type="tns:user"/>
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
-  <xs:complexType final="extension restriction" name="processGroupResponse">
+  <xs:complexType final="extension restriction" name="ProcessGroupResponse">
     <xs:complexContent>
       <xs:extension base="tns:FallibleResponse">
         <xs:sequence>
-          <xs:element minOccurs="0" name="group" type="tns:group"/>
+          <xs:element name="group" nillable="true" type="tns:Group"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="ownerRequest">
+  <xs:complexType final="extension restriction" name="UserGroupAssignmentRequest">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
-          <xs:element minOccurs="0" name="group" type="tns:group"/>
-          <xs:element minOccurs="0" name="title" type="xs:string"/>
-          <xs:element minOccurs="0" name="user" type="tns:user"/>
+          <xs:element name="userGroup" type="tns:UserGroup"/>
+          <xs:element name="deleteUser" nillable="true" type="xs:boolean"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="userRequest">
-    <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="newPassword" type="xs:string"/>
-          <xs:element minOccurs="0" name="newStatus" type="tns:userStatus"/>
-          <xs:element minOccurs="0" name="newUsername" type="xs:string"/>
-          <xs:element minOccurs="0" name="password" type="xs:string"/>
-          <xs:element minOccurs="0" name="user" type="tns:user"/>
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
-  <xs:complexType final="extension restriction" name="fetchRoleRequest">
-    <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="groupId" type="xs:string"/>
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
-  <xs:complexType final="extension restriction" name="fetchRoleResponse">
+  <xs:complexType final="extension restriction" name="ProcessUserGroupResponse">
     <xs:complexContent>
       <xs:extension base="tns:FallibleResponse">
         <xs:sequence>
-          <xs:element maxOccurs="unbounded" minOccurs="0" name="roles" nillable="true" type="tns:role"/>
+          <xs:element name="userGroup" nillable="true" type="tns:UserGroup"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="fetchGroupRequest">
+  <xs:complexType final="extension restriction" name="SearchUserRequest">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
-          <xs:element name="fetchStudents" type="xs:boolean"/>
-          <xs:element name="fetchSubGroups" type="xs:boolean"/>
-          <xs:element minOccurs="0" name="groupId" type="xs:string"/>
-          <xs:element minOccurs="0" name="groupType" type="tns:groupType"/>
-          <xs:element minOccurs="0" name="usersToFetch" type="tns:fetchType"/>
+          <xs:element name="group" nillable="true" type="tns:Group"/>
+          <xs:element name="name" type="xs:string"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="fetchGroupResponse">
+  <xs:complexType final="extension restriction" name="SearchUserResponse">
     <xs:complexContent>
       <xs:extension base="tns:FallibleResponse">
         <xs:sequence>
-          <xs:element minOccurs="0" name="group" type="tns:group"/>
-          <xs:element maxOccurs="unbounded" minOccurs="0" name="members" nillable="true" type="tns:userGroup"/>
-          <xs:element maxOccurs="unbounded" minOccurs="0" name="students" nillable="true" type="tns:userGroup"/>
-          <xs:element maxOccurs="unbounded" minOccurs="0" name="subGroups" nillable="true" type="tns:group"/>
+          <xs:element maxOccurs="unbounded" name="users" nillable="true" type="tns:UserGroup"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="userGroupAssignmentRequest">
+  <xs:complexType final="extension restriction" name="FetchGroupRequest">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
-          <xs:element minOccurs="0" name="userGroup" type="tns:userGroup"/>
+          <xs:element name="groupId" nillable="true" type="xs:string"/>
+          <xs:element name="groupType" nillable="true" type="tns:GroupType"/>
+          <xs:element name="usersToFetch" nillable="true" type="tns:fetchType"/>
+          <xs:element name="fetchStudents" nillable="true" type="xs:boolean"/>
+          <xs:element name="fetchSubGroups" nillable="true" type="xs:boolean"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="processUserGroupResponse">
+  <xs:complexType final="extension restriction" name="FetchGroupResponse">
     <xs:complexContent>
       <xs:extension base="tns:FallibleResponse">
         <xs:sequence>
-          <xs:element minOccurs="0" name="userGroup" type="tns:userGroup"/>
+          <xs:element name="group" nillable="true" type="tns:Group"/>
+          <xs:element maxOccurs="unbounded" name="members" nillable="true" type="tns:UserGroup"/>
+          <xs:element maxOccurs="unbounded" name="students" nillable="true" type="tns:UserGroup"/>
+          <xs:element maxOccurs="unbounded" name="subGroups" nillable="true" type="tns:Group"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="emergencyListResponse">
-    <xs:complexContent>
-      <xs:extension base="tns:FallibleResponse">
-        <xs:sequence>
-          <xs:element maxOccurs="unbounded" minOccurs="0" name="emergencyContacts" nillable="true" type="tns:userGroup"/>
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
-  <xs:complexType final="extension restriction" name="createUserRequest">
+  <xs:complexType final="extension restriction" name="FetchRoleRequest">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
-          <xs:element minOccurs="0" name="firstname" type="xs:string"/>
-          <xs:element minOccurs="0" name="lastname" type="xs:string"/>
-          <xs:element minOccurs="0" name="password" type="xs:string"/>
-          <xs:element minOccurs="0" name="username" type="xs:string"/>
+          <xs:element name="groupId" type="xs:string"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="createUserResponse">
+  <xs:complexType final="extension restriction" name="FetchRoleResponse">
     <xs:complexContent>
       <xs:extension base="tns:FallibleResponse">
         <xs:sequence>
-          <xs:element minOccurs="0" name="user" type="tns:user"/>
+          <xs:element maxOccurs="unbounded" name="roles" nillable="true" type="tns:Role"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="fetchUserRequest">
+  <xs:complexType final="extension restriction" name="CountryRequest">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
-          <xs:element minOccurs="0" name="userId" type="xs:string"/>
+          <xs:element name="country" type="tns:Country"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="fetchUserResponse">
-    <xs:complexContent>
-      <xs:extension base="tns:FallibleResponse">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="user" type="tns:user"/>
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
-  <xs:simpleType name="countryType">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="COMMITTEES"/>
-      <xs:enumeration value="COUNTRIES"/>
-    </xs:restriction>
-  </xs:simpleType>
-
-  <xs:simpleType name="membership">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="UNKNOWN"/>
-      <xs:enumeration value="FULL_MEMBER"/>
-      <xs:enumeration value="ASSOCIATE_MEMBER"/>
-      <xs:enumeration value="COOPERATING_INSTITUTION"/>
-      <xs:enumeration value="FORMER_MEMBER"/>
-      <xs:enumeration value="LISTED"/>
-      <xs:enumeration value="UNLISTED"/>
-    </xs:restriction>
-  </xs:simpleType>
-
-  <xs:simpleType name="currency">
+  <xs:simpleType name="Currency">
     <xs:restriction base="xs:string">
       <xs:enumeration value="AED"/>
       <xs:enumeration value="AFN"/>
@@ -615,15 +600,19 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="notificationFrequency">
+  <xs:simpleType name="Membership">
     <xs:restriction base="xs:string">
-      <xs:enumeration value="IMMEDIATELY"/>
-      <xs:enumeration value="DAILY"/>
-      <xs:enumeration value="WEEKLY"/>
+      <xs:enumeration value="UNKNOWN"/>
+      <xs:enumeration value="FULL_MEMBER"/>
+      <xs:enumeration value="ASSOCIATE_MEMBER"/>
+      <xs:enumeration value="COOPERATING_INSTITUTION"/>
+      <xs:enumeration value="FORMER_MEMBER"/>
+      <xs:enumeration value="LISTED"/>
+      <xs:enumeration value="UNLISTED"/>
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="gender">
+  <xs:simpleType name="Gender">
     <xs:restriction base="xs:string">
       <xs:enumeration value="MALE"/>
       <xs:enumeration value="FEMALE"/>
@@ -631,15 +620,7 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="privacy">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="PUBLIC"/>
-      <xs:enumeration value="PROTECTED"/>
-      <xs:enumeration value="PRIVATE"/>
-    </xs:restriction>
-  </xs:simpleType>
-
-  <xs:simpleType name="userStatus">
+  <xs:simpleType name="UserStatus">
     <xs:restriction base="xs:string">
       <xs:enumeration value="NEW"/>
       <xs:enumeration value="ACTIVE"/>
@@ -648,7 +629,23 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="groupType">
+  <xs:simpleType name="Privacy">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="PUBLIC"/>
+      <xs:enumeration value="PROTECTED"/>
+      <xs:enumeration value="PRIVATE"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="NotificationFrequency">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="IMMEDIATELY"/>
+      <xs:enumeration value="DAILY"/>
+      <xs:enumeration value="WEEKLY"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="GroupType">
     <xs:restriction base="xs:string">
       <xs:enumeration value="ADMINISTRATION"/>
       <xs:enumeration value="PRIVATE"/>
@@ -661,11 +658,18 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="monitoringLevel">
+  <xs:simpleType name="MonitoringLevel">
     <xs:restriction base="xs:string">
       <xs:enumeration value="NONE"/>
       <xs:enumeration value="MARKED"/>
       <xs:enumeration value="DETAILED"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="countryType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="COMMITTEES"/>
+      <xs:enumeration value="COUNTRIES"/>
     </xs:restriction>
   </xs:simpleType>
 
@@ -677,7 +681,7 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="permission">
+  <xs:simpleType name="Permission">
     <xs:restriction base="xs:string">
       <xs:enumeration value="FETCH_COUNTRIES"/>
       <xs:enumeration value="PROCESS_COUNTRY"/>
@@ -728,91 +732,129 @@
 
 </xs:schema>
   </wsdl:types>
+  <wsdl:message name="updateUsername">
+    <wsdl:part name="updateCode" type="xsd:string">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="createUser">
+    <wsdl:part name="token" type="tns:AuthenticationToken">
+    </wsdl:part>
+    <wsdl:part name="request" type="tns:CreateUserRequest">
+    </wsdl:part>
+  </wsdl:message>
   <wsdl:message name="updateUsernameResponse">
     <wsdl:part name="response" type="tns:FallibleResponse">
     </wsdl:part>
   </wsdl:message>
-  <wsdl:message name="fetchRoles">
-    <wsdl:part name="token" type="tns:authenticationToken">
+  <wsdl:message name="changeGroupOwner">
+    <wsdl:part name="token" type="tns:AuthenticationToken">
     </wsdl:part>
-    <wsdl:part name="request" type="tns:fetchRoleRequest">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="changeAccountName">
-    <wsdl:part name="token" type="tns:authenticationToken">
-    </wsdl:part>
-    <wsdl:part name="request" type="tns:accountNameRequest">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="fetchGroupResponse">
-    <wsdl:part name="response" type="tns:fetchGroupResponse">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="deleteSubGroup">
-    <wsdl:part name="token" type="tns:authenticationToken">
-    </wsdl:part>
-    <wsdl:part name="request" type="tns:groupRequest">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="fetchGroup">
-    <wsdl:part name="token" type="tns:authenticationToken">
-    </wsdl:part>
-    <wsdl:part name="request" type="tns:fetchGroupRequest">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="fetchCountriesResponse">
-    <wsdl:part name="response" type="tns:fetchCountryResponse">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="createUserResponse">
-    <wsdl:part name="response" type="tns:createUserResponse">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="processGroup">
-    <wsdl:part name="token" type="tns:authenticationToken">
-    </wsdl:part>
-    <wsdl:part name="request" type="tns:groupRequest">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="searchUsersResponse">
-    <wsdl:part name="response" type="tns:searchUserResponse">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="changeAccountNameResponse">
-    <wsdl:part name="response" type="tns:FallibleResponse">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="fetchUser">
-    <wsdl:part name="token" type="tns:authenticationToken">
-    </wsdl:part>
-    <wsdl:part name="request" type="tns:fetchUserRequest">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="fetchContacts">
-    <wsdl:part name="token" type="tns:authenticationToken">
-    </wsdl:part>
-    <wsdl:part name="request" type="tns:contactsRequest">
+    <wsdl:part name="request" type="tns:OwnerRequest">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="fetchCountries">
-    <wsdl:part name="token" type="tns:authenticationToken">
+    <wsdl:part name="token" type="tns:AuthenticationToken">
     </wsdl:part>
-    <wsdl:part name="request" type="tns:fetchCountryRequest">
+    <wsdl:part name="request" type="tns:FetchCountryRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="processGroupResponse">
+    <wsdl:part name="response" type="tns:ProcessGroupResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="fetchEmergencyListResponse">
+    <wsdl:part name="response" type="tns:EmergencyListResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="changeAccountName">
+    <wsdl:part name="token" type="tns:AuthenticationToken">
+    </wsdl:part>
+    <wsdl:part name="request" type="tns:AccountNameRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="fetchRolesResponse">
+    <wsdl:part name="response" type="tns:FetchRoleResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="deleteSubGroup">
+    <wsdl:part name="token" type="tns:AuthenticationToken">
+    </wsdl:part>
+    <wsdl:part name="request" type="tns:GroupRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="fetchContactsResponse">
+    <wsdl:part name="response" type="tns:ContactsResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="processUserGroupAssignmentResponse">
+    <wsdl:part name="response" type="tns:ProcessUserGroupResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="activateUserResponse">
+    <wsdl:part name="response" type="tns:FallibleResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="controlUserAccount">
-    <wsdl:part name="token" type="tns:authenticationToken">
+    <wsdl:part name="token" type="tns:AuthenticationToken">
     </wsdl:part>
-    <wsdl:part name="request" type="tns:userRequest">
+    <wsdl:part name="request" type="tns:UserRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="fetchEmergencyList">
+    <wsdl:part name="token" type="tns:AuthenticationToken">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="processGroup">
+    <wsdl:part name="token" type="tns:AuthenticationToken">
+    </wsdl:part>
+    <wsdl:part name="request" type="tns:GroupRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="processUserGroupAssignment">
+    <wsdl:part name="token" type="tns:AuthenticationToken">
+    </wsdl:part>
+    <wsdl:part name="request" type="tns:UserGroupAssignmentRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="fetchRoles">
+    <wsdl:part name="token" type="tns:AuthenticationToken">
+    </wsdl:part>
+    <wsdl:part name="request" type="tns:FetchRoleRequest">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="processCountry">
-    <wsdl:part name="token" type="tns:authenticationToken">
+    <wsdl:part name="token" type="tns:AuthenticationToken">
     </wsdl:part>
-    <wsdl:part name="request" type="tns:countryRequest">
+    <wsdl:part name="request" type="tns:CountryRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="createUserResponse">
+    <wsdl:part name="response" type="tns:CreateUserResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="fetchUserResponse">
+    <wsdl:part name="response" type="tns:FetchUserResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="fetchGroupResponse">
+    <wsdl:part name="response" type="tns:FetchGroupResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="fetchUser">
+    <wsdl:part name="token" type="tns:AuthenticationToken">
+    </wsdl:part>
+    <wsdl:part name="request" type="tns:FetchUserRequest">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="changeGroupOwnerResponse">
+    <wsdl:part name="response" type="tns:FallibleResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="activateUser">
+    <wsdl:part name="activationString" type="xsd:string">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="deleteSubGroupResponse">
     <wsdl:part name="response" type="tns:FallibleResponse">
     </wsdl:part>
   </wsdl:message>
@@ -820,167 +862,45 @@
     <wsdl:part name="response" type="tns:FallibleResponse">
     </wsdl:part>
   </wsdl:message>
-  <wsdl:message name="fetchEmergencyList">
-    <wsdl:part name="token" type="tns:authenticationToken">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="updateUsername">
-    <wsdl:part name="updateCode" type="xsd:string">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="createUser">
-    <wsdl:part name="token" type="tns:authenticationToken">
-    </wsdl:part>
-    <wsdl:part name="request" type="tns:createUserRequest">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="fetchContactsResponse">
-    <wsdl:part name="response" type="tns:contactsResponse">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="fetchEmergencyListResponse">
-    <wsdl:part name="response" type="tns:emergencyListResponse">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="activateUser">
-    <wsdl:part name="activationString" type="xsd:string">
-    </wsdl:part>
-  </wsdl:message>
   <wsdl:message name="processCountryResponse">
     <wsdl:part name="response" type="tns:FallibleResponse">
     </wsdl:part>
   </wsdl:message>
-  <wsdl:message name="processUserGroupAssignmentResponse">
-    <wsdl:part name="response" type="tns:processUserGroupResponse">
+  <wsdl:message name="fetchContacts">
+    <wsdl:part name="token" type="tns:AuthenticationToken">
+    </wsdl:part>
+    <wsdl:part name="request" type="tns:ContactsRequest">
     </wsdl:part>
   </wsdl:message>
-  <wsdl:message name="processUserGroupAssignment">
-    <wsdl:part name="token" type="tns:authenticationToken">
+  <wsdl:message name="searchUsersResponse">
+    <wsdl:part name="response" type="tns:SearchUserResponse">
     </wsdl:part>
-    <wsdl:part name="request" type="tns:userGroupAssignmentRequest">
+  </wsdl:message>
+  <wsdl:message name="fetchCountriesResponse">
+    <wsdl:part name="response" type="tns:FetchCountryResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="changeAccountNameResponse">
+    <wsdl:part name="response" type="tns:FallibleResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="searchUsers">
-    <wsdl:part name="token" type="tns:authenticationToken">
+    <wsdl:part name="token" type="tns:AuthenticationToken">
     </wsdl:part>
-    <wsdl:part name="request" type="tns:searchUserRequest">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="changeGroupOwner">
-    <wsdl:part name="token" type="tns:authenticationToken">
-    </wsdl:part>
-    <wsdl:part name="request" type="tns:ownerRequest">
+    <wsdl:part name="request" type="tns:SearchUserRequest">
     </wsdl:part>
   </wsdl:message>
-  <wsdl:message name="processGroupResponse">
-    <wsdl:part name="response" type="tns:processGroupResponse">
+  <wsdl:message name="fetchGroup">
+    <wsdl:part name="token" type="tns:AuthenticationToken">
     </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="deleteSubGroupResponse">
-    <wsdl:part name="response" type="tns:FallibleResponse">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="activateUserResponse">
-    <wsdl:part name="response" type="tns:FallibleResponse">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="fetchRolesResponse">
-    <wsdl:part name="response" type="tns:fetchRoleResponse">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="fetchUserResponse">
-    <wsdl:part name="response" type="tns:fetchUserResponse">
+    <wsdl:part name="request" type="tns:FetchGroupRequest">
     </wsdl:part>
   </wsdl:message>
   <wsdl:portType name="administrationWS">
-    <wsdl:operation name="activateUser">
-      <wsdl:input message="tns:activateUser" name="activateUser">
-    </wsdl:input>
-      <wsdl:output message="tns:activateUserResponse" name="activateUserResponse">
-    </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="fetchCountries">
-      <wsdl:input message="tns:fetchCountries" name="fetchCountries">
-    </wsdl:input>
-      <wsdl:output message="tns:fetchCountriesResponse" name="fetchCountriesResponse">
-    </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="changeAccountName">
-      <wsdl:input message="tns:changeAccountName" name="changeAccountName">
-    </wsdl:input>
-      <wsdl:output message="tns:changeAccountNameResponse" name="changeAccountNameResponse">
-    </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="processCountry">
-      <wsdl:input message="tns:processCountry" name="processCountry">
-    </wsdl:input>
-      <wsdl:output message="tns:processCountryResponse" name="processCountryResponse">
-    </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="fetchContacts">
-      <wsdl:input message="tns:fetchContacts" name="fetchContacts">
-    </wsdl:input>
-      <wsdl:output message="tns:fetchContactsResponse" name="fetchContactsResponse">
-    </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="searchUsers">
-      <wsdl:input message="tns:searchUsers" name="searchUsers">
-    </wsdl:input>
-      <wsdl:output message="tns:searchUsersResponse" name="searchUsersResponse">
-    </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="processGroup">
-      <wsdl:input message="tns:processGroup" name="processGroup">
-    </wsdl:input>
-      <wsdl:output message="tns:processGroupResponse" name="processGroupResponse">
-    </wsdl:output>
-    </wsdl:operation>
     <wsdl:operation name="updateUsername">
       <wsdl:input message="tns:updateUsername" name="updateUsername">
     </wsdl:input>
       <wsdl:output message="tns:updateUsernameResponse" name="updateUsernameResponse">
-    </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="deleteSubGroup">
-      <wsdl:input message="tns:deleteSubGroup" name="deleteSubGroup">
-    </wsdl:input>
-      <wsdl:output message="tns:deleteSubGroupResponse" name="deleteSubGroupResponse">
-    </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="changeGroupOwner">
-      <wsdl:input message="tns:changeGroupOwner" name="changeGroupOwner">
-    </wsdl:input>
-      <wsdl:output message="tns:changeGroupOwnerResponse" name="changeGroupOwnerResponse">
-    </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="controlUserAccount">
-      <wsdl:input message="tns:controlUserAccount" name="controlUserAccount">
-    </wsdl:input>
-      <wsdl:output message="tns:controlUserAccountResponse" name="controlUserAccountResponse">
-    </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="fetchRoles">
-      <wsdl:input message="tns:fetchRoles" name="fetchRoles">
-    </wsdl:input>
-      <wsdl:output message="tns:fetchRolesResponse" name="fetchRolesResponse">
-    </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="fetchGroup">
-      <wsdl:input message="tns:fetchGroup" name="fetchGroup">
-    </wsdl:input>
-      <wsdl:output message="tns:fetchGroupResponse" name="fetchGroupResponse">
-    </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="processUserGroupAssignment">
-      <wsdl:input message="tns:processUserGroupAssignment" name="processUserGroupAssignment">
-    </wsdl:input>
-      <wsdl:output message="tns:processUserGroupAssignmentResponse" name="processUserGroupAssignmentResponse">
-    </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="fetchEmergencyList">
-      <wsdl:input message="tns:fetchEmergencyList" name="fetchEmergencyList">
-    </wsdl:input>
-      <wsdl:output message="tns:fetchEmergencyListResponse" name="fetchEmergencyListResponse">
     </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="createUser">
@@ -995,72 +915,93 @@
       <wsdl:output message="tns:fetchUserResponse" name="fetchUserResponse">
     </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="changeGroupOwner">
+      <wsdl:input message="tns:changeGroupOwner" name="changeGroupOwner">
+    </wsdl:input>
+      <wsdl:output message="tns:changeGroupOwnerResponse" name="changeGroupOwnerResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="fetchCountries">
+      <wsdl:input message="tns:fetchCountries" name="fetchCountries">
+    </wsdl:input>
+      <wsdl:output message="tns:fetchCountriesResponse" name="fetchCountriesResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="changeAccountName">
+      <wsdl:input message="tns:changeAccountName" name="changeAccountName">
+    </wsdl:input>
+      <wsdl:output message="tns:changeAccountNameResponse" name="changeAccountNameResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deleteSubGroup">
+      <wsdl:input message="tns:deleteSubGroup" name="deleteSubGroup">
+    </wsdl:input>
+      <wsdl:output message="tns:deleteSubGroupResponse" name="deleteSubGroupResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="activateUser">
+      <wsdl:input message="tns:activateUser" name="activateUser">
+    </wsdl:input>
+      <wsdl:output message="tns:activateUserResponse" name="activateUserResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="fetchContacts">
+      <wsdl:input message="tns:fetchContacts" name="fetchContacts">
+    </wsdl:input>
+      <wsdl:output message="tns:fetchContactsResponse" name="fetchContactsResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="controlUserAccount">
+      <wsdl:input message="tns:controlUserAccount" name="controlUserAccount">
+    </wsdl:input>
+      <wsdl:output message="tns:controlUserAccountResponse" name="controlUserAccountResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="fetchEmergencyList">
+      <wsdl:input message="tns:fetchEmergencyList" name="fetchEmergencyList">
+    </wsdl:input>
+      <wsdl:output message="tns:fetchEmergencyListResponse" name="fetchEmergencyListResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processGroup">
+      <wsdl:input message="tns:processGroup" name="processGroup">
+    </wsdl:input>
+      <wsdl:output message="tns:processGroupResponse" name="processGroupResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processUserGroupAssignment">
+      <wsdl:input message="tns:processUserGroupAssignment" name="processUserGroupAssignment">
+    </wsdl:input>
+      <wsdl:output message="tns:processUserGroupAssignmentResponse" name="processUserGroupAssignmentResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="searchUsers">
+      <wsdl:input message="tns:searchUsers" name="searchUsers">
+    </wsdl:input>
+      <wsdl:output message="tns:searchUsersResponse" name="searchUsersResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="fetchGroup">
+      <wsdl:input message="tns:fetchGroup" name="fetchGroup">
+    </wsdl:input>
+      <wsdl:output message="tns:fetchGroupResponse" name="fetchGroupResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="fetchRoles">
+      <wsdl:input message="tns:fetchRoles" name="fetchRoles">
+    </wsdl:input>
+      <wsdl:output message="tns:fetchRolesResponse" name="fetchRolesResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processCountry">
+      <wsdl:input message="tns:processCountry" name="processCountry">
+    </wsdl:input>
+      <wsdl:output message="tns:processCountryResponse" name="processCountryResponse">
+    </wsdl:output>
+    </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="administrationWSServiceSoapBinding" type="tns:administrationWS">
     <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
-    <wsdl:operation name="activateUser">
-      <soap:operation soapAction="" style="rpc"/>
-      <wsdl:input name="activateUser">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
-      </wsdl:input>
-      <wsdl:output name="activateUserResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="fetchCountries">
-      <soap:operation soapAction="" style="rpc"/>
-      <wsdl:input name="fetchCountries">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
-      </wsdl:input>
-      <wsdl:output name="fetchCountriesResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="changeAccountName">
-      <soap:operation soapAction="" style="rpc"/>
-      <wsdl:input name="changeAccountName">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
-      </wsdl:input>
-      <wsdl:output name="changeAccountNameResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="fetchContacts">
-      <soap:operation soapAction="" style="rpc"/>
-      <wsdl:input name="fetchContacts">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
-      </wsdl:input>
-      <wsdl:output name="fetchContactsResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="processCountry">
-      <soap:operation soapAction="" style="rpc"/>
-      <wsdl:input name="processCountry">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
-      </wsdl:input>
-      <wsdl:output name="processCountryResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="processGroup">
-      <soap:operation soapAction="" style="rpc"/>
-      <wsdl:input name="processGroup">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
-      </wsdl:input>
-      <wsdl:output name="processGroupResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="searchUsers">
-      <soap:operation soapAction="" style="rpc"/>
-      <wsdl:input name="searchUsers">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
-      </wsdl:input>
-      <wsdl:output name="searchUsersResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
-      </wsdl:output>
-    </wsdl:operation>
     <wsdl:operation name="updateUsername">
       <soap:operation soapAction="" style="rpc"/>
       <wsdl:input name="updateUsername">
@@ -1070,48 +1011,12 @@
         <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="changeGroupOwner">
+    <wsdl:operation name="fetchUser">
       <soap:operation soapAction="" style="rpc"/>
-      <wsdl:input name="changeGroupOwner">
+      <wsdl:input name="fetchUser">
         <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
-      <wsdl:output name="changeGroupOwnerResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="deleteSubGroup">
-      <soap:operation soapAction="" style="rpc"/>
-      <wsdl:input name="deleteSubGroup">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
-      </wsdl:input>
-      <wsdl:output name="deleteSubGroupResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="controlUserAccount">
-      <soap:operation soapAction="" style="rpc"/>
-      <wsdl:input name="controlUserAccount">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
-      </wsdl:input>
-      <wsdl:output name="controlUserAccountResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="fetchRoles">
-      <soap:operation soapAction="" style="rpc"/>
-      <wsdl:input name="fetchRoles">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
-      </wsdl:input>
-      <wsdl:output name="fetchRolesResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="fetchGroup">
-      <soap:operation soapAction="" style="rpc"/>
-      <wsdl:input name="fetchGroup">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
-      </wsdl:input>
-      <wsdl:output name="fetchGroupResponse">
+      <wsdl:output name="fetchUserResponse">
         <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
@@ -1124,12 +1029,84 @@
         <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="fetchCountries">
+      <soap:operation soapAction="" style="rpc"/>
+      <wsdl:input name="fetchCountries">
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="fetchCountriesResponse">
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="changeGroupOwner">
+      <soap:operation soapAction="" style="rpc"/>
+      <wsdl:input name="changeGroupOwner">
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="changeGroupOwnerResponse">
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="changeAccountName">
+      <soap:operation soapAction="" style="rpc"/>
+      <wsdl:input name="changeAccountName">
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="changeAccountNameResponse">
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deleteSubGroup">
+      <soap:operation soapAction="" style="rpc"/>
+      <wsdl:input name="deleteSubGroup">
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="deleteSubGroupResponse">
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="activateUser">
+      <soap:operation soapAction="" style="rpc"/>
+      <wsdl:input name="activateUser">
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="activateUserResponse">
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="fetchContacts">
+      <soap:operation soapAction="" style="rpc"/>
+      <wsdl:input name="fetchContacts">
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="fetchContactsResponse">
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="controlUserAccount">
+      <soap:operation soapAction="" style="rpc"/>
+      <wsdl:input name="controlUserAccount">
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="controlUserAccountResponse">
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="fetchEmergencyList">
       <soap:operation soapAction="" style="rpc"/>
       <wsdl:input name="fetchEmergencyList">
         <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="fetchEmergencyListResponse">
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processGroup">
+      <soap:operation soapAction="" style="rpc"/>
+      <wsdl:input name="processGroup">
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="processGroupResponse">
         <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
@@ -1142,12 +1119,39 @@
         <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="fetchUser">
+    <wsdl:operation name="searchUsers">
       <soap:operation soapAction="" style="rpc"/>
-      <wsdl:input name="fetchUser">
+      <wsdl:input name="searchUsers">
         <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
-      <wsdl:output name="fetchUserResponse">
+      <wsdl:output name="searchUsersResponse">
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="fetchGroup">
+      <soap:operation soapAction="" style="rpc"/>
+      <wsdl:input name="fetchGroup">
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="fetchGroupResponse">
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="fetchRoles">
+      <soap:operation soapAction="" style="rpc"/>
+      <wsdl:input name="fetchRoles">
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="fetchRolesResponse">
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processCountry">
+      <soap:operation soapAction="" style="rpc"/>
+      <wsdl:input name="processCountry">
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="processCountryResponse">
         <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>

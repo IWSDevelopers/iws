@@ -2,12 +2,12 @@
   <wsdl:types>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://ws.iws.iaeste.net/" targetNamespace="http://ws.iws.iaeste.net/" version="1.0">
 
-  <xs:complexType final="extension restriction" name="authenticationToken">
+  <xs:complexType final="extension restriction" name="AuthenticationToken">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
-          <xs:element minOccurs="0" name="groupId" type="xs:string"/>
-          <xs:element minOccurs="0" name="token" type="xs:string"/>
+          <xs:element name="token" type="xs:string"/>
+          <xs:element name="groupId" nillable="true" type="xs:string"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -17,48 +17,10 @@
     <xs:sequence/>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="studentApplicationRequest">
-    <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="applicationId" type="xs:string"/>
-          <xs:element minOccurs="0" name="rejectByEmployerReason" type="xs:string"/>
-          <xs:element minOccurs="0" name="rejectDescription" type="xs:string"/>
-          <xs:element minOccurs="0" name="rejectInternalComment" type="xs:string"/>
-          <xs:element minOccurs="0" name="status" type="tns:applicationStatus"/>
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
-  <xs:complexType final="extension restriction" name="studentApplicationResponse">
-    <xs:complexContent>
-      <xs:extension base="tns:FallibleResponse">
-        <xs:sequence/>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
-  <xs:complexType name="FallibleResponse">
-    <xs:sequence>
-      <xs:element name="error" type="tns:IWSError"/>
-      <xs:element name="message" type="xs:string"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType final="extension restriction" name="IWSError">
-    <xs:sequence>
-      <xs:element name="error" type="xs:int"/>
-      <xs:element name="description" type="xs:string"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType final="extension restriction" name="fetchStudentApplicationsRequest">
+  <xs:complexType final="extension restriction" name="FetchStudentsRequest">
     <xs:complexContent>
       <xs:extension base="tns:abstractPaginatable">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="offerId" type="xs:string"/>
-        </xs:sequence>
+        <xs:all/>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
@@ -71,205 +33,58 @@
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="fetchStudentApplicationsResponse">
+  <xs:complexType final="extension restriction" name="FetchStudentsResponse">
     <xs:complexContent>
       <xs:extension base="tns:FallibleResponse">
         <xs:sequence>
-          <xs:element maxOccurs="unbounded" minOccurs="0" name="studentApplications" nillable="true" type="tns:studentApplication"/>
+          <xs:element maxOccurs="unbounded" name="students" nillable="true">
+            <xs:complexType final="extension restriction">
+              <xs:complexContent>
+                <xs:extension base="tns:abstractVerification">
+                  <xs:sequence>
+                    <xs:element name="user" type="tns:User"/>
+                    <xs:element name="studyLevel" nillable="true" type="tns:StudyLevel"/>
+                    <xs:element maxOccurs="unbounded" name="fieldOfStudies" nillable="true" type="tns:FieldOfStudy"/>
+                    <xs:element maxOccurs="unbounded" name="specializations" nillable="true" type="tns:Specialization"/>
+                    <xs:element name="available" nillable="true" type="tns:DatePeriod"/>
+                    <xs:element name="language1" nillable="true" type="tns:Language"/>
+                    <xs:element name="language1Level" nillable="true" type="tns:LanguageLevel"/>
+                    <xs:element name="language2" nillable="true" type="tns:Language"/>
+                    <xs:element name="language2Level" nillable="true" type="tns:LanguageLevel"/>
+                    <xs:element name="language3" nillable="true" type="tns:Language"/>
+                    <xs:element name="language3Level" nillable="true" type="tns:LanguageLevel"/>
+                    <xs:element name="modified" nillable="true" type="tns:DateTime"/>
+                    <xs:element name="created" nillable="true" type="tns:DateTime"/>
+                  </xs:sequence>
+                </xs:extension>
+              </xs:complexContent>
+            </xs:complexType>
+          </xs:element>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="studentApplication">
-    <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="acceptance" type="tns:studentAcceptance"/>
-          <xs:element minOccurs="0" name="addressDuringTerms" type="tns:address"/>
-          <xs:element minOccurs="0" name="applicationId" type="xs:string"/>
-          <xs:element maxOccurs="unbounded" minOccurs="0" name="attachments" nillable="true" type="tns:file"/>
-          <xs:element minOccurs="0" name="available" type="tns:datePeriod"/>
-          <xs:element minOccurs="0" name="completedYearsOfStudy" type="xs:int"/>
-          <xs:element minOccurs="0" name="created" type="tns:DateTime"/>
-          <xs:element minOccurs="0" name="dateOfBirth" type="tns:Date"/>
-          <xs:element minOccurs="0" name="email" type="xs:string"/>
-          <xs:element maxOccurs="unbounded" minOccurs="0" name="fieldOfStudies" nillable="true" type="tns:fieldOfStudy"/>
-          <xs:element minOccurs="0" name="gender" type="tns:gender"/>
-          <xs:element minOccurs="0" name="homeAddress" type="tns:address"/>
-          <xs:element minOccurs="0" name="isLodgingByIaeste" type="xs:boolean"/>
-          <xs:element minOccurs="0" name="language1" type="tns:language"/>
-          <xs:element minOccurs="0" name="language1Level" type="tns:languageLevel"/>
-          <xs:element minOccurs="0" name="language2" type="tns:language"/>
-          <xs:element minOccurs="0" name="language2Level" type="tns:languageLevel"/>
-          <xs:element minOccurs="0" name="language3" type="tns:language"/>
-          <xs:element minOccurs="0" name="language3Level" type="tns:languageLevel"/>
-          <xs:element minOccurs="0" name="modified" type="tns:DateTime"/>
-          <xs:element minOccurs="0" name="nationality" type="tns:country"/>
-          <xs:element minOccurs="0" name="nominatedAt" type="tns:DateTime"/>
-          <xs:element minOccurs="0" name="offerId" type="xs:string"/>
-          <xs:element minOccurs="0" name="offerState" type="tns:offerState"/>
-          <xs:element minOccurs="0" name="passportNumber" type="xs:string"/>
-          <xs:element minOccurs="0" name="passportPlaceOfIssue" type="xs:string"/>
-          <xs:element minOccurs="0" name="passportValidUntil" type="xs:string"/>
-          <xs:element minOccurs="0" name="phoneNumber" type="xs:string"/>
-          <xs:element minOccurs="0" name="placeOfBirth" type="xs:string"/>
-          <xs:element minOccurs="0" name="rejectByEmployerReason" type="xs:string"/>
-          <xs:element minOccurs="0" name="rejectDescription" type="xs:string"/>
-          <xs:element minOccurs="0" name="rejectInternalComment" type="xs:string"/>
-          <xs:element maxOccurs="unbounded" minOccurs="0" name="specializations" nillable="true" type="xs:string"/>
-          <xs:element minOccurs="0" name="status" type="tns:applicationStatus"/>
-          <xs:element minOccurs="0" name="student" type="tns:student"/>
-          <xs:element minOccurs="0" name="totalYearsOfStudy" type="xs:int"/>
-          <xs:element minOccurs="0" name="travelInformation" type="tns:studentAcceptanceConfirmation"/>
-          <xs:element minOccurs="0" name="university" type="xs:string"/>
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
-  <xs:complexType final="extension restriction" name="studentAcceptance">
-    <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="additionalInformation" type="xs:string"/>
-          <xs:element minOccurs="0" name="applicationId" type="xs:string"/>
-          <xs:element minOccurs="0" name="confirmedPeriod" type="tns:datePeriod"/>
-          <xs:element minOccurs="0" name="contactPerson" type="xs:string"/>
-          <xs:element minOccurs="0" name="contactPersonEmail" type="xs:string"/>
-          <xs:element minOccurs="0" name="contactPersonPhone" type="xs:string"/>
-          <xs:element minOccurs="0" name="firstWorkingDay" type="tns:Date"/>
-          <xs:element minOccurs="0" name="workingPlace" type="xs:string"/>
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
-  <xs:complexType final="extension restriction" name="datePeriod">
-    <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="fromDate" type="tns:Date"/>
-          <xs:element minOccurs="0" name="toDate" type="tns:Date"/>
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
-  <xs:complexType final="extension restriction" name="Date">
+  <xs:complexType name="FallibleResponse">
     <xs:sequence>
-      <xs:element name="midnight" type="xs:dateTime"/>
+      <xs:element name="error" type="tns:IWSError"/>
+      <xs:element name="message" type="xs:string"/>
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="address">
-    <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="city" type="xs:string"/>
-          <xs:element minOccurs="0" name="country" type="tns:country"/>
-          <xs:element minOccurs="0" name="pobox" type="xs:string"/>
-          <xs:element minOccurs="0" name="postalCode" type="xs:string"/>
-          <xs:element minOccurs="0" name="state" type="xs:string"/>
-          <xs:element minOccurs="0" name="street1" type="xs:string"/>
-          <xs:element minOccurs="0" name="street2" type="xs:string"/>
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
-  <xs:complexType final="extension restriction" name="country">
-    <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="citizens" type="xs:string"/>
-          <xs:element minOccurs="0" name="countryCode" type="xs:string"/>
-          <xs:element minOccurs="0" name="countryName" type="xs:string"/>
-          <xs:element minOccurs="0" name="countryNameFull" type="xs:string"/>
-          <xs:element minOccurs="0" name="countryNameNative" type="xs:string"/>
-          <xs:element minOccurs="0" name="currency" type="tns:currency"/>
-          <xs:element minOccurs="0" name="languages" type="xs:string"/>
-          <xs:element minOccurs="0" name="memberSince" type="xs:int"/>
-          <xs:element minOccurs="0" name="membership" type="tns:membership"/>
-          <xs:element minOccurs="0" name="nationality" type="xs:string"/>
-          <xs:element minOccurs="0" name="phonecode" type="xs:string"/>
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
-  <xs:complexType final="extension restriction" name="file">
-    <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="checksum" type="xs:long"/>
-          <xs:element minOccurs="0" name="created" type="tns:Date"/>
-          <xs:element minOccurs="0" name="description" type="xs:string"/>
-          <xs:element minOccurs="0" name="fileId" type="xs:string"/>
-          <xs:element minOccurs="0" name="filedata" type="xs:base64Binary"/>
-          <xs:element minOccurs="0" name="filename" type="xs:string"/>
-          <xs:element minOccurs="0" name="filesize" type="xs:int"/>
-          <xs:element minOccurs="0" name="folder" type="tns:folder"/>
-          <xs:element minOccurs="0" name="group" type="tns:group"/>
-          <xs:element minOccurs="0" name="keywords" type="xs:string"/>
-          <xs:element minOccurs="0" name="mimetype" type="xs:string"/>
-          <xs:element minOccurs="0" name="modified" type="tns:Date"/>
-          <xs:element minOccurs="0" name="privacy" type="tns:privacy"/>
-          <xs:element minOccurs="0" name="user" type="tns:user"/>
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
-  <xs:complexType final="extension restriction" name="folder">
-    <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="created" type="tns:Date"/>
-          <xs:element maxOccurs="unbounded" minOccurs="0" name="files" nillable="true" type="tns:file"/>
-          <xs:element minOccurs="0" name="folderId" type="xs:string"/>
-          <xs:element minOccurs="0" name="foldername" type="xs:string"/>
-          <xs:element maxOccurs="unbounded" minOccurs="0" name="folders" nillable="true" type="tns:folder"/>
-          <xs:element minOccurs="0" name="group" type="tns:group"/>
-          <xs:element minOccurs="0" name="modified" type="tns:Date"/>
-          <xs:element minOccurs="0" name="parentId" type="xs:string"/>
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
-  <xs:complexType final="extension restriction" name="group">
-    <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="country" type="tns:country"/>
-          <xs:element minOccurs="0" name="description" type="xs:string"/>
-          <xs:element minOccurs="0" name="fullName" type="xs:string"/>
-          <xs:element minOccurs="0" name="groupId" type="xs:string"/>
-          <xs:element minOccurs="0" name="groupName" type="xs:string"/>
-          <xs:element minOccurs="0" name="groupType" type="tns:groupType"/>
-          <xs:element minOccurs="0" name="listName" type="xs:string"/>
-          <xs:element minOccurs="0" name="monitoringLevel" type="tns:monitoringLevel"/>
-          <xs:element minOccurs="0" name="privateList" type="xs:boolean"/>
-          <xs:element minOccurs="0" name="publicList" type="xs:boolean"/>
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
-  <xs:complexType final="extension restriction" name="user">
+  <xs:complexType final="extension restriction" name="User">
     <xs:complexContent>
       <xs:extension base="tns:abstractDto">
         <xs:sequence>
-          <xs:element minOccurs="0" name="alias" type="xs:string"/>
-          <xs:element minOccurs="0" name="firstname" type="xs:string"/>
-          <xs:element minOccurs="0" name="lastname" type="xs:string"/>
-          <xs:element minOccurs="0" name="notifications" type="tns:notificationFrequency"/>
-          <xs:element minOccurs="0" name="person" type="tns:person"/>
-          <xs:element minOccurs="0" name="privacy" type="tns:privacy"/>
-          <xs:element minOccurs="0" name="status" type="tns:userStatus"/>
-          <xs:element minOccurs="0" name="userId" type="xs:string"/>
-          <xs:element minOccurs="0" name="username" type="xs:string"/>
+          <xs:element name="userId" nillable="true" type="xs:string"/>
+          <xs:element name="username" nillable="true" type="xs:string"/>
+          <xs:element name="alias" nillable="true" type="xs:string"/>
+          <xs:element name="firstname" nillable="true" type="xs:string"/>
+          <xs:element name="lastname" nillable="true" type="xs:string"/>
+          <xs:element name="person" nillable="true" type="tns:Person"/>
+          <xs:element name="status" nillable="true" type="tns:UserStatus"/>
+          <xs:element name="privacy" type="tns:Privacy"/>
+          <xs:element name="notifications" type="tns:NotificationFrequency"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -283,18 +98,71 @@
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="person">
+  <xs:complexType final="extension restriction" name="Person">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
-          <xs:element minOccurs="0" name="address" type="tns:address"/>
-          <xs:element minOccurs="0" name="alternateEmail" type="xs:string"/>
-          <xs:element minOccurs="0" name="birthday" type="tns:Date"/>
-          <xs:element minOccurs="0" name="fax" type="xs:string"/>
-          <xs:element minOccurs="0" name="gender" type="tns:gender"/>
-          <xs:element minOccurs="0" name="mobile" type="xs:string"/>
-          <xs:element minOccurs="0" name="nationality" type="tns:country"/>
-          <xs:element minOccurs="0" name="phone" type="xs:string"/>
+          <xs:element name="nationality" nillable="true" type="tns:Country"/>
+          <xs:element name="address" nillable="true" type="tns:Address"/>
+          <xs:element name="alternateEmail" nillable="true" type="xs:string"/>
+          <xs:element name="phone" nillable="true" type="xs:string"/>
+          <xs:element name="mobile" nillable="true" type="xs:string"/>
+          <xs:element name="fax" nillable="true" type="xs:string"/>
+          <xs:element name="birthday" nillable="true" type="tns:Date"/>
+          <xs:element name="gender" nillable="true" type="tns:Gender"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="Country">
+    <xs:complexContent>
+      <xs:extension base="tns:abstractVerification">
+        <xs:sequence>
+          <xs:element name="countryCode" type="xs:string"/>
+          <xs:element name="countryName" type="xs:string"/>
+          <xs:element name="countryNameFull" nillable="true" type="xs:string"/>
+          <xs:element name="countryNameNative" nillable="true" type="xs:string"/>
+          <xs:element name="nationality" nillable="true" type="xs:string"/>
+          <xs:element name="citizens" nillable="true" type="xs:string"/>
+          <xs:element name="phonecode" nillable="true" type="xs:string"/>
+          <xs:element name="currency" type="tns:Currency"/>
+          <xs:element name="languages" nillable="true" type="xs:string"/>
+          <xs:element name="membership" nillable="true" type="tns:Membership"/>
+          <xs:element name="memberSince" nillable="true" type="xs:int"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="Address">
+    <xs:complexContent>
+      <xs:extension base="tns:abstractVerification">
+        <xs:sequence>
+          <xs:element name="street1" nillable="true" type="xs:string"/>
+          <xs:element name="street2" nillable="true" type="xs:string"/>
+          <xs:element name="postalCode" nillable="true" type="xs:string"/>
+          <xs:element name="city" nillable="true" type="xs:string"/>
+          <xs:element name="state" nillable="true" type="xs:string"/>
+          <xs:element name="pobox" nillable="true" type="xs:string"/>
+          <xs:element name="country" nillable="true" type="tns:Country"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="Date">
+    <xs:sequence>
+      <xs:element name="midnight" type="xs:dateTime"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="DatePeriod">
+    <xs:complexContent>
+      <xs:extension base="tns:abstractVerification">
+        <xs:sequence>
+          <xs:element name="fromDate" type="tns:Date"/>
+          <xs:element name="toDate" type="tns:Date"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -306,131 +174,322 @@
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="student">
+  <xs:complexType final="extension restriction" name="IWSError">
+    <xs:sequence>
+      <xs:element name="error" type="xs:int"/>
+      <xs:element name="description" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="StudentApplicationRequest">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
-          <xs:element minOccurs="0" name="available" type="tns:datePeriod"/>
-          <xs:element minOccurs="0" name="created" type="tns:DateTime"/>
-          <xs:element maxOccurs="unbounded" minOccurs="0" name="fieldOfStudies" nillable="true" type="tns:fieldOfStudy"/>
-          <xs:element minOccurs="0" name="language1" type="tns:language"/>
-          <xs:element minOccurs="0" name="language1Level" type="tns:languageLevel"/>
-          <xs:element minOccurs="0" name="language2" type="tns:language"/>
-          <xs:element minOccurs="0" name="language2Level" type="tns:languageLevel"/>
-          <xs:element minOccurs="0" name="language3" type="tns:language"/>
-          <xs:element minOccurs="0" name="language3Level" type="tns:languageLevel"/>
-          <xs:element minOccurs="0" name="modified" type="tns:DateTime"/>
-          <xs:element maxOccurs="unbounded" minOccurs="0" name="specializations" nillable="true" type="tns:specialization"/>
-          <xs:element minOccurs="0" name="studyLevel" type="tns:studyLevel"/>
-          <xs:element minOccurs="0" name="user" type="tns:user"/>
+          <xs:element name="applicationId" type="xs:string"/>
+          <xs:element name="status" type="tns:ApplicationStatus"/>
+          <xs:element name="rejectByEmployerReason" nillable="true" type="xs:string"/>
+          <xs:element name="rejectDescription" nillable="true" type="xs:string"/>
+          <xs:element name="rejectInternalComment" nillable="true" type="xs:string"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="studentAcceptanceConfirmation">
+  <xs:complexType final="extension restriction" name="StudentApplicationResponse">
+    <xs:complexContent>
+      <xs:extension base="tns:FallibleResponse">
+        <xs:sequence>
+          <xs:element name="studentApplication" nillable="true" type="tns:StudentApplication"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="StudentApplication">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
           <xs:element minOccurs="0" name="applicationId" type="xs:string"/>
-          <xs:element minOccurs="0" name="arrivalDateTime" type="tns:Date"/>
-          <xs:element minOccurs="0" name="departure" type="tns:Date"/>
-          <xs:element minOccurs="0" name="departureFrom" type="xs:string"/>
-          <xs:element minOccurs="0" name="insuranceCompany" type="xs:string"/>
-          <xs:element minOccurs="0" name="insuranceReceiptNumber" type="xs:string"/>
-          <xs:element minOccurs="0" name="lodgingRequiredFrom" type="tns:Date"/>
-          <xs:element minOccurs="0" name="lodgingRequiredTo" type="tns:Date"/>
-          <xs:element minOccurs="0" name="otherInformation" type="xs:string"/>
-          <xs:element minOccurs="0" name="phoneNumberDuringTravel" type="xs:string"/>
-          <xs:element minOccurs="0" name="transportNumber" type="xs:string"/>
-          <xs:element minOccurs="0" name="transportationType" type="tns:transportationType"/>
+          <xs:element name="offerId" type="xs:string"/>
+          <xs:element name="offerState" nillable="true" type="tns:OfferState"/>
+          <xs:element name="student">
+            <xs:complexType final="extension restriction">
+              <xs:complexContent>
+                <xs:extension base="tns:abstractVerification">
+                  <xs:sequence>
+                    <xs:element name="user" type="tns:User"/>
+                    <xs:element name="studyLevel" nillable="true" type="tns:StudyLevel"/>
+                    <xs:element maxOccurs="unbounded" name="fieldOfStudies" nillable="true" type="tns:FieldOfStudy"/>
+                    <xs:element maxOccurs="unbounded" name="specializations" nillable="true" type="tns:Specialization"/>
+                    <xs:element name="available" nillable="true" type="tns:DatePeriod"/>
+                    <xs:element name="language1" nillable="true" type="tns:Language"/>
+                    <xs:element name="language1Level" nillable="true" type="tns:LanguageLevel"/>
+                    <xs:element name="language2" nillable="true" type="tns:Language"/>
+                    <xs:element name="language2Level" nillable="true" type="tns:LanguageLevel"/>
+                    <xs:element name="language3" nillable="true" type="tns:Language"/>
+                    <xs:element name="language3Level" nillable="true" type="tns:LanguageLevel"/>
+                    <xs:element name="modified" nillable="true" type="tns:DateTime"/>
+                    <xs:element name="created" nillable="true" type="tns:DateTime"/>
+                  </xs:sequence>
+                </xs:extension>
+              </xs:complexContent>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="status" nillable="true" type="tns:ApplicationStatus"/>
+          <xs:element name="homeAddress" nillable="true" type="tns:Address"/>
+          <xs:element name="email" nillable="true" type="xs:string"/>
+          <xs:element name="phoneNumber" nillable="true" type="xs:string"/>
+          <xs:element name="addressDuringTerms" nillable="true" type="tns:Address"/>
+          <xs:element name="dateOfBirth" nillable="true" type="tns:Date"/>
+          <xs:element name="university" nillable="true" type="xs:string"/>
+          <xs:element name="placeOfBirth" nillable="true" type="xs:string"/>
+          <xs:element name="nationality" nillable="true" type="tns:Country"/>
+          <xs:element name="gender" nillable="true" type="tns:Gender"/>
+          <xs:element name="completedYearsOfStudy" nillable="true" type="xs:int"/>
+          <xs:element name="totalYearsOfStudy" nillable="true" type="xs:int"/>
+          <xs:element name="lodgingByIaeste" nillable="true" type="xs:boolean"/>
+          <xs:element name="language1" nillable="true" type="tns:Language"/>
+          <xs:element name="language1Level" nillable="true" type="tns:LanguageLevel"/>
+          <xs:element name="language2" nillable="true" type="tns:Language"/>
+          <xs:element name="language2Level" nillable="true" type="tns:LanguageLevel"/>
+          <xs:element name="language3" nillable="true" type="tns:Language"/>
+          <xs:element name="language3Level" nillable="true" type="tns:LanguageLevel"/>
+          <xs:element name="available" nillable="true" type="tns:DatePeriod"/>
+          <xs:element maxOccurs="unbounded" name="fieldOfStudies" nillable="true" type="tns:FieldOfStudy"/>
+          <xs:element maxOccurs="unbounded" name="specializations" nillable="true" type="xs:string"/>
+          <xs:element name="passportNumber" nillable="true" type="xs:string"/>
+          <xs:element name="passportPlaceOfIssue" nillable="true" type="xs:string"/>
+          <xs:element name="passportValidUntil" nillable="true" type="xs:string"/>
+          <xs:element name="rejectByEmployerReason" nillable="true" type="xs:string"/>
+          <xs:element name="rejectDescription" nillable="true" type="xs:string"/>
+          <xs:element name="rejectInternalComment" nillable="true" type="xs:string"/>
+          <xs:element name="acceptance" nillable="true">
+            <xs:complexType final="extension restriction">
+              <xs:complexContent>
+                <xs:extension base="tns:abstractVerification">
+                  <xs:sequence>
+                    <xs:element name="applicationId" nillable="true" type="xs:string"/>
+                    <xs:element name="firstWorkingDay" nillable="true" type="tns:Date"/>
+                    <xs:element name="workingPlace" nillable="true" type="xs:string"/>
+                    <xs:element name="contactPerson" nillable="true" type="xs:string"/>
+                    <xs:element name="contactPersonEmail" nillable="true" type="xs:string"/>
+                    <xs:element name="contactPersonPhone" nillable="true" type="xs:string"/>
+                    <xs:element name="confirmedPeriod" nillable="true" type="tns:DatePeriod"/>
+                    <xs:element name="additionalInformation" nillable="true" type="xs:string"/>
+                  </xs:sequence>
+                </xs:extension>
+              </xs:complexContent>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="travelInformation" nillable="true" type="tns:StudentAcceptanceConfirmation"/>
+          <xs:element name="nominatedAt" nillable="true" type="tns:DateTime"/>
+          <xs:element maxOccurs="unbounded" name="attachments" nillable="true" type="tns:File"/>
+          <xs:element name="modified" nillable="true" type="tns:DateTime"/>
+          <xs:element name="created" nillable="true" type="tns:DateTime"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType name="processStudentApplicationsRequest">
+  <xs:complexType final="extension restriction" name="StudentAcceptanceConfirmation">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
-          <xs:element minOccurs="0" name="studentApplication" type="tns:studentApplication"/>
+          <xs:element name="applicationId" nillable="true" type="xs:string"/>
+          <xs:element name="departure" nillable="true" type="tns:Date"/>
+          <xs:element name="transportationType" nillable="true" type="tns:TransportationType"/>
+          <xs:element name="departureFrom" nillable="true" type="xs:string"/>
+          <xs:element name="transportNumber" nillable="true" type="xs:string"/>
+          <xs:element name="arrivalDateTime" nillable="true" type="tns:Date"/>
+          <xs:element name="phoneNumberDuringTravel" nillable="true" type="xs:string"/>
+          <xs:element name="lodgingRequiredFrom" nillable="true" type="tns:Date"/>
+          <xs:element name="lodgingRequiredTo" nillable="true" type="tns:Date"/>
+          <xs:element name="otherInformation" nillable="true" type="xs:string"/>
+          <xs:element name="insuranceCompany" nillable="true" type="xs:string"/>
+          <xs:element name="insuranceReceiptNumber" nillable="true" type="xs:string"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="studentRequest">
+  <xs:complexType final="extension restriction" name="File">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
-          <xs:element minOccurs="0" name="student" type="tns:student"/>
+          <xs:element name="fileId" nillable="true" type="xs:string"/>
+          <xs:element name="privacy" type="tns:Privacy"/>
+          <xs:element name="group" nillable="true" type="tns:Group"/>
+          <xs:element name="user" nillable="true" type="tns:User"/>
+          <xs:element name="folder" nillable="true" type="tns:Folder"/>
+          <xs:element name="filename" type="xs:string"/>
+          <xs:element name="filedata" nillable="true" type="xs:base64Binary"/>
+          <xs:element name="filesize" nillable="true" type="xs:int"/>
+          <xs:element name="mimetype" nillable="true" type="xs:string"/>
+          <xs:element name="description" nillable="true" type="xs:string"/>
+          <xs:element name="keywords" nillable="true" type="xs:string"/>
+          <xs:element name="checksum" nillable="true" type="xs:long"/>
+          <xs:element name="modified" nillable="true" type="tns:Date"/>
+          <xs:element name="created" nillable="true" type="tns:Date"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="studentResponse">
+  <xs:complexType final="extension restriction" name="Group">
+    <xs:complexContent>
+      <xs:extension base="tns:abstractVerification">
+        <xs:sequence>
+          <xs:element name="groupId" nillable="true" type="xs:string"/>
+          <xs:element name="groupName" type="xs:string"/>
+          <xs:element name="fullName" nillable="true" type="xs:string"/>
+          <xs:element name="listName" nillable="true" type="xs:string"/>
+          <xs:element name="privateList" type="xs:boolean"/>
+          <xs:element name="publicList" type="xs:boolean"/>
+          <xs:element name="groupType" type="tns:GroupType"/>
+          <xs:element name="description" nillable="true" type="xs:string"/>
+          <xs:element name="monitoringLevel" nillable="true" type="tns:MonitoringLevel"/>
+          <xs:element name="country" nillable="true" type="tns:Country"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="Folder">
+    <xs:complexContent>
+      <xs:extension base="tns:abstractVerification">
+        <xs:sequence>
+          <xs:element name="folderId" nillable="true" type="xs:string"/>
+          <xs:element name="parentId" nillable="true" type="xs:string"/>
+          <xs:element name="group" type="tns:Group"/>
+          <xs:element name="foldername" type="xs:string"/>
+          <xs:element maxOccurs="unbounded" name="folders" nillable="true" type="tns:Folder"/>
+          <xs:element maxOccurs="unbounded" name="files" nillable="true" type="tns:File"/>
+          <xs:element name="modified" nillable="true" type="tns:Date"/>
+          <xs:element name="created" nillable="true" type="tns:Date"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="CreateUserRequest">
+    <xs:complexContent>
+      <xs:extension base="tns:abstractVerification">
+        <xs:sequence>
+          <xs:element name="username" type="xs:string"/>
+          <xs:element name="password" nillable="true" type="xs:string"/>
+          <xs:element name="firstname" type="xs:string"/>
+          <xs:element name="lastname" type="xs:string"/>
+          <xs:element name="studentAccount" nillable="true" type="xs:boolean"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="CreateUserResponse">
     <xs:complexContent>
       <xs:extension base="tns:FallibleResponse">
-        <xs:sequence/>
+        <xs:sequence>
+          <xs:element name="user" nillable="true" type="tns:User"/>
+        </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="fetchStudentsRequest">
+  <xs:complexType final="extension restriction" name="FetchStudentApplicationsRequest">
     <xs:complexContent>
       <xs:extension base="tns:abstractPaginatable">
-        <xs:sequence/>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
-  <xs:complexType final="extension restriction" name="fetchStudentsResponse">
-    <xs:complexContent>
-      <xs:extension base="tns:FallibleResponse">
         <xs:sequence>
-          <xs:element maxOccurs="unbounded" minOccurs="0" name="students" nillable="true" type="tns:student"/>
+          <xs:element name="offerId" type="xs:string"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="createUserRequest">
+  <xs:complexType final="extension restriction" name="FetchStudentApplicationsResponse">
+    <xs:complexContent>
+      <xs:extension base="tns:FallibleResponse">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" name="studentApplications" nillable="true" type="tns:StudentApplication"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="StudentRequest">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
-          <xs:element minOccurs="0" name="firstname" type="xs:string"/>
-          <xs:element minOccurs="0" name="lastname" type="xs:string"/>
-          <xs:element minOccurs="0" name="password" type="xs:string"/>
-          <xs:element minOccurs="0" name="username" type="xs:string"/>
+          <xs:element name="student" nillable="true">
+            <xs:complexType final="extension restriction">
+              <xs:complexContent>
+                <xs:extension base="tns:abstractVerification">
+                  <xs:sequence>
+                    <xs:element name="user" type="tns:User"/>
+                    <xs:element name="studyLevel" nillable="true" type="tns:StudyLevel"/>
+                    <xs:element maxOccurs="unbounded" name="fieldOfStudies" nillable="true" type="tns:FieldOfStudy"/>
+                    <xs:element maxOccurs="unbounded" name="specializations" nillable="true" type="tns:Specialization"/>
+                    <xs:element name="available" nillable="true" type="tns:DatePeriod"/>
+                    <xs:element name="language1" nillable="true" type="tns:Language"/>
+                    <xs:element name="language1Level" nillable="true" type="tns:LanguageLevel"/>
+                    <xs:element name="language2" nillable="true" type="tns:Language"/>
+                    <xs:element name="language2Level" nillable="true" type="tns:LanguageLevel"/>
+                    <xs:element name="language3" nillable="true" type="tns:Language"/>
+                    <xs:element name="language3Level" nillable="true" type="tns:LanguageLevel"/>
+                    <xs:element name="modified" nillable="true" type="tns:DateTime"/>
+                    <xs:element name="created" nillable="true" type="tns:DateTime"/>
+                  </xs:sequence>
+                </xs:extension>
+              </xs:complexContent>
+            </xs:complexType>
+          </xs:element>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="createUserResponse">
+  <xs:complexType final="extension restriction" name="StudentResponse">
     <xs:complexContent>
       <xs:extension base="tns:FallibleResponse">
         <xs:sequence>
-          <xs:element minOccurs="0" name="user" type="tns:user"/>
+          <xs:element name="student" nillable="true">
+            <xs:complexType final="extension restriction">
+              <xs:complexContent>
+                <xs:extension base="tns:abstractVerification">
+                  <xs:sequence>
+                    <xs:element name="user" type="tns:User"/>
+                    <xs:element name="studyLevel" nillable="true" type="tns:StudyLevel"/>
+                    <xs:element maxOccurs="unbounded" name="fieldOfStudies" nillable="true" type="tns:FieldOfStudy"/>
+                    <xs:element maxOccurs="unbounded" name="specializations" nillable="true" type="tns:Specialization"/>
+                    <xs:element name="available" nillable="true" type="tns:DatePeriod"/>
+                    <xs:element name="language1" nillable="true" type="tns:Language"/>
+                    <xs:element name="language1Level" nillable="true" type="tns:LanguageLevel"/>
+                    <xs:element name="language2" nillable="true" type="tns:Language"/>
+                    <xs:element name="language2Level" nillable="true" type="tns:LanguageLevel"/>
+                    <xs:element name="language3" nillable="true" type="tns:Language"/>
+                    <xs:element name="language3Level" nillable="true" type="tns:LanguageLevel"/>
+                    <xs:element name="modified" nillable="true" type="tns:DateTime"/>
+                    <xs:element name="created" nillable="true" type="tns:DateTime"/>
+                  </xs:sequence>
+                </xs:extension>
+              </xs:complexContent>
+            </xs:complexType>
+          </xs:element>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:simpleType name="applicationStatus">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="APPLIED"/>
-      <xs:enumeration value="NOMINATED"/>
-      <xs:enumeration value="FORWARDED_TO_EMPLOYER"/>
-      <xs:enumeration value="ACCEPTED"/>
-      <xs:enumeration value="REJECTED"/>
-      <xs:enumeration value="REJECTED_BY_SENDING_COUNTRY"/>
-      <xs:enumeration value="CANCELLED"/>
-    </xs:restriction>
-  </xs:simpleType>
+  <xs:complexType name="ProcessStudentApplicationsRequest">
+    <xs:complexContent>
+      <xs:extension base="tns:abstractVerification">
+        <xs:sequence>
+          <xs:element name="studentApplication" type="tns:StudentApplication"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
 
-  <xs:simpleType name="currency">
+  <xs:simpleType name="Currency">
     <xs:restriction base="xs:string">
       <xs:enumeration value="AED"/>
       <xs:enumeration value="AFN"/>
@@ -599,7 +658,7 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="membership">
+  <xs:simpleType name="Membership">
     <xs:restriction base="xs:string">
       <xs:enumeration value="UNKNOWN"/>
       <xs:enumeration value="FULL_MEMBER"/>
@@ -611,44 +670,7 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="groupType">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="ADMINISTRATION"/>
-      <xs:enumeration value="PRIVATE"/>
-      <xs:enumeration value="MEMBER"/>
-      <xs:enumeration value="INTERNATIONAL"/>
-      <xs:enumeration value="NATIONAL"/>
-      <xs:enumeration value="LOCAL"/>
-      <xs:enumeration value="WORKGROUP"/>
-      <xs:enumeration value="STUDENT"/>
-    </xs:restriction>
-  </xs:simpleType>
-
-  <xs:simpleType name="monitoringLevel">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="NONE"/>
-      <xs:enumeration value="MARKED"/>
-      <xs:enumeration value="DETAILED"/>
-    </xs:restriction>
-  </xs:simpleType>
-
-  <xs:simpleType name="privacy">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="PUBLIC"/>
-      <xs:enumeration value="PROTECTED"/>
-      <xs:enumeration value="PRIVATE"/>
-    </xs:restriction>
-  </xs:simpleType>
-
-  <xs:simpleType name="notificationFrequency">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="IMMEDIATELY"/>
-      <xs:enumeration value="DAILY"/>
-      <xs:enumeration value="WEEKLY"/>
-    </xs:restriction>
-  </xs:simpleType>
-
-  <xs:simpleType name="gender">
+  <xs:simpleType name="Gender">
     <xs:restriction base="xs:string">
       <xs:enumeration value="MALE"/>
       <xs:enumeration value="FEMALE"/>
@@ -656,7 +678,7 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="userStatus">
+  <xs:simpleType name="UserStatus">
     <xs:restriction base="xs:string">
       <xs:enumeration value="NEW"/>
       <xs:enumeration value="ACTIVE"/>
@@ -665,7 +687,31 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="fieldOfStudy">
+  <xs:simpleType name="Privacy">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="PUBLIC"/>
+      <xs:enumeration value="PROTECTED"/>
+      <xs:enumeration value="PRIVATE"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="NotificationFrequency">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="IMMEDIATELY"/>
+      <xs:enumeration value="DAILY"/>
+      <xs:enumeration value="WEEKLY"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="StudyLevel">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="B"/>
+      <xs:enumeration value="M"/>
+      <xs:enumeration value="E"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="FieldOfStudy">
     <xs:restriction base="xs:string">
       <xs:enumeration value="AERONAUTIC_ENGINEERING"/>
       <xs:enumeration value="AGRICULTURE"/>
@@ -697,75 +743,7 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="language">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="ENGLISH"/>
-      <xs:enumeration value="ARABIC"/>
-      <xs:enumeration value="BELARUSIAN"/>
-      <xs:enumeration value="BULGARIAN"/>
-      <xs:enumeration value="CANTONESE_YUE_CHINESE"/>
-      <xs:enumeration value="CROATIAN"/>
-      <xs:enumeration value="CZECH"/>
-      <xs:enumeration value="DANISH"/>
-      <xs:enumeration value="DUTCH"/>
-      <xs:enumeration value="ESTONIAN"/>
-      <xs:enumeration value="FINNISH"/>
-      <xs:enumeration value="FRENCH"/>
-      <xs:enumeration value="GERMAN"/>
-      <xs:enumeration value="GREEK"/>
-      <xs:enumeration value="HUNGARIAN"/>
-      <xs:enumeration value="INDONESIAN"/>
-      <xs:enumeration value="ITALIAN"/>
-      <xs:enumeration value="JAPANESE"/>
-      <xs:enumeration value="KOREAN"/>
-      <xs:enumeration value="LATVIAN"/>
-      <xs:enumeration value="LITHUANIAN"/>
-      <xs:enumeration value="MANDARIN_CHINESE"/>
-      <xs:enumeration value="NORWEGIAN"/>
-      <xs:enumeration value="PERSIAN"/>
-      <xs:enumeration value="POLISH"/>
-      <xs:enumeration value="PORTUGUESE"/>
-      <xs:enumeration value="ROMANIAN"/>
-      <xs:enumeration value="RUSSIAN"/>
-      <xs:enumeration value="SERBIAN"/>
-      <xs:enumeration value="SLOVAKIAN"/>
-      <xs:enumeration value="SLOVENIAN"/>
-      <xs:enumeration value="SPANISH"/>
-      <xs:enumeration value="SWEDISH"/>
-      <xs:enumeration value="TAJIK"/>
-      <xs:enumeration value="THAI"/>
-      <xs:enumeration value="TURKISH"/>
-      <xs:enumeration value="VIETNAMESE"/>
-      <xs:enumeration value="UKRAINIAN"/>
-    </xs:restriction>
-  </xs:simpleType>
-
-  <xs:simpleType name="languageLevel">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="E"/>
-      <xs:enumeration value="G"/>
-      <xs:enumeration value="F"/>
-    </xs:restriction>
-  </xs:simpleType>
-
-  <xs:simpleType name="offerState">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="NEW"/>
-      <xs:enumeration value="OPEN"/>
-      <xs:enumeration value="SHARED"/>
-      <xs:enumeration value="APPLICATIONS"/>
-      <xs:enumeration value="NOMINATIONS"/>
-      <xs:enumeration value="DELETED"/>
-      <xs:enumeration value="CLOSED"/>
-      <xs:enumeration value="COMPLETED"/>
-      <xs:enumeration value="AT_EMPLOYER"/>
-      <xs:enumeration value="ACCEPTED"/>
-      <xs:enumeration value="EXPIRED"/>
-      <xs:enumeration value="REJECTED"/>
-    </xs:restriction>
-  </xs:simpleType>
-
-  <xs:simpleType name="specialization">
+  <xs:simpleType name="Specialization">
     <xs:restriction base="xs:string">
       <xs:enumeration value="ADMINISTRATION"/>
       <xs:enumeration value="AEROSPACE_ENGINEERING"/>
@@ -962,15 +940,87 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="studyLevel">
+  <xs:simpleType name="Language">
     <xs:restriction base="xs:string">
-      <xs:enumeration value="B"/>
-      <xs:enumeration value="M"/>
-      <xs:enumeration value="E"/>
+      <xs:enumeration value="ENGLISH"/>
+      <xs:enumeration value="ARABIC"/>
+      <xs:enumeration value="BELARUSIAN"/>
+      <xs:enumeration value="BULGARIAN"/>
+      <xs:enumeration value="CANTONESE_YUE_CHINESE"/>
+      <xs:enumeration value="CROATIAN"/>
+      <xs:enumeration value="CZECH"/>
+      <xs:enumeration value="DANISH"/>
+      <xs:enumeration value="DUTCH"/>
+      <xs:enumeration value="ESTONIAN"/>
+      <xs:enumeration value="FINNISH"/>
+      <xs:enumeration value="FRENCH"/>
+      <xs:enumeration value="GERMAN"/>
+      <xs:enumeration value="GREEK"/>
+      <xs:enumeration value="HUNGARIAN"/>
+      <xs:enumeration value="INDONESIAN"/>
+      <xs:enumeration value="ITALIAN"/>
+      <xs:enumeration value="JAPANESE"/>
+      <xs:enumeration value="KOREAN"/>
+      <xs:enumeration value="LATVIAN"/>
+      <xs:enumeration value="LITHUANIAN"/>
+      <xs:enumeration value="MANDARIN_CHINESE"/>
+      <xs:enumeration value="NORWEGIAN"/>
+      <xs:enumeration value="PERSIAN"/>
+      <xs:enumeration value="POLISH"/>
+      <xs:enumeration value="PORTUGUESE"/>
+      <xs:enumeration value="ROMANIAN"/>
+      <xs:enumeration value="RUSSIAN"/>
+      <xs:enumeration value="SERBIAN"/>
+      <xs:enumeration value="SLOVAKIAN"/>
+      <xs:enumeration value="SLOVENIAN"/>
+      <xs:enumeration value="SPANISH"/>
+      <xs:enumeration value="SWEDISH"/>
+      <xs:enumeration value="TAJIK"/>
+      <xs:enumeration value="THAI"/>
+      <xs:enumeration value="TURKISH"/>
+      <xs:enumeration value="VIETNAMESE"/>
+      <xs:enumeration value="UKRAINIAN"/>
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="transportationType">
+  <xs:simpleType name="LanguageLevel">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="E"/>
+      <xs:enumeration value="G"/>
+      <xs:enumeration value="F"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="ApplicationStatus">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="APPLIED"/>
+      <xs:enumeration value="NOMINATED"/>
+      <xs:enumeration value="FORWARDED_TO_EMPLOYER"/>
+      <xs:enumeration value="ACCEPTED"/>
+      <xs:enumeration value="REJECTED"/>
+      <xs:enumeration value="REJECTED_BY_SENDING_COUNTRY"/>
+      <xs:enumeration value="CANCELLED"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="OfferState">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="NEW"/>
+      <xs:enumeration value="OPEN"/>
+      <xs:enumeration value="SHARED"/>
+      <xs:enumeration value="APPLICATIONS"/>
+      <xs:enumeration value="NOMINATIONS"/>
+      <xs:enumeration value="DELETED"/>
+      <xs:enumeration value="CLOSED"/>
+      <xs:enumeration value="COMPLETED"/>
+      <xs:enumeration value="AT_EMPLOYER"/>
+      <xs:enumeration value="ACCEPTED"/>
+      <xs:enumeration value="EXPIRED"/>
+      <xs:enumeration value="REJECTED"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="TransportationType">
     <xs:restriction base="xs:string">
       <xs:enumeration value="PLANE"/>
       <xs:enumeration value="BUS"/>
@@ -980,97 +1030,100 @@
     </xs:restriction>
   </xs:simpleType>
 
+  <xs:simpleType name="GroupType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="ADMINISTRATION"/>
+      <xs:enumeration value="PRIVATE"/>
+      <xs:enumeration value="MEMBER"/>
+      <xs:enumeration value="INTERNATIONAL"/>
+      <xs:enumeration value="NATIONAL"/>
+      <xs:enumeration value="LOCAL"/>
+      <xs:enumeration value="WORKGROUP"/>
+      <xs:enumeration value="STUDENT"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="MonitoringLevel">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="NONE"/>
+      <xs:enumeration value="MARKED"/>
+      <xs:enumeration value="DETAILED"/>
+    </xs:restriction>
+  </xs:simpleType>
+
 </xs:schema>
   </wsdl:types>
-  <wsdl:message name="processStudentApplicationResponse">
-    <wsdl:part name="response" type="tns:studentApplicationResponse">
+  <wsdl:message name="fetchStudents">
+    <wsdl:part name="token" type="tns:AuthenticationToken">
     </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="processStudentApplication">
-    <wsdl:part name="token" type="tns:authenticationToken">
-    </wsdl:part>
-    <wsdl:part name="request" type="tns:processStudentApplicationsRequest">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="fetchStudentsResponse">
-    <wsdl:part name="response" type="tns:fetchStudentsResponse">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="processStudentResponse">
-    <wsdl:part name="response" type="tns:studentResponse">
+    <wsdl:part name="request" type="tns:FetchStudentsRequest">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="processApplicationStatus">
-    <wsdl:part name="token" type="tns:authenticationToken">
+    <wsdl:part name="token" type="tns:AuthenticationToken">
     </wsdl:part>
-    <wsdl:part name="request" type="tns:studentApplicationRequest">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="fetchStudents">
-    <wsdl:part name="token" type="tns:authenticationToken">
-    </wsdl:part>
-    <wsdl:part name="request" type="tns:fetchStudentsRequest">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="processStudent">
-    <wsdl:part name="token" type="tns:authenticationToken">
-    </wsdl:part>
-    <wsdl:part name="request" type="tns:studentRequest">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="processApplicationStatusResponse">
-    <wsdl:part name="response" type="tns:studentApplicationResponse">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="fetchStudentApplications">
-    <wsdl:part name="token" type="tns:authenticationToken">
-    </wsdl:part>
-    <wsdl:part name="request" type="tns:fetchStudentApplicationsRequest">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="createStudentResponse">
-    <wsdl:part name="response" type="tns:createUserResponse">
+    <wsdl:part name="request" type="tns:StudentApplicationRequest">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="createStudent">
-    <wsdl:part name="token" type="tns:authenticationToken">
+    <wsdl:part name="token" type="tns:AuthenticationToken">
     </wsdl:part>
-    <wsdl:part name="request" type="tns:createUserRequest">
+    <wsdl:part name="request" type="tns:CreateUserRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="fetchStudentApplications">
+    <wsdl:part name="token" type="tns:AuthenticationToken">
+    </wsdl:part>
+    <wsdl:part name="request" type="tns:FetchStudentApplicationsRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="processStudent">
+    <wsdl:part name="token" type="tns:AuthenticationToken">
+    </wsdl:part>
+    <wsdl:part name="request" type="tns:StudentRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="fetchStudentsResponse">
+    <wsdl:part name="response" type="tns:FetchStudentsResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="createStudentResponse">
+    <wsdl:part name="response" type="tns:CreateUserResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="processStudentApplication">
+    <wsdl:part name="token" type="tns:AuthenticationToken">
+    </wsdl:part>
+    <wsdl:part name="request" type="tns:ProcessStudentApplicationsRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="processStudentApplicationResponse">
+    <wsdl:part name="response" type="tns:StudentApplicationResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="fetchStudentApplicationsResponse">
-    <wsdl:part name="response" type="tns:fetchStudentApplicationsResponse">
+    <wsdl:part name="response" type="tns:FetchStudentApplicationsResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="processStudentResponse">
+    <wsdl:part name="response" type="tns:StudentResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="processApplicationStatusResponse">
+    <wsdl:part name="response" type="tns:StudentApplicationResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:portType name="studentWS">
-    <wsdl:operation name="processApplicationStatus">
-      <wsdl:input message="tns:processApplicationStatus" name="processApplicationStatus">
-    </wsdl:input>
-      <wsdl:output message="tns:processApplicationStatusResponse" name="processApplicationStatusResponse">
-    </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="fetchStudentApplications">
-      <wsdl:input message="tns:fetchStudentApplications" name="fetchStudentApplications">
-    </wsdl:input>
-      <wsdl:output message="tns:fetchStudentApplicationsResponse" name="fetchStudentApplicationsResponse">
-    </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="processStudentApplication">
-      <wsdl:input message="tns:processStudentApplication" name="processStudentApplication">
-    </wsdl:input>
-      <wsdl:output message="tns:processStudentApplicationResponse" name="processStudentApplicationResponse">
-    </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="processStudent">
-      <wsdl:input message="tns:processStudent" name="processStudent">
-    </wsdl:input>
-      <wsdl:output message="tns:processStudentResponse" name="processStudentResponse">
-    </wsdl:output>
-    </wsdl:operation>
     <wsdl:operation name="fetchStudents">
       <wsdl:input message="tns:fetchStudents" name="fetchStudents">
     </wsdl:input>
       <wsdl:output message="tns:fetchStudentsResponse" name="fetchStudentsResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processApplicationStatus">
+      <wsdl:input message="tns:processApplicationStatus" name="processApplicationStatus">
+    </wsdl:input>
+      <wsdl:output message="tns:processApplicationStatusResponse" name="processApplicationStatusResponse">
     </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="createStudent">
@@ -1079,42 +1132,33 @@
       <wsdl:output message="tns:createStudentResponse" name="createStudentResponse">
     </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="fetchStudentApplications">
+      <wsdl:input message="tns:fetchStudentApplications" name="fetchStudentApplications">
+    </wsdl:input>
+      <wsdl:output message="tns:fetchStudentApplicationsResponse" name="fetchStudentApplicationsResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processStudent">
+      <wsdl:input message="tns:processStudent" name="processStudent">
+    </wsdl:input>
+      <wsdl:output message="tns:processStudentResponse" name="processStudentResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processStudentApplication">
+      <wsdl:input message="tns:processStudentApplication" name="processStudentApplication">
+    </wsdl:input>
+      <wsdl:output message="tns:processStudentApplicationResponse" name="processStudentApplicationResponse">
+    </wsdl:output>
+    </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="studentWSServiceSoapBinding" type="tns:studentWS">
     <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
-    <wsdl:operation name="fetchStudentApplications">
+    <wsdl:operation name="fetchStudents">
       <soap:operation soapAction="" style="rpc"/>
-      <wsdl:input name="fetchStudentApplications">
+      <wsdl:input name="fetchStudents">
         <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
-      <wsdl:output name="fetchStudentApplicationsResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="processApplicationStatus">
-      <soap:operation soapAction="" style="rpc"/>
-      <wsdl:input name="processApplicationStatus">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
-      </wsdl:input>
-      <wsdl:output name="processApplicationStatusResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="processStudentApplication">
-      <soap:operation soapAction="" style="rpc"/>
-      <wsdl:input name="processStudentApplication">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
-      </wsdl:input>
-      <wsdl:output name="processStudentApplicationResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="processStudent">
-      <soap:operation soapAction="" style="rpc"/>
-      <wsdl:input name="processStudent">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
-      </wsdl:input>
-      <wsdl:output name="processStudentResponse">
+      <wsdl:output name="fetchStudentsResponse">
         <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
@@ -1127,12 +1171,39 @@
         <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="fetchStudents">
+    <wsdl:operation name="processApplicationStatus">
       <soap:operation soapAction="" style="rpc"/>
-      <wsdl:input name="fetchStudents">
+      <wsdl:input name="processApplicationStatus">
         <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
-      <wsdl:output name="fetchStudentsResponse">
+      <wsdl:output name="processApplicationStatusResponse">
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="fetchStudentApplications">
+      <soap:operation soapAction="" style="rpc"/>
+      <wsdl:input name="fetchStudentApplications">
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="fetchStudentApplicationsResponse">
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processStudent">
+      <soap:operation soapAction="" style="rpc"/>
+      <wsdl:input name="processStudent">
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="processStudentResponse">
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processStudentApplication">
+      <soap:operation soapAction="" style="rpc"/>
+      <wsdl:input name="processStudentApplication">
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="processStudentApplicationResponse">
         <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>

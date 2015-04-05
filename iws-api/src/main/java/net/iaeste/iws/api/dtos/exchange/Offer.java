@@ -32,6 +32,10 @@ import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.api.util.DatePeriod;
 import net.iaeste.iws.api.util.DateTime;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 import java.math.BigDecimal;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -46,78 +50,80 @@ import java.util.Set;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "Offer", propOrder = { "offerId", "refNo", "offerType", "exchangeType", "oldRefNo", "employer", "workDescription", "typeOfWork", "weeklyHours", "dailyHours", "weeklyWorkDays", "studyLevels", "fieldOfStudies", "specializations", "previousTrainingRequired", "otherRequirements", "minimumWeeks", "maximumWeeks", "period1", "period2", "unavailable", "language1", "language1Level", "language1Operator", "language2", "language2Level", "language2Operator", "language3", "language3Level", "payment", "paymentFrequency", "currency", "deduction", "livingCost", "livingCostFrequency", "lodgingBy", "lodgingCost", "lodgingCostFrequency", "nominationDeadline", "numberOfHardCopies", "additionalInformation", "privateComment", "status", "modified", "created", "nsFirstname", "nsLastname", "shared", "hidden" })
 public final class Offer extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    private String offerId = null;
-    private String refNo = null;
-    private OfferType offerType = OfferType.OPEN;
+    @XmlElement(required = true, nillable = true)  private String offerId = null;
+    @XmlElement(required = true, nillable = false) private String refNo = null;
+    @XmlElement(required = true, nillable = false) private OfferType offerType = OfferType.OPEN;
     // Defaulting to IW, as COBE is causing problems for Reserved Offers
-    private ExchangeType exchangeType = ExchangeType.IW;
+    @XmlElement(required = true, nillable = true)  private ExchangeType exchangeType = ExchangeType.IW;
 
-    private String oldRefNo = null;
+    @XmlElement(required = true, nillable = true)  private String oldRefNo = null;
 
     // General Work Description
-    private Employer employer = null;
-    private String workDescription = null;
-    private TypeOfWork typeOfWork = null;
-    private Float weeklyHours = null;
-    private Float dailyHours = null;
-    private Float weeklyWorkDays = null;
-    private Set<StudyLevel> studyLevels = EnumSet.noneOf(StudyLevel.class);
-    private Set<FieldOfStudy> fieldOfStudies = EnumSet.noneOf(FieldOfStudy.class);
-    private Set<String> specializations = new HashSet<>(1);
-    private Boolean previousTrainingRequired = null;
-    private String otherRequirements = null;
+    @XmlElement(required = true, nillable = false) private Employer employer = null;
+    @XmlElement(required = true, nillable = false) private String workDescription = null;
+    @XmlElement(required = true, nillable = true)  private TypeOfWork typeOfWork = null;
+    @XmlElement(required = true, nillable = false) private Float weeklyHours = null;
+    @XmlElement(required = true, nillable = true)  private Float dailyHours = null;
+    @XmlElement(required = true, nillable = true)  private Float weeklyWorkDays = null;
+    @XmlElement(required = true, nillable = false) private Set<StudyLevel> studyLevels = EnumSet.noneOf(StudyLevel.class);
+    @XmlElement(required = true, nillable = true)  private Set<FieldOfStudy> fieldOfStudies = EnumSet.noneOf(FieldOfStudy.class);
+    @XmlElement(required = true, nillable = true)  private Set<String> specializations = new HashSet<>(1);
+    @XmlElement(required = true, nillable = true)  private Boolean previousTrainingRequired = null;
+    @XmlElement(required = true, nillable = true)  private String otherRequirements = null;
 
     // DatePeriod for the Offer
-    private Integer minimumWeeks = null;
-    private Integer maximumWeeks = null;
-    private DatePeriod period1 = null;
-    private DatePeriod period2 = null;
-    private DatePeriod unavailable = null;
+    @XmlElement(required = true, nillable = false) private Integer minimumWeeks = null;
+    @XmlElement(required = true, nillable = false) private Integer maximumWeeks = null;
+    @XmlElement(required = true, nillable = false) private DatePeriod period1 = null;
+    @XmlElement(required = true, nillable = true)  private DatePeriod period2 = null;
+    @XmlElement(required = true, nillable = true)  private DatePeriod unavailable = null;
 
     // Language restrictions
-    private Language language1 = null;
-    private LanguageLevel language1Level = null;
-    private LanguageOperator language1Operator = null;
-    private Language language2 = null;
-    private LanguageLevel language2Level = null;
-    private LanguageOperator language2Operator = null;
-    private Language language3 = null;
-    private LanguageLevel language3Level = null;
+    @XmlElement(required = true, nillable = false) private Language language1 = null;
+    @XmlElement(required = true, nillable = false) private LanguageLevel language1Level = null;
+    @XmlElement(required = true, nillable = true)  private LanguageOperator language1Operator = null;
+    @XmlElement(required = true, nillable = true)  private Language language2 = null;
+    @XmlElement(required = true, nillable = true)  private LanguageLevel language2Level = null;
+    @XmlElement(required = true, nillable = true)  private LanguageOperator language2Operator = null;
+    @XmlElement(required = true, nillable = true)  private Language language3 = null;
+    @XmlElement(required = true, nillable = true)  private LanguageLevel language3Level = null;
 
     // Payment & Cost information
-    private BigDecimal payment = null;
-    private PaymentFrequency paymentFrequency = null;
+    @XmlElement(required = true, nillable = true)  private BigDecimal payment = null;
+    @XmlElement(required = true, nillable = true)  private PaymentFrequency paymentFrequency = null;
     /* need big numbers, e.g. 1 EUR = 26.435,00 VND */
-    private Currency currency = null;
-    private String deduction = null;
-    private BigDecimal livingCost = null;
-    private PaymentFrequency livingCostFrequency = null;
-    private String lodgingBy = null;
-    private BigDecimal lodgingCost = null;
-    private PaymentFrequency lodgingCostFrequency = null;
+    @XmlElement(required = true, nillable = true)  private Currency currency = null;
+    @XmlElement(required = true, nillable = true)  private String deduction = null;
+    @XmlElement(required = true, nillable = true)  private BigDecimal livingCost = null;
+    @XmlElement(required = true, nillable = true)  private PaymentFrequency livingCostFrequency = null;
+    @XmlElement(required = true, nillable = true)  private String lodgingBy = null;
+    @XmlElement(required = true, nillable = true)  private BigDecimal lodgingCost = null;
+    @XmlElement(required = true, nillable = true)  private PaymentFrequency lodgingCostFrequency = null;
 
     // Other things
-    private Date nominationDeadline = null;
-    private Integer numberOfHardCopies = null;
-    private String additionalInformation = null;
-    private String privateComment = null;
-    private OfferState status = null;
-    private DateTime modified = null;
-    private DateTime created = null;
+    @XmlElement(required = true, nillable = true)  private Date nominationDeadline = null;
+    @XmlElement(required = true, nillable = true)  private Integer numberOfHardCopies = null;
+    @XmlElement(required = true, nillable = true)  private String additionalInformation = null;
+    @XmlElement(required = true, nillable = true)  private String privateComment = null;
+    @XmlElement(required = true, nillable = true)  private OfferState status = null;
+    @XmlElement(required = true, nillable = true)  private DateTime modified = null;
+    @XmlElement(required = true, nillable = true)  private DateTime created = null;
 
     // Additional information
-    private String nsFirstname = null;
-    private String nsLastname = null;
+    @XmlElement(required = true, nillable = true)  private String nsFirstname = null;
+    @XmlElement(required = true, nillable = true)  private String nsLastname = null;
 
-    private DateTime shared = null;
+    @XmlElement(required = true, nillable = true)  private DateTime shared = null;
 
     // custom flag used by the FE to hide irrelevant offers
-    private Boolean hidden = false;
+    @XmlElement(required = true, nillable = true)  private Boolean hidden = false;
 
     // =========================================================================
     // Object Constructors
@@ -807,13 +813,13 @@ public final class Offer extends AbstractVerification {
         // We need to ensure that the Employer is verifiable also!
         isNotNullAndVerifiable(validation, "employer", employer);
         isNotNull(validation, "employer", employer);
-        isNotNull(validation, "weeklyHours", weeklyHours);
         isNotNull(validation, "workDescription", workDescription);
+        isNotNull(validation, "weeklyHours", weeklyHours);
         isNotNull(validation, "studyLevels", studyLevels);
         isNotNull(validation, "fieldOfStudies", fieldOfStudies);
-        isNotNull(validation, "period1", period1);
         isNotNull(validation, "minimumWeeks", minimumWeeks);
         isNotNull(validation, "maximumWeeks", maximumWeeks);
+        isNotNull(validation, "period1", period1);
         isNotNull(validation, "language1", language1);
         isNotNull(validation, "language1Level", language1Level);
 

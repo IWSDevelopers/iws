@@ -19,6 +19,10 @@ import net.iaeste.iws.api.enums.SortingField;
 import net.iaeste.iws.api.enums.exchange.EmployerFetchType;
 import net.iaeste.iws.api.util.AbstractPaginatable;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,13 +31,15 @@ import java.util.Map;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "FetchEmployerRequest", propOrder = { "type", "field" })
 public final class FetchEmployerRequest extends AbstractPaginatable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    private EmployerFetchType type = EmployerFetchType.ALL;
-    private String field = null;
+    @XmlElement(required = true, nillable = true) private EmployerFetchType type = EmployerFetchType.ALL;
+    @XmlElement(required = true, nillable = true) private String field = null;
 
     // =========================================================================
     // Standard Setters & Getters

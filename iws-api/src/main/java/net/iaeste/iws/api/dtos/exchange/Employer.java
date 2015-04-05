@@ -19,6 +19,10 @@ import net.iaeste.iws.api.dtos.Address;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.util.AbstractVerification;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,6 +33,8 @@ import java.util.Map;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "Employer", propOrder = { "employerId", "group", "name", "department", "business", "address", "employeesCount", "website", "workingPlace", "canteen", "nearestAirport", "nearestPublicTransport" })
 public final class Employer extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
@@ -39,18 +45,18 @@ public final class Employer extends AbstractVerification {
      */
     public static final int FIELD_LENGTH = 255;
 
-    private String employerId = null;
-    private Group group = null;
-    private String name = null;
-    private String department = "";
-    private String business = null;
-    private Address address = null;
-    private String employeesCount = null;
-    private String website = null;
-    private String workingPlace = null;
-    private Boolean canteen = null;
-    private String nearestAirport = null;
-    private String nearestPublicTransport = null;
+    @XmlElement(required = true, nillable = true)  private String employerId = null;
+    @XmlElement(required = true, nillable = false) private Group group = null;
+    @XmlElement(required = true, nillable = false) private String name = null;
+    @XmlElement(required = true, nillable = false) private String department = "";
+    @XmlElement(required = true, nillable = true)  private String business = null;
+    @XmlElement(required = true, nillable = false) private Address address = null;
+    @XmlElement(required = true, nillable = true)  private String employeesCount = null;
+    @XmlElement(required = true, nillable = true)  private String website = null;
+    @XmlElement(required = true, nillable = false) private String workingPlace = null;
+    @XmlElement(required = true, nillable = true)  private Boolean canteen = null;
+    @XmlElement(required = true, nillable = true)  private String nearestAirport = null;
+    @XmlElement(required = true, nillable = true)  private String nearestPublicTransport = null;
 
     // =========================================================================
     // Object Constructors
@@ -331,11 +337,11 @@ public final class Employer extends AbstractVerification {
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(0);
 
+        isVerifiable(validation, "group", group);
         isNotNull(validation, "name", name);
         isNotNull(validation, "department", department);
-        isNotNull(validation, "workingPlace", workingPlace);
         isVerifiable(validation, "address", address);
-        isVerifiable(validation, "group", group);
+        isNotNull(validation, "workingPlace", workingPlace);
 
         return validation;
     }

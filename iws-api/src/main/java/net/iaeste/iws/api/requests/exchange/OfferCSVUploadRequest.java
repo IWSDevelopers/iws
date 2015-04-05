@@ -18,6 +18,10 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.SortingField;
 import net.iaeste.iws.api.util.AbstractPaginatable;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,6 +30,8 @@ import java.util.Map;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.1
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "OfferCSVUploadRequest", propOrder = { "data", "delimiter" })
 public class OfferCSVUploadRequest extends AbstractPaginatable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
@@ -34,7 +40,12 @@ public class OfferCSVUploadRequest extends AbstractPaginatable {
     /**
      * Available CSV fields delimiters.
      */
-    public enum FieldDelimiter { COMMA(','), SEMICOLON(';');
+    @XmlType(name = "FieldDelimiter")
+    public enum FieldDelimiter {
+
+        COMMA(','),
+        SEMICOLON(';');
+
         // =========================================================================
         // Private Constructor & functionality
         // =========================================================================
@@ -47,16 +58,19 @@ public class OfferCSVUploadRequest extends AbstractPaginatable {
 
         public char getDescription() {
             return description;
-        }}
+        }
+    }
 
     /**
      * CSV file content
      */
+    @XmlElement(required = true, nillable = false)
     private byte[] data;
 
     /**
      * CSV field delimiter
      */
+    @XmlElement(required = true, nillable = true)
     private FieldDelimiter delimiter;
 
     // =========================================================================

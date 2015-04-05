@@ -18,6 +18,10 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.util.AbstractVerification;
 import net.iaeste.iws.api.util.Date;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,21 +33,26 @@ import java.util.Set;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "PublishOfferRequest", propOrder = { "offerIds", "groupIds", "nominationDeadline" })
 public final class PublishOfferRequest extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     /** The Offer Object to published. */
+    @XmlElement(required = true, nillable = true)
     private Set<String> offerIds = null;
 
     /** The group to which the offer will be published. */
+    @XmlElement(required = true, nillable = true)
     private List<String> groupIds;
 
     /**
      * New nomination deadline for submitted offers.
      * If NULL is passed, the field is not updated.
      * */
+    @XmlElement(required = true, nillable = true)
     private Date nominationDeadline = null;
 
     // =========================================================================

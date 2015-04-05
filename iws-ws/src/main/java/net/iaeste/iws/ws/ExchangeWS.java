@@ -180,14 +180,14 @@ public class ExchangeWS implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    // TODO For now this method is excluded, due to the enummap used. It must be verified what is a better option.
+    // TODO Fix problem with WS uploading Offers
     @WebMethod(exclude = true)
     @WebResult(name = "response")
     public OfferCSVUploadResponse uploadOffers(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final OfferCSVUploadRequest request) {
         log.info(requestLogger.prepareLogMessage(token, "uploadOffers"));
-        return new OfferCSVUploadResponse(IWSErrors.ILLEGAL_ACTION, "Method is not accessible via WebServices.");
+        return bean.uploadOffers(token, request);
     }
 
     /**
@@ -213,7 +213,7 @@ public class ExchangeWS implements Exchange {
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final OfferCSVDownloadRequest request) {
         log.info(requestLogger.prepareLogMessage(token, "downloadOffers"));
-        return new OfferCSVDownloadResponse(IWSErrors.ILLEGAL_ACTION, "Method is not accessible via WebServices.");
+        return bean.downloadOffers(token, request);
     }
 
     /**
@@ -225,7 +225,7 @@ public class ExchangeWS implements Exchange {
     public FetchGroupsForSharingResponse fetchGroupsForSharing(
             @WebParam(name = "token") final AuthenticationToken token) {
         log.info(requestLogger.prepareLogMessage(token, "fetchGroupsForSharing"));
-        return new FetchGroupsForSharingResponse(IWSErrors.ILLEGAL_ACTION, "Method is not accessible via WebServices.");
+        return bean.fetchGroupsForSharing(token);
     }
 
     /**
@@ -238,7 +238,7 @@ public class ExchangeWS implements Exchange {
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final ProcessPublishingGroupRequest request) {
         log.info(requestLogger.prepareLogMessage(token, "processPublishingGroup"));
-        return new FallibleResponse(IWSErrors.ILLEGAL_ACTION, "Method is not accessible via WebServices.");
+        return bean.processPublishingGroup(token, request);
     }
 
     /**
@@ -251,7 +251,7 @@ public class ExchangeWS implements Exchange {
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final FetchPublishGroupsRequest request) {
         log.info(requestLogger.prepareLogMessage(token, "fetchPublishingGroups"));
-        return new FetchPublishingGroupResponse(IWSErrors.ILLEGAL_ACTION, "Method is not accessible via WebServices.");
+        return bean.fetchPublishingGroups(token, request);
     }
 
     /**
@@ -264,7 +264,7 @@ public class ExchangeWS implements Exchange {
     public FallibleResponse deletePublishingGroup(
             @WebParam(name = "token") final AuthenticationToken token, final DeletePublishingGroupRequest request) {
         log.info(requestLogger.prepareLogMessage(token, "deletePublishingGroup"));
-        return new FallibleResponse(IWSErrors.ILLEGAL_ACTION, "Method is not accessible via WebServices.");
+        return bean.deletePublishingGroup(token, request);
     }
 
     /**
@@ -277,21 +277,21 @@ public class ExchangeWS implements Exchange {
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final PublishOfferRequest request) {
         log.info(requestLogger.prepareLogMessage(token, "processPublishOffer"));
-        return new PublishOfferResponse(IWSErrors.ILLEGAL_ACTION, "Method is not accessible via WebServices.");
+        return bean.processPublishOffer(token, request);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    // TODO For now this method is excluded, due to the enummap used. It must be verified what is a better option.
+    // TODO Fix problems with WS Fetching of Published Groups
     @WebMethod(exclude = true)
     @WebResult(name = "response")
     public FetchPublishedGroupsResponse fetchPublishedGroups(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final FetchPublishedGroupsRequest request) {
         log.info(requestLogger.prepareLogMessage(token, "fetchPublishedGroups"));
-        return new FetchPublishedGroupsResponse(IWSErrors.ILLEGAL_ACTION, "Method is not accessible via WebServices.");
+        return bean.fetchPublishedGroups(token, request);
     }
 
     /**
@@ -304,7 +304,7 @@ public class ExchangeWS implements Exchange {
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final HideForeignOffersRequest request) {
         log.info(requestLogger.prepareLogMessage(token, "processHideForeignOffers"));
-        return new FallibleResponse(IWSErrors.ILLEGAL_ACTION, "Method is not accessible via WebServices.");
+        return bean.processHideForeignOffers(token, request);
     }
 
     /**
@@ -317,6 +317,6 @@ public class ExchangeWS implements Exchange {
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final RejectOfferRequest request) {
         log.info(requestLogger.prepareLogMessage(token, "rejectOffer"));
-        return new FallibleResponse(IWSErrors.ILLEGAL_ACTION, "Method is not accessible via WebServices.");
+        return bean.rejectOffer(token, request);
     }
 }

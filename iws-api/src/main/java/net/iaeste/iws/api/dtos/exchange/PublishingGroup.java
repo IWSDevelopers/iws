@@ -18,6 +18,10 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.util.AbstractVerification;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +39,8 @@ import java.util.Map;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "PublishingGroup", propOrder = { "publishingGroupId", "name", "groups" })
 public final class PublishingGroup extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
@@ -45,15 +51,18 @@ public final class PublishingGroup extends AbstractVerification {
     /**
      * The Id of the Publishing Group. If null, then a new will be created.
      */
+    @XmlElement(required = true, nillable = true)
     private String publishingGroupId = null;
 
     /**
      * The name of the Publishing Group, the name must be non-null and unique
      * for the Committee, and will not be shared or shown to other Committees.
      */
+    @XmlElement(required = true, nillable = false)
     private String name = null;
 
     /** The List of Committees, to make up this Publishing Group. */
+    @XmlElement(required = true, nillable = false)
     private List<Group> groups = null;
 
     // =========================================================================

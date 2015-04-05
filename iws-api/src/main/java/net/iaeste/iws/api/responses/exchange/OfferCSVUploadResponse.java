@@ -18,7 +18,10 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.responses.FallibleResponse;
 
-import java.util.HashMap;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 import java.util.Map;
 
 /**
@@ -26,6 +29,8 @@ import java.util.Map;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.1
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "OfferCSVUploadResponse", propOrder = { "processingResult", "errors" })
 public class OfferCSVUploadResponse extends FallibleResponse {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
@@ -35,6 +40,7 @@ public class OfferCSVUploadResponse extends FallibleResponse {
      * Each CSV record to be updated will have a tri-state. Either it was added,
      * updated or there were processing errors.
      */
+    @XmlType(name = "ProcessingResult")
     public enum ProcessingResult { Added, Updated, Error }
 
     /**
@@ -42,14 +48,16 @@ public class OfferCSVUploadResponse extends FallibleResponse {
      * processed. The map contain the Offer Reference Number as key, and the
      * result of the processing as the value.
      */
-    private HashMap<String, ProcessingResult> processingResult;
+    @XmlElement(required = true, nillable = true)
+    private Map<String, ProcessingResult> processingResult;
 
     /**
      * Map with the error information related to the processing. The map contain
      * the Offer Reference Number as key, and the validation result as the
      * value.
      */
-    private HashMap<String, Map<String, String>> errors;
+    @XmlElement(required = true, nillable = true)
+    private Map<String, Map<String, String>> errors;
 
     // =========================================================================
     // Object Constructors
@@ -77,7 +85,7 @@ public class OfferCSVUploadResponse extends FallibleResponse {
     // Standard Setters & Getters
     // =========================================================================
 
-    public void setProcessingResult(final HashMap<String, ProcessingResult> processingResult) {
+    public void setProcessingResult(final Map<String, ProcessingResult> processingResult) {
         this.processingResult = processingResult;
     }
 
@@ -85,11 +93,11 @@ public class OfferCSVUploadResponse extends FallibleResponse {
         return processingResult;
     }
 
-    public void setErrors(final HashMap<String, Map<String, String>> errors) {
+    public void setErrors(final Map<String, Map<String, String>> errors) {
         this.errors = errors;
     }
 
-    public HashMap<String, Map<String, String>> getErrors() {
+    public Map<String, Map<String, String>> getErrors() {
         return errors;
     }
 

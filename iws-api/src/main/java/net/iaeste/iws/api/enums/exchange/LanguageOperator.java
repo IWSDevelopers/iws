@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.api.enums.exchange;
 
+import javax.xml.bind.annotation.XmlType;
+
 /**
  * Possible choices for selecting if something is required or optional
  *
@@ -21,6 +23,7 @@ package net.iaeste.iws.api.enums.exchange;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
+@XmlType(name = "LanguageOperator")
 public enum LanguageOperator {
 
     A("And"),

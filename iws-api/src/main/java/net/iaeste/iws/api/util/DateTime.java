@@ -16,6 +16,8 @@ package net.iaeste.iws.api.util;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 import java.io.Serializable;
@@ -38,6 +40,7 @@ import java.util.Date;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "DateTime")
 public class DateTime implements Serializable, Comparable<DateTime> {
 

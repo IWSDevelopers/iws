@@ -19,6 +19,10 @@ import net.iaeste.iws.api.enums.FetchType;
 import net.iaeste.iws.api.enums.SortingField;
 import net.iaeste.iws.api.util.AbstractPaginatable;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,13 +31,15 @@ import java.util.Map;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "FetchOffersRequest", propOrder = { "fetchType", "exchangeYear" })
 public final class FetchOffersRequest extends AbstractPaginatable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    private FetchType fetchType;
-    private Integer exchangeYear;
+    @XmlElement(required = true, nillable = false) private FetchType fetchType;
+    @XmlElement(required = true, nillable = false) private Integer exchangeYear;
 
     // =========================================================================
     // Object Constructors

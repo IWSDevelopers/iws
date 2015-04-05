@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.api.enums.exchange;
 
+import javax.xml.bind.annotation.XmlType;
+
 /**
  * PaymentFrequency Object for the Exchange Module.
  *
@@ -21,6 +23,7 @@ package net.iaeste.iws.api.enums.exchange;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
+@XmlType(name = "PaymentFrequency")
 public enum PaymentFrequency {
 
     /**

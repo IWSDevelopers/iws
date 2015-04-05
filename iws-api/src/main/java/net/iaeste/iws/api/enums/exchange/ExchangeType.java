@@ -14,11 +14,14 @@
  */
 package net.iaeste.iws.api.enums.exchange;
 
+import javax.xml.bind.annotation.XmlType;
+
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   ISW 1.1
+ * @since   IWS 1.1
  */
+@XmlType(name = "ExchangeType")
 public enum ExchangeType {
 
     IW("IntraWeb"),

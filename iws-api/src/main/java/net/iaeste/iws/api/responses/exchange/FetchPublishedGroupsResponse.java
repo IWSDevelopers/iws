@@ -19,8 +19,13 @@ import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.responses.FallibleResponse;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Response Object for returning sharing info for specified list of offers.
@@ -31,12 +36,15 @@ import java.util.List;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "FetchPublishedGroupsResponse", propOrder = { "offersGroups" })
 public final class FetchPublishedGroupsResponse extends FallibleResponse {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    private HashMap<String, List<Group>> offersGroups = null;
+    @XmlElement(required = true, nillable = true)
+    private Map<String, List<Group>> offersGroups = null;
 
     // =========================================================================
     // Object Constructors
@@ -72,11 +80,11 @@ public final class FetchPublishedGroupsResponse extends FallibleResponse {
     // Standard Setters & Getters
     // =========================================================================
 
-    public void setOffersGroups(final HashMap<String, List<Group>> offersGroups) {
+    public void setOffersGroups(final Map<String, List<Group>> offersGroups) {
         this.offersGroups = offersGroups;
     }
 
-    public HashMap<String, List<Group>> getOffersGroups() {
+    public Map<String, List<Group>> getOffersGroups() {
         return offersGroups;
     }
 

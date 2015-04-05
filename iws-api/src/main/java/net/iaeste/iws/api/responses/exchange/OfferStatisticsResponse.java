@@ -19,18 +19,25 @@ import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.dtos.exchange.OfferStatistics;
 import net.iaeste.iws.api.responses.FallibleResponse;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
+
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "OfferStatisticsResponse", propOrder = { "dommesticStatistics", "foreignStatistics" })
 public final class OfferStatisticsResponse extends FallibleResponse {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    private OfferStatistics dommesticStatistics = null;
-    private OfferStatistics foreignStatistics = null;
+    @XmlElement(required = true, nillable = true) private OfferStatistics dommesticStatistics = null;
+    @XmlElement(required = true, nillable = true) private OfferStatistics foreignStatistics = null;
 
     // =========================================================================
     // Object Constructors

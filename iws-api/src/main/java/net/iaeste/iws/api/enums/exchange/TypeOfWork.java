@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.api.enums.exchange;
 
+import javax.xml.bind.annotation.XmlType;
+
 /**
  * All types of work that can be selected in the system
  *
@@ -21,6 +23,7 @@ package net.iaeste.iws.api.enums.exchange;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
+@XmlType(name = "TypeOfWork")
 public enum TypeOfWork {
 
     R("Research and Development"),

@@ -14,11 +14,14 @@
  */
 package net.iaeste.iws.api.enums.exchange;
 
+import javax.xml.bind.annotation.XmlType;
+
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
+@XmlType(name = "EmployerFetchType")
 public enum EmployerFetchType {
 
     ALL,

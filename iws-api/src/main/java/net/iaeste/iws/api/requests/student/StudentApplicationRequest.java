@@ -36,7 +36,7 @@ import java.util.Map;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = { "applicationId", "status", "rejectByEmployerReason", "rejectDescription", "rejectInternalComment" })
+@XmlType(name = "StudentApplicationRequest", propOrder = { "applicationId", "status", "rejectByEmployerReason", "rejectDescription", "rejectInternalComment" })
 public final class StudentApplicationRequest extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */

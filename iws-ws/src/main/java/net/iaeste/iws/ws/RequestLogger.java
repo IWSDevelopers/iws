@@ -16,9 +16,7 @@ package net.iaeste.iws.ws;
 
 import net.iaeste.iws.api.util.LogUtil;
 import net.iaeste.iws.api.util.Traceable;
-import net.iaeste.iws.ejb.cdi.IWSBean;
 
-import javax.annotation.Resource;
 import javax.servlet.ServletRequest;
 import javax.xml.ws.WebServiceContext;
 import javax.xml.ws.handler.MessageContext;
@@ -28,18 +26,20 @@ import javax.xml.ws.handler.MessageContext;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.1
  */
-@IWSBean
-public class RequestLogger {
+public final class RequestLogger {
 
-    @Resource
-    private WebServiceContext context = null;
+    private final WebServiceContext context;
+
+    public RequestLogger(final WebServiceContext context) {
+        this.context = context;
+    }
 
     public String prepareLogMessage(final Traceable trace, final String method) {
         return LogUtil.formatLogMessage(trace, "Incoming WebService Request for '" + method + "' from '" + readClientIp() + '\'');
     }
 
     public String prepareLogMessage(final String method) {
-        return LogUtil.formatLogMessage(null, "Incoming WebService Request for '" + method + "' from " + readClientIp() + '\'');
+        return LogUtil.formatLogMessage(null, "Incoming WebService Request for '" + method + "' from '" + readClientIp() + '\'');
     }
 
     // =========================================================================

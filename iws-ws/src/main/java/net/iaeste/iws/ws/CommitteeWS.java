@@ -31,12 +31,15 @@ import net.iaeste.iws.ejb.cdi.IWSBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
+import javax.xml.ws.WebServiceContext;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -50,15 +53,29 @@ public class CommitteeWS implements Committees {
     private static final Logger log = LoggerFactory.getLogger(CommitteeWS.class);
 
     /**
-     * Request Logger instance, helps generate the Log message we're using.
-     */
-    @Inject @IWSBean private RequestLogger requestLogger;
-
-    /**
      * Injection of the IWS Committees Bean Instance, which embeds the
      * Transactional logic and itself invokes the actual Implemenation.
      */
     @Inject @IWSBean private Committees bean = null;
+
+    /**
+     * The WebService Context is only available for Classes, which is annotated
+     * with @WebService. So, we need it injected and then in the PostConstruct
+     * method, we can create a new RequestLogger instance with it.
+     */
+    @Resource
+    private WebServiceContext context = null;
+
+    private RequestLogger requestLogger = null;
+
+    /**
+     * Post Construct method, to initialize our Request Logger instance.
+     */
+    @PostConstruct
+    @WebMethod(exclude = true)
+    public void postConstruct() {
+        requestLogger = new RequestLogger(context);
+    }
 
     /**
      * Setter for the JNDI injected Bean context. This allows us to also
@@ -68,7 +85,7 @@ public class CommitteeWS implements Committees {
      */
     @WebMethod(exclude = true)
     public void setCommitteeBean(final CommitteeBean bean) {
-        this.requestLogger = new RequestLogger();
+        this.requestLogger = new RequestLogger(null);
         this.bean = bean;
     }
 

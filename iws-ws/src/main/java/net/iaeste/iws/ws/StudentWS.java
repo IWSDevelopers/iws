@@ -32,12 +32,15 @@ import net.iaeste.iws.ejb.cdi.IWSBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
+import javax.xml.ws.WebServiceContext;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -51,15 +54,29 @@ public class StudentWS implements Students {
     private static final Logger log = LoggerFactory.getLogger(StudentWS.class);
 
     /**
-     * Request Logger instance, helps generate the Log message we're using.
-     */
-    @Inject @IWSBean private RequestLogger requestLogger;
-
-    /**
      * Injection of the IWS Students Bean Instance, which embeds the
      * Transactional logic and itself invokes the actual Implemenation.
      */
     @Inject @IWSBean private Students bean = null;
+
+    /**
+     * The WebService Context is only available for Classes, which is annotated
+     * with @WebService. So, we need it injected and then in the PostConstruct
+     * method, we can create a new RequestLogger instance with it.
+     */
+    @Resource
+    private WebServiceContext context = null;
+
+    private RequestLogger requestLogger = null;
+
+    /**
+     * Post Construct method, to initialize our Request Logger instance.
+     */
+    @PostConstruct
+    @WebMethod(exclude = true)
+    public void postConstruct() {
+        requestLogger = new RequestLogger(context);
+    }
 
     /**
      * Setter for the JNDI injected Bean context. This allows us to also
@@ -69,7 +86,7 @@ public class StudentWS implements Students {
      */
     @WebMethod(exclude = true)
     public void setStudentBean(final StudentBean bean) {
-        this.requestLogger = new RequestLogger();
+        this.requestLogger = new RequestLogger(null);
         this.bean = bean;
     }
 

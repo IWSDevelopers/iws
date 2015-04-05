@@ -46,6 +46,8 @@ import net.iaeste.iws.api.responses.exchange.OfferStatisticsResponse;
 import net.iaeste.iws.api.responses.exchange.PublishOfferResponse;
 import net.iaeste.iws.ejb.ExchangeBean;
 import net.iaeste.iws.ejb.cdi.IWSBean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.jws.WebMethod;
@@ -63,6 +65,13 @@ import javax.jws.soap.SOAPBinding;
 @SOAPBinding(style = SOAPBinding.Style.RPC)
 public class ExchangeWS implements Exchange {
 
+    private static final Logger log = LoggerFactory.getLogger(ExchangeWS.class);
+
+    /**
+     * Request Logger instance, helps generate the Log message we're using.
+     */
+    @Inject @IWSBean private RequestLogger requestLogger;
+
     /**
      * Injection of the IWS Exchange Bean Instance, which embeds the
      * Transactional logic and itself invokes the actual Implemenation.
@@ -77,6 +86,7 @@ public class ExchangeWS implements Exchange {
      */
     @WebMethod(exclude = true)
     public void setExchangeBean(final ExchangeBean bean) {
+        this.requestLogger = new RequestLogger();
         this.bean = bean;
     }
 
@@ -93,7 +103,8 @@ public class ExchangeWS implements Exchange {
     public OfferStatisticsResponse fetchOfferStatistics(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final OfferStatisticsRequest request) {
-        return new OfferStatisticsResponse(IWSErrors.ILLEGAL_ACTION, "Method is not accessible via WebServices.");
+        log.info(requestLogger.prepareLogMessage(token, "fetchOfferStatistics"));
+        return bean.fetchOfferStatistics(token, request);
     }
 
     /**
@@ -105,6 +116,7 @@ public class ExchangeWS implements Exchange {
     public EmployerResponse processEmployer(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final ProcessEmployerRequest request) {
+        log.info(requestLogger.prepareLogMessage(token, "processEmployer"));
         return bean.processEmployer(token, request);
     }
 
@@ -117,6 +129,7 @@ public class ExchangeWS implements Exchange {
     public FetchEmployerResponse fetchEmployers(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final FetchEmployerRequest request) {
+        log.info(requestLogger.prepareLogMessage(token, "fetchEmployers"));
         return bean.fetchEmployers(token, request);
     }
 
@@ -129,6 +142,7 @@ public class ExchangeWS implements Exchange {
     public OfferResponse processOffer(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final ProcessOfferRequest request) {
+        log.info(requestLogger.prepareLogMessage(token, "processOffer"));
         return bean.processOffer(token, request);
     }
 
@@ -141,6 +155,7 @@ public class ExchangeWS implements Exchange {
     public OfferResponse deleteOffer(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final DeleteOfferRequest request) {
+        log.info(requestLogger.prepareLogMessage(token, "deleteOffer"));
         return new OfferResponse(IWSErrors.ILLEGAL_ACTION, "Method is not accessible via WebServices.");
     }
 
@@ -154,6 +169,7 @@ public class ExchangeWS implements Exchange {
     public OfferCSVUploadResponse uploadOffers(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final OfferCSVUploadRequest request) {
+        log.info(requestLogger.prepareLogMessage(token, "uploadOffers"));
         return new OfferCSVUploadResponse(IWSErrors.ILLEGAL_ACTION, "Method is not accessible via WebServices.");
     }
 
@@ -166,6 +182,7 @@ public class ExchangeWS implements Exchange {
     public FetchOffersResponse fetchOffers(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final FetchOffersRequest request) {
+        log.info(requestLogger.prepareLogMessage(token, "fetchOffers"));
         return bean.fetchOffers(token, request);
     }
 
@@ -178,6 +195,7 @@ public class ExchangeWS implements Exchange {
     public OfferCSVDownloadResponse downloadOffers(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final OfferCSVDownloadRequest request) {
+        log.info(requestLogger.prepareLogMessage(token, "downloadOffers"));
         return new OfferCSVDownloadResponse(IWSErrors.ILLEGAL_ACTION, "Method is not accessible via WebServices.");
     }
 
@@ -189,6 +207,7 @@ public class ExchangeWS implements Exchange {
     @WebResult(name = "response")
     public FetchGroupsForSharingResponse fetchGroupsForSharing(
             @WebParam(name = "token") final AuthenticationToken token) {
+        log.info(requestLogger.prepareLogMessage(token, "fetchGroupsForSharing"));
         return new FetchGroupsForSharingResponse(IWSErrors.ILLEGAL_ACTION, "Method is not accessible via WebServices.");
     }
 
@@ -201,6 +220,7 @@ public class ExchangeWS implements Exchange {
     public FallibleResponse processPublishingGroup(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final ProcessPublishingGroupRequest request) {
+        log.info(requestLogger.prepareLogMessage(token, "processPublishingGroup"));
         return new FallibleResponse(IWSErrors.ILLEGAL_ACTION, "Method is not accessible via WebServices.");
     }
 
@@ -213,6 +233,7 @@ public class ExchangeWS implements Exchange {
     public FetchPublishingGroupResponse fetchPublishingGroups(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final FetchPublishGroupsRequest request) {
+        log.info(requestLogger.prepareLogMessage(token, "fetchPublishingGroups"));
         return new FetchPublishingGroupResponse(IWSErrors.ILLEGAL_ACTION, "Method is not accessible via WebServices.");
     }
 
@@ -225,6 +246,7 @@ public class ExchangeWS implements Exchange {
     @WebResult(name = "response")
     public FallibleResponse deletePublishingGroup(
             @WebParam(name = "token") final AuthenticationToken token, final DeletePublishingGroupRequest request) {
+        log.info(requestLogger.prepareLogMessage(token, "deletePublishingGroup"));
         return new FallibleResponse(IWSErrors.ILLEGAL_ACTION, "Method is not accessible via WebServices.");
     }
 
@@ -237,6 +259,7 @@ public class ExchangeWS implements Exchange {
     public PublishOfferResponse processPublishOffer(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final PublishOfferRequest request) {
+        log.info(requestLogger.prepareLogMessage(token, "processPublishOffer"));
         return new PublishOfferResponse(IWSErrors.ILLEGAL_ACTION, "Method is not accessible via WebServices.");
     }
 
@@ -250,6 +273,7 @@ public class ExchangeWS implements Exchange {
     public FetchPublishedGroupsResponse fetchPublishedGroups(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final FetchPublishedGroupsRequest request) {
+        log.info(requestLogger.prepareLogMessage(token, "fetchPublishedGroups"));
         return new FetchPublishedGroupsResponse(IWSErrors.ILLEGAL_ACTION, "Method is not accessible via WebServices.");
     }
 
@@ -262,6 +286,7 @@ public class ExchangeWS implements Exchange {
     public FallibleResponse processHideForeignOffers(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final HideForeignOffersRequest request) {
+        log.info(requestLogger.prepareLogMessage(token, "processHideForeignOffers"));
         return new FallibleResponse(IWSErrors.ILLEGAL_ACTION, "Method is not accessible via WebServices.");
     }
 
@@ -274,6 +299,7 @@ public class ExchangeWS implements Exchange {
     public FallibleResponse rejectOffer(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final RejectOfferRequest request) {
+        log.info(requestLogger.prepareLogMessage(token, "rejectOffer"));
         return new FallibleResponse(IWSErrors.ILLEGAL_ACTION, "Method is not accessible via WebServices.");
     }
 }

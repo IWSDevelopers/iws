@@ -28,6 +28,8 @@ import net.iaeste.iws.api.responses.FetchInternationalGroupResponse;
 import net.iaeste.iws.api.responses.FetchSurveyOfCountryRespose;
 import net.iaeste.iws.ejb.CommitteeBean;
 import net.iaeste.iws.ejb.cdi.IWSBean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.jws.WebMethod;
@@ -45,6 +47,13 @@ import javax.jws.soap.SOAPBinding;
 @SOAPBinding(style = SOAPBinding.Style.RPC)
 public class CommitteeWS implements Committees {
 
+    private static final Logger log = LoggerFactory.getLogger(CommitteeWS.class);
+
+    /**
+     * Request Logger instance, helps generate the Log message we're using.
+     */
+    @Inject @IWSBean private RequestLogger requestLogger;
+
     /**
      * Injection of the IWS Committees Bean Instance, which embeds the
      * Transactional logic and itself invokes the actual Implemenation.
@@ -59,6 +68,7 @@ public class CommitteeWS implements Committees {
      */
     @WebMethod(exclude = true)
     public void setCommitteeBean(final CommitteeBean bean) {
+        this.requestLogger = new RequestLogger();
         this.bean = bean;
     }
 
@@ -75,6 +85,7 @@ public class CommitteeWS implements Committees {
     public FetchCommitteeResponse fetchCommittees(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final FetchCommitteeRequest request) {
+        log.info(requestLogger.prepareLogMessage(token, "fetchCommittees"));
         return bean.fetchCommittees(token, request);
     }
 
@@ -87,6 +98,7 @@ public class CommitteeWS implements Committees {
     public FallibleResponse processCommittee(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final CommitteeRequest request) {
+        log.info(requestLogger.prepareLogMessage(token, "processCommittee"));
         return bean.processCommittee(token, request);
     }
 
@@ -99,6 +111,7 @@ public class CommitteeWS implements Committees {
     public FetchInternationalGroupResponse fetchInternationalGroups(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final FetchInternationalGroupRequest request) {
+        log.info(requestLogger.prepareLogMessage(token, "fetchInternationalGroups"));
         return bean.fetchInternationalGroups(token, request);
     }
 
@@ -111,6 +124,7 @@ public class CommitteeWS implements Committees {
     public FallibleResponse processInternationalGroup(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final InternationalGroupRequest request) {
+        log.info(requestLogger.prepareLogMessage(token, "processInternationalGroup"));
         return bean.processInternationalGroup(token, request);
     }
 
@@ -123,6 +137,7 @@ public class CommitteeWS implements Committees {
     public FetchSurveyOfCountryRespose fetchSurveyOfCountry(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final FetchSurveyOfCountryRequest request) {
+        log.info(requestLogger.prepareLogMessage(token, "fetchSurveyOfCountry"));
         return bean.fetchSurveyOfCountry(token, request);
     }
 
@@ -135,6 +150,7 @@ public class CommitteeWS implements Committees {
     public FallibleResponse processSurveyOfCountry(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final SurveyOfCountryRequest request) {
+        log.info(requestLogger.prepareLogMessage(token, "processSurveyOfCountry"));
         return bean.processSurveyOfCountry(token, request);
     }
 }

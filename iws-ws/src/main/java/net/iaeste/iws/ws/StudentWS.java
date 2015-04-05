@@ -29,6 +29,8 @@ import net.iaeste.iws.api.responses.student.StudentApplicationResponse;
 import net.iaeste.iws.api.responses.student.StudentResponse;
 import net.iaeste.iws.ejb.StudentBean;
 import net.iaeste.iws.ejb.cdi.IWSBean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.jws.WebMethod;
@@ -46,6 +48,13 @@ import javax.jws.soap.SOAPBinding;
 @SOAPBinding(style = SOAPBinding.Style.RPC)
 public class StudentWS implements Students {
 
+    private static final Logger log = LoggerFactory.getLogger(StudentWS.class);
+
+    /**
+     * Request Logger instance, helps generate the Log message we're using.
+     */
+    @Inject @IWSBean private RequestLogger requestLogger;
+
     /**
      * Injection of the IWS Students Bean Instance, which embeds the
      * Transactional logic and itself invokes the actual Implemenation.
@@ -60,6 +69,7 @@ public class StudentWS implements Students {
      */
     @WebMethod(exclude = true)
     public void setStudentBean(final StudentBean bean) {
+        this.requestLogger = new RequestLogger();
         this.bean = bean;
     }
 
@@ -76,6 +86,7 @@ public class StudentWS implements Students {
     public CreateUserResponse createStudent(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final CreateUserRequest request) {
+        log.info(requestLogger.prepareLogMessage(token, "createStudent"));
         return bean.createStudent(token, request);
     }
 
@@ -88,6 +99,7 @@ public class StudentWS implements Students {
     public StudentResponse processStudent(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final StudentRequest request) {
+        log.info(requestLogger.prepareLogMessage(token, "processStudent"));
         return bean.processStudent(token, request);
     }
 
@@ -100,6 +112,7 @@ public class StudentWS implements Students {
     public FetchStudentsResponse fetchStudents(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final FetchStudentsRequest request) {
+        log.info(requestLogger.prepareLogMessage(token, "fetchStudents"));
         return bean.fetchStudents(token, request);
     }
 
@@ -112,6 +125,7 @@ public class StudentWS implements Students {
     public StudentApplicationResponse processStudentApplication(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final ProcessStudentApplicationsRequest request) {
+        log.info(requestLogger.prepareLogMessage(token, "processStudentApplication"));
         return bean.processStudentApplication(token, request);
     }
 
@@ -124,6 +138,7 @@ public class StudentWS implements Students {
     public FetchStudentApplicationsResponse fetchStudentApplications(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final FetchStudentApplicationsRequest request) {
+        log.info(requestLogger.prepareLogMessage(token, "fetchStudentApplications"));
         return bean.fetchStudentApplications(token, request);
     }
 
@@ -136,6 +151,7 @@ public class StudentWS implements Students {
     public StudentApplicationResponse processApplicationStatus(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final StudentApplicationRequest request) {
+        log.info(requestLogger.prepareLogMessage(token, "processApplicationStatus"));
         return bean.processApplicationStatus(token, request);
     }
 }

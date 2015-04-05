@@ -26,6 +26,8 @@ import net.iaeste.iws.api.responses.FileResponse;
 import net.iaeste.iws.api.responses.FolderResponse;
 import net.iaeste.iws.ejb.StorageBean;
 import net.iaeste.iws.ejb.cdi.IWSBean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.jws.WebMethod;
@@ -43,6 +45,13 @@ import javax.jws.soap.SOAPBinding;
 @SOAPBinding(style = SOAPBinding.Style.RPC)
 public class StorageWS implements Storage {
 
+    private static final Logger log = LoggerFactory.getLogger(StorageWS.class);
+
+    /**
+     * Request Logger instance, helps generate the Log message we're using.
+     */
+    @Inject @IWSBean private RequestLogger requestLogger;
+
     /**
      * Injection of the IWS Storage Bean Instance, which embeds the
      * Transactional logic and itself invokes the actual Implemenation.
@@ -57,6 +66,7 @@ public class StorageWS implements Storage {
      */
     @WebMethod(exclude = true)
     public void setStorageBean(final StorageBean bean) {
+        this.requestLogger = new RequestLogger();
         this.bean = bean;
     }
 
@@ -73,6 +83,7 @@ public class StorageWS implements Storage {
     public FolderResponse processFolder(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final FolderRequest request) {
+        log.info(requestLogger.prepareLogMessage(token, "processFolder"));
         return bean.processFolder(token, request);
     }
 
@@ -85,6 +96,7 @@ public class StorageWS implements Storage {
     public FetchFolderResponse fetchFolder(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final FetchFolderRequest request) {
+        log.info(requestLogger.prepareLogMessage(token, "fetchFolder"));
         return bean.fetchFolder(token, request);
     }
 
@@ -97,6 +109,7 @@ public class StorageWS implements Storage {
     public FileResponse processFile(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final FileRequest request) {
+        log.info(requestLogger.prepareLogMessage(token, "processFile"));
         return bean.processFile(token, request);
     }
 
@@ -109,6 +122,7 @@ public class StorageWS implements Storage {
     public FetchFileResponse fetchFile(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final FetchFileRequest request) {
+        log.info(requestLogger.prepareLogMessage(token, "fetchFile"));
         return bean.fetchFile(token, request);
     }
 }

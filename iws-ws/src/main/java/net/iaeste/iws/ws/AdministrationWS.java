@@ -40,9 +40,10 @@ import net.iaeste.iws.api.responses.FetchUserResponse;
 import net.iaeste.iws.api.responses.ProcessGroupResponse;
 import net.iaeste.iws.api.responses.ProcessUserGroupResponse;
 import net.iaeste.iws.api.responses.SearchUserResponse;
-import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.ejb.AdministrationBean;
 import net.iaeste.iws.ejb.cdi.IWSBean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.jws.WebMethod;
@@ -60,11 +61,18 @@ import javax.jws.soap.SOAPBinding;
 @SOAPBinding(style = SOAPBinding.Style.RPC)
 public class AdministrationWS implements Administration {
 
+    private static final Logger log = LoggerFactory.getLogger(AdministrationWS.class);
+
+    /**
+     * Request Logger instance, helps generate the Log message we're using.
+     */
+    @Inject @IWSBean private RequestLogger requestLogger;
+
     /**
      * Injection of the IWS Administration Bean Instance, which embeds the
      * Transactional logic and itself invokes the actual Implemenation.
      */
-    @Inject @IWSBean private Administration bean = null;
+    @Inject @IWSBean private Administration bean;
 
     /**
      * Setter for the JNDI injected Bean context. This allows us to also
@@ -74,6 +82,7 @@ public class AdministrationWS implements Administration {
      */
     @WebMethod(exclude = true)
     public void setAdministrationBean(final AdministrationBean bean) {
+        this.requestLogger = new RequestLogger();
         this.bean = bean;
     }
 
@@ -90,6 +99,7 @@ public class AdministrationWS implements Administration {
     public FallibleResponse processCountry(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final CountryRequest request) {
+        log.info(requestLogger.prepareLogMessage(token, "processCountry"));
         return bean.processCountry(token, request);
     }
 
@@ -102,6 +112,7 @@ public class AdministrationWS implements Administration {
     public FetchCountryResponse fetchCountries(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final FetchCountryRequest request) {
+        log.info(requestLogger.prepareLogMessage(token, "fetchCountries"));
         return bean.fetchCountries(token, request);
     }
 
@@ -114,6 +125,7 @@ public class AdministrationWS implements Administration {
     public CreateUserResponse createUser(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final CreateUserRequest request) {
+        log.info(requestLogger.prepareLogMessage(token, "createUser"));
         return bean.createUser(token, request);
     }
 
@@ -126,6 +138,7 @@ public class AdministrationWS implements Administration {
     public FallibleResponse controlUserAccount(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final UserRequest request) {
+        log.info(requestLogger.prepareLogMessage(token, "controlUserAccount"));
         return bean.controlUserAccount(token, request);
     }
 
@@ -137,6 +150,7 @@ public class AdministrationWS implements Administration {
     @WebResult(name = "response")
     public FallibleResponse activateUser(
             @WebParam(name = "activationString") final String activationString) {
+        log.info(requestLogger.prepareLogMessage("activateUser"));
         return bean.activateUser(activationString);
     }
 
@@ -148,6 +162,7 @@ public class AdministrationWS implements Administration {
     @WebResult(name = "response")
     public FallibleResponse updateUsername(
             @WebParam(name = "updateCode") final String updateCode) {
+        log.info(requestLogger.prepareLogMessage("updateUsername"));
         return bean.updateUsername(updateCode);
     }
 
@@ -160,6 +175,7 @@ public class AdministrationWS implements Administration {
     public FallibleResponse changeAccountName(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final AccountNameRequest request) {
+        log.info(requestLogger.prepareLogMessage(token, "changeAccountName"));
         return bean.changeAccountName(token, request);
     }
 
@@ -172,6 +188,7 @@ public class AdministrationWS implements Administration {
     public FetchUserResponse fetchUser(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final FetchUserRequest request) {
+        log.info(requestLogger.prepareLogMessage(token, "fetchUser"));
         return bean.fetchUser(token, request);
     }
 
@@ -184,6 +201,7 @@ public class AdministrationWS implements Administration {
     public FetchRoleResponse fetchRoles(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final FetchRoleRequest request) {
+        log.info(requestLogger.prepareLogMessage(token, "fetchRoles"));
         return bean.fetchRoles(token, request);
     }
 
@@ -196,6 +214,7 @@ public class AdministrationWS implements Administration {
     public ProcessGroupResponse processGroup(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final GroupRequest request) {
+        log.info(requestLogger.prepareLogMessage(token, "processGroup"));
         return bean.processGroup(token, request);
     }
 
@@ -208,6 +227,7 @@ public class AdministrationWS implements Administration {
     public FallibleResponse deleteSubGroup(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final GroupRequest request) {
+        log.info(requestLogger.prepareLogMessage(token, "deleteSubGroup"));
         return bean.deleteSubGroup(token, request);
     }
 
@@ -220,6 +240,7 @@ public class AdministrationWS implements Administration {
     public FetchGroupResponse fetchGroup(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final FetchGroupRequest request) {
+        log.info(requestLogger.prepareLogMessage(token, "fetchGroup"));
         return bean.fetchGroup(token, request);
     }
 
@@ -232,6 +253,7 @@ public class AdministrationWS implements Administration {
     public FallibleResponse changeGroupOwner(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final OwnerRequest request) {
+        log.info(requestLogger.prepareLogMessage(token, "changeGroupOwner"));
         return bean.changeGroupOwner(token, request);
     }
 
@@ -244,6 +266,7 @@ public class AdministrationWS implements Administration {
     public ProcessUserGroupResponse processUserGroupAssignment(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final UserGroupAssignmentRequest request) {
+        log.info(requestLogger.prepareLogMessage(token, "processUserGroupAssignment"));
         return bean.processUserGroupAssignment(token, request);
     }
 
@@ -256,6 +279,7 @@ public class AdministrationWS implements Administration {
     public SearchUserResponse searchUsers(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final SearchUserRequest request) {
+        log.info(requestLogger.prepareLogMessage(token, "searchUsers"));
         return bean.searchUsers(token, request);
     }
 
@@ -267,6 +291,7 @@ public class AdministrationWS implements Administration {
     @WebResult(name = "response")
     public EmergencyListResponse fetchEmergencyList(
             @WebParam(name = "token") final AuthenticationToken token) {
+        log.info(requestLogger.prepareLogMessage(token, "fetchEmergencyList"));
         return bean.fetchEmergencyList(token);
     }
 
@@ -279,6 +304,7 @@ public class AdministrationWS implements Administration {
     public ContactsResponse fetchContacts(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final ContactsRequest request) {
+        log.info(requestLogger.prepareLogMessage(token, "fetchContacts"));
         return bean.fetchContacts(token, request);
     }
 }

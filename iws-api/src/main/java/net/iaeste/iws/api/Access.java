@@ -52,7 +52,7 @@ import java.io.Serializable;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
-public interface Access {
+public interface Access extends Serializable {
 
     /**
      * Based on the given user credentials in the {@code AuthenticationRequest}

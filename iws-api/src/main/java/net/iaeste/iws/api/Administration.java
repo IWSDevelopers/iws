@@ -40,6 +40,8 @@ import net.iaeste.iws.api.responses.ProcessGroupResponse;
 import net.iaeste.iws.api.responses.ProcessUserGroupResponse;
 import net.iaeste.iws.api.responses.SearchUserResponse;
 
+import java.io.Serializable;
+
 /**
  * Handles Administration of User Accounts, Groups, Roles and Countries.
  *
@@ -47,7 +49,7 @@ import net.iaeste.iws.api.responses.SearchUserResponse;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
-public interface Administration {
+public interface Administration extends Serializable {
 
     /**
      * The IWS uses an internal listing of Countries, that are based on the UN
@@ -246,16 +248,20 @@ public interface Administration {
     FallibleResponse changeGroupOwner(AuthenticationToken token, OwnerRequest request);
 
     /**
-     * Processes a users relation to a Group, either by creating a new, deleting
-     * an existing or modifying an existing.<br />
-     *   If invoked by the user, then it is possible to make a couple of minor
-     * changes such as changing their title and mailinglist settings.<br />
+     * The UserGroup Assignment controls how a User may interact with a Group.
+     * The request will allow Users to make minor corrections to their own
+     * records, and depending on their permissions, it is possible for them to
+     * make more corrections to other Users. The only thing that cannot be
+     * altered with this request, is the current Owner. Since the Owner is a
+     * special User, and there must always be an Owner!<br />
+     *   If a User is attempting to process their own records, then, they may
+     * only change their Private mail flag and their title. Only the Owner may
+     * set the Public List flag, meaning that the user will receive e-mails send
+     * to the public mailing list.<br />
      *   If invoked by an administrator against a different user, then it is
      * possible to change the persons permissions, though it is not possible to
      * use this request to assign a new owner to a Group, this is handled via a
-     * different request.<br />
-     *   The search is trying to find as much information as possible, sorting
-     * the result alphabetically.
+     * {@link #changeGroupOwner} request.
      *
      * @param token   Authentication information about the user invoking the
      *                request

@@ -27,12 +27,14 @@ import net.iaeste.iws.api.responses.student.FetchStudentsResponse;
 import net.iaeste.iws.api.responses.student.StudentApplicationResponse;
 import net.iaeste.iws.api.responses.student.StudentResponse;
 
+import java.io.Serializable;
+
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
-public interface Students {
+public interface Students extends Serializable {
 
     /**
      * Creates a new Student Account, with the data from the Request Object. The

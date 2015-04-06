@@ -24,6 +24,8 @@ import net.iaeste.iws.api.responses.FetchFolderResponse;
 import net.iaeste.iws.api.responses.FileResponse;
 import net.iaeste.iws.api.responses.FolderResponse;
 
+import java.io.Serializable;
+
 /**
  * Storage Functionality.
  *
@@ -31,7 +33,7 @@ import net.iaeste.iws.api.responses.FolderResponse;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
-public interface Storage {
+public interface Storage extends Serializable {
 
     /**
      * Processes a folder, meaning either creating, renaming or deleting.

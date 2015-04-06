@@ -21,6 +21,7 @@ import static net.iaeste.iws.core.transformers.AdministrationTransformer.transfo
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.UserGroup;
+import net.iaeste.iws.api.enums.Action;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.exceptions.IWSException;
@@ -386,6 +387,8 @@ public final class GroupService {
 
         if (shouldChangeSelf(authentication, request)) {
             response = updateSelf(authentication, invokingUser, request);
+        } else if (shouldDeleteMember(request)) {
+            throw new IWSException(IWSErrors.WARNING, "It is not permitted to remove a User from a Member Group with this request. Please delete the user instead.");
         } else if (shouldChangeOwner(invokingUser, request)) {
             throw new PermissionException("It is not permitted to change ownership with this request. Please use the correct request.");
         } else {
@@ -399,12 +402,12 @@ public final class GroupService {
             final RoleEntity role = dao.findRoleByExternalIdAndGroup(roleExternalId, authentication.getGroup());
             final UserGroupEntity existingEntity = dao.findByGroupAndExternalUserId(authentication.getGroup(), externalUserId);
 
-            if ((existingEntity != null) && existingEntity.getRole().getId().equals(InternalConstants.ROLE_OWNER)) {
+            if ((existingEntity != null) && (existingEntity.getRole().getId() == InternalConstants.ROLE_OWNER)) {
                 throw new PermissionException("It is not permitted to change the current Owner.");
-            } else if (request.isDeleteUserRequest()) {
+            } else if (request.getAction() == Action.Delete) {
                 response = deleteUserGroupRelation(authentication, role, existingEntity);
             } else {
-                response = processUserGroupRelation(authentication, request, externalUserId, role, existingEntity);
+                response = processUserGroupRelation(authentication, invokingUser, request, externalUserId, role, existingEntity);
             }
         }
 
@@ -419,33 +422,73 @@ public final class GroupService {
     }
 
     /**
-     * If a person updates his or her own record, it means that they can change
-     * their title and mailinglist settings. As the request can only be
-     * performed by someone who is either the owner or moderator, it will not
-     * pose as a "bug", that someone else may attempt to escalate their
-     * privileges.
+     * If a user is invoking this Process UserGroup Assignement on their own
+     * relation, then it is possible to change a couple of minor things. Users
+     * are generally only allowed to alter the private mailing list settings and
+     * their title. Only if they're also having role Moderator, is it allowed to
+     * change public settings and the Write to Private List flag.
      *
      * @param authentication User & Group information
      * @param request        User Group Request information
      * @return Processed UserGroup relation
      */
     private ProcessUserGroupResponse updateSelf(final Authentication authentication, final UserGroupEntity currentEntity, final UserGroupAssignmentRequest request) {
-        // Update the UserGroup relation
+        // Update non critical settings, title & private list
         currentEntity.setTitle(request.getUserGroup().getTitle());
-        currentEntity.setOnPublicList(request.getUserGroup().isOnPublicList());
         currentEntity.setOnPrivateList(request.getUserGroup().isOnPrivateList());
-        currentEntity.setWriteToPrivateList(request.getUserGroup().mayWriteToPrivateList());
+
+        // Changing other settings, is only allowed if the User is having a
+        // specific relation to the Group
+        if (currentEntity.getRole().getId() == InternalConstants.ROLE_OWNER) {
+            // If the User is the current Owner, we're overridding the settings,
+            // Owners must always be on the lists!
+            currentEntity.setOnPublicList(true);
+            currentEntity.setOnPrivateList(true);
+            currentEntity.setWriteToPrivateList(true);
+        } else if (currentEntity.getRole().getId() == InternalConstants.ROLE_MODERATOR) {
+            // If the User is a Moderator, they may control their private
+            // mailing list access themselves - the public mailing list setting
+            // is only allowed to be controlled by the Owner! As the Private
+            // list flag is set above, we're just forcing the Write to Private
+            // list, since this is a more generic flag.
+            currentEntity.setWriteToPrivateList(true);
+        }
+
+        // Save the changes.
         dao.persist(authentication, currentEntity);
 
         return new ProcessUserGroupResponse(transform(currentEntity));
     }
 
+    /**
+     * Returns true, if the requesting User attempts to delete someone from a
+     * Member Group. Such actions is not permitted, since it is the equivalent
+     * to deleting a User!
+     *
+     * @param request User Group Request Object
+     * @return True if attempting to delete a user from a Member Group
+     */
+    private boolean shouldDeleteMember(final UserGroupAssignmentRequest request) {
+        final Action action = request.getAction();
+        final GroupType type = request.getUserGroup().getGroup().getGroupType();
+
+        return  action == Action.Delete && type == GroupType.MEMBER;
+    }
+
+    /**
+     * Changing the Owner is a special functionality, which is only permitted
+     * via the {@link #changeGroupOwner} request.
+     *
+     * @param invokingUser The User making the request
+     * @param request      Request information
+     * @return True if attempting to change the Owner
+     */
     private boolean shouldChangeOwner(final UserGroupEntity invokingUser, final UserGroupAssignmentRequest request) {
         final RoleEntity requestedRole = dao.findRoleByExternalId(request.getUserGroup().getRole().getRoleId());
         final boolean result;
 
-        if (InternalConstants.ROLE_OWNER.equals(requestedRole.getId())) {
-            if (InternalConstants.ROLE_OWNER.equals(invokingUser.getRole().getId())) {
+        if (requestedRole.getId() == InternalConstants.ROLE_OWNER) {
+            if (invokingUser.getRole().getId() == InternalConstants.ROLE_OWNER) {
                 result = true;
             } else {
                 throw new PermissionException("Illegal attempt at changing Ownership.");
@@ -474,7 +517,7 @@ public final class GroupService {
         }
     }
 
-    private ProcessUserGroupResponse processUserGroupRelation(final Authentication authentication, final UserGroupAssignmentRequest request, final String externalUserId, final RoleEntity role, final UserGroupEntity existingEntity) {
+    private ProcessUserGroupResponse processUserGroupRelation(final Authentication authentication, final UserGroupEntity invokingUser, final UserGroupAssignmentRequest request, final String externalUserId, final RoleEntity role, final UserGroupEntity existingEntity) {
         final UserGroupEntity given = transform(request.getUserGroup());
         final ProcessUserGroupResponse response;
 
@@ -490,7 +533,10 @@ public final class GroupService {
             // Now set the information from the request
             final UserGroup information = request.getUserGroup();
             given.setTitle(information.getTitle());
-            given.setOnPublicList(information.isOnPublicList());
+            // Only the Owner of a Group may control who is on the public list.
+            if (invokingUser.getRole().getId() == InternalConstants.ROLE_OWNER) {
+                given.setOnPublicList(information.isOnPublicList());
+            }
             given.setOnPrivateList(information.isOnPrivateList());
             given.setWriteToPrivateList(information.mayWriteToPrivateList());
 

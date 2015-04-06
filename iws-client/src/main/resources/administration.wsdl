@@ -337,7 +337,7 @@
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
           <xs:element name="userGroup" type="tns:UserGroup"/>
-          <xs:element name="deleteUser" nillable="true" type="xs:boolean"/>
+          <xs:element name="action" type="tns:Action"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -719,6 +719,13 @@
       <xs:enumeration value="FETCH_STUDENTS"/>
       <xs:enumeration value="FETCH_STUDENT_APPLICATION"/>
       <xs:enumeration value="PROCESS_STUDENT_APPLICATION"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Action">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Process"/>
+      <xs:enumeration value="Delete"/>
     </xs:restriction>
   </xs:simpleType>
 

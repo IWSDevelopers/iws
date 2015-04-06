@@ -665,7 +665,7 @@ public final class AccountService extends CommonService<AccessDao> {
                 case INTERNATIONAL:
                 case NATIONAL:
                 case MEMBER:
-                    if (InternalConstants.ROLE_OWNER.equals(entity.getRole().getId())) {
+                    if (entity.getRole().getId() == InternalConstants.ROLE_OWNER) {
                         throw new IWSException(IWSErrors.PROCESSING_FAILURE, "Users who are currently the Owner of a Group with type '" + type.getDescription() + "', cannot be deleted.");
                     }
             }

@@ -25,6 +25,7 @@ import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.Role;
 import net.iaeste.iws.api.dtos.User;
 import net.iaeste.iws.api.dtos.UserGroup;
+import net.iaeste.iws.api.enums.Action;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.requests.CreateUserRequest;
 import net.iaeste.iws.api.requests.FetchGroupRequest;
@@ -100,7 +101,7 @@ public final class UserGroupTest extends AbstractAdministration {
         assertThat(response.isOk(), is(true));
 
         // Delete the user again
-        request.setDeleteUser(true);
+        request.setAction(Action.Delete);
         final Fallible deleteResponse = administration.processUserGroupAssignment(token, request);
         assertThat(deleteResponse, is(not(nullValue())));
         assertThat(deleteResponse.isOk(), is(true));
@@ -252,5 +253,33 @@ public final class UserGroupTest extends AbstractAdministration {
         assertThat(response.isOk(), is(false));
         assertThat(response.getError(), is(IWSErrors.NOT_PERMITTED));
         assertThat(response.getMessage(), is("Cannot reassign National Secretary to a person who is not a member from Denmark."));
+    }
+
+    /**
+     * The Member Group is where we control access to the system. Deleting Users
+     * from a Member Group is thus not allowed, it is the equivalent of deleting
+     * the User, which is handled via the Administration#controlUserAccount
+     * request.
+     */
+    @Test
+    public void testRemovingUserFromMemberGroup() {
+        final User user = createAndActiveUser(token, "member2@iaeste.no", "New", "Member2");
+        final FetchGroupRequest fetchGroupRequest = new FetchGroupRequest(GroupType.MEMBER);
+        fetchGroupRequest.setUsersToFetch(FetchGroupRequest.FetchType.ACTIVE);
+        final FetchGroupResponse fetchGroupResponse = administration.fetchGroup(token, fetchGroupRequest);
+        UserGroup userGroup = null;
+        for (final UserGroup member : fetchGroupResponse.getMembers()) {
+            if (member.getUser().getUserId().equals(user.getUserId())) {
+                userGroup = member;
+            }
+        }
+
+        final UserGroupAssignmentRequest request = new UserGroupAssignmentRequest();
+        request.setAction(Action.Delete);
+        request.setUserGroup(userGroup);
+        final ProcessUserGroupResponse response = administration.processUserGroupAssignment(token, request);
+        assertThat(response.isOk(), is(false));
+        assertThat(response.getError(), is(IWSErrors.WARNING));
+        assertThat(response.getMessage(), is("It is not permitted to remove a User from a Member Group with this request. Please delete the user instead."));
     }
 }

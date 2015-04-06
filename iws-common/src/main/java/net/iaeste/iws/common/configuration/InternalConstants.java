@@ -115,14 +115,14 @@ public interface InternalConstants {
     String PASSWORD_GENERATOR_CHARACTERS = "abcdefghjkmnpqrstuvwxzy23456789";
 
     /** Internal Id for the Owner Role. */
-    Long ROLE_OWNER = 1L;
+    long ROLE_OWNER = 1L;
 
     /** Internal Id for the Moderator Role. */
-    Long ROLE_MODERATOR = 2L;
+    long ROLE_MODERATOR = 2L;
 
     /** Internal Id for the Member Role. */
-    Long ROLE_MEMBER = 3L;
+    long ROLE_MEMBER = 3L;
 
     /** Internal Id for the Student Role. */
-    Long ROLE_STUDENT = 5L;
+    long ROLE_STUDENT = 5L;
 }

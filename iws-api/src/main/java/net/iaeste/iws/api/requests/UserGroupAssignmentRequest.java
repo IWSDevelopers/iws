@@ -16,14 +16,17 @@ package net.iaeste.iws.api.requests;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.dtos.UserGroup;
+import net.iaeste.iws.api.enums.Action;
 import net.iaeste.iws.api.util.AbstractVerification;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -31,14 +34,24 @@ import java.util.Map;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "UserGroupAssignmentRequest", propOrder = { "userGroup", "deleteUser" })
-public final class UserGroupAssignmentRequest extends AbstractVerification {
+@XmlType(name = "UserGroupAssignmentRequest", propOrder = { "userGroup", "action" })
+public final class UserGroupAssignmentRequest extends AbstractVerification implements Actionable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    @XmlElement(required = true, nillable = false) private UserGroup userGroup = null;
-    @XmlElement(required = true, nillable = true)  private boolean deleteUser = false;
+    /** Default allowed Actions for the Process UserGroup Requests. */
+    private static final Set<Action> allowed = EnumSet.of(Action.Process, Action.Delete);
+
+    /**
+     * User Group Relationship to process.
+     */
+    @XmlElement(required = true, nillable = false)
+    private UserGroup userGroup = null;
+
+    /** Action to perform against the given Folder. */
+    @XmlElement(required = true, nillable = false)
+    private Action action = Action.Process;
 
     // =========================================================================
     // Object Constructors
@@ -60,6 +73,35 @@ public final class UserGroupAssignmentRequest extends AbstractVerification {
     }
 
     // =========================================================================
+    // Implementation of the Actionable Interface
+    // =========================================================================
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Set<Action> allowedActions() {
+        return allowed;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setAction(final Action action) throws IllegalArgumentException {
+        ensureNotNullAndContains("action", action, allowed);
+        this.action = action;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Action getAction() {
+        return action;
+    }
+
+    // =========================================================================
     // Standard Setters & Getters
     // =========================================================================
 
@@ -70,14 +112,6 @@ public final class UserGroupAssignmentRequest extends AbstractVerification {
 
     public UserGroup getUserGroup() {
         return new UserGroup(userGroup);
-    }
-
-    public void setDeleteUser(final boolean deleteUser) {
-        this.deleteUser = deleteUser;
-    }
-
-    public boolean isDeleteUserRequest() {
-        return deleteUser;
     }
 
     // =========================================================================
@@ -92,6 +126,7 @@ public final class UserGroupAssignmentRequest extends AbstractVerification {
         final Map<String, String> validation = new HashMap<>(0);
 
         isNotNull(validation, "userGroup", userGroup);
+        isNotNull(validation, "action", action);
 
         return validation;
     }

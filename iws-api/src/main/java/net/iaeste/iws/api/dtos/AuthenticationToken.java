@@ -177,7 +177,7 @@ public final class AuthenticationToken extends AbstractVerification implements T
      */
     @Override
     public String getTraceId() {
-        return token.substring(0, 8);
+        return token != null ? token.substring(0, 8) : "none";
     }
 
     // =========================================================================

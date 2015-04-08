@@ -26,8 +26,6 @@ import net.iaeste.iws.api.responses.FetchCommitteeResponse;
 import net.iaeste.iws.api.responses.FetchInternationalGroupResponse;
 import net.iaeste.iws.api.responses.FetchSurveyOfCountryRespose;
 
-import java.io.Serializable;
-
 /**
  * Control of National Committees and International Groups is done via the
  * functionality provided by this Interface.<br />
@@ -52,7 +50,7 @@ import java.io.Serializable;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
-public interface Committees extends Serializable {
+public interface Committees {
 
     /**
      * Working with committees involve working with more details than normally

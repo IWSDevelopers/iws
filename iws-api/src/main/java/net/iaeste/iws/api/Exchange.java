@@ -43,8 +43,6 @@ import net.iaeste.iws.api.responses.exchange.OfferResponse;
 import net.iaeste.iws.api.responses.exchange.OfferStatisticsResponse;
 import net.iaeste.iws.api.responses.exchange.PublishOfferResponse;
 
-import java.io.Serializable;
-
 /**
  * Exchange related functionality is covered with this interface. Only exception
  * here, the handling of students is done vai the {@link Students} interface.
@@ -53,7 +51,7 @@ import java.io.Serializable;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
-public interface Exchange extends Serializable {
+public interface Exchange {
 
     /**
      * Retrieves the Offer Statistics information.

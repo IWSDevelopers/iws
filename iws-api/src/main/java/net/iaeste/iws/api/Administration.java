@@ -40,8 +40,6 @@ import net.iaeste.iws.api.responses.ProcessGroupResponse;
 import net.iaeste.iws.api.responses.ProcessUserGroupResponse;
 import net.iaeste.iws.api.responses.SearchUserResponse;
 
-import java.io.Serializable;
-
 /**
  * Handles Administration of User Accounts, Groups, Roles and Countries.
  *
@@ -49,7 +47,7 @@ import java.io.Serializable;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
-public interface Administration extends Serializable {
+public interface Administration {
 
     /**
      * The IWS uses an internal listing of Countries, that are based on the UN

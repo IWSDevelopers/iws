@@ -19,6 +19,7 @@ import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.dtos.exchange.PublishingGroup;
 import net.iaeste.iws.api.enums.FetchType;
 import net.iaeste.iws.api.enums.Language;
+import net.iaeste.iws.api.enums.exchange.EmployerFetchType;
 import net.iaeste.iws.api.enums.exchange.ExchangeType;
 import net.iaeste.iws.api.enums.exchange.FieldOfStudy;
 import net.iaeste.iws.api.enums.exchange.LanguageLevel;
@@ -91,9 +92,8 @@ public final class ExchangeMapper extends CommonMapper {
         if (api != null) {
             ws = new net.iaeste.iws.ws.FetchEmployerRequest();
 
-            // TODO Ensure that the mapping of the FetchEmployer Request Object is complete
-            //ws.setEmployerFetchType(map(api.getFetchType()));
-            //ws.setField(field);
+            ws.setType(map(api.getFetchType()));
+            ws.setField(api.getFetchField());
         }
 
         return ws;
@@ -224,7 +224,7 @@ public final class ExchangeMapper extends CommonMapper {
 
         if (api != null) {
             ws = new net.iaeste.iws.ws.FetchPublishGroupsRequest();
-            // TODO add support for pagination
+            ws.setPage(map(api.getPagingInformation()));
         }
 
         return ws;
@@ -546,6 +546,10 @@ public final class ExchangeMapper extends CommonMapper {
     // =========================================================================
     // Convertion of Exchange Enums
     // =========================================================================
+
+    private static net.iaeste.iws.ws.EmployerFetchType map(final EmployerFetchType api) {
+        return api != null ? net.iaeste.iws.ws.EmployerFetchType.valueOf(api.name()) : null;
+    }
 
     private static net.iaeste.iws.ws.FetchType map(final FetchType api) {
         return api != null ? net.iaeste.iws.ws.FetchType.valueOf(api.name()) : null;

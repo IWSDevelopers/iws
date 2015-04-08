@@ -17,6 +17,9 @@ package net.iaeste.iws.api.util;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.SortingField;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlType;
 import java.io.Serializable;
 
 /**
@@ -24,6 +27,8 @@ import java.io.Serializable;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "Page", propOrder = { "pageNumber", "pageSize", "sortAscending", "sortBy" })
 public class Page implements Paginatable, Serializable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */

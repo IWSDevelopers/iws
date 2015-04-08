@@ -43,18 +43,29 @@
 
   <xs:complexType final="extension restriction" name="FetchPublishGroupsRequest">
     <xs:complexContent>
-      <xs:extension base="tns:abstractPaginatable">
+      <xs:extension base="tns:AbstractPaginatable">
         <xs:all/>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType abstract="true" name="abstractPaginatable">
+  <xs:complexType abstract="true" name="AbstractPaginatable">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
-        <xs:sequence/>
+        <xs:sequence>
+          <xs:element name="page" type="tns:Page"/>
+        </xs:sequence>
       </xs:extension>
     </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="Page">
+    <xs:sequence>
+      <xs:element name="pageNumber" type="xs:int"/>
+      <xs:element name="pageSize" type="xs:int"/>
+      <xs:element name="sortAscending" type="xs:boolean"/>
+      <xs:element minOccurs="0" name="sortBy" type="tns:SortingField"/>
+    </xs:sequence>
   </xs:complexType>
 
   <xs:complexType final="extension restriction" name="FetchPublishingGroupResponse">
@@ -130,7 +141,7 @@
 
   <xs:complexType final="extension restriction" name="FetchEmployerRequest">
     <xs:complexContent>
-      <xs:extension base="tns:abstractPaginatable">
+      <xs:extension base="tns:AbstractPaginatable">
         <xs:sequence>
           <xs:element name="type" nillable="true" type="tns:EmployerFetchType"/>
           <xs:element name="field" nillable="true" type="xs:string"/>
@@ -339,7 +350,7 @@
 
   <xs:complexType name="OfferCSVDownloadRequest">
     <xs:complexContent>
-      <xs:extension base="tns:abstractPaginatable">
+      <xs:extension base="tns:AbstractPaginatable">
         <xs:sequence>
           <xs:element name="fetchType" type="tns:fetchType"/>
           <xs:element maxOccurs="unbounded" name="offerIds" type="xs:string"/>
@@ -372,7 +383,7 @@
 
   <xs:complexType final="extension restriction" name="FetchOffersRequest">
     <xs:complexContent>
-      <xs:extension base="tns:abstractPaginatable">
+      <xs:extension base="tns:AbstractPaginatable">
         <xs:sequence>
           <xs:element name="fetchType" type="tns:fetchType"/>
           <xs:element name="exchangeYear" type="xs:int"/>
@@ -451,6 +462,13 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
+
+  <xs:simpleType name="SortingField">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="CREATED"/>
+      <xs:enumeration value="NAME"/>
+    </xs:restriction>
+  </xs:simpleType>
 
   <xs:simpleType name="GroupType">
     <xs:restriction base="xs:string">

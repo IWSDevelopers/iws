@@ -19,7 +19,7 @@
 
   <xs:complexType name="FetchCommitteeRequest">
     <xs:complexContent>
-      <xs:extension base="tns:abstractPaginatable">
+      <xs:extension base="tns:AbstractPaginatable">
         <xs:sequence>
           <xs:element maxOccurs="unbounded" name="countryIds" nillable="true" type="xs:string"/>
           <xs:element name="membership" nillable="true" type="tns:Membership"/>
@@ -29,12 +29,23 @@
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType abstract="true" name="abstractPaginatable">
+  <xs:complexType abstract="true" name="AbstractPaginatable">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
-        <xs:sequence/>
+        <xs:sequence>
+          <xs:element name="page" type="tns:Page"/>
+        </xs:sequence>
       </xs:extension>
     </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="Page">
+    <xs:sequence>
+      <xs:element name="pageNumber" type="xs:int"/>
+      <xs:element name="pageSize" type="xs:int"/>
+      <xs:element name="sortAscending" type="xs:boolean"/>
+      <xs:element minOccurs="0" name="sortBy" type="tns:SortingField"/>
+    </xs:sequence>
   </xs:complexType>
 
   <xs:complexType final="extension restriction" name="fetchCommitteeResponse">
@@ -300,6 +311,13 @@
       <xs:enumeration value="ACTIVE"/>
       <xs:enumeration value="SUSPENDED"/>
       <xs:enumeration value="DELETED"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="SortingField">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="CREATED"/>
+      <xs:enumeration value="NAME"/>
     </xs:restriction>
   </xs:simpleType>
 

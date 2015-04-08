@@ -32,12 +32,14 @@ import net.iaeste.iws.api.enums.MonitoringLevel;
 import net.iaeste.iws.api.enums.NotificationFrequency;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.enums.Privacy;
+import net.iaeste.iws.api.enums.SortingField;
 import net.iaeste.iws.api.enums.UserStatus;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.api.util.DatePeriod;
 import net.iaeste.iws.api.util.DateTime;
+import net.iaeste.iws.api.util.Page;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
@@ -290,6 +292,36 @@ abstract class CommonMapper {
         return api;
     }
 
+    protected static Page map(final net.iaeste.iws.ws.Page ws) {
+        Page api = null;
+
+        if (ws != null) {
+            api = new Page();
+
+            api.setPageNumber(ws.getPageNumber());
+            api.setPageSize(ws.getPageSize());
+            api.setSortAscending(ws.isSortAscending());
+            api.setSortBy(map(ws.getSortBy()));
+        }
+
+        return api;
+    }
+
+    protected static net.iaeste.iws.ws.Page map(final Page api) {
+        net.iaeste.iws.ws.Page ws = null;
+
+        if (api != null) {
+            ws = new net.iaeste.iws.ws.Page();
+
+            ws.setPageNumber(api.pageNumber());
+            ws.setPageSize(api.pageSize());
+            ws.setSortAscending(api.sortAscending());
+            ws.setSortBy(map(api.sortBy()));
+        }
+
+        return ws;
+    }
+
     // =========================================================================
     // Convertion of Collections
     // =========================================================================
@@ -406,6 +438,14 @@ abstract class CommonMapper {
 
     protected static Permission map(final net.iaeste.iws.ws.Permission ws) {
         return ws != null ? Permission.valueOf(ws.value()) : null;
+    }
+
+    private static SortingField map(final net.iaeste.iws.ws.SortingField ws) {
+        return ws != null ? SortingField.valueOf(ws.value()) : null;
+    }
+
+    private static net.iaeste.iws.ws.SortingField map(final SortingField api) {
+        return api != null ? net.iaeste.iws.ws.SortingField.valueOf(api.name()) : null;
     }
 
     // =========================================================================

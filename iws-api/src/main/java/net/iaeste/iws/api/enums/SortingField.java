@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.api.enums;
 
+import javax.xml.bind.annotation.XmlType;
+
 /**
  * This enum contains all allowed fields to be sorted by. However, the
  * individual requess will only allow a sub-set of these, so please check the
@@ -23,6 +25,7 @@ package net.iaeste.iws.api.enums;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
+@XmlType(name = "SortingField")
 public enum SortingField {
 
     /**

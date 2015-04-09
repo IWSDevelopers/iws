@@ -18,6 +18,8 @@ import net.iaeste.iws.api.enums.exchange.OfferState;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.util.Date;
@@ -33,6 +35,7 @@ public class EmbeddedOfferGroup {
     @Column(name = "shared_external_id", insertable = false, updatable = false)
     private String externalId = null;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "shared_status", insertable = false, updatable = false)
     private OfferState status = null;
 

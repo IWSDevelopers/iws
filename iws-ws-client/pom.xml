@@ -1,0 +1,201 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>iws-parent</artifactId>
+        <groupId>net.iaeste.iws</groupId>
+        <version>1.1-SNAPSHOT</version>
+        <relativePath>../iws-parent/pom.xml</relativePath>
+    </parent>
+    <artifactId>iws-ws-client</artifactId>
+    <name>IWS - WS Client</name>
+    <description>IntraWeb Services - WS Client</description>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    </properties>
+
+    <build>
+        <finalName>iws-ws-client</finalName>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>sonar-maven-plugin</artifactId>
+                    <version>2.0</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <showDeprecation>true</showDeprecation>
+                    <showWarnings>true</showWarnings>
+                    <encoding>UTF-8</encoding>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.15</version>
+                <configuration>
+                    <!-- The surefire plugin supports running the execution of
+                         the JUnit tests in parallel, and with various options
+                         set. Although the "advertized" advantage is to speed up
+                         the test suite, is more or less crap, there is another
+                         advantage to running things in parallel. And that is
+                         to see how the system handles multiple threads that
+                         accesses it at the same time - in other words, how
+                         thread-safe is the system.
+                           Since each thread needs to build the Spring beans
+                         required by the tests, it means that the overall
+                         testing takes significantly longer and will eat more
+                         memory. If it makes the system too slow, please reduce
+                         the number of threads in the threadCount below. But
+                         note, that those changes should not be committed.
+                           Spring seems to have a problem with the in-memory
+                         database and running tests in parallel. Hence, these
+                         tests are not enabled by default. The setting is here
+                         merely to show how to configure it. An alternative to
+                         running the tests in parallel using Maven, is to use
+                         IntelliJ's forkmode for JUnit tests.
+                           Parallel supports 'classes', 'methods' or 'both' -->
+                    <parallel>none</parallel>
+                    <threadCount>5</threadCount>
+                </configuration>
+                <goals>
+                    <goal>test</goal>
+                </goals>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.5</version>
+                <executions>
+                    <execution>
+                        <id>jar</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Generate Java classes from WSDL during build -->
+            <plugin>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-codegen-plugin</artifactId>
+                <version>2.7.14</version>
+                <executions>
+                    <execution>
+                        <id>access-sources</id>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <sourceRoot>${basedir}/target/generated-sources</sourceRoot>
+                            <encoding>UTF-8</encoding>
+                            <wsdlOptions>
+                                <wsdlOption>
+                                    <wsdl>${basedir}/src/main/resources/access.wsdl</wsdl>
+                                    <extraargs>
+                                        <extraarg>-client</extraarg>
+                                    </extraargs>
+                                </wsdlOption>
+                            </wsdlOptions>
+                        </configuration>
+                        <goals>
+                            <goal>wsdl2java</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>exchange-sources</id>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <sourceRoot>${basedir}/target/generated-sources</sourceRoot>
+                            <encoding>UTF-8</encoding>
+                            <wsdlOptions>
+                                <wsdlOption>
+                                    <wsdl>${basedir}/src/main/resources/exchange.wsdl</wsdl>
+                                    <extraargs>
+                                        <extraarg>-client</extraarg>
+                                    </extraargs>
+                                </wsdlOption>
+                            </wsdlOptions>
+                        </configuration>
+                        <goals>
+                            <goal>wsdl2java</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Add generated sources - avoids having to copy generated sources to
+                build location -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>add-source</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>${basedir}/target/generated/src/main/java</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Build the JAR with dependencies -->
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>net.iaeste.iws</groupId>
+            <artifactId>iws-api</artifactId>
+            <version>1.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-frontend-jaxws</artifactId>
+            <version>2.7.14</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-transports-http</artifactId>
+            <version>2.7.14</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.10</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>1.7.7</version>
+        </dependency>
+    </dependencies>
+
+</project>

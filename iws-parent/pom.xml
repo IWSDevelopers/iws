@@ -16,6 +16,7 @@
         <module>../iws-ejb</module>
         <module>../iws-ws</module>
         <module>../iws-ear</module>
+        <module>../iws-ws-client</module>
         <module>../iws-client</module>
         <module>../iws-fitnesse</module>
     </modules>

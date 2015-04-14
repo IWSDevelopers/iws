@@ -28,7 +28,6 @@ import net.iaeste.iws.persistence.views.StudentView;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import java.util.Date;
 import java.util.List;
 
 /**

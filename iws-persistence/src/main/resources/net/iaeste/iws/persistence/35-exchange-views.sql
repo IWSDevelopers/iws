@@ -24,7 +24,7 @@ create view employer_view as
     g.id                       as group_id,
     g.external_id              as group_external_id,
     g.parent_id                as group_parent_id,
-    g.grouptype_id             as group_grouptype,
+    t.grouptype                as group_grouptype,
     g.group_name               as group_groupname,
     g.list_name                as group_list_name,
     g.private_list             as group_private_list,
@@ -58,10 +58,12 @@ create view employer_view as
     employers e,
     addresses a,
     countries c,
-    groups g
+    groups g,
+    grouptypes t
   where e.group_id = g.id
     and e.address_id = a.id
-    and a.country_id = c.id;
+    and a.country_id = c.id
+    and g.grouptype_id = t.id;
 
 
 -- =============================================================================
@@ -135,7 +137,8 @@ create view offer_view as
     e.created                  as employer_created,
     g.external_id              as group_external_id,
     g.parent_id                as group_parent_id,
-    g.grouptype_id             as group_grouptype,
+    g.grouptype_id             as group_grouptype_id,
+    t.grouptype                as group_grouptype,
     g.group_name               as group_groupname,
     g.list_name                as group_list_name,
     g.private_list             as group_private_list,
@@ -168,6 +171,7 @@ create view offer_view as
   from
     offers o,
     groups g,
+    grouptypes t,
     employers e,
     addresses a,
     countries c,
@@ -175,6 +179,7 @@ create view offer_view as
     users u
   where e.id = o.employer_id
     and g.id = e.group_id
+    and t.id = g.grouptype_id
     and a.id = e.address_id
     and c.id = a.country_id
     and u.id = u2g.user_id
@@ -261,7 +266,8 @@ create view shared_offer_view as
     e.created                  as employer_created,
     g.external_id              as group_external_id,
     g.parent_id                as group_parent_id,
-    g.grouptype_id             as group_grouptype,
+    g.grouptype_id             as group_grouptype_id,
+    t.grouptype                as group_grouptype,
     g.group_name               as group_groupname,
     g.list_name                as group_list_name,
     g.private_list             as group_private_list,
@@ -294,6 +300,7 @@ create view shared_offer_view as
   from
     offers o,
     groups g,
+    grouptypes t,
     offer_to_group o2g,
     employers e,
     addresses a,
@@ -303,6 +310,7 @@ create view shared_offer_view as
   where o.id = o2g.offer_id
     and e.id = o.employer_id
     and g.id = e.group_id
+    and t.id = g.grouptype_id
     and a.id = e.address_id
     and c.id = a.country_id
     and u.id = u2g.user_id
@@ -339,7 +347,8 @@ create view student_view as
     u.created                  as user_created,
     g.id                       as group_id,
     g.external_id              as group_external_id,
-    g.grouptype_id             as group_grouptype,
+    g.grouptype_id             as group_grouptype_id,
+    t.grouptype                as group_grouptype,
     g.parent_id                as group_parent_id,
     g.group_name               as group_groupname,
     g.list_name                as group_list_name,
@@ -369,12 +378,14 @@ create view student_view as
     users u,
     user_to_group ug,
     groups g,
+    grouptypes t,
     countries c,
     grouptypes gt,
     roles r
   where u.id = s.user_id
     and u.id = ug.user_id
     and g.id = ug.group_id
+    and t.id = g.grouptype_id
     and c.id = g.country_id
     and r.id = ug.role_id
     and g.grouptype_id = gt.id
@@ -526,7 +537,8 @@ create view find_shared_to_groups as
     o.nomination_deadline  as offer_nomination_deadline,
     g.id                   as group_id,
     g.external_id          as group_external_id,
-    g.grouptype_id         as group_grouptype,
+    g.grouptype_id         as group_grouptype_id,
+    t.grouptype            as group_grouptype,
     g.parent_id            as group_parent_id,
     g.group_name           as group_groupname,
     g.list_name            as group_list_name,
@@ -555,11 +567,13 @@ create view find_shared_to_groups as
     employers e,
     groups p,
     groups g,
+    grouptypes t,
     countries c
   where o.id = o2g.offer_id
     and e.id = o.employer_id
     and p.id = e.group_id
     and g.id = o2g.group_id
+    and t.id = g.grouptype_id
     and c.id = g.country_id;
 
 

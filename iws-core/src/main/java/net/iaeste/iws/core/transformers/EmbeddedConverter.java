@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.core.transformers;
 
+import static net.iaeste.iws.core.transformers.CommonTransformer.sanitize;
+
 import net.iaeste.iws.api.dtos.Address;
 import net.iaeste.iws.api.dtos.Country;
 import net.iaeste.iws.api.dtos.Group;
@@ -162,7 +164,6 @@ public final class EmbeddedConverter {
     public static Employer convert(final EmbeddedEmployer embedded) {
         final Employer employer = new Employer();
 
-        // First, read out the the common Employer fields
         employer.setEmployerId(embedded.getExternalId());
         employer.setName(embedded.getName());
         employer.setDepartment(embedded.getDepartment());
@@ -173,8 +174,6 @@ public final class EmbeddedConverter {
         employer.setCanteen(embedded.getCanteen());
         employer.setNearestAirport(embedded.getNearestAirport());
         employer.setNearestPublicTransport(embedded.getNearestPublicTransport());
-        //employer.setWeeklyHours(embedded.getWeeklyHours());
-        //employer.setDailyHours(embedded.getDailyHours());
 
         return employer;
     }
@@ -187,7 +186,7 @@ public final class EmbeddedConverter {
         result.setOfferType(embedded.getOfferType());
         result.setExchangeType(embedded.getExchangeType());
         result.setOldRefNo(embedded.getOldRefNo());
-        result.setWorkDescription(embedded.getWorkDescription());
+        result.setWorkDescription(sanitize(embedded.getWorkDescription()));
         result.setTypeOfWork(embedded.getTypeOfWork());
         result.setWeeklyHours(embedded.getWeeklyHours());
         result.setDailyHours(embedded.getDailyHours());
@@ -196,7 +195,7 @@ public final class EmbeddedConverter {
         result.setFieldOfStudies(CollectionTransformer.explodeEnumSet(FieldOfStudy.class, embedded.getFieldOfStudies()));
         result.setSpecializations(CollectionTransformer.explodeStringSet(embedded.getSpecializations()));
         result.setPreviousTrainingRequired(embedded.getPrevTrainingRequired());
-        result.setOtherRequirements(embedded.getOtherRequirements());
+        result.setOtherRequirements(sanitize(embedded.getOtherRequirements()));
         result.setLanguage1(embedded.getLanguage1());
         result.setLanguage1Level(embedded.getLanguage1Level());
         result.setLanguage1Operator(embedded.getLanguage1Operator());
@@ -221,8 +220,8 @@ public final class EmbeddedConverter {
         result.setLodgingCostFrequency(embedded.getLodgingCostFrequency());
         result.setNominationDeadline(CommonTransformer.convert(embedded.getNominationDeadline()));
         result.setNumberOfHardCopies(embedded.getNumberOfHardCopies());
-        result.setAdditionalInformation(embedded.getAdditionalInformation());
-        result.setPrivateComment(embedded.getPrivateComment());
+        result.setAdditionalInformation(sanitize(embedded.getAdditionalInformation()));
+        result.setPrivateComment(sanitize(embedded.getPrivateComment()));
         result.setStatus(embedded.getStatus());
         result.setModified(new DateTime(embedded.getModified()));
         result.setCreated(new DateTime(embedded.getCreated()));

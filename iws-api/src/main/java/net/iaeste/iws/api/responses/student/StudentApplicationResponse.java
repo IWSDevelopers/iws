@@ -38,7 +38,7 @@ public final class StudentApplicationResponse extends FallibleResponse {
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     @XmlElement(required = true, nillable = true)
-    private final StudentApplication studentApplication;
+    private StudentApplication studentApplication;
 
     // =========================================================================
     // Object Constructors
@@ -76,6 +76,10 @@ public final class StudentApplicationResponse extends FallibleResponse {
     // =========================================================================
     // Standard Setters & Getters
     // =========================================================================
+
+    public void setStudentApplication(final StudentApplication studentApplication) {
+        this.studentApplication = studentApplication;
+    }
 
     public StudentApplication getStudentApplication() {
         return studentApplication;

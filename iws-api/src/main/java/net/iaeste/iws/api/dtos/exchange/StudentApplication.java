@@ -61,6 +61,7 @@ public final class StudentApplication extends AbstractVerification {
 
     private static final int FIELD_LENGTH = 100;
 
+    @XmlElement(required = true, nillable = true)
     private String applicationId = null;
 
     /**
@@ -98,7 +99,7 @@ public final class StudentApplication extends AbstractVerification {
     @XmlElement(required = true, nillable = true) private Language language3 = null;
     @XmlElement(required = true, nillable = true) private LanguageLevel language3Level = null;
 
-    // The internshop period is added as an "availability period" in the Student Object
+    // The internship period is added as an "availability period" in the Student Object
     @XmlElement(required = true, nillable = true) private DatePeriod available = null;
 
     // Field of Studies & Specializations are part of the Student Object

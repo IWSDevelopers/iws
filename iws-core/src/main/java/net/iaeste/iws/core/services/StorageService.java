@@ -272,13 +272,13 @@ public final class StorageService extends CommonService<AccessDao> {
             deleteFile(authentication, request.getFile(), request.getType());
             response = new FileResponse();
         } else {
-            final Folder folder = request.getFile().getFolder();
+            final String folderId = request.getFile().getFolderId();
             final FolderEntity folderEntity;
 
-            if ((folder == null) || (folder.getFolderId() == null)) {
+            if (folderId == null) {
                 folderEntity = null;
             } else {
-                folderEntity = findFolder(folder.getFolderId());
+                folderEntity = findFolder(folderId);
             }
 
             final FileEntity entity = processFile(authentication, request.getFile(), folderEntity);

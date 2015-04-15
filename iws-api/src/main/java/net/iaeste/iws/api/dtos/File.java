@@ -32,7 +32,7 @@ import java.util.Map;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "File", propOrder = { "fileId", "privacy", "group", "user", "folder", "filename", "filedata", "filesize", "mimetype", "description", "keywords", "checksum", "modified", "created" })
+@XmlType(name = "File", propOrder = { "fileId", "privacy", "group", "user", "folderId", "filename", "filedata", "filesize", "mimetype", "description", "keywords", "checksum", "modified", "created" })
 public final class File extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
@@ -42,7 +42,7 @@ public final class File extends AbstractVerification {
     @XmlElement(required = true, nillable = false) private Privacy privacy = Privacy.PRIVATE;
     @XmlElement(required = true, nillable = true) private Group group = null;
     @XmlElement(required = true, nillable = true) private User user = null;
-    @XmlElement(required = true, nillable = true) private Folder folder = null;
+    @XmlElement(required = true, nillable = true) private String folderId = null;
     @XmlElement(required = true, nillable = false) private String filename = null;
     @XmlElement(required = true, nillable = true) private byte[] filedata = null;
     @XmlElement(required = true, nillable = true) private Integer filesize = null;
@@ -75,7 +75,7 @@ public final class File extends AbstractVerification {
             privacy = file.privacy;
             group = new Group(file.group);
             user = new User(file.user);
-            folder = new Folder(file.folder);
+            folderId = file.folderId;
             filename = file.filename;
             filedata = file.filedata;
             filesize = file.filesize;
@@ -165,20 +165,20 @@ public final class File extends AbstractVerification {
     }
 
     /**
-     * Sets the Folder for the File, i.e. the location where the file can be
+     * Sets the FolderId for the File, i.e. the location where the file can be
      * viewed from.<br />
      *   If set, then the folder must be a valid folder, otherwise the method
      * will throw an {@code IllegalArgumentException}.
      *
-     * @param folder Folder for the File
+     * @param folderId FolderId for the File
      */
-    public void setFolder(final Folder folder) {
-        ensureVerifiable("folder", folder);
-        this.folder = folder;
+    public void setFolderId(final String folderId) {
+        ensureValidId("folderId", folderId);
+        this.folderId = folderId;
     }
 
-    public Folder getFolder() {
-        return folder;
+    public String getFolderId() {
+        return folderId;
     }
 
     /**
@@ -367,7 +367,7 @@ public final class File extends AbstractVerification {
         if (user != null ? !user.equals(file.user) : file.user != null) {
             return false;
         }
-        if (folder != null ? !folder.equals(file.folder) : file.folder != null) {
+        if (folderId != null ? !folderId.equals(file.folderId) : file.folderId != null) {
             return false;
         }
         if (filename != null ? !filename.equals(file.filename) : file.filename != null) {
@@ -405,7 +405,7 @@ public final class File extends AbstractVerification {
         result = IWSConstants.HASHCODE_MULTIPLIER * result + ((privacy != null) ? privacy.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + ((group != null) ? group.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + ((user != null) ? user.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((folder != null) ? folder.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((folderId != null) ? folderId.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + ((filename != null) ? filename.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + ((filesize != null) ? filesize.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + ((mimetype != null) ? mimetype.hashCode() : 0);
@@ -428,7 +428,7 @@ public final class File extends AbstractVerification {
                 ", privacy=" + privacy +
                 ", group=" + group +
                 ", user=" + user +
-                ", folder=" + folder +
+                ", folderId=" + folderId +
                 ", filename='" + filename + '\'' +
                 ", filesize=" + filesize +
                 ", mimetype='" + mimetype + '\'' +

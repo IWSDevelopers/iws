@@ -100,7 +100,10 @@ public class CommonService<T extends BasicDao> {
      *
      * @param authentication Authentication information from the requesting user
      * @param username       Pre-processed username
-     * @param request        Request Object with remaining user information
+     * @param password       Password
+     * @param firstname      User firstname
+     * @param lastname       User lastname or family name
+     * @param studentAccount If account is a Student Account or not
      * @return Newly created {@code UserEntity} Object
      * @throws IWSException if unable to create the user
      */
@@ -350,7 +353,7 @@ public class CommonService<T extends BasicDao> {
             final String newId = UUID.randomUUID().toString();
             final String storedNamed = authentication.getGroup().getExternalId() + '/' + newId;
 
-            entity = transform(file);
+            entity = transform(file, folder != null ? folder[0] : null);
             entity.setExternalId(newId);
             entity.setChecksum(calculateChecksum(data));
             entity.setStoredFilename(storedNamed);
@@ -369,7 +372,7 @@ public class CommonService<T extends BasicDao> {
         } else {
             entity = dao.findFileByUserAndExternalId(authentication.getUser(), externalId);
             if (entity != null) {
-                final FileEntity changes = transform(file);
+                final FileEntity changes = transform(file, entity.getFolder());
                 final Long checksum = calculateChecksum(data);
                 if (!entity.getChecksum().equals(checksum)) {
                     writeFileToSystem(entity.getStoredFilename(), data);

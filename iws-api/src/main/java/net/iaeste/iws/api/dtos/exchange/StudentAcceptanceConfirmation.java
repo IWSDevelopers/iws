@@ -18,6 +18,7 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.exchange.TransportationType;
 import net.iaeste.iws.api.util.AbstractVerification;
 import net.iaeste.iws.api.util.Date;
+import net.iaeste.iws.api.util.DateTime;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -45,7 +46,7 @@ public final class StudentAcceptanceConfirmation extends AbstractVerification {
     @XmlElement(required = true, nillable = true) private TransportationType transportationType = null;
     @XmlElement(required = true, nillable = true) private String departureFrom = null;
     @XmlElement(required = true, nillable = true) private String transportNumber = null;
-    @XmlElement(required = true, nillable = true) private Date arrivalDateTime = null;
+    @XmlElement(required = true, nillable = true) private DateTime arrivalDateTime = null;
     @XmlElement(required = true, nillable = true) private String phoneNumberDuringTravel = null;
     @XmlElement(required = true, nillable = true) private Date lodgingRequiredFrom = null;
     @XmlElement(required = true, nillable = true) private Date lodgingRequiredTo = null;
@@ -135,12 +136,12 @@ public final class StudentAcceptanceConfirmation extends AbstractVerification {
         return transportNumber;
     }
 
-    public void setArrivalDateTime(final Date arrivalDateTime) {
+    public void setArrivalDateTime(final DateTime arrivalDateTime) {
         ensureNotNull("arrivalDateTime", arrivalDateTime);
         this.arrivalDateTime = arrivalDateTime;
     }
 
-    public Date getArrivalDateTime() {
+    public DateTime getArrivalDateTime() {
         return arrivalDateTime;
     }
 

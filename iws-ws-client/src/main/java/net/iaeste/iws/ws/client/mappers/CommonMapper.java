@@ -19,14 +19,17 @@ import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.Address;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.dtos.Country;
+import net.iaeste.iws.api.dtos.File;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.Person;
 import net.iaeste.iws.api.dtos.Role;
 import net.iaeste.iws.api.dtos.User;
 import net.iaeste.iws.api.dtos.UserGroup;
+import net.iaeste.iws.api.enums.Action;
 import net.iaeste.iws.api.enums.Currency;
 import net.iaeste.iws.api.enums.Gender;
 import net.iaeste.iws.api.enums.GroupType;
+import net.iaeste.iws.api.enums.Language;
 import net.iaeste.iws.api.enums.Membership;
 import net.iaeste.iws.api.enums.MonitoringLevel;
 import net.iaeste.iws.api.enums.NotificationFrequency;
@@ -34,7 +37,13 @@ import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.enums.Privacy;
 import net.iaeste.iws.api.enums.SortingField;
 import net.iaeste.iws.api.enums.UserStatus;
+import net.iaeste.iws.api.enums.exchange.FieldOfStudy;
+import net.iaeste.iws.api.enums.exchange.LanguageLevel;
+import net.iaeste.iws.api.enums.exchange.OfferState;
+import net.iaeste.iws.api.enums.exchange.StudyLevel;
 import net.iaeste.iws.api.exceptions.IWSException;
+import net.iaeste.iws.api.requests.CreateUserRequest;
+import net.iaeste.iws.api.responses.CreateUserResponse;
 import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.api.util.DatePeriod;
@@ -53,8 +62,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Common Mapper for all the WebService Mapping. Made package private, as it is
- * only used by the API Mappers.
+ * Common Mapper for all the WebService Mapping.
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -109,6 +117,34 @@ public class CommonMapper {
             api.setLanguages(ws.getLanguages());
             api.setMembership(Membership.valueOf(ws.getMembership().name()));
             api.setMemberSince(ws.getMemberSince());
+        }
+
+        return api;
+    }
+
+    public static net.iaeste.iws.ws.CreateUserRequest map(final CreateUserRequest api) {
+        net.iaeste.iws.ws.CreateUserRequest ws = null;
+
+        if (api != null) {
+            ws = new net.iaeste.iws.ws.CreateUserRequest();
+
+            ws.setUsername(api.getUsername());
+            ws.setPassword(api.getPassword());
+            ws.setFirstname(api.getFirstname());
+            ws.setLastname(api.getLastname());
+            ws.setStudentAccount(api.isStudent());
+        }
+
+        return ws;
+    }
+
+    public static CreateUserResponse map(final net.iaeste.iws.ws.CreateUserResponse ws) {
+        CreateUserResponse api = null;
+
+        if (ws != null) {
+            api = new CreateUserResponse(map(ws.getError()), ws.getMessage());
+
+            api.setUser(map(ws.getUser()));
         }
 
         return api;
@@ -192,6 +228,26 @@ public class CommonMapper {
         return api;
     }
 
+    protected static net.iaeste.iws.ws.UserGroup map(final UserGroup api) {
+        net.iaeste.iws.ws.UserGroup ws = null;
+
+        if (api != null) {
+            ws = new net.iaeste.iws.ws.UserGroup();
+
+            ws.setUserGroupId(api.getUserGroupId());
+            ws.setUser(map(api.getUser()));
+            ws.setGroup(map(api.getGroup()));
+            ws.setRole(map(api.getRole()));
+            ws.setTitle(api.getTitle());
+            ws.setOnPrivateList(api.isOnPrivateList());
+            ws.setOnPublicList(api.isOnPublicList());
+            ws.setWriteToPrivateList(api.mayWriteToPrivateList());
+            ws.setMemberSince(map(api.getMemberSince()));
+        }
+
+        return ws;
+    }
+
     protected static User map(final net.iaeste.iws.ws.User ws) {
         User api = null;
 
@@ -212,6 +268,26 @@ public class CommonMapper {
         return api;
     }
 
+    protected static net.iaeste.iws.ws.User map(final User api) {
+        net.iaeste.iws.ws.User ws = null;
+
+        if (api != null) {
+            ws = new net.iaeste.iws.ws.User();
+
+            ws.setUserId(api.getUserId());
+            ws.setUsername(api.getUsername());
+            ws.setAlias(api.getAlias());
+            ws.setFirstname(api.getFirstname());
+            ws.setLastname(api.getLastname());
+            ws.setPerson(map(api.getPerson()));
+            ws.setStatus(map(api.getStatus()));
+            ws.setPrivacy(map(api.getPrivacy()));
+            ws.setNotifications(map(api.getNotifications()));
+        }
+
+        return ws;
+    }
+
     protected static Person map(final net.iaeste.iws.ws.Person ws) {
         Person api = null;
 
@@ -225,10 +301,29 @@ public class CommonMapper {
             api.setPhone(ws.getPhone());
             api.setFax(ws.getFax());
             api.setBirthday(map(ws.getBirthday()));
-            api.setGender(Gender.valueOf(ws.getGender().name()));
+            api.setGender(map(ws.getGender()));
         }
 
         return api;
+    }
+
+    protected static net.iaeste.iws.ws.Person map(final Person api) {
+        net.iaeste.iws.ws.Person ws = null;
+
+        if (api != null) {
+            ws = new net.iaeste.iws.ws.Person();
+
+            ws.setNationality(map(api.getNationality()));
+            ws.setAddress(map(api.getAddress()));
+            ws.setAlternateEmail(api.getAlternateEmail());
+            ws.setMobile(api.getMobile());
+            ws.setPhone(api.getPhone());
+            ws.setFax(api.getFax());
+            ws.setBirthday(map(api.getBirthday()));
+            ws.setGender(map(api.getGender()));
+        }
+
+        return ws;
     }
 
     protected static Group map(final net.iaeste.iws.ws.Group ws) {
@@ -274,13 +369,31 @@ public class CommonMapper {
     }
 
     protected static Role map(final net.iaeste.iws.ws.Role ws) {
-        final Role api = new Role();
+        Role api = null;
 
-        api.setRoleId(ws.getRoleId());
-        api.setRoleName(ws.getRoleName());
-        api.setPermissions(mapPermissionList(ws.getPermissions()));
+        if (ws != null) {
+            api = new Role();
+
+            api.setRoleId(ws.getRoleId());
+            api.setRoleName(ws.getRoleName());
+            api.setPermissions(mapPermissionList(ws.getPermissions()));
+        }
 
         return api;
+    }
+
+    protected static net.iaeste.iws.ws.Role map(final Role api) {
+        net.iaeste.iws.ws.Role ws = null;
+
+        if (api != null) {
+            ws = new net.iaeste.iws.ws.Role();
+
+            ws.setRoleId(api.getRoleId());
+            ws.setRoleName(api.getRoleName());
+            ws.getPermissions().addAll(mapAPIPermissionList(api.getPermissions()));
+        }
+
+        return ws;
     }
 
     protected static Set<Permission> mapPermissionList(final List<net.iaeste.iws.ws.Permission> ws) {
@@ -293,20 +406,17 @@ public class CommonMapper {
         return api;
     }
 
-    //protected static Page map(final net.iaeste.iws.ws.Page ws) {
-    //    Page api = null;
-    //
-    //    if (ws != null) {
-    //        api = new Page();
-    //
-    //        api.setPageNumber(ws.getPageNumber());
-    //        api.setPageSize(ws.getPageSize());
-    //        api.setSortAscending(ws.isSortAscending());
-    //        api.setSortBy(map(ws.getSortBy()));
-    //    }
-    //
-    //    return api;
-    //}
+    protected static Collection<net.iaeste.iws.ws.Permission> mapAPIPermissionList(final Collection<Permission> api) {
+        final Set<net.iaeste.iws.ws.Permission> ws = EnumSet.noneOf(net.iaeste.iws.ws.Permission.class);
+
+        if (api != null) {
+            for (final Permission permission : api) {
+                ws.add(map(permission));
+            }
+        }
+
+        return ws;
+    }
 
     protected static net.iaeste.iws.ws.Page map(final Page api) {
         net.iaeste.iws.ws.Page ws = null;
@@ -318,6 +428,56 @@ public class CommonMapper {
             ws.setPageSize(api.pageSize());
             ws.setSortAscending(api.sortAscending());
             ws.setSortBy(map(api.sortBy()));
+        }
+
+        return ws;
+    }
+
+    protected static File map(final net.iaeste.iws.ws.File ws) {
+        File api = null;
+
+        if (ws != null) {
+            api = new File();
+
+            api.setFileId(ws.getFileId());
+            api.setPrivacy(map(ws.getPrivacy()));
+            api.setGroup(map(ws.getGroup()));
+            api.setUser(map(ws.getUser()));
+            api.setFolderId(ws.getFolderId());
+            api.setFilename(ws.getFilename());
+            api.setFiledata(ws.getFiledata());
+            api.setFilesize(ws.getFilesize());
+            api.setMimetype(ws.getMimetype());
+            api.setDescription(ws.getDescription());
+            api.setKeywords(ws.getKeywords());
+            api.setChecksum(ws.getChecksum());
+            api.setModified(map(ws.getModified()));
+            api.setCreated(map(ws.getCreated()));
+        }
+
+        return api;
+    }
+
+    protected static net.iaeste.iws.ws.File map(final File api) {
+        net.iaeste.iws.ws.File ws = null;
+
+        if (api != null) {
+            ws = new net.iaeste.iws.ws.File();
+
+            ws.setFileId(api.getFileId());
+            ws.setPrivacy(map(api.getPrivacy()));
+            ws.setGroup(map(api.getGroup()));
+            ws.setUser(map(api.getUser()));
+            ws.setFolderId(api.getFolderId());
+            ws.setFilename(api.getFilename());
+            ws.setFiledata(api.getFiledata());
+            ws.setFilesize(api.getFilesize());
+            ws.setMimetype(api.getMimetype());
+            ws.setDescription(api.getDescription());
+            ws.setKeywords(api.getKeywords());
+            ws.setChecksum(api.getChecksum());
+            ws.setModified(map(api.getModified()));
+            ws.setCreated(map(api.getCreated()));
         }
 
         return ws;
@@ -342,12 +502,12 @@ public class CommonMapper {
         return collection;
     }
 
-    protected static Collection<net.iaeste.iws.ws.Group> mapAPIGroupCollection(final Collection<Group> ws) {
+    protected static Collection<net.iaeste.iws.ws.Group> mapAPIGroupCollection(final Collection<Group> api) {
         final Collection<net.iaeste.iws.ws.Group> collection;
 
-        if (ws != null) {
-            collection = new HashSet<>(ws.size());
-            for (final Group group : ws) {
+        if (api != null) {
+            collection = new HashSet<>(api.size());
+            for (final Group group : api) {
                 collection.add(map(group));
             }
         } else {
@@ -397,19 +557,39 @@ public class CommonMapper {
     // Convertion of Enums
     // =========================================================================
 
+    protected static net.iaeste.iws.ws.Action map(final Action api) {
+        return api != null ? net.iaeste.iws.ws.Action.valueOf(api.name()) : null;
+    }
+
+    protected static Gender map(final net.iaeste.iws.ws.Gender ws) {
+        return ws != null ? Gender.valueOf(ws.value()) : null;
+    }
+
+    protected static net.iaeste.iws.ws.Gender map(final Gender api) {
+        return api != null ? net.iaeste.iws.ws.Gender.valueOf(api.name()) : null;
+    }
+
     private static Privacy map(final net.iaeste.iws.ws.Privacy ws) {
         return ws != null ? Privacy.valueOf(ws.value()) : null;
+    }
+
+    private static net.iaeste.iws.ws.Privacy map(final Privacy api) {
+        return api != null ? net.iaeste.iws.ws.Privacy.valueOf(api.name()) : null;
     }
 
     private static UserStatus map(final net.iaeste.iws.ws.UserStatus ws) {
         return ws != null ? UserStatus.valueOf(ws.value()) : null;
     }
 
+    private static net.iaeste.iws.ws.UserStatus map(final UserStatus api) {
+        return api != null ? net.iaeste.iws.ws.UserStatus.valueOf(api.name()) : null;
+    }
+
     private static GroupType map(final net.iaeste.iws.ws.GroupType ws) {
         return ws != null ? GroupType.valueOf(ws.value()) : null;
     }
 
-    private static net.iaeste.iws.ws.GroupType map(final GroupType api) {
+    protected static net.iaeste.iws.ws.GroupType map(final GroupType api) {
         return api != null ? net.iaeste.iws.ws.GroupType.valueOf(api.name()) : null;
     }
 
@@ -421,7 +601,7 @@ public class CommonMapper {
         return api != null ? net.iaeste.iws.ws.Currency.valueOf(api.name()) : null;
     }
 
-    private static net.iaeste.iws.ws.Membership map(final Membership api) {
+    protected static net.iaeste.iws.ws.Membership map(final Membership api) {
         return api != null ? net.iaeste.iws.ws.Membership.valueOf(api.name()) : null;
     }
 
@@ -437,8 +617,16 @@ public class CommonMapper {
         return ws != null ? NotificationFrequency.valueOf(ws.value()) : null;
     }
 
+    private static net.iaeste.iws.ws.NotificationFrequency map(final NotificationFrequency api) {
+        return api != null ? net.iaeste.iws.ws.NotificationFrequency.valueOf(api.name()) : null;
+    }
+
     protected static Permission map(final net.iaeste.iws.ws.Permission ws) {
         return ws != null ? Permission.valueOf(ws.value()) : null;
+    }
+
+    protected static net.iaeste.iws.ws.Permission map(final Permission api) {
+        return api != null ? net.iaeste.iws.ws.Permission.valueOf(api.name()) : null;
     }
 
     //private static SortingField map(final net.iaeste.iws.ws.SortingField ws) {
@@ -447,6 +635,38 @@ public class CommonMapper {
 
     private static net.iaeste.iws.ws.SortingField map(final SortingField api) {
         return api != null ? net.iaeste.iws.ws.SortingField.valueOf(api.name()) : null;
+    }
+
+    protected static StudyLevel map(final net.iaeste.iws.ws.StudyLevel ws) {
+        return ws != null ? StudyLevel.valueOf(ws.value()) : null;
+    }
+
+    protected static net.iaeste.iws.ws.StudyLevel map(final StudyLevel api) {
+        return api != null ? net.iaeste.iws.ws.StudyLevel.valueOf(api.name()) : null;
+    }
+
+    protected static Language map(final net.iaeste.iws.ws.Language ws) {
+        return ws != null ? Language.valueOf(ws.value()) : null;
+    }
+
+    protected static net.iaeste.iws.ws.Language map(final Language api) {
+        return api != null ? net.iaeste.iws.ws.Language.valueOf(api.name()) : null;
+    }
+
+    protected static LanguageLevel map(final net.iaeste.iws.ws.LanguageLevel ws) {
+        return ws != null ? LanguageLevel.valueOf(ws.value()) : null;
+    }
+
+    protected static net.iaeste.iws.ws.LanguageLevel map(final LanguageLevel api) {
+        return api != null ? net.iaeste.iws.ws.LanguageLevel.valueOf(api.name()) : null;
+    }
+
+    protected static OfferState map(final net.iaeste.iws.ws.OfferState ws) {
+        return ws != null ? OfferState.valueOf(ws.value()) : null;
+    }
+
+    protected static net.iaeste.iws.ws.OfferState map(final OfferState api) {
+        return api != null ? net.iaeste.iws.ws.OfferState.valueOf(api.name()) : null;
     }
 
     // =========================================================================
@@ -518,6 +738,66 @@ public class CommonMapper {
         }
 
         return ws;
+    }
+
+    // =========================================================================
+    // Shared Exchange related Conversions
+    // =========================================================================
+
+    protected static Set<FieldOfStudy> mapFieldOfStudyCollection(final Collection<net.iaeste.iws.ws.FieldOfStudy> source) {
+        final Set<FieldOfStudy> set = EnumSet.noneOf(FieldOfStudy.class);
+
+        if (source != null) {
+            for (final net.iaeste.iws.ws.FieldOfStudy fieldOfStudy : source) {
+                set.add(map(fieldOfStudy));
+            }
+        }
+
+        return set;
+    }
+
+    protected static Collection<net.iaeste.iws.ws.FieldOfStudy> mapAPIFieldOfStudyCollection(final Collection<FieldOfStudy> source) {
+        final Set<net.iaeste.iws.ws.FieldOfStudy> set = EnumSet.noneOf(net.iaeste.iws.ws.FieldOfStudy.class);
+
+        if (source != null) {
+            for (final FieldOfStudy fieldOfStudy : source) {
+                set.add(map(fieldOfStudy));
+            }
+        }
+
+        return set;
+    }
+
+    protected static Set<StudyLevel> mapStudyLevelCollectionToSet(final Collection<net.iaeste.iws.ws.StudyLevel> source) {
+        final Set<StudyLevel> set = EnumSet.noneOf(StudyLevel.class);
+
+        if (source != null) {
+            for (final net.iaeste.iws.ws.StudyLevel studyLevel : source) {
+                set.add(map(studyLevel));
+            }
+        }
+
+        return set;
+    }
+
+    protected static Collection<net.iaeste.iws.ws.StudyLevel> mapStudyLevelCollection(final Collection<StudyLevel> source) {
+        final Set<net.iaeste.iws.ws.StudyLevel> set = EnumSet.noneOf(net.iaeste.iws.ws.StudyLevel.class);
+
+        if (source != null) {
+            for (final StudyLevel studyLevel : source) {
+                set.add(map(studyLevel));
+            }
+        }
+
+        return set;
+    }
+
+    private static FieldOfStudy map(final net.iaeste.iws.ws.FieldOfStudy ws) {
+        return ws != null ? FieldOfStudy.valueOf(ws.value()) : null;
+    }
+
+    private static net.iaeste.iws.ws.FieldOfStudy map(final FieldOfStudy api) {
+        return api != null ? net.iaeste.iws.ws.FieldOfStudy.valueOf(api.name()) : null;
     }
 
     // =========================================================================

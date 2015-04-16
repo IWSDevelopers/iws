@@ -19,16 +19,12 @@ import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.dtos.exchange.OfferStatistics;
 import net.iaeste.iws.api.dtos.exchange.PublishingGroup;
 import net.iaeste.iws.api.enums.FetchType;
-import net.iaeste.iws.api.enums.Language;
 import net.iaeste.iws.api.enums.exchange.EmployerFetchType;
 import net.iaeste.iws.api.enums.exchange.ExchangeType;
-import net.iaeste.iws.api.enums.exchange.FieldOfStudy;
-import net.iaeste.iws.api.enums.exchange.LanguageLevel;
 import net.iaeste.iws.api.enums.exchange.LanguageOperator;
 import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.api.enums.exchange.OfferType;
 import net.iaeste.iws.api.enums.exchange.PaymentFrequency;
-import net.iaeste.iws.api.enums.exchange.StudyLevel;
 import net.iaeste.iws.api.enums.exchange.TypeOfWork;
 import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
 import net.iaeste.iws.api.requests.exchange.DeletePublishingGroupRequest;
@@ -54,11 +50,8 @@ import net.iaeste.iws.api.responses.exchange.OfferStatisticsResponse;
 import net.iaeste.iws.api.responses.exchange.PublishOfferResponse;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -447,7 +440,7 @@ public final class ExchangeMapper extends CommonMapper {
             ws.setDailyHours(api.getDailyHours());
             ws.setWeeklyWorkDays(api.getWeeklyWorkDays());
             ws.getStudyLevels().addAll(mapStudyLevelCollection(api.getStudyLevels()));
-            ws.getFieldOfStudies().addAll(mapFieldOfStudyCollection(api.getFieldOfStudies()));
+            ws.getFieldOfStudies().addAll(mapAPIFieldOfStudyCollection(api.getFieldOfStudies()));
             ws.getSpecializations().addAll(mapStringCollectionToList(api.getSpecializations()));
             ws.setPreviousTrainingRequired(api.getPreviousTrainingRequired());
             ws.setOtherRequirements(api.getOtherRequirements());
@@ -507,7 +500,7 @@ public final class ExchangeMapper extends CommonMapper {
             api.setDailyHours(ws.getDailyHours());
             api.setWeeklyWorkDays(ws.getWeeklyWorkDays());
             api.setStudyLevels(mapStudyLevelCollectionToSet(ws.getStudyLevels()));
-            api.setFieldOfStudies(mapFieldOfStudyCollectionToSet(ws.getFieldOfStudies()));
+            api.setFieldOfStudies(mapFieldOfStudyCollection(ws.getFieldOfStudies()));
             api.setSpecializations(mapStringCollectionToSet(ws.getSpecializations()));
             api.setPreviousTrainingRequired(ws.isPreviousTrainingRequired());
             api.setOtherRequirements(ws.getOtherRequirements());
@@ -549,55 +542,6 @@ public final class ExchangeMapper extends CommonMapper {
         return api;
     }
 
-    private static Set<FieldOfStudy> mapFieldOfStudyCollectionToSet(final Collection<net.iaeste.iws.ws.FieldOfStudy> source) {
-        final Set<FieldOfStudy> set = EnumSet.noneOf(FieldOfStudy.class);
-
-        if (source != null) {
-            for (final net.iaeste.iws.ws.FieldOfStudy fieldOfStudy : source) {
-                set.add(map(fieldOfStudy));
-            }
-        }
-
-        return set;
-    }
-
-    private static Collection<net.iaeste.iws.ws.FieldOfStudy> mapFieldOfStudyCollection(final Collection<FieldOfStudy> source) {
-        final Set<net.iaeste.iws.ws.FieldOfStudy> set = EnumSet.noneOf(net.iaeste.iws.ws.FieldOfStudy.class);
-
-        if (source != null) {
-            for (final FieldOfStudy fieldOfStudy : source) {
-                set.add(map(fieldOfStudy));
-            }
-        }
-
-        return set;
-    }
-
-    private static Set<StudyLevel> mapStudyLevelCollectionToSet(final Collection<net.iaeste.iws.ws.StudyLevel> source) {
-        final Set<StudyLevel> set = EnumSet.noneOf(StudyLevel.class);
-
-        if (source != null) {
-            for (final net.iaeste.iws.ws.StudyLevel studyLevel : source) {
-                set.add(map(studyLevel));
-            }
-        }
-
-        return set;
-    }
-
-    private static Collection<net.iaeste.iws.ws.StudyLevel> mapStudyLevelCollection(final Collection<StudyLevel> source) {
-        final Set<net.iaeste.iws.ws.StudyLevel> set = EnumSet.noneOf(net.iaeste.iws.ws.StudyLevel.class);
-
-        if (source != null) {
-            for (final StudyLevel studyLevel : source) {
-                set.add(map(studyLevel));
-            }
-        }
-
-        return set;
-    }
-
-
     // =========================================================================
     // Convertion of Exchange Enums
     // =========================================================================
@@ -608,38 +552,6 @@ public final class ExchangeMapper extends CommonMapper {
 
     private static net.iaeste.iws.ws.FetchType map(final FetchType api) {
         return api != null ? net.iaeste.iws.ws.FetchType.valueOf(api.name()) : null;
-    }
-
-    private static FieldOfStudy map(final net.iaeste.iws.ws.FieldOfStudy ws) {
-        return ws != null ? FieldOfStudy.valueOf(ws.value()) : null;
-    }
-
-    private static net.iaeste.iws.ws.FieldOfStudy map(final FieldOfStudy api) {
-        return api != null ? net.iaeste.iws.ws.FieldOfStudy.valueOf(api.name()) : null;
-    }
-
-    private static StudyLevel map(final net.iaeste.iws.ws.StudyLevel ws) {
-        return ws != null ? StudyLevel.valueOf(ws.value()) : null;
-    }
-
-    private static net.iaeste.iws.ws.StudyLevel map(final StudyLevel api) {
-        return api != null ? net.iaeste.iws.ws.StudyLevel.valueOf(api.name()) : null;
-    }
-
-    private static Language map(final net.iaeste.iws.ws.Language ws) {
-        return ws != null ? Language.valueOf(ws.value()) : null;
-    }
-
-    private static net.iaeste.iws.ws.Language map(final Language api) {
-        return api != null ? net.iaeste.iws.ws.Language.valueOf(api.name()) : null;
-    }
-
-    private static LanguageLevel map(final net.iaeste.iws.ws.LanguageLevel ws) {
-        return ws != null ? LanguageLevel.valueOf(ws.value()) : null;
-    }
-
-    private static net.iaeste.iws.ws.LanguageLevel map(final LanguageLevel api) {
-        return api != null ? net.iaeste.iws.ws.LanguageLevel.valueOf(api.name()) : null;
     }
 
     private static LanguageOperator map(final net.iaeste.iws.ws.LanguageOperator ws) {
@@ -664,14 +576,6 @@ public final class ExchangeMapper extends CommonMapper {
 
     private static net.iaeste.iws.ws.ExchangeType map(final ExchangeType api) {
         return api != null ? net.iaeste.iws.ws.ExchangeType.valueOf(api.name()) : null;
-    }
-
-    private static OfferState map(final net.iaeste.iws.ws.OfferState ws) {
-        return ws != null ? OfferState.valueOf(ws.value()) : null;
-    }
-
-    private static net.iaeste.iws.ws.OfferState map(final OfferState api) {
-        return api != null ? net.iaeste.iws.ws.OfferState.valueOf(api.name()) : null;
     }
 
     private static TypeOfWork map(final net.iaeste.iws.ws.TypeOfWork ws) {

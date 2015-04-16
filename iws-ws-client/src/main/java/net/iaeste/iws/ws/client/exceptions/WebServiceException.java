@@ -15,6 +15,7 @@
 package net.iaeste.iws.ws.client.exceptions;
 
 import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.exceptions.IWSException;
 
@@ -27,6 +28,18 @@ public final class WebServiceException extends IWSException {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
+
+    /**
+     * Default Constructor, for the case where an error condition has arisen,
+     * and the only information available is the type of error, and a message
+     * describing the error.
+     *
+     * @param error    IWS Error
+     * @param message  Specific message, regarding the problem
+     */
+    public WebServiceException(final IWSError error, final String message) {
+        super(error, message);
+    }
 
     /**
      * Default Constructor, for the case where an error condition has arisen,

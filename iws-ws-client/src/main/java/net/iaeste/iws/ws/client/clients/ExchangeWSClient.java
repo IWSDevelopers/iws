@@ -62,7 +62,7 @@ import java.net.URL;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.1
  */
-public final class ExchangeWSClient extends CommonClient implements Exchange {
+public final class ExchangeWSClient extends CommonWSClient implements Exchange {
 
     // =========================================================================
     // Constructor & Setup of WS Client
@@ -70,7 +70,6 @@ public final class ExchangeWSClient extends CommonClient implements Exchange {
 
     private static final QName ACCESS_SERVICE_NAME = new QName("http://ws.iws.iaeste.net/", "exchangeWSService");
     private static final QName ACCESS_SERVICE_PORT = new QName("http://ws.iws.iaeste.net/", "exchangeWS");
-    private static final String ENDPOINT_ADDRESS = BindingProvider.ENDPOINT_ADDRESS_PROPERTY;
     private final ExchangeWS client;
 
     /**
@@ -78,7 +77,7 @@ public final class ExchangeWSClient extends CommonClient implements Exchange {
      * parameter, to generate a new WebService Client instance.<br />
      *   For example: https://iws.iaeste.net/iws-ws/AccessWS?wsdl
      *
-     * @param wsdlLocation IWS Access WSDL URL
+     * @param wsdlLocation IWS Exchange WSDL URL
      * @throws MalformedURLException if not a valid URL
      */
     public ExchangeWSClient(final String wsdlLocation) throws MalformedURLException {

@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2015, IAESTE Internet Development Team. All rights reserved.
  * ----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-client) - net.iaeste.iws.client.ws.AccessWSClient
+ * Project: IntraWeb Services (iws-ws-client) - net.iaeste.iws.ws.client.clients.CommitteeWSClient
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -14,26 +14,28 @@
  */
 package net.iaeste.iws.ws.client.clients;
 
-import net.iaeste.iws.api.Access;
+import static net.iaeste.iws.ws.client.mappers.CommitteeMapper.map;
+
+import net.iaeste.iws.api.Committees;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
-import net.iaeste.iws.api.dtos.Password;
-import net.iaeste.iws.api.requests.AuthenticationRequest;
-import net.iaeste.iws.api.requests.SessionDataRequest;
-import net.iaeste.iws.api.responses.AuthenticationResponse;
+import net.iaeste.iws.api.requests.CommitteeRequest;
+import net.iaeste.iws.api.requests.FetchCommitteeRequest;
+import net.iaeste.iws.api.requests.FetchInternationalGroupRequest;
+import net.iaeste.iws.api.requests.FetchSurveyOfCountryRequest;
+import net.iaeste.iws.api.requests.InternationalGroupRequest;
+import net.iaeste.iws.api.requests.SurveyOfCountryRequest;
 import net.iaeste.iws.api.responses.FallibleResponse;
-import net.iaeste.iws.api.responses.FetchPermissionResponse;
-import net.iaeste.iws.api.responses.SessionDataResponse;
-import net.iaeste.iws.ws.AccessWS;
-import net.iaeste.iws.ws.client.mappers.AccessMapper;
-import net.iaeste.iws.ws.client.mappers.CommonMapper;
+import net.iaeste.iws.api.responses.FetchCommitteeResponse;
+import net.iaeste.iws.api.responses.FetchInternationalGroupResponse;
+import net.iaeste.iws.api.responses.FetchSurveyOfCountryRespose;
+import net.iaeste.iws.ws.CommitteeWS;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.frontend.ClientProxy;
 import org.apache.cxf.transport.http.HTTPConduit;
 
 import javax.xml.namespace.QName;
 import javax.xml.ws.BindingProvider;
-import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -42,27 +44,27 @@ import java.net.URL;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.1
  */
-public final class AccessWSClient extends CommonWSClient implements Access {
+public final class CommitteeWSClient extends CommonWSClient implements Committees {
 
     // =========================================================================
     // Constructor & Setup of WS Client
     // =========================================================================
 
-    private static final QName ACCESS_SERVICE_NAME = new QName("http://ws.iws.iaeste.net/", "accessWSService");
-    private static final QName ACCESS_SERVICE_PORT = new QName("http://ws.iws.iaeste.net/", "accessWS");
-    private final AccessWS client;
+    private static final QName ACCESS_SERVICE_NAME = new QName("http://ws.iws.iaeste.net/", "committeeWSService");
+    private static final QName ACCESS_SERVICE_PORT = new QName("http://ws.iws.iaeste.net/", "committeeWS");
+    private final CommitteeWS client;
 
     /**
      * IWS Access WebService Client Constructor. Takes the URL for the WSDL as
      * parameter, to generate a new WebService Client instance.<br />
      *   For example: https://iws.iaeste.net/iws-ws/AccessWS?wsdl
      *
-     * @param wsdlLocation IWS Access WSDL URL
+     * @param wsdlLocation IWS Committees WSDL URL
      * @throws MalformedURLException if not a valid URL
      */
-    public AccessWSClient(final String wsdlLocation) throws MalformedURLException {
+    public CommitteeWSClient(final String wsdlLocation) throws MalformedURLException {
         super(new URL(wsdlLocation), ACCESS_SERVICE_NAME);
-        client = getPort(ACCESS_SERVICE_PORT, AccessWS.class);
+        client = getPort(ACCESS_SERVICE_PORT, CommitteeWS.class);
 
         // make sure to initialize tlsParams prior to this call somewhere
         //http.setTlsClientParameters(getTlsParams());
@@ -82,7 +84,7 @@ public final class AccessWSClient extends CommonWSClient implements Access {
         final Client proxy = ClientProxy.getClient(client);
         final HTTPConduit conduit = (HTTPConduit) proxy.getConduit();
 
-        // If we're dealing with an HTTPS request, then we'll initialize and
+        // If we're dealing with a HTTPS request, then we'll initialize and
         // set the TLS Client Parameters. The check is primitive, but covers
         // the general case.
         if ("https://".equals(wsdlLocation.substring(0, 8).toLowerCase(IWSConstants.DEFAULT_LOCALE))) {
@@ -98,94 +100,54 @@ public final class AccessWSClient extends CommonWSClient implements Access {
     }
 
     // =========================================================================
-    // Implementation of the Access Interface
+    // Implementation of the Exchange Interface
     // =========================================================================
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public AuthenticationResponse generateSession(final AuthenticationRequest request) {
-        return AccessMapper.map(client.generateSession(AccessMapper.map(request)));
+    public FetchCommitteeResponse fetchCommittees(final AuthenticationToken token, final FetchCommitteeRequest request) {
+        return map(client.fetchCommittees(map(token), map(request)));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public FallibleResponse requestResettingSession(final AuthenticationRequest request) {
-        return CommonMapper.map(client.requestResettingSession(AccessMapper.map(request)));
+    public FallibleResponse processCommittee(final AuthenticationToken token, final CommitteeRequest request) {
+        return map(client.processCommittee(map(token), map(request)));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public AuthenticationResponse resetSession(final String resetSessionToken) {
-        return AccessMapper.map(client.resetSession(resetSessionToken));
+    public FetchInternationalGroupResponse fetchInternationalGroups(final AuthenticationToken token, final FetchInternationalGroupRequest request) {
+        return map(client.fetchInternationalGroups(map(token), map(request)));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <T extends Serializable> FallibleResponse saveSessionData(final AuthenticationToken token, final SessionDataRequest<T> request) {
-        return null;
+    public FallibleResponse processInternationalGroup(final AuthenticationToken token, final InternationalGroupRequest request) {
+        return map(client.processInternationalGroup(map(token), map(request)));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <T extends Serializable> SessionDataResponse<T> readSessionData(final AuthenticationToken token) {
-        return null;
+    public FetchSurveyOfCountryRespose fetchSurveyOfCountry(final AuthenticationToken token, final FetchSurveyOfCountryRequest request) {
+        return map(client.fetchSurveyOfCountry(map(token), map(request)));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public FallibleResponse verifySession(final AuthenticationToken token) {
-        return CommonMapper.map(client.verifySession(CommonMapper.map(token)));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public FallibleResponse deprecateSession(final AuthenticationToken token) {
-        return CommonMapper.map(client.deprecateSession(CommonMapper.map(token)));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public FallibleResponse forgotPassword(final String username) {
-        return CommonMapper.map(client.forgotPassword(username));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public FallibleResponse resetPassword(final String resetPasswordToken, final Password password) {
-        return CommonMapper.map(client.resetPassword(resetPasswordToken, AccessMapper.map(password)));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public FallibleResponse updatePassword(final AuthenticationToken token, final Password password) {
-        return CommonMapper.map(client.updatePassword(CommonMapper.map(token), AccessMapper.map(password)));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public FetchPermissionResponse fetchPermissions(final AuthenticationToken token) {
-        return AccessMapper.map(client.fetchPermissions(CommonMapper.map(token)));
+    public FallibleResponse processSurveyOfCountry(final AuthenticationToken token, final SurveyOfCountryRequest request) {
+        return map(client.processSurveyOfCountry(map(token), map(request)));
     }
 }

@@ -37,7 +37,7 @@
           <xs:element name="privacy" type="tns:Privacy"/>
           <xs:element name="group" nillable="true" type="tns:Group"/>
           <xs:element name="user" nillable="true" type="tns:User"/>
-          <xs:element name="folder" nillable="true" type="tns:Folder"/>
+          <xs:element name="folderId" nillable="true" type="xs:string"/>
           <xs:element name="filename" type="xs:string"/>
           <xs:element name="filedata" nillable="true" type="xs:base64Binary"/>
           <xs:element name="filesize" nillable="true" type="xs:int"/>
@@ -156,23 +156,6 @@
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="Folder">
-    <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
-        <xs:sequence>
-          <xs:element name="folderId" nillable="true" type="xs:string"/>
-          <xs:element name="parentId" nillable="true" type="xs:string"/>
-          <xs:element name="group" type="tns:Group"/>
-          <xs:element name="foldername" type="xs:string"/>
-          <xs:element maxOccurs="unbounded" name="folders" nillable="true" type="tns:Folder"/>
-          <xs:element maxOccurs="unbounded" name="files" nillable="true" type="tns:File"/>
-          <xs:element name="modified" nillable="true" type="tns:Date"/>
-          <xs:element name="created" nillable="true" type="tns:Date"/>
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
   <xs:complexType final="extension restriction" name="FileResponse">
     <xs:complexContent>
       <xs:extension base="tns:FallibleResponse">
@@ -212,6 +195,23 @@
       <xs:extension base="tns:FallibleResponse">
         <xs:sequence>
           <xs:element name="folder" nillable="true" type="tns:Folder"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="Folder">
+    <xs:complexContent>
+      <xs:extension base="tns:abstractVerification">
+        <xs:sequence>
+          <xs:element name="folderId" nillable="true" type="xs:string"/>
+          <xs:element name="parentId" nillable="true" type="xs:string"/>
+          <xs:element name="group" type="tns:Group"/>
+          <xs:element name="foldername" type="xs:string"/>
+          <xs:element maxOccurs="unbounded" name="folders" nillable="true" type="tns:Folder"/>
+          <xs:element maxOccurs="unbounded" name="files" nillable="true" type="tns:File"/>
+          <xs:element name="modified" nillable="true" type="tns:Date"/>
+          <xs:element name="created" nillable="true" type="tns:Date"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>

@@ -48,29 +48,7 @@
     <xs:complexContent>
       <xs:extension base="tns:FallibleResponse">
         <xs:sequence>
-          <xs:element maxOccurs="unbounded" name="students" nillable="true">
-            <xs:complexType final="extension restriction">
-              <xs:complexContent>
-                <xs:extension base="tns:abstractVerification">
-                  <xs:sequence>
-                    <xs:element name="user" type="tns:User"/>
-                    <xs:element name="studyLevel" nillable="true" type="tns:StudyLevel"/>
-                    <xs:element maxOccurs="unbounded" name="fieldOfStudies" nillable="true" type="tns:FieldOfStudy"/>
-                    <xs:element maxOccurs="unbounded" name="specializations" nillable="true" type="tns:Specialization"/>
-                    <xs:element name="available" nillable="true" type="tns:DatePeriod"/>
-                    <xs:element name="language1" nillable="true" type="tns:Language"/>
-                    <xs:element name="language1Level" nillable="true" type="tns:LanguageLevel"/>
-                    <xs:element name="language2" nillable="true" type="tns:Language"/>
-                    <xs:element name="language2Level" nillable="true" type="tns:LanguageLevel"/>
-                    <xs:element name="language3" nillable="true" type="tns:Language"/>
-                    <xs:element name="language3Level" nillable="true" type="tns:LanguageLevel"/>
-                    <xs:element name="modified" nillable="true" type="tns:DateTime"/>
-                    <xs:element name="created" nillable="true" type="tns:DateTime"/>
-                  </xs:sequence>
-                </xs:extension>
-              </xs:complexContent>
-            </xs:complexType>
-          </xs:element>
+          <xs:element maxOccurs="unbounded" name="students" nillable="true" type="tns:Student"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -81,6 +59,28 @@
       <xs:element name="error" type="tns:IWSError"/>
       <xs:element name="message" type="xs:string"/>
     </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="Student">
+    <xs:complexContent>
+      <xs:extension base="tns:abstractVerification">
+        <xs:sequence>
+          <xs:element name="user" type="tns:User"/>
+          <xs:element name="studyLevel" nillable="true" type="tns:StudyLevel"/>
+          <xs:element maxOccurs="unbounded" name="fieldOfStudies" nillable="true" type="tns:FieldOfStudy"/>
+          <xs:element maxOccurs="unbounded" name="specializations" nillable="true" type="tns:Specialization"/>
+          <xs:element name="available" nillable="true" type="tns:DatePeriod"/>
+          <xs:element name="language1" nillable="true" type="tns:Language"/>
+          <xs:element name="language1Level" nillable="true" type="tns:LanguageLevel"/>
+          <xs:element name="language2" nillable="true" type="tns:Language"/>
+          <xs:element name="language2Level" nillable="true" type="tns:LanguageLevel"/>
+          <xs:element name="language3" nillable="true" type="tns:Language"/>
+          <xs:element name="language3Level" nillable="true" type="tns:LanguageLevel"/>
+          <xs:element name="modified" nillable="true" type="tns:DateTime"/>
+          <xs:element name="created" nillable="true" type="tns:DateTime"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
   </xs:complexType>
 
   <xs:complexType final="extension restriction" name="User">
@@ -220,32 +220,10 @@
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
-          <xs:element minOccurs="0" name="applicationId" type="xs:string"/>
+          <xs:element name="applicationId" nillable="true" type="xs:string"/>
           <xs:element name="offerId" type="xs:string"/>
           <xs:element name="offerState" nillable="true" type="tns:OfferState"/>
-          <xs:element name="student">
-            <xs:complexType final="extension restriction">
-              <xs:complexContent>
-                <xs:extension base="tns:abstractVerification">
-                  <xs:sequence>
-                    <xs:element name="user" type="tns:User"/>
-                    <xs:element name="studyLevel" nillable="true" type="tns:StudyLevel"/>
-                    <xs:element maxOccurs="unbounded" name="fieldOfStudies" nillable="true" type="tns:FieldOfStudy"/>
-                    <xs:element maxOccurs="unbounded" name="specializations" nillable="true" type="tns:Specialization"/>
-                    <xs:element name="available" nillable="true" type="tns:DatePeriod"/>
-                    <xs:element name="language1" nillable="true" type="tns:Language"/>
-                    <xs:element name="language1Level" nillable="true" type="tns:LanguageLevel"/>
-                    <xs:element name="language2" nillable="true" type="tns:Language"/>
-                    <xs:element name="language2Level" nillable="true" type="tns:LanguageLevel"/>
-                    <xs:element name="language3" nillable="true" type="tns:Language"/>
-                    <xs:element name="language3Level" nillable="true" type="tns:LanguageLevel"/>
-                    <xs:element name="modified" nillable="true" type="tns:DateTime"/>
-                    <xs:element name="created" nillable="true" type="tns:DateTime"/>
-                  </xs:sequence>
-                </xs:extension>
-              </xs:complexContent>
-            </xs:complexType>
-          </xs:element>
+          <xs:element name="student" type="tns:Student"/>
           <xs:element name="status" nillable="true" type="tns:ApplicationStatus"/>
           <xs:element name="homeAddress" nillable="true" type="tns:Address"/>
           <xs:element name="email" nillable="true" type="xs:string"/>
@@ -274,29 +252,29 @@
           <xs:element name="rejectByEmployerReason" nillable="true" type="xs:string"/>
           <xs:element name="rejectDescription" nillable="true" type="xs:string"/>
           <xs:element name="rejectInternalComment" nillable="true" type="xs:string"/>
-          <xs:element name="acceptance" nillable="true">
-            <xs:complexType final="extension restriction">
-              <xs:complexContent>
-                <xs:extension base="tns:abstractVerification">
-                  <xs:sequence>
-                    <xs:element name="applicationId" nillable="true" type="xs:string"/>
-                    <xs:element name="firstWorkingDay" nillable="true" type="tns:Date"/>
-                    <xs:element name="workingPlace" nillable="true" type="xs:string"/>
-                    <xs:element name="contactPerson" nillable="true" type="xs:string"/>
-                    <xs:element name="contactPersonEmail" nillable="true" type="xs:string"/>
-                    <xs:element name="contactPersonPhone" nillable="true" type="xs:string"/>
-                    <xs:element name="confirmedPeriod" nillable="true" type="tns:DatePeriod"/>
-                    <xs:element name="additionalInformation" nillable="true" type="xs:string"/>
-                  </xs:sequence>
-                </xs:extension>
-              </xs:complexContent>
-            </xs:complexType>
-          </xs:element>
+          <xs:element name="acceptance" nillable="true" type="tns:StudentAcceptance"/>
           <xs:element name="travelInformation" nillable="true" type="tns:StudentAcceptanceConfirmation"/>
           <xs:element name="nominatedAt" nillable="true" type="tns:DateTime"/>
           <xs:element maxOccurs="unbounded" name="attachments" nillable="true" type="tns:File"/>
           <xs:element name="modified" nillable="true" type="tns:DateTime"/>
           <xs:element name="created" nillable="true" type="tns:DateTime"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="StudentAcceptance">
+    <xs:complexContent>
+      <xs:extension base="tns:abstractVerification">
+        <xs:sequence>
+          <xs:element name="applicationId" nillable="true" type="xs:string"/>
+          <xs:element name="firstWorkingDay" nillable="true" type="tns:Date"/>
+          <xs:element name="workingPlace" nillable="true" type="xs:string"/>
+          <xs:element name="contactPerson" nillable="true" type="xs:string"/>
+          <xs:element name="contactPersonEmail" nillable="true" type="xs:string"/>
+          <xs:element name="contactPersonPhone" nillable="true" type="xs:string"/>
+          <xs:element name="confirmedPeriod" nillable="true" type="tns:DatePeriod"/>
+          <xs:element name="additionalInformation" nillable="true" type="xs:string"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -311,7 +289,7 @@
           <xs:element name="transportationType" nillable="true" type="tns:TransportationType"/>
           <xs:element name="departureFrom" nillable="true" type="xs:string"/>
           <xs:element name="transportNumber" nillable="true" type="xs:string"/>
-          <xs:element name="arrivalDateTime" nillable="true" type="tns:Date"/>
+          <xs:element name="arrivalDateTime" nillable="true" type="tns:DateTime"/>
           <xs:element name="phoneNumberDuringTravel" nillable="true" type="xs:string"/>
           <xs:element name="lodgingRequiredFrom" nillable="true" type="tns:Date"/>
           <xs:element name="lodgingRequiredTo" nillable="true" type="tns:Date"/>
@@ -331,7 +309,7 @@
           <xs:element name="privacy" type="tns:Privacy"/>
           <xs:element name="group" nillable="true" type="tns:Group"/>
           <xs:element name="user" nillable="true" type="tns:User"/>
-          <xs:element name="folder" nillable="true" type="tns:Folder"/>
+          <xs:element name="folderId" nillable="true" type="xs:string"/>
           <xs:element name="filename" type="xs:string"/>
           <xs:element name="filedata" nillable="true" type="xs:base64Binary"/>
           <xs:element name="filesize" nillable="true" type="xs:int"/>
@@ -360,23 +338,6 @@
           <xs:element name="description" nillable="true" type="xs:string"/>
           <xs:element name="monitoringLevel" nillable="true" type="tns:MonitoringLevel"/>
           <xs:element name="country" nillable="true" type="tns:Country"/>
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
-  <xs:complexType final="extension restriction" name="Folder">
-    <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
-        <xs:sequence>
-          <xs:element name="folderId" nillable="true" type="xs:string"/>
-          <xs:element name="parentId" nillable="true" type="xs:string"/>
-          <xs:element name="group" type="tns:Group"/>
-          <xs:element name="foldername" type="xs:string"/>
-          <xs:element maxOccurs="unbounded" name="folders" nillable="true" type="tns:Folder"/>
-          <xs:element maxOccurs="unbounded" name="files" nillable="true" type="tns:File"/>
-          <xs:element name="modified" nillable="true" type="tns:Date"/>
-          <xs:element name="created" nillable="true" type="tns:Date"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -430,29 +391,7 @@
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
-          <xs:element name="student" nillable="true">
-            <xs:complexType final="extension restriction">
-              <xs:complexContent>
-                <xs:extension base="tns:abstractVerification">
-                  <xs:sequence>
-                    <xs:element name="user" type="tns:User"/>
-                    <xs:element name="studyLevel" nillable="true" type="tns:StudyLevel"/>
-                    <xs:element maxOccurs="unbounded" name="fieldOfStudies" nillable="true" type="tns:FieldOfStudy"/>
-                    <xs:element maxOccurs="unbounded" name="specializations" nillable="true" type="tns:Specialization"/>
-                    <xs:element name="available" nillable="true" type="tns:DatePeriod"/>
-                    <xs:element name="language1" nillable="true" type="tns:Language"/>
-                    <xs:element name="language1Level" nillable="true" type="tns:LanguageLevel"/>
-                    <xs:element name="language2" nillable="true" type="tns:Language"/>
-                    <xs:element name="language2Level" nillable="true" type="tns:LanguageLevel"/>
-                    <xs:element name="language3" nillable="true" type="tns:Language"/>
-                    <xs:element name="language3Level" nillable="true" type="tns:LanguageLevel"/>
-                    <xs:element name="modified" nillable="true" type="tns:DateTime"/>
-                    <xs:element name="created" nillable="true" type="tns:DateTime"/>
-                  </xs:sequence>
-                </xs:extension>
-              </xs:complexContent>
-            </xs:complexType>
-          </xs:element>
+          <xs:element name="student" nillable="true" type="tns:Student"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -462,29 +401,7 @@
     <xs:complexContent>
       <xs:extension base="tns:FallibleResponse">
         <xs:sequence>
-          <xs:element name="student" nillable="true">
-            <xs:complexType final="extension restriction">
-              <xs:complexContent>
-                <xs:extension base="tns:abstractVerification">
-                  <xs:sequence>
-                    <xs:element name="user" type="tns:User"/>
-                    <xs:element name="studyLevel" nillable="true" type="tns:StudyLevel"/>
-                    <xs:element maxOccurs="unbounded" name="fieldOfStudies" nillable="true" type="tns:FieldOfStudy"/>
-                    <xs:element maxOccurs="unbounded" name="specializations" nillable="true" type="tns:Specialization"/>
-                    <xs:element name="available" nillable="true" type="tns:DatePeriod"/>
-                    <xs:element name="language1" nillable="true" type="tns:Language"/>
-                    <xs:element name="language1Level" nillable="true" type="tns:LanguageLevel"/>
-                    <xs:element name="language2" nillable="true" type="tns:Language"/>
-                    <xs:element name="language2Level" nillable="true" type="tns:LanguageLevel"/>
-                    <xs:element name="language3" nillable="true" type="tns:Language"/>
-                    <xs:element name="language3Level" nillable="true" type="tns:LanguageLevel"/>
-                    <xs:element name="modified" nillable="true" type="tns:DateTime"/>
-                    <xs:element name="created" nillable="true" type="tns:DateTime"/>
-                  </xs:sequence>
-                </xs:extension>
-              </xs:complexContent>
-            </xs:complexType>
-          </xs:element>
+          <xs:element name="student" nillable="true" type="tns:Student"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>

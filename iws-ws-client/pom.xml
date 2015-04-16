@@ -41,6 +41,9 @@
                     <showDeprecation>true</showDeprecation>
                     <showWarnings>true</showWarnings>
                     <encoding>UTF-8</encoding>
+                    <!-- Still using Java7, as we wish to use this Client in
+                         the production Glassfish3, which cannot run under
+                         Java8 -->
                     <source>1.7</source>
                     <target>1.7</target>
                 </configuration>
@@ -268,6 +271,7 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
+            <scope>runtime</scope>
         </dependency>
     </dependencies>
 

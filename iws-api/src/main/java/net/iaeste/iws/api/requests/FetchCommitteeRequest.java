@@ -26,7 +26,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 import java.util.EnumSet;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -46,7 +45,7 @@ public class FetchCommitteeRequest extends AbstractPaginatable {
     private static final Set<GroupStatus> ALLOWED = EnumSet.of(GroupStatus.ACTIVE, GroupStatus.SUSPENDED);
     @XmlElement(required = true, nillable = true) private List<String> countryIds;
     @XmlElement(required = true, nillable = true) private Membership membership;
-    @XmlElement(required = true, nillable = true) private HashSet<GroupStatus> statuses = new HashSet<>(ALLOWED);
+    @XmlElement(required = true, nillable = true) private Set<GroupStatus> statuses = EnumSet.copyOf(ALLOWED);
 
     // =========================================================================
     // Object Constructors
@@ -146,13 +145,13 @@ public class FetchCommitteeRequest extends AbstractPaginatable {
      * @param statuses Set of Status values to include in the lookup
      * @throws IllegalArgumentException if the statuses is null
      */
-    public void setStatuses(final HashSet<GroupStatus> statuses) throws IllegalArgumentException {
+    public void setStatuses(final Set<GroupStatus> statuses) throws IllegalArgumentException {
         ensureNotNullAndContains("statuses", statuses, ALLOWED);
 
         this.statuses = statuses;
     }
 
-    public HashSet<GroupStatus> getStatuses() {
+    public Set<GroupStatus> getStatuses() {
         return statuses;
     }
 

@@ -31,8 +31,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Standard IAESTE Student.
@@ -50,8 +50,8 @@ public final class Student extends AbstractVerification {
 
     @XmlElement(required = true, nillable = false) private User user = null;
     @XmlElement(required = true, nillable = true)  private StudyLevel studyLevel = StudyLevel.B;
-    @XmlElement(required = true, nillable = true)  private HashSet<FieldOfStudy> fieldOfStudies = null;
-    @XmlElement(required = true, nillable = true)  private HashSet<Specialization> specializations = null;
+    @XmlElement(required = true, nillable = true)  private Set<FieldOfStudy> fieldOfStudies = null;
+    @XmlElement(required = true, nillable = true)  private Set<Specialization> specializations = null;
     @XmlElement(required = true, nillable = true)  private DatePeriod available = null;
     @XmlElement(required = true, nillable = true)  private Language language1 = null;
     @XmlElement(required = true, nillable = true)  private LanguageLevel language1Level = null;
@@ -140,21 +140,21 @@ public final class Student extends AbstractVerification {
         return studyLevel;
     }
 
-    public void setFieldOfStudies(final HashSet<FieldOfStudy> fieldOfStudies) throws IllegalArgumentException {
+    public void setFieldOfStudies(final Set<FieldOfStudy> fieldOfStudies) throws IllegalArgumentException {
         ensureNotTooLong("fieldOfStudies", fieldOfStudies, IWSExchangeConstants.MAX_OFFER_FIELDS_OF_STUDY);
         this.fieldOfStudies = fieldOfStudies;
     }
 
-    public HashSet<FieldOfStudy> getFieldOfStudies() {
+    public Set<FieldOfStudy> getFieldOfStudies() {
         return fieldOfStudies;
     }
 
-    public void setSpecializations(final HashSet<Specialization> specializations) throws IllegalArgumentException {
+    public void setSpecializations(final Set<Specialization> specializations) throws IllegalArgumentException {
         ensureNotTooLong("specializations", specializations, IWSExchangeConstants.MAX_OFFER_SPECIALIZATIONS);
         this.specializations = specializations;
     }
 
-    public HashSet<Specialization> getSpecializations() {
+    public Set<Specialization> getSpecializations() {
         return specializations;
     }
 

@@ -20,9 +20,19 @@ import net.iaeste.iws.api.Committees;
 import net.iaeste.iws.api.Exchange;
 import net.iaeste.iws.api.Storage;
 import net.iaeste.iws.api.Students;
+import net.iaeste.iws.api.constants.IWSErrors;
+import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.client.spring.Beans;
+import net.iaeste.iws.ws.client.clients.AccessWSClient;
+import net.iaeste.iws.ws.client.clients.AdministrationWSClient;
+import net.iaeste.iws.ws.client.clients.CommitteeWSClient;
+import net.iaeste.iws.ws.client.clients.ExchangeWSClient;
+import net.iaeste.iws.ws.client.clients.StorageWSClient;
+import net.iaeste.iws.ws.client.clients.StudentWSClient;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+import java.net.MalformedURLException;
 
 /**
  * The ClientFactory will use the provided Properties, to determine which
@@ -35,13 +45,13 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
- * @noinspection StaticNonFinalField
  */
 public final class ClientFactory {
 
     private static final Object LOCK = new Object();
     private static ClientFactory instance = null;
     private final ConfigurableApplicationContext context;
+    private static final boolean useWebService = false;
 
     // =========================================================================
     // Factory Instantiation Methods
@@ -78,26 +88,98 @@ public final class ClientFactory {
     // =========================================================================
 
     Access getAccessImplementation() {
-        return (Access) context.getBean("accessSpringClient");
+        final Access access;
+
+        if (useWebService) {
+            try {
+                access = new AccessWSClient("http://localhost:8080/iws-ws/accessWS?wsdl");
+            } catch (MalformedURLException e) {
+                throw new IWSException(IWSErrors.FATAL, "Cannot connect to the IWS WebServices: " + e.getMessage(), e);
+            }
+        } else {
+            access = (Access) context.getBean("accessSpringClient");
+        }
+
+        return access;
     }
 
     Administration getAdministrationImplementation() {
-        return (Administration) context.getBean("administrationSpringClient");
+        final Administration administration;
+
+        if (useWebService) {
+            try {
+                administration = new AdministrationWSClient("http://localhost:8080/iws-ws/administrationWS?wsdl");
+            } catch (MalformedURLException e) {
+                throw new IWSException(IWSErrors.FATAL, "Cannot connect to the IWS WebServices: " + e.getMessage(), e);
+            }
+        } else {
+            administration = (Administration) context.getBean("administrationSpringClient");
+        }
+
+        return administration;
     }
 
     Storage getStorageImplementation() {
-        return (Storage) context.getBean("storageSpringClient");
+        final Storage storage;
+
+        if (useWebService) {
+            try {
+                storage = new StorageWSClient("http://localhost:8080/iws-ws/storageWS?wsdl");
+            } catch (MalformedURLException e) {
+                throw new IWSException(IWSErrors.FATAL, "Cannot connect to the IWS WebServices: " + e.getMessage(), e);
+            }
+        } else {
+            storage = (Storage) context.getBean("storageSpringClient");
+        }
+
+        return storage;
     }
 
     Committees getCommitteeImplementation() {
-        return (Committees) context.getBean("committeeSpringClient");
+        final Committees committees;
+
+        if (useWebService) {
+            try {
+                committees = new CommitteeWSClient("http://localhost:8080/iws-ws/committeeWS?wsdl");
+            } catch (MalformedURLException e) {
+                throw new IWSException(IWSErrors.FATAL, "Cannot connect to the IWS WebServices: " + e.getMessage(), e);
+            }
+        } else {
+            committees = (Committees) context.getBean("committeeSpringClient");
+        }
+
+        return committees;
     }
 
     Exchange getExchangeImplementation() {
-        return (Exchange) context.getBean("exchangeSpringClient");
+        final Exchange exchange;
+
+        if (useWebService) {
+            try {
+                exchange = new ExchangeWSClient("http://localhost:8080/iws-ws/exchangeWS?wsdl");
+            } catch (MalformedURLException e) {
+                throw new IWSException(IWSErrors.FATAL, "Cannot connect to the IWS WebServices: " + e.getMessage(), e);
+            }
+        } else {
+            exchange = (Exchange) context.getBean("exchangeSpringClient");
+        }
+
+        return exchange;
     }
 
     Students getStudentImplementation() {
-        return (Students) context.getBean("studentSpringClient");
+        final Students students;
+
+        if (useWebService) {
+            try {
+                students = new StudentWSClient("http://localhost:8080/iws-ws/studentWS?wsdl");
+            } catch (MalformedURLException e) {
+                throw new IWSException(IWSErrors.FATAL, "Cannot connect to the IWS WebServices: " + e.getMessage(), e);
+            }
+        } else {
+            students = (Students) context.getBean("studentSpringClient");
+        }
+
+        return students;
     }
 }

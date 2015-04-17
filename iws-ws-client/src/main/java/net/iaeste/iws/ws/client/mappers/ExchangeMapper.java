@@ -50,8 +50,11 @@ import net.iaeste.iws.api.responses.exchange.OfferStatisticsResponse;
 import net.iaeste.iws.api.responses.exchange.PublishOfferResponse;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collection;
+import java.util.EnumMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -91,21 +94,8 @@ public final class ExchangeMapper extends CommonMapper {
         if (ws != null) {
             api = new OfferStatistics();
 
-            api.setStatistics(mapStatisticsMap(ws.getStatistics()));
+            api.setStatistics(mapWSStatisticsMap(ws.getStatistics()));
             api.setExchangeYear(ws.getExchangeYear());
-        }
-
-        return api;
-    }
-
-    private static HashMap<OfferState, Integer> mapStatisticsMap(final net.iaeste.iws.ws.OfferStatistics.Statistics ws) {
-        HashMap<OfferState, Integer> api = null;
-
-        if (ws != null) {
-            api = new HashMap<>();
-            for (final net.iaeste.iws.ws.OfferStatistics.Statistics.Entry entry : ws.getEntry()) {
-                api.put(map(entry.getKey()), entry.getValue());
-            }
         }
 
         return api;
@@ -284,39 +274,7 @@ public final class ExchangeMapper extends CommonMapper {
         if (ws != null) {
             api = new FetchPublishingGroupResponse(map(ws.getError()), ws.getMessage());
 
-            final List<PublishingGroup> list = new ArrayList<>(ws.getPublishingGroups().size());
-            for (final net.iaeste.iws.ws.PublishingGroup group : ws.getPublishingGroups()) {
-                list.add(map(group));
-            }
-            api.setPublishingGroups(list);
-        }
-
-        return api;
-    }
-
-    private static net.iaeste.iws.ws.PublishingGroup map(final PublishingGroup api) {
-        net.iaeste.iws.ws.PublishingGroup ws = null;
-
-        if (api != null) {
-            ws = new net.iaeste.iws.ws.PublishingGroup();
-
-            ws.setPublishingGroupId(api.getPublishingGroupId());
-            ws.setName(api.getName());
-            ws.getGroups().addAll(mapAPIGroupCollection(api.getGroups()));
-        }
-
-        return ws;
-    }
-
-    private static PublishingGroup map(final net.iaeste.iws.ws.PublishingGroup ws) {
-        PublishingGroup api = null;
-
-        if (ws != null) {
-            api = new PublishingGroup();
-
-            api.setPublishingGroupId(api.getPublishingGroupId());
-            api.setName(api.getName());
-            api.getGroups().addAll(mapWSGroupCollection(ws.getGroups()));
+            api.setPublishingGroups(mapWSPublishingGroupCollection(ws.getPublishingGroups()));
         }
 
         return api;
@@ -373,8 +331,24 @@ public final class ExchangeMapper extends CommonMapper {
     }
 
     // =========================================================================
-    // Internal mapping of Exchange relevant Objects
+    // Internal mapping of required Collections, DTO's & Enums
     // =========================================================================
+
+    private static List<PublishingGroup> mapWSPublishingGroupCollection(final Collection<net.iaeste.iws.ws.PublishingGroup> ws) {
+        final List<PublishingGroup> api;
+
+        if (ws != null) {
+            api = new ArrayList<>(ws.size());
+
+            for (final net.iaeste.iws.ws.PublishingGroup group : ws) {
+                api.add(map(group));
+            }
+        } else {
+            api = new ArrayList<>(0);
+        }
+
+        return api;
+    }
 
     private static Employer map(final net.iaeste.iws.ws.Employer ws) {
         Employer api = null;
@@ -441,7 +415,7 @@ public final class ExchangeMapper extends CommonMapper {
             ws.setWeeklyWorkDays(api.getWeeklyWorkDays());
             ws.getStudyLevels().addAll(mapStudyLevelCollection(api.getStudyLevels()));
             ws.getFieldOfStudies().addAll(mapAPIFieldOfStudyCollection(api.getFieldOfStudies()));
-            ws.getSpecializations().addAll(mapStringCollectionToList(api.getSpecializations()));
+            ws.getSpecializations().addAll(mapStringCollection(api.getSpecializations()));
             ws.setPreviousTrainingRequired(api.getPreviousTrainingRequired());
             ws.setOtherRequirements(api.getOtherRequirements());
             ws.setMinimumWeeks(api.getMinimumWeeks());
@@ -501,7 +475,7 @@ public final class ExchangeMapper extends CommonMapper {
             api.setWeeklyWorkDays(ws.getWeeklyWorkDays());
             api.setStudyLevels(mapStudyLevelCollectionToSet(ws.getStudyLevels()));
             api.setFieldOfStudies(mapFieldOfStudyCollection(ws.getFieldOfStudies()));
-            api.setSpecializations(mapStringCollectionToSet(ws.getSpecializations()));
+            api.setSpecializations(new HashSet<>(mapStringCollection(ws.getSpecializations())));
             api.setPreviousTrainingRequired(ws.isPreviousTrainingRequired());
             api.setOtherRequirements(ws.getOtherRequirements());
             api.setMinimumWeeks(ws.getMinimumWeeks());
@@ -542,9 +516,45 @@ public final class ExchangeMapper extends CommonMapper {
         return api;
     }
 
-    // =========================================================================
-    // Convertion of Exchange Enums
-    // =========================================================================
+    private static PublishingGroup map(final net.iaeste.iws.ws.PublishingGroup ws) {
+        PublishingGroup api = null;
+
+        if (ws != null) {
+            api = new PublishingGroup();
+
+            api.setPublishingGroupId(api.getPublishingGroupId());
+            api.setName(api.getName());
+            api.setGroups(mapWSGroupCollection(ws.getGroups()));
+        }
+
+        return api;
+    }
+
+    private static net.iaeste.iws.ws.PublishingGroup map(final PublishingGroup api) {
+        net.iaeste.iws.ws.PublishingGroup ws = null;
+
+        if (api != null) {
+            ws = new net.iaeste.iws.ws.PublishingGroup();
+
+            ws.setPublishingGroupId(api.getPublishingGroupId());
+            ws.setName(api.getName());
+            ws.getGroups().addAll(mapAPIGroupCollection(api.getGroups()));
+        }
+
+        return ws;
+    }
+
+    private static Map<OfferState, Integer> mapWSStatisticsMap(final net.iaeste.iws.ws.OfferStatistics.Statistics ws) {
+        final Map<OfferState, Integer> api = new EnumMap<>(OfferState.class);
+
+        if (ws != null) {
+            for (final net.iaeste.iws.ws.OfferStatistics.Statistics.Entry entry : ws.getEntry()) {
+                api.put(map(entry.getKey()), entry.getValue());
+            }
+        }
+
+        return api;
+    }
 
     private static net.iaeste.iws.ws.EmployerFetchType map(final EmployerFetchType api) {
         return api != null ? net.iaeste.iws.ws.EmployerFetchType.valueOf(api.name()) : null;

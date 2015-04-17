@@ -210,7 +210,7 @@
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
-          <xs:element maxOccurs="unbounded" minOccurs="0" name="statuses" nillable="true" type="tns:GroupStatus"/>
+          <xs:element maxOccurs="unbounded" name="statuses" type="tns:GroupStatus"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>

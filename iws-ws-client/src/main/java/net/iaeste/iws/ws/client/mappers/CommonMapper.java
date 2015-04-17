@@ -57,7 +57,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumSet;
 import java.util.GregorianCalendar;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -98,30 +97,6 @@ public class CommonMapper {
         return new FallibleResponse(map(ws.getError()), ws.getMessage());
     }
 
-    protected static Country map(final net.iaeste.iws.ws.Country ws) {
-        Country api = null;
-
-        // The CountryName may be null if it was a null Object returned, not
-        // sure why the CountryCode is set in that case.
-        if ((ws != null) && (ws.getCountryName() != null)) {
-            api = new Country();
-
-            api.setCountryCode(ws.getCountryCode());
-            api.setCountryName(ws.getCountryName());
-            api.setCountryNameFull(ws.getCountryNameFull());
-            api.setCountryNameNative(ws.getCountryNameNative());
-            api.setNationality(ws.getNationality());
-            api.setCitizens(ws.getCitizens());
-            api.setPhonecode(ws.getPhonecode());
-            api.setCurrency(Currency.valueOf(ws.getCurrency().name()));
-            api.setLanguages(ws.getLanguages());
-            api.setMembership(Membership.valueOf(ws.getMembership().name()));
-            api.setMemberSince(ws.getMemberSince());
-        }
-
-        return api;
-    }
-
     public static net.iaeste.iws.ws.CreateUserRequest map(final CreateUserRequest api) {
         net.iaeste.iws.ws.CreateUserRequest ws = null;
 
@@ -145,6 +120,30 @@ public class CommonMapper {
             api = new CreateUserResponse(map(ws.getError()), ws.getMessage());
 
             api.setUser(map(ws.getUser()));
+        }
+
+        return api;
+    }
+
+    protected static Country map(final net.iaeste.iws.ws.Country ws) {
+        Country api = null;
+
+        // The CountryName may be null if it was a null Object returned, not
+        // sure why the CountryCode is set in that case.
+        if ((ws != null) && (ws.getCountryName() != null)) {
+            api = new Country();
+
+            api.setCountryCode(ws.getCountryCode());
+            api.setCountryName(ws.getCountryName());
+            api.setCountryNameFull(ws.getCountryNameFull());
+            api.setCountryNameNative(ws.getCountryNameNative());
+            api.setNationality(ws.getNationality());
+            api.setCitizens(ws.getCitizens());
+            api.setPhonecode(ws.getPhonecode());
+            api.setCurrency(map(ws.getCurrency()));
+            api.setLanguages(ws.getLanguages());
+            api.setMembership(map(ws.getMembership()));
+            api.setMemberSince(ws.getMemberSince());
         }
 
         return api;
@@ -487,70 +486,89 @@ public class CommonMapper {
     // Convertion of Collections
     // =========================================================================
 
-    protected static Collection<Group> mapWSGroupCollection(final Collection<net.iaeste.iws.ws.Group> ws) {
-        final Collection<Group> collection;
+    protected static List<Group> mapWSGroupCollection(final Collection<net.iaeste.iws.ws.Group> ws) {
+        final List<Group> api;
 
         if (ws != null) {
-            collection = new HashSet<>(ws.size());
+            api = new ArrayList<>(ws.size());
             for (final net.iaeste.iws.ws.Group group : ws) {
-                collection.add(map(group));
+                api.add(map(group));
             }
         } else {
-            collection = new HashSet<>(0);
+            api = new ArrayList<>(0);
         }
 
-        return collection;
+        return api;
     }
 
-    protected static Collection<net.iaeste.iws.ws.Group> mapAPIGroupCollection(final Collection<Group> api) {
-        final Collection<net.iaeste.iws.ws.Group> collection;
+    protected static List<net.iaeste.iws.ws.Group> mapAPIGroupCollection(final Collection<Group> api) {
+        final List<net.iaeste.iws.ws.Group> ws;
 
         if (api != null) {
-            collection = new HashSet<>(api.size());
+            ws = new ArrayList<>(api.size());
+
             for (final Group group : api) {
-                collection.add(map(group));
+                ws.add(map(group));
             }
         } else {
-            collection = new HashSet<>(0);
+            ws = new ArrayList<>(0);
         }
 
-        return collection;
+        return ws;
     }
 
-    protected static Collection<String> mapStringCollection(final Collection<String> source) {
-        final Collection<String> collection;
+    protected static List<UserGroup> mapWSUserGroupCollection(final Collection<net.iaeste.iws.ws.UserGroup> ws) {
+        final List<UserGroup> api;
 
-        if (source != null) {
-            collection = new HashSet<>(source);
+        if (ws != null) {
+            api = new ArrayList<>(ws.size());
+
+            for (final net.iaeste.iws.ws.UserGroup userGroup : ws) {
+                api.add(map(userGroup));
+            }
         } else {
-            collection = new HashSet<>(0);
+            api = new ArrayList<>(0);
         }
 
-        return collection;
+        return api;
     }
 
-    protected static Set<String> mapStringCollectionToSet(final Collection<String> source) {
-        final Set<String> set;
+    protected static List<File> mapWSFileCollection(final List<net.iaeste.iws.ws.File> ws) {
+        final List<File> api;
 
-        if (source != null) {
-            set = new HashSet<>(source);
+        if (ws != null) {
+            api = new ArrayList<>(ws.size());
+
+            for (final net.iaeste.iws.ws.File file : ws) {
+                api.add(map(file));
+            }
         } else {
-            set = new HashSet<>(0);
+            api = new ArrayList<>(0);
         }
 
-        return set;
+        return api;
     }
 
-    protected static List<String> mapStringCollectionToList(final Collection<String> source) {
-        final List<String> list;
+    protected static List<net.iaeste.iws.ws.File> mapAPIFileCollection(final List<File> api) {
+        final List<net.iaeste.iws.ws.File> ws;
 
-        if (source != null) {
-            list = new ArrayList<>(source);
+        if (api != null) {
+            ws = new ArrayList<>(api.size());
+
+            for (final File file : api) {
+                ws.add(map(file));
+            }
         } else {
-            list = new ArrayList<>(0);
+            ws = new ArrayList<>(0);
         }
 
-        return list;
+        return ws;
+    }
+
+    protected static ArrayList<String> mapStringCollection(final Collection<String> source) {
+        // It may seem stupid to map a Collection into a different Collection,
+        // but we need this, to ensure that we do not get any pesky NPE's!
+        return source != null ? new ArrayList<>(source) : new ArrayList<String>(0);
     }
 
     // =========================================================================
@@ -581,7 +599,7 @@ public class CommonMapper {
         return ws != null ? UserStatus.valueOf(ws.value()) : null;
     }
 
-    private static net.iaeste.iws.ws.UserStatus map(final UserStatus api) {
+    protected static net.iaeste.iws.ws.UserStatus map(final UserStatus api) {
         return api != null ? net.iaeste.iws.ws.UserStatus.valueOf(api.name()) : null;
     }
 
@@ -599,6 +617,10 @@ public class CommonMapper {
 
     protected static net.iaeste.iws.ws.Currency map(final Currency api) {
         return api != null ? net.iaeste.iws.ws.Currency.valueOf(api.name()) : null;
+    }
+
+    protected static Membership map(final net.iaeste.iws.ws.Membership ws) {
+        return ws != null ? Membership.valueOf(ws.value()) : null;
     }
 
     protected static net.iaeste.iws.ws.Membership map(final Membership api) {
@@ -628,10 +650,6 @@ public class CommonMapper {
     protected static net.iaeste.iws.ws.Permission map(final Permission api) {
         return api != null ? net.iaeste.iws.ws.Permission.valueOf(api.name()) : null;
     }
-
-    //private static SortingField map(final net.iaeste.iws.ws.SortingField ws) {
-    //    return ws != null ? SortingField.valueOf(ws.value()) : null;
-    //}
 
     private static net.iaeste.iws.ws.SortingField map(final SortingField api) {
         return api != null ? net.iaeste.iws.ws.SortingField.valueOf(api.name()) : null;

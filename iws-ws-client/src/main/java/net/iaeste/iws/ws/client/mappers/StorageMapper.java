@@ -25,6 +25,9 @@ import net.iaeste.iws.api.responses.FetchFolderResponse;
 import net.iaeste.iws.api.responses.FileResponse;
 import net.iaeste.iws.api.responses.FolderResponse;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -136,11 +139,39 @@ public final class StorageMapper extends CommonMapper {
     }
 
     // =========================================================================
-    // Internal mapping of Storage relevant Objects
+    // Internal mapping of required Collections, DTO's & Enums
     // =========================================================================
 
-    private static net.iaeste.iws.ws.StorageType map(final StorageType api) {
-        return api != null ? net.iaeste.iws.ws.StorageType.valueOf(api.name()) : null;
+    private static List<Folder> mapWSFolderCollection(final List<net.iaeste.iws.ws.Folder> ws) {
+        final List<Folder> api;
+
+        if (ws != null) {
+            api = new ArrayList<>(ws.size());
+
+            for (final net.iaeste.iws.ws.Folder folder : ws) {
+                api.add(map(folder));
+            }
+        } else {
+            api = new ArrayList<>(0);
+        }
+
+        return api;
+    }
+
+    private static List<net.iaeste.iws.ws.Folder> mapAPIFolderCollection(final List<Folder> api) {
+        final List<net.iaeste.iws.ws.Folder> ws;
+
+        if (api != null) {
+            ws = new ArrayList<>(api.size());
+
+            for (final Folder folder : api) {
+                ws.add(map(folder));
+            }
+        } else {
+            ws = new ArrayList<>(0);
+        }
+
+        return ws;
     }
 
     private static Folder map(final net.iaeste.iws.ws.Folder ws) {
@@ -153,8 +184,8 @@ public final class StorageMapper extends CommonMapper {
             api.setParentId(ws.getParentId());
             api.setGroup(map(ws.getGroup()));
             api.setFoldername(ws.getFoldername());
-            //TODO List<Folder> folders = null;
-            //TODO List<File> files = null;
+            api.setFolders(mapWSFolderCollection(ws.getFolders()));
+            api.setFiles(mapWSFileCollection(ws.getFiles()));
             api.setModified(map(ws.getModified()));
             api.setCreated(map(ws.getCreated()));
         }
@@ -172,12 +203,16 @@ public final class StorageMapper extends CommonMapper {
             ws.setParentId(api.getParentId());
             ws.setGroup(map(api.getGroup()));
             ws.setFoldername(api.getFoldername());
-            //TODO List<Folder> folders = null;
-            //TODO List<File> files = null;
+            ws.getFolders().addAll(mapAPIFolderCollection(api.getFolders()));
+            ws.getFiles().addAll(mapAPIFileCollection(api.getFiles()));
             ws.setModified(map(api.getModified()));
             ws.setCreated(map(api.getCreated()));
         }
 
         return ws;
+    }
+
+    private static net.iaeste.iws.ws.StorageType map(final StorageType api) {
+        return api != null ? net.iaeste.iws.ws.StorageType.valueOf(api.name()) : null;
     }
 }

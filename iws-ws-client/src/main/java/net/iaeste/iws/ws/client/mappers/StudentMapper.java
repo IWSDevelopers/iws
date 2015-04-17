@@ -19,6 +19,7 @@ import net.iaeste.iws.api.dtos.exchange.StudentAcceptance;
 import net.iaeste.iws.api.dtos.exchange.StudentAcceptanceConfirmation;
 import net.iaeste.iws.api.dtos.exchange.StudentApplication;
 import net.iaeste.iws.api.enums.exchange.ApplicationStatus;
+import net.iaeste.iws.api.enums.exchange.Specialization;
 import net.iaeste.iws.api.enums.exchange.TransportationType;
 import net.iaeste.iws.api.requests.student.FetchStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentsRequest;
@@ -29,6 +30,12 @@ import net.iaeste.iws.api.responses.student.FetchStudentApplicationsResponse;
 import net.iaeste.iws.api.responses.student.FetchStudentsResponse;
 import net.iaeste.iws.api.responses.student.StudentApplicationResponse;
 import net.iaeste.iws.api.responses.student.StudentResponse;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -54,6 +61,7 @@ public final class StudentMapper extends CommonMapper {
 
         if (ws != null) {
             api = new StudentResponse(map(ws.getError()), ws.getMessage());
+
             api.setStudent(map(ws.getStudent()));
         }
 
@@ -77,6 +85,8 @@ public final class StudentMapper extends CommonMapper {
 
         if (ws != null) {
             api = new FetchStudentsResponse(map(ws.getError()), ws.getMessage());
+
+            api.setStudents(mapWSStudentCollection(ws.getStudents()));
         }
 
         return api;
@@ -124,6 +134,8 @@ public final class StudentMapper extends CommonMapper {
 
         if (ws != null) {
             api = new FetchStudentApplicationsResponse(map(ws.getError()), ws.getMessage());
+
+            api.setStudentApplications(mapWSStudentApplicationCollection(ws.getStudentApplications()));
         }
 
         return api;
@@ -146,8 +158,64 @@ public final class StudentMapper extends CommonMapper {
     }
 
     // =========================================================================
-    // Internal mapping of Student relevant Objects
+    // Internal mapping of required Collections, DTO's & Enums
     // =========================================================================
+
+    private static List<Student> mapWSStudentCollection(final List<net.iaeste.iws.ws.Student> ws) {
+        final List<Student> api;
+
+        if (ws != null) {
+            api = new ArrayList<>(ws.size());
+
+            for (final net.iaeste.iws.ws.Student student : ws) {
+                api.add(map(student));
+            }
+        } else {
+            api = new ArrayList<>(0);
+        }
+
+        return api;
+    }
+
+    private static List<StudentApplication> mapWSStudentApplicationCollection(final List<net.iaeste.iws.ws.StudentApplication> ws) {
+        final List<StudentApplication> api;
+
+        if (ws != null) {
+            api = new ArrayList<>(ws.size());
+
+            for (final net.iaeste.iws.ws.StudentApplication studentApplication : ws) {
+                api.add(map(studentApplication));
+            }
+        } else {
+            api = new ArrayList<>(0);
+        }
+
+        return api;
+    }
+
+    private static Set<Specialization> mapWSSpecializationCollection(final Collection<net.iaeste.iws.ws.Specialization> ws) {
+        final Set<Specialization> api = EnumSet.noneOf(Specialization.class);
+
+        if (ws != null) {
+            for (final net.iaeste.iws.ws.Specialization specialization : ws) {
+                api.add(map(specialization));
+            }
+        }
+
+        return api;
+    }
+
+    private static Set<net.iaeste.iws.ws.Specialization> mapAPISpecializationCollection(final Collection<Specialization> api) {
+        final Set<net.iaeste.iws.ws.Specialization> ws = EnumSet.noneOf(net.iaeste.iws.ws.Specialization.class);
+
+        if (api != null) {
+            for (final Specialization specialization : api) {
+                ws.add(map(specialization));
+            }
+        }
+
+        return ws;
+    }
 
     private static Student map(final net.iaeste.iws.ws.Student ws) {
         Student api = null;
@@ -158,7 +226,7 @@ public final class StudentMapper extends CommonMapper {
             api.setUser(map(ws.getUser()));
             api.setStudyLevel(map(ws.getStudyLevel()));
             api.setFieldOfStudies(mapFieldOfStudyCollection(ws.getFieldOfStudies()));
-            //TODO api.setSpecializations(mapStringCollectionToList(ws.getSpecializations()));
+            api.setSpecializations(mapWSSpecializationCollection(ws.getSpecializations()));
             api.setAvailable(map(ws.getAvailable()));
             api.setLanguage1(map(ws.getLanguage1()));
             api.setLanguage1Level(map(ws.getLanguage1Level()));
@@ -181,8 +249,8 @@ public final class StudentMapper extends CommonMapper {
 
             ws.setUser(map(api.getUser()));
             ws.setStudyLevel(map(api.getStudyLevel()));
-            //TODO HashSet<FieldOfStudy> fieldOfStudies = null;
-            //TODO HashSet<Specialization> specializations = null;
+            ws.getFieldOfStudies().addAll(mapAPIFieldOfStudyCollection(api.getFieldOfStudies()));
+            ws.getSpecializations().addAll(mapAPISpecializationCollection(api.getSpecializations()));
             ws.setAvailable(map(api.getAvailable()));
             ws.setLanguage1(map(api.getLanguage1()));
             ws.setLanguage1Level(map(api.getLanguage1Level()));
@@ -228,7 +296,7 @@ public final class StudentMapper extends CommonMapper {
             api.setLanguage3Level(map(ws.getLanguage3Level()));
             api.setAvailable(map(ws.getAvailable()));
             api.setFieldOfStudies(mapFieldOfStudyCollection(ws.getFieldOfStudies()));
-            api.setSpecializations(mapStringCollectionToList(ws.getSpecializations()));
+            api.setSpecializations(mapStringCollection(ws.getSpecializations()));
             api.setPassportNumber(ws.getPassportNumber());
             api.setPassportPlaceOfIssue(ws.getPassportPlaceOfIssue());
             api.setPassportValidUntil(ws.getPassportValidUntil());
@@ -238,7 +306,7 @@ public final class StudentMapper extends CommonMapper {
             api.setAcceptance(map(ws.getAcceptance()));
             api.setTravelInformation(map(ws.getTravelInformation()));
             api.setNominatedAt(map(ws.getNominatedAt()));
-            //TODO api.setAttachments(mapFileList(ws.getAttachments()));
+            api.setAttachments(mapWSFileCollection(ws.getAttachments()));
             api.setModified(map(ws.getModified()));
             api.setCreated(map(ws.getCreated()));
         }
@@ -277,7 +345,7 @@ public final class StudentMapper extends CommonMapper {
             ws.setLanguage3Level(map(api.getLanguage3Level()));
             ws.setAvailable(map(api.getAvailable()));
             ws.getFieldOfStudies().addAll(mapAPIFieldOfStudyCollection(api.getFieldOfStudies()));
-            ws.getSpecializations().addAll(mapStringCollectionToList(api.getSpecializations()));
+            ws.getSpecializations().addAll(mapStringCollection(api.getSpecializations()));
             ws.setPassportNumber(api.getPassportNumber());
             ws.setPassportPlaceOfIssue(api.getPassportPlaceOfIssue());
             ws.setPassportValidUntil(api.getPassportValidUntil());
@@ -287,7 +355,7 @@ public final class StudentMapper extends CommonMapper {
             ws.setAcceptance(map(api.getAcceptance()));
             ws.setTravelInformation(map(api.getTravelInformation()));
             ws.setNominatedAt(map(api.getNominatedAt()));
-            //TODO ws.setAttachments(mapFileList(api.getAttachments()));
+            ws.getAttachments().addAll(mapAPIFileCollection(api.getAttachments()));
             ws.setModified(map(api.getModified()));
             ws.setCreated(map(api.getCreated()));
         }
@@ -393,5 +461,13 @@ public final class StudentMapper extends CommonMapper {
 
     private static net.iaeste.iws.ws.TransportationType map(final TransportationType api) {
         return api != null ? net.iaeste.iws.ws.TransportationType.valueOf(api.name()) : null;
+    }
+
+    private static Specialization map(final net.iaeste.iws.ws.Specialization ws) {
+        return ws != null ? Specialization.valueOf(ws.value()) : null;
+    }
+
+    private static net.iaeste.iws.ws.Specialization map(final Specialization api) {
+        return api != null ? net.iaeste.iws.ws.Specialization.valueOf(api.name()) : null;
     }
 }

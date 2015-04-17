@@ -391,7 +391,7 @@
         <xs:sequence>
           <xs:element name="groupId" nillable="true" type="xs:string"/>
           <xs:element name="groupType" nillable="true" type="tns:GroupType"/>
-          <xs:element name="usersToFetch" nillable="true" type="tns:fetchType"/>
+          <xs:element name="usersToFetch" nillable="true" type="tns:userFetchType"/>
           <xs:element name="fetchStudents" nillable="true" type="xs:boolean"/>
           <xs:element name="fetchSubGroups" nillable="true" type="xs:boolean"/>
         </xs:sequence>
@@ -747,7 +747,7 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="fetchType">
+  <xs:simpleType name="userFetchType">
     <xs:restriction base="xs:string">
       <xs:enumeration value="NONE"/>
       <xs:enumeration value="ACTIVE"/>

@@ -15,7 +15,8 @@
 package net.iaeste.iws.ws.client.mappers;
 
 import net.iaeste.iws.api.dtos.Country;
-import net.iaeste.iws.api.dtos.UserGroup;
+import net.iaeste.iws.api.dtos.Role;
+import net.iaeste.iws.api.dtos.User;
 import net.iaeste.iws.api.enums.ContactsType;
 import net.iaeste.iws.api.enums.CountryType;
 import net.iaeste.iws.api.requests.AccountNameRequest;
@@ -39,8 +40,10 @@ import net.iaeste.iws.api.responses.FetchUserResponse;
 import net.iaeste.iws.api.responses.ProcessGroupResponse;
 import net.iaeste.iws.api.responses.ProcessUserGroupResponse;
 import net.iaeste.iws.api.responses.SearchUserResponse;
+import net.iaeste.iws.ws.UserFetchType;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -83,7 +86,7 @@ public final class AdministrationMapper extends CommonMapper {
         if (ws != null) {
             api = new FetchCountryResponse(map(ws.getError()), ws.getMessage());
 
-            api.setCountries(mapCountryList(ws.getCountries()));
+            api.setCountries(mapWSCountryCollection(ws.getCountries()));
         }
 
         return api;
@@ -94,7 +97,12 @@ public final class AdministrationMapper extends CommonMapper {
 
         if (api != null) {
             ws = new net.iaeste.iws.ws.UserRequest();
-            // TODO!!!
+
+            ws.setUser(map(api.getUser()));
+            ws.setNewStatus(map(api.getNewStatus()));
+            ws.setNewUsername(api.getNewUsername());
+            ws.setNewPassword(api.getNewPassword());
+            ws.setPassword(api.getPassword());
         }
 
         return ws;
@@ -105,7 +113,10 @@ public final class AdministrationMapper extends CommonMapper {
 
         if (api != null) {
             ws = new net.iaeste.iws.ws.AccountNameRequest();
-            // TODO!!!
+
+            ws.setUser(map(api.getUser()));
+            ws.setFirstname(api.getFirstname());
+            ws.setLastname(api.getLastname());
         }
 
         return ws;
@@ -116,7 +127,8 @@ public final class AdministrationMapper extends CommonMapper {
 
         if (api != null) {
             ws = new net.iaeste.iws.ws.FetchUserRequest();
-            // TODO!!!
+
+            ws.setUserId(api.getUserId());
         }
 
         return ws;
@@ -127,7 +139,8 @@ public final class AdministrationMapper extends CommonMapper {
 
         if (ws != null) {
             api = new FetchUserResponse(map(ws.getError()), ws.getMessage());
-            // TODO!!!
+
+            api.setUser(map(ws.getUser()));
         }
 
         return api;
@@ -138,7 +151,8 @@ public final class AdministrationMapper extends CommonMapper {
 
         if (api != null) {
             ws = new net.iaeste.iws.ws.FetchRoleRequest();
-            // TODO!!!
+
+            ws.setGroupId(api.getGroupId());
         }
 
         return ws;
@@ -149,7 +163,8 @@ public final class AdministrationMapper extends CommonMapper {
 
         if (ws != null) {
             api = new FetchRoleResponse(map(ws.getError()), ws.getMessage());
-            // TODO!!!
+
+            api.setRoles(mapWSRoleCollection(ws.getRoles()));
         }
 
         return api;
@@ -160,7 +175,9 @@ public final class AdministrationMapper extends CommonMapper {
 
         if (api != null) {
             ws = new net.iaeste.iws.ws.GroupRequest();
-            // TODO!!!
+
+            ws.setGroup(map(api.getGroup()));
+            ws.setUser(map(api.getUser()));
         }
 
         return ws;
@@ -171,7 +188,8 @@ public final class AdministrationMapper extends CommonMapper {
 
         if (ws != null) {
             api = new ProcessGroupResponse(map(ws.getError()), ws.getMessage());
-            // TODO!!!
+
+            api.setGroup(map(ws.getGroup()));
         }
 
         return api;
@@ -185,8 +203,7 @@ public final class AdministrationMapper extends CommonMapper {
 
             ws.setGroupId(api.getGroupId());
             ws.setGroupType(map(api.getGroupType()));
-            // TODO Ensure that this enum is properly mapped in WS, currently it conflicts with a similarly named enum!
-            //ws.setUsersToFetch(map(api.getUsersToFetch()));
+            ws.setUsersToFetch(map(api.getUsersToFetch()));
             ws.setFetchStudents(api.isFetchStudents());
             ws.setFetchSubGroups(api.isFetchSubGroups());
         }
@@ -201,9 +218,9 @@ public final class AdministrationMapper extends CommonMapper {
             api = new FetchGroupResponse(map(ws.getError()), ws.getMessage());
 
             api.setGroup(map(ws.getGroup()));
-            api.setMembers(mapUserGroupList(ws.getMembers()));
-            api.setStudents(mapUserGroupList(ws.getStudents()));
-            api.setSubGroups(new ArrayList<>(mapWSGroupCollection(ws.getSubGroups())));
+            api.setMembers(mapWSUserGroupCollection(ws.getMembers()));
+            api.setStudents(mapWSUserGroupCollection(ws.getStudents()));
+            api.setSubGroups(mapWSGroupCollection(ws.getSubGroups()));
         }
 
         return api;
@@ -241,7 +258,8 @@ public final class AdministrationMapper extends CommonMapper {
 
         if (ws != null) {
             api = new ProcessUserGroupResponse(map(ws.getError()), ws.getMessage());
-            // TODO!!!
+
+            api.setUserGroup(map(ws.getUserGroup()));
         }
 
         return api;
@@ -265,7 +283,8 @@ public final class AdministrationMapper extends CommonMapper {
 
         if (ws != null) {
             api = new SearchUserResponse(map(ws.getError()), ws.getMessage());
-            // TODO!!!
+
+            api.setUsers(mapWSUserGroupCollection(ws.getUsers()));
         }
 
         return api;
@@ -276,7 +295,8 @@ public final class AdministrationMapper extends CommonMapper {
 
         if (ws != null) {
             api = new EmergencyListResponse(map(ws.getError()), ws.getMessage());
-            // TODO!!!
+
+            api.setEmergencyContacts(mapWSUserGroupCollection(ws.getEmergencyContacts()));
         }
 
         return api;
@@ -301,26 +321,21 @@ public final class AdministrationMapper extends CommonMapper {
 
         if (ws != null) {
             api = new ContactsResponse(map(ws.getError()), ws.getMessage());
-            // TODO!!!
+
+            api.setUsers(mapWSUserCollection(ws.getUsers()));
+            api.setGroups(mapWSGroupCollection(ws.getGroups()));
+            api.setType(map(ws.getType()));
         }
 
         return api;
     }
 
     // =========================================================================
-    // Internal mapping of Administration relevant Objects
+    // Internal mapping of required Collections, DTO's & Enums
     // =========================================================================
 
-    private static net.iaeste.iws.ws.CountryType map(final CountryType api) {
-        return api != null ? net.iaeste.iws.ws.CountryType.valueOf(api.name()) : null;
-    }
-
-    private static net.iaeste.iws.ws.ContactsType map(final ContactsType api) {
-        return api != null ? net.iaeste.iws.ws.ContactsType.valueOf(api.name()) : null;
-    }
-
-    private static List<Country> mapCountryList(final List<net.iaeste.iws.ws.Country> ws) {
-        List<Country> api = null;
+    private static List<Country> mapWSCountryCollection(final Collection<net.iaeste.iws.ws.Country> ws) {
+        final List<Country> api;
 
         if (ws != null) {
             api = new ArrayList<>(ws.size());
@@ -328,22 +343,58 @@ public final class AdministrationMapper extends CommonMapper {
             for (final net.iaeste.iws.ws.Country country : ws) {
                 api.add(map(country));
             }
+        } else {
+            api = new ArrayList<>(0);
         }
 
         return api;
     }
 
-    private static List<UserGroup> mapUserGroupList(final List<net.iaeste.iws.ws.UserGroup> ws) {
-        List<UserGroup> api = null;
+    private static List<User> mapWSUserCollection(final Collection<net.iaeste.iws.ws.User> ws) {
+        final List<User> api;
 
         if (ws != null) {
             api = new ArrayList<>(ws.size());
 
-            for (final net.iaeste.iws.ws.UserGroup userGroup : ws) {
-                api.add(map(userGroup));
+            for (final net.iaeste.iws.ws.User user : ws) {
+                api.add(map(user));
             }
+        } else {
+            api = new ArrayList<>(0);
         }
 
         return api;
+    }
+
+    private static List<Role> mapWSRoleCollection(final Collection<net.iaeste.iws.ws.Role> ws) {
+        final List<Role> api;
+
+        if (ws != null) {
+            api = new ArrayList<>(ws.size());
+
+            for (final net.iaeste.iws.ws.Role role : ws) {
+                api.add(map(role));
+            }
+        } else {
+            api = new ArrayList<>(0);
+        }
+
+        return api;
+    }
+
+    private static net.iaeste.iws.ws.CountryType map(final CountryType api) {
+        return api != null ? net.iaeste.iws.ws.CountryType.valueOf(api.name()) : null;
+    }
+
+    private static ContactsType map(final net.iaeste.iws.ws.ContactsType ws) {
+        return ws != null ? ContactsType.valueOf(ws.value()) : null;
+    }
+
+    private static net.iaeste.iws.ws.ContactsType map(final ContactsType api) {
+        return api != null ? net.iaeste.iws.ws.ContactsType.valueOf(api.name()) : null;
+    }
+
+    private static UserFetchType map(final FetchGroupRequest.UserFetchType api) {
+        return api != null ? UserFetchType.valueOf(api.name()) : null;
     }
 }

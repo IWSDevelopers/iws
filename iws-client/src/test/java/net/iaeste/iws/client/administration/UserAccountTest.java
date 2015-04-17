@@ -285,7 +285,7 @@ public final class UserAccountTest extends AbstractAdministration {
         final AuthenticationToken myToken = login("finland@iaeste.fi", "finland");
         final Group memberGroup = findMemberGroup(myToken);
         final FetchGroupRequest groupRequest = new FetchGroupRequest(memberGroup.getGroupId());
-        groupRequest.setUsersToFetch(FetchGroupRequest.FetchType.ACTIVE);
+        groupRequest.setUsersToFetch(FetchGroupRequest.UserFetchType.ACTIVE);
         final FetchGroupResponse groupResponse1 = administration.fetchGroup(myToken, groupRequest);
         assertThat(groupResponse1.isOk(), is(true));
         assertThat(groupResponse1.getMembers().size(), is(1));

@@ -39,11 +39,11 @@ public final class FetchGroupRequest extends AbstractVerification {
 
     @XmlElement(required = true, nillable = true) private String groupId = null;
     @XmlElement(required = true, nillable = true) private GroupType groupType = null;
-    @XmlElement(required = true, nillable = true) private FetchType usersToFetch = FetchType.NONE;
+    @XmlElement(required = true, nillable = true) private UserFetchType usersToFetch = UserFetchType.NONE;
     @XmlElement(required = true, nillable = true) private boolean fetchStudents = false;
     @XmlElement(required = true, nillable = true) private boolean fetchSubGroups = false;
 
-    public enum FetchType {
+    public enum UserFetchType {
 
         /**
          * If set to this value, no users will be retrieved for this Group.
@@ -115,13 +115,13 @@ public final class FetchGroupRequest extends AbstractVerification {
         return groupType;
     }
 
-    public void setUsersToFetch(final FetchType usersToFetch) {
+    public void setUsersToFetch(final UserFetchType usersToFetch) {
         ensureNotNull("usersToFetch", usersToFetch);
 
         this.usersToFetch = usersToFetch;
     }
 
-    public FetchType getUsersToFetch() {
+    public UserFetchType getUsersToFetch() {
         return usersToFetch;
     }
 

@@ -74,7 +74,7 @@ public abstract class AbstractAdministration extends AbstractTest {
 
     protected static ProcessGroupResponse createGroup(final AuthenticationToken token, final GroupType parent, final GroupType subgroup, final String groupName) {
         final FetchGroupRequest fetchRequest = new FetchGroupRequest(parent);
-        fetchRequest.setUsersToFetch(FetchGroupRequest.FetchType.ACTIVE);
+        fetchRequest.setUsersToFetch(FetchGroupRequest.UserFetchType.ACTIVE);
         fetchRequest.setFetchSubGroups(true);
         final FetchGroupResponse fetchResponse = administration.fetchGroup(token, fetchRequest);
 

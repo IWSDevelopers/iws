@@ -17,6 +17,7 @@ package net.iaeste.iws.api.requests;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.User;
+import net.iaeste.iws.api.enums.Action;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.util.AbstractVerification;
 
@@ -24,8 +25,10 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -34,10 +37,13 @@ import java.util.Map;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "CommitteeRequest", propOrder = { "countryId", "institutionName", "institutionAbbreviation", "firstname", "lastname", "username", "nationalCommittee", "nationalSecretary", "action" })
-public final class CommitteeRequest extends AbstractVerification {
+public final class CommitteeRequest extends AbstractVerification implements Actionable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
+
+    /** Default allowed Actions for the Committee Request. */
+    private static final Set<Action> allowed = EnumSet.of(Action.Create, Action.Update, Action.Merge, Action.Upgrade, Action.Activate, Action.Suspend, Action.Delete);
 
     /** The Id of the Country to create a new Cooperating Institution for. */
     @XmlElement(required = true, nillable = true) private String countryId = null;
@@ -60,41 +66,7 @@ public final class CommitteeRequest extends AbstractVerification {
      * Action to perform on a Committee, by default we're assuming that it must
      * be updated, i.e. that the National Secretary must be set.
      */
-    @XmlElement(required = true, nillable = false) private Action action = Action.CHANGE_NS;
-
-    /**
-     * The actiona is needed to specify precisely which action is to be taken.
-     */
-    public enum Action {
-
-        /** Create a new Cooperating Institution. */
-        CREATE,
-
-        /** Updating a Committee, i.e. change Institution Name & Abbreviation. */
-        UPDATE,
-
-        /** Change the National Secretary. */
-        CHANGE_NS,
-
-        /** Upgrades a Committee from Cooperating Institution to Associate Member. */
-        MERGE,
-
-        /**
-         * Upgrade a Committee from Cooperating Institution to Associate Member,
-         * if there is currently only a single Cooperating Institution for the
-         * given Country, or upgrades an Associate Member to Full Member.
-         */
-        UPGRADE,
-
-        /** Activate a currently Suspended Committee. */
-        ACTIVATE,
-
-        /** Suspend a currently Active Committee. */
-        SUSPEND,
-
-        /** Delete a currently Suspended Committee. */
-        DELETE
-    }
+    @XmlElement(required = true, nillable = false) private Action action = Action.ChangeNs;
 
     // =========================================================================
     // Object Constructors
@@ -123,6 +95,31 @@ public final class CommitteeRequest extends AbstractVerification {
     // =========================================================================
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Set<Action> allowedActions() {
+        return allowed;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setAction(final Action action) throws IllegalArgumentException {
+        ensureNotNullAndContains("action", action, allowed);
+        this.action = action;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Action getAction() {
+        return action;
+    }
+
+    /**
      * Sets the CountryId, or CountryCode, which is the standard two-letter code
      * for all Countries, defined by the UN. The Code is used by several of the
      * request variations, and if needed, it must be set.<br />
@@ -149,8 +146,8 @@ public final class CommitteeRequest extends AbstractVerification {
      *   The method will throw an IllegalArgument Exception, if the name is set
      * to null, empty or too long. The max length is 50 characters.
      *
-     * @param institutionName
-     * @throws IllegalArgumentException
+     * @param institutionName The Institution Name
+     * @throws IllegalArgumentException if not valid, i.e. null, empty or longer than 50 characters
      */
     public void setInstitutionName(final String institutionName) throws IllegalArgumentException {
         ensureNotNullOrEmptyOrTooLong("institutionName", institutionName, 50);
@@ -190,7 +187,7 @@ public final class CommitteeRequest extends AbstractVerification {
 
     /**
      *
-     * @param lastname
+     * @param lastname Lastname or Family name of the new National Secretary
      * @throws IllegalArgumentException
      */
     public void setLastname(final String lastname) throws IllegalArgumentException {
@@ -243,15 +240,6 @@ public final class CommitteeRequest extends AbstractVerification {
         return nationalSecretary;
     }
 
-    public void setAction(final Action action) throws IllegalArgumentException {
-        ensureNotNull("action", action);
-        this.action = action;
-    }
-
-    public Action getAction() {
-        return action;
-    }
-
     // =========================================================================
     // Standard Request Methods
     // =========================================================================
@@ -266,7 +254,7 @@ public final class CommitteeRequest extends AbstractVerification {
         isNotNull(validation, "action", action);
         if (action != null) {
             switch (action) {
-                case CREATE:
+                case Create:
                     isNotNull(validation, "countryId", countryId);
                     isNotNull(validation, "institutionName", institutionName);
                     isNotNull(validation, "institutionAbbreviation", institutionAbbreviation);
@@ -274,26 +262,28 @@ public final class CommitteeRequest extends AbstractVerification {
                     isNotNull(validation, "lastname", lastname);
                     isNotNull(validation, "username", username);
                     break;
-                case UPDATE:
+                case Update:
                     isNotNull(validation, "nationalCommittee", nationalCommittee);
                     isNotNull(validation, "institutionName", institutionName);
                     isNotNull(validation, "institutionAbbreviation", institutionAbbreviation);
                     break;
-                case MERGE:
+                case Merge:
                     isNotNull(validation, "countryId", countryId);
                     isNotNull(validation, "nationalSecretary", nationalSecretary);
                     break;
-                case CHANGE_NS:
+                case ChangeNs:
                     // Updating means changing the current National Secretary,
                     // however doing so means internal checks for an existing
                     // new National Secretary or a potentional new National
                     // Secretary.
-                case UPGRADE:
-                case ACTIVATE:
-                case SUSPEND:
-                case DELETE:
+                case Upgrade:
+                case Activate:
+                case Suspend:
+                case Delete:
                     isNotNull(validation, "nationalCommittee", nationalCommittee);
                     break;
+                default:
+                    validation.put("action", "The Action '" + action + "' is not allowed");
             }
         }
 

@@ -24,7 +24,56 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "Action")
 public enum Action {
 
-    Process,
-    Delete
+    /**
+     * Create a new Cooperating Institution.
+     */
+    Create,
 
+    /**
+     * Updating a Committee, i.e. change Institution Name & Abbreviation.
+     */
+    Update,
+
+    /**
+     * Upgrade a Committee from Cooperating Institution to Associate Member,
+     * if there is currently only a single Cooperating Institution for the
+     * given Country, or upgrades an Associate Member to Full Member.
+     */
+    Upgrade,
+
+    /**
+     * Processing a record means either Creating a new record or update an
+     * existing, based on the current state of the system.
+     */
+    Process,
+
+    /**
+     * Change the National Secretary.
+     */
+    ChangeNs,
+
+    /**
+     * Upgrades a Committee from Cooperating Institution to Associate Member.
+     */
+    Merge,
+
+    /**
+     * Activate a currently Suspended Committee.
+     */
+    Activate,
+
+    /**
+     * Suspend a currently Active Committee.
+     */
+    Suspend,
+
+    /**
+     * <p>Deletes a record from the system. For Users, only NEW or SUSPENDED
+     * Users can be deleted, otherwise the rule apply that only suspended Users,
+     * Groups or Committees can be deleted.</p>
+     *
+     * <p></p>Deletion may also be done against other data, where the process
+     * of deleting it will determine how much is erased.</p>
+     */
+    Delete
 }

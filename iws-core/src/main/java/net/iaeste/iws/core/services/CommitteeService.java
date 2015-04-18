@@ -126,28 +126,28 @@ public final class CommitteeService extends CommonService<CommitteeDao> {
      */
     public void processCommittee(final Authentication authentication, final CommitteeRequest request) {
         switch (request.getAction()) {
-            case CREATE:
+            case Create:
                 createCommittee(authentication, request);
                 break;
-            case UPDATE:
+            case Update:
                 updateCommittee(authentication, request);
                 break;
-            case CHANGE_NS:
+            case ChangeNs:
                 changeNsForCommittee(authentication, request);
                 break;
-            case MERGE:
+            case Merge:
                 mergeCommittees(authentication, request);
                 break;
-            case UPGRADE:
+            case Upgrade:
                 upgradeCommittee(authentication, request);
                 break;
-            case ACTIVATE:
+            case Activate:
                 activateCommittee(authentication, request);
                 break;
-            case SUSPEND:
+            case Suspend:
                 suspendCommittee(authentication, request);
                 break;
-            case DELETE:
+            case Delete:
                 deleteCommittee(authentication, request);
                 break;
         }

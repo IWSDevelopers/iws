@@ -23,7 +23,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 import java.io.Serializable;
 import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -58,7 +57,7 @@ public final class OfferStatistics implements Serializable {
      * @param statistics   Offer Statistics
      * @param exchangeYear Exchange Year
      */
-    public OfferStatistics(final HashMap<OfferState, Integer> statistics, final Integer exchangeYear) {
+    public OfferStatistics(final Map<OfferState, Integer> statistics, final Integer exchangeYear) {
         this.statistics = statistics;
         this.exchangeYear = exchangeYear;
     }

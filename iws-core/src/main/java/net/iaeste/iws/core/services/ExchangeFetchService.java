@@ -53,8 +53,10 @@ import net.iaeste.iws.persistence.views.OfferView;
 import net.iaeste.iws.persistence.views.SharedOfferView;
 
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This Service Class contains the read-only parts of the Exchange methods.
@@ -88,7 +90,7 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
     private OfferStatistics readDomesticStatistics(final GroupEntity nationalGroup, final Integer year) {
         final List<DomesticOfferStatisticsView> records = dao.findDomesticOfferStatistics(nationalGroup, year);
 
-        final HashMap<OfferState, Integer> statistics = new HashMap<>();
+        final Map<OfferState, Integer> statistics = new EnumMap<>(OfferState.class);
         for (final DomesticOfferStatisticsView stats : records) {
             statistics.put(stats.getId().getStatus(), stats.getRecords());
         }
@@ -99,7 +101,7 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
     private OfferStatistics readForeignStatistics(final GroupEntity nationalGroup, final Integer year) {
         final List<ForeignOfferStatisticsView> records = dao.findForeignOfferStatistics(nationalGroup, year);
 
-        final HashMap<OfferState, Integer> statistics = new HashMap<>();
+        final Map<OfferState, Integer> statistics = new EnumMap<>(OfferState.class);
         for (final ForeignOfferStatisticsView stats : records) {
             statistics.put(stats.getId().getStatus(), stats.getRecords());
         }
@@ -114,7 +116,7 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
      * Authentication, isn't a National Group, we will assume that it is a Local
      * Committee. In which case, we can find it via the Parent.
      *
-     * @param authentication
+     * @param authentication User Authentication Object
      * @return National Group Entity
      */
     private GroupEntity findNationalGroup(final Authentication authentication) {
@@ -234,7 +236,7 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
     public FetchPublishingGroupResponse fetchPublishGroups(final Authentication authentication, final FetchPublishGroupsRequest request) {
         final List<PublishingGroupEntity> sharingLists = dao.getSharingListForOwner(authentication.getGroup().getId());
         final List<PublishingGroup> publishingGroups = new ArrayList<>(sharingLists.size());
-        for (PublishingGroupEntity sharingList : sharingLists) {
+        for (final PublishingGroupEntity sharingList : sharingLists) {
             publishingGroups.add(ExchangeTransformer.transform(sharingList));
         }
 
@@ -280,22 +282,6 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
 
         // Done, return result
         return new FetchPublishedGroupsResponse(result);
-
-        // Note, according to Trac ticket #635, the old method was way slow,
-        // looking at the code, it is understandably, since we're running n + 1
-        // queries, where n is the number of OfferIds.
-        //verifyOffersOwnership(authentication, new HashSet<>(request.getOfferIds()));
-        //
-        //final List<String> externalIds = request.getOfferIds();
-        //final Map<String, List<Group>> result = new HashMap<>(externalIds.size());
-        //
-        //for (final String externalId : externalIds) {
-        //    result.put(externalId, convertOfferGroupEntityList(dao.findInfoForUnexpiredSharedOffer(externalId, now)));
-        //}
-        //
-        //response = new FetchPublishedGroupsResponse(result);
-        //
-        //return response;
     }
 
     /**

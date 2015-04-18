@@ -266,7 +266,7 @@
           <xs:element name="username" nillable="true" type="xs:string"/>
           <xs:element name="nationalCommittee" nillable="true" type="tns:Group"/>
           <xs:element name="nationalSecretary" nillable="true" type="tns:User"/>
-          <xs:element name="action" type="tns:action"/>
+          <xs:element name="action" type="tns:Action"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -585,16 +585,17 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="action">
+  <xs:simpleType name="Action">
     <xs:restriction base="xs:string">
-      <xs:enumeration value="CREATE"/>
-      <xs:enumeration value="UPDATE"/>
-      <xs:enumeration value="CHANGE_NS"/>
-      <xs:enumeration value="MERGE"/>
-      <xs:enumeration value="UPGRADE"/>
-      <xs:enumeration value="ACTIVATE"/>
-      <xs:enumeration value="SUSPEND"/>
-      <xs:enumeration value="DELETE"/>
+      <xs:enumeration value="Create"/>
+      <xs:enumeration value="Update"/>
+      <xs:enumeration value="Upgrade"/>
+      <xs:enumeration value="Process"/>
+      <xs:enumeration value="ChangeNs"/>
+      <xs:enumeration value="Merge"/>
+      <xs:enumeration value="Activate"/>
+      <xs:enumeration value="Suspend"/>
+      <xs:enumeration value="Delete"/>
     </xs:restriction>
   </xs:simpleType>
 

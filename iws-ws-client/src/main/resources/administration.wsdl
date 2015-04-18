@@ -742,7 +742,14 @@
 
   <xs:simpleType name="Action">
     <xs:restriction base="xs:string">
+      <xs:enumeration value="Create"/>
+      <xs:enumeration value="Update"/>
+      <xs:enumeration value="Upgrade"/>
       <xs:enumeration value="Process"/>
+      <xs:enumeration value="ChangeNs"/>
+      <xs:enumeration value="Merge"/>
+      <xs:enumeration value="Activate"/>
+      <xs:enumeration value="Suspend"/>
       <xs:enumeration value="Delete"/>
     </xs:restriction>
   </xs:simpleType>

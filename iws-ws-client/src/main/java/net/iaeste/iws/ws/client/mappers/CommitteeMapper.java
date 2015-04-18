@@ -77,8 +77,7 @@ public final class CommitteeMapper extends CommonMapper {
             ws.setUsername(api.getUsername());
             ws.setNationalCommittee(map(api.getNationalCommittee()));
             ws.setNationalSecretary(map(api.getNationalSecretary()));
-            // TODO Move Actions from Request to the general Action Enum
-            //ws.setAction(map(api.getAction()));
+            ws.setAction(map(api.getAction()));
         }
 
         return ws;

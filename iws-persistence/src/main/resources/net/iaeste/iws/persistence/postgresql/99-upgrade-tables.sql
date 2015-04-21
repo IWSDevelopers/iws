@@ -5,11 +5,41 @@
 -- The changes makes the system incompatible with earlier versions of the IWS,
 -- so let's add the information that this is the next DB version, and the IWS
 -- version it is related to.
-insert into versions (db_version, iws_version) values (5, '1.1.7');
+-- Commented out, as the current updates will not change the data model, only
+-- correct some problems discovered with the Views & Data Content
+--insert into versions (db_version, iws_version) values (5, '1.1.7');
+
 
 -- =============================================================================
--- Corrections for Trac Tasks
+-- Corrections for Trac Task #837
 -- =============================================================================
+
+-- Cleanup of duplicate Swiss Employers, we cannot clear the char(11) before this is resolved.
+update offers set employer_id = 12968 where employer_id = 8472;
+update offers set employer_id = 12983 where employer_id = 12958;
+update offers set employer_id = 9030 where employer_id = 3877;
+--select address_id from employers where id in (8472, 13135, 12958, 3877);
+delete from employers where id in (8472, 13135, 12958, 3877);
+delete from addresses where id in (10704, 16543, 16191, 6109);
+
+-- Corrections to Swiss Offers & Employers. For some reason they're filled with
+--  char(11) or VT (Vertical Tab). These cause problems for WebServices.
+update employers set
+    name = regexp_replace(name, '[' || chr(11) || ']', E'\\n', 'g')
+where name like '%' || chr(11) || '%';
+update employers set
+    website = regexp_replace(website, '[' || chr(11) || ']', E'\\n', 'g')
+where website like '%' || chr(11) || '%';
+update offers set
+    work_description = regexp_replace(work_description, '[' || chr(11) || ']', E'\\n', 'g')
+where work_description like '%' || chr(11) || '%';
+update offers set
+    specializations = regexp_replace(specializations, '[' || chr(11) || ']', E'\\n', 'g')
+where specializations like '%' || chr(11) || '%';
+update offers set
+    other_requirements = regexp_replace(other_requirements, '[' || chr(11) || ']', E'\\n', 'g')
+where other_requirements like '%' || chr(11) || '%';
+
 
 -- Correction to the Permissions, by mistake Students can also process folders.
 -- It was initially added, since a Student Group could also have a folder - but

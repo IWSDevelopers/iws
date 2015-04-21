@@ -110,6 +110,7 @@ public final class AdministrationTransformer {
             user.setLastname(entity.getLastname());
             user.setAlias(entity.getAlias());
             user.setStatus(entity.getStatus());
+            user.setType(entity.getType());
             user.setPrivacy(entity.getPrivateData());
             user.setNotifications(entity.getNotifications());
             user.setPerson(CommonTransformer.transform(entity.getPerson()));
@@ -131,6 +132,7 @@ public final class AdministrationTransformer {
             entity.setFirstname(user.getFirstname());
             entity.setLastname(user.getLastname());
             entity.setStatus(user.getStatus());
+            entity.setType(user.getType());
             entity.setPrivateData(user.getPrivacy());
             entity.setNotifications(user.getNotifications());
             //entity.setPerson(CommonTransformer.transform(user.getPerson()));

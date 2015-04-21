@@ -18,6 +18,7 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.NotificationFrequency;
 import net.iaeste.iws.api.enums.Privacy;
 import net.iaeste.iws.api.enums.UserStatus;
+import net.iaeste.iws.api.enums.UserType;
 import net.iaeste.iws.api.util.AbstractDto;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -46,7 +47,7 @@ import java.util.Map;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "User", propOrder = { "userId", "username", "alias", "firstname", "lastname", "person", "status", "privacy", "notifications" })
+@XmlType(name = "User", propOrder = { "userId", "username", "alias", "firstname", "lastname", "person", "status", "type", "privacy", "notifications" })
 public final class User extends AbstractDto {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
@@ -59,6 +60,7 @@ public final class User extends AbstractDto {
     @XmlElement(required = true, nillable = true)  private String lastname = null;
     @XmlElement(required = true, nillable = true)  private Person person = null;
     @XmlElement(required = true, nillable = true)  private UserStatus status = null;
+    @XmlElement(required = true, nillable = false) private UserType type = UserType.VOLUNTEER;
     @XmlElement(required = true, nillable = false) private Privacy privacy = Privacy.PRIVATE;
     @XmlElement(required = true, nillable = false) private NotificationFrequency notifications = NotificationFrequency.IMMEDIATELY;
 
@@ -129,6 +131,7 @@ public final class User extends AbstractDto {
             lastname = user.lastname;
             person = new Person(user.person);
             status = user.status;
+            type = user.type;
             privacy = user.privacy;
             notifications = user.notifications;
         }
@@ -254,6 +257,15 @@ public final class User extends AbstractDto {
         return status;
     }
 
+    public void setType(final UserType type) {
+        ensureNotNull("type", type);
+        this.type = type;
+    }
+
+    public UserType getType() {
+        return type;
+    }
+
     /**
      * Sets the User's privacy setting. By default, the privacy is set to max,
      * meaning that no information whatsoever will be shared with others.<br />
@@ -346,6 +358,9 @@ public final class User extends AbstractDto {
         if (status != user.status) {
             return false;
         }
+        if (type != user.type) {
+            return false;
+        }
 
         return privacy == user.privacy;
     }
@@ -366,6 +381,7 @@ public final class User extends AbstractDto {
         result = IWSConstants.HASHCODE_MULTIPLIER * result + ((firstname != null) ? firstname.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + ((lastname != null) ? lastname.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + ((status != null) ? status.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((type != null) ? type.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + ((privacy != null) ? privacy.hashCode() : 0);
 
         return result;
@@ -386,6 +402,7 @@ public final class User extends AbstractDto {
                 ", firstname='" + firstname + '\'' +
                 ", lastname='" + lastname + '\'' +
                 ", status=" + status +
+                ", type=" + type +
                 ", privacy=" + privacy +
                 '}';
     }

@@ -30,8 +30,8 @@ import java.util.Map;
  * @since   IWS 1.1
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "FetchSurveyOfCountryRequest", propOrder = { "groupId" })
-public final class FetchSurveyOfCountryRequest extends AbstractVerification {
+@XmlType(name = "FetchCountrySurveyRequest", propOrder = { "groupId" })
+public final class FetchCountrySurveyRequest extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -46,7 +46,7 @@ public final class FetchSurveyOfCountryRequest extends AbstractVerification {
     /**
      * Default Constructor.
      */
-    public FetchSurveyOfCountryRequest() {
+    public FetchCountrySurveyRequest() {
     }
 
     // =========================================================================

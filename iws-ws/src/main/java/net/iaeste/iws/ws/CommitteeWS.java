@@ -19,13 +19,13 @@ import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.CommitteeRequest;
 import net.iaeste.iws.api.requests.FetchCommitteeRequest;
 import net.iaeste.iws.api.requests.FetchInternationalGroupRequest;
-import net.iaeste.iws.api.requests.FetchSurveyOfCountryRequest;
+import net.iaeste.iws.api.requests.FetchCountrySurveyRequest;
 import net.iaeste.iws.api.requests.InternationalGroupRequest;
-import net.iaeste.iws.api.requests.SurveyOfCountryRequest;
+import net.iaeste.iws.api.requests.CountrySurveyRequest;
 import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchCommitteeResponse;
 import net.iaeste.iws.api.responses.FetchInternationalGroupResponse;
-import net.iaeste.iws.api.responses.FetchSurveyOfCountryRespose;
+import net.iaeste.iws.api.responses.FetchCountrySurveyRespose;
 import net.iaeste.iws.ejb.CommitteeBean;
 import net.iaeste.iws.ejb.cdi.IWSBean;
 import org.slf4j.Logger;
@@ -151,11 +151,11 @@ public class CommitteeWS implements Committees {
     @Override
     @WebMethod
     @WebResult(name = "response")
-    public FetchSurveyOfCountryRespose fetchSurveyOfCountry(
+    public FetchCountrySurveyRespose fetchCountrySurvey(
             @WebParam(name = "token") final AuthenticationToken token,
-            @WebParam(name = "request") final FetchSurveyOfCountryRequest request) {
-        log.info(requestLogger.prepareLogMessage(token, "fetchSurveyOfCountry"));
-        return bean.fetchSurveyOfCountry(token, request);
+            @WebParam(name = "request") final FetchCountrySurveyRequest request) {
+        log.info(requestLogger.prepareLogMessage(token, "fetchCountrySurvey"));
+        return bean.fetchCountrySurvey(token, request);
     }
 
     /**
@@ -164,10 +164,10 @@ public class CommitteeWS implements Committees {
     @Override
     @WebMethod
     @WebResult(name = "response")
-    public FallibleResponse processSurveyOfCountry(
+    public FallibleResponse processCountrySurvey(
             @WebParam(name = "token") final AuthenticationToken token,
-            @WebParam(name = "request") final SurveyOfCountryRequest request) {
-        log.info(requestLogger.prepareLogMessage(token, "processSurveyOfCountry"));
-        return bean.processSurveyOfCountry(token, request);
+            @WebParam(name = "request") final CountrySurveyRequest request) {
+        log.info(requestLogger.prepareLogMessage(token, "processCountrySurvey"));
+        return bean.processCountrySurvey(token, request);
     }
 }

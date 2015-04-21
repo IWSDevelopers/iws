@@ -22,13 +22,13 @@ import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.CommitteeRequest;
 import net.iaeste.iws.api.requests.FetchCommitteeRequest;
 import net.iaeste.iws.api.requests.FetchInternationalGroupRequest;
-import net.iaeste.iws.api.requests.FetchSurveyOfCountryRequest;
+import net.iaeste.iws.api.requests.FetchCountrySurveyRequest;
 import net.iaeste.iws.api.requests.InternationalGroupRequest;
-import net.iaeste.iws.api.requests.SurveyOfCountryRequest;
+import net.iaeste.iws.api.requests.CountrySurveyRequest;
 import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchCommitteeResponse;
 import net.iaeste.iws.api.responses.FetchInternationalGroupResponse;
-import net.iaeste.iws.api.responses.FetchSurveyOfCountryRespose;
+import net.iaeste.iws.api.responses.FetchCountrySurveyRespose;
 import net.iaeste.iws.ws.CommitteeWS;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.frontend.ClientProxy;
@@ -139,15 +139,15 @@ public final class CommitteeWSClient extends CommonWSClient implements Committee
      * {@inheritDoc}
      */
     @Override
-    public FetchSurveyOfCountryRespose fetchSurveyOfCountry(final AuthenticationToken token, final FetchSurveyOfCountryRequest request) {
-        return map(client.fetchSurveyOfCountry(map(token), map(request)));
+    public FetchCountrySurveyRespose fetchCountrySurvey(final AuthenticationToken token, final FetchCountrySurveyRequest request) {
+        return map(client.fetchCountrySurvey(map(token), map(request)));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public FallibleResponse processSurveyOfCountry(final AuthenticationToken token, final SurveyOfCountryRequest request) {
-        return map(client.processSurveyOfCountry(map(token), map(request)));
+    public FallibleResponse processCountrySurvey(final AuthenticationToken token, final CountrySurveyRequest request) {
+        return map(client.processCountrySurvey(map(token), map(request)));
     }
 }

@@ -20,13 +20,13 @@ import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.CommitteeRequest;
 import net.iaeste.iws.api.requests.FetchCommitteeRequest;
 import net.iaeste.iws.api.requests.FetchInternationalGroupRequest;
-import net.iaeste.iws.api.requests.FetchSurveyOfCountryRequest;
+import net.iaeste.iws.api.requests.FetchCountrySurveyRequest;
 import net.iaeste.iws.api.requests.InternationalGroupRequest;
-import net.iaeste.iws.api.requests.SurveyOfCountryRequest;
+import net.iaeste.iws.api.requests.CountrySurveyRequest;
 import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchCommitteeResponse;
 import net.iaeste.iws.api.responses.FetchInternationalGroupResponse;
-import net.iaeste.iws.api.responses.FetchSurveyOfCountryRespose;
+import net.iaeste.iws.api.responses.FetchCountrySurveyRespose;
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.core.CommitteeController;
 import net.iaeste.iws.core.notifications.Notifications;
@@ -203,16 +203,16 @@ public class CommitteeBean implements Committees {
      * {@inheritDoc}
      */
     @Override
-    public FetchSurveyOfCountryRespose fetchSurveyOfCountry(final AuthenticationToken token, final FetchSurveyOfCountryRequest request) {
+    public FetchCountrySurveyRespose fetchCountrySurvey(final AuthenticationToken token, final FetchCountrySurveyRequest request) {
         final long start = System.nanoTime();
-        FetchSurveyOfCountryRespose response;
+        FetchCountrySurveyRespose response;
 
         try {
-            response = controller.fetchSurveyOfCountry(token, request);
-            log.info(session.generateLogAndUpdateSession("fetchSurveyOfCountry", start, response, token));
+            response = controller.fetchCountrySurvey(token, request);
+            log.info(session.generateLogAndUpdateSession("fetchCountrySurvey", start, response, token));
         } catch (RuntimeException e) {
-            log.error(session.generateLogAndSaveRequest("fetchSurveyOfCountry", start, e, token, request), e);
-            response = new FetchSurveyOfCountryRespose(IWSErrors.ERROR, e.getMessage());
+            log.error(session.generateLogAndSaveRequest("fetchCountrySurvey", start, e, token, request), e);
+            response = new FetchCountrySurveyRespose(IWSErrors.ERROR, e.getMessage());
         }
 
         return response;
@@ -222,15 +222,15 @@ public class CommitteeBean implements Committees {
      * {@inheritDoc}
      */
     @Override
-    public FallibleResponse processSurveyOfCountry(final AuthenticationToken token, final SurveyOfCountryRequest request) {
+    public FallibleResponse processCountrySurvey(final AuthenticationToken token, final CountrySurveyRequest request) {
         final long start = System.nanoTime();
         FallibleResponse response;
 
         try {
-            response = controller.processSurveyOfCountry(token, request);
-            log.info(session.generateLogAndUpdateSession("processSurveyOfCountry", start, response, token));
+            response = controller.processCountrySurvey(token, request);
+            log.info(session.generateLogAndUpdateSession("processCountrySurvey", start, response, token));
         } catch (RuntimeException e) {
-            log.error(session.generateLogAndSaveRequest("processSurveyOfCountry", start, e, token, request), e);
+            log.error(session.generateLogAndSaveRequest("processCountrySurvey", start, e, token, request), e);
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 

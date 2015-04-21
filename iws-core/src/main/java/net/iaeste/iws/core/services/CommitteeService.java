@@ -32,12 +32,12 @@ import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.api.requests.CommitteeRequest;
 import net.iaeste.iws.api.requests.FetchCommitteeRequest;
 import net.iaeste.iws.api.requests.FetchInternationalGroupRequest;
-import net.iaeste.iws.api.requests.FetchSurveyOfCountryRequest;
+import net.iaeste.iws.api.requests.FetchCountrySurveyRequest;
 import net.iaeste.iws.api.requests.InternationalGroupRequest;
-import net.iaeste.iws.api.requests.SurveyOfCountryRequest;
+import net.iaeste.iws.api.requests.CountrySurveyRequest;
 import net.iaeste.iws.api.responses.FetchCommitteeResponse;
 import net.iaeste.iws.api.responses.FetchInternationalGroupResponse;
-import net.iaeste.iws.api.responses.FetchSurveyOfCountryRespose;
+import net.iaeste.iws.api.responses.FetchCountrySurveyRespose;
 import net.iaeste.iws.common.configuration.InternalConstants;
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.common.exceptions.IllegalActionException;
@@ -847,11 +847,11 @@ public final class CommitteeService extends CommonService<CommitteeDao> {
     // Fetch & Process Survey of Country logic
     // =========================================================================
 
-    public FetchSurveyOfCountryRespose fetchSurveyOfCountry(final Authentication authentication, final FetchSurveyOfCountryRequest request) {
+    public FetchCountrySurveyRespose fetchCountrySurvey(final Authentication authentication, final FetchCountrySurveyRequest request) {
         throw new NotImplementedException("Method pending implementation, see Trac #924.");
     }
 
-    public void processSurveyOfCountry(final Authentication authentication, final SurveyOfCountryRequest request) {
+    public void processCountrySurvey(final Authentication authentication, final CountrySurveyRequest request) {
         throw new NotImplementedException("Method pending implementation, see Trac #924.");
     }
 }

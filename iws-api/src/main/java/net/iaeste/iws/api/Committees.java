@@ -18,13 +18,13 @@ import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.CommitteeRequest;
 import net.iaeste.iws.api.requests.FetchCommitteeRequest;
 import net.iaeste.iws.api.requests.FetchInternationalGroupRequest;
-import net.iaeste.iws.api.requests.FetchSurveyOfCountryRequest;
+import net.iaeste.iws.api.requests.FetchCountrySurveyRequest;
 import net.iaeste.iws.api.requests.InternationalGroupRequest;
-import net.iaeste.iws.api.requests.SurveyOfCountryRequest;
+import net.iaeste.iws.api.requests.CountrySurveyRequest;
 import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchCommitteeResponse;
 import net.iaeste.iws.api.responses.FetchInternationalGroupResponse;
-import net.iaeste.iws.api.responses.FetchSurveyOfCountryRespose;
+import net.iaeste.iws.api.responses.FetchCountrySurveyRespose;
 
 /**
  * Control of National Committees and International Groups is done via the
@@ -212,7 +212,7 @@ public interface Committees {
      * @param request Fetch Survey of Country Request Object
      * @return Response Object with the Survey information or error information
      */
-    FetchSurveyOfCountryRespose fetchSurveyOfCountry(AuthenticationToken token, FetchSurveyOfCountryRequest request);
+    FetchCountrySurveyRespose fetchCountrySurvey(AuthenticationToken token, FetchCountrySurveyRequest request);
 
     /**
      * Processes the Survey of Countries for the given Country. The processing
@@ -222,5 +222,5 @@ public interface Committees {
      * @param request Survey of Country Request Object
      * @return Standard Error object
      */
-    FallibleResponse processSurveyOfCountry(AuthenticationToken token, SurveyOfCountryRequest request);
+    FallibleResponse processCountrySurvey(AuthenticationToken token, CountrySurveyRequest request);
 }

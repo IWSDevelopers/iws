@@ -14,17 +14,17 @@
  */
 package net.iaeste.iws.ws.client.mappers;
 
-import net.iaeste.iws.api.dtos.SurveyOfCountry;
+import net.iaeste.iws.api.dtos.CountrySurvey;
 import net.iaeste.iws.api.enums.GroupStatus;
 import net.iaeste.iws.api.requests.CommitteeRequest;
 import net.iaeste.iws.api.requests.FetchCommitteeRequest;
 import net.iaeste.iws.api.requests.FetchInternationalGroupRequest;
-import net.iaeste.iws.api.requests.FetchSurveyOfCountryRequest;
+import net.iaeste.iws.api.requests.FetchCountrySurveyRequest;
 import net.iaeste.iws.api.requests.InternationalGroupRequest;
-import net.iaeste.iws.api.requests.SurveyOfCountryRequest;
+import net.iaeste.iws.api.requests.CountrySurveyRequest;
 import net.iaeste.iws.api.responses.FetchCommitteeResponse;
 import net.iaeste.iws.api.responses.FetchInternationalGroupResponse;
-import net.iaeste.iws.api.responses.FetchSurveyOfCountryRespose;
+import net.iaeste.iws.api.responses.FetchCountrySurveyRespose;
 
 import java.util.Collection;
 import java.util.EnumSet;
@@ -121,11 +121,11 @@ public final class CommitteeMapper extends CommonMapper {
         return ws;
     }
 
-    public static net.iaeste.iws.ws.FetchSurveyOfCountryRequest map(final FetchSurveyOfCountryRequest api) {
-        net.iaeste.iws.ws.FetchSurveyOfCountryRequest ws = null;
+    public static net.iaeste.iws.ws.FetchCountrySurveyRequest map(final FetchCountrySurveyRequest api) {
+        net.iaeste.iws.ws.FetchCountrySurveyRequest ws = null;
 
         if (api != null) {
-            ws = new net.iaeste.iws.ws.FetchSurveyOfCountryRequest();
+            ws = new net.iaeste.iws.ws.FetchCountrySurveyRequest();
 
             ws.setGroupId(api.getGroupId());
         }
@@ -133,11 +133,11 @@ public final class CommitteeMapper extends CommonMapper {
         return ws;
     }
 
-    public static FetchSurveyOfCountryRespose map(final net.iaeste.iws.ws.FetchSurveyOfCountryRespose ws) {
-        FetchSurveyOfCountryRespose api = null;
+    public static FetchCountrySurveyRespose map(final net.iaeste.iws.ws.FetchCountrySurveyRespose ws) {
+        FetchCountrySurveyRespose api = null;
 
         if (ws != null) {
-            api = new FetchSurveyOfCountryRespose(map(ws.getError()), ws.getMessage());
+            api = new FetchCountrySurveyRespose(map(ws.getError()), ws.getMessage());
 
             api.setSurvey(map(ws.getSurvey()));
         }
@@ -145,11 +145,11 @@ public final class CommitteeMapper extends CommonMapper {
         return api;
     }
 
-    public static net.iaeste.iws.ws.SurveyOfCountryRequest map(final SurveyOfCountryRequest api) {
-        net.iaeste.iws.ws.SurveyOfCountryRequest ws = null;
+    public static net.iaeste.iws.ws.CountrySurveyRequest map(final CountrySurveyRequest api) {
+        net.iaeste.iws.ws.CountrySurveyRequest ws = null;
 
         if (api != null) {
-            ws = new net.iaeste.iws.ws.SurveyOfCountryRequest();
+            ws = new net.iaeste.iws.ws.CountrySurveyRequest();
 
             ws.setSurvey(map(api.getSurvey()));
         }
@@ -173,21 +173,21 @@ public final class CommitteeMapper extends CommonMapper {
         return ws;
     }
 
-    private static SurveyOfCountry map(final net.iaeste.iws.ws.SurveyOfCountry ws) {
-        SurveyOfCountry api = null;
+    private static CountrySurvey map(final net.iaeste.iws.ws.CountrySurvey ws) {
+        CountrySurvey api = null;
 
         if (ws != null) {
-            api = new SurveyOfCountry();
+            api = new CountrySurvey();
         }
 
         return api;
     }
 
-    private static net.iaeste.iws.ws.SurveyOfCountry map(final SurveyOfCountry api) {
-        net.iaeste.iws.ws.SurveyOfCountry ws = null;
+    private static net.iaeste.iws.ws.CountrySurvey map(final CountrySurvey api) {
+        net.iaeste.iws.ws.CountrySurvey ws = null;
 
         if (api != null) {
-            ws = new net.iaeste.iws.ws.SurveyOfCountry();
+            ws = new net.iaeste.iws.ws.CountrySurvey();
         }
 
         return ws;

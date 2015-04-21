@@ -102,6 +102,7 @@
           <xs:element name="lastname" nillable="true" type="xs:string"/>
           <xs:element name="person" nillable="true" type="tns:Person"/>
           <xs:element name="status" nillable="true" type="tns:UserStatus"/>
+          <xs:element name="type" type="tns:userType"/>
           <xs:element name="privacy" type="tns:Privacy"/>
           <xs:element name="notifications" type="tns:NotificationFrequency"/>
         </xs:sequence>
@@ -500,6 +501,15 @@
       <xs:enumeration value="ACTIVE"/>
       <xs:enumeration value="SUSPENDED"/>
       <xs:enumeration value="DELETED"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="userType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="VOLUNTEER"/>
+      <xs:enumeration value="EMPLOYED"/>
+      <xs:enumeration value="STUDENT"/>
+      <xs:enumeration value="UNKNOWN"/>
     </xs:restriction>
   </xs:simpleType>
 

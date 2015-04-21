@@ -94,6 +94,7 @@
           <xs:element name="lastname" nillable="true" type="xs:string"/>
           <xs:element name="person" nillable="true" type="tns:Person"/>
           <xs:element name="status" nillable="true" type="tns:UserStatus"/>
+          <xs:element name="type" type="tns:userType"/>
           <xs:element name="privacy" type="tns:Privacy"/>
           <xs:element name="notifications" type="tns:NotificationFrequency"/>
         </xs:sequence>
@@ -226,7 +227,7 @@
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="FetchSurveyOfCountryRequest">
+  <xs:complexType final="extension restriction" name="FetchCountrySurveyRequest">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
@@ -236,20 +237,20 @@
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="FetchSurveyOfCountryRespose">
+  <xs:complexType final="extension restriction" name="FetchCountrySurveyRespose">
     <xs:complexContent>
       <xs:extension base="tns:FallibleResponse">
         <xs:sequence>
-          <xs:element name="survey" nillable="true" type="tns:SurveyOfCountry"/>
+          <xs:element name="survey" nillable="true" type="tns:countrySurvey"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="SurveyOfCountry">
+  <xs:complexType final="extension restriction" name="countrySurvey">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
-        <xs:all/>
+        <xs:sequence/>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
@@ -272,16 +273,6 @@
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="SurveyOfCountryRequest">
-    <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
-        <xs:sequence>
-          <xs:element name="survey" type="tns:SurveyOfCountry"/>
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
   <xs:complexType final="extension restriction" name="InternationalGroupRequest">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
@@ -289,6 +280,16 @@
           <xs:element name="group" type="tns:Group"/>
           <xs:element name="user" type="tns:User"/>
           <xs:element name="status" type="tns:GroupStatus"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="CountrySurveyRequest">
+    <xs:complexContent>
+      <xs:extension base="tns:abstractVerification">
+        <xs:sequence>
+          <xs:element name="survey" type="tns:countrySurvey"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -507,6 +508,15 @@
     </xs:restriction>
   </xs:simpleType>
 
+  <xs:simpleType name="userType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="VOLUNTEER"/>
+      <xs:enumeration value="EMPLOYED"/>
+      <xs:enumeration value="STUDENT"/>
+      <xs:enumeration value="UNKNOWN"/>
+    </xs:restriction>
+  </xs:simpleType>
+
   <xs:simpleType name="Privacy">
     <xs:restriction base="xs:string">
       <xs:enumeration value="PUBLIC"/>
@@ -617,18 +627,18 @@
     <wsdl:part name="request" type="tns:FetchInternationalGroupRequest">
     </wsdl:part>
   </wsdl:message>
-  <wsdl:message name="processSurveyOfCountryResponse">
-    <wsdl:part name="response" type="tns:FallibleResponse">
-    </wsdl:part>
-  </wsdl:message>
   <wsdl:message name="fetchInternationalGroupsResponse">
     <wsdl:part name="response" type="tns:FetchInternationalGroupResponse">
     </wsdl:part>
   </wsdl:message>
-  <wsdl:message name="fetchSurveyOfCountry">
+  <wsdl:message name="fetchCountrySurvey">
     <wsdl:part name="token" type="tns:AuthenticationToken">
     </wsdl:part>
-    <wsdl:part name="request" type="tns:FetchSurveyOfCountryRequest">
+    <wsdl:part name="request" type="tns:FetchCountrySurveyRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="fetchCountrySurveyResponse">
+    <wsdl:part name="response" type="tns:FetchCountrySurveyRespose">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="processCommittee">
@@ -637,13 +647,11 @@
     <wsdl:part name="request" type="tns:CommitteeRequest">
     </wsdl:part>
   </wsdl:message>
-  <wsdl:message name="processSurveyOfCountry">
-    <wsdl:part name="token" type="tns:AuthenticationToken">
-    </wsdl:part>
-    <wsdl:part name="request" type="tns:SurveyOfCountryRequest">
+  <wsdl:message name="processCommitteeResponse">
+    <wsdl:part name="response" type="tns:FallibleResponse">
     </wsdl:part>
   </wsdl:message>
-  <wsdl:message name="processCommitteeResponse">
+  <wsdl:message name="processCountrySurveyResponse">
     <wsdl:part name="response" type="tns:FallibleResponse">
     </wsdl:part>
   </wsdl:message>
@@ -657,8 +665,10 @@
     <wsdl:part name="request" type="tns:InternationalGroupRequest">
     </wsdl:part>
   </wsdl:message>
-  <wsdl:message name="fetchSurveyOfCountryResponse">
-    <wsdl:part name="response" type="tns:FetchSurveyOfCountryRespose">
+  <wsdl:message name="processCountrySurvey">
+    <wsdl:part name="token" type="tns:AuthenticationToken">
+    </wsdl:part>
+    <wsdl:part name="request" type="tns:CountrySurveyRequest">
     </wsdl:part>
   </wsdl:message>
   <wsdl:portType name="committeeWS">
@@ -674,10 +684,10 @@
       <wsdl:output message="tns:fetchInternationalGroupsResponse" name="fetchInternationalGroupsResponse">
     </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="fetchSurveyOfCountry">
-      <wsdl:input message="tns:fetchSurveyOfCountry" name="fetchSurveyOfCountry">
+    <wsdl:operation name="fetchCountrySurvey">
+      <wsdl:input message="tns:fetchCountrySurvey" name="fetchCountrySurvey">
     </wsdl:input>
-      <wsdl:output message="tns:fetchSurveyOfCountryResponse" name="fetchSurveyOfCountryResponse">
+      <wsdl:output message="tns:fetchCountrySurveyResponse" name="fetchCountrySurveyResponse">
     </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="processCommittee">
@@ -686,16 +696,16 @@
       <wsdl:output message="tns:processCommitteeResponse" name="processCommitteeResponse">
     </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="processSurveyOfCountry">
-      <wsdl:input message="tns:processSurveyOfCountry" name="processSurveyOfCountry">
-    </wsdl:input>
-      <wsdl:output message="tns:processSurveyOfCountryResponse" name="processSurveyOfCountryResponse">
-    </wsdl:output>
-    </wsdl:operation>
     <wsdl:operation name="processInternationalGroup">
       <wsdl:input message="tns:processInternationalGroup" name="processInternationalGroup">
     </wsdl:input>
       <wsdl:output message="tns:processInternationalGroupResponse" name="processInternationalGroupResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processCountrySurvey">
+      <wsdl:input message="tns:processCountrySurvey" name="processCountrySurvey">
+    </wsdl:input>
+      <wsdl:output message="tns:processCountrySurveyResponse" name="processCountrySurveyResponse">
     </wsdl:output>
     </wsdl:operation>
   </wsdl:portType>
@@ -719,12 +729,12 @@
         <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="fetchSurveyOfCountry">
+    <wsdl:operation name="fetchCountrySurvey">
       <soap:operation soapAction="" style="rpc"/>
-      <wsdl:input name="fetchSurveyOfCountry">
+      <wsdl:input name="fetchCountrySurvey">
         <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
-      <wsdl:output name="fetchSurveyOfCountryResponse">
+      <wsdl:output name="fetchCountrySurveyResponse">
         <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
@@ -737,21 +747,21 @@
         <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="processSurveyOfCountry">
-      <soap:operation soapAction="" style="rpc"/>
-      <wsdl:input name="processSurveyOfCountry">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
-      </wsdl:input>
-      <wsdl:output name="processSurveyOfCountryResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
-      </wsdl:output>
-    </wsdl:operation>
     <wsdl:operation name="processInternationalGroup">
       <soap:operation soapAction="" style="rpc"/>
       <wsdl:input name="processInternationalGroup">
         <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="processInternationalGroupResponse">
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processCountrySurvey">
+      <soap:operation soapAction="" style="rpc"/>
+      <wsdl:input name="processCountrySurvey">
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="processCountrySurveyResponse">
         <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>

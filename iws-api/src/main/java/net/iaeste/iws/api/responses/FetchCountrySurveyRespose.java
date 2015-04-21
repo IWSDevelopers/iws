@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2015, IAESTE Internet Development Team. All rights reserved.
  * ----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.requests.SurveyOfCountryRequest
+ * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.responses.FetchSurveyOfCountryRespose
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -12,18 +12,16 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-package net.iaeste.iws.api.requests;
+package net.iaeste.iws.api.responses;
 
 import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.api.dtos.SurveyOfCountry;
-import net.iaeste.iws.api.util.AbstractVerification;
+import net.iaeste.iws.api.constants.IWSError;
+import net.iaeste.iws.api.dtos.CountrySurvey;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -31,14 +29,15 @@ import java.util.Map;
  * @since   IWS 1.1
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "SurveyOfCountryRequest", propOrder = { "survey" })
-public final class SurveyOfCountryRequest extends AbstractVerification {
+@XmlType(name = "FetchCountrySurveyRespose", propOrder = { "survey" })
+public final class FetchCountrySurveyRespose extends FallibleResponse {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    @XmlElement(required = true, nillable = false)
-    private SurveyOfCountry survey = null;
+    /** The Survey of Countries, matching the request. */
+    @XmlElement(required = true, nillable = true)
+    private CountrySurvey survey = null;
 
     // =========================================================================
     // Object Constructors
@@ -48,44 +47,84 @@ public final class SurveyOfCountryRequest extends AbstractVerification {
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.
      */
-    public SurveyOfCountryRequest() {
+    public FetchCountrySurveyRespose() {
     }
 
     /**
-     * Default Constructor,
+     * Default Constructor.
      *
-     * @param survey Survey Of Country Object to process
+     * @param survey Survey Of Country Object
      */
-    public SurveyOfCountryRequest(final SurveyOfCountry survey) {
-        setSurvey(survey);
+    public FetchCountrySurveyRespose(final CountrySurvey survey) {
+        this.survey = survey;
+    }
+
+    /**
+     * Error Constructor.
+     *
+     * @param error   IWS Error Object
+     * @param message Error Message
+     */
+    public FetchCountrySurveyRespose(final IWSError error, final String message) {
+        super(error, message);
     }
 
     // =========================================================================
     // Standard Setters & Getters
     // =========================================================================
 
-    public void setSurvey(final SurveyOfCountry survey) throws IllegalArgumentException {
-        ensureNotNullAndVerifiable("survey", survey);
+    public void setSurvey(final CountrySurvey survey) {
         this.survey = survey;
     }
 
-    public SurveyOfCountry getSurvey() {
+    public CountrySurvey getSurvey() {
         return survey;
     }
 
+
     // =========================================================================
-    // Standard Request Methods
+    // Standard Response Methods
     // =========================================================================
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Map<String, String> validate() {
-        final Map<String, String> validation = new HashMap<>(1);
+    public boolean equals(final Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof FetchCountrySurveyRespose)) {
+            return false;
+        }
+        if (!super.equals(obj)) {
+            return false;
+        }
 
-        isNotNull(validation, "survey", survey);
+        final FetchCountrySurveyRespose that = (FetchCountrySurveyRespose) obj;
 
-        return validation;
+        return !(survey != null ? !survey.equals(that.survey) : that.survey != null);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (survey != null ? survey.hashCode() : 0);
+
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return "FetchSurveyOfCountryRespose{" +
+                "survey=" + survey +
+                '}';
     }
 }

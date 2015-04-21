@@ -23,13 +23,13 @@ import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.requests.CommitteeRequest;
 import net.iaeste.iws.api.requests.FetchCommitteeRequest;
 import net.iaeste.iws.api.requests.FetchInternationalGroupRequest;
-import net.iaeste.iws.api.requests.FetchSurveyOfCountryRequest;
+import net.iaeste.iws.api.requests.FetchCountrySurveyRequest;
 import net.iaeste.iws.api.requests.InternationalGroupRequest;
-import net.iaeste.iws.api.requests.SurveyOfCountryRequest;
+import net.iaeste.iws.api.requests.CountrySurveyRequest;
 import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchCommitteeResponse;
 import net.iaeste.iws.api.responses.FetchInternationalGroupResponse;
-import net.iaeste.iws.api.responses.FetchSurveyOfCountryRespose;
+import net.iaeste.iws.api.responses.FetchCountrySurveyRespose;
 import net.iaeste.iws.core.services.CommitteeService;
 import net.iaeste.iws.core.services.ServiceFactory;
 import net.iaeste.iws.persistence.Authentication;
@@ -165,24 +165,24 @@ public final class CommitteeController extends CommonController implements Commi
      * {@inheritDoc}
      */
     @Override
-    public FetchSurveyOfCountryRespose fetchSurveyOfCountry(final AuthenticationToken token, final FetchSurveyOfCountryRequest request) {
+    public FetchCountrySurveyRespose fetchCountrySurvey(final AuthenticationToken token, final FetchCountrySurveyRequest request) {
         if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting fetchSurveyOfCountry()"));
+            log.trace(formatLogMessage(token, "Starting fetchCountrySurvey()"));
         }
-        FetchSurveyOfCountryRespose response;
+        FetchCountrySurveyRespose response;
 
         try {
             verify(request);
             final Authentication authentication = verifyAccess(token, Permission.FETCH_SURVEY_OF_COUNTRIES);
 
             final CommitteeService service = factory.prepareCommitteeService();
-            response = service.fetchSurveyOfCountry(authentication, request);
+            response = service.fetchCountrySurvey(authentication, request);
         } catch (IWSException e) {
-            response = new FetchSurveyOfCountryRespose(e.getError(), e.getMessage());
+            response = new FetchCountrySurveyRespose(e.getError(), e.getMessage());
         }
 
         if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished fetchSurveyOfCountry()"));
+            log.trace(formatLogMessage(token, "Finished fetchCountrySurvey()"));
         }
         return response;
     }
@@ -191,9 +191,9 @@ public final class CommitteeController extends CommonController implements Commi
      * {@inheritDoc}
      */
     @Override
-    public FallibleResponse processSurveyOfCountry(final AuthenticationToken token, final SurveyOfCountryRequest request) {
+    public FallibleResponse processCountrySurvey(final AuthenticationToken token, final CountrySurveyRequest request) {
         if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting processSurveyOfCountry()"));
+            log.trace(formatLogMessage(token, "Starting processCountrySurvey()"));
         }
         FallibleResponse response;
 
@@ -202,14 +202,14 @@ public final class CommitteeController extends CommonController implements Commi
             final Authentication authentication = verifyAccess(token, Permission.PROCESS_SURVEY_OF_COUNTRIES);
 
             final CommitteeService service = factory.prepareCommitteeService();
-            service.processSurveyOfCountry(authentication, request);
+            service.processCountrySurvey(authentication, request);
             response = new FallibleResponse();
         } catch (IWSException e) {
             response = new FallibleResponse(e.getError(), e.getMessage());
         }
 
         if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished processSurveyOfCountry()"));
+            log.trace(formatLogMessage(token, "Finished processCountrySurvey()"));
         }
         return response;
     }

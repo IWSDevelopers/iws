@@ -95,8 +95,8 @@ public enum Permission {
     PROCESS_COMMITTEE("Process Committee", Committees.class, "processCommittee"),
     FETCH_INTERNATIONAL_GROUPS("Fetch International Groups", Committees.class, "fetchInternationalGroups"),
     PROCESS_INTERNATIONAL_GROUP("Process International Group", Committees.class, "processInternationalGroup"),
-    FETCH_SURVEY_OF_COUNTRIES("Fetch Survey of Countries", Committees.class, "fetchSurveyOfCountry"),
-    PROCESS_SURVEY_OF_COUNTRIES("Process Survey of Countries", Committees.class, "processSurveyOfCountry"),
+    FETCH_SURVEY_OF_COUNTRIES("Fetch Survey of Countries", Committees.class, "fetchCountrySurvey"),
+    PROCESS_SURVEY_OF_COUNTRIES("Process Survey of Countries", Committees.class, "processCountrySurvey"),
 
     // =========================================================================
     // File related Permissions

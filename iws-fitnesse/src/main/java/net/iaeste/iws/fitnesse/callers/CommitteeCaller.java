@@ -19,13 +19,13 @@ import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.CommitteeRequest;
 import net.iaeste.iws.api.requests.FetchCommitteeRequest;
 import net.iaeste.iws.api.requests.FetchInternationalGroupRequest;
-import net.iaeste.iws.api.requests.FetchSurveyOfCountryRequest;
+import net.iaeste.iws.api.requests.FetchCountrySurveyRequest;
 import net.iaeste.iws.api.requests.InternationalGroupRequest;
-import net.iaeste.iws.api.requests.SurveyOfCountryRequest;
+import net.iaeste.iws.api.requests.CountrySurveyRequest;
 import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchCommitteeResponse;
 import net.iaeste.iws.api.responses.FetchInternationalGroupResponse;
-import net.iaeste.iws.api.responses.FetchSurveyOfCountryRespose;
+import net.iaeste.iws.api.responses.FetchCountrySurveyRespose;
 import net.iaeste.iws.client.CommitteeClient;
 import net.iaeste.iws.fitnesse.exceptions.StopTestException;
 
@@ -100,9 +100,9 @@ public final class CommitteeCaller implements Committees {
      * {@inheritDoc}
      */
     @Override
-    public FetchSurveyOfCountryRespose fetchSurveyOfCountry(final AuthenticationToken token, final FetchSurveyOfCountryRequest request) {
+    public FetchCountrySurveyRespose fetchCountrySurvey(final AuthenticationToken token, final FetchCountrySurveyRequest request) {
         try {
-            return caller.fetchSurveyOfCountry(token, request);
+            return caller.fetchCountrySurvey(token, request);
         } catch (RuntimeException e) {
             throw new StopTestException(e);
         }
@@ -112,9 +112,9 @@ public final class CommitteeCaller implements Committees {
      * {@inheritDoc}
      */
     @Override
-    public FallibleResponse processSurveyOfCountry(final AuthenticationToken token, final SurveyOfCountryRequest request) {
+    public FallibleResponse processCountrySurvey(final AuthenticationToken token, final CountrySurveyRequest request) {
         try {
-            return caller.processSurveyOfCountry(token, request);
+            return caller.processCountrySurvey(token, request);
         } catch (RuntimeException e) {
             throw new StopTestException(e);
         }

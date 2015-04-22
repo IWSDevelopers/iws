@@ -52,12 +52,12 @@ public class AccessWS implements Access {
 
     /**
      * Injection of the IWS Access Bean Instance, which embeds the Transactional
-     * logic and itself invokes the actual Implemenation.
+     * logic and itself invokes the actual Implementation.
      */
     @Inject @IWSBean private Access bean;
 
     /**
-     * The WebService Context is only available for Classes, which is annotated
+     * The WebService Context is only available for Classes, which are annotated
      * with @WebService. So, we need it injected and then in the PostConstruct
      * method, we can create a new RequestLogger instance with it.
      */

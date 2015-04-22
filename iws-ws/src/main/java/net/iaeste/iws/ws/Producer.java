@@ -26,7 +26,7 @@ import javax.ejb.EJB;
 import javax.enterprise.inject.Produces;
 
 /**
- * Producer for the IWS EJB's, required for injection of the Bean instances into
+ * Producer for the IWS EJBs, required for injection of the Bean instances into
  * the IWS WebServices.
  *
  * @author  Kim Jensen / last $Author:$

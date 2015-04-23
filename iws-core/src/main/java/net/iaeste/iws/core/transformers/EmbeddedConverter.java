@@ -14,8 +14,6 @@
  */
 package net.iaeste.iws.core.transformers;
 
-import static net.iaeste.iws.core.transformers.CommonTransformer.sanitize;
-
 import net.iaeste.iws.api.dtos.Address;
 import net.iaeste.iws.api.dtos.Country;
 import net.iaeste.iws.api.dtos.Group;
@@ -186,7 +184,7 @@ public final class EmbeddedConverter {
         result.setOfferType(embedded.getOfferType());
         result.setExchangeType(embedded.getExchangeType());
         result.setOldRefNo(embedded.getOldRefNo());
-        result.setWorkDescription(sanitize(embedded.getWorkDescription()));
+        result.setWorkDescription(embedded.getWorkDescription());
         result.setTypeOfWork(embedded.getTypeOfWork());
         result.setWeeklyHours(embedded.getWeeklyHours());
         result.setDailyHours(embedded.getDailyHours());
@@ -195,7 +193,7 @@ public final class EmbeddedConverter {
         result.setFieldOfStudies(CollectionTransformer.explodeEnumSet(FieldOfStudy.class, embedded.getFieldOfStudies()));
         result.setSpecializations(CollectionTransformer.explodeStringSet(embedded.getSpecializations()));
         result.setPreviousTrainingRequired(embedded.getPrevTrainingRequired());
-        result.setOtherRequirements(sanitize(embedded.getOtherRequirements()));
+        result.setOtherRequirements(embedded.getOtherRequirements());
         result.setLanguage1(embedded.getLanguage1());
         result.setLanguage1Level(embedded.getLanguage1Level());
         result.setLanguage1Operator(embedded.getLanguage1Operator());
@@ -220,8 +218,8 @@ public final class EmbeddedConverter {
         result.setLodgingCostFrequency(embedded.getLodgingCostFrequency());
         result.setNominationDeadline(CommonTransformer.convert(embedded.getNominationDeadline()));
         result.setNumberOfHardCopies(embedded.getNumberOfHardCopies());
-        result.setAdditionalInformation(sanitize(embedded.getAdditionalInformation()));
-        result.setPrivateComment(sanitize(embedded.getPrivateComment()));
+        result.setAdditionalInformation(embedded.getAdditionalInformation());
+        result.setPrivateComment(embedded.getPrivateComment());
         result.setStatus(embedded.getStatus());
         result.setModified(new DateTime(embedded.getModified()));
         result.setCreated(new DateTime(embedded.getCreated()));

@@ -81,6 +81,28 @@ public interface IWSConstants {
     Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX);
 
     /**
+     * XML files are generally very error tolerant, however - certain characters
+     * exists, which is referred to as Control Characters. These can cause
+     * problems, and should thus be removed from the XML. According to
+     * <a href="http://www.w3.org/TR/REC-xml/#charsets">W3C</a>, the not allowed
+     * characters should be stripped. At best Server Side, or even better as
+     * part of the data input validation.<br />
+     *   Illegal or not-allowed characters can occur in text, when something is
+     * copy'n'pasted from programs such as Microsoft Word.<br />
+     *   This regular expression will detect invalid newline characters, which
+     * can then be used by the Sanitizer method, which is part of the IWS
+     * Verification framework.
+     */
+    String REGEX_INVALID_NEWLINES = "\11";
+
+    /**
+     * The compiled invalid newline pattern to use. Note, that the Pattern class
+     * is safe to precompile into a Global constant, whereas the Matcher must be
+     * generated on a per-thread basis.
+     */
+    Pattern PATTERN_INVALID_NEWLINES = Pattern.compile(REGEX_INVALID_NEWLINES);
+
+    /**
      * The minimal lenghth for a password which the user is choosing must be
      * this long.
      */

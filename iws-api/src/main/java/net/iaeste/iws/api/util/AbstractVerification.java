@@ -20,7 +20,9 @@ import net.iaeste.iws.api.exceptions.VerificationException;
 
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 /**
@@ -73,6 +75,41 @@ public abstract class AbstractVerification implements Verifiable {
         if (!validationResult.isEmpty()) {
             throw new VerificationException("Validation failed: " + validationResult);
         }
+    }
+
+    /**
+     * To ensure that the data is not causing problems when being accessed via
+     * the IWS WebService interface, it is necessary to sanitize it. Problems
+     * which has been found is added to this method, to improve the internal
+     * data quality.
+     *
+     * @param source String to sanitize
+     * @return Sanitized String
+     * @see <a href="https://trac.iaeste.net/ticket/837">837</a> &amp; <a href="https://trac.iaeste.net/ticket/987">987</a>
+     */
+    public String sanitize(final String source) {
+        return source != null ? IWSConstants.PATTERN_INVALID_NEWLINES.matcher(source).replaceAll("\n") : null;
+    }
+
+    /**
+     * Sanitize Wrapper for Collections.
+     *
+     * @param source Collection to Sanitize
+     * @return Set of sanitized String
+     */
+    public Set<String> sanitize(final Collection<String> source) {
+        final Set<String> sanitized;
+
+        if (source != null) {
+            sanitized = new HashSet<>(source.size());
+            for (final String str : source) {
+                sanitized.add(sanitize(str));
+            }
+        } else {
+            sanitized = null;
+        }
+
+        return sanitized;
     }
 
     // =========================================================================

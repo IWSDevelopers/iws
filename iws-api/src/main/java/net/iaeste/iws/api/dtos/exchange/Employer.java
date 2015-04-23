@@ -149,7 +149,7 @@ public final class Employer extends AbstractVerification {
      */
     public void setName(final String name) throws IllegalArgumentException {
         ensureNotNullOrEmptyOrTooLong("name", name, FIELD_LENGTH);
-        this.name = name;
+        this.name = sanitize(name);
     }
 
     public String getName() {
@@ -169,7 +169,7 @@ public final class Employer extends AbstractVerification {
      */
     public void setBusiness(final String business) throws IllegalArgumentException {
         ensureNotTooLong("business", business, FIELD_LENGTH);
-        this.business = business;
+        this.business = sanitize(business);
     }
 
     public String getBusiness() {
@@ -189,7 +189,7 @@ public final class Employer extends AbstractVerification {
      */
     public void setDepartment(final String department) throws IllegalArgumentException {
         ensureNotNullOrTooLong("department", department, FIELD_LENGTH);
-        this.department = department;
+        this.department = sanitize(department);
     }
 
     public String getDepartment() {
@@ -225,7 +225,7 @@ public final class Employer extends AbstractVerification {
      */
     public void setEmployeesCount(final String employeesCount) throws IllegalArgumentException {
         ensureNotTooLong("employeesCount", employeesCount, 25);
-        this.employeesCount = employeesCount;
+        this.employeesCount = sanitize(employeesCount);
     }
 
     public String getEmployeesCount() {
@@ -245,7 +245,7 @@ public final class Employer extends AbstractVerification {
      */
     public void setWebsite(final String website) throws IllegalArgumentException {
         ensureNotTooLong("website", website, FIELD_LENGTH);
-        this.website = website;
+        this.website = sanitize(website);
     }
 
     public String getWebsite() {
@@ -265,7 +265,7 @@ public final class Employer extends AbstractVerification {
      */
     public void setWorkingPlace(final String workingPlace) throws IllegalArgumentException {
         ensureNotNullOrTooLong("workingPlace", workingPlace, FIELD_LENGTH);
-        this.workingPlace = workingPlace;
+        this.workingPlace = sanitize(workingPlace);
     }
 
     public String getWorkingPlace() {
@@ -299,7 +299,7 @@ public final class Employer extends AbstractVerification {
      */
     public void setNearestAirport(final String nearestAirport) throws IllegalArgumentException {
         ensureNotTooLong("nearestAirport", nearestAirport, FIELD_LENGTH);
-        this.nearestAirport = nearestAirport;
+        this.nearestAirport = sanitize(nearestAirport);
     }
 
     public String getNearestAirport() {
@@ -319,7 +319,7 @@ public final class Employer extends AbstractVerification {
      */
     public void setNearestPublicTransport(final String nearestPublicTransport) throws IllegalArgumentException {
         ensureNotTooLong("nearestPublicTransport", nearestPublicTransport, FIELD_LENGTH);
-        this.nearestPublicTransport = nearestPublicTransport;
+        this.nearestPublicTransport = sanitize(nearestPublicTransport);
     }
 
     public String getNearestPublicTransport() {

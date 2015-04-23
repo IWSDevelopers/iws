@@ -37,8 +37,6 @@ import org.apache.commons.csv.CSVRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.regex.Pattern;
-
 /**
  * Transformation of Common Objects.
  *
@@ -309,64 +307,5 @@ public final class CommonTransformer {
             result = "No";
         }
         return result;
-    }
-
-    private static final String VALID_XML_CHARS = "[^\\u0009\\u000A\\u000D\\u0020-\\uD7FF\\uE000-\\uFFFD\\x{10000}-\\x{10FFFF}]";
-    private static final Pattern PATTERN_VALID_XML = Pattern.compile(VALID_XML_CHARS);
-
-    /**
-     * XML files are generally very error tolerant, however - certain characters
-     * exists, which is referred to as Control Characters. These can cause
-     * problems, and should thus be removed from the XML. According to
-     * <a href="http://www.w3.org/TR/REC-xml/#charsets">W3C</a>, the not allowed
-     * characters should be stripped. At best Server Side, or even better as
-     * part of the data input validation.<br />
-     *   Illegal or not-allowed characters can occur in text, when something is
-     * copy'n'pasted from programs such as Microsoft Word.<br />
-     *   The solution is simply to traverse the XML String and replace illegal
-     * or not-allowed characters. Doing so can be done either with a regex or
-     * with a String Builder Object. The String Builder Object is for larger
-     * data sets faster than the regex. Though - both variants is very expensive
-     * regarding memory consumption.
-     *
-     * @param str XML String to sanitize
-     * @return Sanitized XML String
-     * @see <a href="http://blog.mark-mclaren.info/2007/02/invalid-xml-characters-when-valid-utf8_5873.html">Mark McLaren's blog</a>.
-     * @see <a href="http://www.rgagnon.com/javadetails/java-sanitize-xml-string.html">Real's Howto</a>.
-     */
-    public static String sanitize(final String str) {
-        // ref : http://www.w3.org/TR/REC-xml/#charsets
-        return str != null ? PATTERN_VALID_XML.matcher(str).replaceAll("") : null;
-        //String output = null;
-        //
-        //if (str != null) {
-        //    if (!str.isEmpty()) {
-        //        int count = 0;
-        //        final StringBuilder builder = new StringBuilder(str.length());
-        //
-        //        for (int i = 0; i < str.length(); i++) {
-        //            final char current = str.charAt(i);
-        //            if ((current == 0x9) ||
-        //                    (current == 0xA) ||
-        //                    (current == 0xD) ||
-        //                    ((current >= 0x20) && (current <= 0xD7FF)) ||
-        //                    ((current >= 0xE000) && (current <= 0xFFFD)) ||
-        //                    ((current >= 0x10000) && (current <= 0x10FFFF))) {
-        //                builder.append(current);
-        //            } else {
-        //                count++;
-        //            }
-        //        }
-        //
-        //        if (count > 0) {
-        //            log.warn("Found " + count + " invalid characters.");
-        //        }
-        //        output = builder.toString().trim();
-        //    } else {
-        //        output = "";
-        //    }
-        //}
-        //
-        //return output;
     }
 }

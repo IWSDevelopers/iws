@@ -249,9 +249,10 @@ public final class Offer extends AbstractVerification {
 
     /**
      * Sets the Type of Offer, meaning if this Offer is either Reserved, Limited
-     * or Open. The type is closely linked together with the Reference Number
-     * @param offerType
-     * @throws IllegalArgumentException
+     * or Open. The type is closely linked together with the Reference Number.
+     *
+     * @param offerType Type of Offer
+     * @throws IllegalArgumentException in set to null
      */
     public void setOfferType(final OfferType offerType) throws IllegalArgumentException {
         ensureNotNull("offerType", offerType);
@@ -320,7 +321,7 @@ public final class Offer extends AbstractVerification {
      */
     public void setWorkDescription(final String workDescription) throws IllegalArgumentException {
         ensureNotTooLong("workDescription", workDescription, 3000);
-        this.workDescription = workDescription;
+        this.workDescription = sanitize(workDescription);
     }
 
     public String getWorkDescription() {
@@ -367,7 +368,7 @@ public final class Offer extends AbstractVerification {
     /**
      * Sets the number of work days expected by the Employer.
      *
-     * @param dailyHours Offer Weekly Work Days
+     * @param weeklyWorkDays Offer Weekly Work Days
      */
     public void setWeeklyWorkDays(final Float weeklyWorkDays) {
         this.weeklyWorkDays = weeklyWorkDays;
@@ -423,7 +424,7 @@ public final class Offer extends AbstractVerification {
     public void setSpecializations(final Set<String> specializations) throws IllegalArgumentException {
         ensureNotNullOrTooLong("specializations", specializations, IWSExchangeConstants.MAX_OFFER_SPECIALIZATIONS);
         ensureNotContaining("specializations", specializations, IWSExchangeConstants.SET_DELIMITER);
-        this.specializations = specializations;
+        this.specializations = sanitize(specializations);
     }
 
     public Set<String> getSpecializations() {
@@ -440,7 +441,7 @@ public final class Offer extends AbstractVerification {
 
     public void setOtherRequirements(final String otherRequirements) throws IllegalArgumentException {
         ensureNotTooLong("otherRequirements", otherRequirements, 4000);
-        this.otherRequirements = otherRequirements;
+        this.otherRequirements = sanitize(otherRequirements);
     }
 
     public String getOtherRequirements() {
@@ -595,7 +596,7 @@ public final class Offer extends AbstractVerification {
      */
     public void setDeduction(final String deduction) {
         ensureNotTooLong("deduction", deduction, 50);
-        this.deduction = deduction;
+        this.deduction = sanitize(deduction);
     }
 
     public String getDeduction() {
@@ -627,7 +628,7 @@ public final class Offer extends AbstractVerification {
      */
     public void setLodgingBy(final String lodgingBy) {
         ensureNotTooLong("lodgingBy", lodgingBy, 255);
-        this.lodgingBy = lodgingBy;
+        this.lodgingBy = sanitize(lodgingBy);
     }
 
     public String getLodgingBy() {
@@ -675,7 +676,7 @@ public final class Offer extends AbstractVerification {
      */
     public void setAdditionalInformation(final String additionalInformation) throws IllegalArgumentException {
         ensureNotTooLong("additionalInformation", additionalInformation, 3000);
-        this.additionalInformation = additionalInformation;
+        this.additionalInformation = sanitize(additionalInformation);
     }
 
     public String getAdditionalInformation() {
@@ -691,7 +692,7 @@ public final class Offer extends AbstractVerification {
      */
     public void setPrivateComment(final String privateComment) throws IllegalArgumentException {
         ensureNotTooLong("privateComment", privateComment, 1000);
-        this.privateComment = privateComment;
+        this.privateComment = sanitize(privateComment);
     }
 
     public String getPrivateComment() {
@@ -770,7 +771,7 @@ public final class Offer extends AbstractVerification {
      *
      * @param shared Offer Sharing DateTime
      */
-    public void setShared(DateTime shared) {
+    public void setShared(final DateTime shared) {
         this.shared = shared;
     }
 
@@ -778,7 +779,7 @@ public final class Offer extends AbstractVerification {
         return shared;
     }
 
-    public void setHidden(boolean hidden) {
+    public void setHidden(final boolean hidden) {
         this.hidden = hidden;
     }
 

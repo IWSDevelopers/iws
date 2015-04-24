@@ -14,9 +14,11 @@
  */
 package net.iaeste.iws.api.enums;
 
+import javax.xml.bind.annotation.XmlType;
+
 /**
  * The different types of Users we have. From IW3, the values were added as part
- * of release 113, and the following was found in the SQL update script:
+ * of release 1.13, and the following was found in the SQL update script:
  * <pre>
  *   ALTER TABLE users ADD COLUMN type VARCHAR(1);
  *   ALTER TABLE users ALTER COLUMN type SET DEFAULT 'v';
@@ -31,17 +33,19 @@ package net.iaeste.iws.api.enums;
  * Based on the above SQL changes, it is assumed that we have three types.
  * During the migration, it was discovered that 30 accounts were having type
  * 'x', interpreted as Unknown.<br />
- *   In IWS, we've added a fourth type, student. Instead, hence the Student type
- * was added existing list of Volunteers, Employed & Unknown.
+ *   In IWS, we've added two more types, student & functional. which complements
+ * the previous ones to provide a more suitable range of Accounts, where rules
+ * can later be added to these, to improve internal data management.
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
+@XmlType(name = "UserType")
 public enum UserType {
 
     /**
-     * By default, all new accounts are made with type Volunteer. A Volunteer is
+     * By default, all new Accounts are made with type Volunteer. A Volunteer is
      * defined as someone associated (working for) IAESTE, but is not payed for
      * their services.
      */
@@ -58,6 +62,12 @@ public enum UserType {
      * are
      */
     STUDENT("Student"),
+
+    /**
+     * Some Accounts are purely used with automated tools, such as cron jobs.
+     * These Accounts can be treated differently than other accounts.
+     */
+    FUNCTIONAL("Functional"),
 
     /**
      * The fallback type, if nothing else is provided. The Unknown type should

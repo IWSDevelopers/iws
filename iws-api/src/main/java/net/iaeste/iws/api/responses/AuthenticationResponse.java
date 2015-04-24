@@ -33,7 +33,7 @@ import javax.xml.bind.annotation.XmlType;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "authenticationResponse", propOrder = { "token" })
+@XmlType(name = "AuthenticationResponse", propOrder = { "token" })
 public final class AuthenticationResponse extends FallibleResponse {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */

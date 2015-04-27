@@ -81,10 +81,6 @@ public class SessionRequestBean {
     private static final String WARINING = "%s completed in %s ms with warning: %s";
     private static final String FAILURE = "%s completed in %s ms with failure: %s";
 
-    // The milliseconds that a request takes is converted from the date/time
-    // format and into a nice printable number, via this formatter.
-    private static final DecimalFormat format = new DecimalFormat("###,###.##");
-
     /**
      * Setter for the JNDI injected persistence context. This allows us to also
      * test the code, by invoking these setters on the instantiated Object.
@@ -143,6 +139,10 @@ public class SessionRequestBean {
      * @return Formatted log message with request, duration and result
      */
     public String generateLog(final String method, final Long start, final Fallible fallible, final AuthenticationToken token) {
+        // The milliseconds that a request takes is converted from the date/time
+        // format and into a nice printable number, via this formatter.
+        final DecimalFormat format = new DecimalFormat("###,###.##");
+
         final String duration = format.format((double) (System.nanoTime() - start) / 1000000);
         final String logMessage;
 
@@ -183,6 +183,9 @@ public class SessionRequestBean {
      * @return Formatted log message with request, duration and failure message
      */
     public String generateLog(final String method, final Long start, final Throwable cause, final AuthenticationToken token) {
+        // The milliseconds that a request takes is converted from the date/time
+        // format and into a nice printable number, via this formatter.
+        final DecimalFormat format = new DecimalFormat("###,###.##");
         final String duration = format.format((double) (System.nanoTime() - start) / 1000000);
 
         return formatLogMessage(token, FAILURE, method, duration, cause.getMessage());
@@ -212,7 +215,7 @@ public class SessionRequestBean {
             if (obj != null) {
                 entity.setSessionData(serialize(obj));
             }
-            log.info("Saving Requests information with the request Object.");
+            log.debug("Saving Requests information with the request Object.");
             dao.persist(entity);
         } else {
             log.warn("Attempted to save request information for deprecated Session.");

@@ -89,17 +89,17 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
 
     public OfferCSVUploadResponse uploadOffers(final Authentication authentication, final OfferCSVUploadRequest request) {
         final OfferCSVUploadResponse response = new OfferCSVUploadResponse();
-        HashMap<String, OfferCSVUploadResponse.ProcessingResult> processingResult = new HashMap<>();
-        final HashMap<String, Map<String, String>> errors = new HashMap<>();
+        final Map<String, OfferCSVUploadResponse.ProcessingResult> processingResult = new HashMap<>();
+        final Map<String, Map<String, String>> errors = new HashMap<>();
 
         final char fieldDelimiter = request.getDelimiter() != null ? request.getDelimiter().getDescription() : DELIMITER;
 
         try (ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(request.getData());
              Reader reader = new InputStreamReader(byteArrayInputStream, IWSConstants.DEFAULT_ENCODING);
              CSVParser parser = getDefaultCsvParser(reader, fieldDelimiter)) {
-            Map<String, Integer> headersMap = parser.getHeaderMap();
-            Set<String> headers = headersMap.keySet();
-            Set<String> expectedHeaders = new HashSet<>(createDomesticFirstRow());
+            final Map<String, Integer> headersMap = parser.getHeaderMap();
+            final Set<String> headers = headersMap.keySet();
+            final Set<String> expectedHeaders = new HashSet<>(createDomesticFirstRow());
             if (expectedHeaders.equals(headers)) {
                 for (final CSVRecord record : parser.getRecords()) {
                     process(processingResult, errors, authentication, record);
@@ -234,9 +234,10 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
         }
     }
 
-    private void process(final Map<String, OfferCSVUploadResponse.ProcessingResult> processingResult, final HashMap<String, Map<String, String>> errors, final Authentication authentication, final CSVRecord record) {
+    private void process(final Map<String, OfferCSVUploadResponse.ProcessingResult> processingResult, final Map<String, Map<String, String>> errors, final Authentication authentication, final CSVRecord record) {
         String refNo = "";
         final Map<String, String> conversionErrors = new HashMap<>(0);
+
         try {
             refNo = record.get(OfferFields.REFNO.getField());
             final Offer csvOffer = ExchangeTransformer.offerFromCsv(record, conversionErrors);
@@ -302,7 +303,7 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
             if (errors.containsKey(refNo)) {
                 errors.get(refNo).put("general", e.getMessage());
             } else {
-                final HashMap<String, String> generalError = new HashMap<>(1);
+                final Map<String, String> generalError = new HashMap<>(1);
                 generalError.put("general", e.getMessage());
                 if (!conversionErrors.isEmpty()) {
                     generalError.putAll(conversionErrors);
@@ -324,7 +325,6 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
      * @param authentication The users Authentication information
      * @param employer       The Employer to find / create
      * @return Employer Entity found or created
-     * @throws IdentificationException if more than one Employer exists
      */
     private EmployerEntity process(final Authentication authentication, final Employer employer) {
         // If the Employer provided is having an Id set - then we need to update
@@ -334,7 +334,7 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
         EmployerEntity entity;
         if (employer.getEmployerId() != null) {
             // Id exists, so we simply find the Employer based on that
-            entity = dao.findEmployer(employer.getEmployerId());
+            entity = dao.findEmployer(authentication, employer.getEmployerId());
             log.debug(formatLogMessage(authentication, "Employer lookup for Id '%s' gave '%s'.", employer.getEmployerId(), entity.getName()));
         } else {
             // No Id was set, so we're trying to find the Employer based on the
@@ -345,7 +345,7 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
 
         if (entity == null) {
             entity = ExchangeTransformer.transform(employer);
-            GroupEntity nationalGroup = accessDao.findNationalGroup(authentication.getUser());
+            final GroupEntity nationalGroup = accessDao.findNationalGroup(authentication.getUser());
             entity.setGroup(nationalGroup);
             processAddress(authentication, entity.getAddress());
             dao.persist(authentication, entity);

@@ -51,7 +51,8 @@ import java.util.Date;
                         "where e.group.id = :gid"),
         @NamedQuery(name = "employer.findByExternalId",
                 query = "select e from EmployerEntity e " +
-                        "where e.externalId = :eid"),
+                        "where e.externalId = :eid" +
+                        "  and e.group.parentId = :pgid"),
         @NamedQuery(name = "employer.findEmployerByValues",
                 query = "select e from EmployerEntity e " +
                         "where e.group.id = :gid" +

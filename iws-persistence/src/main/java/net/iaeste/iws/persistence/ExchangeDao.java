@@ -43,7 +43,7 @@ public interface ExchangeDao extends BasicDao {
 
     List<DomesticOfferStatisticsView> findDomesticOfferStatistics(GroupEntity group, Integer year);
 
-    EmployerEntity findEmployer(String externalId);
+    EmployerEntity findEmployer(Authentication authentication, String externalId);
 
     /**
      * Finds a Unique Employer in the IntraWeb. The Uniqueness of an Employer is

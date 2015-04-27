@@ -80,9 +80,10 @@ public final class ExchangeJpaDao extends BasicJpaDao implements ExchangeDao {
      * {@inheritDoc}
      */
     @Override
-    public EmployerEntity findEmployer(final String externalId) {
+    public EmployerEntity findEmployer(final Authentication authentication, final String externalId) {
         final Query query = entityManager.createNamedQuery("employer.findByExternalId");
         query.setParameter("eid", externalId);
+        query.setParameter("pgid", authentication.getGroup().getParentId());
 
         return findUniqueResult(query, "Employer");
     }

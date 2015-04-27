@@ -97,8 +97,8 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
             entity = dao.findUniqueEmployer(authentication, employer);
 
             if (entity == null) {
+                final GroupEntity nationalGroup = accessDao.findNationalGroup(authentication.getUser());
                 entity = transform(employer);
-                GroupEntity nationalGroup = accessDao.findNationalGroup(authentication.getUser());
                 entity.setGroup(nationalGroup);
                 processAddress(authentication, entity.getAddress());
                 dao.persist(authentication, entity);
@@ -107,8 +107,8 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
                 dao.persist(authentication, entity, transform(employer));
             }
         } else {
+            entity = dao.findEmployer(authentication, externalId);
             final EmployerEntity updated = transform(employer);
-            entity = dao.findEmployer(externalId);
             processAddress(authentication, entity.getAddress(), employer.getAddress());
             dao.persist(authentication, entity, updated);
         }

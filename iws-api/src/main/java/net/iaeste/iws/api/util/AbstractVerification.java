@@ -88,7 +88,14 @@ public abstract class AbstractVerification implements Verifiable {
      * @see <a href="https://trac.iaeste.net/ticket/837">837</a> &amp; <a href="https://trac.iaeste.net/ticket/987">987</a>
      */
     public String sanitize(final String source) {
-        return source != null ? IWSConstants.PATTERN_INVALID_NEWLINES.matcher(source).replaceAll("\n") : null;
+        String sanitized = source;
+
+        if ((source != null) && !source.isEmpty()) {
+            final String correctedNewline = IWSConstants.PATTERN_INVALID_NEWLINES.matcher(source).replaceAll("\n");
+            sanitized = IWSConstants.PATTERN_INVALID_BELL.matcher(correctedNewline).replaceAll("");
+        }
+
+        return sanitized;
     }
 
     /**

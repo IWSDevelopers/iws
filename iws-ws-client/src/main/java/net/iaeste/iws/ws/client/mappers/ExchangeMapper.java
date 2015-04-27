@@ -165,6 +165,12 @@ public final class ExchangeMapper extends CommonMapper {
 
         if (ws != null) {
             api = new FetchOffersResponse(map(ws.getError()), ws.getMessage());
+
+            final List<Offer> offers = new ArrayList<>(ws.getOffers().size());
+            for (final net.iaeste.iws.ws.Offer offer : ws.getOffers()) {
+                offers.add(map(offer));
+            }
+            api.setOffers(offers);
         }
 
         return api;
@@ -175,6 +181,8 @@ public final class ExchangeMapper extends CommonMapper {
 
         if (api != null) {
             ws = new net.iaeste.iws.ws.ProcessOfferRequest();
+
+            ws.setOffer(map(api.getOffer()));
         }
 
         return ws;

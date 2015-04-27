@@ -738,7 +738,7 @@ public class CommonMapper {
     protected static DatePeriod map(final net.iaeste.iws.ws.DatePeriod ws) {
         DatePeriod api = null;
 
-        if (ws != null) {
+        if ((ws != null) && (ws.getFromDate() != null) && (ws.getToDate() != null)) {
             api = new DatePeriod(map(ws.getFromDate()), map(ws.getToDate()));
         }
 

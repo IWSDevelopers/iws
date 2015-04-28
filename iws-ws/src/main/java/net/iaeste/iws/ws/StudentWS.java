@@ -15,6 +15,7 @@
 package net.iaeste.iws.ws;
 
 import net.iaeste.iws.api.Students;
+import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.CreateUserRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentApplicationsRequest;
@@ -104,7 +105,18 @@ public class StudentWS implements Students {
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final CreateUserRequest request) {
         log.info(requestLogger.prepareLogMessage(token, "createStudent"));
-        return bean.createStudent(token, request);
+        CreateUserResponse response;
+
+        try {
+            response = bean.createStudent(token, request);
+        } catch (RuntimeException e) {
+            // The EJB's are all annotated with Transactional Logic, so if an
+            // error is flying by - then it is caught here.
+            log.error("Transactional Problem: " + e.getMessage(), e);
+            response = new CreateUserResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
+        }
+
+        return response;
     }
 
     /**
@@ -117,7 +129,18 @@ public class StudentWS implements Students {
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final StudentRequest request) {
         log.info(requestLogger.prepareLogMessage(token, "processStudent"));
-        return bean.processStudent(token, request);
+        StudentResponse response;
+
+        try {
+            response = bean.processStudent(token, request);
+        } catch (RuntimeException e) {
+            // The EJB's are all annotated with Transactional Logic, so if an
+            // error is flying by - then it is caught here.
+            log.error("Transactional Problem: " + e.getMessage(), e);
+            response = new StudentResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
+        }
+
+        return response;
     }
 
     /**
@@ -130,7 +153,18 @@ public class StudentWS implements Students {
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final FetchStudentsRequest request) {
         log.info(requestLogger.prepareLogMessage(token, "fetchStudents"));
-        return bean.fetchStudents(token, request);
+        FetchStudentsResponse response;
+
+        try {
+            response = bean.fetchStudents(token, request);
+        } catch (RuntimeException e) {
+            // The EJB's are all annotated with Transactional Logic, so if an
+            // error is flying by - then it is caught here.
+            log.error("Transactional Problem: " + e.getMessage(), e);
+            response = new FetchStudentsResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
+        }
+
+        return response;
     }
 
     /**
@@ -143,7 +177,18 @@ public class StudentWS implements Students {
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final ProcessStudentApplicationsRequest request) {
         log.info(requestLogger.prepareLogMessage(token, "processStudentApplication"));
-        return bean.processStudentApplication(token, request);
+        StudentApplicationResponse response;
+
+        try {
+            response = bean.processStudentApplication(token, request);
+        } catch (RuntimeException e) {
+            // The EJB's are all annotated with Transactional Logic, so if an
+            // error is flying by - then it is caught here.
+            log.error("Transactional Problem: " + e.getMessage(), e);
+            response = new StudentApplicationResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
+        }
+
+        return response;
     }
 
     /**
@@ -156,7 +201,18 @@ public class StudentWS implements Students {
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final FetchStudentApplicationsRequest request) {
         log.info(requestLogger.prepareLogMessage(token, "fetchStudentApplications"));
-        return bean.fetchStudentApplications(token, request);
+        FetchStudentApplicationsResponse response;
+
+        try {
+            response = bean.fetchStudentApplications(token, request);
+        } catch (RuntimeException e) {
+            // The EJB's are all annotated with Transactional Logic, so if an
+            // error is flying by - then it is caught here.
+            log.error("Transactional Problem: " + e.getMessage(), e);
+            response = new FetchStudentApplicationsResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
+        }
+
+        return response;
     }
 
     /**
@@ -169,6 +225,17 @@ public class StudentWS implements Students {
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final StudentApplicationRequest request) {
         log.info(requestLogger.prepareLogMessage(token, "processApplicationStatus"));
-        return bean.processApplicationStatus(token, request);
+        StudentApplicationResponse response;
+
+        try {
+            response = bean.processApplicationStatus(token, request);
+        } catch (RuntimeException e) {
+            // The EJB's are all annotated with Transactional Logic, so if an
+            // error is flying by - then it is caught here.
+            log.error("Transactional Problem: " + e.getMessage(), e);
+            response = new StudentApplicationResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
+        }
+
+        return response;
     }
 }

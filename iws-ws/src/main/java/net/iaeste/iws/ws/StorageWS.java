@@ -15,6 +15,7 @@
 package net.iaeste.iws.ws;
 
 import net.iaeste.iws.api.Storage;
+import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.FetchFileRequest;
 import net.iaeste.iws.api.requests.FetchFolderRequest;
@@ -101,7 +102,18 @@ public class StorageWS implements Storage {
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final FolderRequest request) {
         log.info(requestLogger.prepareLogMessage(token, "processFolder"));
-        return bean.processFolder(token, request);
+        FolderResponse response;
+
+        try {
+            response = bean.processFolder(token, request);
+        } catch (RuntimeException e) {
+            // The EJB's are all annotated with Transactional Logic, so if an
+            // error is flying by - then it is caught here.
+            log.error("Transactional Problem: " + e.getMessage(), e);
+            response = new FolderResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
+        }
+
+        return response;
     }
 
     /**
@@ -114,7 +126,18 @@ public class StorageWS implements Storage {
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final FetchFolderRequest request) {
         log.info(requestLogger.prepareLogMessage(token, "fetchFolder"));
-        return bean.fetchFolder(token, request);
+        FetchFolderResponse response;
+
+        try {
+            response = bean.fetchFolder(token, request);
+        } catch (RuntimeException e) {
+            // The EJB's are all annotated with Transactional Logic, so if an
+            // error is flying by - then it is caught here.
+            log.error("Transactional Problem: " + e.getMessage(), e);
+            response = new FetchFolderResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
+        }
+
+        return response;
     }
 
     /**
@@ -127,7 +150,18 @@ public class StorageWS implements Storage {
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final FileRequest request) {
         log.info(requestLogger.prepareLogMessage(token, "processFile"));
-        return bean.processFile(token, request);
+        FileResponse response;
+
+        try {
+            response = bean.processFile(token, request);
+        } catch (RuntimeException e) {
+            // The EJB's are all annotated with Transactional Logic, so if an
+            // error is flying by - then it is caught here.
+            log.error("Transactional Problem: " + e.getMessage(), e);
+            response = new FileResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
+        }
+
+        return response;
     }
 
     /**
@@ -140,6 +174,17 @@ public class StorageWS implements Storage {
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final FetchFileRequest request) {
         log.info(requestLogger.prepareLogMessage(token, "fetchFile"));
-        return bean.fetchFile(token, request);
+        FetchFileResponse response;
+
+        try {
+            response = bean.fetchFile(token, request);
+        } catch (RuntimeException e) {
+            // The EJB's are all annotated with Transactional Logic, so if an
+            // error is flying by - then it is caught here.
+            log.error("Transactional Problem: " + e.getMessage(), e);
+            response = new FetchFileResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
+        }
+
+        return response;
     }
 }

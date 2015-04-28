@@ -15,17 +15,18 @@
 package net.iaeste.iws.ws;
 
 import net.iaeste.iws.api.Committees;
+import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.CommitteeRequest;
-import net.iaeste.iws.api.requests.FetchCommitteeRequest;
-import net.iaeste.iws.api.requests.FetchInternationalGroupRequest;
-import net.iaeste.iws.api.requests.FetchCountrySurveyRequest;
-import net.iaeste.iws.api.requests.InternationalGroupRequest;
 import net.iaeste.iws.api.requests.CountrySurveyRequest;
+import net.iaeste.iws.api.requests.FetchCommitteeRequest;
+import net.iaeste.iws.api.requests.FetchCountrySurveyRequest;
+import net.iaeste.iws.api.requests.FetchInternationalGroupRequest;
+import net.iaeste.iws.api.requests.InternationalGroupRequest;
 import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchCommitteeResponse;
-import net.iaeste.iws.api.responses.FetchInternationalGroupResponse;
 import net.iaeste.iws.api.responses.FetchCountrySurveyRespose;
+import net.iaeste.iws.api.responses.FetchInternationalGroupResponse;
 import net.iaeste.iws.ejb.CommitteeBean;
 import net.iaeste.iws.ejb.cdi.IWSBean;
 import org.slf4j.Logger;
@@ -103,7 +104,18 @@ public class CommitteeWS implements Committees {
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final FetchCommitteeRequest request) {
         log.info(requestLogger.prepareLogMessage(token, "fetchCommittees"));
-        return bean.fetchCommittees(token, request);
+        FetchCommitteeResponse response;
+
+        try {
+            response = bean.fetchCommittees(token, request);
+        } catch (RuntimeException e) {
+            // The EJB's are all annotated with Transactional Logic, so if an
+            // error is flying by - then it is caught here.
+            log.error("Transactional Problem: " + e.getMessage(), e);
+            response = new FetchCommitteeResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
+        }
+
+        return response;
     }
 
     /**
@@ -116,7 +128,18 @@ public class CommitteeWS implements Committees {
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final CommitteeRequest request) {
         log.info(requestLogger.prepareLogMessage(token, "processCommittee"));
-        return bean.processCommittee(token, request);
+        FallibleResponse response;
+
+        try {
+            response = bean.processCommittee(token, request);
+        } catch (RuntimeException e) {
+            // The EJB's are all annotated with Transactional Logic, so if an
+            // error is flying by - then it is caught here.
+            log.error("Transactional Problem: " + e.getMessage(), e);
+            response = new FallibleResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
+        }
+
+        return response;
     }
 
     /**
@@ -129,7 +152,18 @@ public class CommitteeWS implements Committees {
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final FetchInternationalGroupRequest request) {
         log.info(requestLogger.prepareLogMessage(token, "fetchInternationalGroups"));
-        return bean.fetchInternationalGroups(token, request);
+        FetchInternationalGroupResponse response;
+
+        try {
+            response = bean.fetchInternationalGroups(token, request);
+        } catch (RuntimeException e) {
+            // The EJB's are all annotated with Transactional Logic, so if an
+            // error is flying by - then it is caught here.
+            log.error("Transactional Problem: " + e.getMessage(), e);
+            response = new FetchInternationalGroupResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
+        }
+
+        return response;
     }
 
     /**
@@ -142,7 +176,18 @@ public class CommitteeWS implements Committees {
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final InternationalGroupRequest request) {
         log.info(requestLogger.prepareLogMessage(token, "processInternationalGroup"));
-        return bean.processInternationalGroup(token, request);
+        FallibleResponse response;
+
+        try {
+            response = bean.processInternationalGroup(token, request);
+        } catch (RuntimeException e) {
+            // The EJB's are all annotated with Transactional Logic, so if an
+            // error is flying by - then it is caught here.
+            log.error("Transactional Problem: " + e.getMessage(), e);
+            response = new FallibleResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
+        }
+
+        return response;
     }
 
     /**
@@ -155,7 +200,18 @@ public class CommitteeWS implements Committees {
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final FetchCountrySurveyRequest request) {
         log.info(requestLogger.prepareLogMessage(token, "fetchCountrySurvey"));
-        return bean.fetchCountrySurvey(token, request);
+        FetchCountrySurveyRespose response;
+
+        try {
+            response = bean.fetchCountrySurvey(token, request);
+        } catch (RuntimeException e) {
+            // The EJB's are all annotated with Transactional Logic, so if an
+            // error is flying by - then it is caught here.
+            log.error("Transactional Problem: " + e.getMessage(), e);
+            response = new FetchCountrySurveyRespose(IWSErrors.FATAL, "Internal error occurred while handling the request.");
+        }
+
+        return response;
     }
 
     /**
@@ -168,6 +224,17 @@ public class CommitteeWS implements Committees {
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final CountrySurveyRequest request) {
         log.info(requestLogger.prepareLogMessage(token, "processCountrySurvey"));
-        return bean.processCountrySurvey(token, request);
+        FallibleResponse response;
+
+        try {
+            response = bean.processCountrySurvey(token, request);
+        } catch (RuntimeException e) {
+            // The EJB's are all annotated with Transactional Logic, so if an
+            // error is flying by - then it is caught here.
+            log.error("Transactional Problem: " + e.getMessage(), e);
+            response = new FallibleResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
+        }
+
+        return response;
     }
 }

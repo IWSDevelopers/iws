@@ -17,7 +17,7 @@
     <xs:sequence/>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="authenticationResponse">
+  <xs:complexType final="extension restriction" name="AuthenticationResponse">
     <xs:complexContent>
       <xs:extension base="tns:FallibleResponse">
         <xs:sequence>
@@ -98,7 +98,7 @@
           <xs:element name="lastname" nillable="true" type="xs:string"/>
           <xs:element name="person" nillable="true" type="tns:Person"/>
           <xs:element name="status" nillable="true" type="tns:UserStatus"/>
-          <xs:element name="type" type="tns:userType"/>
+          <xs:element name="type" type="tns:UserType"/>
           <xs:element name="privacy" type="tns:Privacy"/>
           <xs:element name="notifications" type="tns:NotificationFrequency"/>
         </xs:sequence>
@@ -441,11 +441,12 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="userType">
+  <xs:simpleType name="UserType">
     <xs:restriction base="xs:string">
       <xs:enumeration value="VOLUNTEER"/>
       <xs:enumeration value="EMPLOYED"/>
       <xs:enumeration value="STUDENT"/>
+      <xs:enumeration value="FUNCTIONAL"/>
       <xs:enumeration value="UNKNOWN"/>
     </xs:restriction>
   </xs:simpleType>
@@ -555,7 +556,7 @@
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="resetSessionResponse">
-    <wsdl:part name="response" type="tns:authenticationResponse">
+    <wsdl:part name="response" type="tns:AuthenticationResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="fetchPermissionsResponse">
@@ -601,7 +602,7 @@
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="generateSessionResponse">
-    <wsdl:part name="response" type="tns:authenticationResponse">
+    <wsdl:part name="response" type="tns:AuthenticationResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="saveSessionData">

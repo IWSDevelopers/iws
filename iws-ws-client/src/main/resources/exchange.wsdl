@@ -1038,7 +1038,7 @@
   <wsdl:message name="deletePublishingGroup">
     <wsdl:part name="token" type="tns:AuthenticationToken">
     </wsdl:part>
-    <wsdl:part name="arg1" type="tns:DeletePublishingGroupRequest">
+    <wsdl:part name="request" type="tns:DeletePublishingGroupRequest">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="downloadOffersResponse">

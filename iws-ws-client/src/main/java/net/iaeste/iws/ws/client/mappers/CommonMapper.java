@@ -37,6 +37,7 @@ import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.enums.Privacy;
 import net.iaeste.iws.api.enums.SortingField;
 import net.iaeste.iws.api.enums.UserStatus;
+import net.iaeste.iws.api.enums.UserType;
 import net.iaeste.iws.api.enums.exchange.FieldOfStudy;
 import net.iaeste.iws.api.enums.exchange.LanguageLevel;
 import net.iaeste.iws.api.enums.exchange.OfferState;
@@ -260,6 +261,7 @@ public class CommonMapper {
             api.setLastname(ws.getLastname());
             api.setPerson(map(ws.getPerson()));
             api.setStatus(map(ws.getStatus()));
+            api.setType(map(ws.getType()));
             api.setPrivacy(map(ws.getPrivacy()));
             api.setNotifications(map(ws.getNotifications()));
         }
@@ -280,6 +282,7 @@ public class CommonMapper {
             ws.setLastname(api.getLastname());
             ws.setPerson(map(api.getPerson()));
             ws.setStatus(map(api.getStatus()));
+            ws.setType(map(api.getType()));
             ws.setPrivacy(map(api.getPrivacy()));
             ws.setNotifications(map(api.getNotifications()));
         }
@@ -601,6 +604,14 @@ public class CommonMapper {
 
     protected static net.iaeste.iws.ws.UserStatus map(final UserStatus api) {
         return api != null ? net.iaeste.iws.ws.UserStatus.valueOf(api.name()) : null;
+    }
+
+    private static UserType map(final net.iaeste.iws.ws.UserType ws) {
+        return ws != null ? UserType.valueOf(ws.value()) : null;
+    }
+
+    protected static net.iaeste.iws.ws.UserType map(final UserType api) {
+        return api != null ? net.iaeste.iws.ws.UserType.valueOf(api.name()) : null;
     }
 
     private static GroupType map(final net.iaeste.iws.ws.GroupType ws) {

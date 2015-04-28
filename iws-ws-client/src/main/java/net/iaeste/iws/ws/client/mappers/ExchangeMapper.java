@@ -142,6 +142,12 @@ public final class ExchangeMapper extends CommonMapper {
 
         if (ws != null) {
             api = new FetchEmployerResponse(map(ws.getError()), ws.getMessage());
+
+            final List<Employer> employers = new ArrayList<>(ws.getEmployers().size());
+            for (final net.iaeste.iws.ws.Employer employer : ws.getEmployers()) {
+                employers.add(map(employer));
+            }
+            api.setEmployers(employers);
         }
 
         return api;
@@ -205,13 +211,21 @@ public final class ExchangeMapper extends CommonMapper {
 
         if (ws != null) {
             api = new OfferResponse(map(ws.getError()), ws.getMessage());
+
+            api.setOffer(map(ws.getOffer()));
         }
 
         return api;
     }
 
     public static PublishOfferResponse map(final net.iaeste.iws.ws.PublishOfferResponse ws) {
-        return new PublishOfferResponse(map(ws.getError()), ws.getMessage());
+        PublishOfferResponse api = null;
+
+        if (ws != null) {
+            api = new PublishOfferResponse(map(ws.getError()), ws.getMessage());
+        }
+
+        return api;
     }
 
     public static net.iaeste.iws.ws.ProcessPublishingGroupRequest map(final ProcessPublishingGroupRequest api) {

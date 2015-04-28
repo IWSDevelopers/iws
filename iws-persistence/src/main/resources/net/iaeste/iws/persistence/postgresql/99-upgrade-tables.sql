@@ -25,19 +25,25 @@ delete from addresses where id in (10704, 16543, 16191, 6109);
 -- Corrections to Swiss Offers & Employers. For some reason they're filled with
 --  char(11) or VT (Vertical Tab). These cause problems for WebServices.
 update employers set
-    name = regexp_replace(name, '[' || chr(11) || ']', E'\\n', 'g')
+    name = regexp_replace(name, '[' || chr(11) || ']', E'\n', 'g')
 where name like '%' || chr(11) || '%';
 update employers set
-    website = regexp_replace(website, '[' || chr(11) || ']', E'\\n', 'g')
+    website = regexp_replace(website, '[' || chr(11) || ']', E'\n', 'g')
 where website like '%' || chr(11) || '%';
 update offers set
-    work_description = regexp_replace(work_description, '[' || chr(11) || ']', E'\\n', 'g')
+    work_description = regexp_replace(work_description, '[' || chr(7) || ']', '', 'g')
+where work_description ilike '%' || chr(7) || '%';
+update offers set
+    work_description = regexp_replace(work_description, '[' || chr(11) || ']', E'\n', 'g')
 where work_description like '%' || chr(11) || '%';
 update offers set
-    specializations = regexp_replace(specializations, '[' || chr(11) || ']', E'\\n', 'g')
+    specializations = regexp_replace(specializations, '[' || chr(11) || ']', E'\n', 'g')
 where specializations like '%' || chr(11) || '%';
 update offers set
-    other_requirements = regexp_replace(other_requirements, '[' || chr(11) || ']', E'\\n', 'g')
+    other_requirements = regexp_replace(other_requirements, '[' || chr(7) || ']', '', 'g')
+where other_requirements ilike '%' || chr(7) || '%';
+update offers set
+    other_requirements = regexp_replace(other_requirements, '[' || chr(11) || ']', E'\n', 'g')
 where other_requirements like '%' || chr(11) || '%';
 
 

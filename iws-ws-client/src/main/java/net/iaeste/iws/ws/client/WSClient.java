@@ -3,16 +3,22 @@ package net.iaeste.iws.ws.client;
 import net.iaeste.iws.api.Access;
 import net.iaeste.iws.api.Exchange;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
+import net.iaeste.iws.api.dtos.exchange.Employer;
+import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.enums.FetchType;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.requests.exchange.FetchEmployerRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
 import net.iaeste.iws.api.requests.exchange.OfferStatisticsRequest;
+import net.iaeste.iws.api.requests.exchange.ProcessEmployerRequest;
+import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
 import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchPermissionResponse;
+import net.iaeste.iws.api.responses.exchange.EmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchEmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
+import net.iaeste.iws.api.responses.exchange.OfferResponse;
 import net.iaeste.iws.api.responses.exchange.OfferStatisticsResponse;
 import net.iaeste.iws.ws.client.clients.AccessWSClient;
 import net.iaeste.iws.ws.client.clients.ExchangeWSClient;
@@ -33,6 +39,9 @@ import java.net.MalformedURLException;
  */
 public final class WSClient {
 
+    private static final String switzerland = "incoming@office.iaeste.ch";
+    private static final String germany = "pankau@daad.de";
+
     /**
      * Simple Main method to allow invocation from Command Line. To demonstrate
      * how the IWS WebService can be invoked.
@@ -43,7 +52,7 @@ public final class WSClient {
         final WSClient client = new WSClient("localhost", "8080");
 
         // Before we can do anything, we first need to log in
-        final AuthenticationResponse authResponse = client.login("kim@dawn.dk", "faked");
+        final AuthenticationResponse authResponse = client.login(germany, "faked");
 
         // If the login request was successful, then we can make further things
         if (authResponse.isOk()) {
@@ -58,8 +67,16 @@ public final class WSClient {
                 // Exchange related requests
                 log.info("Offer Statistics: " + client.fetchOfferStatistics(token).getMessage());
                 log.info("Fetch Employers: " + client.fetchEmployers(token).getMessage());
-                log.info("Fetch Domestic Offers: " + client.fetchOffers(token, FetchType.DOMESTIC).getMessage());
-                log.info("Fetch Shared Offers: " + client.fetchOffers(token, FetchType.SHARED).getMessage());
+                final FetchOffersResponse domesticOfferResponse = client.fetchOffers(token, FetchType.DOMESTIC);
+                final FetchOffersResponse sharedOfferResponse = client.fetchOffers(token, FetchType.SHARED);
+                log.info("Fetch Domestic Offers: " + domesticOfferResponse.getMessage() + " with " + domesticOfferResponse.getOffers().size() + " Offers.");
+                log.info("Fetch Shared Offers: " + sharedOfferResponse.getMessage() + " with " + sharedOfferResponse.getOffers().size() + " Offers.");
+                if (domesticOfferResponse.isOk() && domesticOfferResponse.getOffers() != null) {
+                    for (final Offer offer : domesticOfferResponse.getOffers()) {
+                        log.info("Processing Employer '" + offer.getEmployer().getName() + "': " + client.processEmployer(token, offer.getEmployer()).getMessage());
+                        log.info("Processing Offer with Reference Number '" + offer.getRefNo() + "': " + client.processOffer(token, offer).getMessage());
+                    }
+                }
             } catch (Throwable t) {
                 log.error(t.getMessage(), t);
             } finally {
@@ -170,8 +187,8 @@ public final class WSClient {
     }
 
     /**
-     * <p>Sample IWS Fetch Offers request. The request requires just the current
-     * Session Token.</p>
+     * <p>Sample IWS Fetch Employer request. The request requires just the
+     * current Session Token.</p>
      *
      * <p>The method will build and send the Request Object, and return the
      * Response Object from the IWS.</p>
@@ -183,6 +200,24 @@ public final class WSClient {
         final FetchEmployerRequest employerRequest = new FetchEmployerRequest();
 
         return getExchange().fetchEmployers(token, employerRequest);
+    }
+
+    /**
+     * <p>Sample IWS Process Employer Request. The request requires st current
+     * token, and an Employer to be processed.</p>
+     *
+     * <p>The method will build and send the Request Object, and return the
+     * Response Object from the IWS.</p>
+     *
+     * @param token    User Authentication (Session) Token
+     * @param employer The Employer to be processed (created or updated)
+     * @return Response Object from the IWS
+     */
+    private EmployerResponse processEmployer(final AuthenticationToken token, final Employer employer) {
+        final Employer copy = new Employer(employer);
+        final ProcessEmployerRequest request = new ProcessEmployerRequest(copy);
+
+        return getExchange().processEmployer(token, request);
     }
 
     /**
@@ -202,6 +237,24 @@ public final class WSClient {
         offerRequest.setFetchType(type);
 
         return getExchange().fetchOffers(token, offerRequest);
+    }
+
+    /**
+     * <p>Sample IWS Process Offer Request. The request requires st current
+     * token, and an Employer to be processed.</p>
+     *
+     * <p>The method will build and send the Request Object, and return the
+     * Response Object from the IWS.</p>
+     *
+     * @param token User Authentication (Session) Token
+     * @param offer The Offer to be processed (created or updated)
+     * @return Response Object from the IWS
+     */
+    private OfferResponse processOffer(final AuthenticationToken token, final Offer offer) {
+        final ProcessOfferRequest request = new ProcessOfferRequest();
+        request.setOffer(offer);
+
+        return getExchange().processOffer(token, request);
     }
 
     // =========================================================================

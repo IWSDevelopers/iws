@@ -145,11 +145,17 @@
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:datasources:2.0">
             <datasources>
-                <datasource jta="false" jndi-name="java:/datasources/iwsDS" pool-name="iwsDS" enabled="true" use-ccm="false">
+                <datasource jta="true" jndi-name="java:/datasources/iwsDS" pool-name="iwsDS" enabled="true" use-ccm="false">
                     <connection-url>jdbc:postgresql://localhost:5432/iws</connection-url>
                     <driver-class>org.postgresql.Driver</driver-class>
                     <driver>postgresql</driver>
                     <transaction-isolation>TRANSACTION_READ_COMMITTED</transaction-isolation>
+                    <pool>
+                        <min-pool-size>1</min-pool-size>
+                        <max-pool-size>20</max-pool-size>
+                        <flush-strategy>FailingConnectionOnly</flush-strategy>
+                        <allow-multiple-users>true</allow-multiple-users>
+                    </pool>
                     <security>
                         <user-name>iws_user</user-name>
                         <password>iws</password>
@@ -166,7 +172,7 @@
                         <idle-timeout-minutes>10</idle-timeout-minutes>
                     </timeout>
                     <statement>
-                        <prepared-statement-cache-size>10</prepared-statement-cache-size>
+                        <prepared-statement-cache-size>25</prepared-statement-cache-size>
                         <share-prepared-statements>true</share-prepared-statements>
                     </statement>
                 </datasource>
@@ -175,6 +181,12 @@
                     <driver-class>org.postgresql.Driver</driver-class>
                     <driver>postgresql</driver>
                     <transaction-isolation>TRANSACTION_READ_COMMITTED</transaction-isolation>
+                    <pool>
+                        <min-pool-size>1</min-pool-size>
+                        <max-pool-size>20</max-pool-size>
+                        <flush-strategy>FailingConnectionOnly</flush-strategy>
+                        <allow-multiple-users>true</allow-multiple-users>
+                    </pool>
                     <security>
                         <user-name>iws_user</user-name>
                         <password>iws</password>
@@ -191,7 +203,7 @@
                         <idle-timeout-minutes>10</idle-timeout-minutes>
                     </timeout>
                     <statement>
-                        <prepared-statement-cache-size>10</prepared-statement-cache-size>
+                        <prepared-statement-cache-size>25</prepared-statement-cache-size>
                         <share-prepared-statements>true</share-prepared-statements>
                     </statement>
                 </datasource>

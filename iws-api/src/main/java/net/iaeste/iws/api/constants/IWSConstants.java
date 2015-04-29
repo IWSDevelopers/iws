@@ -89,11 +89,43 @@ public interface IWSConstants {
      * part of the data input validation.<br />
      *   Illegal or not-allowed characters can occur in text, when something is
      * copy'n'pasted from programs such as Microsoft Word.<br />
+     *   This regular expression will detect invalid space characters, which can
+     * then be used by the Sanitizer method, which is part of the IWS
+     * Verification framework.<br>
+     * <ul>
+     *   <li><b>28 (0x1C)</b> FS or File Separator</li>
+     *   <li><b>29 (0x1D)</b> GS or Group Separator</li>
+     *   <li><b>30 (0x1E)</b> RS or Record Separator</li>
+     *   <li><b>31 (0x1F)</b> US or Unit Separator</li>
+     * </ul>
+     */
+    String REGEX_INVALID_SPACES = "[\\x1C\\x1D\\x1E\\x1F]";
+
+    /**
+     * The compiled invalid newline pattern to use. Note, that the Pattern class
+     * is safe to precompile into a Global constant, whereas the Matcher must be
+     * generated on a per-thread basis.
+     */
+    Pattern PATTERN_INVALID_SPACES = Pattern.compile(REGEX_INVALID_SPACES);
+
+    /**
+     * XML files are generally very error tolerant, however - certain characters
+     * exists, which is referred to as Control Characters. These can cause
+     * problems, and should thus be removed from the XML. According to
+     * <a href="http://www.w3.org/TR/REC-xml/#charsets">W3C</a>, the not allowed
+     * characters should be stripped. At best Server Side, or even better as
+     * part of the data input validation.<br />
+     *   Illegal or not-allowed characters can occur in text, when something is
+     * copy'n'pasted from programs such as Microsoft Word.<br />
      *   This regular expression will detect invalid newline characters, which
      * can then be used by the Sanitizer method, which is part of the IWS
-     * Verification framework.
+     * Verification framework.<br>
+     * <ul>
+     *   <li><b>11 (0x0B)</b> LF or Line Feed</li>
+     *   <li><b>12 (0x0C)</b> FF or Form Feed</li>
+     * </ul>
      */
-    String REGEX_INVALID_NEWLINES = "\11";
+    String REGEX_INVALID_NEWLINES = "[\\x0B\\x0C]";
 
     /**
      * The compiled invalid newline pattern to use. Note, that the Pattern class
@@ -113,16 +145,21 @@ public interface IWSConstants {
      * copy'n'pasted from programs such as Microsoft Word.<br />
      *   This regular expression will detect invalid bell characters, which can
      * then be used by the Sanitizer method, which is part of the IWS
-     * Verification framework.
+     * Verification framework.<br>
+     * <ul>
+     *   <li><b>04 (0x04)</b> EOT or End of Transmission</li>
+     *   <li><b>07 (0x07)</b> Bell</li>
+     *   <li><b>23 (0x17)</b> ETB or End of Transmission Block</li>
+     * </ul>
      */
-    String REGEX_INVALID_BELL = "\7";
+    String REGEX_INVALID_CHARS = "[\\x04\\x08\\x17]";
 
     /**
      * The compiled invalid bell pattern to use. Note, that the Pattern class
      * is safe to precompile into a Global constant, whereas the Matcher must be
      * generated on a per-thread basis.
      */
-    Pattern PATTERN_INVALID_BELL = Pattern.compile(REGEX_INVALID_BELL);
+    Pattern PATTERN_INVALID_CHARS = Pattern.compile(REGEX_INVALID_CHARS);
 
     /**
      * The minimal lenghth for a password which the user is choosing must be

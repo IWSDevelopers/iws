@@ -92,7 +92,8 @@ public abstract class AbstractVerification implements Verifiable {
 
         if ((source != null) && !source.isEmpty()) {
             final String correctedNewline = IWSConstants.PATTERN_INVALID_NEWLINES.matcher(source).replaceAll("\n");
-            sanitized = IWSConstants.PATTERN_INVALID_BELL.matcher(correctedNewline).replaceAll("");
+            final String correctedSpaces = IWSConstants.PATTERN_INVALID_SPACES.matcher(correctedNewline).replaceAll(" ");
+            sanitized = IWSConstants.PATTERN_INVALID_CHARS.matcher(correctedSpaces).replaceAll("");
         }
 
         return sanitized;

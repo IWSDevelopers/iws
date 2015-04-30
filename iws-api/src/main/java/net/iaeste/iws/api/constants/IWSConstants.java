@@ -30,10 +30,10 @@ public interface IWSConstants {
      * All serialized classes should use this value. The value reflects the
      * current version of the system. If updates are made in one or more of the
      * serialized classes, it should be updated.<br />
-     * If not used, then all classes that are serialized will have a runtime
+     *   If not used, then all classes that are serialized will have a runtime
      * performance overhead while calculating a UID, which matches the current
      * class. See "Effective Java, 2nd Edition" - Item 75.<br />
-     * As this is a useless overhead and simple to avoid, it is recommended to
+     *   As this is a useless overhead and simple to avoid, it is recommended to
      * do so. Just add the following line in the beginning of all serialized
      * and derived classes:<br /><br />
      *
@@ -65,7 +65,7 @@ public interface IWSConstants {
      * that they are valid, we need a simple regex. Unfortunately, the constant
      * changes to what is allowed and what isn't means that any regex will
      * eventually fail. For this reason, we've tried to keep it simple yet able
-     * to allow at least 99% of all valid addresses.rb />
+     * to allow at least 99% of all valid addresses.<br />
      *   See <a href="http://en.wikipedia.org/wiki/Email_address">Wikipedia</a>
      * for more information.<br />
      *   This regex does not support the quotation rules, which makes the rule
@@ -128,7 +128,7 @@ public interface IWSConstants {
     String REGEX_INVALID_NEWLINES = "[\\x0B\\x0C]";
 
     /**
-     * The compiled invalid newline pattern to use. Note, that the Pattern class
+     * The compiled invalid space pattern to use. Note, that the Pattern class
      * is safe to precompile into a Global constant, whereas the Matcher must be
      * generated on a per-thread basis.
      */
@@ -155,7 +155,7 @@ public interface IWSConstants {
     String REGEX_INVALID_CHARS = "[\\x04\\x08\\x17]";
 
     /**
-     * The compiled invalid bell pattern to use. Note, that the Pattern class
+     * The compiled invalid char pattern to use. Note, that the Pattern class
      * is safe to precompile into a Global constant, whereas the Matcher must be
      * generated on a per-thread basis.
      */

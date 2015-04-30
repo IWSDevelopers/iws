@@ -77,7 +77,6 @@ public interface InternalConstants {
      * monitored, and updated - the default 8 hours has been reduced to 30
      * minutes.
      */
-    //long MAX_SESSION_IDLE_PERIOD = 28800000L;  // 8 hours
     long MAX_SESSION_IDLE_PERIOD = 1800000;  // 30 minutes
 
     /**

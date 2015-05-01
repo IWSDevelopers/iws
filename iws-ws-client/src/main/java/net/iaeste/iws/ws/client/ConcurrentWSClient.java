@@ -24,11 +24,13 @@ import net.iaeste.iws.api.enums.FetchType;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
+import net.iaeste.iws.api.requests.exchange.OfferCSVDownloadRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
 import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchPermissionResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
+import net.iaeste.iws.api.responses.exchange.OfferCSVDownloadResponse;
 import net.iaeste.iws.api.responses.exchange.OfferResponse;
 import net.iaeste.iws.api.util.AbstractVerification;
 import net.iaeste.iws.ws.client.clients.AccessWSClient;
@@ -56,44 +58,70 @@ import java.util.concurrent.Future;
  */
 public final class ConcurrentWSClient implements Runnable {
 
-    // IWS WebService settings:
-    private static final String iwsHost = "localhost";
-    // The port is 8080 under both Glassfish and WildFly
-    private static final String iwsPort = "8080";
-    // Number of concurrent Threads to use, higher is meaner!
+    /**
+     * <p>The number of Threads to run with in parallel. The Job Queue will
+     * contain all the National Secretaries (see below), but only n of these
+     * will be processed concurrently. If the number is set to low, then the
+     * test may take very long, and if set too high - it may not properly
+     * spread the load.</p>
+     * <p>Defauly value is 5, which is a fairly low number yet - high enough
+     * to keep the IWS busy.</p>
+     */
     private static final int threads = 5;
-    // First registered Exchange Year in the Database
-    private static final int startYear = 2005;
-    // Current Exchange Year
+
+    /** <p>The Server, where the IWS has been deployed.</p> */
+    private static final String iwsHost = "localhost";
+
+    /**
+     * <p>The Port under which the IWS is reachable. Glassfish and WildFly both
+     * uses port 8080 by default, though WildFly have been altered, so it uses
+     * port 9080 instead - to prevent conflicts.</p>
+     */
+    private static final String iwsPort = "8080";
+
+    /**
+     * <p>The test will iterate over a number of Exchange Years. The Exchange
+     * Year is ending/starting around September 1st. The first year with Offers
+     * registered is 2005, but to reduce the test, a later year can also be
+     * chosen.</p>
+     */
+    private static final int startYear = 2015;
+
+    /**
+     * <p>The last Exchange Year to use, by default it is set to the
+     * current, using the API Exchange Year Calculator.</p>
+     */
     private static final int endYear = AbstractVerification.calculateExchangeYear();
-    // List of all the current National Secretaries
+
+    /**
+     * <p>This is a list of All National Secretaries order by the number of
+     * Offers they have, with the Country with most being the first. Although
+     * Threads are not ordered, the Jobs themselves are, so by sorting by the
+     * Country with most Offers in the beginning, we can prevent that the
+     * longest running jobs is started so late that other Threads have
+     * completed.</p>
+     * <p>The list was compiled on May 1st, 2015.</p>
+     */
     private static final String[] users = {
-            "edlira.osmani@gmail.com", "iaeste@mincyt.gob.ar", "intour@arminco.com", "lachlanharpley@gmail.com",
-            "lukas.schwendinger@iaeste.at", "vugar@yesevent.org", "mahossain2001us@yahoo.com", "sumon@catechedu.com",
-            "dva@minedu.unibel.by", "annelies.vermeir@ugent.be", "patriciapaganigasser@gmail.com", "vedro88etf@gmail.com",
-            "mmereki@mopipi.ub.bw", "pprado@abipe.org.br", "nationalsecretary@iaestecanada.org", "lauramendezprencke@gmail.com",
-            "pnavarrete@corparaucania.cl", "beatrice.chu@polyu.edu.hk", "rtoac@umac.mo", "richard.wu@iaeste-china.org",
-            "bernardbaeyens2@gmail.com", "valentina.jovic1@gmail.com", "iaeste@cut.ac.cy", "vaclav.pavlik@iaeste.cz",
-            "bl@iaeste.dk", "zong.pust@gmail.com", "iecuador@yahoo.com", "iaeste.egypt@mailcity.com",
-            "maret.hein@ttu.ee", "agnes.arcarons@gmail.com", "audrey.stewart@ensam.eu", "moseslewally@yahoo.com",
-            "guramsologashvili@yahoo.co.uk", "mueller-graetschel@daad.de", "iaestegh@yahoo.com", "iaeste@central.ntua.gr",
-            "szirmai.pal@iaeste.hu", "kok11@hi.is", "nationalsecretary@iaeste.in", "salim_johan@yahoo.com",
-            "shekarch@ut.ac.ir", "iaeste@leargas.ie", "iaeste@tx.technion.ac.il", "cbennett@joystyouthexchangeintl.org",
-            "office2@iaeste.or.jp", "r.imam@ju.edu.jo", "iaeste_kz@hotmail.com", "charles.kagiri@dkut.ac.ke",
-            "iaeste-kenya@jkuat.ac.ke", "professoryou@gmail.com", "patricija.kara@gmail.com", "memouk@aub.edu.lb",
-            "bonsu112@gmail.com", "cuspecialassistant@yahoo.com", "vaida.spudyte@gmail.com", "stamenkov.filip@gmail.com",
-            "hafizal@usm.my", "maria.stella.portelli@iaeste.org.mt", "consuelo@amipp.org", "batzorig@must.edu.mn",
-            "dhakal.khagendra@gmail.com", "iaestenederland@gmail.com", "ingrid.s.mcewan@iaeste.org.au", "rmaguta@yahoo.com",
-            "jonilo4love1@yahoo.com", "karolinelekve@gmail.com", "adita@squ.edu.om", "iaeste_pakistan@yahoo.co.uk",
-            "victor.sanchez@utp.ac.pa", "maribel.alayza@udep.pe", "iaeste@poec.net", "anna.jerzak@iaeste.pl",
-            "silvia.santos@tecnico.ulisboa.pt", "ghina@qu.edu.qa", "iaeste_romania@yahoo.co.uk", "incoming@iaesterussia.ru",
-            "zqudah@taibahu.edu.sa", "iaeste@tmf.bg.ac.rs", "smawundu@yahoo.com", "jamukpos@yahoo.com",
-            "hirjak.miroslav@gmail.com", "katarina.korencan@iaeste.si", "iaestesp@upvnet.upv.es", "nihal@mrt.ac.lk",
-            "anders.freden@chalmers.se", "sabine.lenz@office.iaeste.ch", "iaeste.syr@hotmail.com", "pulatov@bk.ru",
-            "fbadundwa2004@yahoo.com", "tck@kmutnb.ac.th", "iaeste.tunisia@gmail.com", "iaeste.turkiye@gmail.com",
-            "stri@aer.ntu-kpi.kiev.ua", "iaeste@sharjah.ac.ae", "wendy.waring@britishcouncil.org", "dewert@culturalvistas.org",
-            "talatmt@rambler.ru", "iaestevietnam@gmail.com", "awad@mail.najah.edu", "iaestecoach@gmail.com",
-            "sawekema@yahoo.com",
+            "mueller-graetschel@daad.de", "nationalsecretary@iaeste.in", "anna.jerzak@iaeste.pl", "pprado@abipe.org.br", "iaeste.turkiye@gmail.com",
+            "sabine.lenz@office.iaeste.ch", "iaestesp@upvnet.upv.es", "lukas.schwendinger@iaeste.at", "iaeste@tmf.bg.ac.rs", "richard.wu@iaeste-china.org",
+            "iaeste.tunisia@gmail.com", "wendy.waring@britishcouncil.org", "vaclav.pavlik@iaeste.cz", "annelies.vermeir@ugent.be", "valentina.jovic1@gmail.com",
+            "bernardbaeyens2@gmail.com", "szirmai.pal@iaeste.hu", "shekarch@ut.ac.ir", "stamenkov.filip@gmail.com", "iaestegh@yahoo.com",
+            "vedro88etf@gmail.com", "office2@iaeste.or.jp", "tck@kmutnb.ac.th", "katarina.korencan@iaeste.si", "iaestevietnam@gmail.com",
+            "hirjak.miroslav@gmail.com", "incoming@iaesterussia.ru", "silvia.santos@tecnico.ulisboa.pt", "karolinelekve@gmail.com", "professoryou@gmail.com",
+            "agnes.arcarons@gmail.com", "adita@squ.edu.om", "dewert@culturalvistas.org", "stri@aer.ntu-kpi.kiev.ua", "r.imam@ju.edu.jo",
+            "iaeste_kz@hotmail.com", "iecuador@yahoo.com", "iaeste@mincyt.gob.ar", "iaeste_romania@yahoo.co.uk", "bl@iaeste.dk",
+            "beatrice.chu@polyu.edu.hk", "pulatov@bk.ru", "iaeste@cut.ac.cy", "lachlanharpley@gmail.com", "iaeste@central.ntua.gr",
+            "dva@minedu.unibel.by", "memouk@aub.edu.lb", "awad@mail.najah.edu", "iaeste@tx.technion.ac.il", "anders.freden@chalmers.se",
+            "batzorig@must.edu.mn", "iaeste@leargas.ie", "maria.stella.portelli@iaeste.org.mt", "iaeste@sharjah.ac.ae", "maribel.alayza@udep.pe",
+            "nationalsecretary@iaestecanada.org", "victor.sanchez@utp.ac.pa", "iaeste-kenya@jkuat.ac.ke", "sumon@catechedu.com", "jonilo4love1@yahoo.com",
+            "rtoac@umac.mo", "vaida.spudyte@gmail.com", "ghina@qu.edu.qa", "iaestenederland@gmail.com", "jamukpos@yahoo.com",
+            "iaeste.egypt@mailcity.com", "consuelo@amipp.org", "nihal@mrt.ac.lk", "iaeste@poec.net", "fbadundwa2004@yahoo.com",
+            "maret.hein@ttu.ee", "moseslewally@yahoo.com", "rmaguta@yahoo.com", "dhakal.khagendra@gmail.com", "patriciapaganigasser@gmail.com",
+            "iaeste_pakistan@yahoo.co.uk", "talatmt@rambler.ru", "edlira.osmani@gmail.com", "sawekema@yahoo.com", "cbennett@joystyouthexchangeintl.org",
+            "vugar@yesevent.org", "patricija.kara@gmail.com", "iaeste.syr@hotmail.com", "mahossain2001us@yahoo.com", "mmereki@mopipi.ub.bw",
+            "cuspecialassistant@yahoo.com", "charles.kagiri@dkut.ac.ke", "lauramendezprencke@gmail.com", "kok11@hi.is", "ingrid.s.mcewan@iaeste.org.au",
+            "hafizal@usm.my", "pnavarrete@corparaucania.cl", "guramsologashvili@yahoo.co.uk"
     };
 
     /**
@@ -107,7 +135,7 @@ public final class ConcurrentWSClient implements Runnable {
      * @param args Command Line Parameters
      */
     public static void main(final String[] args) throws InterruptedException {
-        log.info("Starting {} threads concurrently to process the Offers for {} users.", threads, users.length);
+        log.info("Starting {} threads concurrently to process the Offers for {} users from {} until {}.", threads, users.length, startYear, endYear);
         final long startTime = System.nanoTime();
 
         final ExecutorService executor = Executors.newFixedThreadPool(threads);
@@ -120,8 +148,8 @@ public final class ConcurrentWSClient implements Runnable {
         executor.shutdown();
 
         final DecimalFormat format = new DecimalFormat("###,###.##");
-        final String duration = format.format((double) (System.nanoTime() - startTime) / 1000000000);
-        log.info("Completed concurrent processing of Offers with {} threads in {} s.", result.size(), duration);
+        final String duration = format.format((double) (System.nanoTime() - startTime) / 60000000000L);
+        log.info("Completed concurrent processing of Offers with {} threads in {} minutes.", result.size(), duration);
     }
 
     // =========================================================================
@@ -303,6 +331,26 @@ public final class ConcurrentWSClient implements Runnable {
         offerRequest.setExchangeYear(year);
 
         return getExchange().fetchOffers(token, offerRequest);
+    }
+
+    /**
+     * <p>Sample IWS Download Offers request. The request requires two parameters,
+     * the current Session Token and the type of Offers to be fetched. The
+     * Exchange Year is omitted, as it is the current.</p>
+     *
+     * <p>The method will build and send the Request Object, and return the
+     * Response Object from the IWS.</p>
+     *
+     * @param token User Authentication (Session) Token
+     * @param type  Type of Offers to be fetch (domestic or shared)
+     * @return Respons Object from the IWS
+     */
+    public OfferCSVDownloadResponse downloadOffers(final AuthenticationToken token, final FetchType type, final int year) {
+        final OfferCSVDownloadRequest request = new OfferCSVDownloadRequest();
+        request.setFetchType(type);
+        request.setExchangeYear(year);
+
+        return getExchange().downloadOffers(token, request);
     }
 
     /**

@@ -1,0 +1,115 @@
+#!/bin/bash
+
+host="Local"
+if [ $# -eq 1 ]; then
+    host=$1
+fi
+
+# Calculate the information about Glassfish, we're collecting information about
+# the current number of Java Threads and how much memory is consumed.
+gPid=`ps -eaf | grep -v "grep" | grep "glassfish.jar" | awk '{ print $2; }'`
+gThreads=`prtstat ${gPid} 2>/dev/null | grep "Threads" | awk '{ print $6; }'`
+if [ "${gThreads}" = "" ]; then gThreads="0"; fi
+gMemory=`prtstat ${gPid} 2>/dev/null | grep "RSS" | awk '{ print $2; }'`
+if [ "${gMemory}" = "" ]; then gMemory="0"; fi
+
+# Calculate the information about PostgreSQL, we're collecting information about
+# the current number of Connections and how much memory is consumed.
+pmem=0
+for pid in `ps -u postgres o pid= 2>/dev/null`; do
+    mem=`prtstat ${pid} 2>/dev/null | grep "RSS" | awk '{ print $2; }'`
+    type=`prtstat ${pid} 2>/dev/null | grep "RSS" | awk '{ print $3; }'`
+    if [ "${type}" = "MB" ]; then
+        let "mem *= 1024"
+    fi
+    let "pmem += mem"
+done
+pConnections=`netstat -pant 2>/dev/null | grep 5432 | grep ESTABLISHED | wc -l`
+pMemory=""
+if [ ${pmem} -gt 0 ]; then
+    let "pmem /= 1024"
+    pMemory="; ${pmem} MB"
+fi
+
+# Prepare other relevant information, timestamp (good for logging) and load
+timestamp=`date +"%F %T"`
+#timestamp=`date +"%T"`
+load=`uptime | sed -E 's/^.*load average: ([0-9]*)[,|\.]([0-9]*).*$/\1.\2/g'`
+
+# And print out the information...
+echo -e "[${timestamp}] Glassfish (Threads:${gThreads}; ${gMemory} MB) PostgreSQL (Connections:${pConnections}${pMemory}) Load ${load}"
+
+# JAVI Modification
+#
+# Script to notify admin user if Linux,FreeBSD load crossed certain limit
+# It will send an email notification to admin.
+#
+# Copyright 2005 (c) nixCraft project
+# This is free script under GNU GPL version 2.0 or above.
+# Support/FeedBack/comment :  http://cyberciti.biz/fb/
+# Tested os:
+# * RedHat Linux
+# * Debain Linux
+# * FreeBSD
+# -------------------------------------------------------------------------
+# This script is part of nixCraft shell script collection (NSSC)
+# Visit http://bash.cyberciti.biz/ for more information.
+# ------------------------------------------------------------------------
+
+# Set up limit below
+LOADNOTIFY="3.0"
+TOTALMEMNOTIFY="6000000" #System has 24GB???
+GMEMNOTIFY="3000" #Max Glassfish memory 3000 MB
+
+# admin user email id
+EMAIL="jprici@gmail.com,jh@clutter.net,idt.admin@iaeste.net"
+
+# Subject for email
+SUBJECT="Alert $(hostname) load average"
+
+# -----------------------------------------------------------------
+
+# Os Specifc tweaks do not change anything below ;)
+OS="$(uname)"
+TRUE="1"
+if [ "$OS" == "FreeBSD" ]; then
+        TEMPFILE="$(mktemp /tmp/$(basename $0).tmp.XXX)"
+	FTEXT='load averages:'
+elif [ "$OS" == "Linux" ]; then
+        TEMPFILE="$(mktemp)"
+	FTEXT='load average:'
+fi
+# get first 5 min load
+F5M="$(uptime | awk -F "$FTEXT" '{ print $2 }' | cut -d, -f1 | sed 's/ //g')"
+# 10 min
+F10M="$(uptime | awk -F "$FTEXT" '{ print $2 }' | cut -d, -f2 | sed 's/ //g')"
+# 15 min
+F15M="$(uptime | awk -F "$FTEXT" '{ print $2 }' | cut -d, -f3 | sed 's/ //g')"
+#Memory -> already calculated gMemory
+FREEMEMORY="$(cat /proc/meminfo | grep MemFree | sed 's/kB//g' | sed 's/MemFree://g' | sed 's/ //g')"
+
+# mail message
+# keep it short coz we may send it to page or as an short message (SMS)
+echo "Load average Crossed allowed limit $NOTIFY." >> $TEMPFILE
+echo "Hostname: $(hostname)" >> $TEMPFILE
+echo "Local Date & Time : $(date)" >> $TEMPFILE
+echo "System Free Memory: $FREEMEMORY kB" >> $TEMPFILE
+echo "Glassfish Memory: $gMemory MB" >> $TEMPFILE
+
+# Look if it crossed limit
+# compare it with last 15 min load average
+RESULTLOAD="$(echo "$F15M > $LOADNOTIFY" | bc)"
+RESULTMEMORY="$(echo "$FREEMEMORY < $TOTALMEMNOTIFY" | bc)"
+RESULTGMEMORY="$(echo "$gMemory > $GMEMNOTIFY" | bc)"
+
+# if so send an email
+if [ "$RESULTLOAD" == "$TRUE" ] || [ "$RESULTMEMORY" == "$TRUE" ] || [ "$RESULTGMEMORY" == "$TRUE" ]; then
+        mail -s "$SUBJECT" "$EMAIL" < $TEMPFILE
+fi
+
+# remove file
+#rm -f $TEMPFILE
+
+#if [ ${echo "${load} > 0.06" | bc} ]; then
+#    mail -s "GLASSFISH LOAD" jprici@gmail.com <<< echo -e "[${timestamp}] Glassfish (Threads:${gThreads}; ${gMemory} MB) PostgreSQL (Connections:${pConnections}${pMemory}) Load ${load}"
+#fi

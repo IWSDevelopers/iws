@@ -420,11 +420,11 @@ public final class AccountService extends CommonService<AccessDao> {
         final String newUsername = request.getNewUsername();
 
         if (newUsername != null) {
-            final String hash = generateHash(request.getPassword(), authentication.getUser().getSalt());
+            final String hash = generateHash(toLower(request.getPassword()), authentication.getUser().getSalt());
             if (hash.equals(authentication.getUser().getPassword())) {
                 prepareUsernameUpdate(authentication.getUser(), newUsername);
             } else {
-                throw new IWSException(IWSErrors.AUTHENTICATION_ERROR, "The initiate update password request cannot be completed.");
+                throw new IWSException(IWSErrors.AUTHENTICATION_ERROR, "The update username request cannot be completed.");
             }
         } else if (newStatus == UserStatus.DELETED) {
             deletePrivateData(authentication, authentication.getUser());

@@ -1156,7 +1156,7 @@
   </wsdl:binding>
   <wsdl:service name="studentWSService">
     <wsdl:port binding="tns:studentWSServiceSoapBinding" name="studentWS">
-      <soap:address location="http://localhost:8080/iws-ws/studentWS"/>
+      <soap:address location="http://localhost:9080/iws-ws/studentWS"/>
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

@@ -797,7 +797,7 @@
   </wsdl:binding>
   <wsdl:service name="accessWSService">
     <wsdl:port binding="tns:accessWSServiceSoapBinding" name="accessWS">
-      <soap:address location="http://localhost:8080/iws-ws/accessWS"/>
+      <soap:address location="http://localhost:9080/iws-ws/accessWS"/>
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

@@ -154,7 +154,7 @@ public final class GroupService {
      *
      * @param authentication Authentication information for requesting user
      * @param entity         Entity to update
-     * @param changesToGroup Group Object from the requesting user
+     * @param group          Group Object from the requesting user
      */
     private void updateGroup(final Authentication authentication, final GroupEntity entity, final Group group) {
         final String oldFullname = entity.getFullName();
@@ -180,7 +180,7 @@ public final class GroupService {
      *
      * @param authentication Authentication information for requesting user
      * @param entity         Entity to update
-     * @param changesToGroup Group Object from the requesting user
+     * @param group          Group Object from the requesting user
      */
     private void limitedGroupUpdate(final Authentication authentication, final GroupEntity entity, final Group group) {
         final GroupEntity groupEntity = new GroupEntity();
@@ -404,7 +404,7 @@ public final class GroupService {
 
             if ((existingEntity != null) && (existingEntity.getRole().getId() == InternalConstants.ROLE_OWNER)) {
                 throw new PermissionException("It is not permitted to change the current Owner.");
-            } else if (request.getAction() == Action.Delete) {
+            } else if (request.getAction() == Action.DELETE) {
                 response = deleteUserGroupRelation(authentication, role, existingEntity);
             } else {
                 response = processUserGroupRelation(authentication, invokingUser, request, externalUserId, role, existingEntity);
@@ -472,7 +472,7 @@ public final class GroupService {
         final Action action = request.getAction();
         final GroupType type = request.getUserGroup().getGroup().getGroupType();
 
-        return  action == Action.Delete && type == GroupType.MEMBER;
+        return  action == Action.DELETE && type == GroupType.MEMBER;
     }
 
     /**

@@ -107,7 +107,7 @@ public class StorageTest extends AbstractTest {
 
         // Delete the File
         final FileRequest deleteRequest = new FileRequest(response.getFile());
-        deleteRequest.setAction(Action.Delete);
+        deleteRequest.setAction(Action.DELETE);
         token.setGroupId(nationalGroup.getGroupId());
         final FileResponse deleteResponse = storage.processFile(token, deleteRequest);
         assertThat(deleteResponse.isOk(), is(true));

@@ -43,7 +43,7 @@ public final class CommitteeRequest extends AbstractVerification implements Acti
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     /** Default allowed Actions for the Committee Request. */
-    private static final Set<Action> allowed = EnumSet.of(Action.Create, Action.Update, Action.Merge, Action.Upgrade, Action.Activate, Action.Suspend, Action.Delete);
+    private static final Set<Action> allowed = EnumSet.of(Action.CREATE, Action.UPDATE, Action.MERGE, Action.UPGRADE, Action.ACTIVATE, Action.SUSPEND, Action.DELETE);
 
     /** The Id of the Country to create a new Cooperating Institution for. */
     @XmlElement(required = true, nillable = true) private String countryId = null;
@@ -66,7 +66,7 @@ public final class CommitteeRequest extends AbstractVerification implements Acti
      * Action to perform on a Committee, by default we're assuming that it must
      * be updated, i.e. that the National Secretary must be set.
      */
-    @XmlElement(required = true, nillable = false) private Action action = Action.ChangeNs;
+    @XmlElement(required = true, nillable = false) private Action action = Action.CHANGE_NS;
 
     // =========================================================================
     // Object Constructors
@@ -254,7 +254,7 @@ public final class CommitteeRequest extends AbstractVerification implements Acti
         isNotNull(validation, "action", action);
         if (action != null) {
             switch (action) {
-                case Create:
+                case CREATE:
                     isNotNull(validation, "countryId", countryId);
                     isNotNull(validation, "institutionName", institutionName);
                     isNotNull(validation, "institutionAbbreviation", institutionAbbreviation);
@@ -262,24 +262,24 @@ public final class CommitteeRequest extends AbstractVerification implements Acti
                     isNotNull(validation, "lastname", lastname);
                     isNotNull(validation, "username", username);
                     break;
-                case Update:
+                case UPDATE:
                     isNotNull(validation, "nationalCommittee", nationalCommittee);
                     isNotNull(validation, "institutionName", institutionName);
                     isNotNull(validation, "institutionAbbreviation", institutionAbbreviation);
                     break;
-                case Merge:
+                case MERGE:
                     isNotNull(validation, "countryId", countryId);
                     isNotNull(validation, "nationalSecretary", nationalSecretary);
                     break;
-                case ChangeNs:
+                case CHANGE_NS:
                     // Updating means changing the current National Secretary,
                     // however doing so means internal checks for an existing
                     // new National Secretary or a potentional new National
                     // Secretary.
-                case Upgrade:
-                case Activate:
-                case Suspend:
-                case Delete:
+                case UPGRADE:
+                case ACTIVATE:
+                case SUSPEND:
+                case DELETE:
                     isNotNull(validation, "nationalCommittee", nationalCommittee);
                     break;
                 default:

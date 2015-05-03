@@ -265,15 +265,15 @@
 
   <xs:simpleType name="Action">
     <xs:restriction base="xs:string">
-      <xs:enumeration value="Create"/>
-      <xs:enumeration value="Update"/>
-      <xs:enumeration value="Upgrade"/>
-      <xs:enumeration value="Process"/>
-      <xs:enumeration value="ChangeNs"/>
-      <xs:enumeration value="Merge"/>
-      <xs:enumeration value="Activate"/>
-      <xs:enumeration value="Suspend"/>
-      <xs:enumeration value="Delete"/>
+      <xs:enumeration value="CREATE"/>
+      <xs:enumeration value="UPDATE"/>
+      <xs:enumeration value="UPGRADE"/>
+      <xs:enumeration value="PROCESS"/>
+      <xs:enumeration value="CHANGE_NS"/>
+      <xs:enumeration value="MERGE"/>
+      <xs:enumeration value="ACTIVATE"/>
+      <xs:enumeration value="SUSPEND"/>
+      <xs:enumeration value="DELETE"/>
     </xs:restriction>
   </xs:simpleType>
 
@@ -639,7 +639,7 @@
   </wsdl:binding>
   <wsdl:service name="storageWSService">
     <wsdl:port binding="tns:storageWSServiceSoapBinding" name="storageWS">
-      <soap:address location="http://localhost:8080/iws-ws/storageWS"/>
+      <soap:address location="http://localhost:9080/iws-ws/storageWS"/>
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

@@ -101,7 +101,7 @@ public final class UserGroupTest extends AbstractAdministration {
         assertThat(response.isOk(), is(true));
 
         // Delete the user again
-        request.setAction(Action.Delete);
+        request.setAction(Action.DELETE);
         final Fallible deleteResponse = administration.processUserGroupAssignment(token, request);
         assertThat(deleteResponse, is(not(nullValue())));
         assertThat(deleteResponse.isOk(), is(true));
@@ -275,7 +275,7 @@ public final class UserGroupTest extends AbstractAdministration {
         }
 
         final UserGroupAssignmentRequest request = new UserGroupAssignmentRequest();
-        request.setAction(Action.Delete);
+        request.setAction(Action.DELETE);
         request.setUserGroup(userGroup);
         final ProcessUserGroupResponse response = administration.processUserGroupAssignment(token, request);
         assertThat(response.isOk(), is(false));

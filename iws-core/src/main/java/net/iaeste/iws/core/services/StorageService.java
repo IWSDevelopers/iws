@@ -104,7 +104,7 @@ public final class StorageService extends CommonService<AccessDao> {
         final String folderExternalId = request.getFolder().getFolderId();
         final Folder folder;
 
-        if (request.getAction() == Action.Process) {
+        if (request.getAction() == Action.PROCESS) {
             if (folderExternalId == null) {
                 // Check the parentId, if it is null - it means we're about to
                 // create a new root folder for a Group. Only one such Group may
@@ -268,7 +268,7 @@ public final class StorageService extends CommonService<AccessDao> {
         final FileResponse response;
         // TODO Current processing needs to be rethought, since the Library will allow users who have protected access to a file that is marked public or protected, to also make changes.
 
-        if (request.getAction() == Action.Delete) {
+        if (request.getAction() == Action.DELETE) {
             deleteFile(authentication, request.getFile(), request.getType());
             response = new FileResponse();
         } else {

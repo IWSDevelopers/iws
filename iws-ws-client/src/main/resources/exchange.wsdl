@@ -1390,7 +1390,7 @@
   </wsdl:binding>
   <wsdl:service name="exchangeWSService">
     <wsdl:port binding="tns:exchangeWSServiceSoapBinding" name="exchangeWS">
-      <soap:address location="http://localhost:8080/iws-ws/exchangeWS"/>
+      <soap:address location="http://localhost:9080/iws-ws/exchangeWS"/>
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

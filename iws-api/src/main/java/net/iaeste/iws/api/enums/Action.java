@@ -27,45 +27,45 @@ public enum Action {
     /**
      * Create a new Cooperating Institution.
      */
-    Create,
+    CREATE,
 
     /**
      * Updating a Committee, i.e. change Institution Name & Abbreviation.
      */
-    Update,
+    UPDATE,
 
     /**
      * Upgrade a Committee from Cooperating Institution to Associate Member,
      * if there is currently only a single Cooperating Institution for the
      * given Country, or upgrades an Associate Member to Full Member.
      */
-    Upgrade,
+    UPGRADE,
 
     /**
      * Processing a record means either Creating a new record or update an
      * existing, based on the current state of the system.
      */
-    Process,
+    PROCESS,
 
     /**
      * Change the National Secretary.
      */
-    ChangeNs,
+    CHANGE_NS,
 
     /**
      * Upgrades a Committee from Cooperating Institution to Associate Member.
      */
-    Merge,
+    MERGE,
 
     /**
      * Activate a currently Suspended Committee.
      */
-    Activate,
+    ACTIVATE,
 
     /**
      * Suspend a currently Active Committee.
      */
-    Suspend,
+    SUSPEND,
 
     /**
      * <p>Deletes a record from the system. For Users, only NEW or SUSPENDED
@@ -75,5 +75,5 @@ public enum Action {
      * <p></p>Deletion may also be done against other data, where the process
      * of deleting it will determine how much is erased.</p>
      */
-    Delete
+    DELETE
 }

@@ -41,7 +41,7 @@ public final class UserGroupAssignmentRequest extends AbstractVerification imple
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     /** Default allowed Actions for the Process UserGroup Requests. */
-    private static final Set<Action> allowed = EnumSet.of(Action.Process, Action.Delete);
+    private static final Set<Action> allowed = EnumSet.of(Action.PROCESS, Action.DELETE);
 
     /**
      * User Group Relationship to process.
@@ -51,7 +51,7 @@ public final class UserGroupAssignmentRequest extends AbstractVerification imple
 
     /** Action to perform against the given Folder. */
     @XmlElement(required = true, nillable = false)
-    private Action action = Action.Process;
+    private Action action = Action.PROCESS;
 
     // =========================================================================
     // Object Constructors

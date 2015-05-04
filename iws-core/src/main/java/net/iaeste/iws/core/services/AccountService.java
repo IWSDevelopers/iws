@@ -629,6 +629,12 @@ public final class AccountService extends CommonService<AccessDao> {
         user.setPassword(null);
         user.setSalt(null);
         user.setPerson(null);
+        // Although it can be argued that we shouldn't delete aliases, then it
+        // is very rare that two users with the same name comes along. And we've
+        // seen many cases where it is the same user being registered a second
+        // or third time. So we're changing the policy here and deleting Aliases
+        // when an Account is deleted.
+        user.setAlias(null);
         user.setStatus(UserStatus.DELETED);
         dao.persist(user);
     }

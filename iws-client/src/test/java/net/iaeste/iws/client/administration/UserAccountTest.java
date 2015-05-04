@@ -76,7 +76,10 @@ public final class UserAccountTest extends AbstractAdministration {
         // First, let's create a new account for Harvey Rabbit, which we can
         // use to test with.
         final String username = "harvey@iaeste.us";
-        final String password = "harvey's password which is super secret.";
+        // There was a bug related to the Changing of Username, as it failed if
+        // the password contained upper/lower case letters. Since IWS followed
+        // the rule from IW3 and only looked at Passwords case insensitive.
+        final String password = "Harvey's password which is SUPER secret.";
         final CreateUserRequest createRequest = new CreateUserRequest(username, password, "Harvey", "Rabbit");
         final CreateUserResponse createResponse = administration.createUser(token, createRequest);
         assertThat(createResponse.isOk(), is(true));

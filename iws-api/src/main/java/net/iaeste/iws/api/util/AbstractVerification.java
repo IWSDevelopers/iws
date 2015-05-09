@@ -87,7 +87,7 @@ public abstract class AbstractVerification implements Verifiable {
      * @return Sanitized String
      * @see <a href="https://trac.iaeste.net/ticket/837">837</a> &amp; <a href="https://trac.iaeste.net/ticket/987">987</a>
      */
-    public String sanitize(final String source) {
+    public static String sanitize(final String source) {
         String sanitized = source;
 
         if ((source != null) && !source.isEmpty()) {

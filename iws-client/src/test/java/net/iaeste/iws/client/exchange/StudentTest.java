@@ -25,6 +25,7 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.dtos.Group;
+import net.iaeste.iws.api.dtos.GroupList;
 import net.iaeste.iws.api.dtos.TestData;
 import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.dtos.exchange.Student;
@@ -144,7 +145,7 @@ public final class StudentTest extends AbstractTest {
 
         //is it shared to two groups?
         assertThat(fetchPublishResponse1.isOk(), is(true));
-        final List<Group> offerGroupsSharedTo = fetchPublishResponse1.getOffersGroups().get(offersExternalId.get(0));
+        final GroupList offerGroupsSharedTo = fetchPublishResponse1.getOffersGroups().get(offersExternalId.get(0));
         assertThat(2, is(offerGroupsSharedTo.size()));
 
         allOffersResponse = exchange.fetchOffers(token, allOffersRequest);
@@ -225,7 +226,7 @@ public final class StudentTest extends AbstractTest {
 
         //is it shared to two groups?
         assertThat(fetchPublishResponse1.isOk(), is(true));
-        final List<Group> offerGroupsSharedTo = fetchPublishResponse1.getOffersGroups().get(offersExternalId.get(0));
+        final GroupList offerGroupsSharedTo = fetchPublishResponse1.getOffersGroups().get(offersExternalId.get(0));
         assertThat(2, is(offerGroupsSharedTo.size()));
 
         allOffersResponse = exchange.fetchOffers(token, allOffersRequest);
@@ -314,7 +315,7 @@ public final class StudentTest extends AbstractTest {
 
         //is it shared to two groups?
         assertThat(fetchPublishResponse1.isOk(), is(true));
-        final List<Group> offerGroupsSharedTo = fetchPublishResponse1.getOffersGroups().get(offersExternalId.get(0));
+        final GroupList offerGroupsSharedTo = fetchPublishResponse1.getOffersGroups().get(offersExternalId.get(0));
         assertThat(2, is(offerGroupsSharedTo.size()));
 
         allOffersResponse = exchange.fetchOffers(token, allOffersRequest);

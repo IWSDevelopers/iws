@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.ws.client.mappers;
 
+import net.iaeste.iws.api.dtos.GroupList;
 import net.iaeste.iws.api.dtos.exchange.Employer;
 import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.dtos.exchange.OfferStatistics;
@@ -31,6 +32,7 @@ import net.iaeste.iws.api.requests.exchange.DeletePublishingGroupRequest;
 import net.iaeste.iws.api.requests.exchange.FetchEmployerRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishGroupsRequest;
+import net.iaeste.iws.api.requests.exchange.FetchPublishedGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.HideForeignOffersRequest;
 import net.iaeste.iws.api.requests.exchange.OfferCSVDownloadRequest;
 import net.iaeste.iws.api.requests.exchange.OfferStatisticsRequest;
@@ -43,15 +45,18 @@ import net.iaeste.iws.api.responses.exchange.EmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchEmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchGroupsForSharingResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
+import net.iaeste.iws.api.responses.exchange.FetchPublishedGroupsResponse;
 import net.iaeste.iws.api.responses.exchange.FetchPublishingGroupResponse;
 import net.iaeste.iws.api.responses.exchange.OfferCSVDownloadResponse;
 import net.iaeste.iws.api.responses.exchange.OfferResponse;
 import net.iaeste.iws.api.responses.exchange.OfferStatisticsResponse;
 import net.iaeste.iws.api.responses.exchange.PublishOfferResponse;
+import net.iaeste.iws.ws.Group;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -247,7 +252,7 @@ public final class ExchangeMapper extends CommonMapper {
         if (ws != null) {
             api = new FetchGroupsForSharingResponse(map(ws.getError()), ws.getMessage());
 
-            api.getGroups().addAll(mapWSGroupCollection(ws.getGroups()));
+            api.setGroups(mapWSGroupCollection(ws.getGroups()));
         }
 
         return api;
@@ -312,6 +317,45 @@ public final class ExchangeMapper extends CommonMapper {
         }
 
         return ws;
+    }
+
+    public static net.iaeste.iws.ws.FetchPublishedGroupsRequest map(final FetchPublishedGroupsRequest api) {
+        net.iaeste.iws.ws.FetchPublishedGroupsRequest ws = null;
+
+        if (api != null) {
+            ws = new net.iaeste.iws.ws.FetchPublishedGroupsRequest();
+
+            ws.setPage(map(api.getPagingInformation()));
+            ws.getOfferIds().addAll(mapStringCollection(api.getOfferIds()));
+            ws.setExchangeYear(api.getExchangeYear());
+        }
+
+        return ws;
+    }
+
+    public static FetchPublishedGroupsResponse map(final net.iaeste.iws.ws.FetchPublishedGroupsResponse ws) {
+        FetchPublishedGroupsResponse api = null;
+
+        if (ws != null) {
+            api = new FetchPublishedGroupsResponse(map(ws.getError()), ws.getMessage());
+
+            api.setOffersGroups(mapOfferGroupList(ws.getOffersGroups()));
+        }
+
+        return api;
+    }
+
+    private static Map<String, GroupList> mapOfferGroupList(final net.iaeste.iws.ws.FetchPublishedGroupsResponse.OffersGroups ws) {
+        Map<String, GroupList> api = null;
+
+        if (ws != null) {
+            api = new HashMap<>();
+            for (final net.iaeste.iws.ws.FetchPublishedGroupsResponse.OffersGroups.Entry entry : ws.getEntry()) {
+                api.put(entry.getKey(), map(entry.getValue()));
+            }
+        }
+
+        return api;
     }
 
     public static net.iaeste.iws.ws.PublishOfferRequest map(final PublishOfferRequest api) {
@@ -418,7 +462,7 @@ public final class ExchangeMapper extends CommonMapper {
         return ws;
     }
 
-    public static net.iaeste.iws.ws.Offer map(final Offer api) {
+    private static net.iaeste.iws.ws.Offer map(final Offer api) {
         net.iaeste.iws.ws.Offer ws = null;
 
         if (api != null) {
@@ -478,7 +522,7 @@ public final class ExchangeMapper extends CommonMapper {
         return ws;
     }
 
-    public static Offer map(final net.iaeste.iws.ws.Offer ws) {
+    private static Offer map(final net.iaeste.iws.ws.Offer ws) {
         Offer api = null;
 
         if (ws != null) {
@@ -533,6 +577,20 @@ public final class ExchangeMapper extends CommonMapper {
             api.setNsLastname(ws.getNsLastname());
             api.setShared(map(ws.getShared()));
             api.setHidden(ws.isHidden());
+        }
+
+        return api;
+    }
+
+    private static GroupList map(final net.iaeste.iws.ws.GroupList ws) {
+        GroupList api = null;
+
+        if (ws != null) {
+            api = new GroupList();
+
+            for (final Group group : ws.getGroups()) {
+                api.add(map(group));
+            }
         }
 
         return api;

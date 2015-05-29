@@ -17,6 +17,7 @@ package net.iaeste.iws.core.services;
 import static net.iaeste.iws.core.transformers.ViewTransformer.transform;
 
 import net.iaeste.iws.api.dtos.Group;
+import net.iaeste.iws.api.dtos.GroupList;
 import net.iaeste.iws.api.dtos.exchange.Employer;
 import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.dtos.exchange.OfferStatistics;
@@ -273,7 +274,7 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
         final List<OfferSharedToGroupView> shared = viewsDao.findSharedToGroup(parentId, exchangeYear, externalOfferIds);
 
         // Prepare resulting map, and iterate over the list and fill in the details
-        final HashMap<String, List<Group>> result = prepareResultingMap(externalOfferIds);
+        final Map<String, GroupList> result = prepareResultingMap(externalOfferIds);
         for (final OfferSharedToGroupView view : shared) {
             final String offerId = view.getOfferExternalId();
             final Group group = transform(view);
@@ -293,12 +294,13 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
      * @param externalOfferIds List of ExternalOfferIds to find results for
      * @return Result Map with empty data structure
      */
-    private static HashMap<String, List<Group>> prepareResultingMap(final List<String> externalOfferIds) {
-        final HashMap<String, List<Group>> result = new HashMap<>(externalOfferIds.size());
+    private static Map<String, GroupList> prepareResultingMap(final List<String> externalOfferIds) {
+        final Map<String, GroupList> result = new HashMap<>(externalOfferIds.size());
 
         for (final String externalOfferId : externalOfferIds) {
-            final List<Group> groups = new ArrayList<>(80);
-            result.put(externalOfferId, groups);
+            final ArrayList<Group> groups = new ArrayList<>(80);
+            final GroupList list = new GroupList(groups);
+            result.put(externalOfferId, list);
         }
 
         return result;

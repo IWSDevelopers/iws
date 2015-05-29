@@ -19,6 +19,8 @@ import net.iaeste.iws.api.enums.exchange.OfferState;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -37,7 +39,7 @@ import java.util.Date;
         query = "select s from OfferSharedToGroupView s " +
                 "where s.offerOwner = :pid" +
                 "  and s.exchangeYear = :year" +
-                "  and offerExternalId in (:externalOfferIds)" +
+                "  and s.offerExternalId in (:externalOfferIds)" +
                 "  and s.status not in ('CLOSED', 'REJECTED')"))
 @Table(name = "find_shared_to_groups")
 public class OfferSharedToGroupView {
@@ -46,6 +48,7 @@ public class OfferSharedToGroupView {
     @Column(name = "id", insertable = false, updatable = false)
     private Long id = null;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status", insertable = false, updatable = false)
     private OfferState status = null;
 

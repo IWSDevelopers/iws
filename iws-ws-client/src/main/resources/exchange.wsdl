@@ -381,6 +381,46 @@
     </xs:complexContent>
   </xs:complexType>
 
+  <xs:complexType final="extension restriction" name="FetchPublishedGroupsRequest">
+    <xs:complexContent>
+      <xs:extension base="tns:AbstractPaginatable">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" name="offerIds" type="xs:string"/>
+          <xs:element name="exchangeYear" type="xs:int"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="FetchPublishedGroupsResponse">
+    <xs:complexContent>
+      <xs:extension base="tns:FallibleResponse">
+        <xs:sequence>
+          <xs:element name="offersGroups">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="0" name="entry">
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element minOccurs="0" name="key" type="xs:string"/>
+                      <xs:element minOccurs="0" name="value" type="tns:GroupList"/>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="GroupList">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" name="groups" nillable="true" type="tns:Group"/>
+    </xs:sequence>
+  </xs:complexType>
+
   <xs:complexType final="extension restriction" name="FetchOffersRequest">
     <xs:complexContent>
       <xs:extension base="tns:AbstractPaginatable">
@@ -1107,6 +1147,10 @@
     <wsdl:part name="request" type="tns:OfferCSVDownloadRequest">
     </wsdl:part>
   </wsdl:message>
+  <wsdl:message name="fetchPublishedGroupsResponse">
+    <wsdl:part name="response" type="tns:FetchPublishedGroupsResponse">
+    </wsdl:part>
+  </wsdl:message>
   <wsdl:message name="fetchOffers">
     <wsdl:part name="token" type="tns:AuthenticationToken">
     </wsdl:part>
@@ -1157,6 +1201,12 @@
     <wsdl:part name="token" type="tns:AuthenticationToken">
     </wsdl:part>
     <wsdl:part name="request" type="tns:ProcessPublishingGroupRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="fetchPublishedGroups">
+    <wsdl:part name="token" type="tns:AuthenticationToken">
+    </wsdl:part>
+    <wsdl:part name="request" type="tns:FetchPublishedGroupsRequest">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="processEmployerResponse">
@@ -1232,6 +1282,12 @@
       <wsdl:input message="tns:processPublishingGroup" name="processPublishingGroup">
     </wsdl:input>
       <wsdl:output message="tns:processPublishingGroupResponse" name="processPublishingGroupResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="fetchPublishedGroups">
+      <wsdl:input message="tns:fetchPublishedGroups" name="fetchPublishedGroups">
+    </wsdl:input>
+      <wsdl:output message="tns:fetchPublishedGroupsResponse" name="fetchPublishedGroupsResponse">
     </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="fetchOffers">
@@ -1348,6 +1404,15 @@
         <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="processPublishingGroupResponse">
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="fetchPublishedGroups">
+      <soap:operation soapAction="" style="rpc"/>
+      <wsdl:input name="fetchPublishedGroups">
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="fetchPublishedGroupsResponse">
         <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>

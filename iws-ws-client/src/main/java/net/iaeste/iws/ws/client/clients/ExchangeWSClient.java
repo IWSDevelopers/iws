@@ -223,7 +223,8 @@ public final class ExchangeWSClient extends CommonWSClient implements Exchange {
      */
     @Override
     public FetchPublishedGroupsResponse fetchPublishedGroups(final AuthenticationToken token, final FetchPublishedGroupsRequest request) {
-        return new FetchPublishedGroupsResponse(IWSErrors.NOT_IMPLEMENTED, "Functionality requires an API change, which has not yet been made.");
+        return map(client.fetchPublishedGroups(map(token), map(request)));
+        //return new FetchPublishedGroupsResponse(IWSErrors.NOT_IMPLEMENTED, "Functionality requires an API change, which has not yet been made.");
     }
 
     /**

@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2015, IAESTE Internet Development Team. All rights reserved.
  * ----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.responses.exchange.FetchPublishedGroupsResponse
+ * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.dtos.GroupList
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -12,78 +12,80 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-package net.iaeste.iws.api.responses.exchange;
+package net.iaeste.iws.api.dtos;
 
 import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.api.constants.IWSError;
-import net.iaeste.iws.api.dtos.GroupList;
-import net.iaeste.iws.api.responses.FallibleResponse;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
-import java.util.Map;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Response Object for returning sharing info for specified list of offers.
- * Returned value is a Map with an offer ID as key and a list of OfferGroup
- * as sharing details for particular offer in the map value.
+ * This Object serves as a WebService Wrapper for Group Lists. As Collections
+ * of Collections cannot be mapped over correctly by the auto-generated
+ * WebService Classes.
  *
- * @author  Pavel Fiala / last $Author:$
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   IWS 1.0
+ * @since   IWS 1.1
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "FetchPublishedGroupsResponse", propOrder = { "offersGroups" })
-public final class FetchPublishedGroupsResponse extends FallibleResponse {
+@XmlType(name = "GroupList", propOrder = { "groups" })
+public class GroupList implements Serializable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     @XmlElement(required = true, nillable = true)
-    private Map<String, GroupList> offersGroups = null;
-
-    // =========================================================================
-    // Object Constructors
-    // =========================================================================
+    private List<Group> groups = null;
 
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.
      */
-    public FetchPublishedGroupsResponse() {
+    public GroupList() {
+        groups = new ArrayList<>();
     }
 
     /**
      * Default Constructor.
      *
-     * @param offersGroups List of Offers found
+     * @param groups List of Groups
      */
-    public FetchPublishedGroupsResponse(final Map<String, GroupList> offersGroups) {
-        this.offersGroups = offersGroups;
-    }
-
-    /**
-     * Error Constructor.
-     *
-     * @param error   IWS Error Object
-     * @param message Error Message
-     */
-    public FetchPublishedGroupsResponse(final IWSError error, final String message) {
-        super(error, message);
+    public GroupList(final List<Group> groups) {
+        this.groups = groups;
     }
 
     // =========================================================================
     // Standard Setters & Getters
     // =========================================================================
 
-    public void setOffersGroups(final Map<String, GroupList> offersGroups) {
-        this.offersGroups = offersGroups;
+    public void setGroups(final List<Group> groups) {
+        this.groups = groups;
     }
 
-    public Map<String, GroupList> getOffersGroups() {
-        return offersGroups;
+    public List<Group> getGroups() {
+        return groups;
+    }
+
+    // =========================================================================
+    // Mapped Collection Methods
+    // =========================================================================
+
+    public void add(final Group group) {
+        groups.add(group);
+    }
+
+    public Group get(final int index) {
+        return groups.get(index);
+    }
+
+    public int size() {
+        return groups.size();
     }
 
     // =========================================================================
@@ -98,13 +100,17 @@ public final class FetchPublishedGroupsResponse extends FallibleResponse {
         if (this == obj) {
             return true;
         }
-
-        if (!(obj instanceof FetchPublishedGroupsResponse)) {
+        if (!(obj instanceof GroupList)) {
             return false;
         }
 
-        final FetchPublishedGroupsResponse that = (FetchPublishedGroupsResponse) obj;
-        return !((offersGroups != null) ? !offersGroups.equals(that.offersGroups) : (that.offersGroups != null));
+        final GroupList groupList = (GroupList) obj;
+
+        if (groups != null ? !groups.equals(groupList.groups) : groupList.groups != null) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -112,11 +118,7 @@ public final class FetchPublishedGroupsResponse extends FallibleResponse {
      */
     @Override
     public int hashCode() {
-        int result = super.hashCode();
-
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((offersGroups != null) ? offersGroups.hashCode() : 0);
-
-        return result;
+        return groups != null ? groups.hashCode() : 0;
     }
 
     /**
@@ -124,8 +126,8 @@ public final class FetchPublishedGroupsResponse extends FallibleResponse {
      */
     @Override
     public String toString() {
-        return "FetchOffersResponse{" +
-                "offers=" + offersGroups +
+        return "GroupList{" +
+                "groups=" + groups +
                 '}';
     }
 }

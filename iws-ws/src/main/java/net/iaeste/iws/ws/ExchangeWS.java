@@ -428,8 +428,7 @@ public class ExchangeWS implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    // TODO Fix problems with WS Fetching of Published Groups
-    @WebMethod(exclude = true)
+    @WebMethod
     @WebResult(name = "response")
     public FetchPublishedGroupsResponse fetchPublishedGroups(
             @WebParam(name = "token") final AuthenticationToken token,

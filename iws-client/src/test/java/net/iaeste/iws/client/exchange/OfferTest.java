@@ -16,7 +16,6 @@ package net.iaeste.iws.client.exchange;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasKey;
-import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.nullValue;
@@ -30,6 +29,7 @@ import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.Address;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.dtos.Group;
+import net.iaeste.iws.api.dtos.GroupList;
 import net.iaeste.iws.api.dtos.TestData;
 import net.iaeste.iws.api.dtos.exchange.Employer;
 import net.iaeste.iws.api.dtos.exchange.Offer;
@@ -393,7 +393,7 @@ public final class OfferTest extends AbstractTest {
 
         //is it shared to two groups?
         assertThat(fetchPublishResponse1.isOk(), is(true));
-        List<Group> offerGroupsSharedTo = fetchPublishResponse1.getOffersGroups().get(offersExternalId.get(0));
+        GroupList offerGroupsSharedTo = fetchPublishResponse1.getOffersGroups().get(offersExternalId.get(0));
         assertThat(2, is(offerGroupsSharedTo.size()));
 
         allOffersResponse = exchange.fetchOffers(token, allOffersRequest);
@@ -457,7 +457,7 @@ public final class OfferTest extends AbstractTest {
 
         //is it shared to two groups?
         assertThat(fetchPublishResponse1.isOk(), is(true));
-        List<Group> offerGroupsSharedTo = fetchPublishResponse1.getOffersGroups().get(offersExternalId.get(0));
+        GroupList offerGroupsSharedTo = fetchPublishResponse1.getOffersGroups().get(offersExternalId.get(0));
         assertThat(2, is(offerGroupsSharedTo.size()));
 
         allOffersResponse = exchange.fetchOffers(token, allOffersRequest);
@@ -528,7 +528,7 @@ public final class OfferTest extends AbstractTest {
 
         //is it shared to one groups?
         assertThat(fetchPublishResponse1.isOk(), is(true));
-        List<Group> offerGroupsSharedTo = fetchPublishResponse1.getOffersGroups().get(offersExternalId.get(0));
+        GroupList offerGroupsSharedTo = fetchPublishResponse1.getOffersGroups().get(offersExternalId.get(0));
         assertThat(offerGroupsSharedTo.size(), is(1));
 
         allOffersResponse = exchange.fetchOffers(token, allOffersRequest);
@@ -871,7 +871,7 @@ public final class OfferTest extends AbstractTest {
 
         assertThat(fetchPublishedGroupsResponse.getOffersGroups(), hasKey(savedOffer.getOfferId()));
         assertThat("it's after the nomination deadline and OfferGroup should be fetched",
-                fetchPublishedGroupsResponse.getOffersGroups().get(savedOffer.getOfferId()), hasSize(1));
+                fetchPublishedGroupsResponse.getOffersGroups().get(savedOffer.getOfferId()).size(), is(1));
     }
 
     @Test
@@ -902,7 +902,7 @@ public final class OfferTest extends AbstractTest {
 
         assertThat(fetchPublishedGroupsResponse.getOffersGroups(), hasKey(savedOffer.getOfferId()));
         assertThat("it's still before the nomination deadline so OfferGroup should be fetched",
-                fetchPublishedGroupsResponse.getOffersGroups().get(savedOffer.getOfferId()), hasSize(1));
+                fetchPublishedGroupsResponse.getOffersGroups().get(savedOffer.getOfferId()).size(), is(1));
     }
 
     /**
@@ -995,7 +995,7 @@ public final class OfferTest extends AbstractTest {
 
         //is it shared to two groups?
         assertThat(fetchPublishResponse.isOk(), is(true));
-        List<Group> offerGroupsSharedTo = fetchPublishResponse.getOffersGroups().get(offersExternalId.get(0));
+        GroupList offerGroupsSharedTo = fetchPublishResponse.getOffersGroups().get(offersExternalId.get(0));
         assertThat(1, is(offerGroupsSharedTo.size()));
 
         allOffersResponse = exchange.fetchOffers(token, allOffersRequest);
@@ -1065,7 +1065,7 @@ public final class OfferTest extends AbstractTest {
 
         //is it shared to one groups?
         assertThat(fetchPublishResponse.isOk(), is(true));
-        List<Group> offerGroupsSharedTo = fetchPublishResponse.getOffersGroups().get(offersExternalId.get(0));
+        GroupList offerGroupsSharedTo = fetchPublishResponse.getOffersGroups().get(offersExternalId.get(0));
         assertThat(1, is(offerGroupsSharedTo.size()));
 
         allOffersResponse = exchange.fetchOffers(token, allOffersRequest);
@@ -1143,7 +1143,7 @@ public final class OfferTest extends AbstractTest {
 
         //is it shared to one groups?
         assertThat(fetchPublishResponse.isOk(), is(true));
-        List<Group> offerGroupsSharedTo = fetchPublishResponse.getOffersGroups().get(offersExternalId.get(0));
+        GroupList offerGroupsSharedTo = fetchPublishResponse.getOffersGroups().get(offersExternalId.get(0));
         assertThat(1, is(offerGroupsSharedTo.size()));
 
         allOffersResponse = exchange.fetchOffers(token, allOffersRequest);
@@ -1240,7 +1240,7 @@ public final class OfferTest extends AbstractTest {
 
         //is it shared to two groups?
         assertThat(fetchPublishResponse.isOk(), is(true));
-        List<Group> offerGroupsSharedTo = fetchPublishResponse.getOffersGroups().get(offersExternalId.get(0));
+        GroupList offerGroupsSharedTo = fetchPublishResponse.getOffersGroups().get(offersExternalId.get(0));
         assertThat(2, is(offerGroupsSharedTo.size()));
 
         allOffersResponse = exchange.fetchOffers(token, allOffersRequest);
@@ -1394,7 +1394,7 @@ public final class OfferTest extends AbstractTest {
     private static Group findGroupFromResponse(final String offerId, final String groupId, final FetchPublishedGroupsResponse response) {
         Group group = null;
 
-        for (final Group found : response.getOffersGroups().get(offerId)) {
+        for (final Group found : response.getOffersGroups().get(offerId).getGroups()) {
             if (found.getGroupId().equals(groupId)) {
                 group = found;
             }

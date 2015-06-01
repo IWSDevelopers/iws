@@ -86,10 +86,14 @@ public class CommonMapper {
     }
 
     public static net.iaeste.iws.ws.AuthenticationToken map(final AuthenticationToken api) {
-        final net.iaeste.iws.ws.AuthenticationToken ws = new net.iaeste.iws.ws.AuthenticationToken();
+        net.iaeste.iws.ws.AuthenticationToken ws = null;
 
-        ws.setToken(api.getToken());
-        ws.setGroupId(api.getGroupId());
+        if (api != null) {
+            ws = new net.iaeste.iws.ws.AuthenticationToken();
+
+            ws.setToken(api.getToken());
+            ws.setGroupId(api.getGroupId());
+        }
 
         return ws;
     }

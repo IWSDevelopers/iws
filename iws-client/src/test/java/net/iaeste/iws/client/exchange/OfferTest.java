@@ -1338,7 +1338,7 @@ public final class OfferTest extends AbstractTest {
 
         assertThat(uploadResponse.isOk(), is(true));
         final Map<String, OfferCSVUploadResponse.ProcessingResult> processingResult = uploadResponse.getProcessingResult();
-        EnumSet<OfferCSVUploadResponse.ProcessingResult> okProcessingResults = EnumSet.of(OfferCSVUploadResponse.ProcessingResult.Updated, OfferCSVUploadResponse.ProcessingResult.Added);
+        EnumSet<OfferCSVUploadResponse.ProcessingResult> okProcessingResults = EnumSet.of(OfferCSVUploadResponse.ProcessingResult.UPDATED, OfferCSVUploadResponse.ProcessingResult.ADDED);
         assertThat(processingResult, is(not(nullValue())));
         for (final String refNo : processingResult.keySet()) {
             assertTrue(okProcessingResults.contains(processingResult.get(refNo)));

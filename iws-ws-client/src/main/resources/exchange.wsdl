@@ -41,10 +41,13 @@
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="FetchPublishGroupsRequest">
+  <xs:complexType name="OfferCSVUploadRequest">
     <xs:complexContent>
       <xs:extension base="tns:AbstractPaginatable">
-        <xs:all/>
+        <xs:sequence>
+          <xs:element name="data" type="xs:base64Binary"/>
+          <xs:element name="delimiter" nillable="true" type="tns:FieldDelimiter"/>
+        </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
@@ -66,6 +69,70 @@
       <xs:element name="sortAscending" type="xs:boolean"/>
       <xs:element minOccurs="0" name="sortBy" type="tns:SortingField"/>
     </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="OfferCSVUploadResponse">
+    <xs:complexContent>
+      <xs:extension base="tns:FallibleResponse">
+        <xs:sequence>
+          <xs:element name="processingResult">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="0" name="entry">
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element minOccurs="0" name="key" type="xs:string"/>
+                      <xs:element minOccurs="0" name="value" type="tns:ProcessingResult"/>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="errors">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="0" name="entry">
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element minOccurs="0" name="key" type="xs:string"/>
+                      <xs:element minOccurs="0" name="value" type="tns:CSVProcessingErrors"/>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="CSVProcessingErrors">
+    <xs:sequence>
+      <xs:element name="csvErrors">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="entry">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element minOccurs="0" name="key" type="xs:string"/>
+                  <xs:element minOccurs="0" name="value" type="xs:string"/>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="FetchPublishGroupsRequest">
+    <xs:complexContent>
+      <xs:extension base="tns:AbstractPaginatable">
+        <xs:all/>
+      </xs:extension>
+    </xs:complexContent>
   </xs:complexType>
 
   <xs:complexType final="extension restriction" name="FetchPublishingGroupResponse">
@@ -503,10 +570,25 @@
     </xs:complexContent>
   </xs:complexType>
 
+  <xs:simpleType name="FieldDelimiter">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="COMMA"/>
+      <xs:enumeration value="SEMICOLON"/>
+    </xs:restriction>
+  </xs:simpleType>
+
   <xs:simpleType name="SortingField">
     <xs:restriction base="xs:string">
       <xs:enumeration value="CREATED"/>
       <xs:enumeration value="NAME"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="ProcessingResult">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="ADDED"/>
+      <xs:enumeration value="UPDATED"/>
+      <xs:enumeration value="ERROR"/>
     </xs:restriction>
   </xs:simpleType>
 
@@ -1085,6 +1167,12 @@
     <wsdl:part name="response" type="tns:OfferCSVDownloadResponse">
     </wsdl:part>
   </wsdl:message>
+  <wsdl:message name="uploadOffers">
+    <wsdl:part name="token" type="tns:AuthenticationToken">
+    </wsdl:part>
+    <wsdl:part name="request" type="tns:OfferCSVUploadRequest">
+    </wsdl:part>
+  </wsdl:message>
   <wsdl:message name="fetchPublishingGroups">
     <wsdl:part name="token" type="tns:AuthenticationToken">
     </wsdl:part>
@@ -1209,6 +1297,10 @@
     <wsdl:part name="request" type="tns:FetchPublishedGroupsRequest">
     </wsdl:part>
   </wsdl:message>
+  <wsdl:message name="uploadOffersResponse">
+    <wsdl:part name="response" type="tns:OfferCSVUploadResponse">
+    </wsdl:part>
+  </wsdl:message>
   <wsdl:message name="processEmployerResponse">
     <wsdl:part name="response" type="tns:EmployerResponse">
     </wsdl:part>
@@ -1228,6 +1320,12 @@
       <wsdl:input message="tns:deletePublishingGroup" name="deletePublishingGroup">
     </wsdl:input>
       <wsdl:output message="tns:deletePublishingGroupResponse" name="deletePublishingGroupResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="uploadOffers">
+      <wsdl:input message="tns:uploadOffers" name="uploadOffers">
+    </wsdl:input>
+      <wsdl:output message="tns:uploadOffersResponse" name="uploadOffersResponse">
     </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="fetchPublishingGroups">
@@ -1323,6 +1421,15 @@
         <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="deletePublishingGroupResponse">
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="uploadOffers">
+      <soap:operation soapAction="" style="rpc"/>
+      <wsdl:input name="uploadOffers">
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="uploadOffersResponse">
         <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>

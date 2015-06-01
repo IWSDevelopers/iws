@@ -421,7 +421,7 @@ public final class CsvTransformer {
      * @param obj    The Object to invoke the Setter on
      * @param field  The Object field to be set
      * @param args   Arguments to the Setter
-     * @throws net.iaeste.iws.api.exceptions.IWSException If a Reflection Error occurred.
+     * @throws IWSException If a Reflection Error occurred.
      */
     private static <O extends Verifiable> void invokeMethodOnObject(final Map<String, String> errors, final O obj, final OfferFields field, final Object... args) throws IWSException {
         if (field.getMethod() != null) {

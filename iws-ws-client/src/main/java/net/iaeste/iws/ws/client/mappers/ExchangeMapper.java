@@ -15,6 +15,7 @@
 package net.iaeste.iws.ws.client.mappers;
 
 import net.iaeste.iws.api.dtos.GroupList;
+import net.iaeste.iws.api.dtos.exchange.CSVProcessingErrors;
 import net.iaeste.iws.api.dtos.exchange.Employer;
 import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.dtos.exchange.OfferStatistics;
@@ -35,6 +36,7 @@ import net.iaeste.iws.api.requests.exchange.FetchPublishGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishedGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.HideForeignOffersRequest;
 import net.iaeste.iws.api.requests.exchange.OfferCSVDownloadRequest;
+import net.iaeste.iws.api.requests.exchange.OfferCSVUploadRequest;
 import net.iaeste.iws.api.requests.exchange.OfferStatisticsRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessEmployerRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
@@ -48,10 +50,13 @@ import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
 import net.iaeste.iws.api.responses.exchange.FetchPublishedGroupsResponse;
 import net.iaeste.iws.api.responses.exchange.FetchPublishingGroupResponse;
 import net.iaeste.iws.api.responses.exchange.OfferCSVDownloadResponse;
+import net.iaeste.iws.api.responses.exchange.OfferCSVUploadResponse;
 import net.iaeste.iws.api.responses.exchange.OfferResponse;
 import net.iaeste.iws.api.responses.exchange.OfferStatisticsResponse;
 import net.iaeste.iws.api.responses.exchange.PublishOfferResponse;
+import net.iaeste.iws.ws.FieldDelimiter;
 import net.iaeste.iws.ws.Group;
+import net.iaeste.iws.ws.ProcessingResult;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -218,6 +223,33 @@ public final class ExchangeMapper extends CommonMapper {
             api = new OfferResponse(map(ws.getError()), ws.getMessage());
 
             api.setOffer(map(ws.getOffer()));
+        }
+
+        return api;
+    }
+
+    public static net.iaeste.iws.ws.OfferCSVUploadRequest map(final OfferCSVUploadRequest api) {
+        net.iaeste.iws.ws.OfferCSVUploadRequest ws = null;
+
+        if (api != null) {
+            ws = new net.iaeste.iws.ws.OfferCSVUploadRequest();
+
+            ws.setPage(map(api.getPagingInformation()));
+            ws.setData(api.getData());
+            ws.setDelimiter(map(api.getDelimiter()));
+        }
+
+        return ws;
+    }
+
+    public static OfferCSVUploadResponse map(final net.iaeste.iws.ws.OfferCSVUploadResponse ws) {
+        OfferCSVUploadResponse api = null;
+
+        if (ws != null) {
+            api = new OfferCSVUploadResponse(map(ws.getError()), ws.getMessage());
+
+            api.setProcessingResult(map(ws.getProcessingResult()));
+            api.setErrors(map(ws.getErrors()));
         }
 
         return api;
@@ -411,6 +443,47 @@ public final class ExchangeMapper extends CommonMapper {
             }
         } else {
             api = new ArrayList<>(0);
+        }
+
+        return api;
+    }
+
+    private static Map<String, OfferCSVUploadResponse.ProcessingResult> map(final net.iaeste.iws.ws.OfferCSVUploadResponse.ProcessingResult ws) {
+        Map<String, OfferCSVUploadResponse.ProcessingResult> api = null;
+
+        if (ws != null) {
+            api = new HashMap<>();
+            for (final net.iaeste.iws.ws.OfferCSVUploadResponse.ProcessingResult.Entry entry : ws.getEntry()) {
+                api.put(entry.getKey(), map(entry.getValue()));
+            }
+        }
+
+        return api;
+    }
+
+    private static Map<String, CSVProcessingErrors> map(final net.iaeste.iws.ws.OfferCSVUploadResponse.Errors ws) {
+        Map<String, CSVProcessingErrors> api = null;
+
+        if (ws != null) {
+            api = new HashMap<>();
+
+            for (net.iaeste.iws.ws.OfferCSVUploadResponse.Errors.Entry entry : ws.getEntry()) {
+                api.put(entry.getKey(), map(entry.getValue()));
+            }
+        }
+
+        return api;
+    }
+
+    private static CSVProcessingErrors map(final net.iaeste.iws.ws.CSVProcessingErrors ws) {
+        CSVProcessingErrors api = null;
+
+        if ((ws != null) && (ws.getCsvErrors() != null)) {
+            api = new CSVProcessingErrors();
+
+            for (final net.iaeste.iws.ws.CSVProcessingErrors.CsvErrors.Entry entry : ws.getCsvErrors().getEntry()) {
+                api.put(entry.getKey(), entry.getValue());
+            }
         }
 
         return api;
@@ -634,6 +707,14 @@ public final class ExchangeMapper extends CommonMapper {
         }
 
         return api;
+    }
+
+    private static FieldDelimiter map(final OfferCSVUploadRequest.FieldDelimiter api) {
+        return api != null ? FieldDelimiter.valueOf(api.name()) : null;
+    }
+
+    private static OfferCSVUploadResponse.ProcessingResult map(final ProcessingResult ws) {
+        return ws != null ? OfferCSVUploadResponse.ProcessingResult.valueOf(ws.value()) : null;
     }
 
     private static net.iaeste.iws.ws.EmployerFetchType map(final EmployerFetchType api) {

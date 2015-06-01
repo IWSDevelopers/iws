@@ -17,9 +17,12 @@ package net.iaeste.iws.ws.client.mappers;
 import net.iaeste.iws.api.dtos.Authorization;
 import net.iaeste.iws.api.dtos.Password;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
+import net.iaeste.iws.api.requests.SessionDataRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
 import net.iaeste.iws.api.responses.FetchPermissionResponse;
+import net.iaeste.iws.api.responses.SessionDataResponse;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,6 +52,32 @@ public final class AccessMapper extends CommonMapper {
         if (ws != null) {
             api = new AuthenticationResponse(map(ws.getError()), ws.getMessage());
             api.setToken(map(ws.getToken()));
+        }
+
+        return api;
+    }
+
+    public static <T extends Serializable> net.iaeste.iws.ws.SessionDataRequest map(final SessionDataRequest<T> api) {
+        net.iaeste.iws.ws.SessionDataRequest ws = null;
+
+        if (api != null) {
+            ws = new net.iaeste.iws.ws.SessionDataRequest();
+
+            ws.setSessionData(api.getSessionData());
+        }
+
+        return ws;
+    }
+
+    public static <T extends Serializable> SessionDataResponse<T> map(final net.iaeste.iws.ws.SessionDataResponse ws) {
+        SessionDataResponse<T> api = null;
+
+        if (ws != null) {
+            api = new SessionDataResponse<>(map(ws.getError()), ws.getMessage());
+
+            api.setSessionData(ws.getSessionData());
+            api.setModified(map(ws.getModified()));
+            api.setCreated(map(ws.getCreated()));
         }
 
         return api;

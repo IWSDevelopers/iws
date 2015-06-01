@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.ws.client.clients;
 
+import static net.iaeste.iws.ws.client.mappers.AccessMapper.map;
+
 import net.iaeste.iws.api.Access;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
@@ -25,7 +27,6 @@ import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchPermissionResponse;
 import net.iaeste.iws.api.responses.SessionDataResponse;
 import net.iaeste.iws.ws.AccessWS;
-import net.iaeste.iws.ws.client.mappers.AccessMapper;
 import net.iaeste.iws.ws.client.mappers.CommonMapper;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.frontend.ClientProxy;
@@ -106,7 +107,7 @@ public final class AccessWSClient extends CommonWSClient implements Access {
      */
     @Override
     public AuthenticationResponse generateSession(final AuthenticationRequest request) {
-        return AccessMapper.map(client.generateSession(AccessMapper.map(request)));
+        return map(client.generateSession(map(request)));
     }
 
     /**
@@ -114,7 +115,7 @@ public final class AccessWSClient extends CommonWSClient implements Access {
      */
     @Override
     public FallibleResponse requestResettingSession(final AuthenticationRequest request) {
-        return CommonMapper.map(client.requestResettingSession(AccessMapper.map(request)));
+        return CommonMapper.map(client.requestResettingSession(map(request)));
     }
 
     /**
@@ -122,7 +123,7 @@ public final class AccessWSClient extends CommonWSClient implements Access {
      */
     @Override
     public AuthenticationResponse resetSession(final String resetSessionToken) {
-        return AccessMapper.map(client.resetSession(resetSessionToken));
+        return map(client.resetSession(resetSessionToken));
     }
 
     /**
@@ -130,7 +131,7 @@ public final class AccessWSClient extends CommonWSClient implements Access {
      */
     @Override
     public <T extends Serializable> FallibleResponse saveSessionData(final AuthenticationToken token, final SessionDataRequest<T> request) {
-        return null;
+        return map(client.saveSessionData(map(token), map(request)));
     }
 
     /**
@@ -138,7 +139,7 @@ public final class AccessWSClient extends CommonWSClient implements Access {
      */
     @Override
     public <T extends Serializable> SessionDataResponse<T> readSessionData(final AuthenticationToken token) {
-        return null;
+        return map(client.readSessionData(map(token)));
     }
 
     /**
@@ -170,7 +171,7 @@ public final class AccessWSClient extends CommonWSClient implements Access {
      */
     @Override
     public FallibleResponse resetPassword(final String resetPasswordToken, final Password password) {
-        return CommonMapper.map(client.resetPassword(resetPasswordToken, AccessMapper.map(password)));
+        return CommonMapper.map(client.resetPassword(resetPasswordToken, map(password)));
     }
 
     /**
@@ -178,7 +179,7 @@ public final class AccessWSClient extends CommonWSClient implements Access {
      */
     @Override
     public FallibleResponse updatePassword(final AuthenticationToken token, final Password password) {
-        return CommonMapper.map(client.updatePassword(CommonMapper.map(token), AccessMapper.map(password)));
+        return CommonMapper.map(client.updatePassword(CommonMapper.map(token), map(password)));
     }
 
     /**
@@ -186,6 +187,6 @@ public final class AccessWSClient extends CommonWSClient implements Access {
      */
     @Override
     public FetchPermissionResponse fetchPermissions(final AuthenticationToken token) {
-        return AccessMapper.map(client.fetchPermissions(CommonMapper.map(token)));
+        return map(client.fetchPermissions(CommonMapper.map(token)));
     }
 }

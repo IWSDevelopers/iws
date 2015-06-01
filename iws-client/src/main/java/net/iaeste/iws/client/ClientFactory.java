@@ -52,6 +52,8 @@ public final class ClientFactory {
     private static ClientFactory instance = null;
     private final ConfigurableApplicationContext context;
     private static final boolean useWebService = false;
+    private static final String wsHost = "localhost";
+    private static final String wsPort = "9080";
 
     // =========================================================================
     // Factory Instantiation Methods
@@ -92,7 +94,7 @@ public final class ClientFactory {
 
         if (useWebService) {
             try {
-                access = new AccessWSClient("http://localhost:8080/iws-ws/accessWS?wsdl");
+                access = new AccessWSClient("http://" + wsHost + ':' + wsPort + "/iws-ws/accessWS?wsdl");
             } catch (MalformedURLException e) {
                 throw new IWSException(IWSErrors.FATAL, "Cannot connect to the IWS WebServices: " + e.getMessage(), e);
             }
@@ -108,7 +110,7 @@ public final class ClientFactory {
 
         if (useWebService) {
             try {
-                administration = new AdministrationWSClient("http://localhost:8080/iws-ws/administrationWS?wsdl");
+                administration = new AdministrationWSClient("http://" + wsHost + ':' + wsPort + "/iws-ws/administrationWS?wsdl");
             } catch (MalformedURLException e) {
                 throw new IWSException(IWSErrors.FATAL, "Cannot connect to the IWS WebServices: " + e.getMessage(), e);
             }
@@ -124,7 +126,7 @@ public final class ClientFactory {
 
         if (useWebService) {
             try {
-                storage = new StorageWSClient("http://localhost:8080/iws-ws/storageWS?wsdl");
+                storage = new StorageWSClient("http://" + wsHost + ':' + wsPort + "/iws-ws/storageWS?wsdl");
             } catch (MalformedURLException e) {
                 throw new IWSException(IWSErrors.FATAL, "Cannot connect to the IWS WebServices: " + e.getMessage(), e);
             }
@@ -140,7 +142,7 @@ public final class ClientFactory {
 
         if (useWebService) {
             try {
-                committees = new CommitteeWSClient("http://localhost:8080/iws-ws/committeeWS?wsdl");
+                committees = new CommitteeWSClient("http://" + wsHost + ':' + wsPort + "/iws-ws/committeeWS?wsdl");
             } catch (MalformedURLException e) {
                 throw new IWSException(IWSErrors.FATAL, "Cannot connect to the IWS WebServices: " + e.getMessage(), e);
             }
@@ -156,7 +158,7 @@ public final class ClientFactory {
 
         if (useWebService) {
             try {
-                exchange = new ExchangeWSClient("http://localhost:8080/iws-ws/exchangeWS?wsdl");
+                exchange = new ExchangeWSClient("http://" + wsHost + ':' + wsPort + "/iws-ws/exchangeWS?wsdl");
             } catch (MalformedURLException e) {
                 throw new IWSException(IWSErrors.FATAL, "Cannot connect to the IWS WebServices: " + e.getMessage(), e);
             }
@@ -172,7 +174,7 @@ public final class ClientFactory {
 
         if (useWebService) {
             try {
-                students = new StudentWSClient("http://localhost:8080/iws-ws/studentWS?wsdl");
+                students = new StudentWSClient("http://" + wsHost + ':' + wsPort + "/iws-ws/studentWS?wsdl");
             } catch (MalformedURLException e) {
                 throw new IWSException(IWSErrors.FATAL, "Cannot connect to the IWS WebServices: " + e.getMessage(), e);
             }

@@ -16,6 +16,7 @@ package net.iaeste.iws.api.responses.exchange;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
+import net.iaeste.iws.api.dtos.exchange.CSVProcessingErrors;
 import net.iaeste.iws.api.responses.FallibleResponse;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -41,7 +42,7 @@ public class OfferCSVUploadResponse extends FallibleResponse {
      * updated or there were processing errors.
      */
     @XmlType(name = "ProcessingResult")
-    public enum ProcessingResult { Added, Updated, Error }
+    public enum ProcessingResult { ADDED, UPDATED, ERROR }
 
     /**
      * Map with the result from each record from the CSV file that which was
@@ -57,7 +58,7 @@ public class OfferCSVUploadResponse extends FallibleResponse {
      * value.
      */
     @XmlElement(required = true, nillable = true)
-    private Map<String, Map<String, String>> errors;
+    private Map<String, CSVProcessingErrors> errors;
 
     // =========================================================================
     // Object Constructors
@@ -93,11 +94,11 @@ public class OfferCSVUploadResponse extends FallibleResponse {
         return processingResult;
     }
 
-    public void setErrors(final Map<String, Map<String, String>> errors) {
+    public void setErrors(final Map<String, CSVProcessingErrors> errors) {
         this.errors = errors;
     }
 
-    public Map<String, Map<String, String>> getErrors() {
+    public Map<String, CSVProcessingErrors> getErrors() {
         return errors;
     }
 

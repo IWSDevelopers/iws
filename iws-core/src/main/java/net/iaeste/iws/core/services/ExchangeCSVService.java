@@ -20,6 +20,7 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.Address;
 import net.iaeste.iws.api.dtos.Country;
+import net.iaeste.iws.api.dtos.exchange.CSVProcessingErrors;
 import net.iaeste.iws.api.dtos.exchange.Employer;
 import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.enums.exchange.OfferFields;
@@ -90,7 +91,7 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
     public OfferCSVUploadResponse uploadOffers(final Authentication authentication, final OfferCSVUploadRequest request) {
         final OfferCSVUploadResponse response = new OfferCSVUploadResponse();
         final Map<String, OfferCSVUploadResponse.ProcessingResult> processingResult = new HashMap<>();
-        final Map<String, Map<String, String>> errors = new HashMap<>();
+        final Map<String, CSVProcessingErrors> errors = new HashMap<>();
 
         final char fieldDelimiter = request.getDelimiter() != null ? request.getDelimiter().getDescription() : DELIMITER;
 
@@ -234,7 +235,7 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
         }
     }
 
-    private void process(final Map<String, OfferCSVUploadResponse.ProcessingResult> processingResult, final Map<String, Map<String, String>> errors, final Authentication authentication, final CSVRecord record) {
+    private void process(final Map<String, OfferCSVUploadResponse.ProcessingResult> processingResult, final Map<String, CSVProcessingErrors> errors, final Authentication authentication, final CSVRecord record) {
         String refNo = "";
         final Map<String, String> conversionErrors = new HashMap<>(0);
 
@@ -248,7 +249,7 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
             csvEmployer.setAddress(csvAddress);
             csvOffer.setEmployer(csvEmployer);
 
-            final Map<String, String> validationErrors = csvOffer.validate();
+            final CSVProcessingErrors validationErrors = new CSVProcessingErrors(csvOffer.validate());
             validationErrors.putAll(conversionErrors);
             if (validationErrors.isEmpty()) {
                 final OfferEntity existingEntity = dao.findOfferByRefNo(authentication, refNo);
@@ -267,7 +268,7 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
                     newEntity.setExternalId(existingEntity.getExternalId());
                     dao.persist(authentication, existingEntity, newEntity);
                     log.info(formatLogMessage(authentication, "CSV Update of Offer with RefNo '%s' completed.", newEntity.getRefNo()));
-                    processingResult.put(refNo, OfferCSVUploadResponse.ProcessingResult.Updated);
+                    processingResult.put(refNo, OfferCSVUploadResponse.ProcessingResult.UPDATED);
                 } else {
                     // First, we need an Employer for our new Offer. The Process
                     // method will either find an existing Employer or create a
@@ -290,20 +291,20 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
                     // Persist the Offer with history
                     dao.persist(authentication, newEntity);
                     log.info(formatLogMessage(authentication, "CSV Import of Offer with RefNo '%s' completed.", newEntity.getRefNo()));
-                    processingResult.put(refNo, OfferCSVUploadResponse.ProcessingResult.Added);
+                    processingResult.put(refNo, OfferCSVUploadResponse.ProcessingResult.ADDED);
                 }
             } else {
                 log.warn(formatLogMessage(authentication, "CSV Offer with RefNo " + refNo + " has some Problems: " + validationErrors));
-                processingResult.put(refNo, OfferCSVUploadResponse.ProcessingResult.Error);
+                processingResult.put(refNo, OfferCSVUploadResponse.ProcessingResult.ERROR);
                 errors.put(refNo, validationErrors);
             }
         } catch (IllegalArgumentException | IWSException e) {
             log.warn(formatLogMessage(authentication, "CSV Offer with RefNo " + refNo + " has a Problem: " + e.getMessage()), e);
-            processingResult.put(refNo, OfferCSVUploadResponse.ProcessingResult.Error);
+            processingResult.put(refNo, OfferCSVUploadResponse.ProcessingResult.ERROR);
             if (errors.containsKey(refNo)) {
                 errors.get(refNo).put("general", e.getMessage());
             } else {
-                final Map<String, String> generalError = new HashMap<>(1);
+                final CSVProcessingErrors generalError = new CSVProcessingErrors();
                 generalError.put("general", e.getMessage());
                 if (!conversionErrors.isEmpty()) {
                     generalError.putAll(conversionErrors);

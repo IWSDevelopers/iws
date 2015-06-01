@@ -44,7 +44,7 @@ public abstract class AbstractVerification implements Verifiable {
     // Our internal error strings
     private static final String ERROR_NOT_NULL = "The field %s may not be null.";
     private static final String ERROR_NOT_EMPTY = "The field %s may not be empty.";
-    private static final String ERROR_NOT_LONGER = "The field %s may not be longer than %d";
+    private static final String ERROR_NOT_LONGER = "The field %s may not be longer than %d characters.";
     private static final String ERROR_COLLECTION_LONGER = "The field %s may not containt more than %d Objects.";
     private static final String ERROR_ARRAY_LONGER = "The field %s may not be longer than %d bytes.";
     private static final String ERROR_TOO_SHORT = "The field %s must be at least %d characters long";

@@ -18,7 +18,6 @@ import static net.iaeste.iws.ws.client.mappers.ExchangeMapper.map;
 
 import net.iaeste.iws.api.Exchange;
 import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
 import net.iaeste.iws.api.requests.exchange.DeletePublishingGroupRequest;
@@ -166,7 +165,7 @@ public final class ExchangeWSClient extends CommonWSClient implements Exchange {
      */
     @Override
     public OfferCSVUploadResponse uploadOffers(final AuthenticationToken token, final OfferCSVUploadRequest request) {
-        return new OfferCSVUploadResponse(IWSErrors.NOT_IMPLEMENTED, "Functionality requires an API change, which has not yet been made.");
+        return map(client.uploadOffers(map(token), map(request)));
     }
 
     /**
@@ -224,7 +223,6 @@ public final class ExchangeWSClient extends CommonWSClient implements Exchange {
     @Override
     public FetchPublishedGroupsResponse fetchPublishedGroups(final AuthenticationToken token, final FetchPublishedGroupsRequest request) {
         return map(client.fetchPublishedGroups(map(token), map(request)));
-        //return new FetchPublishedGroupsResponse(IWSErrors.NOT_IMPLEMENTED, "Functionality requires an API change, which has not yet been made.");
     }
 
     /**

@@ -236,7 +236,7 @@ public class ExchangeWS implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    @WebMethod(exclude = true)
+    @WebMethod
     @WebResult(name = "response")
     public OfferCSVUploadResponse uploadOffers(
             @WebParam(name = "token") final AuthenticationToken token,

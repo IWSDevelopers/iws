@@ -42,20 +42,13 @@ public class Producer {
 
     private static final Logger log = LoggerFactory.getLogger(Producer.class);
 
-    /**
-     * See https://docs.jboss.org/author/display/WFLY8/Command+line+parameters
-     */
+    //See https://docs.jboss.org/author/display/WFLY8/Command+line+parameters
     private static final String JBOSS_CONFIG_DIR = "jboss.server.config.dir";
-
-    /**
-     * See http://czetsuya-tech.blogspot.de/2012/07/how-to-load-property-file-from.html
-     */
-    private static String GLASSFISH_HOME = "com.sun.aas.instanceRoot";
-    /**
-     * Glassfish configuration folder.
-     */
-    private static String GLASSFISH_CONFIG_DIR = "config";
-
+    //See http://czetsuya-tech.blogspot.de/2012/07/how-to-load-property-file-from.html
+    private static final String GLASSFISH_HOME = "com.sun.aas.instanceRoot";
+    //Glassfish configuration folder.
+    private static final String GLASSFISH_CONFIG_DIR = "config";
+    // The IWS Properties File
     private static final String PROPERTIES_FILE = "iws.properties";
 
     /**

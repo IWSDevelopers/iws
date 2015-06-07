@@ -675,8 +675,8 @@ public final class ExchangeMapper extends CommonMapper {
         if (ws != null) {
             api = new PublishingGroup();
 
-            api.setPublishingGroupId(api.getPublishingGroupId());
-            api.setName(api.getName());
+            api.setPublishingGroupId(ws.getPublishingGroupId());
+            api.setName(ws.getName());
             api.setGroups(mapWSGroupCollection(ws.getGroups()));
         }
 

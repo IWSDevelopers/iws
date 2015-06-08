@@ -83,8 +83,7 @@ public interface IWSErrors {
     IWSError SESSION_EXISTS = new IWSError(405, "User can only hold one active Session at the time.");
 
     /**
-     * The system has an upper limit of how many active sessions may exists,
-     * please see {@link IWSConstants#MAX_ACTIVE_TOKENS} for more information.
+     * The system has an upper limit of how many active sessions may exists.
      */
     IWSError TOO_MANY_ACTIVE_SESSIONS = new IWSError(406, "The system has reached the maximum allowed number of concurrently active users.");
 

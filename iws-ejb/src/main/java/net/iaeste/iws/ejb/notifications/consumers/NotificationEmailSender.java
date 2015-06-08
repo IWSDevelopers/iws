@@ -335,13 +335,12 @@ public class NotificationEmailSender implements Observer {
                     result.add(user);
                 }
                 break;
-            //TODO disable sending notification about updating username, uncomment once we want to enable this feature
-//            case UPDATE_USERNAME:
-//                user = accessDao.findActiveUserByUsername(fields.get(NotificationField.EMAIL));
-//                if (user != null) {
-//                    result.add(user);
-//                }
-//                break;
+            case UPDATE_USERNAME:
+                user = accessDao.findActiveUserByUsername(fields.get(NotificationField.EMAIL));
+                if (user != null) {
+                    result.add(user);
+                }
+                break;
             default:
                 return null;
         }

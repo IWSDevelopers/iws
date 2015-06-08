@@ -172,11 +172,9 @@ insert into permission_to_role (role_id, permission_id) values (1, 151);
 insert into permission_to_role (role_id, permission_id) values (2, 151);
 
 -- Permission 200 - Control User Account
---   -> GroupTypes: 0 Administration
---                  2 Member
+--   -> GroupTypes: 2 Member
 --   -> Roles:      1 Owner
 --                  2 Moderator
-insert into permission_to_grouptype (grouptype_id, permission_id) values (0, 200);
 insert into permission_to_grouptype (grouptype_id, permission_id) values (2, 200);
 insert into permission_to_role (role_id, permission_id) values (1, 200);
 insert into permission_to_role (role_id, permission_id) values (2, 200);

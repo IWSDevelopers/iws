@@ -262,6 +262,36 @@ create view problem_groups as
   from groups
   where id in (select ids from gids);
 
+
+-- =============================================================================
+-- The Emergency List
+-- =============================================================================
+create view emergency_list as
+  select
+    r.role           as role,
+    u2g.custom_title as title,
+    u.firstname      as firstname,
+    u.lastname       as lasname,
+    u.alias          as alias,
+    u.username       as email,
+    p.email          as alternative,
+    c.phonecode      as precode,
+    p.phone          as phone,
+    p.mobile         as mobile
+  from user_to_group u2g
+    inner join roles r     on r.id = u2g.role_id
+    inner join groups g    on g.id = u2g.group_id
+    inner join countries c on c.id = g.country_id
+    inner join users u     on u.id = u2g.user_id
+    left  join persons p   on u.person_id = p.id
+  where g.grouptype_id = 4
+    and r.id <=2
+  order by
+    g.group_name asc,
+    r.id asc,
+    u.firstname asc,
+    u.lastname asc;
+
 -- =============================================================================
 -- Following Views are commented out, as HyperSQL doesn't support them
 -- =============================================================================

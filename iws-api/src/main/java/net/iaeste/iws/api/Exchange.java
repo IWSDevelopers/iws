@@ -118,7 +118,7 @@ public interface Exchange {
      *
      * @param token   The valid authentication token provided by {@link Access#generateSession(net.iaeste.iws.api.requests.AuthenticationRequest)}
      * @param request Offer CSV Upload Request
-     * @return
+     * @return Response Object with error information from the uploading
      */
     OfferCSVUploadResponse uploadOffers(AuthenticationToken token, OfferCSVUploadRequest request);
 
@@ -141,7 +141,7 @@ public interface Exchange {
     FetchOffersResponse fetchOffers(AuthenticationToken token, FetchOffersRequest request);
 
     /**
-     * IW3, IAESTE IntraWeb version 3, provided a simple way whereby Offers
+     * The IAESTE IntraWeb version 3, IW3, provided a simple way whereby Offers
      * could be downloaded. The download was primarily of the countries incoming
      * or foreign Offers. This functionality mimics this service in IWS, so the
      * request, will fetch Offers, though with a few more options as described
@@ -149,7 +149,7 @@ public interface Exchange {
      *
      * @param token   The valid authentication token provided by {@link Access#generateSession(net.iaeste.iws.api.requests.AuthenticationRequest)}
      * @param request Offer CSV Download Request
-     * @return
+     * @return Response Object with standard error information and CSV Data
      */
     OfferCSVDownloadResponse downloadOffers(AuthenticationToken token, OfferCSVDownloadRequest request);
 

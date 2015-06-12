@@ -23,6 +23,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,7 +54,7 @@ public class OfferCSVDownloadRequest extends AbstractPaginatable {
      */
     public OfferCSVDownloadRequest() {
         this.fetchType = null;
-        this.offerIds = null;
+        this.offerIds = new ArrayList<>(0);
         this.exchangeYear = calculateExchangeYear();
     }
 
@@ -67,7 +68,18 @@ public class OfferCSVDownloadRequest extends AbstractPaginatable {
     // Standard Setters & Getters
     // =========================================================================
 
-    public void setFetchType(final FetchType fetchType) {
+    /**
+     * Sets the mandatory FetchType for the CSV Downloading of Offers, the type
+     * can be either Domestic (a Committee's own Offers) or Shared (Offers from
+     * other Committee's). However, the value cannot be null.<br />
+     *   The method will thrown an {@code IllegalArgumentException} if the given
+     * value is null.
+     *
+     * @param fetchType Type of Offers to be fetched
+     * @throws IllegalArgumentException if the parameter is null
+     */
+    public void setFetchType(final FetchType fetchType) throws IllegalArgumentException {
+        ensureNotNull("fetchType", fetchType);
         this.fetchType = fetchType;
     }
 
@@ -75,7 +87,20 @@ public class OfferCSVDownloadRequest extends AbstractPaginatable {
         return fetchType;
     }
 
-    public void setOfferIds(final List<String> offerIds) {
+    /**
+     * Sets a list of Offer Id's, which is suppose to be fetched. The Id's must
+     * either belong to the Country (if the FetchType is domestic) or the Id's
+     * must belong to Offers shared (if the FetchType is shared). If the list
+     * of Id's is empty, then all Offers matching the FetchType and Exchange
+     * Year will be retrieved.<br />
+     *   The method will thrown an {@code IllegalArgumentException} if the given
+     * value is null.
+     *
+     * @param offerIds List of OfferId's to be fetched, may be empty
+     * @throws IllegalArgumentException if the parameter is null
+     */
+    public void setOfferIds(final List<String> offerIds) throws IllegalArgumentException {
+        ensureNotNull("offerIds", offerIds);
         this.offerIds = offerIds;
     }
 
@@ -83,7 +108,22 @@ public class OfferCSVDownloadRequest extends AbstractPaginatable {
         return offerIds;
     }
 
-    public void setExchangeYear(final Integer exchangeYear) {
+    /**
+     * Sets the mandatory Exchange Year for the CSV Downloading of Offers. The
+     * year must be within the known Exchange years for IAESTE, which
+     * theoretically is from the founding year until the current. However, the
+     * IWS is only having data from 2004 and onward. The latest year to read
+     * from will be the current Exhange Year.<br />
+     *   The method will thrown an {@code IllegalArgumentException} if the given
+     * value is null.
+     *
+     * @param exchangeYear Exchange Year to retrieve offers from
+     * @throws IllegalArgumentException if the parameter is null or not within limits
+     * @see IWSConstants#FOUNDING_YEAR
+     * @see #calculateExchangeYear()
+     */
+    public void setExchangeYear(final Integer exchangeYear) throws IllegalArgumentException {
+        ensureNotNullAndWithinLimits("exchangeYear", exchangeYear, IWSConstants.FOUNDING_YEAR, calculateExchangeYear());
         this.exchangeYear = exchangeYear;
     }
 

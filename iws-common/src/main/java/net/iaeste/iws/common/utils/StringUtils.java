@@ -28,7 +28,7 @@ import java.util.regex.Pattern;
 public final class StringUtils {
 
     public static final String EMPTY_STRING = "";
-    public static final String[] EMPTY_STRING_ARRAY = new String[0];
+    private static final String[] EMPTY_STRING_ARRAY = new String[0];
     private static final Pattern PATTERN_NEWLINE = Pattern.compile("\\r\\n|\\r|\\n");
 
     /**

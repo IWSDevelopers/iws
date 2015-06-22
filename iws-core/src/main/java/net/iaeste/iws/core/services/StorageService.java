@@ -456,7 +456,7 @@ public final class StorageService extends CommonService<AccessDao> {
 
                 // If still not allowed, then we're down to the last option,
                 // that the file is public and belongs to a public folder.
-                if ((entity == null) && (entity.getPrivacy() == Privacy.PUBLIC)) {
+                if ((file == null) && (entity.getPrivacy() == Privacy.PUBLIC)) {
                     // First, check that the Parent Folder exists
                     if (entity.getFolder() != null) {
                         // check that the file belongs to a Group with a public Folder.

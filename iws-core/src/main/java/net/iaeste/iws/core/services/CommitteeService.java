@@ -712,6 +712,8 @@ public final class CommitteeService extends CommonService<CommitteeDao> {
                 // All good, now we can create the new International Group :-)
                 final GroupEntity groupEntity = doCreateTheInternationalGroup(authentication, group);
                 createGroupCoordinator(authentication, groupEntity, userEntity);
+                notifications.notify(authentication, groupEntity, NotificationType.NEW_GROUP);
+                notifications.notify(authentication, userEntity, NotificationType.NEW_GROUP_OWNER);
                 log.info(formatLogMessage(authentication, "Created new International Group %s with Coordinator %s", group.getGroupName(), user.getFirstname() + ' ' + user.getLastname()));
             } else {
                 throw new VerificationException("Attempting to greate a new International Group failed as no Coordinator provided doesn't exist.");
@@ -819,6 +821,8 @@ public final class CommitteeService extends CommonService<CommitteeDao> {
                 oldCoordinator.setRole(dao.findRole(InternalConstants.ROLE_MODERATOR));
                 oldCoordinator.setTitle("Former " + oldCoordinator.getTitle());
                 dao.persist(authentication, oldCoordinator);
+                notifications.notify(authentication, groupEntity, NotificationType.CHANGE_IN_GROUP_MEMBERS);
+                notifications.notify(authentication, userEntity, NotificationType.NEW_GROUP_OWNER);
             }
         }
     }

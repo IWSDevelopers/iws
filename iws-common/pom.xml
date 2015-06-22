@@ -62,14 +62,14 @@
 
     <profiles>
         <profile>
-            <id>sonar</id>
+            <id>coverage</id>
             <build>
                 <plugins>
                     <plugin>
                         <groupId>org.jacoco</groupId>
                         <artifactId>jacoco-maven-plugin</artifactId>
                         <configuration>
-                            <destFile>${project.basedir}/../target/jacoco-it.exec</destFile>
+                            <destFile>${project.basedir}/../target/jacoco.exec</destFile>
                         </configuration>
                         <executions>
                             <execution>

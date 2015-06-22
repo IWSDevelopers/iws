@@ -52,13 +52,6 @@
                             <addClasspath>true</addClasspath>
                         </manifest>
                     </archive>
-                    <!--<generateClient>true</generateClient>-->
-					<!--<clientIncludes>-->
-					   <!--<clientInclude>net/iaeste/iws/ejb/**/*Remote.class</clientInclude>-->
-                       <!--<clientInclude>net/iaeste/iws/ejb/**/*Local.class</clientInclude>-->
-                       <!--<clientInclude>net/iaeste/iws/ejb/data/**/*.class</clientInclude>-->
-                       <!--<clientInclude>net/iaeste/iws/ejb/exceptions/**/*.class</clientInclude>-->
-					<!--</clientIncludes>-->
                 </configuration>
             </plugin>
         </plugins>
@@ -66,14 +59,14 @@
 
     <profiles>
         <profile>
-            <id>sonar</id>
+            <id>coverage</id>
             <build>
                 <plugins>
                     <plugin>
                         <groupId>org.jacoco</groupId>
                         <artifactId>jacoco-maven-plugin</artifactId>
                         <configuration>
-                            <destFile>${project.basedir}/../target/jacoco-it.exec</destFile>
+                            <destFile>${project.basedir}/../target/jacoco.exec</destFile>
                         </configuration>
                         <executions>
                             <execution>

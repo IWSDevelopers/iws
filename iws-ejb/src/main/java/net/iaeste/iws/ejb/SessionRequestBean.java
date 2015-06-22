@@ -16,6 +16,7 @@ package net.iaeste.iws.ejb;
 
 import static net.iaeste.iws.api.util.LogUtil.formatLogMessage;
 
+import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.exceptions.VerificationException;
@@ -44,6 +45,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.Date;
 import java.util.zip.GZIPOutputStream;
 
@@ -139,11 +141,15 @@ public class SessionRequestBean {
      * @return Formatted log message with request, duration and result
      */
     public String generateLog(final String method, final Long start, final Fallible fallible, final AuthenticationToken token) {
+        // The symbols used can vary from locale to locale, so we're setting
+        // them according to the default Locale in IWS.
+        final DecimalFormatSymbols symbols = new DecimalFormatSymbols(IWSConstants.DEFAULT_LOCALE);
+
         // The milliseconds that a request takes is converted from the date/time
         // format and into a nice printable number, via this formatter.
-        final DecimalFormat format = new DecimalFormat("###,###.##");
+        final DecimalFormat format = new DecimalFormat("###,###.##", symbols);
 
-        final String duration = format.format((double) (System.nanoTime() - start) / 1000000);
+        final String duration = format.format((System.nanoTime() - start) / 1000000.0);
         final String logMessage;
 
         if (fallible.isOk()) {

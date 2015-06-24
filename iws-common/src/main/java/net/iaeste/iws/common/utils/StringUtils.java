@@ -177,7 +177,7 @@ public final class StringUtils {
                     .replaceAll("[Üü]", "ue")
                     .replaceAll("[Ŵŵ]", "w")
                     .replaceAll("[ÝŶŸýÿŷ]", "y")
-                    .replaceAll("[ŹŻŽŽźżž]", "z")
+                    .replaceAll("[ŹŻŽźżž]", "z")
                     .replaceAll("[×÷]", "")
                     .replaceAll("[^a-zA-Z0-9_'\\.@]", "_")
                     .toLowerCase(IWSConstants.DEFAULT_LOCALE);

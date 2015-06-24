@@ -1,6 +1,7 @@
 package net.iaeste.iws.ws.client;
 
 import net.iaeste.iws.api.Access;
+import net.iaeste.iws.api.Administration;
 import net.iaeste.iws.api.Exchange;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.dtos.exchange.Employer;
@@ -13,6 +14,7 @@ import net.iaeste.iws.api.requests.exchange.OfferStatisticsRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessEmployerRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
+import net.iaeste.iws.api.responses.EmergencyListResponse;
 import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchPermissionResponse;
 import net.iaeste.iws.api.responses.exchange.EmployerResponse;
@@ -21,6 +23,7 @@ import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
 import net.iaeste.iws.api.responses.exchange.OfferResponse;
 import net.iaeste.iws.api.responses.exchange.OfferStatisticsResponse;
 import net.iaeste.iws.ws.client.clients.AccessWSClient;
+import net.iaeste.iws.ws.client.clients.AdministrationWSClient;
 import net.iaeste.iws.ws.client.clients.ExchangeWSClient;
 import net.iaeste.iws.ws.client.exceptions.WebServiceException;
 import org.slf4j.Logger;
@@ -49,7 +52,7 @@ public final class WSClient {
      * @param args Command Line Parameters
      */
     public static void main(final String[] args) {
-        final WSClient client = new WSClient("localhost", "8080");
+        final WSClient client = new WSClient("http://localhost:8080");
 
         // Before we can do anything, we first need to log in
         final AuthenticationResponse authResponse = client.login(germany, "faked");
@@ -62,7 +65,11 @@ public final class WSClient {
             // to ensure that the Session is closed in the end.
             try {
                 // Access related requests
-                log.info("PermissionResponse: " + client.fetchPermissions(token).getMessage());
+                final FetchPermissionResponse permissionResponse = client.fetchPermissions(token);
+                log.info("PermissionResponse: " + permissionResponse.getMessage());
+
+                final EmergencyListResponse emergency = client.fetchEmergencyList(token);
+                log.info("Received the Emergency List with " + emergency.getEmergencyContacts().size() + " records.");
 
                 // Exchange related requests
                 log.info("Offer Statistics: " + client.fetchOfferStatistics(token).getMessage());
@@ -77,7 +84,7 @@ public final class WSClient {
                         log.info("Processing Offer with Reference Number '" + offer.getRefNo() + "': " + client.processOffer(token, offer).getMessage());
                     }
                 }
-            } catch (Throwable t) {
+            } catch (RuntimeException t) {
                 log.error(t.getMessage(), t);
             } finally {
                 // Always remember to log out, otherwise the Account will be
@@ -94,9 +101,9 @@ public final class WSClient {
     private static final Logger log = LoggerFactory.getLogger(WSClient.class);
     private static final Object lock = new Object();
     private final String host;
-    private final String port;
 
     private Access access = null;
+    private Administration administration = null;
     private Exchange exchange = null;
 
     /**
@@ -105,13 +112,12 @@ public final class WSClient {
      * for the server, or it can be the IPv4 Number for the Server. However, a
      * second parameter is also required, the Port number where the IWS Service
      * is made available.</p>
+     *   Production Hostname; https://iws.iaeste.net:9443
      *
      * @param host Hostname (resolvable DNS record or IPv4) for the IWS instance
-     * @param port Portnumber for the IWS instance
      */
-    public WSClient(final String host, final String port) {
+    public WSClient(final String host) {
         this.host = host;
-        this.port = port;
     }
 
     // =========================================================================
@@ -128,7 +134,7 @@ public final class WSClient {
      *
      * @param username E-mail address whereby the user is registered in the IWS
      * @param password The user's password for the IWS
-     * @return Respons Object from the IWS
+     * @return Response Object from the IWS
      */
     public AuthenticationResponse login(final String username, final String password) {
         final AuthenticationRequest request = new AuthenticationRequest();
@@ -146,7 +152,7 @@ public final class WSClient {
      * Response Object from the IWS.</p>
      *
      * @param token User Authentication (Session) Token
-     * @return Respons Object from the IWS
+     * @return Response Object from the IWS
      */
     public FallibleResponse deprecateSession(final AuthenticationToken token) {
         return getAccess().deprecateSession(token);
@@ -162,10 +168,21 @@ public final class WSClient {
      * Response Object from the IWS.</p>
      *
      * @param token User Authentication (Session) Token
-     * @return Respons Object from the IWS
+     * @return Response Object from the IWS
      */
     public FetchPermissionResponse fetchPermissions(final AuthenticationToken token) {
         return getAccess().fetchPermissions(token);
+    }
+
+    /**
+     * <p>Fetches the Emergency List, which is a list that includes all
+     * Administrative Staff (Owner or Moderator) as well as the Board.</p>
+     *
+     * @param token User Authentication (Session) Token
+     * @return Response Object from the IWS
+     */
+    public EmergencyListResponse fetchEmergencyList(final AuthenticationToken token) {
+        return getAdministration().fetchEmergencyList(token);
     }
 
     /**
@@ -178,7 +195,7 @@ public final class WSClient {
      * Response Object from the IWS.</p>
      *
      * @param token User Authentication (Session) Token
-     * @return Respons Object from the IWS
+     * @return Response Object from the IWS
      */
     public OfferStatisticsResponse fetchOfferStatistics(final AuthenticationToken token) {
         final OfferStatisticsRequest request = new OfferStatisticsRequest();
@@ -194,7 +211,7 @@ public final class WSClient {
      * Response Object from the IWS.</p>
      *
      * @param token User Authentication (Session) Token
-     * @return Respons Object from the IWS
+     * @return Response Object from the IWS
      */
     public FetchEmployerResponse fetchEmployers(final AuthenticationToken token) {
         final FetchEmployerRequest employerRequest = new FetchEmployerRequest();
@@ -230,7 +247,7 @@ public final class WSClient {
      *
      * @param token User Authentication (Session) Token
      * @param type  Type of Offers to be fetch (domestic or shared)
-     * @return Respons Object from the IWS
+     * @return Response Object from the IWS
      */
     public FetchOffersResponse fetchOffers(final AuthenticationToken token, final FetchType type) {
         final FetchOffersRequest offerRequest = new FetchOffersRequest();
@@ -265,7 +282,7 @@ public final class WSClient {
         synchronized (lock) {
             if (access == null) {
                 try {
-                    access = new AccessWSClient("http://" + host + ':' + port + "/iws-ws/accessWS?wsdl");
+                    access = new AccessWSClient(host + "/iws-ws/accessWS?wsdl");
                 } catch (MalformedURLException e) {
                     throw new WebServiceException(e);
                 }
@@ -275,11 +292,25 @@ public final class WSClient {
         }
     }
 
+    private Administration getAdministration() {
+        synchronized (lock) {
+            if (administration == null) {
+                try {
+                    administration = new AdministrationWSClient(host + "/iws-ws/administrationWS?wsdl");
+                } catch (MalformedURLException e) {
+                    throw new WebServiceException(e);
+                }
+            }
+
+            return administration;
+        }
+    }
+
     private Exchange getExchange() {
         synchronized (lock) {
             if (exchange == null) {
                 try {
-                    exchange = new ExchangeWSClient("http://" + host + ':' + port + "/iws-ws/exchangeWS?wsdl");
+                    exchange = new ExchangeWSClient(host + "/iws-ws/exchangeWS?wsdl");
                 } catch (MalformedURLException e) {
                     throw new WebServiceException(e);
                 }

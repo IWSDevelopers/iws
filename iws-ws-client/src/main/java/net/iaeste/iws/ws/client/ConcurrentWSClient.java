@@ -64,20 +64,21 @@ public final class ConcurrentWSClient implements Runnable {
      * will be processed concurrently. If the number is set to low, then the
      * test may take very long, and if set too high - it may not properly
      * spread the load.</p>
-     * <p>Defauly value is 5, which is a fairly low number yet - high enough
+     * <p>Default value is 5, which is a fairly low number yet - high enough
      * to keep the IWS busy.</p>
      */
     private static final int threads = 5;
 
-    /** <p>The Server, where the IWS has been deployed.</p> */
-    private static final String iwsHost = "localhost";
-
     /**
-     * <p>The Port under which the IWS is reachable. Glassfish and WildFly both
-     * uses port 8080 by default, though WildFly have been altered, so it uses
-     * port 9080 instead - to prevent conflicts.</p>
+     * <p>The IWS Host, is the server where IWS is currently running, including
+     * Protocol information, resolvable DNS name and port.</p>
+     * <ul>
+     *   <li><b>http://localhost:8080</b> <i>if IWS is running locally under Glasfish.</i></li>
+     *   <li><b>http://localhost:9080</b> <i>if IWS is running locally under WildFly.</i></li>
+     *   <li><b>https://iws.iaeste.net:9443</b> <i>for the production IWS instance.</i></li>
+     * </ul>
      */
-    private static final String iwsPort = "8080";
+    private static final String iwsHost = "http://localhost:9080";
 
     /**
      * <p>The test will iterate over a number of Exchange Years. The Exchange
@@ -141,7 +142,7 @@ public final class ConcurrentWSClient implements Runnable {
         final ExecutorService executor = Executors.newFixedThreadPool(threads);
         final List<Callable<Object>> jobs = new ArrayList<>(users.length);
         for (final String username : users) {
-            final ConcurrentWSClient client = new ConcurrentWSClient(iwsHost, iwsPort, username, "faked");
+            final ConcurrentWSClient client = new ConcurrentWSClient(iwsHost, username, "faked");
             jobs.add(Executors.callable(client));
         }
         final List<Future<Object>> result = executor.invokeAll(jobs);
@@ -159,7 +160,6 @@ public final class ConcurrentWSClient implements Runnable {
     private static final Logger log = LoggerFactory.getLogger(WSClient.class);
     private static final Object lock = new Object();
     private final String host;
-    private final String port;
     private final String username;
     private final String password;
 
@@ -170,15 +170,14 @@ public final class ConcurrentWSClient implements Runnable {
      * <p>Concurrent Constructor, takes the Host & Port for the IWS WebService,
      * and additionally the User Credentials, and the Start/End years for the
      * Offers to process.</p>
+     *   Production Hostname; https://iws.iaeste.net:9443
      *
      * @param host     Hostname (resolvable DNS record or IPv4) for the IWS instance
-     * @param port     Portnumber for the IWS instance
      * @param username Username for the User to access
      * @param password Password for the User
      */
-    public ConcurrentWSClient(final String host, final String port, final String username, final String password) {
+    public ConcurrentWSClient(final String host, final String username, final String password) {
         this.host = host;
-        this.port = port;
         this.username = username;
         this.password = password;
     }
@@ -215,7 +214,7 @@ public final class ConcurrentWSClient implements Runnable {
                         }
                     }
                 }
-            } catch (Throwable t) {
+            } catch (RuntimeException t) {
                 log.error(t.getMessage(), t);
             } finally {
                 // Always remember to log out, otherwise the Account will be
@@ -235,7 +234,7 @@ public final class ConcurrentWSClient implements Runnable {
         synchronized (lock) {
             if (access == null) {
                 try {
-                    access = new AccessWSClient("http://" + host + ':' + port + "/iws-ws/accessWS?wsdl");
+                    access = new AccessWSClient(host + "/iws-ws/accessWS?wsdl");
                 } catch (MalformedURLException e) {
                     throw new WebServiceException(e);
                 }
@@ -249,7 +248,7 @@ public final class ConcurrentWSClient implements Runnable {
         synchronized (lock) {
             if (exchange == null) {
                 try {
-                    exchange = new ExchangeWSClient("http://" + host + ':' + port + "/iws-ws/exchangeWS?wsdl");
+                    exchange = new ExchangeWSClient(host + "/iws-ws/exchangeWS?wsdl");
                 } catch (MalformedURLException e) {
                     throw new WebServiceException(e);
                 }
@@ -273,7 +272,7 @@ public final class ConcurrentWSClient implements Runnable {
      *
      * @param username E-mail address whereby the user is registered in the IWS
      * @param password The user's password for the IWS
-     * @return Respons Object from the IWS
+     * @return Response Object from the IWS
      */
     public AuthenticationResponse login(final String username, final String password) {
         final AuthenticationRequest request = new AuthenticationRequest();
@@ -291,7 +290,7 @@ public final class ConcurrentWSClient implements Runnable {
      * Response Object from the IWS.</p>
      *
      * @param token User Authentication (Session) Token
-     * @return Respons Object from the IWS
+     * @return Response Object from the IWS
      */
     public FallibleResponse deprecateSession(final AuthenticationToken token) {
         return getAccess().deprecateSession(token);
@@ -307,7 +306,7 @@ public final class ConcurrentWSClient implements Runnable {
      * Response Object from the IWS.</p>
      *
      * @param token User Authentication (Session) Token
-     * @return Respons Object from the IWS
+     * @return Response Object from the IWS
      */
     public FetchPermissionResponse fetchPermissions(final AuthenticationToken token) {
         return getAccess().fetchPermissions(token);
@@ -323,7 +322,7 @@ public final class ConcurrentWSClient implements Runnable {
      *
      * @param token User Authentication (Session) Token
      * @param type  Type of Offers to be fetch (domestic or shared)
-     * @return Respons Object from the IWS
+     * @return Response Object from the IWS
      */
     public FetchOffersResponse fetchOffers(final AuthenticationToken token, final FetchType type, final int year) {
         final FetchOffersRequest offerRequest = new FetchOffersRequest();
@@ -343,7 +342,7 @@ public final class ConcurrentWSClient implements Runnable {
      *
      * @param token User Authentication (Session) Token
      * @param type  Type of Offers to be fetch (domestic or shared)
-     * @return Respons Object from the IWS
+     * @return Response Object from the IWS
      */
     public OfferCSVDownloadResponse downloadOffers(final AuthenticationToken token, final FetchType type, final int year) {
         final OfferCSVDownloadRequest request = new OfferCSVDownloadRequest();

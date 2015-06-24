@@ -17,18 +17,17 @@ package net.iaeste.iws.ws.client.clients;
 import static net.iaeste.iws.ws.client.mappers.CommitteeMapper.map;
 
 import net.iaeste.iws.api.Committees;
-import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.CommitteeRequest;
-import net.iaeste.iws.api.requests.FetchCommitteeRequest;
-import net.iaeste.iws.api.requests.FetchInternationalGroupRequest;
-import net.iaeste.iws.api.requests.FetchCountrySurveyRequest;
-import net.iaeste.iws.api.requests.InternationalGroupRequest;
 import net.iaeste.iws.api.requests.CountrySurveyRequest;
+import net.iaeste.iws.api.requests.FetchCommitteeRequest;
+import net.iaeste.iws.api.requests.FetchCountrySurveyRequest;
+import net.iaeste.iws.api.requests.FetchInternationalGroupRequest;
+import net.iaeste.iws.api.requests.InternationalGroupRequest;
 import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchCommitteeResponse;
-import net.iaeste.iws.api.responses.FetchInternationalGroupResponse;
 import net.iaeste.iws.api.responses.FetchCountrySurveyRespose;
+import net.iaeste.iws.api.responses.FetchInternationalGroupResponse;
 import net.iaeste.iws.ws.CommitteeWS;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.frontend.ClientProxy;
@@ -57,7 +56,7 @@ public final class CommitteeWSClient extends CommonWSClient implements Committee
     /**
      * IWS Access WebService Client Constructor. Takes the URL for the WSDL as
      * parameter, to generate a new WebService Client instance.<br />
-     *   For example: https://iws.iaeste.net/iws-ws/AccessWS?wsdl
+     *   For example: https://iws.iaeste.net:9443/iws-ws/committeeWS?wsdl
      *
      * @param wsdlLocation IWS Committees WSDL URL
      * @throws MalformedURLException if not a valid URL
@@ -83,17 +82,6 @@ public final class CommitteeWSClient extends CommonWSClient implements Committee
         // Policy: http://cxf.apache.org/docs/client-http-transport-including-ssl-support.html#ClientHTTPTransport%28includingSSLsupport%29-HowtoconfiguretheHTTPConduitfortheSOAPClient?
         final Client proxy = ClientProxy.getClient(client);
         final HTTPConduit conduit = (HTTPConduit) proxy.getConduit();
-
-        // If we're dealing with a HTTPS request, then we'll initialize and
-        // set the TLS Client Parameters. The check is primitive, but covers
-        // the general case.
-        if ("https://".equals(wsdlLocation.substring(0, 8).toLowerCase(IWSConstants.DEFAULT_LOCALE))) {
-            // Before doing anything else, we're initializing the SSL Conduit
-            initializeSSL();
-
-            // Add the TLS Client Parameters & our new Policy
-            conduit.setTlsClientParameters(tlsClientParameters);
-        }
 
         // Finally, set the Policy into the HTTP Conduit.
         conduit.setClient(policy);

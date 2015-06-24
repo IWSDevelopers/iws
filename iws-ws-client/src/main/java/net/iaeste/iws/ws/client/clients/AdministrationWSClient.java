@@ -17,7 +17,6 @@ package net.iaeste.iws.ws.client.clients;
 import static net.iaeste.iws.ws.client.mappers.AdministrationMapper.map;
 
 import net.iaeste.iws.api.Administration;
-import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.AccountNameRequest;
 import net.iaeste.iws.api.requests.ContactsRequest;
@@ -71,7 +70,7 @@ public final class AdministrationWSClient extends CommonWSClient implements Admi
     /**
      * IWS Access WebService Client Constructor. Takes the URL for the WSDL as
      * parameter, to generate a new WebService Client instance.<br />
-     *   For example: https://iws.iaeste.net/iws-ws/AccessWS?wsdl
+     *   For example: https://iws.iaeste.net:9443/iws-ws/administrationWS?wsdl
      *
      * @param wsdlLocation IWS Administration WSDL URL
      * @throws MalformedURLException if not a valid URL
@@ -97,17 +96,6 @@ public final class AdministrationWSClient extends CommonWSClient implements Admi
         // Policy: http://cxf.apache.org/docs/client-http-transport-including-ssl-support.html#ClientHTTPTransport%28includingSSLsupport%29-HowtoconfiguretheHTTPConduitfortheSOAPClient?
         final Client proxy = ClientProxy.getClient(client);
         final HTTPConduit conduit = (HTTPConduit) proxy.getConduit();
-
-        // If we're dealing with a HTTPS request, then we'll initialize and
-        // set the TLS Client Parameters. The check is primitive, but covers
-        // the general case.
-        if ("https://".equals(wsdlLocation.substring(0, 8).toLowerCase(IWSConstants.DEFAULT_LOCALE))) {
-            // Before doing anything else, we're initializing the SSL Conduit
-            initializeSSL();
-
-            // Add the TLS Client Parameters & our new Policy
-            conduit.setTlsClientParameters(tlsClientParameters);
-        }
 
         // Finally, set the Policy into the HTTP Conduit.
         conduit.setClient(policy);

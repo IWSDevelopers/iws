@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlType;
 * @since   IWS 1.0
 */
 @XmlType(name = "Currency")
-public enum Currency {
+public enum Currency implements Descriptable<Currency> {
 
     AED("United Arab Emirates Dirham"),
     AFN("Afghanistan Afghani"),
@@ -201,6 +201,10 @@ public enum Currency {
         this.description = description;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getDescription() {
         return description;
     }

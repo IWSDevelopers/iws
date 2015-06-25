@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.api.enums.exchange;
 
+import net.iaeste.iws.api.enums.Descriptable;
+
 import javax.xml.bind.annotation.XmlType;
 
 /**
@@ -22,7 +24,7 @@ import javax.xml.bind.annotation.XmlType;
  * @since   IWS 1.0
  */
 @XmlType(name = "StudyLevel")
-public enum StudyLevel {
+public enum StudyLevel implements Descriptable<StudyLevel> {
 
     B("Begin (1-3 semesters)"),
     M("Middle (4-6 semesters)"),
@@ -38,6 +40,10 @@ public enum StudyLevel {
         this.description = description;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getDescription() {
         return description;
     }

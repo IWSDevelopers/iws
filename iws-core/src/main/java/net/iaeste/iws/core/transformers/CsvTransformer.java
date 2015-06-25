@@ -18,6 +18,7 @@ import static net.iaeste.iws.common.utils.StringUtils.toLower;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
+import net.iaeste.iws.api.enums.Descriptable;
 import net.iaeste.iws.api.enums.exchange.OfferFields;
 import net.iaeste.iws.api.enums.exchange.StudyLevel;
 import net.iaeste.iws.api.enums.exchange.TypeOfWork;
@@ -203,9 +204,9 @@ public final class CsvTransformer {
         return result;
     }
 
-    public static <T extends Enum<T>> Set<T> toEnumSet(final Map<String, String> errors, final CSVRecord record, final OfferFields field, final Class<T> enumType) {
+    public static <E extends Enum<E> & Descriptable<E>> Set<E> toEnumSet(final Map<String, String> errors, final CSVRecord record, final OfferFields field, final Class<E> enumType) {
         final String input = record.get(field.getField());
-        Set<T> result = null;
+        Set<E> result = null;
 
         try {
             result = CollectionTransformer.explodeEnumSet(enumType, input);
@@ -329,11 +330,11 @@ public final class CsvTransformer {
         }
     }
 
-    public static <T extends Enum<T>> void transformEnumSet(final Map<String, String> errors, final Verifiable obj, final OfferFields field, final CSVRecord record, final Class<T> enumType) {
+    public static <E extends Enum<E> & Descriptable<E>> void transformEnumSet(final Map<String, String> errors, final Verifiable obj, final OfferFields field, final CSVRecord record, final Class<E> enumType) {
         final String value = record.get(field.getField());
 
         try {
-            Set<T> set = CollectionTransformer.explodeEnumSet(enumType, value);
+            Set<E> set = CollectionTransformer.explodeEnumSet(enumType, value);
             invokeMethodOnObject(errors, obj, field, set);
         } catch (IllegalArgumentException e) {
             errors.put(field.getField(), e.getMessage());

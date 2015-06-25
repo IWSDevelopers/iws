@@ -28,7 +28,7 @@ import javax.xml.bind.annotation.XmlType;
  * @since   IWS 1.0
  */
 @XmlType(name = "GroupType")
-public enum GroupType {
+public enum GroupType implements Descriptable<GroupType> {
 
     /**
      * The Administration Group is present to ensure that certain users may
@@ -227,6 +227,10 @@ public enum GroupType {
         this.folderType = folderType;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getDescription() {
         return description;
     }

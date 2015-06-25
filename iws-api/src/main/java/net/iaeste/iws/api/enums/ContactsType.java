@@ -23,7 +23,7 @@ package net.iaeste.iws.api.enums;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
-public enum ContactsType {
+public enum ContactsType implements Descriptable<ContactsType> {
 
     USER("Viewing User Detauls"),
     GROUP("Viewing Group Details"),
@@ -39,6 +39,10 @@ public enum ContactsType {
         this.description = description;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getDescription() {
         return description;
     }

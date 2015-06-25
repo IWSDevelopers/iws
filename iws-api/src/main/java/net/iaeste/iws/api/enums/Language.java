@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlType;
  * @since   IWS 1.0
  */
 @XmlType(name = "Language")
-public enum Language {
+public enum Language implements Descriptable<Language> {
 
     ENGLISH("English"),
     ARABIC("Arabic"),
@@ -75,6 +75,10 @@ public enum Language {
         this.description = description;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getDescription() {
         return description;
     }

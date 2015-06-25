@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.api.enums.exchange;
 
+import net.iaeste.iws.api.enums.Descriptable;
+
 import javax.xml.bind.annotation.XmlType;
 
 /**
@@ -24,7 +26,7 @@ import javax.xml.bind.annotation.XmlType;
  * @since   IWS 1.0
  */
 @XmlType(name = "LanguageOperator")
-public enum LanguageOperator {
+public enum LanguageOperator implements Descriptable<LanguageOperator> {
 
     A("And"),
     O("Or");
@@ -39,6 +41,10 @@ public enum LanguageOperator {
         this.description = description;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getDescription() {
         return description;
     }

@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.api.enums.exchange;
 
+import net.iaeste.iws.api.enums.Descriptable;
+
 import javax.xml.bind.annotation.XmlType;
 
 /**
@@ -24,7 +26,7 @@ import javax.xml.bind.annotation.XmlType;
  * @since   IWS 1.0
  */
 @XmlType(name = "OfferState")
-public enum OfferState {
+public enum OfferState implements Descriptable<OfferState> {
 
     /**
      * In an offer is not shared
@@ -74,7 +76,11 @@ public enum OfferState {
         this.description = description;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getDescription() {
-        return description; //name().substring(0,1) + name().substring(1).toLowerCase(IWSConstants.DEFAULT_LOCALE);
+        return description;
     }
 }

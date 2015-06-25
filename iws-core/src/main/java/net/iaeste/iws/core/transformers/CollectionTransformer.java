@@ -15,6 +15,8 @@
 package net.iaeste.iws.core.transformers;
 
 import net.iaeste.iws.api.constants.exchange.IWSExchangeConstants;
+import net.iaeste.iws.api.enums.Descriptable;
+import net.iaeste.iws.api.util.EnumUtil;
 import net.iaeste.iws.common.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,7 +42,7 @@ public final class CollectionTransformer {
 
     public static final Logger log = LoggerFactory.getLogger(CollectionTransformer.class);
 
-    private static final String DELIMITER_REG_EXP = '\\' + IWSExchangeConstants.SET_DELIMITER;
+    private static final String DELIMITER_REG_EXP = ",|\\" + IWSExchangeConstants.SET_DELIMITER;
     private static final Pattern SPLIT_PATTERN = Pattern.compile(DELIMITER_REG_EXP);
 
     /**
@@ -80,17 +82,18 @@ public final class CollectionTransformer {
      * @param value    String which is splited into the list of enum values
      * @return List of enum values
      */
-    public static <T extends Enum<T>> List<T> explodeEnumList(final Class<T> enumType, final String value) {
-        final List<T> result = new ArrayList<>(10);
+    public static <E extends Enum<E> & Descriptable<E>> List<E> explodeEnumList(final Class<E> enumType, final String value) {
+        final List<E> result = new ArrayList<>(10);
         if (value != null) {
             final String[] array = SPLIT_PATTERN.split(value);
             for (final String str : array) {
                 if (!str.isEmpty()) {
+
                     try {
-                        final T v = Enum.valueOf(enumType, str);
-                        result.add(v);
+                        final E enumValue = EnumUtil.valueOf(enumType, str);
+                        result.add(enumValue);
                     } catch (IllegalArgumentException e) {
-                        log.info("Error converting value '" + str + "' to enum of type '" + enumType.getName() + "': " + e.getMessage(), e);
+                        log.info("Error converting value '" + str + "' to enum of type '" + enumType.getClass().getName() + "': " + e.getMessage(), e);
                     }
                 }
             }
@@ -106,9 +109,9 @@ public final class CollectionTransformer {
      * @param value    String which is split into the list of enum values
      * @return Set of enum values
      */
-    public static <T extends Enum<T>> HashSet<T> explodeEnumSet(final Class<T> enumType, final String value) {
-        final List<T> list = explodeEnumList(enumType, value);
-        final HashSet<T> result = new HashSet<>();
+    public static <E extends Enum<E> & Descriptable<E>> HashSet<E> explodeEnumSet(final Class<E> enumType, final String value) {
+        final List<E> list = explodeEnumList(enumType, value);
+        final HashSet<E> result = new HashSet<>();
 
         if (!list.isEmpty()) {
             result.addAll(list);

@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.api.enums.exchange;
 
+import net.iaeste.iws.api.enums.Descriptable;
+
 import javax.xml.bind.annotation.XmlType;
 import java.util.EnumSet;
 import java.util.Set;
@@ -24,7 +26,7 @@ import java.util.Set;
  * @since   IWS 1.1
  */
 @XmlType(name = "OfferType")
-public enum OfferType {
+public enum OfferType implements Descriptable<OfferType> {
 
     OPEN("Open", "", EnumSet.of(ExchangeType.AC, ExchangeType.IW, ExchangeType.COBE)),
     LIMITED("Limited", "-L", EnumSet.of(ExchangeType.AC, ExchangeType.IW, ExchangeType.COBE)),
@@ -44,6 +46,10 @@ public enum OfferType {
         this.exchangeTypes = exchangeTypes;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getDescription() {
         return description;
     }

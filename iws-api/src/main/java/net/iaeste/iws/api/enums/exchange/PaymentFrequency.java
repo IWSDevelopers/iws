@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.api.enums.exchange;
 
+import net.iaeste.iws.api.enums.Descriptable;
+
 import javax.xml.bind.annotation.XmlType;
 
 /**
@@ -24,7 +26,7 @@ import javax.xml.bind.annotation.XmlType;
  * @since   IWS 1.0
  */
 @XmlType(name = "PaymentFrequency")
-public enum PaymentFrequency {
+public enum PaymentFrequency implements Descriptable<PaymentFrequency> {
 
     /**
      * When the Payment frequency is daily.
@@ -61,6 +63,10 @@ public enum PaymentFrequency {
         this.description = description;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getDescription() {
         return description;
     }

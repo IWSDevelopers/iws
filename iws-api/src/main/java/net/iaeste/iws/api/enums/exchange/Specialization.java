@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.api.enums.exchange;
 
+import net.iaeste.iws.api.enums.Descriptable;
+
 import javax.xml.bind.annotation.XmlType;
 
 /**
@@ -40,7 +42,7 @@ import javax.xml.bind.annotation.XmlType;
  * @since   IWS 1.0
  */
 @XmlType(name = "Specialization")
-public enum Specialization {
+public enum Specialization implements Descriptable<Specialization> {
 
     ADMINISTRATION("Administration"),
     AEROSPACE_ENGINEERING("Aerospace engineering"),
@@ -247,6 +249,10 @@ public enum Specialization {
         this.description = description;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getDescription() {
         return description;
     }

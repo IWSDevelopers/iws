@@ -31,7 +31,7 @@ import javax.xml.bind.annotation.XmlType;
  * @since   IWS 1.0
  */
 @XmlType(name = "MonitoringLevel")
-public enum MonitoringLevel {
+public enum MonitoringLevel implements Descriptable<MonitoringLevel> {
 
     /**
      * This will effectively disable the monitoring of either the Type (Class)
@@ -75,6 +75,10 @@ public enum MonitoringLevel {
         this.description = description;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getDescription() {
         return description;
     }

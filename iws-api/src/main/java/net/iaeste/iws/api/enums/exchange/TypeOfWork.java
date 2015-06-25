@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.api.enums.exchange;
 
+import net.iaeste.iws.api.enums.Descriptable;
+
 import javax.xml.bind.annotation.XmlType;
 
 /**
@@ -24,7 +26,7 @@ import javax.xml.bind.annotation.XmlType;
  * @since   IWS 1.0
  */
 @XmlType(name = "TypeOfWork")
-public enum TypeOfWork {
+public enum TypeOfWork implements Descriptable<TypeOfWork> {
 
     R("Research and Development"),
     O("Office Work"),
@@ -40,6 +42,10 @@ public enum TypeOfWork {
         this.description = description;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getDescription() {
         return description;
     }

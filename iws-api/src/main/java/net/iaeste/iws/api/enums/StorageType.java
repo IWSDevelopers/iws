@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlType;
  * @since   IWS 1.0
  */
 @XmlType(name = "StorageType")
-public enum StorageType {
+public enum StorageType implements Descriptable<StorageType> {
 
     /**
      * By default, the storage type is the Owner.
@@ -56,6 +56,10 @@ public enum StorageType {
         this.description = description;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getDescription() {
         return description;
     }

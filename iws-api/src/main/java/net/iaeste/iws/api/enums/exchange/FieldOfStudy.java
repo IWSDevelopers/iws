@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.api.enums.exchange;
 
+import net.iaeste.iws.api.enums.Descriptable;
+
 import javax.xml.bind.annotation.XmlType;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,7 +45,7 @@ import java.util.List;
  * @since   IWS 1.0
  */
 @XmlType(name = "FieldOfStudy")
-public enum FieldOfStudy {
+public enum FieldOfStudy implements Descriptable<FieldOfStudy> {
 
     AERONAUTIC_ENGINEERING("Aeronautic Engineering", Arrays.asList(
             Specialization.AVIONICS,
@@ -72,7 +74,7 @@ public enum FieldOfStudy {
             Specialization.DRAWING,
             Specialization.GRAPHIC_DESIGN,
             Specialization.GRAPHICS_AND_PRINTING
-            )),
+    )),
 
     AQUA_CULTURE("Aquaculture", Arrays.asList(
             Specialization.AQUACULTURE_AQUAFARMING,
@@ -80,14 +82,14 @@ public enum FieldOfStudy {
             Specialization.MARINE_GEOLOGY,
             Specialization.MARINE_TECHNOLOGY,
             Specialization.SEAFOOD
-            )),
+    )),
 
     ARCHITECTURE("Architecture", Arrays.asList(
             Specialization.INDUSTRIAL_DESIGN,
             Specialization.INTERIOR_DESIGN,
             Specialization.LANDSCAPE_ARCHITECTURE,
             Specialization.URBAN_PLANNING
-            )),
+    )),
 
     BIOLOGY("Biology", Arrays.asList(
             Specialization.ANIMAL_BEHAVIOUR,
@@ -112,7 +114,7 @@ public enum FieldOfStudy {
             Specialization.SEAFOOD,
             Specialization.TOXICOLOGY,
             Specialization.ZOOLOGY
-            )),
+    )),
 
     BIOMEDICAL_SCIENCE("Biomedical Science", Arrays.asList(
             Specialization.BIOENGINEERING,
@@ -124,7 +126,7 @@ public enum FieldOfStudy {
             Specialization.MEDICAL_ENGINEERING,
             Specialization.NANOBIOTECHNOLOGY,
             Specialization.PROTEOMICS
-            )),
+    )),
 
     BIOTECHNOLOGY("Biotechnology", Arrays.asList(
             Specialization.BIOCHEMISTRY,
@@ -136,7 +138,7 @@ public enum FieldOfStudy {
             Specialization.MOLECULAR_BIOLOGY,
             Specialization.PHARMACY,
             Specialization.PROCESS_ENGINEERING
-            )),
+    )),
 
     CHEMISTRY("Chemistry", Arrays.asList(
             Specialization.ANALYTICAL_CHEMISTRY,
@@ -150,7 +152,7 @@ public enum FieldOfStudy {
             Specialization.PHYSICAL_CHEMISTRY,
             Specialization.POLYMER_SCIENCE,
             Specialization.PROCESS_ENGINEERING
-            )),
+    )),
 
     CIVIL_ENGINEERING("Civil Engineering", Arrays.asList(
             Specialization.CONSTRUCTION,
@@ -165,7 +167,7 @@ public enum FieldOfStudy {
             Specialization.TRAFFIC_ENGINEERING,
             Specialization.WATER_ENGINEERING,
             Specialization.WASTEWATER_TREATMENT
-            )),
+    )),
 
     ECONOMY_AND_MANAGEMENT("Economy and Management", Arrays.asList(
             Specialization.ADMINISTRATION,
@@ -181,12 +183,12 @@ public enum FieldOfStudy {
             Specialization.PROJECT_MANAGEMENT,
             Specialization.PRODUCTION_MANAGEMENT,
             Specialization.STATISTICS
-            )),
+    )),
 
     EDUCATION("Education", Arrays.asList(
             Specialization.LANGUAGE,
             Specialization.SCIENCE
-            )),
+    )),
 
     ELECTRICAL_ENGINEERING("Electrical Engineering", Arrays.asList(
             Specialization.AUDIO_TECHNOLOGY,
@@ -200,7 +202,7 @@ public enum FieldOfStudy {
             Specialization.PHOTONICS,
             Specialization.POWER_ENGINEERING,
             Specialization.POWER_GENERATION
-            )),
+    )),
 
     ENERGY_ENGINEERING("Energy Engineering", Arrays.asList(
             Specialization.ENERGY_AND_PROCESS_ENGINEERING,
@@ -209,7 +211,7 @@ public enum FieldOfStudy {
             Specialization.NUCLEAR_ENERGY_ENGINEERING,
             Specialization.POWER_ENGINEERING,
             Specialization.POWER_GENERATION
-            )),
+    )),
 
     ENVIRONMENTAL_ENGINEERING("Environmental Science", Arrays.asList(
             Specialization.BIODIVERSITY,
@@ -222,7 +224,7 @@ public enum FieldOfStudy {
             Specialization.SUSTAINABILITY,
             Specialization.SOIL_AND_AIR_POLLUTION,
             Specialization.WASTEWATER_TREATMENT
-            )),
+    )),
 
     FOOD_SCIENCE("Food Science", Arrays.asList(
             Specialization.BREWING,
@@ -233,7 +235,7 @@ public enum FieldOfStudy {
             Specialization.NUTRITIONAL_SCIENCE,
             Specialization.OECOTROPHOLOGY,
             Specialization.WINERY
-            )),
+    )),
 
     GEOSCIENCE("Geoscience", Arrays.asList(
             Specialization.EARTH_SCIENCE,
@@ -254,7 +256,7 @@ public enum FieldOfStudy {
             Specialization.OCEANOGRAPHY,
             Specialization.SEISMOLOGY,
             Specialization.TOPOLOGY
-            )),
+    )),
 
     INDUSTRIAL_ENGINEERING("Industrial Engineering", Arrays.asList(
             Specialization.INDUSTRIAL_DESIGN,
@@ -263,7 +265,7 @@ public enum FieldOfStudy {
             Specialization.PROCESS_ENGINEERING,
             Specialization.PRODUCT_DEVELOPMENT,
             Specialization.WASTEWATER_TREATMENT
-            )),
+    )),
 
     IT("IT", Arrays.asList(
             Specialization.AUTOMATION,
@@ -389,6 +391,10 @@ public enum FieldOfStudy {
         return specializations;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getDescription() {
         return description;
     }

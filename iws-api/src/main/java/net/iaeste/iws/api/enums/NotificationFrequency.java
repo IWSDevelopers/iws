@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlType;
  * @since   IWS 1.0
  */
 @XmlType(name = "NotificationFrequency")
-public enum NotificationFrequency {
+public enum NotificationFrequency implements Descriptable<NotificationFrequency> {
 
     /**
      * The IWS Notification System will send notifications immediately.
@@ -59,6 +59,10 @@ public enum NotificationFrequency {
         this.description = description;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getDescription() {
         return description;
     }

@@ -19,7 +19,7 @@ package net.iaeste.iws.api.enums;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
-public enum CountryType {
+public enum CountryType implements Descriptable<CountryType> {
 
     /**
      * Default Type for requesting a list of Countries. The Listing is based on
@@ -52,6 +52,10 @@ public enum CountryType {
         this.description = description;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getDescription() {
         return description;
     }

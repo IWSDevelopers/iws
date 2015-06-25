@@ -42,7 +42,7 @@ import javax.xml.bind.annotation.XmlType;
  * @since   IWS 1.0
  */
 @XmlType(name = "UserType")
-public enum UserType {
+public enum UserType implements Descriptable<UserType> {
 
     /**
      * By default, all new Accounts are made with type Volunteer. A Volunteer is
@@ -85,6 +85,10 @@ public enum UserType {
         this.description = description;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getDescription() {
         return description;
     }

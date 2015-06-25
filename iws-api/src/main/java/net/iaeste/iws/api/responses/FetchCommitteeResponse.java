@@ -81,7 +81,7 @@ public final class FetchCommitteeResponse extends FallibleResponse {
         if (this == obj) {
             return true;
         }
-        if (!(obj instanceof FetchCountryResponse)) {
+        if (!(obj instanceof FetchCommitteeResponse)) {
             return false;
         }
         if (!super.equals(obj)) {

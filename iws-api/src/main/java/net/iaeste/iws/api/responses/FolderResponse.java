@@ -96,7 +96,7 @@ public final class FolderResponse extends FallibleResponse {
         if (this == obj) {
             return true;
         }
-        if (!(obj instanceof FileResponse)) {
+        if (!(obj instanceof FolderResponse)) {
             return false;
         }
         if (!super.equals(obj)) {

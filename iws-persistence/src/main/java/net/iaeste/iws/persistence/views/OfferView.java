@@ -170,7 +170,7 @@ public class OfferView extends AbstractView<OfferView> {
             return true;
         }
 
-        if (!(obj instanceof EmployerView)) {
+        if (!(obj instanceof OfferView)) {
             return false;
         }
 

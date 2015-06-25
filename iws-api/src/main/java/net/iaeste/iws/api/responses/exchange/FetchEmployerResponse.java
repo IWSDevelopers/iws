@@ -96,7 +96,7 @@ public final class FetchEmployerResponse extends FallibleResponse {
         if (this == obj) {
             return true;
         }
-        if (!(obj instanceof FetchEmployerRequest)) {
+        if (!(obj instanceof FetchEmployerResponse)) {
             return false;
         }
         if (!super.equals(obj)) {

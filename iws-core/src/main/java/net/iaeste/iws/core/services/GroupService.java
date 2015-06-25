@@ -621,7 +621,8 @@ public final class GroupService {
     }
 
     private List<UserGroup> findGroupMembers(final GroupEntity entity, final FetchGroupRequest request) {
-        List<UserGroupEntity> members = null;
+        final List<UserGroupEntity> members;
+
         switch (request.getUsersToFetch()) {
             case ACTIVE:
                 members = dao.findActiveGroupMembers(entity);
@@ -630,6 +631,7 @@ public final class GroupService {
                 members = dao.findAllGroupMembers(entity);
                 break;
             case NONE:
+            default:
                 members = new ArrayList<>(0);
         }
 

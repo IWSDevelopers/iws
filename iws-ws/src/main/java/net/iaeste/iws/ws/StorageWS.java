@@ -38,6 +38,7 @@ import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
+import javax.xml.ws.BindingType;
 import javax.xml.ws.WebServiceContext;
 
 /**
@@ -45,8 +46,9 @@ import javax.xml.ws.WebServiceContext;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.1
  */
-@WebService(name = "storageWS", serviceName = "storageWSService", portName = "storageWS", targetNamespace = "http://ws.iws.iaeste.net/")
 @SOAPBinding(style = SOAPBinding.Style.RPC)
+@BindingType(javax.xml.ws.soap.SOAPBinding.SOAP12HTTP_BINDING)
+@WebService(name = "storageWS", serviceName = "storageWSService", portName = "storageWS", targetNamespace = "http://ws.iws.iaeste.net/")
 public class StorageWS implements Storage {
 
     private static final Logger log = LoggerFactory.getLogger(StorageWS.class);

@@ -40,6 +40,7 @@ import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
+import javax.xml.ws.BindingType;
 import javax.xml.ws.WebServiceContext;
 
 /**
@@ -47,8 +48,9 @@ import javax.xml.ws.WebServiceContext;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.1
  */
-@WebService(name = "committeeWS", serviceName = "committeeWSService", portName = "committeeWS", targetNamespace = "http://ws.iws.iaeste.net/")
 @SOAPBinding(style = SOAPBinding.Style.RPC)
+@BindingType(javax.xml.ws.soap.SOAPBinding.SOAP12HTTP_BINDING)
+@WebService(name = "committeeWS", serviceName = "committeeWSService", portName = "committeeWS", targetNamespace = "http://ws.iws.iaeste.net/")
 public class CommitteeWS implements Committees {
 
     private static final Logger log = LoggerFactory.getLogger(CommitteeWS.class);

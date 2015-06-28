@@ -175,15 +175,24 @@ import java.util.Map;
                         "where ug.group.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
                         "  and ug.role.id <= " + EntityConstants.ROLE_MODERATOR +
                         "  and ug.group.groupType.grouptype = " + EntityConstants.GROUPTYPE_NATIONAL),
-        // The roles are hardcoded to Owner & Moderator, see
-        // IWSConstants for more information
+        // Under IW3, the schema for the NC's mailing list was that
+        // Owner/Moderator of the Staff's were on it. At the same time the
+        // list was limited to Owners of the International Groups. This rule
+        // was inflexible and instead, the new rule is that members who are on
+        // the public list of the following Groups (Administration, National &
+        // International) are all included. For now, a hybrid version is used,
+        // which allows both variants.
         @NamedQuery(name = "usergroup.findncs",
                 query = "select distinct ug from UserGroupEntity ug " +
                         "where ug.group.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
                         "  and ug.user.status = " + EntityConstants.USER_STATUS_ACTIVE +
-                        "  and ug.role.id <= " + EntityConstants.ROLE_MODERATOR +
-                        "  and (ug.group.groupType.grouptype = " + EntityConstants.GROUPTYPE_NATIONAL +
-                        "    or ug.group.groupType.grouptype = " + EntityConstants.GROUPTYPE_INTERNATIONAL + ')'),
+                        // IW3 variant, where we're looking at the role
+                        "  and (ug.role.id <= " + EntityConstants.ROLE_MODERATOR +
+                        // IWS variant, which is less restrictive
+                        "    or ug.onPublicList = true)" +
+                        "  and (ug.group.groupType.grouptype = " + EntityConstants.GROUPTYPE_ADMINISTRATION +
+                        "    or ug.group.groupType.grouptype = " + EntityConstants.GROUPTYPE_INTERNATIONAL +
+                        "    or ug.group.groupType.grouptype = " + EntityConstants.GROUPTYPE_NATIONAL + ')'),
         @NamedQuery(name = "usergroup.findByUsernameAndGroupExternalId",
                 query = "select ug from UserGroupEntity ug " +
                         "where ug.group.externalId = :egid" +

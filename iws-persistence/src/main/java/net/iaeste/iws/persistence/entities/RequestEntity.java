@@ -62,7 +62,7 @@ public class RequestEntity implements IWSEntity {
     private String errormessage = null;
 
     @Column(name = "request_object")
-    private byte[] sessionData = null;
+    private byte[] requestObject = null;
 
     /**
      * Timestamp when the Entity was created.
@@ -133,12 +133,12 @@ public class RequestEntity implements IWSEntity {
         return errormessage;
     }
 
-    public void setSessionData(final byte[] sessionData) {
-        this.sessionData = sessionData;
+    public void setRequestObject(final byte[] requestObject) {
+        this.requestObject = requestObject;
     }
 
-    public byte[] getSessionData() {
-        return sessionData;
+    public byte[] getRequestObject() {
+        return requestObject;
     }
 
     /**

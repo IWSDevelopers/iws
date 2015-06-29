@@ -20,6 +20,7 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 import net.iaeste.iws.api.dtos.Field;
+import net.iaeste.iws.api.util.Serializer;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.MonitoringEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
@@ -54,13 +55,13 @@ public class MonitoringEntityTest {
     @Transactional
     public void testEntity() {
         final MonitoringProcessor monitoring = new MonitoringProcessor();
-        final List<Field> data = createMonitoringData(5);
+        final ArrayList<Field> data = createMonitoringData(5);
         final MonitoringEntity entity = new MonitoringEntity();
         entity.setTableName("Offer");
         entity.setRecordId(1L);
         entity.setUser(findUser(1L));
         entity.setGroup(findGroup(1L));
-        entity.setFields(monitoring.serialize(data));
+        entity.setFields(Serializer.serialize(data));
         entityManager.persist(entity);
 
         final Query q = entityManager.createNamedQuery("monitoring.findChanges");
@@ -70,12 +71,12 @@ public class MonitoringEntityTest {
 
         assertThat(result, is(not(nullValue())));
         final MonitoringEntity found = result.get(0);
-        final List<Field> read = monitoring.deserialize(found.getFields());
+        final List<Field> read = Serializer.deserialize(found.getFields());
         assertThat(data.toString(), is(read.toString()));
     }
 
-    private static List<Field> createMonitoringData(final int count) {
-        final List<Field> list = new ArrayList<>(count);
+    private static ArrayList<Field> createMonitoringData(final int count) {
+        final ArrayList<Field> list = new ArrayList<>(count);
 
         for (int i = 0; i < count; i++) {
             final String field = "field" + i;

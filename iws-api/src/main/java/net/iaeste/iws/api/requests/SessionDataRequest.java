@@ -15,20 +15,16 @@
 package net.iaeste.iws.api.requests;
 
 import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.api.util.AbstractVerification;
+import net.iaeste.iws.api.util.Serializer;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.zip.GZIPOutputStream;
 
 /**
  * IWS Clients can work with Sessions in many different ways. The Data they may
@@ -86,7 +82,7 @@ public final class SessionDataRequest<T extends Serializable> extends AbstractVe
      * @param sessionData Client specific Session Data
      */
     public SessionDataRequest(final T sessionData) {
-        this.sessionData = serialize(sessionData);
+        this.sessionData = Serializer.serialize(sessionData);
     }
 
     // =========================================================================
@@ -105,7 +101,7 @@ public final class SessionDataRequest<T extends Serializable> extends AbstractVe
      * @see #MAX_SIZE
      */
     public void setSessionData(final T sessionData) throws IllegalArgumentException {
-        final byte[] tmp = serialize(sessionData);
+        final byte[] tmp = Serializer.serialize(sessionData);
         ensureNotTooLong("sessionData", tmp, MAX_SIZE);
         this.sessionData = tmp;
     }
@@ -130,31 +126,5 @@ public final class SessionDataRequest<T extends Serializable> extends AbstractVe
         }
 
         return validation;
-    }
-
-    // =========================================================================
-    // Standard Request Methods
-    // =========================================================================
-
-    private static <T extends Serializable> byte[] serialize(final T data) {
-        final byte[] result;
-
-        if (data != null) {
-            try (final ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-                 final GZIPOutputStream zipStream = new GZIPOutputStream(byteStream);
-                 final ObjectOutputStream objectStream = new ObjectOutputStream(zipStream)) {
-
-                objectStream.writeObject(data);
-                objectStream.close();
-
-                result = byteStream.toByteArray();
-            } catch (IOException e) {
-                throw new VerificationException(e);
-            }
-        } else {
-            result = null;
-        }
-
-        return result;
     }
 }

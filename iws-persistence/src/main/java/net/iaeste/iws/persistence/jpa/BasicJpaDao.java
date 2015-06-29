@@ -24,6 +24,7 @@ import net.iaeste.iws.api.enums.StorageType;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.util.Paginatable;
 import net.iaeste.iws.api.enums.MonitoringLevel;
+import net.iaeste.iws.api.util.Serializer;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.BasicDao;
 import net.iaeste.iws.persistence.Externable;
@@ -95,7 +96,7 @@ public class BasicJpaDao implements BasicDao {
 
         final MonitoringLevel level = findMonitoringLevel(entityToPersist, authentication.getGroup());
         if (level != MonitoringLevel.NONE) {
-            final List<Field> changes = monitoringProcessor.findChanges(level, entityToPersist);
+            final ArrayList<Field> changes = monitoringProcessor.findChanges(level, entityToPersist);
             final String className = monitoringProcessor.findClassMonitoringName(entityToPersist);
             persistMonitoredData(authentication, className, entityToPersist.getId(), changes);
         }
@@ -108,7 +109,7 @@ public class BasicJpaDao implements BasicDao {
     public <T extends Updateable<T>> void persist(final Authentication authentication, final T entityToPersist, final T changesToBeMerged) {
         final MonitoringLevel level = findMonitoringLevel(entityToPersist, authentication.getGroup());
         if (level != MonitoringLevel.NONE) {
-            final List<Field> changes = monitoringProcessor.findChanges(level, entityToPersist, changesToBeMerged);
+            final ArrayList<Field> changes = monitoringProcessor.findChanges(level, entityToPersist, changesToBeMerged);
             final String className = monitoringProcessor.findClassMonitoringName(entityToPersist);
             persistMonitoredData(authentication, className, entityToPersist.getId(), changes);
         }
@@ -174,9 +175,9 @@ public class BasicJpaDao implements BasicDao {
         return found;
     }
 
-    private void persistMonitoredData(final Authentication authentication, final String className, final Long recordId, final List<Field> fields) {
+    private void persistMonitoredData(final Authentication authentication, final String className, final Long recordId, final ArrayList<Field> fields) {
         final MonitoringEntity monitoringEntity = new MonitoringEntity();
-        final byte[] data = monitoringProcessor.serialize(fields);
+        final byte[] data = Serializer.serialize(fields);
 
         monitoringEntity.setUser(authentication.getUser());
         monitoringEntity.setGroup(authentication.getGroup());
@@ -305,17 +306,6 @@ public class BasicJpaDao implements BasicDao {
         query.setParameter("type", GroupType.MEMBER);
 
         return findSingleResult(query, "User");
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<GroupEntity> findAllGroups(final GroupType type) {
-        final Query query = entityManager.createNamedQuery("group.findAllGroupType");
-        query.setParameter("type", type);
-
-        return query.getResultList();
     }
 
     /**

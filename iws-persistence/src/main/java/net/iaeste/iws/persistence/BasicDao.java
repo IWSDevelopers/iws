@@ -156,7 +156,7 @@ public interface BasicDao {
      * @param user       User
      * @param externalId External File Id
      * @return File
-     * @throws net.iaeste.iws.persistence.exceptions.PersistenceException if a single file could not be found
+     * @throws PersistenceException if a single file could not be found
      */
     FileEntity findFileByUserAndExternalId(UserEntity user, String externalId) throws PersistenceException;
     FileEntity findAttachedFileByUserAndExternalId(GroupEntity group, String externalId) throws PersistenceException;
@@ -164,8 +164,6 @@ public interface BasicDao {
     int deleteAttachmentRecord(FileEntity file);
 
     GroupEntity findMemberGroup(UserEntity user);
-
-    List<GroupEntity> findAllGroups(GroupType type);
 
     /**
      * Finds a file based on the internal Id.

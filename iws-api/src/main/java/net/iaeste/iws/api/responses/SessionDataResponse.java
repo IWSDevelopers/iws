@@ -16,19 +16,15 @@ package net.iaeste.iws.api.responses;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
-import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.api.util.DateTime;
+import net.iaeste.iws.api.util.Serializer;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.Arrays;
-import java.util.zip.GZIPInputStream;
 
 /**
  * The Session Response Object contains the Session Data belonging to the users
@@ -83,7 +79,7 @@ public final class SessionDataResponse<T extends Serializable> extends FallibleR
     }
 
     public T getSessionData() {
-        return deserialize(sessionData);
+        return Serializer.deserialize(sessionData);
     }
 
     public void setModified(final DateTime modified) {
@@ -156,24 +152,5 @@ public final class SessionDataResponse<T extends Serializable> extends FallibleR
                 "modified=" + modified +
                 ", created=" + created +
                 '}';
-    }
-
-    private T deserialize(final byte[] bytes) {
-        final T result;
-
-        if (bytes != null) {
-            try (final ByteArrayInputStream byteStream = new ByteArrayInputStream(bytes);
-                 final GZIPInputStream zipStream = new GZIPInputStream(byteStream);
-                 final ObjectInputStream objectStream = new ObjectInputStream(zipStream)) {
-
-                result = (T) objectStream.readObject();
-            } catch (IOException | ClassNotFoundException e) {
-                throw new VerificationException(e);
-            }
-        } else  {
-            result = null;
-        }
-
-        return result;
     }
 }

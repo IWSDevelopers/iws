@@ -98,6 +98,11 @@ public interface IWSErrors {
     IWSError EXCEEDED_LOGIN_ATTEMPTS = new IWSError(408, "Too many login attempts for this account.");
 
     /**
+     * The user account has seen too many attempts at login in.
+     */
+    IWSError DATA_SERIALIZATION_ERROR = new IWSError(420, "Serialization Error with the given Object.");
+
+    /**
      * The database is inaccessible.
      */
     IWSError DATABASE_UNREACHABLE = new IWSError(501, "Database unreachable.");

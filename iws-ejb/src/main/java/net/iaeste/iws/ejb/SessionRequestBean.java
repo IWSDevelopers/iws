@@ -19,8 +19,8 @@ import static net.iaeste.iws.api.util.LogUtil.formatLogMessage;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
-import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.api.util.Fallible;
+import net.iaeste.iws.api.util.Serializer;
 import net.iaeste.iws.common.exceptions.AuthenticationException;
 import net.iaeste.iws.ejb.cdi.IWSBean;
 import net.iaeste.iws.persistence.AccessDao;
@@ -40,14 +40,10 @@ import javax.ejb.TransactionManagementType;
 import javax.inject.Inject;
 import javax.jws.WebMethod;
 import javax.persistence.EntityManager;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Date;
-import java.util.zip.GZIPOutputStream;
 
 /**
  * To improve the internal error handling, it helps if all error cases saved
@@ -219,7 +215,7 @@ public class SessionRequestBean {
         if (session != null) {
             final RequestEntity entity = prepareEntity(session, cause, request);
             if (obj != null) {
-                entity.setSessionData(serialize(obj));
+                entity.setRequestObject(Serializer.serialize(obj));
             }
             log.debug("Saving Requests information with the request Object.");
             dao.persist(entity);
@@ -282,27 +278,5 @@ public class SessionRequestBean {
         }
 
         return entity;
-    }
-
-    private <T extends Serializable> byte[] serialize(final T data) {
-        final byte[] result;
-
-        if (data != null) {
-            try (final ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-                 final GZIPOutputStream zipStream = new GZIPOutputStream(byteStream);
-                 final ObjectOutputStream objectStream = new ObjectOutputStream(zipStream)) {
-
-                objectStream.writeObject(data);
-                objectStream.close();
-
-                result = byteStream.toByteArray();
-            } catch (IOException e) {
-                throw new VerificationException(e);
-            }
-        } else {
-            result = null;
-        }
-
-        return result;
     }
 }

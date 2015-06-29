@@ -85,6 +85,7 @@ public class OfferCSVDownloadResponse extends FallibleResponse {
      */
     @Override
     public String toString() {
-        return null;
+        // Just showing the Object.
+        return "OfferCSVDownloadResponse{data=...}";
     }
 }

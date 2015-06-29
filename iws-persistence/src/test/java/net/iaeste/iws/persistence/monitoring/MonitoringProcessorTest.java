@@ -20,6 +20,7 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 import net.iaeste.iws.api.dtos.Field;
+import net.iaeste.iws.api.util.Serializer;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -35,7 +36,7 @@ public class MonitoringProcessorTest {
     @Test
     public void testSerialization() {
         // First, our test data
-        final List<Field> list = new ArrayList<>(5);
+        final ArrayList<Field> list = new ArrayList<>(5);
         final Field field1 = new Field("field1");
         final Field field2 = new Field("field2", "This stink", "What a wonderful world");
         final Field field3 = new Field("field3", "Apple", "Android");
@@ -49,8 +50,8 @@ public class MonitoringProcessorTest {
 
         // Now, we instantiate the Monitoring and performs the serialization
         final MonitoringProcessor cut = new MonitoringProcessor();
-        final byte[] serialized = cut.serialize(list);
-        final List<Field> deserialized = cut.deserialize(serialized);
+        final byte[] serialized = Serializer.serialize(list);
+        final List<Field> deserialized = Serializer.deserialize(serialized);
 
         assertThat(serialized, is(not(nullValue())));
         assertThat(deserialized, is(not(nullValue())));

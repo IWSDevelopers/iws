@@ -155,8 +155,8 @@ public final class AccessSpringClient implements Access {
      * {@inheritDoc}
      */
     @Override
-    public FallibleResponse resetPassword(final String resetPasswordToken, final Password password) {
-        return client.resetPassword(resetPasswordToken, password);
+    public FallibleResponse resetPassword(final Password password) {
+        return client.resetPassword(password);
     }
 
     /**

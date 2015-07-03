@@ -14,10 +14,10 @@
  */
 package net.iaeste.iws.core.services;
 
+import static net.iaeste.iws.api.util.LogUtil.formatLogMessage;
 import static net.iaeste.iws.common.utils.HashcodeGenerator.generateHash;
 import static net.iaeste.iws.common.utils.StringUtils.toLower;
 import static net.iaeste.iws.core.transformers.AdministrationTransformer.transform;
-import static net.iaeste.iws.api.util.LogUtil.formatLogMessage;
 
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
@@ -41,9 +41,9 @@ import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.common.notification.NotificationType;
 import net.iaeste.iws.common.utils.HashcodeGenerator;
 import net.iaeste.iws.core.exceptions.SessionException;
-import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.core.monitors.ActiveSessions;
 import net.iaeste.iws.core.monitors.LoginRetries;
+import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.entities.SessionEntity;
@@ -158,7 +158,7 @@ public final class AccessService extends CommonService<AccessDao> {
      */
     public AuthenticationToken resetSession(final String resetSessionString) {
         removeDeprecatedSessions();
-        final UserEntity user = dao.findUserByCodeAndStatus(resetSessionString, UserStatus.ACTIVE);
+        final UserEntity user = dao.findActiveUserByCode(resetSessionString);
         final SessionEntity deadSession = dao.findActiveSession(user);
 
         if (deadSession != null) {
@@ -243,6 +243,8 @@ public final class AccessService extends CommonService<AccessDao> {
             user.setCode(generateHash(UUID.randomUUID().toString(), user.getSalt()));
             dao.persist(user);
             notifications.notify(user);
+        } else {
+            throw new IWSException(IWSErrors.AUTHENTICATION_ERROR, "No account for this user was found.");
         }
     }
 
@@ -250,11 +252,10 @@ public final class AccessService extends CommonService<AccessDao> {
      * Resets the usersession, by finding the Account via the token. Only
      * accounts that are currently Active can have their passwords reset.
      *
-     * @param resetPasswordToken Reset Password Token, from the notification
      * @param password           New Password for the user
      */
-    public void resetPassword(final String resetPasswordToken, final Password password) {
-        final UserEntity user = dao.findUserByCodeAndStatus(resetPasswordToken, UserStatus.ACTIVE);
+    public void resetPassword(final Password password) {
+        final UserEntity user = dao.findActiveUserByCode(password.getIdentification());
 
         if (user != null) {
             final String pwd = toLower(password.getNewPassword());
@@ -431,7 +432,7 @@ public final class AccessService extends CommonService<AccessDao> {
     }
 
     private static boolean isOldPasswordValid(final UserEntity user, final Password password) {
-        final String oldPassword = password.getOldPassword();
+        final String oldPassword = password.getIdentification();
         final boolean result;
 
         if (oldPassword != null) {

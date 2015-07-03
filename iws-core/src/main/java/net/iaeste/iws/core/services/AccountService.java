@@ -203,7 +203,7 @@ public final class AccountService extends CommonService<AccessDao> {
      * @param activationString Hashvalue of the activation String
      */
     public void activateUser(final String activationString) {
-        final UserEntity user = dao.findUserByCodeAndStatus(activationString, UserStatus.NEW);
+        final UserEntity user = dao.findNewUserByCode(activationString);
 
         if (user != null) {
             // Update the fields in the User Entity, so the user can log in
@@ -231,7 +231,7 @@ public final class AccountService extends CommonService<AccessDao> {
      * @param updateCode Code used for updating the username for the account
      */
     public void updateUsername(final String updateCode) {
-        final UserEntity user = dao.findUserByCodeAndStatus(updateCode, UserStatus.ACTIVE);
+        final UserEntity user = dao.findActiveUserByCode(updateCode);
 
         if (user != null) {
             // Update the UserEntity with the new Username

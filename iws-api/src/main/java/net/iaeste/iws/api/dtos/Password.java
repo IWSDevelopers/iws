@@ -23,6 +23,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * This Object is used for the requests, where a user needs to change the
@@ -34,7 +35,7 @@ import java.util.Map;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "Password", propOrder = { "newPassword", "oldPassword" })
+@XmlType(name = "Password", propOrder = { "newPassword", "identification" })
 public final class Password extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
@@ -48,14 +49,16 @@ public final class Password extends AbstractVerification {
     private String newPassword = null;
 
     /**
-     * When updating the Password, it is important that the old Password is also
-     * set, since anyone gaining access to an open Session may attempt to hijack
-     * it.<br />
-     *   Note, this field is only used when invoking the update Password, if the
-     * forgot password functionality was used, then it is a different matter.
+     * Both a resetPassword & updatePassword request requires additional
+     * information to properly identify the User who is performing the
+     * Request.<br />
+     *   For the Reset Request, this is the given Password Token. For the Update
+     * Request, it is the existing Password. As it is not possible within this
+     * Object to determine which variant is required, the identification field
+     * will contain either the one or other.
      */
     @XmlElement(required = true, nillable = false)
-    private String oldPassword = null;
+    private String identification = null;
 
     // =========================================================================
     // Object Constructors
@@ -69,23 +72,14 @@ public final class Password extends AbstractVerification {
     }
 
     /**
-     * Default Constructor for the reset Password request.
-     *
-     * @param newPassword New Password for the user
-     */
-    public Password(final String newPassword) {
-        setNewPassword(newPassword);
-    }
-
-    /**
      * Default Constructor for the update Password request.
      *
      * @param newPassword New Password for the user
-     * @param oldPassword Old Password for the user
+     * @param identification Old User Password or Password Token
      */
-    public Password(final String newPassword, final String oldPassword) {
+    public Password(final String newPassword, final String identification) {
         setNewPassword(newPassword);
-        setOldPassword(oldPassword);
+        setIdentification(identification);
     }
 
     /**
@@ -96,7 +90,7 @@ public final class Password extends AbstractVerification {
     public Password(final Password password) {
         if (password != null) {
             this.newPassword = password.newPassword;
-            this.oldPassword = password.oldPassword;
+            this.identification = password.identification;
         }
     }
 
@@ -134,24 +128,23 @@ public final class Password extends AbstractVerification {
     }
 
     /**
-     * Ensures that the given Old Password is valid, and sets it. This value is
-     * required for the update Password request.
+     * Sets (parts of the) Identification information for the Request, which is
+     * either the old User Password (Update Password Request) or Password Token
+     * (Reset Password Request). The value must be set otherwise the request
+     * will fail.<br />
+     *   If the value is invalid, i.e. null or empty - then the method will
+     * throw an {@code IllegalArgumentException}.
      *
-     * @param oldPassword Old Password for a user
+     * @param identification Old User Password or given Password Token
      * @throws IllegalArgumentException if the given value is invalid
      */
-    public void setOldPassword(final String oldPassword) throws IllegalArgumentException {
-        ensureNotNull("oldPassword", oldPassword);
-        this.oldPassword = oldPassword;
+    public void setIdentification(final String identification) throws IllegalArgumentException {
+        ensureNotNullOrEmpty("identification", identification);
+        this.identification = identification;
     }
 
-    /**
-     * Retrieves the Old Password, required for the update Password request.
-     *
-     * @return Old Password for a user
-     */
-    public String getOldPassword() {
-        return oldPassword;
+    public String getIdentification() {
+        return identification;
     }
 
     // =========================================================================
@@ -166,9 +159,9 @@ public final class Password extends AbstractVerification {
         final Map<String, String> validation = new HashMap<>(0);
 
         // As the Setters are verifying all given values, we only
-        // need to run checks against nonnull fields here
+        // need to run checks against nonnull fields here.
         isNotNull(validation, "newPassword", newPassword);
-        isNotNull(validation, "oldPassword", oldPassword);
+        isNotNull(validation, "identification", identification);
 
         return validation;
     }
@@ -194,7 +187,9 @@ public final class Password extends AbstractVerification {
         // compare this Object with something else, we wish to convey that it is
         // a sensitive Object, hence standards methods are returning negative
         // information only
-        return 0;
+        //   However, to avoid that multiple Password Objects is given the same
+        // hashCode value, we're generating and returning a UUID.
+        return UUID.randomUUID().hashCode();
     }
 
     /**

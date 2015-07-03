@@ -147,13 +147,13 @@ public interface Access {
     FallibleResponse forgotPassword(String username);
 
     /**
-     * Resets a users password in the system.
+     * Resets a users password in the system, using the Reset Token, which was
+     * given to the User as a Notification.
      *
-     * @param resetPasswordToken Reset Password Token, from the notification
-     * @param password           Password Object for the user
+     * @param password Password Object for the user
      * @return Standard Error object
      */
-    FallibleResponse resetPassword(String resetPasswordToken, Password password);
+    FallibleResponse resetPassword(Password password);
 
     /**
      * Updates a users password in the system.

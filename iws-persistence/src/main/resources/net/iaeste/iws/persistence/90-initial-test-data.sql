@@ -795,7 +795,7 @@ insert into user_to_group (external_id, user_id, group_id, role_id) values ('2f4
 
 -- For our testing, we need to suspend a single Country -> First country, Albania
 update groups set status = 'SUSPENDED' where id = 10;
--- Four out testing, we need to suspend a single Account, First available, Argentina
+-- Four our testing, we need to suspend a single Account, First available, Argentina
 update users set status = 'SUSPENDED' where id = 2;
 
 -- Australia is set to be Administrator
@@ -804,6 +804,6 @@ insert into user_to_group (external_id, user_id, group_id, role_id) values ('440
 insert into user_to_group (external_id, user_id, group_id, role_id) values ('3f83b074-0771-40e2-8337-910d2c75bbf8', 82, 4, 1);
 -- Denmark is set as IDT Coordinator
 insert into user_to_group (external_id, user_id, group_id, role_id) values ('9ab8d850-b096-4b88-b56c-3870128c618a', 19, 5, 1);
--- Germany is set as Alumni Coordinator, for our testing we'r suspending this group
+-- Germany is set as Alumni Coordinator, for our testing we're suspending this group
 insert into user_to_group (external_id, user_id, group_id, role_id) values ('48b86ad0-a8c9-4f79-840b-2d930c76ffd2', 26, 6, 1);
 update groups set status = 'SUSPENDED' where id = 6;

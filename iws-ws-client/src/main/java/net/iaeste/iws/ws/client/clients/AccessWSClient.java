@@ -158,8 +158,8 @@ public final class AccessWSClient extends CommonWSClient implements Access {
      * {@inheritDoc}
      */
     @Override
-    public FallibleResponse resetPassword(final String resetPasswordToken, final Password password) {
-        return CommonMapper.map(client.resetPassword(resetPasswordToken, map(password)));
+    public FallibleResponse resetPassword(final Password password) {
+        return CommonMapper.map(client.resetPassword(map(password)));
     }
 
     /**

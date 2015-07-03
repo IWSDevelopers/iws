@@ -99,10 +99,21 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
      * {@inheritDoc}
      */
     @Override
-    public UserEntity findUserByCodeAndStatus(final String code, final UserStatus status) {
-        final Query query = entityManager.createNamedQuery("user.findByCodeAndStatus");
+    public UserEntity findActiveUserByCode(final String code) {
+        final Query query = entityManager.createNamedQuery("user.findActiveByCode");
         query.setParameter("code", code);
-        query.setParameter("status", status);
+        final List<UserEntity> list = query.getResultList();
+
+        return resolveResultList(list);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserEntity findNewUserByCode(final String code) {
+        final Query query = entityManager.createNamedQuery("user.findNewByCode");
+        query.setParameter("code", code);
         final List<UserEntity> list = query.getResultList();
 
         return resolveResultList(list);

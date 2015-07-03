@@ -277,12 +277,12 @@ public class AccessBean implements Access {
      * {@inheritDoc}
      */
     @Override
-    public FallibleResponse resetPassword(final String resetPasswordToken, final Password password) {
+    public FallibleResponse resetPassword(final Password password) {
         final long start = System.nanoTime();
         FallibleResponse response;
 
         try {
-            response = controller.resetPassword(resetPasswordToken, password);
+            response = controller.resetPassword(password);
             log.info(session.generateLog("resetPassword", start, response));
         } catch (RuntimeException e) {
             log.error(session.generateLog("resetPassword", start, e), e);

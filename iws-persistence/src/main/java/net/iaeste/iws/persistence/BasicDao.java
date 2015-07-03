@@ -189,7 +189,7 @@ public interface BasicDao {
      * Finds a file for a given Group, which is attached to a Object of the
      * given type.
      *
-     * @param externalId      External File Id
+     * @param externalFileId  External File Id
      * @param externalGroupId The Group that the file is shared to
      * @param type            Storage Type
      * @return File

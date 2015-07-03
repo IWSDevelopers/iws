@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.core;
 
+import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.dtos.Group;
@@ -171,6 +172,12 @@ class CommonController {
         }
 
         verifiable.verify();
+    }
+
+    void verifyEmail(final String value) {
+        if ((value != null) && !IWSConstants.EMAIL_PATTERN.matcher(value).matches()) {
+            throw new VerificationException(prepareErrorText("Invalid e-mail address provided."));
+        }
     }
 
     void verifyCode(final String code, final String... message) {

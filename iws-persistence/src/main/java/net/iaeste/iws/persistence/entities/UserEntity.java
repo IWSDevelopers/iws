@@ -91,10 +91,18 @@ import java.util.Map;
                 query = "select u from UserEntity u " +
                         "where u.status <> " + EntityConstants.USER_STATUS_DELETED +
                         "  and u.externalId = :euid"),
-        @NamedQuery(name = "user.findByCodeAndStatus",
-                query = "select u from UserEntity u " +
-                        "where u.status = :status" +
-                        "  and u.code = :code"),
+        @NamedQuery(name = "user.findActiveByCode",
+                query = "select ug.user from UserGroupEntity ug " +
+                        "where ug.user.status = " + EntityConstants.USER_STATUS_ACTIVE +
+                        "  and ug.group.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
+                        "  and ug.group.groupType.grouptype = " + EntityConstants.GROUPTYPE_MEMBER +
+                        "  and ug.user.code = :code"),
+        @NamedQuery(name = "user.findNewByCode",
+                query = "select ug.user from UserGroupEntity ug " +
+                        "where ug.user.status = " + EntityConstants.USER_STATUS_NEW +
+                        "  and ug.group.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
+                        "  and ug.group.groupType.grouptype = " + EntityConstants.GROUPTYPE_MEMBER +
+                        "  and ug.user.code = :code"),
         @NamedQuery(name = "user.findAccountsWithStateAfterModification",
                 query = "select u from UserEntity u " +
                         "where u.status = :status" +

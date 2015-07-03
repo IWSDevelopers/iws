@@ -36,6 +36,7 @@ import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.common.configuration.InternalConstants;
 import net.iaeste.iws.common.notification.NotificationField;
+import net.iaeste.iws.common.notification.NotificationType;
 import org.junit.Test;
 
 /**
@@ -228,6 +229,66 @@ public final class AccessClientTest extends AbstractTest {
     }
 
     @Test
+    public void testResetPasswordInvalidRequest() {
+        final Fallible invalidAccountResponse = access.forgotPassword("Some Crap");
+        assertThat(invalidAccountResponse.isOk(), is(false));
+        assertThat(invalidAccountResponse.getError(), is(IWSErrors.VERIFICATION_ERROR));
+        assertThat(invalidAccountResponse.getMessage(), is("Invalid e-mail address provided."));
+    }
+
+    @Test
+    public void testResetPasswordUnknownUsername() {
+        final Fallible validEmailResponse = access.forgotPassword("user@domain.com");
+        assertThat(validEmailResponse.isOk(), is(false));
+        assertThat(validEmailResponse.getError(), is(IWSErrors.AUTHENTICATION_ERROR));
+        assertThat(validEmailResponse.getMessage(), is("No account for this user was found."));
+    }
+    @Test
+    public void testResetPasswordCountrySuspended() {
+        // Bu default, the Albian Test Group is Suspended
+        final Fallible suspendedGroupResponse = access.forgotPassword("albania@iaeste.al");
+        assertThat(suspendedGroupResponse.isOk(), is(false));
+        assertThat(suspendedGroupResponse.getError(), is(IWSErrors.AUTHENTICATION_ERROR));
+        assertThat(suspendedGroupResponse.getMessage(), is("No account for this user was found."));
+    }
+
+    @Test
+    public void testResetPasswordUserSuspended() {
+        // By default, the Argentinian User is Suspended
+        final Fallible suspendedUserResponse = access.forgotPassword("argentina@iaeste.ar");
+        assertThat(suspendedUserResponse.isOk(), is(false));
+        assertThat(suspendedUserResponse.getError(), is(IWSErrors.AUTHENTICATION_ERROR));
+        assertThat(suspendedUserResponse.getMessage(), is("No account for this user was found."));
+    }
+
+    @Test
+    public void testResetPasswordValidRequest() {
+        final Fallible forgotResponse = access.forgotPassword("uzbekistan@iaeste.uz");
+        assertThat(forgotResponse.isOk(), is(true));
+
+        // Verify Token sent with the Notification
+        final NotificationType type = NotificationType.RESET_PASSWORD;
+        assertThat(spy.size(type), is(1));
+        final String resetCode = spy.getNext(type).getFields().get(NotificationField.CODE);
+        assertThat(resetCode, is(not(nullValue())));
+        assertThat(resetCode.length(), is(64));
+
+        // Reset the Password for the User
+        final String newPassword = "Uzbekistan123";
+        final Password password = new Password(newPassword, resetCode);
+        final Fallible resetResponse = access.resetPassword(password);
+        assertThat(resetResponse.isOk(), is(true));
+
+        // Login with the new Password
+        final AuthenticationResponse loginResponse = access.generateSession(new AuthenticationRequest("uzbekistan@iaeste.uz", newPassword));
+        assertThat(loginResponse.isOk(), is(true));
+
+        // Wrap up the test with logging out :-)
+        final Fallible logoutResponse = access.deprecateSession(loginResponse.getToken());
+        assertThat(logoutResponse.isOk(), is(true));
+    }
+
+    @Test
     public void testUpdatePassword() {
         // Create a new Token, that we can use for the test
         final AuthenticationToken adminToken = access.generateSession(new AuthenticationRequest("austria@iaeste.at", "austria")).getToken();
@@ -250,7 +311,9 @@ public final class AccessClientTest extends AbstractTest {
         // users password without providing the old password. This should fail
         final AuthenticationToken userToken = access.generateSession(new AuthenticationRequest(username, oldPassword)).getToken();
         final String newPassword = "newPassword";
-        final Fallible update1 = access.updatePassword(userToken, new Password(newPassword));
+        final Password password = new Password();
+        password.setNewPassword(newPassword);
+        final Fallible update1 = access.updatePassword(userToken, password);
         assertThat(update1.isOk(), is(false));
         assertThat(update1.getError(), is(IWSErrors.VERIFICATION_ERROR));
 

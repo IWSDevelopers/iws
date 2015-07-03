@@ -248,6 +248,7 @@ public final class AccessController extends CommonController implements Access {
         FallibleResponse response;
 
         try {
+            verifyEmail(username);
             final AccessService service = factory.prepareAuthenticationService();
             service.forgotPassword(username);
             response = new FallibleResponse();
@@ -265,18 +266,17 @@ public final class AccessController extends CommonController implements Access {
      * {@inheritDoc}
      */
     @Override
-    public FallibleResponse resetPassword(final String resetPasswordToken, final Password password) {
+    public FallibleResponse resetPassword(final Password password) {
         if (log.isTraceEnabled()) {
             log.trace("Starting resetPassword()");
         }
         FallibleResponse response;
 
         try {
-            verifyCode(resetPasswordToken, "The ResetPassword Token is invalid.");
             verify(password);
 
             final AccessService service = factory.prepareAuthenticationService();
-            service.resetPassword(resetPasswordToken, password);
+            service.resetPassword(password);
             response = new FallibleResponse();
         } catch (IWSException e) {
             response = new FallibleResponse(e.getError(), e.getMessage());

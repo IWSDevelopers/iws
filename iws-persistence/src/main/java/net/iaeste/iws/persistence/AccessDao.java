@@ -78,7 +78,9 @@ public interface AccessDao extends BasicDao {
      */
     UserEntity findUserByUsername(String username) throws IWSException;
 
-    UserEntity findUserByCodeAndStatus(String code, UserStatus status);
+    UserEntity findActiveUserByCode(String code);
+
+    UserEntity findNewUserByCode(String code);
 
     UserEntity findUserByAlias(String alias);
 

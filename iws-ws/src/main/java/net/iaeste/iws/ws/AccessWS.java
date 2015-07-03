@@ -286,13 +286,12 @@ public class AccessWS implements Access {
     @WebMethod
     @WebResult(name = "response")
     public FallibleResponse resetPassword(
-            @WebParam(name = "resetPasswordToken") final String resetPasswordToken,
             @WebParam(name = "password") final Password password) {
         log.info(requestLogger.prepareLogMessage("resetPassword"));
         FallibleResponse response;
 
         try {
-            response = bean.resetPassword(resetPasswordToken, password);
+            response = bean.resetPassword(password);
         } catch (RuntimeException e) {
             // The EJB's are all annotated with Transactional Logic, so if an
             // error is flying by - then it is caught here.

@@ -147,9 +147,9 @@ public final class AccessCaller implements Access {
      * {@inheritDoc}
      */
     @Override
-    public FallibleResponse resetPassword(final String resetPasswordToken, final Password password) {
+    public FallibleResponse resetPassword(final Password password) {
         try {
-            return caller.resetPassword(resetPasswordToken, password);
+            return caller.resetPassword(password);
         } catch (RuntimeException e) {
             throw new StopTestException(e);
         }

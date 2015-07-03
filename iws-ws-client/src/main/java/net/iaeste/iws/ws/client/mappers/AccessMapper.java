@@ -118,7 +118,7 @@ public final class AccessMapper extends CommonMapper {
             ws = new net.iaeste.iws.ws.Password();
 
             ws.setNewPassword(api.getNewPassword());
-            ws.setOldPassword(api.getOldPassword());
+            ws.setIdentification(api.getIdentification());
         }
 
         return ws;

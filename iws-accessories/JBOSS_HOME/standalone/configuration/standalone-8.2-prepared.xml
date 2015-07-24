@@ -140,7 +140,7 @@
                     <transaction-isolation>TRANSACTION_READ_COMMITTED</transaction-isolation>
                     <pool>
                         <min-pool-size>1</min-pool-size>
-                        <max-pool-size>20</max-pool-size>
+                        <max-pool-size>50</max-pool-size>
                         <flush-strategy>FailingConnectionOnly</flush-strategy>
                         <allow-multiple-users>true</allow-multiple-users>
                     </pool>
@@ -171,7 +171,7 @@
                     <transaction-isolation>TRANSACTION_READ_COMMITTED</transaction-isolation>
                     <pool>
                         <min-pool-size>1</min-pool-size>
-                        <max-pool-size>20</max-pool-size>
+                        <max-pool-size>50</max-pool-size>
                         <flush-strategy>FailingConnectionOnly</flush-strategy>
                         <allow-multiple-users>true</allow-multiple-users>
                     </pool>
@@ -246,8 +246,8 @@
             <pools>
                 <bean-instance-pools>
                     <!-- A sample strict max pool configuration -->
-                    <strict-max-pool name="slsb-strict-max-pool" max-pool-size="20" instance-acquisition-timeout="5" instance-acquisition-timeout-unit="MINUTES"/>
-                    <strict-max-pool name="mdb-strict-max-pool" max-pool-size="20" instance-acquisition-timeout="5" instance-acquisition-timeout-unit="MINUTES"/>
+                    <strict-max-pool name="slsb-strict-max-pool" max-pool-size="25" instance-acquisition-timeout="5" instance-acquisition-timeout-unit="MINUTES"/>
+                    <strict-max-pool name="mdb-strict-max-pool" max-pool-size="2" instance-acquisition-timeout="5" instance-acquisition-timeout-unit="MINUTES"/>
                 </bean-instance-pools>
             </pools>
             <caches>
@@ -266,7 +266,7 @@
             <remote connector-ref="http-remoting-connector" thread-pool-name="default"/>
             <thread-pools>
                 <thread-pool name="default">
-                    <max-threads count="10"/>
+                    <max-threads count="25"/>
                     <keepalive-time time="100" unit="milliseconds"/>
                 </thread-pool>
             </thread-pools>

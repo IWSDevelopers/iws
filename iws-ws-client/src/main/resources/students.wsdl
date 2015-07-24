@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://ws.iws.iaeste.net/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="studentWSService" targetNamespace="http://ws.iws.iaeste.net/">
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://ws.iws.iaeste.net/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="studentWSService" targetNamespace="http://ws.iws.iaeste.net/">
   <wsdl:types>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://ws.iws.iaeste.net/" targetNamespace="http://ws.iws.iaeste.net/" version="1.0">
 
@@ -122,6 +122,8 @@
           <xs:element name="fax" nillable="true" type="xs:string"/>
           <xs:element name="birthday" nillable="true" type="tns:Date"/>
           <xs:element name="gender" nillable="true" type="tns:Gender"/>
+          <xs:element name="understoodPrivacySettings" nillable="true" type="xs:boolean"/>
+          <xs:element name="acceptNewsletters" nillable="true" type="xs:boolean"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -1098,65 +1100,65 @@
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="studentWSServiceSoapBinding" type="tns:studentWS">
-    <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <soap12:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
     <wsdl:operation name="fetchStudents">
-      <soap:operation soapAction="" style="rpc"/>
+      <soap12:operation soapAction="" style="rpc"/>
       <wsdl:input name="fetchStudents">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="fetchStudentsResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="createStudent">
-      <soap:operation soapAction="" style="rpc"/>
+      <soap12:operation soapAction="" style="rpc"/>
       <wsdl:input name="createStudent">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="createStudentResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="processApplicationStatus">
-      <soap:operation soapAction="" style="rpc"/>
+      <soap12:operation soapAction="" style="rpc"/>
       <wsdl:input name="processApplicationStatus">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="processApplicationStatusResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="fetchStudentApplications">
-      <soap:operation soapAction="" style="rpc"/>
+      <soap12:operation soapAction="" style="rpc"/>
       <wsdl:input name="fetchStudentApplications">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="fetchStudentApplicationsResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="processStudent">
-      <soap:operation soapAction="" style="rpc"/>
+      <soap12:operation soapAction="" style="rpc"/>
       <wsdl:input name="processStudent">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="processStudentResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="processStudentApplication">
-      <soap:operation soapAction="" style="rpc"/>
+      <soap12:operation soapAction="" style="rpc"/>
       <wsdl:input name="processStudentApplication">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="processStudentApplicationResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
   </wsdl:binding>
   <wsdl:service name="studentWSService">
     <wsdl:port binding="tns:studentWSServiceSoapBinding" name="studentWS">
-      <soap:address location="http://localhost:9080/iws-ws/studentWS"/>
+      <soap12:address location="http://localhost:9080/iws-ws/studentWS"/>
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

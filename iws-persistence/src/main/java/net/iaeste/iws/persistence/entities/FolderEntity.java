@@ -16,11 +16,14 @@ package net.iaeste.iws.persistence.entities;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.MonitoringLevel;
+import net.iaeste.iws.api.enums.Privacy;
 import net.iaeste.iws.persistence.Externable;
 import net.iaeste.iws.persistence.monitoring.Monitored;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -76,6 +79,10 @@ public class FolderEntity extends AbstractUpdateable<FolderEntity> implements Ex
     @Monitored(name="Folder Name", level = MonitoringLevel.DETAILED)
     @Column(name = "foldername", length = 100, nullable = false)
     private String foldername = null;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "privacy", nullable = false)
+    private Privacy privacy = null;
 
     @Column(name = "old_iw3_file_id")
     private Long oldIW3FileId = null;
@@ -146,6 +153,14 @@ public class FolderEntity extends AbstractUpdateable<FolderEntity> implements Ex
 
     public String getFoldername() {
         return foldername;
+    }
+
+    public void setPrivacy(final Privacy privacy) {
+        this.privacy = privacy;
+    }
+
+    public Privacy getPrivacy() {
+        return privacy;
     }
 
     public void setOldIW3FileId(final Long oldIW3FileId) {
@@ -224,6 +239,7 @@ public class FolderEntity extends AbstractUpdateable<FolderEntity> implements Ex
                 ", parentId=" + parentId +
                 ", group=" + group +
                 ", foldername='" + foldername + '\'' +
+                ", privacy='" + privacy + '\'' +
                 '}';
     }
 }

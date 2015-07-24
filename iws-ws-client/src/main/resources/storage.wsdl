@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://ws.iws.iaeste.net/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="storageWSService" targetNamespace="http://ws.iws.iaeste.net/">
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://ws.iws.iaeste.net/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="storageWSService" targetNamespace="http://ws.iws.iaeste.net/">
   <wsdl:types>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://ws.iws.iaeste.net/" targetNamespace="http://ws.iws.iaeste.net/" version="1.0">
 
@@ -130,6 +130,8 @@
           <xs:element name="fax" nillable="true" type="xs:string"/>
           <xs:element name="birthday" nillable="true" type="tns:Date"/>
           <xs:element name="gender" nillable="true" type="tns:Gender"/>
+          <xs:element name="understoodPrivacySettings" nillable="true" type="xs:boolean"/>
+          <xs:element name="acceptNewsletters" nillable="true" type="xs:boolean"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -211,6 +213,7 @@
           <xs:element name="foldername" type="xs:string"/>
           <xs:element maxOccurs="unbounded" name="folders" nillable="true" type="tns:Folder"/>
           <xs:element maxOccurs="unbounded" name="files" nillable="true" type="tns:File"/>
+          <xs:element name="privacy" nillable="true" type="tns:Privacy"/>
           <xs:element name="modified" nillable="true" type="tns:Date"/>
           <xs:element name="created" nillable="true" type="tns:Date"/>
         </xs:sequence>
@@ -599,47 +602,47 @@
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="storageWSServiceSoapBinding" type="tns:storageWS">
-    <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <soap12:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
     <wsdl:operation name="processFile">
-      <soap:operation soapAction="" style="rpc"/>
+      <soap12:operation soapAction="" style="rpc"/>
       <wsdl:input name="processFile">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="processFileResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="fetchFolder">
-      <soap:operation soapAction="" style="rpc"/>
+      <soap12:operation soapAction="" style="rpc"/>
       <wsdl:input name="fetchFolder">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="fetchFolderResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="processFolder">
-      <soap:operation soapAction="" style="rpc"/>
+      <soap12:operation soapAction="" style="rpc"/>
       <wsdl:input name="processFolder">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="processFolderResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="fetchFile">
-      <soap:operation soapAction="" style="rpc"/>
+      <soap12:operation soapAction="" style="rpc"/>
       <wsdl:input name="fetchFile">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="fetchFileResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
   </wsdl:binding>
   <wsdl:service name="storageWSService">
     <wsdl:port binding="tns:storageWSServiceSoapBinding" name="storageWS">
-      <soap:address location="http://localhost:9080/iws-ws/storageWS"/>
+      <soap12:address location="http://localhost:9080/iws-ws/storageWS"/>
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

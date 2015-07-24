@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://ws.iws.iaeste.net/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="administrationWSService" targetNamespace="http://ws.iws.iaeste.net/">
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://ws.iws.iaeste.net/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="administrationWSService" targetNamespace="http://ws.iws.iaeste.net/">
   <wsdl:types>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://ws.iws.iaeste.net/" targetNamespace="http://ws.iws.iaeste.net/" version="1.0">
 
@@ -94,6 +94,8 @@
           <xs:element name="fax" nillable="true" type="xs:string"/>
           <xs:element name="birthday" nillable="true" type="tns:Date"/>
           <xs:element name="gender" nillable="true" type="tns:Gender"/>
+          <xs:element name="understoodPrivacySettings" nillable="true" type="xs:boolean"/>
+          <xs:element name="acceptNewsletters" nillable="true" type="xs:boolean"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -1044,164 +1046,164 @@
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="administrationWSServiceSoapBinding" type="tns:administrationWS">
-    <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <soap12:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
     <wsdl:operation name="updateUsername">
-      <soap:operation soapAction="" style="rpc"/>
+      <soap12:operation soapAction="" style="rpc"/>
       <wsdl:input name="updateUsername">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="updateUsernameResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="fetchUser">
-      <soap:operation soapAction="" style="rpc"/>
+      <soap12:operation soapAction="" style="rpc"/>
       <wsdl:input name="fetchUser">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="fetchUserResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="createUser">
-      <soap:operation soapAction="" style="rpc"/>
+      <soap12:operation soapAction="" style="rpc"/>
       <wsdl:input name="createUser">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="createUserResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="fetchCountries">
-      <soap:operation soapAction="" style="rpc"/>
+      <soap12:operation soapAction="" style="rpc"/>
       <wsdl:input name="fetchCountries">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="fetchCountriesResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="changeGroupOwner">
-      <soap:operation soapAction="" style="rpc"/>
+      <soap12:operation soapAction="" style="rpc"/>
       <wsdl:input name="changeGroupOwner">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="changeGroupOwnerResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="changeAccountName">
-      <soap:operation soapAction="" style="rpc"/>
+      <soap12:operation soapAction="" style="rpc"/>
       <wsdl:input name="changeAccountName">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="changeAccountNameResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="deleteSubGroup">
-      <soap:operation soapAction="" style="rpc"/>
+      <soap12:operation soapAction="" style="rpc"/>
       <wsdl:input name="deleteSubGroup">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="deleteSubGroupResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="activateUser">
-      <soap:operation soapAction="" style="rpc"/>
+      <soap12:operation soapAction="" style="rpc"/>
       <wsdl:input name="activateUser">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="activateUserResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="fetchContacts">
-      <soap:operation soapAction="" style="rpc"/>
+      <soap12:operation soapAction="" style="rpc"/>
       <wsdl:input name="fetchContacts">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="fetchContactsResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="controlUserAccount">
-      <soap:operation soapAction="" style="rpc"/>
+      <soap12:operation soapAction="" style="rpc"/>
       <wsdl:input name="controlUserAccount">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="controlUserAccountResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="fetchEmergencyList">
-      <soap:operation soapAction="" style="rpc"/>
+      <soap12:operation soapAction="" style="rpc"/>
       <wsdl:input name="fetchEmergencyList">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="fetchEmergencyListResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="processGroup">
-      <soap:operation soapAction="" style="rpc"/>
+      <soap12:operation soapAction="" style="rpc"/>
       <wsdl:input name="processGroup">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="processGroupResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="processUserGroupAssignment">
-      <soap:operation soapAction="" style="rpc"/>
+      <soap12:operation soapAction="" style="rpc"/>
       <wsdl:input name="processUserGroupAssignment">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="processUserGroupAssignmentResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="searchUsers">
-      <soap:operation soapAction="" style="rpc"/>
+      <soap12:operation soapAction="" style="rpc"/>
       <wsdl:input name="searchUsers">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="searchUsersResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="fetchGroup">
-      <soap:operation soapAction="" style="rpc"/>
+      <soap12:operation soapAction="" style="rpc"/>
       <wsdl:input name="fetchGroup">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="fetchGroupResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="fetchRoles">
-      <soap:operation soapAction="" style="rpc"/>
+      <soap12:operation soapAction="" style="rpc"/>
       <wsdl:input name="fetchRoles">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="fetchRolesResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="processCountry">
-      <soap:operation soapAction="" style="rpc"/>
+      <soap12:operation soapAction="" style="rpc"/>
       <wsdl:input name="processCountry">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="processCountryResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
   </wsdl:binding>
   <wsdl:service name="administrationWSService">
     <wsdl:port binding="tns:administrationWSServiceSoapBinding" name="administrationWS">
-      <soap:address location="http://localhost:9080/iws-ws/administrationWS"/>
+      <soap12:address location="http://localhost:9080/iws-ws/administrationWS"/>
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

@@ -39,7 +39,7 @@ public final class File extends AbstractVerification {
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     @XmlElement(required = true, nillable = true) private String fileId = null;
-    @XmlElement(required = true, nillable = false) private Privacy privacy = Privacy.PRIVATE;
+    @XmlElement(required = true, nillable = false) private Privacy privacy = Privacy.PROTECTED;
     @XmlElement(required = true, nillable = true) private Group group = null;
     @XmlElement(required = true, nillable = true) private User user = null;
     @XmlElement(required = true, nillable = true) private String folderId = null;

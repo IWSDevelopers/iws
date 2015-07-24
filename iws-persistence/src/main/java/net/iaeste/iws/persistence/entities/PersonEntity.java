@@ -16,6 +16,7 @@ package net.iaeste.iws.persistence.entities;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.Gender;
+import net.iaeste.iws.api.enums.Privacy;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,6 +31,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.xml.bind.annotation.XmlElement;
 import java.util.Date;
 
 /**
@@ -76,6 +78,12 @@ public class PersonEntity extends AbstractUpdateable<PersonEntity> {
     @Enumerated(EnumType.STRING)
     @Column(name = "gender", length = 10)
     private Gender gender = null;
+
+    @Column(name = "understood_privacy", nullable = false)
+    private Boolean understoodPrivacy = null;
+
+    @Column(name = "accept_newsletters", nullable = false)
+    private Boolean acceptNewsletters = null;
 
     /**
      * Last time the Entity was modified.
@@ -175,6 +183,22 @@ public class PersonEntity extends AbstractUpdateable<PersonEntity> {
         return gender;
     }
 
+    public void setUnderstoodPrivacy(final Boolean understoodPrivacy) {
+        this.understoodPrivacy = understoodPrivacy;
+    }
+
+    public Boolean getUnderstoodPrivacy() {
+        return understoodPrivacy;
+    }
+
+    public void setAcceptNewsletters(final Boolean acceptNewsletters) {
+        this.acceptNewsletters = acceptNewsletters;
+    }
+
+    public Boolean getAcceptNewsletters() {
+        return acceptNewsletters;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -234,6 +258,8 @@ public class PersonEntity extends AbstractUpdateable<PersonEntity> {
             fax = which(fax, obj.fax);
             birthday = which(birthday, obj.birthday);
             gender = which(gender, obj.gender);
+            understoodPrivacy = which(understoodPrivacy, obj.understoodPrivacy);
+            acceptNewsletters = which(acceptNewsletters, obj.acceptNewsletters);
         }
     }
 }

@@ -36,7 +36,7 @@ import java.util.Map;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "Person", propOrder = { "nationality", "address", "alternateEmail", "phone", "mobile", "fax", "birthday", "gender" })
+@XmlType(name = "Person", propOrder = { "nationality", "address", "alternateEmail", "phone", "mobile", "fax", "birthday", "gender", "understoodPrivacySettings", "acceptNewsletters" })
 public final class Person extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
@@ -50,6 +50,8 @@ public final class Person extends AbstractVerification {
     @XmlElement(required = true, nillable = true) private String fax = null;
     @XmlElement(required = true, nillable = true) private Date birthday = null;
     @XmlElement(required = true, nillable = true) private Gender gender = null;
+    @XmlElement(required = true, nillable = true) private Boolean understoodPrivacySettings = false;
+    @XmlElement(required = true, nillable = true) private Boolean acceptNewsletters = true;
 
     // =========================================================================
     // Object Constructors
@@ -77,6 +79,8 @@ public final class Person extends AbstractVerification {
             fax = person.fax;
             birthday = person.birthday;
             gender = person.gender;
+            understoodPrivacySettings = person.understoodPrivacySettings;
+            acceptNewsletters = person.acceptNewsletters;
         }
     }
 
@@ -220,6 +224,48 @@ public final class Person extends AbstractVerification {
         return gender;
     }
 
+    /**
+     * Changing the Privacy settings for Files or Folders has the consequence
+     * that these Object is generally accessible or viewable. This consequence
+     * must be known and understood by the User, if not - then a pop-up should
+     * appear explaining the consequences, and only by accepting this - will
+     * the flag be set.<br />
+     *   The value must be set to either True or False, if it is set to Null,
+     * then an {@code IllegalArgumentException} will be thrown.
+     *
+     * @param understoodPrivacySettings Has the User understood the Privacy Settings
+     * @throws IllegalArgumentException if set to null
+     */
+    public void setUnderstoodPrivacySettings(final Boolean understoodPrivacySettings) throws IllegalArgumentException {
+        ensureNotNull("understoodPrivacySettings", understoodPrivacySettings);
+        this.understoodPrivacySettings = understoodPrivacySettings;
+    }
+
+    public Boolean getUnderstoodPrivacySettings() {
+        return understoodPrivacySettings;
+    }
+
+    /**
+     * The Announce mailing list will go to all Active Members of the IAESTE,
+     * except Students. The Announce list consists of announcements from the
+     * Board or the IDT Administrators - but can also be a general newsletter
+     * from the Staff. The announcements is not optional, but people may not
+     * wish to receive newsletters, and by setting this flag, they won't. By
+     * default, this flag is set to true, making this an opt-out.<br />
+     *   The value must be set to either True or False, if it is set to Null,
+     * then an {@code IllegalArgumentException} will be thrown.
+     *
+     * @param acceptNewsletters If the User accepts to receive Newsletters
+     */
+    public void setAcceptNewsletters(final Boolean acceptNewsletters) throws IllegalArgumentException {
+        ensureNotNull("acceptNewsletters", acceptNewsletters);
+        this.acceptNewsletters = acceptNewsletters;
+    }
+
+    public Boolean getAcceptNewsletters() {
+        return acceptNewsletters;
+    }
+
     // =========================================================================
     // DTO required methods
     // =========================================================================
@@ -266,6 +312,12 @@ public final class Person extends AbstractVerification {
         if ((birthday != null) ? !birthday.equals(person.birthday) : (person.birthday != null)) {
             return false;
         }
+        if ((understoodPrivacySettings != null) ? !understoodPrivacySettings.equals(person.understoodPrivacySettings) : (person.understoodPrivacySettings != null)) {
+            return false;
+        }
+        if ((acceptNewsletters != null) ? !acceptNewsletters.equals(person.acceptNewsletters) : (person.acceptNewsletters != null)) {
+            return false;
+        }
 
         return gender == person.gender;
     }
@@ -284,6 +336,8 @@ public final class Person extends AbstractVerification {
         result = IWSConstants.HASHCODE_MULTIPLIER * result + ((fax != null) ? fax.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + ((birthday != null) ? birthday.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + ((gender != null) ? gender.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((understoodPrivacySettings != null) ? understoodPrivacySettings.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((acceptNewsletters != null) ? acceptNewsletters.hashCode() : 0);
 
         return result;
     }
@@ -301,6 +355,8 @@ public final class Person extends AbstractVerification {
                 ", fax='" + fax + '\'' +
                 ", birthday=" + birthday +
                 ", gender=" + gender +
+                ", understoodPrivacySettings=" + understoodPrivacySettings +
+                ", acceptNewsletters=" + acceptNewsletters +
                 '}';
     }
 }

@@ -64,7 +64,7 @@ import java.util.zip.Checksum;
  */
 public class CommonService<T extends BasicDao> {
 
-    private static final Logger log = LoggerFactory.getLogger(CommonService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CommonService.class);
 
     protected final Settings settings;
     protected final T dao;
@@ -166,6 +166,8 @@ public class CommonService<T extends BasicDao> {
         // Create & Persist the Person Entity
         final PersonEntity person = new PersonEntity();
         person.setAddress(createEmptyAddress(authentication));
+        person.setUnderstoodPrivacy(false);
+        person.setAcceptNewsletters(true);
         dao.persist(authentication, person);
 
         // Return the new Entity
@@ -412,7 +414,7 @@ public class CommonService<T extends BasicDao> {
             final int attachmentsDeleted = dao.deleteAttachmentRecord(entity);
             dao.delete(entity);
 
-            log.info(formatLogMessage(authentication, "File %s, Attached %d times, has been successfully deleted from the IWS.", filename, attachmentsDeleted));
+            LOG.info(formatLogMessage(authentication, "File %s, Attached %d times, has been successfully deleted from the IWS.", filename, attachmentsDeleted));
         } else {
             throw new AuthorizationException("The user is not authorized to process this file.");
         }

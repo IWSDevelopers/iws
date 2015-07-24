@@ -126,6 +126,8 @@
           <xs:element name="fax" nillable="true" type="xs:string"/>
           <xs:element name="birthday" nillable="true" type="tns:Date"/>
           <xs:element name="gender" nillable="true" type="tns:Gender"/>
+          <xs:element name="understoodPrivacySettings" nillable="true" type="xs:boolean"/>
+          <xs:element name="acceptNewsletters" nillable="true" type="xs:boolean"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>

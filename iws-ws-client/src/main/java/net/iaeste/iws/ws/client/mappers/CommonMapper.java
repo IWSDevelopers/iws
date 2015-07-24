@@ -308,6 +308,8 @@ public class CommonMapper {
             api.setFax(ws.getFax());
             api.setBirthday(map(ws.getBirthday()));
             api.setGender(map(ws.getGender()));
+            api.setUnderstoodPrivacySettings(ws.isUnderstoodPrivacySettings());
+            api.setAcceptNewsletters(ws.isAcceptNewsletters());
         }
 
         return api;
@@ -327,6 +329,8 @@ public class CommonMapper {
             ws.setFax(api.getFax());
             ws.setBirthday(map(api.getBirthday()));
             ws.setGender(map(api.getGender()));
+            ws.setUnderstoodPrivacySettings(api.getUnderstoodPrivacySettings());
+            ws.setAcceptNewsletters(api.getAcceptNewsletters());
         }
 
         return ws;
@@ -594,11 +598,11 @@ public class CommonMapper {
         return api != null ? net.iaeste.iws.ws.Gender.valueOf(api.name()) : null;
     }
 
-    private static Privacy map(final net.iaeste.iws.ws.Privacy ws) {
+    protected static Privacy map(final net.iaeste.iws.ws.Privacy ws) {
         return ws != null ? Privacy.valueOf(ws.value()) : null;
     }
 
-    private static net.iaeste.iws.ws.Privacy map(final Privacy api) {
+    protected static net.iaeste.iws.ws.Privacy map(final Privacy api) {
         return api != null ? net.iaeste.iws.ws.Privacy.valueOf(api.name()) : null;
     }
 

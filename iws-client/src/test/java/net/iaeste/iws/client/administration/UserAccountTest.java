@@ -307,6 +307,8 @@ public final class UserAccountTest extends AbstractAdministration {
         person.setMobile("+1 1234567890");
         person.setGender(Gender.UNKNOWN);
         person.setPhone("+1 0987654321");
+        person.setUnderstoodPrivacySettings(true);
+        person.setAcceptNewsletters(false);
         myself.setPerson(person);
         final UserRequest updateRequest = new UserRequest();
         updateRequest.setUser(myself);
@@ -326,6 +328,8 @@ public final class UserAccountTest extends AbstractAdministration {
         assertThat(updatedPerson.getGender(), is(person.getGender()));
         assertThat(updatedPerson.getMobile(), is(person.getMobile()));
         assertThat(updatedPerson.getPhone(), is(person.getPhone()));
+        assertThat(updatedPerson.getUnderstoodPrivacySettings(), is(person.getUnderstoodPrivacySettings()));
+        assertThat(updatedPerson.getAcceptNewsletters(), is(person.getAcceptNewsletters()));
 
         final Address updatedAddress = updatedPerson.getAddress();
         assertThat(updatedAddress.getStreet1(), is(address.getStreet1()));

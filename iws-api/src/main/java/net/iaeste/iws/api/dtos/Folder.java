@@ -15,6 +15,7 @@
 package net.iaeste.iws.api.dtos;
 
 import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.api.enums.Privacy;
 import net.iaeste.iws.api.util.AbstractVerification;
 import net.iaeste.iws.api.util.Date;
 
@@ -23,9 +24,11 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -33,11 +36,14 @@ import java.util.Map;
  * @since   IWS 1.1
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "Folder", propOrder = { "folderId", "parentId", "group", "foldername", "folders", "files", "modified", "created" })
+@XmlType(name = "Folder", propOrder = { "folderId", "parentId", "group", "foldername", "folders", "files", "privacy", "modified", "created" })
 public final class Folder extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
+
+    /** Default allowed Actions for the Committee Request. */
+    private static final Set<Privacy> allowed = EnumSet.of(Privacy.PRIVATE, Privacy.PROTECTED);
 
     @XmlElement(required = true, nillable = true)  private String folderId = null;
     @XmlElement(required = true, nillable = true)  private String parentId = null;
@@ -45,6 +51,7 @@ public final class Folder extends AbstractVerification {
     @XmlElement(required = true, nillable = false) private String foldername = null;
     @XmlElement(required = true, nillable = true)  private List<Folder> folders = null;
     @XmlElement(required = true, nillable = true)  private List<File> files = null;
+    @XmlElement(required = true, nillable = true)  private Privacy privacy = Privacy.PROTECTED;
     @XmlElement(required = true, nillable = true)  private Date modified = null;
     @XmlElement(required = true, nillable = true)  private Date created = null;
 
@@ -62,7 +69,7 @@ public final class Folder extends AbstractVerification {
     /**
      * Copy Constructor.
      *
-     * @param file File Object to copy
+     * @param folder Folder Object to copy
      */
     public Folder(final Folder folder) {
         if (folder != null) {
@@ -72,6 +79,8 @@ public final class Folder extends AbstractVerification {
             foldername = folder.foldername;
             folders = folder.folders;
             files = folder.files;
+            privacy = folder.privacy;
+            modified = folder.modified;
             created = folder.created;
         }
     }
@@ -135,7 +144,7 @@ public final class Folder extends AbstractVerification {
      * The Foldername is mandatory in the IWS, and if not set or too long, the
      * method will throw an {@code IllegalArgumentException}.
      *
-     * @param filename Name of the Folder
+     * @param foldername Name of the Folder
      * @throws IllegalArgumentException if null, empty or longer than 100 characters
      */
     public void setFoldername(final String foldername) throws IllegalArgumentException {
@@ -173,6 +182,27 @@ public final class Folder extends AbstractVerification {
 
     public List<File> getFiles() {
         return files == null ? new ArrayList<File>(0) : files;
+    }
+
+    /**
+     * Sets the Privacy Flag for the Folder, it can be either Public or
+     * Protected. Public means that if the Folder belongs to a Group which may
+     * publish Folders & Files, then it will be publicly accessible. Private
+     * means that the Folder is not accessible. By default, all Folders are
+     * Private, making it a User opt-int choice to publish a Folder.<br />
+     *   If a not allowed value is used, such as null or a different Privacy
+     * enum value is used, then an {@code IllegalArgumentException} is thrown.
+     *
+     * @param privacy Privacy Value for the Folder, either Public or Protected
+     * @throws IllegalArgumentException if value is null or not allowed
+     */
+    public void setPrivacy(final Privacy privacy) throws IllegalArgumentException {
+        ensureNotNullAndContains("privacy", privacy, allowed);
+        this.privacy = privacy;
+    }
+
+    public Privacy getPrivacy() {
+        return privacy;
     }
 
     /**
@@ -216,6 +246,7 @@ public final class Folder extends AbstractVerification {
 
         isNotNull(validation, "foldername", foldername);
         isNotNull(validation, "group", group);
+        isNotNull(validation, "privacy", privacy);
 
         return validation;
     }
@@ -252,6 +283,9 @@ public final class Folder extends AbstractVerification {
         if (files != null ? !files.equals(folder.files) : folder.files != null) {
             return false;
         }
+        if (privacy != null ? !privacy.equals(folder.privacy) : folder.privacy != null) {
+            return false;
+        }
         if (modified != null ? !modified.equals(folder.modified) : folder.modified != null) {
             return false;
         }
@@ -271,6 +305,7 @@ public final class Folder extends AbstractVerification {
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (foldername != null ? foldername.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (folders != null ? folders.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (files != null ? files.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (privacy != null ? privacy.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (modified != null ? modified.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (created != null ? created.hashCode() : 0);
 
@@ -289,6 +324,7 @@ public final class Folder extends AbstractVerification {
                 ", foldername='" + foldername + '\'' +
                 ", folders=" + folders +
                 ", files=" + files +
+                ", privacy=" + privacy +
                 ", modified=" + modified +
                 ", created=" + created +
                 '}';

@@ -186,6 +186,7 @@ public final class StorageMapper extends CommonMapper {
             api.setFoldername(ws.getFoldername());
             api.setFolders(mapWSFolderCollection(ws.getFolders()));
             api.setFiles(mapWSFileCollection(ws.getFiles()));
+            api.setPrivacy(map(ws.getPrivacy()));
             api.setModified(map(ws.getModified()));
             api.setCreated(map(ws.getCreated()));
         }
@@ -205,6 +206,7 @@ public final class StorageMapper extends CommonMapper {
             ws.setFoldername(api.getFoldername());
             ws.getFolders().addAll(mapAPIFolderCollection(api.getFolders()));
             ws.getFiles().addAll(mapAPIFileCollection(api.getFiles()));
+            ws.setPrivacy(map(api.getPrivacy()));
             ws.setModified(map(api.getModified()));
             ws.setCreated(map(api.getCreated()));
         }

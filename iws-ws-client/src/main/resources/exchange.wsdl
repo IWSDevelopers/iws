@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://ws.iws.iaeste.net/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="exchangeWSService" targetNamespace="http://ws.iws.iaeste.net/">
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://ws.iws.iaeste.net/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="exchangeWSService" targetNamespace="http://ws.iws.iaeste.net/">
   <wsdl:types>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://ws.iws.iaeste.net/" targetNamespace="http://ws.iws.iaeste.net/" version="1.0">
 
@@ -1414,155 +1414,155 @@
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="exchangeWSServiceSoapBinding" type="tns:exchangeWS">
-    <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <soap12:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
     <wsdl:operation name="deletePublishingGroup">
-      <soap:operation soapAction="" style="rpc"/>
+      <soap12:operation soapAction="" style="rpc"/>
       <wsdl:input name="deletePublishingGroup">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="deletePublishingGroupResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="uploadOffers">
-      <soap:operation soapAction="" style="rpc"/>
+      <soap12:operation soapAction="" style="rpc"/>
       <wsdl:input name="uploadOffers">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="uploadOffersResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="fetchPublishingGroups">
-      <soap:operation soapAction="" style="rpc"/>
+      <soap12:operation soapAction="" style="rpc"/>
       <wsdl:input name="fetchPublishingGroups">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="fetchPublishingGroupsResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="processHideForeignOffers">
-      <soap:operation soapAction="" style="rpc"/>
+      <soap12:operation soapAction="" style="rpc"/>
       <wsdl:input name="processHideForeignOffers">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="processHideForeignOffersResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="rejectOffer">
-      <soap:operation soapAction="" style="rpc"/>
+      <soap12:operation soapAction="" style="rpc"/>
       <wsdl:input name="rejectOffer">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="rejectOfferResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="fetchEmployers">
-      <soap:operation soapAction="" style="rpc"/>
+      <soap12:operation soapAction="" style="rpc"/>
       <wsdl:input name="fetchEmployers">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="fetchEmployersResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="processPublishOffer">
-      <soap:operation soapAction="" style="rpc"/>
+      <soap12:operation soapAction="" style="rpc"/>
       <wsdl:input name="processPublishOffer">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="processPublishOfferResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="processEmployer">
-      <soap:operation soapAction="" style="rpc"/>
+      <soap12:operation soapAction="" style="rpc"/>
       <wsdl:input name="processEmployer">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="processEmployerResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="deleteOffer">
-      <soap:operation soapAction="" style="rpc"/>
+      <soap12:operation soapAction="" style="rpc"/>
       <wsdl:input name="deleteOffer">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="deleteOfferResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="downloadOffers">
-      <soap:operation soapAction="" style="rpc"/>
+      <soap12:operation soapAction="" style="rpc"/>
       <wsdl:input name="downloadOffers">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="downloadOffersResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="processPublishingGroup">
-      <soap:operation soapAction="" style="rpc"/>
+      <soap12:operation soapAction="" style="rpc"/>
       <wsdl:input name="processPublishingGroup">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="processPublishingGroupResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="fetchPublishedGroups">
-      <soap:operation soapAction="" style="rpc"/>
+      <soap12:operation soapAction="" style="rpc"/>
       <wsdl:input name="fetchPublishedGroups">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="fetchPublishedGroupsResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="fetchOffers">
-      <soap:operation soapAction="" style="rpc"/>
+      <soap12:operation soapAction="" style="rpc"/>
       <wsdl:input name="fetchOffers">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="fetchOffersResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="fetchOfferStatistics">
-      <soap:operation soapAction="" style="rpc"/>
+      <soap12:operation soapAction="" style="rpc"/>
       <wsdl:input name="fetchOfferStatistics">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="fetchOfferStatisticsResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="processOffer">
-      <soap:operation soapAction="" style="rpc"/>
+      <soap12:operation soapAction="" style="rpc"/>
       <wsdl:input name="processOffer">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="processOfferResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="fetchGroupsForSharing">
-      <soap:operation soapAction="" style="rpc"/>
+      <soap12:operation soapAction="" style="rpc"/>
       <wsdl:input name="fetchGroupsForSharing">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="fetchGroupsForSharingResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
   </wsdl:binding>
   <wsdl:service name="exchangeWSService">
     <wsdl:port binding="tns:exchangeWSServiceSoapBinding" name="exchangeWS">
-      <soap:address location="http://localhost:9080/iws-ws/exchangeWS"/>
+      <soap12:address location="http://localhost:9080/iws-ws/exchangeWS"/>
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

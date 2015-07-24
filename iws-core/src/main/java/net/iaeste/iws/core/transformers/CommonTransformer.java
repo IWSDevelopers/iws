@@ -46,7 +46,7 @@ import org.slf4j.LoggerFactory;
  */
 public final class CommonTransformer {
 
-    private static final Logger log = LoggerFactory.getLogger(CommonTransformer.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CommonTransformer.class);
 
     /**
      * Private Constructor, this is a utility class.
@@ -68,6 +68,8 @@ public final class CommonTransformer {
             person.setFax(entity.getFax());
             person.setBirthday(convert(entity.getBirthday()));
             person.setGender(entity.getGender());
+            person.setUnderstoodPrivacySettings(entity.getUnderstoodPrivacy());
+            person.setAcceptNewsletters(entity.getAcceptNewsletters());
         } else {
             person = null;
         }
@@ -88,6 +90,8 @@ public final class CommonTransformer {
             entity.setFax(person.getFax());
             entity.setBirthday(convert(person.getBirthday()));
             entity.setGender(person.getGender());
+            entity.setUnderstoodPrivacy(person.getUnderstoodPrivacySettings());
+            entity.setAcceptNewsletters(person.getAcceptNewsletters());
         }
 
         return entity;

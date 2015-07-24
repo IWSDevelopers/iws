@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://ws.iws.iaeste.net/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="committeeWSService" targetNamespace="http://ws.iws.iaeste.net/">
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://ws.iws.iaeste.net/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="committeeWSService" targetNamespace="http://ws.iws.iaeste.net/">
   <wsdl:types>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://ws.iws.iaeste.net/" targetNamespace="http://ws.iws.iaeste.net/" version="1.0">
 
@@ -122,6 +122,8 @@
           <xs:element name="fax" nillable="true" type="xs:string"/>
           <xs:element name="birthday" nillable="true" type="tns:Date"/>
           <xs:element name="gender" nillable="true" type="tns:Gender"/>
+          <xs:element name="understoodPrivacySettings" nillable="true" type="xs:boolean"/>
+          <xs:element name="acceptNewsletters" nillable="true" type="xs:boolean"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -711,65 +713,65 @@
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="committeeWSServiceSoapBinding" type="tns:committeeWS">
-    <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <soap12:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
     <wsdl:operation name="fetchCommittees">
-      <soap:operation soapAction="" style="rpc"/>
+      <soap12:operation soapAction="" style="rpc"/>
       <wsdl:input name="fetchCommittees">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="fetchCommitteesResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="fetchInternationalGroups">
-      <soap:operation soapAction="" style="rpc"/>
+      <soap12:operation soapAction="" style="rpc"/>
       <wsdl:input name="fetchInternationalGroups">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="fetchInternationalGroupsResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="fetchCountrySurvey">
-      <soap:operation soapAction="" style="rpc"/>
+      <soap12:operation soapAction="" style="rpc"/>
       <wsdl:input name="fetchCountrySurvey">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="fetchCountrySurveyResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="processCommittee">
-      <soap:operation soapAction="" style="rpc"/>
+      <soap12:operation soapAction="" style="rpc"/>
       <wsdl:input name="processCommittee">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="processCommitteeResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="processInternationalGroup">
-      <soap:operation soapAction="" style="rpc"/>
+      <soap12:operation soapAction="" style="rpc"/>
       <wsdl:input name="processInternationalGroup">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="processInternationalGroupResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="processCountrySurvey">
-      <soap:operation soapAction="" style="rpc"/>
+      <soap12:operation soapAction="" style="rpc"/>
       <wsdl:input name="processCountrySurvey">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="processCountrySurveyResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
   </wsdl:binding>
   <wsdl:service name="committeeWSService">
     <wsdl:port binding="tns:committeeWSServiceSoapBinding" name="committeeWS">
-      <soap:address location="http://localhost:9080/iws-ws/committeeWS"/>
+      <soap12:address location="http://localhost:9080/iws-ws/committeeWS"/>
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

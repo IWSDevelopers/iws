@@ -43,17 +43,17 @@ import java.util.List;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class MigrateTest {
 
-    private static final Logger log = LoggerFactory.getLogger(MigrateTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MigrateTest.class);
     private static final ContextProvider context = ContextProvider.getInstance();
 
-    private Migrator fileMigrator;
-    //private Migrator countryMigrator;
-    //private Migrator groupMigrator;
-    //private Migrator userMigrator;
-    //private Migrator userGroupMigrator;
-    //private Migrator mailMigrator;
-    //private Migrator offerMigrator;
-    //private Migrator offerGroupMigrator;
+    private Migrator<IW3FileEntity> fileMigrator;
+    //private Migrator<IW3CountriesEntity> countryMigrator;
+    //private Migrator<IW3GroupsEntity> groupMigrator;
+    //private Migrator<IW3ProfilesEntity> userMigrator;
+    //private Migrator<IW3User2GroupEntity> userGroupMigrator;
+    //private Migrator<IW3UsersEntity> mailMigrator;
+    //private Migrator<IW3OffersEntity> offerMigrator;
+    //private Migrator<IW3Offer2GroupEntity> offerGroupMigrator;
     private IW3Dao iw3Dao;
 
     private static Long start = null;
@@ -66,7 +66,7 @@ public class MigrateTest {
     @AfterClass
     public static void afterClass() {
         final Period duration = new Period(new Date().getTime() - start);
-        log.info("Migration of the IW3 Database to IWS has been completed in {}:{}:{}.",
+        LOG.info("Migration of the IW3 Database to IWS has been completed in {}:{}:{}.",
                 duration.getHours(),
                 duration.getMinutes(),
                 duration.getSeconds());
@@ -93,17 +93,17 @@ public class MigrateTest {
     public void test8ReadingWritingFiles() {
         final Long count = iw3Dao.countFiles();
         final long blocks = (count / Migrator.BLOCK_SIZE) + 1;
-        log.info("Found {} Files to migrate.", count);
+        LOG.info("Found {} Files to migrate.", count);
         MigrationResult result = new MigrationResult();
 
         for (int page = 0; page < blocks; page ++) {
-            log.debug("Migrating File block {} of {}.", page + 1, blocks);
+            LOG.debug("Migrating File block {} of {}.", page + 1, blocks);
             final List<IW3FileEntity> userGroups = iw3Dao.findFiles(page);
             result = result.merge(fileMigrator.migrate(userGroups));
         }
 
         assertThat(result.getPersisted() + result.getSkipped(), is(count));
-        log.info("Completed Migrating Files; Persisted {} & Skipped {}.", result.getPersisted(), result.getSkipped());
+        LOG.info("Completed Migrating Files; Persisted {} & Skipped {}.", result.getPersisted(), result.getSkipped());
     }
 
     // Following is commented out, since the initial migration is over. The code
@@ -112,7 +112,7 @@ public class MigrateTest {
     //@Test
     //public void test1ReadingWritingCountries() {
     //    final List<IW3CountriesEntity> countries = iw3Dao.findAllCountries();
-    //    log.info("Found {} Countries to migrate.", countries.size());
+    //    LOG.info("Found {} Countries to migrate.", countries.size());
     //
     //    final MigrationResult result = countryMigrator.migrate(countries);
     //    final long persisted = result.getPersisted();
@@ -120,7 +120,7 @@ public class MigrateTest {
     //
     //    // We should have all minus the invalid Chile & Training Session Country
     //    assertThat((int) (persisted + skipped), is(countries.size()));
-    //    log.info("Completed Migrating Countries; Persisted {} & Skipped {}.", persisted, skipped);
+    //    LOG.info("Completed Migrating Countries; Persisted {} & Skipped {}.", persisted, skipped);
     //}
 
     // Following is commented out, since the initial migration is over. The code
@@ -129,14 +129,14 @@ public class MigrateTest {
     //@Test
     //public void test2ReadingWritingGroups() {
     //    final List<IW3GroupsEntity> groups = iw3Dao.findAllGroups();
-    //    log.info("Found {} Groups to migrate.", groups.size());
+    //    LOG.info("Found {} Groups to migrate.", groups.size());
     //
     //    final MigrationResult result = groupMigrator.migrate(groups);
     //    final long persisted = result.getPersisted();
     //    final long skipped = result.getSkipped();
     //
     //    assertThat((int) (persisted + skipped), is(groups.size()));
-    //    log.info("Completed Migrating Groups; Persisted {} & Skipped {}.", persisted, skipped);
+    //    LOG.info("Completed Migrating Groups; Persisted {} & Skipped {}.", persisted, skipped);
     //}
 
     // Following is commented out, since the initial migration is over. The code
@@ -146,17 +146,17 @@ public class MigrateTest {
     //public void test3ReadingWritingUsers() {
     //    final Long count = iw3Dao.countProfiles();
     //    final long blocks = (count / Migrator.BLOCK_SIZE) + 1;
-    //    log.info("Found {} Users to migrate.", count);
+    //    LOG.info("Found {} Users to migrate.", count);
     //    MigrationResult result = new MigrationResult();
     //
     //    for (int page = 0; page < blocks; page++) {
-    //        log.debug("Migrating Users block {} of {}.", page + 1, blocks);
+    //        LOG.debug("Migrating Users block {} of {}.", page + 1, blocks);
     //        final List<IW3ProfilesEntity> profiles = iw3Dao.findProfiles(page);
     //        result = result.merge(userMigrator.migrate(profiles));
     //    }
     //
     //    assertThat(result.getPersisted(), is(count));
-    //    log.info("Completed Migrating Users; Persisted {}.", result.getPersisted());
+    //    LOG.info("Completed Migrating Users; Persisted {}.", result.getPersisted());
     //}
 
     // Following is commented out, since the initial migration is over. The code
@@ -166,29 +166,29 @@ public class MigrateTest {
     //public void test4ReadingWritingUserGroups() {
     //    final Long count = iw3Dao.countUserGroups();
     //    final long blocks = (count / Migrator.BLOCK_SIZE) + 1;
-    //    log.info("Found {} UserGroups to migrate.", count);
+    //    LOG.info("Found {} UserGroups to migrate.", count);
     //    MigrationResult result = new MigrationResult();
     //
     //    for (int page = 0; page < blocks; page ++) {
-    //        log.debug("Migrating UserGroups block {} of {}.", page + 1, blocks);
+    //        LOG.debug("Migrating UserGroups block {} of {}.", page + 1, blocks);
     //        final List<IW3User2GroupEntity> userGroups = iw3Dao.findUserGroups(page);
     //        result = result.merge(userGroupMigrator.migrate(userGroups));
     //    }
     //
     //    assertThat(result.getPersisted() + result.getSkipped(), is(count));
-    //    log.info("Completed Migrating UserGroups; Persisted {} & Skipped {}.", result.getPersisted(), result.getSkipped());
+    //    LOG.info("Completed Migrating UserGroups; Persisted {} & Skipped {}.", result.getPersisted(), result.getSkipped());
     //}
 
     //@Test
     //@Transactional("transactionManagerMail")
     //public void test5ReadingWritingMail() {
-    //    log.info("Starting migration of Mail settings.");
+    //    LOG.info("Starting migration of Mail settings.");
     //
     //    final MigrationResult result = mailMigrator.migrate();
     //    final long persisted = result.getPersisted();
     //
     //    assertThat(persisted > 0, is(true));
-    //    log.info("Completed Migrating Mail.");
+    //    LOG.info("Completed Migrating Mail.");
     //}
 
     // Following is commented out, since the initial migration is over. The code
@@ -198,17 +198,17 @@ public class MigrateTest {
     //public void test6ReadingWritingOffers() {
     //    final Long count = iw3Dao.countOffers();
     //    final long blocks = (count / Migrator.BLOCK_SIZE) + 1;
-    //    log.info("Found {} Offers to migrate.", count);
+    //    LOG.info("Found {} Offers to migrate.", count);
     //    MigrationResult result = new MigrationResult();
     //
     //    for (int page = 0; page < blocks; page++) {
-    //        log.debug("Migrating Offers block {} of {}.", page + 1, blocks);
+    //        LOG.debug("Migrating Offers block {} of {}.", page + 1, blocks);
     //        final List<IW3OffersEntity> offers = iw3Dao.findOffers(page);
     //        result = result.merge(offerMigrator.migrate(offers));
     //    }
     //
     //    assertThat(result.getPersisted() + result.getSkipped(), is(count));
-    //    log.info("Completed Migrating Offers; Persisted {} & Skipped {}.", result.getPersisted(), result.getSkipped());
+    //    LOG.info("Completed Migrating Offers; Persisted {} & Skipped {}.", result.getPersisted(), result.getSkipped());
     //}
 
     // Following is commented out, since the initial migration is over. The code
@@ -218,16 +218,16 @@ public class MigrateTest {
     //public void test7ReadingWritingOfferGroups() {
     //    final Long count = iw3Dao.countOfferGroups();
     //    final long blocks = (count / Migrator.BLOCK_SIZE) + 1;
-    //    log.info("Found {} OfferGroups to migrate.", count);
+    //    LOG.info("Found {} OfferGroups to migrate.", count);
     //    MigrationResult result = new MigrationResult();
     //
     //    for (int page = 0; page < blocks; page++) {
-    //        log.debug("Migrating OfferGroups block {} of {}.", page + 1, blocks);
+    //        LOG.debug("Migrating OfferGroups block {} of {}.", page + 1, blocks);
     //        final List<IW3Offer2GroupEntity> offerGroups = iw3Dao.findOfferGroups(page);
     //        result = result.merge(offerGroupMigrator.migrate(offerGroups));
     //    }
     //
     //    assertThat(result.getPersisted() + result.getSkipped(), is(count));
-    //    log.info("Completed Migrating OfferGroups; Persisted {} & Skipped {}.", result.getPersisted(), result.getSkipped());
+    //    LOG.info("Completed Migrating OfferGroups; Persisted {} & Skipped {}.", result.getPersisted(), result.getSkipped());
     //}
 }

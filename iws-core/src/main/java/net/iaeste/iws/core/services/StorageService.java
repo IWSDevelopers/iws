@@ -61,7 +61,8 @@ import java.util.Objects;
  */
 public final class StorageService extends CommonService<AccessDao> {
 
-    private static final Logger log = LoggerFactory.getLogger(StorageService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(StorageService.class);
+
     // The root folder is having the internal Id 3. However, since we're only
     // getting the ExternalId for all other folders, it makes more sense to the
     // existing ExternalId for the Root folder instead of the Id.
@@ -199,7 +200,7 @@ public final class StorageService extends CommonService<AccessDao> {
             final List<FolderEntity> subfolders = readSubFolders(foundFolder);
             final List<FileEntity> files = findFiles(foundFolder);
             if (subfolders.isEmpty() && files.isEmpty()) {
-                log.info(formatLogMessage(authentication, "Deleting folder %s from the system.", foundFolder));
+                LOG.info(formatLogMessage(authentication, "Deleting folder %s from the system.", foundFolder));
                 dao.delete(foundFolder);
                 folder = null;
             } else {
@@ -223,11 +224,11 @@ public final class StorageService extends CommonService<AccessDao> {
         final List<UserGroupEntity> u2gList = dao.findAllUserGroups(authentication.getUser());
 
         if (folderId == null) {
-            log.info(formatLogMessage(authentication, "Reading the Root Folder."));
+            LOG.info(formatLogMessage(authentication, "Reading the Root Folder."));
             // Fetch the root folder
             folderEntity = findFolder(ROOT_FOLDER_EID);
         } else {
-            log.info(formatLogMessage(authentication, "Reading the Folder with Id {}.", folderId));
+            LOG.info(formatLogMessage(authentication, "Reading the Folder with Id {}.", folderId));
             // Fetch the content of the desired folder, including the files.
             folderEntity = findFolder(folderId);
 
@@ -339,7 +340,7 @@ public final class StorageService extends CommonService<AccessDao> {
      *
      * @param u2gList User Group Relations
      * @param folder  Parent Folder to find sub folders for
-     * @return
+     * @return Folder List
      */
     private List<Folder> readFolders(final List<UserGroupEntity> u2gList, final FolderEntity folder) {
         final List<FolderEntity> found = readSubFolders(folder);
@@ -425,7 +426,7 @@ public final class StorageService extends CommonService<AccessDao> {
      * @param authentication User Authentication Information
      * @param entity         Current File Entity to check
      * @param u2gList        User Group Relations
-     * @return
+     * @return Found file or null
      */
     private FileEntity checkFile(final Authentication authentication, final FileEntity entity, final List<UserGroupEntity> u2gList) {
         FileEntity file = null;

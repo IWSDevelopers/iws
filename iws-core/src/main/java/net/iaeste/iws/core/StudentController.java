@@ -45,7 +45,7 @@ import org.slf4j.LoggerFactory;
  */
 public final class StudentController extends CommonController implements Students {
 
-    private static final Logger log = LoggerFactory.getLogger(StudentController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(StudentController.class);
 
     /**
      * Default Constructor, takes a ServiceFactory as input parameter, and uses
@@ -62,8 +62,8 @@ public final class StudentController extends CommonController implements Student
      */
     @Override
     public CreateUserResponse createStudent(final AuthenticationToken token, final CreateUserRequest request) {
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting createStudent()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Starting createStudent()"));
         }
         CreateUserResponse response;
 
@@ -74,11 +74,17 @@ public final class StudentController extends CommonController implements Student
             final AccountService service = factory.prepareAccountService();
             response = service.createStudent(authentication, request);
         } catch (IWSException e) {
+            // Generally, Exceptions should always be either logged or rethrown.
+            // In our case, we're transforming the Exception into an Error
+            // Object which can be returned to the User. However, to ensure
+            // that we're not loosing anything - the Exception is also LOG.ed
+            // here as a debug message
+            LOG.debug(e.getMessage(), e);
             response = new CreateUserResponse(e.getError(), e.getMessage());
         }
 
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished createStudent()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Finished createStudent()"));
         }
         return response;
     }
@@ -88,8 +94,8 @@ public final class StudentController extends CommonController implements Student
      */
     @Override
     public StudentResponse processStudent(final AuthenticationToken token, final StudentRequest request) {
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting processStudent()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Starting processStudent()"));
         }
         StudentResponse response;
 
@@ -100,11 +106,17 @@ public final class StudentController extends CommonController implements Student
             final StudentService service = factory.prepareStudentService();
             response = service.processStudent(authentication, request);
         } catch (IWSException e) {
+            // Generally, Exceptions should always be either logged or rethrown.
+            // In our case, we're transforming the Exception into an Error
+            // Object which can be returned to the User. However, to ensure
+            // that we're not loosing anything - the Exception is also LOG.ed
+            // here as a debug message
+            LOG.debug(e.getMessage(), e);
             response = new StudentResponse(e.getError(), e.getMessage());
         }
 
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished processStudent()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Finished processStudent()"));
         }
         return response;
     }
@@ -114,8 +126,8 @@ public final class StudentController extends CommonController implements Student
      */
     @Override
     public FetchStudentsResponse fetchStudents(final AuthenticationToken token, final FetchStudentsRequest request) {
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting fetchStudents()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Starting fetchStudents()"));
         }
         FetchStudentsResponse response;
 
@@ -126,11 +138,17 @@ public final class StudentController extends CommonController implements Student
             final StudentService service = factory.prepareStudentService();
             response = service.fetchStudents(authentication, request);
         } catch (IWSException e) {
+            // Generally, Exceptions should always be either logged or rethrown.
+            // In our case, we're transforming the Exception into an Error
+            // Object which can be returned to the User. However, to ensure
+            // that we're not loosing anything - the Exception is also LOG.ed
+            // here as a debug message
+            LOG.debug(e.getMessage(), e);
             response = new FetchStudentsResponse(e.getError(), e.getMessage());
         }
 
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished fetchStudents()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Finished fetchStudents()"));
         }
         return response;
     }
@@ -140,8 +158,8 @@ public final class StudentController extends CommonController implements Student
      */
     @Override
     public StudentApplicationResponse processStudentApplication(final AuthenticationToken token, final ProcessStudentApplicationsRequest request) {
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting processStudentApplication()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Starting processStudentApplication()"));
         }
         StudentApplicationResponse response;
 
@@ -152,11 +170,17 @@ public final class StudentController extends CommonController implements Student
             final StudentService service = factory.prepareStudentService();
             response = service.processStudentApplication(authentication, request);
         } catch (IWSException e) {
+            // Generally, Exceptions should always be either logged or rethrown.
+            // In our case, we're transforming the Exception into an Error
+            // Object which can be returned to the User. However, to ensure
+            // that we're not loosing anything - the Exception is also LOG.ed
+            // here as a debug message
+            LOG.debug(e.getMessage(), e);
             response = new StudentApplicationResponse(e.getError(), e.getMessage());
         }
 
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished processStudentApplication()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Finished processStudentApplication()"));
         }
         return response;
     }
@@ -166,8 +190,8 @@ public final class StudentController extends CommonController implements Student
      */
     @Override
     public FetchStudentApplicationsResponse fetchStudentApplications(final AuthenticationToken token, final FetchStudentApplicationsRequest request) {
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting fetchStudentApplications()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Starting fetchStudentApplications()"));
         }
         FetchStudentApplicationsResponse response;
 
@@ -178,11 +202,17 @@ public final class StudentController extends CommonController implements Student
             final StudentService service = factory.prepareStudentService();
             response = service.fetchStudentApplications(authentication, request);
         } catch (IWSException e) {
+            // Generally, Exceptions should always be either logged or rethrown.
+            // In our case, we're transforming the Exception into an Error
+            // Object which can be returned to the User. However, to ensure
+            // that we're not loosing anything - the Exception is also LOG.ed
+            // here as a debug message
+            LOG.debug(e.getMessage(), e);
             response = new FetchStudentApplicationsResponse(e.getError(), e.getMessage());
         }
 
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished fetchStudentApplications()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Finished fetchStudentApplications()"));
         }
         return response;
     }
@@ -192,8 +222,8 @@ public final class StudentController extends CommonController implements Student
      */
     @Override
     public StudentApplicationResponse processApplicationStatus(final AuthenticationToken token, final StudentApplicationRequest request) {
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting processApplicationStatus()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Starting processApplicationStatus()"));
         }
         StudentApplicationResponse response;
 
@@ -204,11 +234,17 @@ public final class StudentController extends CommonController implements Student
             final StudentService service = factory.prepareStudentService();
             response = service.processApplicationStatus(authentication, request);
         } catch (IWSException e) {
+            // Generally, Exceptions should always be either logged or rethrown.
+            // In our case, we're transforming the Exception into an Error
+            // Object which can be returned to the User. However, to ensure
+            // that we're not loosing anything - the Exception is also LOG.ed
+            // here as a debug message
+            LOG.debug(e.getMessage(), e);
             response = new StudentApplicationResponse(e.getError(), e.getMessage());
         }
 
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished processApplicationStatus()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Finished processApplicationStatus()"));
         }
         return response;
     }

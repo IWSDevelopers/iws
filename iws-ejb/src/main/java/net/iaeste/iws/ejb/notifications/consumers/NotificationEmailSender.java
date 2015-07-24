@@ -75,7 +75,7 @@ public class NotificationEmailSender implements Observer {
     private NotificationDao dao;
     private AccessDao accessDao;
 
-    private static final Logger log = LoggerFactory.getLogger(NotificationEmailSender.class);
+    private static final Logger LOG = LoggerFactory.getLogger(NotificationEmailSender.class);
 
     //Need to be EJB to use @resource
 //    @Resource(mappedName = "iwsEmailQueue")
@@ -197,10 +197,10 @@ public class NotificationEmailSender implements Observer {
             } catch (Exception e) {
                 //catching all exceptions other than IWSException to prevent
                 //stopping notification processing and leaving error message in log
-                log.error("System error occured", e);
+                LOG.error("System error occured", e);
             }
         } else {
-            log.warn("Update called for uninitialized observer");
+            LOG.warn("Update called for uninitialized observer");
         }
     }
 
@@ -208,14 +208,14 @@ public class NotificationEmailSender implements Observer {
         //TODO this DB request doesn't work just after the task is persisted, I (Pavel) have no idea why. once it's solved, some TODOs in NotificationManager(Bean) could fixed
         final List<NotificationJobTasksView> jobTasks = dao.findUnprocessedNotificationJobTaskByConsumerId(id, ATTEMPTS_LIMIT);
         for (final NotificationJobTasksView jobTask : jobTasks) {
-            log.info("Processing email notification job task " + jobTask.getId());
+            LOG.info("Processing email notification job task " + jobTask.getId());
             processTask(jobTask);
         }
     }
 
     private void processTask(final NotificationJobTasksView task) {
         if ((task != null) && (task.getObject() != null)) {
-            log.info("Processing email notification job task " + task.getId());
+            LOG.info("Processing email notification job task " + task.getId());
             try (final ByteArrayInputStream inputStream = new ByteArrayInputStream(task.getObject());
                  final ObjectInputStream objectStream = new ObjectInputStream(inputStream);) {
                 final Map<NotificationField, String> fields = (Map<NotificationField, String>) objectStream.readObject();
@@ -226,26 +226,26 @@ public class NotificationEmailSender implements Observer {
                     processedStatus = processTask(fields, task.getNotificationType());
                 }
                 final boolean processed = processedStatus != NotificationProcessTaskStatus.ERROR;
-                log.info("Notification job task " + task.getId() + " attempt number is going to be updated to " + (task.getAttempts() + 1) + ", processed set to " + processed);
+                LOG.info("Notification job task " + task.getId() + " attempt number is going to be updated to " + (task.getAttempts() + 1) + ", processed set to " + processed);
                 dao.updateNotificationJobTask(task.getId(), processed, task.getAttempts() + 1);
-                log.info("Notification job task " + task.getId() + " was updated");
+                LOG.info("Notification job task " + task.getId() + " was updated");
             } catch (IOException | ClassNotFoundException e) {
                 final boolean processed = false;
-                log.info("Notification job task " + task.getId() + " failed, task is going to be updated to " + (task.getAttempts() + 1) + ", processed set to " + processed);
+                LOG.info("Notification job task " + task.getId() + " failed, task is going to be updated to " + (task.getAttempts() + 1) + ", processed set to " + processed);
                 dao.updateNotificationJobTask(task.getId(), processed, task.getAttempts() + 1);
-                log.info("Notification job task " + task.getId() + " was updated");
-                log.error(e.getMessage(), e);
+                LOG.info("Notification job task " + task.getId() + " was updated");
+                LOG.error(e.getMessage(), e);
             } catch (IWSException e) {
                 //prevent throwing IWSException out, it stops the timer to run this processing
                 final boolean processed = false;
                 dao.updateNotificationJobTask(task.getId(), processed, task.getAttempts() + 1);
-                log.error("Error during notification processing", e);
+                LOG.error("Error during notification processing", e);
             }
         } else {
             if (task != null) {
-                log.error("Processing of the " + task + " which contains no Object, cannot be completed.");
+                LOG.error("Processing of the " + task + " which contains no Object, cannot be completed.");
             } else {
-                log.error("Processing of a NULL task will not work.");
+                LOG.error("Processing of a NULL task will not work.");
             }
         }
     }
@@ -258,43 +258,43 @@ public class NotificationEmailSender implements Observer {
         NotificationProcessTaskStatus ret = NotificationProcessTaskStatus.ERROR;
         final List<UserEntity> recipients = getRecipients(fields, type);
         if (recipients == null) {
-            log.info("Notification job task for " + type + " has no recipient");
+            LOG.info("Notification job task for " + type + " has no recipient");
             return NotificationProcessTaskStatus.NOT_FOR_ME;
         }
 
         for (final UserEntity recipient : recipients) {
-            log.info("Notification job task for " + type + " has recipient " + recipient.getId());
+            LOG.info("Notification job task for " + type + " has recipient " + recipient.getId());
             try {
                 final UserNotificationEntity userSetting = dao.findUserNotificationSetting(recipient, type);
                 //Processing of other notification than 'IMMEDIATELY' ones will be triggered by a timer and all required information
                 //should be get from DB directly according to the NotificationType
                 if (userSetting != null && userSetting.getFrequency() == NotificationFrequency.IMMEDIATELY) {
                     debugLogActivationLink(fields, type);
-                    log.info("User notification setting for " + type + " was found");
+                    LOG.info("User notification setting for " + type + " was found");
                     try {
                         final ObjectMessage msg = session.createObjectMessage();
                         final EmailMessage emsg = new EmailMessage();
                         emsg.setTo(getTargetEmailAddress(recipient, type));
                         final Map<String, String> messageData = messageGenerator.generateFromTemplate(fields, type);
-                        log.info("Email message for for " + type + " was generated");
+                        LOG.info("Email message for for " + type + " was generated");
                         emsg.setSubject(messageData.get("title"));
                         emsg.setMessage(messageData.get("body"));
                         msg.setObject(emsg);
 
                         sender.send(msg);
-                        log.info("Email message for for " + type + " was sent to message queue");
+                        LOG.info("Email message for for " + type + " was sent to message queue");
                         ret = NotificationProcessTaskStatus.OK;
                     } catch (IWSException e) {
-                        log.error("Notification message generating failed", e);
+                        LOG.error("Notification message generating failed", e);
                     } catch (JMSException e) {
                         //do something, log or exception?
-                        log.error("Error during sending notification message to JMS queue", e);
+                        LOG.error("Error during sending notification message to JMS queue", e);
                     }
                 } else if (userSetting == null) {
-                    log.warn("User " + recipient.getId() + " has no setting for notification type '" + type + "'");
+                    LOG.warn("User " + recipient.getId() + " has no setting for notification type '" + type + "'");
                 }
             } catch (IWSException ignore) {
-                log.warn("User " + recipient.getId() + " has not proper notification setting for notification type " + type);
+                LOG.warn("User " + recipient.getId() + " has not proper notification setting for notification type " + type);
             }
         }
         return ret;
@@ -302,7 +302,7 @@ public class NotificationEmailSender implements Observer {
 
     // printout of the activation link for easier testing of add user functionality
     private static void debugLogActivationLink(Map<NotificationField, String> fields, NotificationType notificationType) {
-        if(notificationType == NotificationType.ACTIVATE_USER && log.isDebugEnabled()) {
+        if(notificationType == NotificationType.ACTIVATE_USER && LOG.isDebugEnabled()) {
             String hostname;
             try {
                 hostname = InetAddress.getLocalHost().getHostName();
@@ -310,7 +310,7 @@ public class NotificationEmailSender implements Observer {
                 // Just assume localhost
                 hostname = "localhost";
             }
-            log.debug("***** ACTIVATION LINK https://" + hostname + "/intraweb/pages/activateUser.xhtml?code=" + fields.get(NotificationField.CODE) + " *****");
+            LOG.debug("***** ACTIVATION LINK https://" + hostname + "/intraweb/pages/activateUser.xhtml?code=" + fields.get(NotificationField.CODE) + " *****");
         }
     }
 

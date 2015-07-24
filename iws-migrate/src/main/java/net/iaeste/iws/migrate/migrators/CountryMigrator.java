@@ -40,7 +40,7 @@ import java.util.List;
  */
 public class CountryMigrator implements Migrator<IW3CountriesEntity> {
 
-    private static final Logger log = LoggerFactory.getLogger(CountryMigrator.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CountryMigrator.class);
 
     @Autowired
     private IWSDao iwsDao;
@@ -79,11 +79,11 @@ public class CountryMigrator implements Migrator<IW3CountriesEntity> {
                     iwsDao.persist(entity);
                     persisted++;
                 } catch (IllegalArgumentException | VerificationException e) {
-                    log.error("Cannot process Country id:{}, name = {} => {}", oldCountry.getCountryid(), oldCountry.getCountryname(), e.getMessage());
+                    LOG.error("Cannot process Country id:{}, name = {} => {}", oldCountry.getCountryid(), oldCountry.getCountryname(), e.getMessage());
                     skipped++;
                 }
             } else {
-                log.info("Skipping {}, the CountryCode is invalid '{}'.", convert(oldCountry.getCountryname()), oldCountry.getCountryid());
+                LOG.info("Skipping {}, the CountryCode is invalid '{}'.", convert(oldCountry.getCountryname()), oldCountry.getCountryid());
                 skipped++;
             }
         }
@@ -148,7 +148,9 @@ public class CountryMigrator implements Migrator<IW3CountriesEntity> {
                 converted = Currency.UYU;
                 break;
             case "": // as 138 countries have no currency we just log this at debug level to avoid being spammed!
-                log.debug("Failed to convert Currency '" + currency + "' for " + countryname + ", falling back to USD.");
+                LOG.debug("Failed to convert Currency '" + currency + "' for " + countryname + ", falling back to USD.");
+                converted = Currency.USD;
+                break;
             case "XYZ": // Test value
                 converted = Currency.USD;
                 break;
@@ -171,7 +173,7 @@ public class CountryMigrator implements Migrator<IW3CountriesEntity> {
             try {
                 result = Currency.valueOf(currency);
             } catch (final IllegalArgumentException e) {
-                log.debug("Unable to convert currency " + currency + " for country " + countryname + ": " + e.getMessage(), e);
+                LOG.debug("Unable to convert currency " + currency + " for country " + countryname + ": " + e.getMessage(), e);
                 result = null;
             }
         }

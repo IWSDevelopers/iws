@@ -64,7 +64,7 @@ import javax.persistence.EntityManager;
 @TransactionManagement(TransactionManagementType.CONTAINER)
 public class StorageBean implements Storage {
 
-    private static final Logger log = LoggerFactory.getLogger(StorageBean.class);
+    private static final Logger LOG = LoggerFactory.getLogger(StorageBean.class);
     @Inject @IWSBean private EntityManager entityManager;
     @Inject @IWSBean private Notifications notifications;
     @Inject @IWSBean private SessionRequestBean session;
@@ -132,9 +132,9 @@ public class StorageBean implements Storage {
 
         try {
             response = controller.processFolder(token, request);
-            log.info(session.generateLogAndUpdateSession("processFolder", start, response, token));
+            LOG.info(session.generateLogAndUpdateSession("processFolder", start, response, token));
         } catch (RuntimeException e) {
-            log.error(session.generateLogAndSaveRequest("processFolder", start, e, token, request), e);
+            LOG.error(session.generateLogAndSaveRequest("processFolder", start, e, token, request), e);
             response = new FolderResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -152,9 +152,9 @@ public class StorageBean implements Storage {
 
         try {
             response = controller.fetchFolder(token, request);
-            log.info(session.generateLogAndUpdateSession("fetchFolder", start, response, token));
+            LOG.info(session.generateLogAndUpdateSession("fetchFolder", start, response, token));
         } catch (RuntimeException e) {
-            log.error(session.generateLogAndSaveRequest("fetchFolder", start, e, token, request), e);
+            LOG.error(session.generateLogAndSaveRequest("fetchFolder", start, e, token, request), e);
             response = new FetchFolderResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -172,9 +172,9 @@ public class StorageBean implements Storage {
 
         try {
             response = controller.processFile(token, request);
-            log.info(session.generateLogAndUpdateSession("processFile", start, response, token));
+            LOG.info(session.generateLogAndUpdateSession("processFile", start, response, token));
         } catch (RuntimeException e) {
-            log.error(session.generateLogAndSaveRequest("processFile", start, e, token, request), e);
+            LOG.error(session.generateLogAndSaveRequest("processFile", start, e, token, request), e);
             response = new FileResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -192,9 +192,9 @@ public class StorageBean implements Storage {
 
         try {
             response = controller.fetchFile(token, request);
-            log.info(session.generateLogAndUpdateSession("fetchFile", start, response, token));
+            LOG.info(session.generateLogAndUpdateSession("fetchFile", start, response, token));
         } catch (RuntimeException e) {
-            log.error(session.generateLogAndSaveRequest("fetchFile", start, e, token, request), e);
+            LOG.error(session.generateLogAndSaveRequest("fetchFile", start, e, token, request), e);
             response = new FetchFileResponse(IWSErrors.ERROR, e.getMessage());
         }
 

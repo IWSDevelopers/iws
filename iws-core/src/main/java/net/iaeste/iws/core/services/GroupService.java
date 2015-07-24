@@ -61,7 +61,7 @@ import java.util.List;
  */
 public final class GroupService {
 
-    private static final Logger log = LoggerFactory.getLogger(GroupService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(GroupService.class);
 
     private static final Long GENERAL_SECRETARY_GROUP = 2L;
 
@@ -129,7 +129,7 @@ public final class GroupService {
                 }
             } else {
                 final Group theGroup = request.getGroup();
-                log.info(formatLogMessage(authentication, "Group Updated was made for the restricted group %s of type %s. Only selected fields have been updated!", theGroup.getGroupName(), theGroup.getGroupType().getDescription()));
+                LOG.info(formatLogMessage(authentication, "Group Updated was made for the restricted group %s of type %s. Only selected fields have been updated!", theGroup.getGroupName(), theGroup.getGroupType().getDescription()));
                 limitedGroupUpdate(authentication, entity, theGroup);
             }
         }
@@ -224,7 +224,7 @@ public final class GroupService {
                 throw new IWSException(IWSErrors.NOT_PERMITTED, "The Group being deleted contains SubGroups.");
             }
 
-            log.info(formatLogMessage(authentication, "The Group '%s' with Id '%s', is being deleted by '%s'.", group.getGroupName(), group.getExternalId(), authentication.getUser().getExternalId()));
+            LOG.info(formatLogMessage(authentication, "The Group '%s' with Id '%s', is being deleted by '%s'.", group.getGroupName(), group.getExternalId(), authentication.getUser().getExternalId()));
             dao.delete(group);
         } else {
             throw new IWSException(IWSErrors.NOT_PERMITTED, "The Group is not associated with the requesting Group.");
@@ -298,7 +298,7 @@ public final class GroupService {
                 // Member Group
                 if ((type == GroupType.NATIONAL) || group.getId().equals(GENERAL_SECRETARY_GROUP)) {
                     final GroupEntity memberGroup = dao.findMemberGroup(user);
-                    log.debug(formatLogMessage(authentication, "Changing owner for Member Group '%s' with Id '%s'.", memberGroup.getGroupName(), memberGroup.getExternalId()));
+                    LOG.debug(formatLogMessage(authentication, "Changing owner for Member Group '%s' with Id '%s'.", memberGroup.getGroupName(), memberGroup.getExternalId()));
                     if (memberGroup.getId().equals(group.getParentId())) {
                         changeGroupOwner(authentication, user, memberGroup, request.getTitle());
                     } else {
@@ -309,7 +309,7 @@ public final class GroupService {
 
                 // As the NS/GS aspects are gone, we can deal with the actual
                 // change just as with any other group
-                log.debug(formatLogMessage(authentication, "Changing owner for the Group '%s' with Id '%s'.", group.getGroupName(), group.getExternalId()));
+                LOG.debug(formatLogMessage(authentication, "Changing owner for the Group '%s' with Id '%s'.", group.getGroupName(), group.getExternalId()));
                 changeGroupOwner(authentication, user, group, request.getTitle());
             } else {
                 throw new PermissionException("Cannot reassign ownership to an inactive person.");
@@ -352,16 +352,16 @@ public final class GroupService {
         newOwner.setOnPublicList(true);
         newOwner.setOnPrivateList(true);
         newOwner.setWriteToPrivateList(true);
-        log.debug(formatLogMessage(authentication, "New Owner: %s gets the role %s for group %s.", user.getFirstname() + ' ' + user.getLastname(), newOwner.getRole().getRole(), group.getGroupName()));
+        LOG.debug(formatLogMessage(authentication, "New Owner: %s gets the role %s for group %s.", user.getFirstname() + ' ' + user.getLastname(), newOwner.getRole().getRole(), group.getGroupName()));
         dao.persist(authentication, newOwner);
 
         // The old Owner will get the Moderator Role and have the title
         // removed, since it may no longer be valid
         oldOwner.setRole(dao.findRoleById(InternalConstants.ROLE_MODERATOR));
         oldOwner.setTitle(title);
-        log.debug(formatLogMessage(authentication, "Old Owner: %s gets the role %s for group %s.", authentication.getUser().getFirstname() + ' ' + authentication.getUser().getLastname(), oldOwner.getRole().getRole(), group.getGroupName()));
+        LOG.debug(formatLogMessage(authentication, "Old Owner: %s gets the role %s for group %s.", authentication.getUser().getFirstname() + ' ' + authentication.getUser().getLastname(), oldOwner.getRole().getRole(), group.getGroupName()));
         dao.persist(authentication, oldOwner);
-        log.debug(formatLogMessage(authentication, "Ownership changes have been persisted."));
+        LOG.debug(formatLogMessage(authentication, "Ownership changes have been persisted."));
 
         // Old Owner is the one invoking this request, so no need to include that
         // Commenting out the notifications, since they cause errors

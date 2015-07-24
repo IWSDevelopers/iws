@@ -53,6 +53,9 @@ public final class HashcodeGenerator {
     private static final String HASHCODE_ALGORITHM_SHA384 = "SHA-384";
     private static final String HASHCODE_ALGORITHM_SHA512 = "SHA-512";
     private static final Charset CHARSET = Charset.forName(IWSConstants.DEFAULT_ENCODING);
+
+    // The primary HashCode algorithm for IWS is SHA-256, and the length of the
+    // SHA-256 HashCodes is 64 characters.
     public static final int HASHCODE_LENGTH = 64;
 
     /**

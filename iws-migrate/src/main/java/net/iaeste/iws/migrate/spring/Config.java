@@ -57,7 +57,7 @@ import java.util.Properties;
 @ComponentScan("net.iaeste.iws.migrate.daos")
 public class Config {
 
-    private static final Logger log = LoggerFactory.getLogger(Config.class);
+    private static final Logger LOG = LoggerFactory.getLogger(Config.class);
     private final Object lock = new Object();
     private final Properties properties = new Properties();
 
@@ -285,11 +285,11 @@ public class Config {
         // The URL have PostgreSQL special settings. So we prepare the
         // connection URL here
         final String url = "jdbc:postgresql://" + server + ':' + port + '/' + database;
-        log.trace("Preparing DataSource: URL=" + url);
+        LOG.trace("Preparing DataSource: URL=" + url);
         dataSource.setUrl(url);
 
         // Just have to fill in the Username & Optional Password
-        log.trace("Preparing DataSource: User=" + username);
+        LOG.trace("Preparing DataSource: User=" + username);
         dataSource.setUsername(username);
         if ((password != null) && !password.isEmpty()) {
             dataSource.setPassword(password);

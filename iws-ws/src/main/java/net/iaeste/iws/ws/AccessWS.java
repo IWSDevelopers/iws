@@ -51,7 +51,7 @@ import java.io.Serializable;
 @WebService(name = "accessWS", serviceName = "accessWSService", portName = "accessWS", targetNamespace = "http://ws.iws.iaeste.net/")
 public class AccessWS implements Access {
 
-    private static final Logger log = LoggerFactory.getLogger(AccessWS.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AccessWS.class);
 
     /**
      * Injection of the IWS Access Bean Instance, which embeds the Transactional
@@ -102,7 +102,7 @@ public class AccessWS implements Access {
     @WebResult(name = "response")
     public AuthenticationResponse generateSession(
             @WebParam(name = "request") final AuthenticationRequest request) {
-        log.info(requestLogger.prepareLogMessage("generateSession"));
+        LOG.info(requestLogger.prepareLogMessage("generateSession"));
         AuthenticationResponse response;
 
         try {
@@ -110,7 +110,7 @@ public class AccessWS implements Access {
         } catch (RuntimeException e) {
             // The EJB's are all annotated with Transactional Logic, so if an
             // error is flying by - then it is caught here.
-            log.error("Transactional Problem: " + e.getMessage(), e);
+            LOG.error("Transactional Problem: " + e.getMessage(), e);
             response = new AuthenticationResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
         }
 
@@ -125,7 +125,7 @@ public class AccessWS implements Access {
     @WebResult(name = "response")
     public FallibleResponse requestResettingSession(
             @WebParam(name = "request") final AuthenticationRequest request) {
-        log.info(requestLogger.prepareLogMessage("requestResettingSession"));
+        LOG.info(requestLogger.prepareLogMessage("requestResettingSession"));
         FallibleResponse response;
 
         try {
@@ -133,7 +133,7 @@ public class AccessWS implements Access {
         } catch (RuntimeException e) {
             // The EJB's are all annotated with Transactional Logic, so if an
             // error is flying by - then it is caught here.
-            log.error("Transactional Problem: " + e.getMessage(), e);
+            LOG.error("Transactional Problem: " + e.getMessage(), e);
             response = new FallibleResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
         }
 
@@ -148,7 +148,7 @@ public class AccessWS implements Access {
     @WebResult(name = "response")
     public AuthenticationResponse resetSession(
             @WebParam(name = "resetSessionToken") final String resetSessionToken) {
-        log.info(requestLogger.prepareLogMessage("resetSession"));
+        LOG.info(requestLogger.prepareLogMessage("resetSession"));
         AuthenticationResponse response;
 
         try {
@@ -156,7 +156,7 @@ public class AccessWS implements Access {
         } catch (RuntimeException e) {
             // The EJB's are all annotated with Transactional Logic, so if an
             // error is flying by - then it is caught here.
-            log.error("Transactional Problem: " + e.getMessage(), e);
+            LOG.error("Transactional Problem: " + e.getMessage(), e);
             response = new AuthenticationResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
         }
 
@@ -172,7 +172,7 @@ public class AccessWS implements Access {
     public <T extends Serializable> FallibleResponse saveSessionData(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final SessionDataRequest<T> request) {
-        log.info(requestLogger.prepareLogMessage(token, "saveSessionData"));
+        LOG.info(requestLogger.prepareLogMessage(token, "saveSessionData"));
         FallibleResponse response;
 
         try {
@@ -180,7 +180,7 @@ public class AccessWS implements Access {
         } catch (RuntimeException e) {
             // The EJB's are all annotated with Transactional Logic, so if an
             // error is flying by - then it is caught here.
-            log.error("Transactional Problem: " + e.getMessage(), e);
+            LOG.error("Transactional Problem: " + e.getMessage(), e);
             response = new FallibleResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
         }
 
@@ -195,7 +195,7 @@ public class AccessWS implements Access {
     @WebResult(name = "response")
     public <T extends Serializable> SessionDataResponse<T> readSessionData(
             @WebParam(name = "token") final AuthenticationToken token) {
-        log.info(requestLogger.prepareLogMessage(token, "readSessionData"));
+        LOG.info(requestLogger.prepareLogMessage(token, "readSessionData"));
         SessionDataResponse<T> response;
 
         try {
@@ -203,7 +203,7 @@ public class AccessWS implements Access {
         } catch (RuntimeException e) {
             // The EJB's are all annotated with Transactional Logic, so if an
             // error is flying by - then it is caught here.
-            log.error("Transactional Problem: " + e.getMessage(), e);
+            LOG.error("Transactional Problem: " + e.getMessage(), e);
             response = new SessionDataResponse<>(IWSErrors.FATAL, "Internal error occurred while handling the request.");
         }
 
@@ -218,7 +218,7 @@ public class AccessWS implements Access {
     @WebResult(name = "response")
     public FallibleResponse verifySession(
             @WebParam(name = "token") final AuthenticationToken token) {
-        log.info(requestLogger.prepareLogMessage(token, "verifySession"));
+        LOG.info(requestLogger.prepareLogMessage(token, "verifySession"));
         FallibleResponse response;
 
         try {
@@ -226,7 +226,7 @@ public class AccessWS implements Access {
         } catch (RuntimeException e) {
             // The EJB's are all annotated with Transactional Logic, so if an
             // error is flying by - then it is caught here.
-            log.error("Transactional Problem: " + e.getMessage(), e);
+            LOG.error("Transactional Problem: " + e.getMessage(), e);
             response = new FallibleResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
         }
 
@@ -241,7 +241,7 @@ public class AccessWS implements Access {
     @WebResult(name = "response")
     public FallibleResponse deprecateSession(
             @WebParam(name = "token") final AuthenticationToken token) {
-        log.info(requestLogger.prepareLogMessage(token, "deprecateSession"));
+        LOG.info(requestLogger.prepareLogMessage(token, "deprecateSession"));
         FallibleResponse response;
 
         try {
@@ -249,7 +249,7 @@ public class AccessWS implements Access {
         } catch (RuntimeException e) {
             // The EJB's are all annotated with Transactional Logic, so if an
             // error is flying by - then it is caught here.
-            log.error("Transactional Problem: " + e.getMessage(), e);
+            LOG.error("Transactional Problem: " + e.getMessage(), e);
             response = new FallibleResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
         }
 
@@ -264,7 +264,7 @@ public class AccessWS implements Access {
     @WebResult(name = "response")
     public FallibleResponse forgotPassword(
             @WebParam(name = "username") final String username) {
-        log.info(requestLogger.prepareLogMessage("forgotPassword"));
+        LOG.info(requestLogger.prepareLogMessage("forgotPassword"));
         FallibleResponse response;
 
         try {
@@ -272,7 +272,7 @@ public class AccessWS implements Access {
         } catch (RuntimeException e) {
             // The EJB's are all annotated with Transactional Logic, so if an
             // error is flying by - then it is caught here.
-            log.error("Transactional Problem: " + e.getMessage(), e);
+            LOG.error("Transactional Problem: " + e.getMessage(), e);
             response = new FallibleResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
         }
 
@@ -287,7 +287,7 @@ public class AccessWS implements Access {
     @WebResult(name = "response")
     public FallibleResponse resetPassword(
             @WebParam(name = "password") final Password password) {
-        log.info(requestLogger.prepareLogMessage("resetPassword"));
+        LOG.info(requestLogger.prepareLogMessage("resetPassword"));
         FallibleResponse response;
 
         try {
@@ -295,7 +295,7 @@ public class AccessWS implements Access {
         } catch (RuntimeException e) {
             // The EJB's are all annotated with Transactional Logic, so if an
             // error is flying by - then it is caught here.
-            log.error("Transactional Problem: " + e.getMessage(), e);
+            LOG.error("Transactional Problem: " + e.getMessage(), e);
             response = new FallibleResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
         }
 
@@ -311,7 +311,7 @@ public class AccessWS implements Access {
     public FallibleResponse updatePassword(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "password") final Password password) {
-        log.info(requestLogger.prepareLogMessage(token, "updatePassword"));
+        LOG.info(requestLogger.prepareLogMessage(token, "updatePassword"));
         FallibleResponse response;
 
         try {
@@ -319,7 +319,7 @@ public class AccessWS implements Access {
         } catch (RuntimeException e) {
             // The EJB's are all annotated with Transactional Logic, so if an
             // error is flying by - then it is caught here.
-            log.error("Transactional Problem: " + e.getMessage(), e);
+            LOG.error("Transactional Problem: " + e.getMessage(), e);
             response = new FallibleResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
         }
 
@@ -334,7 +334,7 @@ public class AccessWS implements Access {
     @WebResult(name = "response")
     public FetchPermissionResponse fetchPermissions(
             @WebParam(name = "token") final AuthenticationToken token) {
-        log.info(requestLogger.prepareLogMessage(token, "fetchPermissions"));
+        LOG.info(requestLogger.prepareLogMessage(token, "fetchPermissions"));
         FetchPermissionResponse response;
 
         try {
@@ -342,7 +342,7 @@ public class AccessWS implements Access {
         } catch (RuntimeException e) {
             // The EJB's are all annotated with Transactional Logic, so if an
             // error is flying by - then it is caught here.
-            log.error("Transactional Problem: " + e.getMessage(), e);
+            LOG.error("Transactional Problem: " + e.getMessage(), e);
             response = new FetchPermissionResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
         }
 

@@ -65,7 +65,7 @@ import java.util.Properties;
 )
 public class EmailSender implements MessageListener {
 
-    private static final Logger log = LoggerFactory.getLogger(EmailSender.class);
+    private static final Logger LOG = LoggerFactory.getLogger(EmailSender.class);
 
     @Inject @IWSBean private Settings settings;
 
@@ -76,7 +76,7 @@ public class EmailSender implements MessageListener {
      */
     public EmailSender() {
         // TODO figure out why 30 bean instances is started initially - we're not sending that many mails!
-        log.info("Starting EmailSender");
+        LOG.info("Starting EmailSender");
     }
 
     /**
@@ -110,7 +110,7 @@ public class EmailSender implements MessageListener {
             message.setSubject(msg.getSubject());
             message.setText(msg.getMessage());
 
-            log.info("Sending email message to " + msg.getTo());
+            LOG.info("Sending email message to " + msg.getTo());
             Transport.send(message);
         } catch (MessagingException e) {
             throw new IWSException(IWSErrors.ERROR, "Sending to '" + msg.getTo() + "' failed.", e);

@@ -76,7 +76,7 @@ import java.util.UUID;
  */
 public class MailMigrator implements Migrator<IW3UsersEntity> {
 
-    private static final Logger log = LoggerFactory.getLogger(MailMigrator.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MailMigrator.class);
 
     /**
      * This is a matrix with various static aliases that we need to have in the
@@ -148,15 +148,15 @@ public class MailMigrator implements Migrator<IW3UsersEntity> {
     @Transactional("transactionManagerMail")
     public MigrationResult migrateGroups() {
         final List<GroupEntity> groups = iwsDao.findAllGroups();
-        log.info("Found {} Groups to Migrate.", groups.size());
+        LOG.info("Found {} Groups to Migrate.", groups.size());
         int persisted = 0;
         int skipped = 0;
 
         for (final GroupEntity group : groups) {
             if (group.getStatus() != GroupStatus.ACTIVE) {
-                log.info("Skipping Mailinglist for {} (id: {}), as their status is {}", group.getGroupName(), group.getId(), group.getStatus());
+                LOG.info("Skipping Mailinglist for {} (id: {}), as their status is {}", group.getGroupName(), group.getId(), group.getStatus());
             } else if (group.getListName() == null) {
-                log.info("Skipping Mailinglist for {} (id: {}), as it is invalid.", group.getGroupName(), group.getId());
+                LOG.info("Skipping Mailinglist for {} (id: {}), as it is invalid.", group.getGroupName(), group.getId());
             } else {
                 final GroupType type = group.getGroupType().getGrouptype();
                 if (group.getPrivateList() && type.getMayHavePrivateMailinglist()) {
@@ -170,14 +170,14 @@ public class MailMigrator implements Migrator<IW3UsersEntity> {
             }
         }
 
-        log.info("Completed Migrating Groups, persisted {}.", persisted);
+        LOG.info("Completed Migrating Groups, persisted {}.", persisted);
         return new MigrationResult(persisted, skipped);
     }
 
     @Transactional("transactionManagerMail")
     public MigrationResult migrateAliases() {
         final List<UserEntity> users = iwsDao.findAllUsers();
-        log.info("Found {} Users to create Aliases for.", users.size());
+        LOG.info("Found {} Users to create Aliases for.", users.size());
         int persisted = 0;
 
         for (final UserEntity user : users) {
@@ -190,12 +190,12 @@ public class MailMigrator implements Migrator<IW3UsersEntity> {
                 mailDao.persist(alias);
                 persisted++;
             } else {
-                log.info("Skipping {} this is a student account.", user.getUsername());
+                LOG.info("Skipping {} this is a student account.", user.getUsername());
             }
         }
         persisted += createStaticAliases();
 
-        log.info("Completed Migrating user Aliases, persisted {}.", persisted);
+        LOG.info("Completed Migrating user Aliases, persisted {}.", persisted);
         return new MigrationResult(persisted, 0);
     }
 
@@ -258,7 +258,7 @@ public class MailMigrator implements Migrator<IW3UsersEntity> {
         entity.setCreated(group.getCreated());
 
         if (group.getListName() == null) {
-            log.warn("Cannot migrate Group {}.", group);
+            LOG.warn("Cannot migrate Group {}.", group);
         } else {
             mailDao.persist(entity);
         }

@@ -64,7 +64,7 @@ import java.util.Set;
  */
 public class OfferMigrator implements Migrator<IW3OffersEntity> {
 
-    private static final Logger log = LoggerFactory.getLogger(OfferMigrator.class);
+    private static final Logger LOG = LoggerFactory.getLogger(OfferMigrator.class);
     private static final Character REFNO_START_SERIALNUMBER = 'A';
     private static final Date SEPTEMBER_1ST_2013 = new Date(1377986400000L);
 
@@ -157,7 +157,7 @@ public class OfferMigrator implements Migrator<IW3OffersEntity> {
                 iwsDao.persist(offerEntity);
                 persisted++;
             } catch (IllegalArgumentException | VerificationException e) {
-                log.error("Cannot process Offer with refno:{} => {}", offerEntity.getRefNo(), e.getMessage());
+                LOG.error("Cannot process Offer with refno:{} => {}", offerEntity.getRefNo(), e.getMessage());
                 skipped++;
             }
         }
@@ -230,7 +230,7 @@ public class OfferMigrator implements Migrator<IW3OffersEntity> {
         entity.setExchangeYear(convertExchangeYear(oldOffer.getExchangeyear(), oldOffer.getCreated()));
         entity.setWeeklyHours(round(oldOffer.getHoursweekly()));
         entity.setDailyHours(round(oldOffer.getHoursdaily()));
-        log.trace("Workhours: weekly = {}, daily = {}", entity.getWeeklyHours(), entity.getDailyHours());
+        LOG.trace("Workhours: weekly = {}, daily = {}", entity.getWeeklyHours(), entity.getDailyHours());
         entity.setModified(convert(oldOffer.getModified()));
         entity.setCreated(convert(oldOffer.getCreated()));
 
@@ -255,7 +255,7 @@ public class OfferMigrator implements Migrator<IW3OffersEntity> {
             final Long count = iwsDao.countRefNos(countryCode, year, serialNumber);
             appender = (char) (REFNO_START_SERIALNUMBER + count);
             if (!appender.equals(REFNO_START_SERIALNUMBER)) {
-                log.info("Duplicate Reference number {} found, will append {} to it.", systemrefno, appender);
+                LOG.info("Duplicate Reference number {} found, will append {} to it.", systemrefno, appender);
             }
         } else {
             appender = REFNO_START_SERIALNUMBER;
@@ -572,7 +572,7 @@ public class OfferMigrator implements Migrator<IW3OffersEntity> {
                     field = FieldOfStudy.OTHER;
                     break;
                 default:
-                    log.info("The Field of Study (Faculty) {} is not mapped over.", toCheck);
+                    LOG.info("The Field of Study (Faculty) {} is not mapped over.", toCheck);
                     field = FieldOfStudy.OTHER;
             }
         } else {

@@ -56,6 +56,8 @@ import java.net.MalformedURLException;
  */
 public final class WSClient {
 
+    private static final Logger LOG = LoggerFactory.getLogger(WSClient.class);
+
     private static final String switzerland = "incoming@office.iaeste.ch";
     private static final String germany = "pankau@daad.de";
 
@@ -66,7 +68,7 @@ public final class WSClient {
      * @param args Command Line Parameters
      */
     public static void main(final String[] args) {
-        final WSClient client = new WSClient("http://localhost:8080");
+        final WSClient client = new WSClient("http://localhost:9080");
 
         // Before we can do anything, we first need to log in
         final AuthenticationResponse authResponse = client.login(germany, "faked");
@@ -80,30 +82,30 @@ public final class WSClient {
             try {
                 // Access related requests
                 final FetchPermissionResponse permissionResponse = client.fetchPermissions(token);
-                log.info("PermissionResponse: " + permissionResponse.getMessage());
+                LOG.info("PermissionResponse: " + permissionResponse.getMessage());
 
                 final EmergencyListResponse emergency = client.fetchEmergencyList(token);
-                log.info("Received the Emergency List with " + emergency.getEmergencyContacts().size() + " records.");
+                LOG.info("Received the Emergency List with " + emergency.getEmergencyContacts().size() + " records.");
 
                 // Exchange related requests
-                log.info("Offer Statistics: " + client.fetchOfferStatistics(token).getMessage());
-                log.info("Fetch Employers: " + client.fetchEmployers(token).getMessage());
+                LOG.info("Offer Statistics: " + client.fetchOfferStatistics(token).getMessage());
+                LOG.info("Fetch Employers: " + client.fetchEmployers(token).getMessage());
                 final FetchOffersResponse domesticOfferResponse = client.fetchOffers(token, FetchType.DOMESTIC);
                 final FetchOffersResponse sharedOfferResponse = client.fetchOffers(token, FetchType.SHARED);
-                log.info("Fetch Domestic Offers: " + domesticOfferResponse.getMessage() + " with " + domesticOfferResponse.getOffers().size() + " Offers.");
-                log.info("Fetch Shared Offers: " + sharedOfferResponse.getMessage() + " with " + sharedOfferResponse.getOffers().size() + " Offers.");
+                LOG.info("Fetch Domestic Offers: " + domesticOfferResponse.getMessage() + " with " + domesticOfferResponse.getOffers().size() + " Offers.");
+                LOG.info("Fetch Shared Offers: " + sharedOfferResponse.getMessage() + " with " + sharedOfferResponse.getOffers().size() + " Offers.");
                 if (domesticOfferResponse.isOk() && domesticOfferResponse.getOffers() != null) {
                     for (final Offer offer : domesticOfferResponse.getOffers()) {
-                        log.info("Processing Employer '" + offer.getEmployer().getName() + "': " + client.processEmployer(token, offer.getEmployer()).getMessage());
-                        log.info("Processing Offer with Reference Number '" + offer.getRefNo() + "': " + client.processOffer(token, offer).getMessage());
+                        LOG.info("Processing Employer '" + offer.getEmployer().getName() + "': " + client.processEmployer(token, offer.getEmployer()).getMessage());
+                        LOG.info("Processing Offer with Reference Number '" + offer.getRefNo() + "': " + client.processOffer(token, offer).getMessage());
                     }
                 }
             } catch (RuntimeException t) {
-                log.error(t.getMessage(), t);
+                LOG.error(t.getMessage(), t);
             } finally {
                 // Always remember to log out, otherwise the Account will be
                 // blocked for a longer time period
-                log.info("DeprecateSession: " + client.deprecateSession(token).getMessage());
+                LOG.info("DeprecateSession: " + client.deprecateSession(token).getMessage());
             }
         }
     }
@@ -112,7 +114,6 @@ public final class WSClient {
     // Constants, Settings and Constructor
     // =========================================================================
 
-    private static final Logger log = LoggerFactory.getLogger(WSClient.class);
     private static final Object lock = new Object();
     private final String host;
 

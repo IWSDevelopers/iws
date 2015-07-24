@@ -84,7 +84,7 @@ import javax.persistence.EntityManager;
 @TransactionManagement(TransactionManagementType.CONTAINER)
 public class ExchangeBean implements Exchange {
 
-    private static final Logger log = LoggerFactory.getLogger(ExchangeBean.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ExchangeBean.class);
     @Inject @IWSBean private EntityManager entityManager;
     @Inject @IWSBean private Notifications notifications;
     @Inject @IWSBean private SessionRequestBean session;
@@ -152,9 +152,9 @@ public class ExchangeBean implements Exchange {
 
         try {
             response = controller.fetchOfferStatistics(token, request);
-            log.info(session.generateLogAndUpdateSession("fetchOfferStatistics", start, response, token));
+            LOG.info(session.generateLogAndUpdateSession("fetchOfferStatistics", start, response, token));
         } catch (RuntimeException e) {
-            log.error(session.generateLogAndSaveRequest("fetchOfferStatistics", start, e, token, request), e);
+            LOG.error(session.generateLogAndSaveRequest("fetchOfferStatistics", start, e, token, request), e);
             response = new OfferStatisticsResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -172,9 +172,9 @@ public class ExchangeBean implements Exchange {
 
         try {
             response = controller.processEmployer(token, request);
-            log.info(session.generateLogAndUpdateSession("processEmployer", start, response, token));
+            LOG.info(session.generateLogAndUpdateSession("processEmployer", start, response, token));
         } catch (RuntimeException e) {
-            log.error(session.generateLogAndSaveRequest("processEmployer", start, e, token, request), e);
+            LOG.error(session.generateLogAndSaveRequest("processEmployer", start, e, token, request), e);
             response = new EmployerResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -192,9 +192,9 @@ public class ExchangeBean implements Exchange {
 
         try {
             response = controller.fetchEmployers(token, request);
-            log.info(session.generateLogAndUpdateSession("fetchEmployers", start, response, token));
+            LOG.info(session.generateLogAndUpdateSession("fetchEmployers", start, response, token));
         } catch (RuntimeException e) {
-            log.error(session.generateLogAndSaveRequest("fetchEmployers", start, e, token, request), e);
+            LOG.error(session.generateLogAndSaveRequest("fetchEmployers", start, e, token, request), e);
             response = new FetchEmployerResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -212,9 +212,9 @@ public class ExchangeBean implements Exchange {
 
         try {
             response = controller.processOffer(token, request);
-            log.info(session.generateLogAndUpdateSession("processOffer", start, response, token));
+            LOG.info(session.generateLogAndUpdateSession("processOffer", start, response, token));
         } catch (RuntimeException e) {
-            log.error(session.generateLogAndSaveRequest("processOffer", start, e, token, request), e);
+            LOG.error(session.generateLogAndSaveRequest("processOffer", start, e, token, request), e);
             response = new OfferResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -232,9 +232,9 @@ public class ExchangeBean implements Exchange {
 
         try {
             response = controller.deleteOffer(token, request);
-            log.info(session.generateLogAndUpdateSession("deleteOffer", start, response, token));
+            LOG.info(session.generateLogAndUpdateSession("deleteOffer", start, response, token));
         } catch (RuntimeException e) {
-            log.error(session.generateLogAndSaveRequest("deleteOffer", start, e, token, request), e);
+            LOG.error(session.generateLogAndSaveRequest("deleteOffer", start, e, token, request), e);
             response = new OfferResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -252,9 +252,9 @@ public class ExchangeBean implements Exchange {
 
         try {
             response = controller.uploadOffers(token, request);
-            log.info(session.generateLogAndUpdateSession("uploadOffers", start, response, token));
+            LOG.info(session.generateLogAndUpdateSession("uploadOffers", start, response, token));
         } catch (RuntimeException e) {
-            log.error(session.generateLogAndSaveRequest("uploadOffers", start, e, token, request), e);
+            LOG.error(session.generateLogAndSaveRequest("uploadOffers", start, e, token, request), e);
             response = new OfferCSVUploadResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -274,9 +274,9 @@ public class ExchangeBean implements Exchange {
 
         try {
             response = controller.fetchOffers(token, request);
-            log.info(session.generateLogAndUpdateSession("fetchOffers", start, response, token));
+            LOG.info(session.generateLogAndUpdateSession("fetchOffers", start, response, token));
         } catch (RuntimeException e) {
-            log.error(session.generateLogAndSaveRequest("fetchOffers", start, e, token, request), e);
+            LOG.error(session.generateLogAndSaveRequest("fetchOffers", start, e, token, request), e);
             response = new FetchOffersResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -294,9 +294,9 @@ public class ExchangeBean implements Exchange {
 
         try {
             response = controller.downloadOffers(token, request);
-            log.info(session.generateLogAndUpdateSession("downloadOffers", start, response, token));
+            LOG.info(session.generateLogAndUpdateSession("downloadOffers", start, response, token));
         } catch (RuntimeException e) {
-            log.error(session.generateLogAndSaveRequest("downloadOffers", start, e, token, request), e);
+            LOG.error(session.generateLogAndSaveRequest("downloadOffers", start, e, token, request), e);
             response = new OfferCSVDownloadResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -314,9 +314,9 @@ public class ExchangeBean implements Exchange {
 
         try {
             response = controller.fetchGroupsForSharing(token);
-            log.info(session.generateLogAndUpdateSession("fetchGroupsForSharing", start, response, token));
+            LOG.info(session.generateLogAndUpdateSession("fetchGroupsForSharing", start, response, token));
         } catch (RuntimeException e) {
-            log.error(session.generateLogAndSaveRequest("fetchGroupsForSharing", start, e, token), e);
+            LOG.error(session.generateLogAndSaveRequest("fetchGroupsForSharing", start, e, token), e);
             response = new FetchGroupsForSharingResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -334,9 +334,9 @@ public class ExchangeBean implements Exchange {
 
         try {
             response = controller.processPublishingGroup(token, request);
-            log.info(session.generateLogAndUpdateSession("processPublishingGroup", start, response, token));
+            LOG.info(session.generateLogAndUpdateSession("processPublishingGroup", start, response, token));
         } catch (RuntimeException e) {
-            log.error(session.generateLogAndSaveRequest("processPublishingGroup", start, e, token, request), e);
+            LOG.error(session.generateLogAndSaveRequest("processPublishingGroup", start, e, token, request), e);
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -354,9 +354,9 @@ public class ExchangeBean implements Exchange {
 
         try {
             response = controller.fetchPublishingGroups(token, request);
-            log.info(session.generateLogAndUpdateSession("fetchPublishingGroups", start, response, token));
+            LOG.info(session.generateLogAndUpdateSession("fetchPublishingGroups", start, response, token));
         } catch (RuntimeException e) {
-            log.error(session.generateLogAndSaveRequest("fetchPublishingGroups", start, e, token, request), e);
+            LOG.error(session.generateLogAndSaveRequest("fetchPublishingGroups", start, e, token, request), e);
             response = new FetchPublishingGroupResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -375,9 +375,9 @@ public class ExchangeBean implements Exchange {
 
         try {
             response = controller.deletePublishingGroup(token, request);
-            log.info(session.generateLogAndUpdateSession("deletePublishingGroup", start, response, token));
+            LOG.info(session.generateLogAndUpdateSession("deletePublishingGroup", start, response, token));
         } catch (RuntimeException e) {
-            log.error(session.generateLogAndSaveRequest("deletePublishingGroup", start, e, token, request), e);
+            LOG.error(session.generateLogAndSaveRequest("deletePublishingGroup", start, e, token, request), e);
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -395,9 +395,9 @@ public class ExchangeBean implements Exchange {
 
         try {
             response = controller.processPublishOffer(token, request);
-            log.info(session.generateLogAndUpdateSession("processPublishOffer", start, response, token));
+            LOG.info(session.generateLogAndUpdateSession("processPublishOffer", start, response, token));
         } catch (RuntimeException e) {
-            log.error(session.generateLogAndSaveRequest("processPublishOffer", start, e, token, request), e);
+            LOG.error(session.generateLogAndSaveRequest("processPublishOffer", start, e, token, request), e);
             response = new PublishOfferResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -415,9 +415,9 @@ public class ExchangeBean implements Exchange {
 
         try {
             response = controller.fetchPublishedGroups(token, request);
-            log.info(session.generateLogAndUpdateSession("fetchPublishedGroups", start, response, token));
+            LOG.info(session.generateLogAndUpdateSession("fetchPublishedGroups", start, response, token));
         } catch (RuntimeException e) {
-            log.error(session.generateLogAndSaveRequest("fetchPublishedGroups", start, e, token, request), e);
+            LOG.error(session.generateLogAndSaveRequest("fetchPublishedGroups", start, e, token, request), e);
             response = new FetchPublishedGroupsResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -435,9 +435,9 @@ public class ExchangeBean implements Exchange {
 
         try {
             response = controller.processHideForeignOffers(token, request);
-            log.info(session.generateLogAndUpdateSession("processHideForeignOffers", start, response, token));
+            LOG.info(session.generateLogAndUpdateSession("processHideForeignOffers", start, response, token));
         } catch (RuntimeException e) {
-            log.error(session.generateLogAndSaveRequest("processHideForeignOffers", start, e, token, request), e);
+            LOG.error(session.generateLogAndSaveRequest("processHideForeignOffers", start, e, token, request), e);
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -455,9 +455,9 @@ public class ExchangeBean implements Exchange {
 
         try {
             response = controller.rejectOffer(token, request);
-            log.info(session.generateLogAndUpdateSession("rejectOffer", start, response, token));
+            LOG.info(session.generateLogAndUpdateSession("rejectOffer", start, response, token));
         } catch (RuntimeException e) {
-            log.error(session.generateLogAndSaveRequest("rejectOffer", start, e, token, request), e);
+            LOG.error(session.generateLogAndSaveRequest("rejectOffer", start, e, token, request), e);
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 

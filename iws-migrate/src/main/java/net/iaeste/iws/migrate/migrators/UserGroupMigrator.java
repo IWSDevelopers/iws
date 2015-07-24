@@ -49,7 +49,7 @@ import java.util.List;
  */
 public class UserGroupMigrator implements Migrator<IW3User2GroupEntity> {
 
-    private static final Logger log = LoggerFactory.getLogger(UserGroupMigrator.class);
+    private static final Logger LOG = LoggerFactory.getLogger(UserGroupMigrator.class);
 
     @Autowired
     private IWSDao iwsDao;
@@ -81,7 +81,7 @@ public class UserGroupMigrator implements Migrator<IW3User2GroupEntity> {
         for (final IW3User2GroupEntity oldUserGroupEntity : oldEntities) {
 
             if ((oldUserGroupEntity.getUser().getUserid() == 3005) && (oldUserGroupEntity.getGroup().getGroupid() == 30)) {
-                log.info("Skipping the relation between {} and {}, it is an error.",
+                LOG.info("Skipping the relation between {} and {}, it is an error.",
                         convert(oldUserGroupEntity.getUser().getUsername()),
                         convert(oldUserGroupEntity.getGroup().getFullname()));
                 skipped++;
@@ -94,7 +94,7 @@ public class UserGroupMigrator implements Migrator<IW3User2GroupEntity> {
                     toPersist = entity;
                     persisted++;
                 } else {
-                    log.info("Skipping UserGroup Entity where the user no longer exists (userid={}, groupid={}).",
+                    LOG.info("Skipping UserGroup Entity where the user no longer exists (userid={}, groupid={}).",
                             oldUserGroupEntity.getUser().getUserid(),
                             oldUserGroupEntity.getGroup().getGroupid());
                     skipped++;
@@ -134,9 +134,9 @@ public class UserGroupMigrator implements Migrator<IW3User2GroupEntity> {
                 dto.verify();
                 iwsDao.persist(toPersist);
             } catch (IllegalArgumentException | VerificationException e) {
-                log.error("Cannot process UserGroup {} => {}", dto, e.getMessage());
+                LOG.error("Cannot process UserGroup {} => {}", dto, e.getMessage());
             } catch (RuntimeException e) {
-                log.error("Unknown problem while migrating UserGroup {} => {}", dto, e.getMessage());
+                LOG.error("Unknown problem while migrating UserGroup {} => {}", dto, e.getMessage());
             }
         }
     }

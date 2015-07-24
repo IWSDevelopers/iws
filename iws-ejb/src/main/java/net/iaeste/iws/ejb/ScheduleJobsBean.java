@@ -53,7 +53,7 @@ import java.util.Map;
 @Singleton
 public class ScheduleJobsBean {
 
-    private static final Logger log = LoggerFactory.getLogger(ScheduleJobsBean.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ScheduleJobsBean.class);
     @Inject @IWSBean private EntityManager iwsEntityManager;
     private ExchangeDao exchangeDao = null;
     private AccessDao accessDao = null;
@@ -79,7 +79,7 @@ public class ScheduleJobsBean {
      */
     @PostConstruct
     public void postConstruct() {
-        log.info("post construct");
+        LOG.info("post construct");
         exchangeDao = new ExchangeJpaDao(iwsEntityManager);
         accessDao = new AccessJpaDao(iwsEntityManager);
     }
@@ -89,7 +89,7 @@ public class ScheduleJobsBean {
     //for server
     @Schedule(second = "0", minute = "1", hour = "0", info = "Every day at 0:01 AM (server time)", persistent = false)
     private void processExpiredOffers() {
-        log.info("processExpiredOffers started at " + new DateTime());
+        LOG.info("processExpiredOffers started at " + new DateTime());
         final boolean run;
 
         synchronized (lock) {
@@ -118,7 +118,7 @@ public class ScheduleJobsBean {
             }
         }
 
-        log.info("processExpiredOffers ended at " + new DateTime());
+        LOG.info("processExpiredOffers ended at " + new DateTime());
     }
 
     private void runExpiredOfferProcessing() {
@@ -126,7 +126,7 @@ public class ScheduleJobsBean {
             final UserEntity systemUser = accessDao.findUserByUsername("system.user@iaeste.net");
             if (systemUser != null) {
                 final List<OfferEntity> offers = exchangeDao.findExpiredOffers(new Date(), AbstractVerification.calculateExchangeYear());
-                log.info("Found " + offers.size() + " expired offers for exchange year " + AbstractVerification.calculateExchangeYear());
+                LOG.info("Found " + offers.size() + " expired offers for exchange year " + AbstractVerification.calculateExchangeYear());
                 if (!offers.isEmpty()) {
 
                     final List<Long> ids = new ArrayList<>(offers.size());
@@ -150,10 +150,10 @@ public class ScheduleJobsBean {
                     }
                 }
             } else {
-                log.warn("System user was not found");
+                LOG.warn("System user was not found");
             }
         } catch (IllegalArgumentException | IWSException e) {
-            log.error("Error in processing expired offers", e);
+            LOG.error("Error in processing expired offers", e);
         }
     }
 

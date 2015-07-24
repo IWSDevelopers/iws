@@ -42,7 +42,7 @@ import java.util.List;
  */
 public class GroupMigrator implements Migrator<IW3GroupsEntity> {
 
-    private static final Logger log = LoggerFactory.getLogger(GroupMigrator.class);
+    private static final Logger LOG = LoggerFactory.getLogger(GroupMigrator.class);
 
     @Autowired
     private IWSDao iwsDao;
@@ -86,19 +86,19 @@ public class GroupMigrator implements Migrator<IW3GroupsEntity> {
                     existing.merge(converted);
                     toPersist = existing;
                 } else {
-                    log.info("The standard group {} (id {}), is dropped.", converted.getGroupName(), converted.getOldId());
+                    LOG.info("The standard group {} (id {}), is dropped.", converted.getGroupName(), converted.getOldId());
                     skipped++;
                 }
             } else if ((converted.getOldId() == 749) || (converted.getOldId() == 839)) {
-                log.info("The Group {} (id {}), is dropped, since it's an unused duplicate.", converted.getGroupName(), converted.getOldId());
+                LOG.info("The Group {} (id {}), is dropped, since it's an unused duplicate.", converted.getGroupName(), converted.getOldId());
                 skipped++;
             } else if (converted.getOldId() == 672) {
-                log.info("The Group {} (id 672), is dropped - there is a name clash, and it is unused.", converted.getGroupName());
+                LOG.info("The Group {} (id 672), is dropped - there is a name clash, and it is unused.", converted.getGroupName());
                 skipped++;
             } else {
                 if (parent == null) {
                     // For Holland, we have the problem that Group 629 exists, but 628 (the parent) doesn't.
-                    log.info("Couldn't find a parent for {} with id {}", convert(oldGroup.getGroupdescription()), oldGroup.getGroupid());
+                    LOG.info("Couldn't find a parent for {} with id {}", convert(oldGroup.getGroupdescription()), oldGroup.getGroupid());
                     converted.setFullName(convert(oldGroup.getGroupdescription()) + " Staff");
                     converted.setParentId(0L);
                 } else {
@@ -120,9 +120,9 @@ public class GroupMigrator implements Migrator<IW3GroupsEntity> {
 
                     persisted++;
                 } catch (IllegalArgumentException | VerificationException e) {
-                    log.error("Cannot process Group {} => {}", group, e.getMessage());
+                    LOG.error("Cannot process Group {} => {}", group, e.getMessage());
                 } catch (final RuntimeException e) {
-                    log.error("Unknown problem while migrating Group {} => {}", group, e.getMessage());
+                    LOG.error("Unknown problem while migrating Group {} => {}", group, e.getMessage());
                 }
             }
         }
@@ -159,7 +159,7 @@ public class GroupMigrator implements Migrator<IW3GroupsEntity> {
         group.setDescription(convert(entity.getGroupdescription()));
         group.setFullName(convertFullName(type, convert(entity.getGroupname()), parent));
         group.setListName(convertListName(type, convert(entity.getGroupname()), parent));
-        group.setParentId(0L + entity.getParentid());
+        group.setParentId((long) entity.getParentid());
         group.setStatus(convertGroupStatus(entity.getStatus()));
         group.setModified(convert(entity.getModified()));
         group.setCreated(convert(entity.getCreated(), entity.getModified()));

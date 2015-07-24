@@ -62,7 +62,7 @@ import org.slf4j.LoggerFactory;
  */
 public final class ExchangeController extends CommonController implements Exchange {
 
-    private static final Logger log = LoggerFactory.getLogger(ExchangeController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ExchangeController.class);
 
     /**
      * Default Constructor, takes a ServiceFactory as input parameter, and uses
@@ -79,8 +79,8 @@ public final class ExchangeController extends CommonController implements Exchan
      */
     @Override
     public OfferStatisticsResponse fetchOfferStatistics(final AuthenticationToken token, final OfferStatisticsRequest request) {
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting fetchOfferStatistics()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Starting fetchOfferStatistics()"));
         }
         OfferStatisticsResponse response;
 
@@ -91,11 +91,17 @@ public final class ExchangeController extends CommonController implements Exchan
             final ExchangeFetchService service = factory.prepareExchangeFetchService();
             response = service.fetchOfferStatistics(authentication, request);
         } catch (IWSException e) {
+            // Generally, Exceptions should always be either logged or rethrown.
+            // In our case, we're transforming the Exception into an Error
+            // Object which can be returned to the User. However, to ensure
+            // that we're not loosing anything - the Exception is also LOG.ed
+            // here as a debug message
+            LOG.debug(e.getMessage(), e);
             response = new OfferStatisticsResponse(e.getError(), e.getMessage());
         }
 
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished fetchOfferStatistics()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Finished fetchOfferStatistics()"));
         }
         return response;
     }
@@ -105,8 +111,8 @@ public final class ExchangeController extends CommonController implements Exchan
      */
     @Override
     public EmployerResponse processEmployer(final AuthenticationToken token, final ProcessEmployerRequest request) {
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting processEmployer()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Starting processEmployer()"));
         }
         EmployerResponse response;
 
@@ -117,11 +123,17 @@ public final class ExchangeController extends CommonController implements Exchan
             final ExchangeService service = factory.prepareExchangeService();
             response = service.processEmployer(authentication, request);
         } catch (IWSException e) {
+            // Generally, Exceptions should always be either logged or rethrown.
+            // In our case, we're transforming the Exception into an Error
+            // Object which can be returned to the User. However, to ensure
+            // that we're not loosing anything - the Exception is also LOG.ed
+            // here as a debug message
+            LOG.debug(e.getMessage(), e);
             response = new EmployerResponse(e.getError(), e.getMessage());
         }
 
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished processEmployer()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Finished processEmployer()"));
         }
         return response;
     }
@@ -131,8 +143,8 @@ public final class ExchangeController extends CommonController implements Exchan
      */
     @Override
     public FetchEmployerResponse fetchEmployers(final AuthenticationToken token, final FetchEmployerRequest request) {
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting fetchEmployers()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Starting fetchEmployers()"));
         }
         FetchEmployerResponse response;
 
@@ -143,11 +155,17 @@ public final class ExchangeController extends CommonController implements Exchan
             final ExchangeFetchService service = factory.prepareExchangeFetchService();
             response = service.fetchEmployers(authentication, request);
         } catch (IWSException e) {
+            // Generally, Exceptions should always be either logged or rethrown.
+            // In our case, we're transforming the Exception into an Error
+            // Object which can be returned to the User. However, to ensure
+            // that we're not loosing anything - the Exception is also LOG.ed
+            // here as a debug message
+            LOG.debug(e.getMessage(), e);
             response = new FetchEmployerResponse(e.getError(), e.getMessage());
         }
 
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished fetchEmployers()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Finished fetchEmployers()"));
         }
         return response;
     }
@@ -157,8 +175,8 @@ public final class ExchangeController extends CommonController implements Exchan
      */
     @Override
     public OfferResponse processOffer(final AuthenticationToken token, final ProcessOfferRequest request) {
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting processOffer()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Starting processOffer()"));
         }
         OfferResponse response;
 
@@ -169,11 +187,17 @@ public final class ExchangeController extends CommonController implements Exchan
             final ExchangeService service = factory.prepareExchangeService();
             response = service.processOffer(authentication, request);
         } catch (IWSException e) {
+            // Generally, Exceptions should always be either logged or rethrown.
+            // In our case, we're transforming the Exception into an Error
+            // Object which can be returned to the User. However, to ensure
+            // that we're not loosing anything - the Exception is also LOG.ed
+            // here as a debug message
+            LOG.debug(e.getMessage(), e);
             response = new OfferResponse(e.getError(), e.getMessage());
         }
 
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished processOffer()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Finished processOffer()"));
         }
         return response;
     }
@@ -183,8 +207,8 @@ public final class ExchangeController extends CommonController implements Exchan
      */
     @Override
     public OfferResponse deleteOffer(final AuthenticationToken token, final DeleteOfferRequest request) {
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting deleteOffer()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Starting deleteOffer()"));
         }
         OfferResponse response;
 
@@ -196,11 +220,17 @@ public final class ExchangeController extends CommonController implements Exchan
             service.deleteOffer(authentication, request);
             response = new OfferResponse();
         } catch (IWSException e) {
+            // Generally, Exceptions should always be either logged or rethrown.
+            // In our case, we're transforming the Exception into an Error
+            // Object which can be returned to the User. However, to ensure
+            // that we're not loosing anything - the Exception is also LOG.ed
+            // here as a debug message
+            LOG.debug(e.getMessage(), e);
             response = new OfferResponse(e.getError(), e.getMessage());
         }
 
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished processOffer()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Finished processOffer()"));
         }
         return response;
     }
@@ -210,8 +240,8 @@ public final class ExchangeController extends CommonController implements Exchan
      */
     @Override
     public OfferCSVUploadResponse uploadOffers(final AuthenticationToken token, final OfferCSVUploadRequest request) {
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting uploadOffers()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Starting uploadOffers()"));
         }
         OfferCSVUploadResponse response;
 
@@ -222,11 +252,17 @@ public final class ExchangeController extends CommonController implements Exchan
             final ExchangeCSVService service = factory.prepareExchangeCSVService();
             response = service.uploadOffers(authentication, request);
         } catch (IWSException e) {
+            // Generally, Exceptions should always be either logged or rethrown.
+            // In our case, we're transforming the Exception into an Error
+            // Object which can be returned to the User. However, to ensure
+            // that we're not loosing anything - the Exception is also LOG.ed
+            // here as a debug message
+            LOG.debug(e.getMessage(), e);
             response = new OfferCSVUploadResponse(e.getError(), e.getMessage());
         }
 
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished uploadOffers()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Finished uploadOffers()"));
         }
         return response;
     }
@@ -236,8 +272,8 @@ public final class ExchangeController extends CommonController implements Exchan
      */
     @Override
     public FetchOffersResponse fetchOffers(final AuthenticationToken token, final FetchOffersRequest request) {
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting fetchOffers()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Starting fetchOffers()"));
         }
         FetchOffersResponse response;
 
@@ -248,11 +284,17 @@ public final class ExchangeController extends CommonController implements Exchan
             final ExchangeFetchService service = factory.prepareExchangeFetchService();
             response = service.fetchOffers(authentication, request);
         } catch (IWSException e) {
+            // Generally, Exceptions should always be either logged or rethrown.
+            // In our case, we're transforming the Exception into an Error
+            // Object which can be returned to the User. However, to ensure
+            // that we're not loosing anything - the Exception is also LOG.ed
+            // here as a debug message
+            LOG.debug(e.getMessage(), e);
             response = new FetchOffersResponse(e.getError(), e.getMessage());
         }
 
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished fetchOffers()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Finished fetchOffers()"));
         }
         return response;
     }
@@ -262,8 +304,8 @@ public final class ExchangeController extends CommonController implements Exchan
      */
     @Override
     public OfferCSVDownloadResponse downloadOffers(AuthenticationToken token, OfferCSVDownloadRequest request) {
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting downloadOffers()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Starting downloadOffers()"));
         }
         OfferCSVDownloadResponse response;
 
@@ -274,11 +316,17 @@ public final class ExchangeController extends CommonController implements Exchan
             final ExchangeCSVService service = factory.prepareExchangeCSVService();
             response = service.downloadOffers(authentication, request);
         } catch (IWSException e) {
+            // Generally, Exceptions should always be either logged or rethrown.
+            // In our case, we're transforming the Exception into an Error
+            // Object which can be returned to the User. However, to ensure
+            // that we're not loosing anything - the Exception is also LOG.ed
+            // here as a debug message
+            LOG.debug(e.getMessage(), e);
             response = new OfferCSVDownloadResponse(e.getError(), e.getMessage());
         }
 
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished downloadOffers()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Finished downloadOffers()"));
         }
         return response;
     }
@@ -288,8 +336,8 @@ public final class ExchangeController extends CommonController implements Exchan
      */
     @Override
     public FallibleResponse processPublishingGroup(final AuthenticationToken token, final ProcessPublishingGroupRequest request) {
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting processPublishGroup()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Starting processPublishGroup()"));
         }
         FallibleResponse response;
 
@@ -301,11 +349,17 @@ public final class ExchangeController extends CommonController implements Exchan
             service.processPublishingGroups(authentication, request);
             response = new FallibleResponse();
         } catch (IWSException e) {
+            // Generally, Exceptions should always be either logged or rethrown.
+            // In our case, we're transforming the Exception into an Error
+            // Object which can be returned to the User. However, to ensure
+            // that we're not loosing anything - the Exception is also LOG.ed
+            // here as a debug message
+            LOG.debug(e.getMessage(), e);
             response = new FallibleResponse(e.getError(), e.getMessage());
         }
 
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished processPublishGroup()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Finished processPublishGroup()"));
         }
         return response;
     }
@@ -315,8 +369,8 @@ public final class ExchangeController extends CommonController implements Exchan
      */
     @Override
     public FetchPublishingGroupResponse fetchPublishingGroups(final AuthenticationToken token, final FetchPublishGroupsRequest request) {
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting fetchPublishGroups()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Starting fetchPublishGroups()"));
         }
         FetchPublishingGroupResponse response;
 
@@ -327,11 +381,17 @@ public final class ExchangeController extends CommonController implements Exchan
             final ExchangeFetchService service = factory.prepareExchangeFetchService();
             response = service.fetchPublishGroups(authentication, request);
         } catch (IWSException e) {
+            // Generally, Exceptions should always be either logged or rethrown.
+            // In our case, we're transforming the Exception into an Error
+            // Object which can be returned to the User. However, to ensure
+            // that we're not loosing anything - the Exception is also LOG.ed
+            // here as a debug message
+            LOG.debug(e.getMessage(), e);
             response = new FetchPublishingGroupResponse(e.getError(), e.getMessage());
         }
 
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished fetchPublishGroups()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Finished fetchPublishGroups()"));
         }
         return response;
     }
@@ -342,8 +402,8 @@ public final class ExchangeController extends CommonController implements Exchan
     @Override
     @Deprecated
     public FallibleResponse deletePublishingGroup(final AuthenticationToken token, final DeletePublishingGroupRequest request) {
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting processPublishGroup()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Starting processPublishGroup()"));
         }
         FallibleResponse response;
 
@@ -355,11 +415,17 @@ public final class ExchangeController extends CommonController implements Exchan
             service.deletePublishingGroup(authentication, request);
             response = new FallibleResponse();
         } catch (IWSException e) {
+            // Generally, Exceptions should always be either logged or rethrown.
+            // In our case, we're transforming the Exception into an Error
+            // Object which can be returned to the User. However, to ensure
+            // that we're not loosing anything - the Exception is also LOG.ed
+            // here as a debug message
+            LOG.debug(e.getMessage(), e);
             response = new FallibleResponse(e.getError(), e.getMessage());
         }
 
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished processPublishGroup()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Finished processPublishGroup()"));
         }
         return response;
     }
@@ -369,8 +435,8 @@ public final class ExchangeController extends CommonController implements Exchan
      */
     @Override
     public FetchGroupsForSharingResponse fetchGroupsForSharing(final AuthenticationToken token) {
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting fetchGroupsForSharing()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Starting fetchGroupsForSharing()"));
         }
         FetchGroupsForSharingResponse response;
 
@@ -380,11 +446,17 @@ public final class ExchangeController extends CommonController implements Exchan
             final ExchangeFetchService service = factory.prepareExchangeFetchService();
             response = service.fetchGroupsForSharing(authentication);
         } catch (IWSException e) {
+            // Generally, Exceptions should always be either logged or rethrown.
+            // In our case, we're transforming the Exception into an Error
+            // Object which can be returned to the User. However, to ensure
+            // that we're not loosing anything - the Exception is also LOG.ed
+            // here as a debug message
+            LOG.debug(e.getMessage(), e);
             response = new FetchGroupsForSharingResponse(e.getError(), e.getMessage());
         }
 
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished fetchGroupsForSharing()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Finished fetchGroupsForSharing()"));
         }
         return response;
     }
@@ -394,8 +466,8 @@ public final class ExchangeController extends CommonController implements Exchan
      */
     @Override
     public PublishOfferResponse processPublishOffer(final AuthenticationToken token, final PublishOfferRequest request) {
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting processPublishOffer()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Starting processPublishOffer()"));
         }
         PublishOfferResponse response;
 
@@ -407,11 +479,17 @@ public final class ExchangeController extends CommonController implements Exchan
             service.processPublishOffer(authentication, request);
             response = new PublishOfferResponse();
         } catch (IWSException e) {
+            // Generally, Exceptions should always be either logged or rethrown.
+            // In our case, we're transforming the Exception into an Error
+            // Object which can be returned to the User. However, to ensure
+            // that we're not loosing anything - the Exception is also LOG.ed
+            // here as a debug message
+            LOG.debug(e.getMessage(), e);
             response = new PublishOfferResponse(e.getError(), e.getMessage());
         }
 
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished processPublishOffer()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Finished processPublishOffer()"));
         }
         return response;
     }
@@ -421,8 +499,8 @@ public final class ExchangeController extends CommonController implements Exchan
      */
     @Override
     public FetchPublishedGroupsResponse fetchPublishedGroups(final AuthenticationToken token, final FetchPublishedGroupsRequest request) {
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting fetchPublishedGroups()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Starting fetchPublishedGroups()"));
         }
         FetchPublishedGroupsResponse response;
 
@@ -433,11 +511,17 @@ public final class ExchangeController extends CommonController implements Exchan
             final ExchangeFetchService service = factory.prepareExchangeFetchService();
             response = service.fetchPublishedOfferInfo(authentication, request);
         } catch (IWSException e) {
+            // Generally, Exceptions should always be either logged or rethrown.
+            // In our case, we're transforming the Exception into an Error
+            // Object which can be returned to the User. However, to ensure
+            // that we're not loosing anything - the Exception is also LOG.ed
+            // here as a debug message
+            LOG.debug(e.getMessage(), e);
             response = new FetchPublishedGroupsResponse(e.getError(), e.getMessage());
         }
 
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished fetchPublishedGroups()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Finished fetchPublishedGroups()"));
         }
         return response;
     }
@@ -447,8 +531,8 @@ public final class ExchangeController extends CommonController implements Exchan
      */
     @Override
     public FallibleResponse processHideForeignOffers(final AuthenticationToken token, final HideForeignOffersRequest request) {
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting processHideForeignOffers()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Starting processHideForeignOffers()"));
         }
         FallibleResponse response;
 
@@ -460,11 +544,17 @@ public final class ExchangeController extends CommonController implements Exchan
             service.processHideForeignOffers(authentication, request);
             response = new FallibleResponse();
         } catch (IWSException e) {
+            // Generally, Exceptions should always be either logged or rethrown.
+            // In our case, we're transforming the Exception into an Error
+            // Object which can be returned to the User. However, to ensure
+            // that we're not loosing anything - the Exception is also LOG.ed
+            // here as a debug message
+            LOG.debug(e.getMessage(), e);
             response = new FallibleResponse(e.getError(), e.getMessage());
         }
 
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished processHideForeignOffers()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Finished processHideForeignOffers()"));
         }
         return response;
     }
@@ -474,8 +564,8 @@ public final class ExchangeController extends CommonController implements Exchan
      */
     @Override
     public FallibleResponse rejectOffer(final AuthenticationToken token, final RejectOfferRequest request) {
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting rejectOffer()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Starting rejectOffer()"));
         }
         FallibleResponse response;
 
@@ -487,11 +577,17 @@ public final class ExchangeController extends CommonController implements Exchan
             service.rejectOffer(authentication, request);
             response = new FallibleResponse();
         } catch (IWSException e) {
+            // Generally, Exceptions should always be either logged or rethrown.
+            // In our case, we're transforming the Exception into an Error
+            // Object which can be returned to the User. However, to ensure
+            // that we're not loosing anything - the Exception is also LOG.ed
+            // here as a debug message
+            LOG.debug(e.getMessage(), e);
             response = new FallibleResponse(e.getError(), e.getMessage());
         }
 
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished rejectOffer()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Finished rejectOffer()"));
         }
         return response;
     }

@@ -55,7 +55,7 @@ import java.util.concurrent.Future;
 @Ignore("The test is very heavy, and is designed to run against a Migated PostgreSQL database.")
 public final class HeavyLoadTest {
 
-    private static final Logger log = LoggerFactory.getLogger(HeavyLoadTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(HeavyLoadTest.class);
     private static final Access access = new AccessClient();
     private static final Object lock = new Object();
     private static long userTotalNanos = 0;
@@ -100,7 +100,7 @@ public final class HeavyLoadTest {
         final List<AuthenticationToken> tokens = prepareTokenPool();
         final int threads = tokens.size();
         final int loops = 10;
-        log.info("Starting the test with {} threads and {} loops in each thread.", threads, loops);
+        LOG.info("Starting the test with {} threads and {} loops in each thread.", threads, loops);
 
         final ExecutorService executor = Executors.newFixedThreadPool(threads);
         final List<Callable<Object>> jobs = new ArrayList<>(threads);
@@ -113,11 +113,11 @@ public final class HeavyLoadTest {
         final List<Future<Object>> result = executor.invokeAll(jobs);
         assertThat(result.size(), is(threads));
 
-        log.info("Finishing the test.");
-        log.info("Fetching MemberGroup with all users {} times, took {} ms", tokens.size() * loops, getUserNanos() / 1000000);
-        log.info("Fetching OfferStatistics {} times, took {} ms", tokens.size() * loops, getStatNanos() / 1000000);
-        log.info("Fetching All Offers {} times, took {} ms", tokens.size() * loops, getDomesticOfferNanos() / 1000000);
-        log.info("Fetching Shared Offers {} times, took {} ms", tokens.size() * loops, getSharedOfferNanos() / 1000000);
+        LOG.info("Finishing the test.");
+        LOG.info("Fetching MemberGroup with all users {} times, took {} ms", tokens.size() * loops, getUserNanos() / 1000000);
+        LOG.info("Fetching OfferStatistics {} times, took {} ms", tokens.size() * loops, getStatNanos() / 1000000);
+        LOG.info("Fetching All Offers {} times, took {} ms", tokens.size() * loops, getDomesticOfferNanos() / 1000000);
+        LOG.info("Fetching Shared Offers {} times, took {} ms", tokens.size() * loops, getSharedOfferNanos() / 1000000);
 
         // Now we can clean up the tokens
         cleanupTokenPool(tokens);
@@ -229,7 +229,7 @@ public final class HeavyLoadTest {
          */
         @Override
         public void run() {
-            log.info("Thread {} starting.", thread);
+            LOG.info("Thread {} starting.", thread);
             long userNanos = 0;
             long statNanos = 0;
             long domesticOfferNanos = 0;
@@ -259,11 +259,11 @@ public final class HeavyLoadTest {
             recordStatNanos(statNanos);
             recordDomesticOfferNanos(domesticOfferNanos);
             recordSharedOfferNanos(sharedOfferNanos);
-            log.debug("Thread {} :: Fetching MemberGroup with all users {} times, took {} ns", thread, loops, userNanos);
-            log.debug("Thread {} :: Fetching OfferStatistics {} times, took {} ns", thread, loops, statNanos);
-            log.debug("Thread {} :: Fetching All Offers {} times, took {} ns", thread, loops, domesticOfferNanos);
-            log.debug("Thread {} :: Fetching Shared Offers {} times, took {} ns", thread, loops, sharedOfferNanos);
-            log.debug("Thread {} finishing.", thread);
+            LOG.debug("Thread {} :: Fetching MemberGroup with all users {} times, took {} ns", thread, loops, userNanos);
+            LOG.debug("Thread {} :: Fetching OfferStatistics {} times, took {} ns", thread, loops, statNanos);
+            LOG.debug("Thread {} :: Fetching All Offers {} times, took {} ns", thread, loops, domesticOfferNanos);
+            LOG.debug("Thread {} :: Fetching Shared Offers {} times, took {} ns", thread, loops, sharedOfferNanos);
+            LOG.debug("Thread {} finishing.", thread);
         }
     }
 }

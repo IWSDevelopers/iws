@@ -50,7 +50,7 @@ import java.util.Set;
  */
 public final class CsvTransformer {
 
-    private static final Logger log = LoggerFactory.getLogger(CsvTransformer.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CsvTransformer.class);
 
     /**
      * Private Constructor, this is a utility class.
@@ -352,7 +352,7 @@ public final class CsvTransformer {
         Boolean typeF = convertBoolean(inputW);
 
         if (convertBoolean(inputN)) {
-            log.info("Ignoring the TypeOfWork 'N'.");
+            LOG.info("Ignoring the TypeOfWork 'N'.");
         }
 
         if (((typeR ? 1 : 0) + (typeO ? 1 : 0) + (typeF ? 1 : 0)) > 1) {
@@ -430,17 +430,17 @@ public final class CsvTransformer {
                 final Method implementation = obj.getClass().getMethod(field.getField());
                 implementation.invoke(obj, args);
             } catch (IllegalArgumentException e) {
-                log.debug("Setter " + field.getMethod() + " Invocation Error: " + e.getMessage());
+                LOG.debug("Setter " + field.getMethod() + " Invocation Error: " + e.getMessage());
                 errors.put(field.getField(), e.getMessage());
             } catch (SecurityException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
                 // The Reflection framework forces a check for the NoSuchMethod
                 // and InvocationTarget Exceptions. Additionally, if the Java
                 // Security Manager is used, we may also see a SecurityException
-                log.error(e.getMessage(), e);
+                LOG.error(e.getMessage(), e);
                 throw new IWSException(IWSErrors.FATAL, e.getMessage(), e);
             }
         } else {
-            log.warn("Cannot set field " + field + ", as there is no method associated with it.");
+            LOG.warn("Cannot set field " + field + ", as there is no method associated with it.");
         }
     }
 }

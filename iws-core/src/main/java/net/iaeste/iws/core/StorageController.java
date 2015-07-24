@@ -41,7 +41,7 @@ import org.slf4j.LoggerFactory;
  */
 public final class StorageController extends CommonController implements Storage {
 
-    private static final Logger log = LoggerFactory.getLogger(StorageController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(StorageController.class);
 
     /**
      * Default Constructor, takes a ServiceFactory as input parameter, and uses
@@ -58,8 +58,8 @@ public final class StorageController extends CommonController implements Storage
      */
     @Override
     public FolderResponse processFolder(final AuthenticationToken token, final FolderRequest request) {
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting processFolder()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Starting processFolder()"));
         }
         FolderResponse response;
 
@@ -75,11 +75,17 @@ public final class StorageController extends CommonController implements Storage
             final StorageService service = factory.prepareStorageService();
             response = service.processFolder(authentication, request);
         } catch (IWSException e) {
+            // Generally, Exceptions should always be either logged or rethrown.
+            // In our case, we're transforming the Exception into an Error
+            // Object which can be returned to the User. However, to ensure
+            // that we're not loosing anything - the Exception is also LOG.ed
+            // here as a debug message
+            LOG.debug(e.getMessage(), e);
             response = new FolderResponse(e.getError(), e.getMessage());
         }
 
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished processFolder()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Finished processFolder()"));
         }
         return response;
     }
@@ -89,8 +95,8 @@ public final class StorageController extends CommonController implements Storage
      */
     @Override
     public FetchFolderResponse fetchFolder(final AuthenticationToken token, final FetchFolderRequest request) {
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting processFile()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Starting processFile()"));
         }
         FetchFolderResponse response;
 
@@ -101,11 +107,17 @@ public final class StorageController extends CommonController implements Storage
             final StorageService service = factory.prepareStorageService();
             response = service.fetchFolder(authentication, request);
         } catch (IWSException e) {
+            // Generally, Exceptions should always be either logged or rethrown.
+            // In our case, we're transforming the Exception into an Error
+            // Object which can be returned to the User. However, to ensure
+            // that we're not loosing anything - the Exception is also LOG.ed
+            // here as a debug message
+            LOG.debug(e.getMessage(), e);
             response = new FetchFolderResponse(e.getError(), e.getMessage());
         }
 
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished processFile()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Finished processFile()"));
         }
         return response;
     }
@@ -115,8 +127,8 @@ public final class StorageController extends CommonController implements Storage
      */
     @Override
     public FileResponse processFile(final AuthenticationToken token, final FileRequest request) {
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting processFile()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Starting processFile()"));
         }
         FileResponse response;
 
@@ -127,11 +139,17 @@ public final class StorageController extends CommonController implements Storage
             final StorageService service = factory.prepareStorageService();
             response = service.processFile(authentication, request);
         } catch (IWSException e) {
+            // Generally, Exceptions should always be either logged or rethrown.
+            // In our case, we're transforming the Exception into an Error
+            // Object which can be returned to the User. However, to ensure
+            // that we're not loosing anything - the Exception is also LOG.ed
+            // here as a debug message
+            LOG.debug(e.getMessage(), e);
             response = new FileResponse(e.getError(), e.getMessage());
         }
 
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished processFile()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Finished processFile()"));
         }
         return response;
     }
@@ -141,8 +159,8 @@ public final class StorageController extends CommonController implements Storage
      */
     @Override
     public FetchFileResponse fetchFile(final AuthenticationToken token, final FetchFileRequest request) {
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting fetchFile()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Starting fetchFile()"));
         }
         FetchFileResponse response;
 
@@ -157,11 +175,17 @@ public final class StorageController extends CommonController implements Storage
             final StorageService service = factory.prepareStorageService();
             response = service.fetchFile(authentication, request);
         } catch (IWSException e) {
+            // Generally, Exceptions should always be either logged or rethrown.
+            // In our case, we're transforming the Exception into an Error
+            // Object which can be returned to the User. However, to ensure
+            // that we're not loosing anything - the Exception is also LOG.ed
+            // here as a debug message
+            LOG.debug(e.getMessage(), e);
             response = new FetchFileResponse(e.getError(), e.getMessage());
         }
 
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished fetchFile()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Finished fetchFile()"));
         }
         return response;
     }

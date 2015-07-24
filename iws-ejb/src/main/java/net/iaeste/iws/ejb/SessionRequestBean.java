@@ -67,7 +67,7 @@ import java.util.Date;
 @TransactionManagement(TransactionManagementType.CONTAINER)
 public class SessionRequestBean {
 
-    private static final Logger log = LoggerFactory.getLogger(SessionRequestBean.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SessionRequestBean.class);
 
     @Inject @IWSBean private EntityManager entityManager;
 
@@ -217,10 +217,10 @@ public class SessionRequestBean {
             if (obj != null) {
                 entity.setRequestObject(Serializer.serialize(obj));
             }
-            log.debug("Saving Requests information with the request Object.");
+            LOG.debug("Saving Requests information with the request Object.");
             dao.persist(entity);
         } else {
-            log.warn("Attempted to save request information for deprecated Session.");
+            LOG.warn("Attempted to save request information for deprecated Session.");
         }
     }
 
@@ -230,7 +230,7 @@ public class SessionRequestBean {
         if (!response.getError().equals(IWSErrors.SUCCESS)) {
             if (session != null) {
                 final RequestEntity entity = prepareEntity(session, response, request);
-                log.info("Saving Requests information.");
+                LOG.info("Saving Requests information.");
                 dao.persist(entity);
             }
         }
@@ -272,7 +272,7 @@ public class SessionRequestBean {
                 entity.setModified(new Date());
                 dao.persist(entity);
             } catch (AuthenticationException | IdentificationException e) {
-                log.info(e.getMessage());
+                LOG.info(e.getMessage());
                 entity = null;
             }
         }

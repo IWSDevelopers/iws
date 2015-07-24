@@ -69,7 +69,7 @@ import java.util.UUID;
  */
 public final class AccessService extends CommonService<AccessDao> {
 
-    private static final Logger log = LoggerFactory.getLogger(AccessService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AccessService.class);
     private final Notifications notifications;
     private final ActiveSessions activeSessions;
     private final LoginRetries loginRetries;
@@ -111,7 +111,7 @@ public final class AccessService extends CommonService<AccessDao> {
             loginRetries.removeAuthenticatedUser(request.getUsername());
 
             final AuthenticationToken token = new AuthenticationToken(key);
-            log.info(formatLogMessage(token, "Created a new Session for the user " + user));
+            LOG.info(formatLogMessage(token, "Created a new Session for the user " + user));
             return new AuthenticationResponse(token);
         } else {
             final String msg = "An Active Session for user %s %s already exists.";
@@ -224,7 +224,7 @@ public final class AccessService extends CommonService<AccessDao> {
         final SessionEntity session = dao.findActiveSession(token);
         dao.deprecateSession(session);
         activeSessions.removeToken(token.getToken());
-        log.info(formatLogMessage(token, "Deprecated session for user: " + session.getUser()));
+        LOG.info(formatLogMessage(token, "Deprecated session for user: " + session.getUser()));
     }
 
     /**
@@ -344,7 +344,7 @@ public final class AccessService extends CommonService<AccessDao> {
             final SessionEntity session = dao.findActiveSession(token);
             final UserEntity user = session.getUser();
             dao.deprecateSession(session);
-            log.info("Deprecated inactive session for user " + user);
+            LOG.info("Deprecated inactive session for user " + user);
         }
     }
 

@@ -71,7 +71,7 @@ import java.util.Set;
  */
 public final class ExchangeService extends CommonService<ExchangeDao> {
 
-    private static final Logger log = LoggerFactory.getLogger(ExchangeService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ExchangeService.class);
 
     private final Notifications notifications;
 

@@ -51,7 +51,7 @@ public class NotificationImSender implements Observer {
 
     private NotificationDao dao;
 
-    private static final Logger log = LoggerFactory.getLogger(NotificationImSender.class);
+    private static final Logger LOG = LoggerFactory.getLogger(NotificationImSender.class);
 
     public NotificationImSender(final EntityManager iwsEntityManager, final EntityManager mailingEntityManager, final Settings settings) {
 //        //initialize jms message queue
@@ -80,7 +80,7 @@ public class NotificationImSender implements Observer {
         if (initialized) {
             processMessages();
         } else {
-            log.warn("Update called for uninitialized observer");
+            LOG.warn("Update called for uninitialized observer");
         }
     }
 

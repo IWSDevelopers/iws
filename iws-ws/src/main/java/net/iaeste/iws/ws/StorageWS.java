@@ -51,7 +51,7 @@ import javax.xml.ws.WebServiceContext;
 @WebService(name = "storageWS", serviceName = "storageWSService", portName = "storageWS", targetNamespace = "http://ws.iws.iaeste.net/")
 public class StorageWS implements Storage {
 
-    private static final Logger log = LoggerFactory.getLogger(StorageWS.class);
+    private static final Logger LOG = LoggerFactory.getLogger(StorageWS.class);
 
     /**
      * Injection of the IWS Storage Bean Instance, which embeds the
@@ -103,7 +103,7 @@ public class StorageWS implements Storage {
     public FolderResponse processFolder(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final FolderRequest request) {
-        log.info(requestLogger.prepareLogMessage(token, "processFolder"));
+        LOG.info(requestLogger.prepareLogMessage(token, "processFolder"));
         FolderResponse response;
 
         try {
@@ -111,7 +111,7 @@ public class StorageWS implements Storage {
         } catch (RuntimeException e) {
             // The EJB's are all annotated with Transactional Logic, so if an
             // error is flying by - then it is caught here.
-            log.error("Transactional Problem: " + e.getMessage(), e);
+            LOG.error("Transactional Problem: " + e.getMessage(), e);
             response = new FolderResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
         }
 
@@ -127,7 +127,7 @@ public class StorageWS implements Storage {
     public FetchFolderResponse fetchFolder(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final FetchFolderRequest request) {
-        log.info(requestLogger.prepareLogMessage(token, "fetchFolder"));
+        LOG.info(requestLogger.prepareLogMessage(token, "fetchFolder"));
         FetchFolderResponse response;
 
         try {
@@ -135,7 +135,7 @@ public class StorageWS implements Storage {
         } catch (RuntimeException e) {
             // The EJB's are all annotated with Transactional Logic, so if an
             // error is flying by - then it is caught here.
-            log.error("Transactional Problem: " + e.getMessage(), e);
+            LOG.error("Transactional Problem: " + e.getMessage(), e);
             response = new FetchFolderResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
         }
 
@@ -151,7 +151,7 @@ public class StorageWS implements Storage {
     public FileResponse processFile(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final FileRequest request) {
-        log.info(requestLogger.prepareLogMessage(token, "processFile"));
+        LOG.info(requestLogger.prepareLogMessage(token, "processFile"));
         FileResponse response;
 
         try {
@@ -159,7 +159,7 @@ public class StorageWS implements Storage {
         } catch (RuntimeException e) {
             // The EJB's are all annotated with Transactional Logic, so if an
             // error is flying by - then it is caught here.
-            log.error("Transactional Problem: " + e.getMessage(), e);
+            LOG.error("Transactional Problem: " + e.getMessage(), e);
             response = new FileResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
         }
 
@@ -175,7 +175,7 @@ public class StorageWS implements Storage {
     public FetchFileResponse fetchFile(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final FetchFileRequest request) {
-        log.info(requestLogger.prepareLogMessage(token, "fetchFile"));
+        LOG.info(requestLogger.prepareLogMessage(token, "fetchFile"));
         FetchFileResponse response;
 
         try {
@@ -183,7 +183,7 @@ public class StorageWS implements Storage {
         } catch (RuntimeException e) {
             // The EJB's are all annotated with Transactional Logic, so if an
             // error is flying by - then it is caught here.
-            log.error("Transactional Problem: " + e.getMessage(), e);
+            LOG.error("Transactional Problem: " + e.getMessage(), e);
             response = new FetchFileResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
         }
 

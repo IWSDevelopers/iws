@@ -64,7 +64,7 @@ import java.io.Serializable;
 @TransactionManagement(TransactionManagementType.CONTAINER)
 public class AccessBean implements Access {
 
-    private static final Logger log = LoggerFactory.getLogger(AccessBean.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AccessBean.class);
     @Inject @IWSBean private EntityManager entityManager;
     @Inject @IWSBean private Notifications notifications;
     @Inject @IWSBean private Settings settings;
@@ -131,9 +131,8 @@ public class AccessBean implements Access {
 
         try {
             response = controller.generateSession(request);
-            log.info(session.generateLog("generateSession", start, response, response.getToken()));
         } catch (RuntimeException e) {
-            log.error(session.generateLog("generateSession", start, e));
+            LOG.error(session.generateLog("generateSession", start, e));
             response = new AuthenticationResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -150,9 +149,9 @@ public class AccessBean implements Access {
 
         try {
             response = controller.requestResettingSession(request);
-            log.info(session.generateLog("requestResettingSession", start, response));
+            LOG.info(session.generateLog("requestResettingSession", start, response));
         } catch (RuntimeException e) {
-            log.error(session.generateLog("requestResettingSession", start, e));
+            LOG.error(session.generateLog("requestResettingSession", start, e));
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -169,9 +168,9 @@ public class AccessBean implements Access {
 
         try {
             response = controller.resetSession(resetSessionToken);
-            log.info(session.generateLog("resetSession", start, response));
+            LOG.info(session.generateLog("resetSession", start, response));
         } catch (RuntimeException e) {
-            log.error(session.generateLog("resetSession", start, e));
+            LOG.error(session.generateLog("resetSession", start, e));
             response = new AuthenticationResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -188,9 +187,9 @@ public class AccessBean implements Access {
 
         try {
             response = controller.saveSessionData(token, request);
-            log.info(session.generateLogAndUpdateSession("saveSessionData", start, response, token));
+            LOG.info(session.generateLogAndUpdateSession("saveSessionData", start, response, token));
         } catch (RuntimeException e) {
-            log.error(session.generateLogAndSaveRequest("saveSessionData", start, e, token, request), e);
+            LOG.error(session.generateLogAndSaveRequest("saveSessionData", start, e, token, request), e);
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -207,9 +206,9 @@ public class AccessBean implements Access {
 
         try {
             response = controller.readSessionData(token);
-            log.info(session.generateLogAndUpdateSession("readSessionData", start, response, token));
+            LOG.info(session.generateLogAndUpdateSession("readSessionData", start, response, token));
         } catch (RuntimeException e) {
-            log.error(session.generateLogAndSaveRequest("readSessionData", start, e, token), e);
+            LOG.error(session.generateLogAndSaveRequest("readSessionData", start, e, token), e);
             response = new SessionDataResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -226,9 +225,9 @@ public class AccessBean implements Access {
 
         try {
             response = controller.verifySession(token);
-            log.info(session.generateLogAndUpdateSession("verifySession", start, response, token));
+            LOG.info(session.generateLogAndUpdateSession("verifySession", start, response, token));
         } catch (RuntimeException e) {
-            log.error(session.generateLogAndSaveRequest("verifySession", start, e, token), e);
+            LOG.error(session.generateLogAndSaveRequest("verifySession", start, e, token), e);
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -245,9 +244,9 @@ public class AccessBean implements Access {
 
         try {
             response = controller.deprecateSession(token);
-            log.info(session.generateLogAndUpdateSession("deprecateSession", start, response, token));
+            LOG.info(session.generateLogAndUpdateSession("deprecateSession", start, response, token));
         } catch (RuntimeException e) {
-            log.error(session.generateLogAndSaveRequest("deprecateSession", start, e, token), e);
+            LOG.error(session.generateLogAndSaveRequest("deprecateSession", start, e, token), e);
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -264,9 +263,9 @@ public class AccessBean implements Access {
 
         try {
             response = controller.forgotPassword(username);
-            log.info(session.generateLog("forgotPassword", start, response));
+            LOG.info(session.generateLog("forgotPassword", start, response));
         } catch (RuntimeException e) {
-            log.error(session.generateLog("forgotPassword", start, e));
+            LOG.error(session.generateLog("forgotPassword", start, e));
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -283,9 +282,9 @@ public class AccessBean implements Access {
 
         try {
             response = controller.resetPassword(password);
-            log.info(session.generateLog("resetPassword", start, response));
+            LOG.info(session.generateLog("resetPassword", start, response));
         } catch (RuntimeException e) {
-            log.error(session.generateLog("resetPassword", start, e), e);
+            LOG.error(session.generateLog("resetPassword", start, e), e);
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -302,9 +301,9 @@ public class AccessBean implements Access {
 
         try {
             response = controller.updatePassword(token, password);
-            log.info(session.generateLogAndUpdateSession("updatePassword", start, response, token));
+            LOG.info(session.generateLogAndUpdateSession("updatePassword", start, response, token));
         } catch (RuntimeException e) {
-            log.error(session.generateLogAndSaveRequest("updatePassword", start, e, token), e);
+            LOG.error(session.generateLogAndSaveRequest("updatePassword", start, e, token), e);
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -322,9 +321,9 @@ public class AccessBean implements Access {
 
         try {
             response = controller.fetchPermissions(token);
-            log.info(session.generateLogAndUpdateSession("fetchPermissions", start, response, token));
+            LOG.info(session.generateLogAndUpdateSession("fetchPermissions", start, response, token));
         } catch (RuntimeException e) {
-            log.error(session.generateLogAndSaveRequest("fetchPermissions", start, e, token), e);
+            LOG.error(session.generateLogAndSaveRequest("fetchPermissions", start, e, token), e);
             response = new FetchPermissionResponse(IWSErrors.ERROR, e.getMessage());
         }
 

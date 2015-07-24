@@ -68,7 +68,7 @@ import java.util.List;
  */
 public final class StudentService extends CommonService<StudentDao> {
 
-    private static final Logger log = LoggerFactory.getLogger(StudentService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(StudentService.class);
     private final AccessDao accessDao;
     private final ExchangeDao exchangeDao;
     private final ViewsDao viewsDao;

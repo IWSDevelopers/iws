@@ -54,7 +54,7 @@ import java.util.List;
  */
 public class UserMigrator implements Migrator<IW3ProfilesEntity> {
 
-    private static final Logger log = LoggerFactory.getLogger(UserMigrator.class);
+    private static final Logger LOG = LoggerFactory.getLogger(UserMigrator.class);
 
     @Autowired
     private IWSDao iwsDao;
@@ -106,10 +106,10 @@ public class UserMigrator implements Migrator<IW3ProfilesEntity> {
                 iwsDao.persist(entity);
                 persisted++;
             } catch (IllegalArgumentException | VerificationException e) {
-                log.error("Cannot process User {} => {}", user, e.getMessage());
+                LOG.error("Cannot process User {} => {}", user, e.getMessage());
                 skipped++;
             } catch (final RuntimeException e) {
-                log.error("Unknown problem while migrating User {} => {}", user, e.getMessage());
+                LOG.error("Unknown problem while migrating User {} => {}", user, e.getMessage());
                 skipped++;
             }
         }

@@ -71,7 +71,7 @@ import java.util.UUID;
  */
 public final class CommitteeService extends CommonService<CommitteeDao> {
 
-    private static final Logger log = LoggerFactory.getLogger(CommitteeService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CommitteeService.class);
 
     private final Notifications notifications;
 
@@ -426,14 +426,14 @@ public final class CommitteeService extends CommonService<CommitteeDao> {
                     if (staffs.size() == 1) {
                         country.setMembership(Membership.ASSOCIATE_MEMBER);
                         dao.persist(authentication, country);
-                        log.info(formatLogMessage(authentication, "Country %s has been upgraded from %s to %s.", country.getCountryName(), Membership.COOPERATING_INSTITUTION, Membership.ASSOCIATE_MEMBER));
+                        LOG.info(formatLogMessage(authentication, "Country %s has been upgraded from %s to %s.", country.getCountryName(), Membership.COOPERATING_INSTITUTION, Membership.ASSOCIATE_MEMBER));
                     } else {
                         throw new IllegalActionException("Attempting to updgrade a Cooperating Institution to Associate Membership, while other Cooperating Institutions still exist for the Country.");
                     }
                 } else if (country.getMembership() == Membership.ASSOCIATE_MEMBER) {
                     country.setMembership(Membership.FULL_MEMBER);
                     dao.persist(authentication, country);
-                    log.info(formatLogMessage(authentication, "Country %s has been upgraded from %s to %s.", country.getCountryName(), Membership.ASSOCIATE_MEMBER, Membership.FULL_MEMBER));
+                    LOG.info(formatLogMessage(authentication, "Country %s has been upgraded from %s to %s.", country.getCountryName(), Membership.ASSOCIATE_MEMBER, Membership.FULL_MEMBER));
                 } else {
                     throw new IllegalActionException("Attempting to updgrade a Committee, which is already a Full Member.");
                 }
@@ -592,7 +592,7 @@ public final class CommitteeService extends CommonService<CommitteeDao> {
             deletePerson(user);
             dao.delete(user);
 
-            log.info(formatLogMessage(authentication, "Deleted the new user %s %s <%s> completely.", user.getFirstname(), user.getLastname(), user.getUsername()));
+            LOG.info(formatLogMessage(authentication, "Deleted the new user %s %s <%s> completely.", user.getFirstname(), user.getLastname(), user.getUsername()));
         }
     }
 
@@ -613,7 +613,7 @@ public final class CommitteeService extends CommonService<CommitteeDao> {
             try {
                 deletePrivateData(authentication, user);
             } catch (IWSException e) {
-                log.warn(formatLogMessage(authentication, "Unable to delete the Account for %s %s <%s>, reason: %s", user.getFirstname(), user.getLastname(), user.getUsername(), e.getMessage()));
+                LOG.warn(formatLogMessage(authentication, "Unable to delete the Account for %s %s <%s>, reason: %s", user.getFirstname(), user.getLastname(), user.getUsername(), e.getMessage()));
             }
         }
     }
@@ -646,7 +646,7 @@ public final class CommitteeService extends CommonService<CommitteeDao> {
         user.setStatus(UserStatus.DELETED);
         dao.persist(user);
 
-        log.info(formatLogMessage(authentication, "Deleted all private data for user %s, including %d sessions.", user, deletedSessions));
+        LOG.info(formatLogMessage(authentication, "Deleted all private data for user %s, including %d sessions.", user, deletedSessions));
     }
 
     // =========================================================================
@@ -714,7 +714,7 @@ public final class CommitteeService extends CommonService<CommitteeDao> {
                 createGroupCoordinator(authentication, groupEntity, userEntity);
                 notifications.notify(authentication, groupEntity, NotificationType.NEW_GROUP);
                 notifications.notify(authentication, userEntity, NotificationType.NEW_GROUP_OWNER);
-                log.info(formatLogMessage(authentication, "Created new International Group %s with Coordinator %s", group.getGroupName(), user.getFirstname() + ' ' + user.getLastname()));
+                LOG.info(formatLogMessage(authentication, "Created new International Group %s with Coordinator %s", group.getGroupName(), user.getFirstname() + ' ' + user.getLastname()));
             } else {
                 throw new VerificationException("Attempting to greate a new International Group failed as no Coordinator provided doesn't exist.");
             }

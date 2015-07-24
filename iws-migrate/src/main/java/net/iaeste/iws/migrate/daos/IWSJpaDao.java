@@ -16,8 +16,6 @@ package net.iaeste.iws.migrate.daos;
 
 import static net.iaeste.iws.common.utils.StringUtils.toUpper;
 
-import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.common.configuration.InternalConstants;
@@ -53,7 +51,7 @@ import java.util.UUID;
 @Transactional("transactionManagerIWS")
 public class IWSJpaDao implements IWSDao {
 
-    private static final Logger log = LoggerFactory.getLogger(IWSJpaDao.class);
+    private static final Logger LOG = LoggerFactory.getLogger(IWSJpaDao.class);
 
     private EntityManager entityManager;
 
@@ -71,8 +69,8 @@ public class IWSJpaDao implements IWSDao {
      */
     @Override
     public void persist(final Object entity) {
-        if (entity instanceof Externable && ((Externable) entity).getExternalId() == null) {
-            ((Externable) entity).setExternalId(UUID.randomUUID().toString());
+        if (entity instanceof Externable && ((Externable<?>) entity).getExternalId() == null) {
+            ((Externable<?>) entity).setExternalId(UUID.randomUUID().toString());
         }
 
         entityManager.persist(entity);
@@ -101,7 +99,7 @@ public class IWSJpaDao implements IWSDao {
                 entity = findCountry(countrycode);
             }
         } catch (IWSException e) {
-            log.warn("Couldn't find Entity for country {} => {}.", countrycode, e.getMessage());
+            LOG.warn("Couldn't find Entity for country {} => {}.", countrycode, e.getMessage());
             entity = null;
         }
 
@@ -306,17 +304,6 @@ public class IWSJpaDao implements IWSDao {
     // =========================================================================
 
     /**
-     * Returns the lower case version of the String, using the default Locale
-     * for the conversion.
-     *
-     * @param str String to lower case
-     * @return Lower cased String
-     */
-    protected static String toLower(final String str) {
-        return str.toLowerCase(IWSConstants.DEFAULT_LOCALE);
-    }
-
-    /**
      * Resolves the given Query, and will throw an Identification Exception, if
      * a unique result was not found.
      *
@@ -361,19 +348,5 @@ public class IWSJpaDao implements IWSDao {
         }
 
         return result;
-    }
-
-    protected static <T extends IWSEntity> T resolveResultList(final List<T> list) {
-        final T user;
-
-        if (list.size() == 1) {
-            user = list.get(0);
-        } else if (list.isEmpty()) {
-            user = null;
-        } else {
-            throw new IWSException(IWSErrors.DATABASE_CONSTRAINT_INCONSISTENCY, "Although Record should be unique, multiple records exists.");
-        }
-
-        return user;
     }
 }

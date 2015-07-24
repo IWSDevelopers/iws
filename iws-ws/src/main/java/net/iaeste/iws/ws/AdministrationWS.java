@@ -67,7 +67,7 @@ import javax.xml.ws.WebServiceContext;
 @WebService(name = "administrationWS", serviceName = "administrationWSService", portName = "administrationWS", targetNamespace = "http://ws.iws.iaeste.net/")
 public class AdministrationWS implements Administration {
 
-    private static final Logger log = LoggerFactory.getLogger(AdministrationWS.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AdministrationWS.class);
 
     /**
      * Injection of the IWS Administration Bean Instance, which embeds the
@@ -119,7 +119,7 @@ public class AdministrationWS implements Administration {
     public FallibleResponse processCountry(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final CountryRequest request) {
-        log.info(requestLogger.prepareLogMessage(token, "processCountry"));
+        LOG.info(requestLogger.prepareLogMessage(token, "processCountry"));
         FallibleResponse response;
 
         try {
@@ -127,7 +127,7 @@ public class AdministrationWS implements Administration {
         } catch (RuntimeException e) {
             // The EJB's are all annotated with Transactional Logic, so if an
             // error is flying by - then it is caught here.
-            log.error("Transactional Problem: " + e.getMessage(), e);
+            LOG.error("Transactional Problem: " + e.getMessage(), e);
             response = new FallibleResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
         }
 
@@ -143,7 +143,7 @@ public class AdministrationWS implements Administration {
     public FetchCountryResponse fetchCountries(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final FetchCountryRequest request) {
-        log.info(requestLogger.prepareLogMessage(token, "fetchCountries"));
+        LOG.info(requestLogger.prepareLogMessage(token, "fetchCountries"));
         FetchCountryResponse response;
 
         try {
@@ -151,7 +151,7 @@ public class AdministrationWS implements Administration {
         } catch (RuntimeException e) {
             // The EJB's are all annotated with Transactional Logic, so if an
             // error is flying by - then it is caught here.
-            log.error("Transactional Problem: " + e.getMessage(), e);
+            LOG.error("Transactional Problem: " + e.getMessage(), e);
             response = new FetchCountryResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
         }
 
@@ -167,7 +167,7 @@ public class AdministrationWS implements Administration {
     public CreateUserResponse createUser(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final CreateUserRequest request) {
-        log.info(requestLogger.prepareLogMessage(token, "createUser"));
+        LOG.info(requestLogger.prepareLogMessage(token, "createUser"));
         CreateUserResponse response;
 
         try {
@@ -175,7 +175,7 @@ public class AdministrationWS implements Administration {
         } catch (RuntimeException e) {
             // The EJB's are all annotated with Transactional Logic, so if an
             // error is flying by - then it is caught here.
-            log.error("Transactional Problem: " + e.getMessage(), e);
+            LOG.error("Transactional Problem: " + e.getMessage(), e);
             response = new CreateUserResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
         }
 
@@ -191,7 +191,7 @@ public class AdministrationWS implements Administration {
     public FallibleResponse controlUserAccount(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final UserRequest request) {
-        log.info(requestLogger.prepareLogMessage(token, "controlUserAccount"));
+        LOG.info(requestLogger.prepareLogMessage(token, "controlUserAccount"));
         FallibleResponse response;
 
         try {
@@ -199,7 +199,7 @@ public class AdministrationWS implements Administration {
         } catch (RuntimeException e) {
             // The EJB's are all annotated with Transactional Logic, so if an
             // error is flying by - then it is caught here.
-            log.error("Transactional Problem: " + e.getMessage(), e);
+            LOG.error("Transactional Problem: " + e.getMessage(), e);
             response = new FallibleResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
         }
 
@@ -214,7 +214,7 @@ public class AdministrationWS implements Administration {
     @WebResult(name = "response")
     public FallibleResponse activateUser(
             @WebParam(name = "activationString") final String activationString) {
-        log.info(requestLogger.prepareLogMessage("activateUser"));
+        LOG.info(requestLogger.prepareLogMessage("activateUser"));
         FallibleResponse response;
 
         try {
@@ -222,7 +222,7 @@ public class AdministrationWS implements Administration {
         } catch (RuntimeException e) {
             // The EJB's are all annotated with Transactional Logic, so if an
             // error is flying by - then it is caught here.
-            log.error("Transactional Problem: " + e.getMessage(), e);
+            LOG.error("Transactional Problem: " + e.getMessage(), e);
             response = new FallibleResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
         }
 
@@ -237,7 +237,7 @@ public class AdministrationWS implements Administration {
     @WebResult(name = "response")
     public FallibleResponse updateUsername(
             @WebParam(name = "updateCode") final String updateCode) {
-        log.info(requestLogger.prepareLogMessage("updateUsername"));
+        LOG.info(requestLogger.prepareLogMessage("updateUsername"));
         FallibleResponse response;
 
         try {
@@ -245,7 +245,7 @@ public class AdministrationWS implements Administration {
         } catch (RuntimeException e) {
             // The EJB's are all annotated with Transactional Logic, so if an
             // error is flying by - then it is caught here.
-            log.error("Transactional Problem: " + e.getMessage(), e);
+            LOG.error("Transactional Problem: " + e.getMessage(), e);
             response = new FallibleResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
         }
 
@@ -261,7 +261,7 @@ public class AdministrationWS implements Administration {
     public FallibleResponse changeAccountName(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final AccountNameRequest request) {
-        log.info(requestLogger.prepareLogMessage(token, "changeAccountName"));
+        LOG.info(requestLogger.prepareLogMessage(token, "changeAccountName"));
         FallibleResponse response;
 
         try {
@@ -269,7 +269,7 @@ public class AdministrationWS implements Administration {
         } catch (RuntimeException e) {
             // The EJB's are all annotated with Transactional Logic, so if an
             // error is flying by - then it is caught here.
-            log.error("Transactional Problem: " + e.getMessage(), e);
+            LOG.error("Transactional Problem: " + e.getMessage(), e);
             response = new FallibleResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
         }
 
@@ -285,7 +285,7 @@ public class AdministrationWS implements Administration {
     public FetchUserResponse fetchUser(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final FetchUserRequest request) {
-        log.info(requestLogger.prepareLogMessage(token, "fetchUser"));
+        LOG.info(requestLogger.prepareLogMessage(token, "fetchUser"));
         FetchUserResponse response;
 
         try {
@@ -293,7 +293,7 @@ public class AdministrationWS implements Administration {
         } catch (RuntimeException e) {
             // The EJB's are all annotated with Transactional Logic, so if an
             // error is flying by - then it is caught here.
-            log.error("Transactional Problem: " + e.getMessage(), e);
+            LOG.error("Transactional Problem: " + e.getMessage(), e);
             response = new FetchUserResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
         }
 
@@ -309,7 +309,7 @@ public class AdministrationWS implements Administration {
     public FetchRoleResponse fetchRoles(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final FetchRoleRequest request) {
-        log.info(requestLogger.prepareLogMessage(token, "fetchRoles"));
+        LOG.info(requestLogger.prepareLogMessage(token, "fetchRoles"));
         FetchRoleResponse response;
 
         try {
@@ -317,7 +317,7 @@ public class AdministrationWS implements Administration {
         } catch (RuntimeException e) {
             // The EJB's are all annotated with Transactional Logic, so if an
             // error is flying by - then it is caught here.
-            log.error("Transactional Problem: " + e.getMessage(), e);
+            LOG.error("Transactional Problem: " + e.getMessage(), e);
             response = new FetchRoleResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
         }
 
@@ -333,7 +333,7 @@ public class AdministrationWS implements Administration {
     public ProcessGroupResponse processGroup(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final GroupRequest request) {
-        log.info(requestLogger.prepareLogMessage(token, "processGroup"));
+        LOG.info(requestLogger.prepareLogMessage(token, "processGroup"));
         ProcessGroupResponse response;
 
         try {
@@ -341,7 +341,7 @@ public class AdministrationWS implements Administration {
         } catch (RuntimeException e) {
             // The EJB's are all annotated with Transactional Logic, so if an
             // error is flying by - then it is caught here.
-            log.error("Transactional Problem: " + e.getMessage(), e);
+            LOG.error("Transactional Problem: " + e.getMessage(), e);
             response = new ProcessGroupResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
         }
 
@@ -357,7 +357,7 @@ public class AdministrationWS implements Administration {
     public FallibleResponse deleteSubGroup(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final GroupRequest request) {
-        log.info(requestLogger.prepareLogMessage(token, "deleteSubGroup"));
+        LOG.info(requestLogger.prepareLogMessage(token, "deleteSubGroup"));
         FallibleResponse response;
 
         try {
@@ -365,7 +365,7 @@ public class AdministrationWS implements Administration {
         } catch (RuntimeException e) {
             // The EJB's are all annotated with Transactional Logic, so if an
             // error is flying by - then it is caught here.
-            log.error("Transactional Problem: " + e.getMessage(), e);
+            LOG.error("Transactional Problem: " + e.getMessage(), e);
             response = new FallibleResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
         }
 
@@ -381,7 +381,7 @@ public class AdministrationWS implements Administration {
     public FetchGroupResponse fetchGroup(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final FetchGroupRequest request) {
-        log.info(requestLogger.prepareLogMessage(token, "fetchGroup"));
+        LOG.info(requestLogger.prepareLogMessage(token, "fetchGroup"));
         FetchGroupResponse response;
 
         try {
@@ -389,7 +389,7 @@ public class AdministrationWS implements Administration {
         } catch (RuntimeException e) {
             // The EJB's are all annotated with Transactional Logic, so if an
             // error is flying by - then it is caught here.
-            log.error("Transactional Problem: " + e.getMessage(), e);
+            LOG.error("Transactional Problem: " + e.getMessage(), e);
             response = new FetchGroupResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
         }
 
@@ -405,7 +405,7 @@ public class AdministrationWS implements Administration {
     public FallibleResponse changeGroupOwner(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final OwnerRequest request) {
-        log.info(requestLogger.prepareLogMessage(token, "changeGroupOwner"));
+        LOG.info(requestLogger.prepareLogMessage(token, "changeGroupOwner"));
         FallibleResponse response;
 
         try {
@@ -413,7 +413,7 @@ public class AdministrationWS implements Administration {
         } catch (RuntimeException e) {
             // The EJB's are all annotated with Transactional Logic, so if an
             // error is flying by - then it is caught here.
-            log.error("Transactional Problem: " + e.getMessage(), e);
+            LOG.error("Transactional Problem: " + e.getMessage(), e);
             response = new FallibleResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
         }
 
@@ -429,7 +429,7 @@ public class AdministrationWS implements Administration {
     public ProcessUserGroupResponse processUserGroupAssignment(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final UserGroupAssignmentRequest request) {
-        log.info(requestLogger.prepareLogMessage(token, "processUserGroupAssignment"));
+        LOG.info(requestLogger.prepareLogMessage(token, "processUserGroupAssignment"));
         ProcessUserGroupResponse response;
 
         try {
@@ -437,7 +437,7 @@ public class AdministrationWS implements Administration {
         } catch (RuntimeException e) {
             // The EJB's are all annotated with Transactional Logic, so if an
             // error is flying by - then it is caught here.
-            log.error("Transactional Problem: " + e.getMessage(), e);
+            LOG.error("Transactional Problem: " + e.getMessage(), e);
             response = new ProcessUserGroupResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
         }
 
@@ -453,7 +453,7 @@ public class AdministrationWS implements Administration {
     public SearchUserResponse searchUsers(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final SearchUserRequest request) {
-        log.info(requestLogger.prepareLogMessage(token, "searchUsers"));
+        LOG.info(requestLogger.prepareLogMessage(token, "searchUsers"));
         SearchUserResponse response;
 
         try {
@@ -461,7 +461,7 @@ public class AdministrationWS implements Administration {
         } catch (RuntimeException e) {
             // The EJB's are all annotated with Transactional Logic, so if an
             // error is flying by - then it is caught here.
-            log.error("Transactional Problem: " + e.getMessage(), e);
+            LOG.error("Transactional Problem: " + e.getMessage(), e);
             response = new SearchUserResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
         }
 
@@ -476,7 +476,7 @@ public class AdministrationWS implements Administration {
     @WebResult(name = "response")
     public EmergencyListResponse fetchEmergencyList(
             @WebParam(name = "token") final AuthenticationToken token) {
-        log.info(requestLogger.prepareLogMessage(token, "fetchEmergencyList"));
+        LOG.info(requestLogger.prepareLogMessage(token, "fetchEmergencyList"));
         EmergencyListResponse response;
 
         try {
@@ -484,7 +484,7 @@ public class AdministrationWS implements Administration {
         } catch (RuntimeException e) {
             // The EJB's are all annotated with Transactional Logic, so if an
             // error is flying by - then it is caught here.
-            log.error("Transactional Problem: " + e.getMessage(), e);
+            LOG.error("Transactional Problem: " + e.getMessage(), e);
             response = new EmergencyListResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
         }
 
@@ -500,7 +500,7 @@ public class AdministrationWS implements Administration {
     public ContactsResponse fetchContacts(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final ContactsRequest request) {
-        log.info(requestLogger.prepareLogMessage(token, "fetchContacts"));
+        LOG.info(requestLogger.prepareLogMessage(token, "fetchContacts"));
         ContactsResponse response;
 
         try {
@@ -508,7 +508,7 @@ public class AdministrationWS implements Administration {
         } catch (RuntimeException e) {
             // The EJB's are all annotated with Transactional Logic, so if an
             // error is flying by - then it is caught here.
-            log.error("Transactional Problem: " + e.getMessage(), e);
+            LOG.error("Transactional Problem: " + e.getMessage(), e);
             response = new ContactsResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
         }
 

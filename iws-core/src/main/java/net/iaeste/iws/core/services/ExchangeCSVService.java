@@ -74,7 +74,7 @@ import java.util.Set;
  */
 public class ExchangeCSVService extends CommonService<ExchangeDao> {
 
-    private static final Logger log = LoggerFactory.getLogger(ExchangeCSVService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ExchangeCSVService.class);
 
     private static final char DELIMITER = ',';
 
@@ -267,7 +267,7 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
 
                     newEntity.setExternalId(existingEntity.getExternalId());
                     dao.persist(authentication, existingEntity, newEntity);
-                    log.info(formatLogMessage(authentication, "CSV Update of Offer with RefNo '%s' completed.", newEntity.getRefNo()));
+                    LOG.info(formatLogMessage(authentication, "CSV Update of Offer with RefNo '%s' completed.", newEntity.getRefNo()));
                     processingResult.put(refNo, OfferCSVUploadResponse.ProcessingResult.UPDATED);
                 } else {
                     // First, we need an Employer for our new Offer. The Process
@@ -290,16 +290,16 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
 
                     // Persist the Offer with history
                     dao.persist(authentication, newEntity);
-                    log.info(formatLogMessage(authentication, "CSV Import of Offer with RefNo '%s' completed.", newEntity.getRefNo()));
+                    LOG.info(formatLogMessage(authentication, "CSV Import of Offer with RefNo '%s' completed.", newEntity.getRefNo()));
                     processingResult.put(refNo, OfferCSVUploadResponse.ProcessingResult.ADDED);
                 }
             } else {
-                log.warn(formatLogMessage(authentication, "CSV Offer with RefNo " + refNo + " has some Problems: " + validationErrors));
+                LOG.warn(formatLogMessage(authentication, "CSV Offer with RefNo " + refNo + " has some Problems: " + validationErrors));
                 processingResult.put(refNo, OfferCSVUploadResponse.ProcessingResult.ERROR);
                 errors.put(refNo, validationErrors);
             }
         } catch (IllegalArgumentException | IWSException e) {
-            log.warn(formatLogMessage(authentication, "CSV Offer with RefNo " + refNo + " has a Problem: " + e.getMessage()), e);
+            LOG.warn(formatLogMessage(authentication, "CSV Offer with RefNo " + refNo + " has a Problem: " + e.getMessage()), e);
             processingResult.put(refNo, OfferCSVUploadResponse.ProcessingResult.ERROR);
             if (errors.containsKey(refNo)) {
                 errors.get(refNo).put("general", e.getMessage());
@@ -336,12 +336,12 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
         if (employer.getEmployerId() != null) {
             // Id exists, so we simply find the Employer based on that
             entity = dao.findEmployer(authentication, employer.getEmployerId());
-            log.debug(formatLogMessage(authentication, "Employer lookup for Id '%s' gave '%s'.", employer.getEmployerId(), entity.getName()));
+            LOG.debug(formatLogMessage(authentication, "Employer lookup for Id '%s' gave '%s'.", employer.getEmployerId(), entity.getName()));
         } else {
             // No Id was set, so we're trying to find the Employer based on the
             // Unique information
             entity = dao.findUniqueEmployer(authentication, employer);
-            log.debug(formatLogMessage(authentication, "Unique Employer for name '%s' gave '%s'.", employer.getName(), entity != null ? entity.getName() : "null"));
+            LOG.debug(formatLogMessage(authentication, "Unique Employer for name '%s' gave '%s'.", employer.getName(), entity != null ? entity.getName() : "null"));
         }
 
         if (entity == null) {
@@ -350,12 +350,12 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
             entity.setGroup(nationalGroup);
             processAddress(authentication, entity.getAddress());
             dao.persist(authentication, entity);
-            log.info(formatLogMessage(authentication, "Have added the Employer '%s' for '%s'.", employer.getName(), authentication.getGroup().getGroupName()));
+            LOG.info(formatLogMessage(authentication, "Have added the Employer '%s' for '%s'.", employer.getName(), authentication.getGroup().getGroupName()));
         } else {
             final EmployerEntity updated = ExchangeTransformer.transform(employer);
             processAddress(authentication, entity.getAddress(), employer.getAddress());
             dao.persist(authentication, entity, updated);
-            log.info(formatLogMessage(authentication, "Have updated the Employer '%s' for '%s'.", employer.getName(), authentication.getGroup().getGroupName()));
+            LOG.info(formatLogMessage(authentication, "Have updated the Employer '%s' for '%s'.", employer.getName(), authentication.getGroup().getGroupName()));
         }
 
         return entity;

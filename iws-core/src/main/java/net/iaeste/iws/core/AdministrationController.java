@@ -60,7 +60,7 @@ import org.slf4j.LoggerFactory;
  */
 public final class AdministrationController extends CommonController implements Administration {
 
-    private static final Logger log = LoggerFactory.getLogger(AdministrationController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AdministrationController.class);
 
     /**
      * Default Constructor, takes a ServiceFactory as input parameter, and uses
@@ -77,8 +77,8 @@ public final class AdministrationController extends CommonController implements 
      */
     @Override
     public FetchCountryResponse fetchCountries(final AuthenticationToken token, final FetchCountryRequest request) {
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting fetchCountries()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Starting fetchCountries()"));
         }
         FetchCountryResponse response;
 
@@ -91,11 +91,17 @@ public final class AdministrationController extends CommonController implements 
             final CountryService service = factory.prepareCountryService();
             response = service.fetchCountries(request);
         } catch (IWSException e) {
+            // Generally, Exceptions should always be either logged or rethrown.
+            // In our case, we're transforming the Exception into an Error
+            // Object which can be returned to the User. However, to ensure
+            // that we're not loosing anything - the Exception is also logged
+            // here as a debug message
+            LOG.debug(e.getMessage(), e);
             response = new FetchCountryResponse(e.getError(), e.getMessage());
         }
 
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished fetchCountries()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Finished fetchCountries()"));
         }
         return response;
     }
@@ -105,8 +111,8 @@ public final class AdministrationController extends CommonController implements 
      */
     @Override
     public FallibleResponse processCountry(final AuthenticationToken token, final CountryRequest request) {
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting processCountry()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Starting processCountry()"));
         }
         FallibleResponse response;
 
@@ -118,11 +124,17 @@ public final class AdministrationController extends CommonController implements 
             service.processCountries(authentication, request);
             response = new FetchCountryResponse();
         } catch (IWSException e) {
+            // Generally, Exceptions should always be either logged or rethrown.
+            // In our case, we're transforming the Exception into an Error
+            // Object which can be returned to the User. However, to ensure
+            // that we're not loosing anything - the Exception is also logged
+            // here as a debug message
+            LOG.debug(e.getMessage(), e);
             response = new FetchCountryResponse(e.getError(), e.getMessage());
         }
 
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished processCountry()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Finished processCountry()"));
         }
         return response;
     }
@@ -132,8 +144,8 @@ public final class AdministrationController extends CommonController implements 
      */
     @Override
     public CreateUserResponse createUser(final AuthenticationToken token, final CreateUserRequest request) {
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting createUser()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Starting createUser()"));
         }
         CreateUserResponse response;
 
@@ -144,11 +156,17 @@ public final class AdministrationController extends CommonController implements 
             final AccountService service = factory.prepareAccountService();
             response = service.createUser(authentication, request);
         } catch (IWSException e) {
+            // Generally, Exceptions should always be either logged or rethrown.
+            // In our case, we're transforming the Exception into an Error
+            // Object which can be returned to the User. However, to ensure
+            // that we're not loosing anything - the Exception is also logged
+            // here as a debug message
+            LOG.debug(e.getMessage(), e);
             response = new CreateUserResponse(e.getError(), e.getMessage());
         }
 
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished createUser()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Finished createUser()"));
         }
         return response;
     }
@@ -158,8 +176,8 @@ public final class AdministrationController extends CommonController implements 
      */
     @Override
     public FallibleResponse activateUser(final String activationString) {
-        if (log.isTraceEnabled()) {
-            log.trace("Starting activateUser()");
+        if (LOG.isTraceEnabled()) {
+            LOG.trace("Starting activateUser()");
         }
         FallibleResponse response;
 
@@ -170,11 +188,17 @@ public final class AdministrationController extends CommonController implements 
             service.activateUser(activationString);
             response = new FallibleResponse();
         } catch (IWSException e) {
+            // Generally, Exceptions should always be either logged or rethrown.
+            // In our case, we're transforming the Exception into an Error
+            // Object which can be returned to the User. However, to ensure
+            // that we're not loosing anything - the Exception is also logged
+            // here as a debug message
+            LOG.debug(e.getMessage(), e);
             response = new FallibleResponse(e.getError(), e.getMessage());
         }
 
-        if (log.isTraceEnabled()) {
-            log.trace("Finished activateUser()");
+        if (LOG.isTraceEnabled()) {
+            LOG.trace("Finished activateUser()");
         }
         return response;
     }
@@ -184,8 +208,8 @@ public final class AdministrationController extends CommonController implements 
      */
     @Override
     public FallibleResponse updateUsername(final String updateCode) {
-        if (log.isTraceEnabled()) {
-            log.trace("Starting updateUsername()");
+        if (LOG.isTraceEnabled()) {
+            LOG.trace("Starting updateUsername()");
         }
         FallibleResponse response;
 
@@ -196,11 +220,17 @@ public final class AdministrationController extends CommonController implements 
             service.updateUsername(updateCode);
             response = new FallibleResponse();
         } catch (IWSException e) {
+            // Generally, Exceptions should always be either logged or rethrown.
+            // In our case, we're transforming the Exception into an Error
+            // Object which can be returned to the User. However, to ensure
+            // that we're not loosing anything - the Exception is also logged
+            // here as a debug message
+            LOG.debug(e.getMessage(), e);
             response = new FallibleResponse(e.getError(), e.getMessage());
         }
 
-        if (log.isTraceEnabled()) {
-            log.trace("Finished updateUsername()");
+        if (LOG.isTraceEnabled()) {
+            LOG.trace("Finished updateUsername()");
         }
         return response;
     }
@@ -210,8 +240,8 @@ public final class AdministrationController extends CommonController implements 
      */
     @Override
     public FallibleResponse controlUserAccount(final AuthenticationToken token, final UserRequest request) {
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting controlUserAccount()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Starting controlUserAccount()"));
         }
         FallibleResponse response;
 
@@ -227,11 +257,17 @@ public final class AdministrationController extends CommonController implements 
             service.controlUserAccount(authentication, request);
             response = new FallibleResponse();
         } catch (IWSException e) {
+            // Generally, Exceptions should always be either logged or rethrown.
+            // In our case, we're transforming the Exception into an Error
+            // Object which can be returned to the User. However, to ensure
+            // that we're not loosing anything - the Exception is also logged
+            // here as a debug message
+            LOG.debug(e.getMessage(), e);
             response = new FallibleResponse(e.getError(), e.getMessage());
         }
 
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished controlUserAccount()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Finished controlUserAccount()"));
         }
         return response;
     }
@@ -241,8 +277,8 @@ public final class AdministrationController extends CommonController implements 
      */
     @Override
     public FallibleResponse changeAccountName(final AuthenticationToken token, final AccountNameRequest request) {
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting changeAccountName()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Starting changeAccountName()"));
         }
         FallibleResponse response;
 
@@ -254,11 +290,17 @@ public final class AdministrationController extends CommonController implements 
             service.changeAccountName(authentication, request);
             response = new FallibleResponse();
         } catch (IWSException e) {
+            // Generally, Exceptions should always be either logged or rethrown.
+            // In our case, we're transforming the Exception into an Error
+            // Object which can be returned to the User. However, to ensure
+            // that we're not loosing anything - the Exception is also logged
+            // here as a debug message
+            LOG.debug(e.getMessage(), e);
             response = new FallibleResponse(e.getError(), e.getMessage());
         }
 
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished changeAccountName()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Finished changeAccountName()"));
         }
         return response;
     }
@@ -268,8 +310,8 @@ public final class AdministrationController extends CommonController implements 
      */
     @Override
     public FetchUserResponse fetchUser(final AuthenticationToken token, final FetchUserRequest request) {
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting fetchUser()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Starting fetchUser()"));
         }
         FetchUserResponse response;
 
@@ -283,11 +325,17 @@ public final class AdministrationController extends CommonController implements 
             final AccountService service = factory.prepareAccountService();
             response = service.fetchUser(authentication, request);
         } catch (IWSException e) {
+            // Generally, Exceptions should always be either logged or rethrown.
+            // In our case, we're transforming the Exception into an Error
+            // Object which can be returned to the User. However, to ensure
+            // that we're not loosing anything - the Exception is also logged
+            // here as a debug message
+            LOG.debug(e.getMessage(), e);
             response = new FetchUserResponse(e.getError(), e.getMessage());
         }
 
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished fetchUser()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Finished fetchUser()"));
         }
         return response;
     }
@@ -297,8 +345,8 @@ public final class AdministrationController extends CommonController implements 
      */
     @Override
     public FetchRoleResponse fetchRoles(final AuthenticationToken token, final FetchRoleRequest request) {
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting fetchRoles()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Starting fetchRoles()"));
         }
         FetchRoleResponse response;
 
@@ -310,11 +358,17 @@ public final class AdministrationController extends CommonController implements 
             final AccountService service = factory.prepareAccountService();
             response = service.fetchRoles(authentication);
         } catch (IWSException e) {
+            // Generally, Exceptions should always be either logged or rethrown.
+            // In our case, we're transforming the Exception into an Error
+            // Object which can be returned to the User. However, to ensure
+            // that we're not loosing anything - the Exception is also logged
+            // here as a debug message
+            LOG.debug(e.getMessage(), e);
             response = new FetchRoleResponse(e.getError(), e.getMessage());
         }
 
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished fetchRoles()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Finished fetchRoles()"));
         }
         return response;
     }
@@ -324,8 +378,8 @@ public final class AdministrationController extends CommonController implements 
      */
     @Override
     public ProcessGroupResponse processGroup(final AuthenticationToken token, final GroupRequest request) {
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting processGroup()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Starting processGroup()"));
         }
         ProcessGroupResponse response;
 
@@ -336,11 +390,17 @@ public final class AdministrationController extends CommonController implements 
             final GroupService service = factory.prepareGroupService();
             response = service.processGroup(authentication, request);
         } catch (IWSException e) {
+            // Generally, Exceptions should always be either logged or rethrown.
+            // In our case, we're transforming the Exception into an Error
+            // Object which can be returned to the User. However, to ensure
+            // that we're not loosing anything - the Exception is also logged
+            // here as a debug message
+            LOG.debug(e.getMessage(), e);
             response = new ProcessGroupResponse(e.getError(), e.getMessage());
         }
 
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished processGroup()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Finished processGroup()"));
         }
         return response;
     }
@@ -350,8 +410,8 @@ public final class AdministrationController extends CommonController implements 
      */
     @Override
     public FallibleResponse deleteSubGroup(final AuthenticationToken token, final GroupRequest request) {
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting deleteSubGroup()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Starting deleteSubGroup()"));
         }
         FallibleResponse response;
 
@@ -363,11 +423,17 @@ public final class AdministrationController extends CommonController implements 
             service.deleteGroup(authentication, request);
             response = new FallibleResponse();
         } catch (IWSException e) {
+            // Generally, Exceptions should always be either logged or rethrown.
+            // In our case, we're transforming the Exception into an Error
+            // Object which can be returned to the User. However, to ensure
+            // that we're not loosing anything - the Exception is also logged
+            // here as a debug message
+            LOG.debug(e.getMessage(), e);
             response = new FallibleResponse(e.getError(), e.getMessage());
         }
 
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished deleteSubGroup()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Finished deleteSubGroup()"));
         }
         return response;
     }
@@ -377,8 +443,8 @@ public final class AdministrationController extends CommonController implements 
      */
     @Override
     public FetchGroupResponse fetchGroup(final AuthenticationToken token, final FetchGroupRequest request) {
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting fetchGroup()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Starting fetchGroup()"));
         }
         FetchGroupResponse response;
 
@@ -398,11 +464,17 @@ public final class AdministrationController extends CommonController implements 
             final GroupService service = factory.prepareGroupService();
             response = service.fetchGroup(authentication, request);
         } catch (IWSException e) {
+            // Generally, Exceptions should always be either logged or rethrown.
+            // In our case, we're transforming the Exception into an Error
+            // Object which can be returned to the User. However, to ensure
+            // that we're not loosing anything - the Exception is also logged
+            // here as a debug message
+            LOG.debug(e.getMessage(), e);
             response = new FetchGroupResponse(e.getError(), e.getMessage());
         }
 
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished fetchGroup()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Finished fetchGroup()"));
         }
         return response;
     }
@@ -412,8 +484,8 @@ public final class AdministrationController extends CommonController implements 
      */
     @Override
     public FallibleResponse changeGroupOwner(final AuthenticationToken token, final OwnerRequest request) {
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting changeGroupOwner()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Starting changeGroupOwner()"));
         }
         FallibleResponse response;
 
@@ -426,11 +498,17 @@ public final class AdministrationController extends CommonController implements 
             service.changeUserGroupOwner(authentication, request);
             response = new FallibleResponse();
         } catch (IWSException e) {
+            // Generally, Exceptions should always be either logged or rethrown.
+            // In our case, we're transforming the Exception into an Error
+            // Object which can be returned to the User. However, to ensure
+            // that we're not loosing anything - the Exception is also logged
+            // here as a debug message
+            LOG.debug(e.getMessage(), e);
             response = new FetchGroupResponse(e.getError(), e.getMessage());
         }
 
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished changeGroupOwner()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Finished changeGroupOwner()"));
         }
         return response;
     }
@@ -440,8 +518,8 @@ public final class AdministrationController extends CommonController implements 
      */
     @Override
     public ProcessUserGroupResponse processUserGroupAssignment(final AuthenticationToken token, final UserGroupAssignmentRequest request) {
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting processUserGroupAssignment()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Starting processUserGroupAssignment()"));
         }
         ProcessUserGroupResponse response;
 
@@ -453,11 +531,17 @@ public final class AdministrationController extends CommonController implements 
             final GroupService service = factory.prepareGroupService();
             response = service.processUserGroupAssignment(authentication, request);
         } catch (IWSException e) {
+            // Generally, Exceptions should always be either logged or rethrown.
+            // In our case, we're transforming the Exception into an Error
+            // Object which can be returned to the User. However, to ensure
+            // that we're not loosing anything - the Exception is also logged
+            // here as a debug message
+            LOG.debug(e.getMessage(), e);
             response = new ProcessUserGroupResponse(e.getError(), e.getMessage());
         }
 
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished processUserGroupAssignment()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Finished processUserGroupAssignment()"));
         }
         return response;
     }
@@ -467,8 +551,8 @@ public final class AdministrationController extends CommonController implements 
      */
     @Override
     public SearchUserResponse searchUsers(final AuthenticationToken token, final SearchUserRequest request) {
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting searchUsers()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Starting searchUsers()"));
         }
         SearchUserResponse response;
 
@@ -479,11 +563,17 @@ public final class AdministrationController extends CommonController implements 
             final ContactsService service = factory.prepareContacsService();
             response = service.searchUsers(request);
         } catch (IWSException e) {
+            // Generally, Exceptions should always be either logged or rethrown.
+            // In our case, we're transforming the Exception into an Error
+            // Object which can be returned to the User. However, to ensure
+            // that we're not loosing anything - the Exception is also logged
+            // here as a debug message
+            LOG.debug(e.getMessage(), e);
             response = new SearchUserResponse(e.getError(), e.getMessage());
         }
 
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished searchUsers()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Finished searchUsers()"));
         }
         return response;
     }
@@ -493,8 +583,8 @@ public final class AdministrationController extends CommonController implements 
      */
     @Override
     public EmergencyListResponse fetchEmergencyList(final AuthenticationToken token) {
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting fetchEmergencyList()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Starting fetchEmergencyList()"));
         }
         EmergencyListResponse response;
 
@@ -504,11 +594,17 @@ public final class AdministrationController extends CommonController implements 
             final ContactsService service = factory.prepareContacsService();
             response = service.fetchEmergencyList();
         } catch (IWSException e) {
+            // Generally, Exceptions should always be either logged or rethrown.
+            // In our case, we're transforming the Exception into an Error
+            // Object which can be returned to the User. However, to ensure
+            // that we're not loosing anything - the Exception is also logged
+            // here as a debug message
+            LOG.debug(e.getMessage(), e);
             response = new EmergencyListResponse(e.getError(), e.getMessage());
         }
 
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished fetchEmergencyList()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Finished fetchEmergencyList()"));
         }
         return response;
     }
@@ -518,8 +614,8 @@ public final class AdministrationController extends CommonController implements 
      */
     @Override
     public ContactsResponse fetchContacts(final AuthenticationToken token, final ContactsRequest request) {
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting fetchContacts()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Starting fetchContacts()"));
         }
         ContactsResponse response;
 
@@ -530,11 +626,17 @@ public final class AdministrationController extends CommonController implements 
             final ContactsService service = factory.prepareContacsService();
             response = service.fetchContacts(request);
         } catch (IWSException e) {
+            // Generally, Exceptions should always be either logged or rethrown.
+            // In our case, we're transforming the Exception into an Error
+            // Object which can be returned to the User. However, to ensure
+            // that we're not loosing anything - the Exception is also logged
+            // here as a debug message
+            LOG.debug(e.getMessage(), e);
             response = new ContactsResponse(e.getError(), e.getMessage());
         }
 
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished fetchContacts()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Finished fetchContacts()"));
         }
         return response;
     }

@@ -74,7 +74,7 @@ import java.util.List;
 @TransactionManagement(TransactionManagementType.CONTAINER)
 public class StateBean {
 
-    private static final Logger log = LoggerFactory.getLogger(StateBean.class);
+    private static final Logger LOG = LoggerFactory.getLogger(StateBean.class);
 
     /**
      * The System Account is the Account used by the Notification system & this
@@ -130,7 +130,7 @@ public class StateBean {
      */
     @PostConstruct
     public void startup() {
-        log.info("Starting IWS Initialization.");
+        LOG.info("Starting IWS Initialization.");
 
         // First, we need to initialize our dependencies
         activeSessions = ActiveSessions.getInstance(settings);
@@ -148,17 +148,17 @@ public class StateBean {
         final TimerConfig config = new TimerConfig(StateBean.class.getSimpleName(), false);
         timerService.createIntervalTimer(INITIAL_EXPIRATION, INTERVAL_DURATION, config);
         final DateFormat dateFormatter = new SimpleDateFormat(IWSConstants.DATE_TIME_FORMAT, IWSConstants.DEFAULT_LOCALE);
-        log.info("First cleanup run scheduled to begin at " + dateFormatter.format(new Date(INITIAL_EXPIRATION)));
+        LOG.info("First cleanup run scheduled to begin at " + dateFormatter.format(new Date(INITIAL_EXPIRATION)));
 
         // Now, remove all deprecated Sessions from the Server. These Sessions
         // may or may not work correctly, since IW4 with JSF is combining the
         // Sessions with a Windows Id, and upon restart - the Windows Id is
         // renewed. Even if it isn't renewed, JSF will not recognize it
         final int deprecated = accessDao.deprecateAllActiveSessions();
-        log.info("Deprecated {} Stale Sessions.", deprecated);
+        LOG.info("Deprecated {} Stale Sessions.", deprecated);
 
         // That's it - we're done :-)
-        log.info("IWS Initialization Completed.");
+        LOG.info("IWS Initialization Completed.");
     }
 
     // =========================================================================
@@ -166,13 +166,13 @@ public class StateBean {
     // =========================================================================
 
     /**
-    * Timeout Method, which will start the frequent cleaning.
-    *
-    * @param timer Timer information, useful for logging
-    */
+     * Timeout Method, which will start the frequent cleaning.
+     *
+     * @param timer Timer information, useful for logging
+     */
     @Timeout
     public void doCleanup(final Timer timer) {
-        log.info("Timout occurred, will start the Cleanup");
+        LOG.info("Timout occurred, will start the Cleanup");
         final long start = System.nanoTime();
 
         // For the suspension & deleting, we need to use an Authentication
@@ -195,7 +195,7 @@ public class StateBean {
 
         final DateFormat dateFormatter = new SimpleDateFormat(IWSConstants.DATE_TIME_FORMAT, IWSConstants.DEFAULT_LOCALE);
         final long duration = (System.nanoTime() - start) / 1000000;
-        log.info("Cleanup took: {}ms (expired {}, suspended {} & deleted {}), next Timeout: {}", duration, expired, suspended, deleted, dateFormatter.format(timer.getNextTimeout()));
+        LOG.info("Cleanup took: {}ms (expired {}, suspended {} & deleted {}), next Timeout: {}", duration, expired, suspended, deleted, dateFormatter.format(timer.getNextTimeout()));
     }
 
     /**
@@ -231,7 +231,7 @@ public class StateBean {
      */
     private int removeUnusedAccounts() {
         final Long days = settings.getAccountUnusedRemovedDays();
-        log.debug("Checking of any accounts exists which has expired, i.e. status NEW after {} days.", days);
+        LOG.debug("Checking of any accounts exists which has expired, i.e. status NEW after {} days.", days);
         int accounts = 0;
 
         // We have a User Account, that was never activated. This we can
@@ -239,7 +239,7 @@ public class StateBean {
         final List<UserEntity> newUsers = accessDao.findAccountsWithState(UserStatus.NEW, days);
         for (final UserEntity user : newUsers) {
             if (user.getId() != SYSTEM_ACCOUNT) {
-                log.info("Deleting Expired NEW Account for {} {} <{}>.", user.getFirstname(), user.getLastname(), user.getUsername());
+                LOG.info("Deleting Expired NEW Account for {} {} <{}>.", user.getFirstname(), user.getLastname(), user.getUsername());
                 service.deleteNewUser(user);
                 accounts++;
             }
@@ -293,11 +293,11 @@ public class StateBean {
         // order by max(modified);
         // -----------------------------------
         final Long days = settings.getAccountInactiveDays();
-        log.info("Fetching the list of Users to be suspended.");
+        LOG.info("Fetching the list of Users to be suspended.");
         final List<UserEntity> users = accessDao.findInactiveAccounts(days);
         if (!users.isEmpty()) {
             for (final UserEntity user : users) {
-                log.info("Suspending the User {} {} <{}>.", user.getFirstname(), user.getLastname(), user.getUsername());
+                LOG.info("Suspending the User {} {} <{}>.", user.getFirstname(), user.getLastname(), user.getUsername());
                 service.suspendUser(authentication, user);
             }
         }
@@ -315,18 +315,18 @@ public class StateBean {
      */
     private int deleteSuspendedAccounts(final Authentication authentication) {
         final Long days = settings.getAccountSuspendedDays();
-        log.debug("Checking if Accounts exists with status SUSPENDED after {} days.", days);
+        LOG.debug("Checking if Accounts exists with status SUSPENDED after {} days.", days);
         int accounts = 0;
 
         final List<UserEntity> suspendedUsers = accessDao.findAccountsWithState(UserStatus.SUSPENDED, days);
         if (!suspendedUsers.isEmpty()) {
             for (final UserEntity user : suspendedUsers) {
                 try {
-                    log.info("Deleting Suspended Account for {} {} <{}>.", user.getFirstname(), user.getLastname(), user.getUsername());
+                    LOG.info("Deleting Suspended Account for {} {} <{}>.", user.getFirstname(), user.getLastname(), user.getUsername());
                     service.deletePrivateData(authentication, user);
                     accounts++;
                 } catch (IWSException e) {
-                    log.warn("Unable to delete the Account for {} {} <{}>, reason: {}", user.getFirstname(), user.getLastname(), user.getUsername(), e.getMessage());
+                    LOG.warn("Unable to delete the Account for {} {} <{}>, reason: {}", user.getFirstname(), user.getLastname(), user.getUsername(), e.getMessage());
                 }
             }
         }

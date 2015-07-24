@@ -60,7 +60,7 @@ import javax.persistence.EntityManager;
 @TransactionManagement(TransactionManagementType.CONTAINER)
 public class NotificationManagerBean implements NotificationManagerLocal {
 
-    private static final Logger log = LoggerFactory.getLogger(NotificationManagerBean.class);
+    private static final Logger LOG = LoggerFactory.getLogger(NotificationManagerBean.class);
     @Inject @IWSBean(IWSBean.Type.SECONDARY) private EntityManager mailEntityManager;
     @Inject @IWSBean private EntityManager entityManager;
     @Inject @IWSBean private Notifications notifications;
@@ -113,7 +113,7 @@ public class NotificationManagerBean implements NotificationManagerLocal {
      */
     @PostConstruct
     public void postConstruct() {
-        log.info("post construct");
+        LOG.info("post construct");
         dao = new NotificationJpaDao(entityManager);
         accessDao = new AccessJpaDao(entityManager);
 
@@ -139,11 +139,11 @@ public class NotificationManagerBean implements NotificationManagerLocal {
      */
     @Override
     public void notify(final Authentication authentication, final Notifiable obj, final NotificationType type) {
-        log.info("New '" + type + "' notification request at NotificationManagerBean");
+        LOG.info("New '" + type + "' notification request at NotificationManagerBean");
         try {
             notifications.notify(authentication, obj, type);
         } catch (IWSException e) {
-            log.error("Preparing notification failed", e);
+            LOG.error("Preparing notification failed", e);
         }
 
         //TODO if to avoid problems during testing, possible fix by providing mocked TimerService
@@ -158,7 +158,7 @@ public class NotificationManagerBean implements NotificationManagerLocal {
 //            }
 //            processJobs();
         } else {
-            log.debug("There is no TimerService, probably running outside app server");
+            LOG.debug("There is no TimerService, probably running outside app server");
         }
     }
 
@@ -167,11 +167,11 @@ public class NotificationManagerBean implements NotificationManagerLocal {
      */
     @Override
     public void notify(final UserEntity user) {
-        log.info("New 'user' notification request at NotificationManagerBean");
+        LOG.info("New 'user' notification request at NotificationManagerBean");
         try {
             notifications.notify(user);
         } catch (IWSException e) {
-            log.error("Preparing notification failed", e);
+            LOG.error("Preparing notification failed", e);
         }
 
         //TODO if to avoid problems during testing, possible fix by providing mocked TimerService
@@ -187,7 +187,7 @@ public class NotificationManagerBean implements NotificationManagerLocal {
             //start processing jobs immediately to avoid possible problems with timer running another thread
 //            processJobs();
         } else {
-            log.warn("There is no TimerService, probably running outside app server");
+            LOG.warn("There is no TimerService, probably running outside app server");
         }
     }
 
@@ -228,14 +228,14 @@ public class NotificationManagerBean implements NotificationManagerLocal {
         //TODO remove log messages when the processing works correctly, i.e. there is no need of timer rescheduling.
         //     the problem is that consumers doesn't see their tasks when they are called just after tasks' creation
         this.timer = null;
-        log.trace("processJobsScheduled started at " + new DateTime());
+        LOG.trace("processJobsScheduled started at " + new DateTime());
         notifications.processJobs();
     }
 
     // Commented for now, since this causes huge stack traces!
     @Schedule(second = "*/30",minute = "*", hour = "*", info="Every 30 seconds", persistent = false)
     private void processJobsScheduled() {
-        log.trace("processJobsScheduled started at " + new DateTime());
+        LOG.trace("processJobsScheduled started at " + new DateTime());
         final boolean run;
         synchronized (lock) {
             if (!processingIsRunning) {
@@ -250,7 +250,7 @@ public class NotificationManagerBean implements NotificationManagerLocal {
             try {
                 notifications.processJobs();
             } catch (RuntimeException e) {
-                log.error("Exception caught in notification processing", e);
+                LOG.error("Exception caught in notification processing", e);
             } finally {
                 synchronized (lock) {
                     processingIsRunning = false;

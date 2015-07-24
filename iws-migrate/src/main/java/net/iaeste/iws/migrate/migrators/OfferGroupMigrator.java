@@ -48,7 +48,7 @@ import java.util.Map;
  */
 public class OfferGroupMigrator implements Migrator<IW3Offer2GroupEntity> {
 
-    private static final Logger log = LoggerFactory.getLogger(OfferGroupMigrator.class);
+    private static final Logger LOG = LoggerFactory.getLogger(OfferGroupMigrator.class);
 
     private final Map<Integer, GroupEntity> nationalGroups = new HashMap<>(80);
 
@@ -98,7 +98,7 @@ public class OfferGroupMigrator implements Migrator<IW3Offer2GroupEntity> {
             if (group != null) {
                 final OfferEntity offer = iwsDao.findOfferByOldOfferId(oldEntity.getId().getOfferId());
                 if (skipThis(offer)) {
-                    log.info("Skipping Offer {} to Group {}.", offer.getRefNo(), group.getGroupName());
+                    LOG.info("Skipping Offer {} to Group {}.", offer.getRefNo(), group.getGroupName());
                     skipped++;
                 } else {
                     final OfferGroupEntity entity = convert(oldEntity);
@@ -113,7 +113,7 @@ public class OfferGroupMigrator implements Migrator<IW3Offer2GroupEntity> {
                         iwsDao.persist(entity);
                         persisted++;
                     } catch (IllegalArgumentException | VerificationException e) {
-                        log.error("Cannot process OfferGroup with refno:{} and Group:{} => {}",
+                        LOG.error("Cannot process OfferGroup with refno:{} and Group:{} => {}",
                                 entity.getOffer().getRefNo(),
                                 entity.getGroup().getId(),
                                 e.getMessage());
@@ -121,7 +121,7 @@ public class OfferGroupMigrator implements Migrator<IW3Offer2GroupEntity> {
                     }
                 }
             } else {
-                log.info("Failed to migrate OfferGroup for Offer = {} and Group = {}, as the Group doesn't exist.",
+                LOG.info("Failed to migrate OfferGroup for Offer = {} and Group = {}, as the Group doesn't exist.",
                         oldEntity.getId().getOfferId(),
                         oldEntity.getId().getGroupId());
                 skipped++;

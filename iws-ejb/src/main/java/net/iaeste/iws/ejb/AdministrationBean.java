@@ -80,7 +80,7 @@ import javax.persistence.EntityManager;
 @TransactionManagement(TransactionManagementType.CONTAINER)
 public class AdministrationBean implements Administration {
 
-    private static final Logger log = LoggerFactory.getLogger(AdministrationBean.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AdministrationBean.class);
     @Inject @IWSBean private EntityManager entityManager;
     @Inject @IWSBean private Notifications notifications;
     @Inject @IWSBean private SessionRequestBean session;
@@ -147,9 +147,9 @@ public class AdministrationBean implements Administration {
 
         try {
             response = controller.processCountry(token, request);
-            log.info(session.generateLogAndUpdateSession("processCountry", start, response, token));
+            LOG.info(session.generateLogAndUpdateSession("processCountry", start, response, token));
         } catch (RuntimeException e) {
-            log.error(session.generateLogAndSaveRequest("processCountry", start, e, token, request), e);
+            LOG.error(session.generateLogAndSaveRequest("processCountry", start, e, token, request), e);
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -167,9 +167,9 @@ public class AdministrationBean implements Administration {
 
         try {
             response = controller.fetchCountries(token, request);
-            log.info(session.generateLogAndUpdateSession("fetchCountries", start, response, token));
+            LOG.info(session.generateLogAndUpdateSession("fetchCountries", start, response, token));
         } catch (RuntimeException e) {
-            log.error(session.generateLogAndSaveRequest("fetchCountries", start, e, token, request), e);
+            LOG.error(session.generateLogAndSaveRequest("fetchCountries", start, e, token, request), e);
             response = new FetchCountryResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -186,9 +186,9 @@ public class AdministrationBean implements Administration {
 
         try {
             response = controller.createUser(token, request);
-            log.info(session.generateLogAndUpdateSession("createUser", start, response, token));
+            LOG.info(session.generateLogAndUpdateSession("createUser", start, response, token));
         } catch (RuntimeException e) {
-            log.error(session.generateLogAndSaveRequest("createUser", start, e, token, request), e);
+            LOG.error(session.generateLogAndSaveRequest("createUser", start, e, token, request), e);
             response = new CreateUserResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -205,9 +205,9 @@ public class AdministrationBean implements Administration {
 
         try {
             response = controller.activateUser(activationString);
-            log.info(session.generateLog("activateUser", start, response));
+            LOG.info(session.generateLog("activateUser", start, response));
         } catch (RuntimeException e) {
-            log.error(session.generateLog("activateUser", start, e), e);
+            LOG.error(session.generateLog("activateUser", start, e), e);
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -224,9 +224,9 @@ public class AdministrationBean implements Administration {
 
         try {
             response = controller.updateUsername(updateCode);
-            log.info(session.generateLog("updateUsername", start, response));
+            LOG.info(session.generateLog("updateUsername", start, response));
         } catch (RuntimeException e) {
-            log.error(session.generateLog("updateUsername", start, e), e);
+            LOG.error(session.generateLog("updateUsername", start, e), e);
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -243,9 +243,9 @@ public class AdministrationBean implements Administration {
 
         try {
             response = controller.controlUserAccount(token, request);
-            log.info(session.generateLogAndUpdateSession("controlUserAccount", start, response, token));
+            LOG.info(session.generateLogAndUpdateSession("controlUserAccount", start, response, token));
         } catch (RuntimeException e) {
-            log.error(session.generateLogAndSaveRequest("controlUserAccount", start, e, token, request), e);
+            LOG.error(session.generateLogAndSaveRequest("controlUserAccount", start, e, token, request), e);
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -262,9 +262,9 @@ public class AdministrationBean implements Administration {
 
         try {
             response = controller.changeAccountName(token, request);
-            log.info(session.generateLogAndUpdateSession("changeAccountName", start, response, token));
+            LOG.info(session.generateLogAndUpdateSession("changeAccountName", start, response, token));
         } catch (RuntimeException e) {
-            log.error(session.generateLogAndSaveRequest("changeAccountName", start, e, token, request), e);
+            LOG.error(session.generateLogAndSaveRequest("changeAccountName", start, e, token, request), e);
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -282,9 +282,9 @@ public class AdministrationBean implements Administration {
 
         try {
             response = controller.fetchUser(token, request);
-            log.info(session.generateLogAndUpdateSession("fetchUser", start, response, token));
+            LOG.info(session.generateLogAndUpdateSession("fetchUser", start, response, token));
         } catch (RuntimeException e) {
-            log.error(session.generateLogAndSaveRequest("fetchUser", start, e, token, request), e);
+            LOG.error(session.generateLogAndSaveRequest("fetchUser", start, e, token, request), e);
             response = new FetchUserResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -302,9 +302,9 @@ public class AdministrationBean implements Administration {
 
         try {
             response = controller.fetchRoles(token, request);
-            log.info(session.generateLogAndUpdateSession("fetchRoles", start, response, token));
+            LOG.info(session.generateLogAndUpdateSession("fetchRoles", start, response, token));
         } catch (RuntimeException e) {
-            log.error(session.generateLogAndSaveRequest("fetchRoles", start, e, token, request), e);
+            LOG.error(session.generateLogAndSaveRequest("fetchRoles", start, e, token, request), e);
             response = new FetchRoleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -321,9 +321,9 @@ public class AdministrationBean implements Administration {
 
         try {
             response = controller.processGroup(token, request);
-            log.info(session.generateLogAndUpdateSession("processGroup", start, response, token));
+            LOG.info(session.generateLogAndUpdateSession("processGroup", start, response, token));
         } catch (RuntimeException e) {
-            log.error(session.generateLogAndSaveRequest("processGroup", start, e, token, request), e);
+            LOG.error(session.generateLogAndSaveRequest("processGroup", start, e, token, request), e);
             response = new ProcessGroupResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -340,9 +340,9 @@ public class AdministrationBean implements Administration {
 
         try {
             response = controller.deleteSubGroup(token, request);
-            log.info(session.generateLogAndUpdateSession("deleteSubGroup", start, response, token));
+            LOG.info(session.generateLogAndUpdateSession("deleteSubGroup", start, response, token));
         } catch (RuntimeException e) {
-            log.error(session.generateLogAndSaveRequest("deleteSubGroup", start, e, token, request), e);
+            LOG.error(session.generateLogAndSaveRequest("deleteSubGroup", start, e, token, request), e);
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -360,9 +360,9 @@ public class AdministrationBean implements Administration {
 
         try {
             response = controller.fetchGroup(token, request);
-            log.info(session.generateLogAndUpdateSession("fetchGroup", start, response, token));
+            LOG.info(session.generateLogAndUpdateSession("fetchGroup", start, response, token));
         } catch (RuntimeException e) {
-            log.error(session.generateLogAndSaveRequest("fetchGroup", start, e, token, request), e);
+            LOG.error(session.generateLogAndSaveRequest("fetchGroup", start, e, token, request), e);
             response = new FetchGroupResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -379,9 +379,9 @@ public class AdministrationBean implements Administration {
 
         try {
             response = controller.changeGroupOwner(token, request);
-            log.info(session.generateLogAndUpdateSession("changeGroupOwner", start, response, token));
+            LOG.info(session.generateLogAndUpdateSession("changeGroupOwner", start, response, token));
         } catch (RuntimeException e) {
-            log.error(session.generateLogAndSaveRequest("changeGroupOwner", start, e, token, request), e);
+            LOG.error(session.generateLogAndSaveRequest("changeGroupOwner", start, e, token, request), e);
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -398,9 +398,9 @@ public class AdministrationBean implements Administration {
 
         try {
             response = controller.processUserGroupAssignment(token, request);
-            log.info(session.generateLogAndUpdateSession("processUserGroupAssignment", start, response, token));
+            LOG.info(session.generateLogAndUpdateSession("processUserGroupAssignment", start, response, token));
         } catch (RuntimeException e) {
-            log.error(session.generateLogAndSaveRequest("processUserGroupAssignment", start, e, token, request), e);
+            LOG.error(session.generateLogAndSaveRequest("processUserGroupAssignment", start, e, token, request), e);
             response = new ProcessUserGroupResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -418,9 +418,9 @@ public class AdministrationBean implements Administration {
 
         try {
             response = controller.searchUsers(token, request);
-            log.info(session.generateLogAndUpdateSession("searchUsers", start, response, token));
+            LOG.info(session.generateLogAndUpdateSession("searchUsers", start, response, token));
         } catch (RuntimeException e) {
-            log.error(session.generateLogAndSaveRequest("searchUsers", start, e, token, request), e);
+            LOG.error(session.generateLogAndSaveRequest("searchUsers", start, e, token, request), e);
             response = new SearchUserResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -438,9 +438,9 @@ public class AdministrationBean implements Administration {
 
         try {
             response = controller.fetchEmergencyList(token);
-            log.info(session.generateLogAndUpdateSession("fetchEmergencyList", start, response, token));
+            LOG.info(session.generateLogAndUpdateSession("fetchEmergencyList", start, response, token));
         } catch (RuntimeException e) {
-            log.error(session.generateLogAndSaveRequest("fetchEmergencyList", start, e, token), e);
+            LOG.error(session.generateLogAndSaveRequest("fetchEmergencyList", start, e, token), e);
             response = new EmergencyListResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -458,9 +458,9 @@ public class AdministrationBean implements Administration {
 
         try {
             response = controller.fetchContacts(token, request);
-            log.info(session.generateLogAndUpdateSession("fetchContacts", start, response, token));
+            LOG.info(session.generateLogAndUpdateSession("fetchContacts", start, response, token));
         } catch (RuntimeException e) {
-            log.error(session.generateLogAndSaveRequest("fetchContacts", start, e, token, request), e);
+            LOG.error(session.generateLogAndSaveRequest("fetchContacts", start, e, token, request), e);
             response = new ContactsResponse(IWSErrors.ERROR, e.getMessage());
         }
 

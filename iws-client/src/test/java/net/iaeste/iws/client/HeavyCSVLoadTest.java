@@ -56,7 +56,7 @@ import java.util.concurrent.Future;
 @Ignore("The test is very heavy, and was made to detect memory problems, see #839, #851.")
 public class HeavyCSVLoadTest {
 
-    private static final Logger log = LoggerFactory.getLogger(HeavyCSVLoadTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(HeavyCSVLoadTest.class);
 
     /** The URL to connection to, for retreiving the Offers. */
     private static final String URL = "http://localhost:8080/intraweb/exchange/inbox.csv";
@@ -136,15 +136,15 @@ public class HeavyCSVLoadTest {
          */
         @Override
         public void run() {
-            log.info("Thread <{}> starting.", username);
+            LOG.info("Thread <{}> starting.", username);
             try {
                 for (int i = 1; i <= LOOPS; i++) {
                     // Send a request and store the result
                     final String csv = sendRequest(username);
                     if (csv.length() > 150) {
-                        log.info("{}. Iteration: User <{}> received {} bytes from the server.", i, username, csv.length());
+                        LOG.info("{}. Iteration: User <{}> received {} bytes from the server.", i, username, csv.length());
                     } else {
-                        log.info("{}. Iteration: Read folloring for user <{}>: '{}'.", i, username, csv);
+                        LOG.info("{}. Iteration: Read folloring for user <{}>: '{}'.", i, username, csv);
                     }
 
                     // First iteration, we'll save the length from the
@@ -159,14 +159,14 @@ public class HeavyCSVLoadTest {
                         saveCSV(csv);
                     } else {
                         if (length != csv.length()) {
-                            log.warn("{}. Iteration: User <{}> Receiving CSV had different length than the first!", i, username);
+                            LOG.warn("{}. Iteration: User <{}> Receiving CSV had different length than the first!", i, username);
                         }
                     }
                 }
             } catch (IOException e) {
-                log.error(e.getMessage(), e);
+                LOG.error(e.getMessage(), e);
             }
-            log.info("Thread <{}> ending.", username);
+            LOG.info("Thread <{}> ending.", username);
         }
 
         private String sendRequest(final String username) throws IOException {
@@ -176,7 +176,7 @@ public class HeavyCSVLoadTest {
 
             int responseCode = connection.getResponseCode();
             if (responseCode != 200) {
-                log.error("Response Code : " + responseCode);
+                LOG.error("Response Code : " + responseCode);
             }
 
             return readInputResponse(connection);

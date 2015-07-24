@@ -67,7 +67,7 @@ public final class ConcurrentWSClient implements Runnable {
      * <p>Default value is 5, which is a fairly low number yet - high enough
      * to keep the IWS busy.</p>
      */
-    private static final int threads = 5;
+    private static final int threads = 3;
 
     /**
      * <p>The IWS Host, is the server where IWS is currently running, including
@@ -136,7 +136,7 @@ public final class ConcurrentWSClient implements Runnable {
      * @param args Command Line Parameters
      */
     public static void main(final String[] args) throws InterruptedException {
-        log.info("Starting {} threads concurrently to process the Offers for {} users from {} until {}.", threads, users.length, startYear, endYear);
+        LOG.info("Starting {} threads concurrently to process the Offers for {} users from {} until {}.", threads, users.length, startYear, endYear);
         final long startTime = System.nanoTime();
 
         final ExecutorService executor = Executors.newFixedThreadPool(threads);
@@ -150,14 +150,14 @@ public final class ConcurrentWSClient implements Runnable {
 
         final DecimalFormat format = new DecimalFormat("###,###.##");
         final String duration = format.format((double) (System.nanoTime() - startTime) / 60000000000L);
-        log.info("Completed concurrent processing of Offers with {} threads in {} minutes.", result.size(), duration);
+        LOG.info("Completed concurrent processing of Offers with {} threads in {} minutes.", result.size(), duration);
     }
 
     // =========================================================================
     // Constants, Settings and Constructor
     // =========================================================================
 
-    private static final Logger log = LoggerFactory.getLogger(WSClient.class);
+    private static final Logger LOG = LoggerFactory.getLogger(WSClient.class);
     private static final Object lock = new Object();
     private final String host;
     private final String username;
@@ -187,7 +187,7 @@ public final class ConcurrentWSClient implements Runnable {
      */
     @Override
     public void run() {
-        log.info("Starting Offer Processing thread for {}.", username);
+        LOG.info("Starting Offer Processing thread for {}.", username);
 
         // Before we can do anything, we first need to log in
         final AuthenticationResponse authResponse = login(username, password);
@@ -202,28 +202,28 @@ public final class ConcurrentWSClient implements Runnable {
 
                 // Iterate over the Exchange Years
                 for (int i = startYear; i <= endYear; i++) {
-                    log.debug("Start iterating over Exchange Year {} for Group '{}'.", i, member.getCommitteeName());
+                    LOG.debug("Start iterating over Exchange Year {} for Group '{}'.", i, member.getCommitteeName());
                     final FetchOffersResponse domestic = fetchOffers(token, FetchType.DOMESTIC, i);
                     final FetchOffersResponse shared = fetchOffers(token, FetchType.SHARED, i);
-                    log.info("Found {} Domestic Offers & {} Shared Offers for {} in {}", domestic.getOffers().size(), shared.getOffers().size(), member.getCommitteeName(), i);
+                    LOG.info("Found {} Domestic Offers & {} Shared Offers for {} in {}", domestic.getOffers().size(), shared.getOffers().size(), member.getCommitteeName(), i);
 
                     for (final Offer offer : domestic.getOffers()) {
                         final OfferResponse response = processOffer(token, offer);
                         if (!response.isOk()) {
-                            log.warn("Processing Offer with Reference Number '" + offer.getRefNo() + "' failed: " + processOffer(token, offer).getMessage());
+                            LOG.warn("Processing Offer with Reference Number '" + offer.getRefNo() + "' failed: " + processOffer(token, offer).getMessage());
                         }
                     }
                 }
             } catch (RuntimeException t) {
-                log.error(t.getMessage(), t);
+                LOG.error(t.getMessage(), t);
             } finally {
                 // Always remember to log out, otherwise the Account will be
                 // blocked for a longer time period
-                log.debug("Deprecated Session for user '" + username + "': " + deprecateSession(token).getMessage());
+                LOG.debug("Deprecated Session for user '" + username + "': " + deprecateSession(token).getMessage());
             }
         }
 
-        log.info("Completed Offer Processing thread for {}.", username);
+        LOG.info("Completed Offer Processing thread for {}.", username);
     }
 
     // =========================================================================

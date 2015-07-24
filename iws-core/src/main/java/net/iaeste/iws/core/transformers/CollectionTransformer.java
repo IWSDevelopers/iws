@@ -40,7 +40,7 @@ import java.util.regex.Pattern;
  */
 public final class CollectionTransformer {
 
-    public static final Logger log = LoggerFactory.getLogger(CollectionTransformer.class);
+    public static final Logger LOG = LoggerFactory.getLogger(CollectionTransformer.class);
 
     private static final String DELIMITER_REG_EXP = ",|\\" + IWSExchangeConstants.SET_DELIMITER;
     private static final Pattern SPLIT_PATTERN = Pattern.compile(DELIMITER_REG_EXP);
@@ -93,7 +93,7 @@ public final class CollectionTransformer {
                         final E enumValue = EnumUtil.valueOf(enumType, str);
                         result.add(enumValue);
                     } catch (IllegalArgumentException e) {
-                        log.info("Error converting value '" + str + "' to enum of type '" + enumType.getClass().getName() + "': " + e.getMessage(), e);
+                        LOG.info("Error converting value '" + str + "' to enum of type '" + enumType.getClass().getName() + "': " + e.getMessage(), e);
                     }
                 }
             }

@@ -60,7 +60,7 @@ import java.util.Map;
 @TransactionManagement(TransactionManagementType.CONTAINER)
 public class NotificationManager implements Notifications {
 
-    private static final Logger log = LoggerFactory.getLogger(NotificationManager.class);
+    private static final Logger LOG = LoggerFactory.getLogger(NotificationManager.class);
 
     private final EntityManager entityManager;
     private final EntityManager mailingEntityManager;
@@ -131,7 +131,7 @@ public class NotificationManager implements Notifications {
      */
     @Override
     public void notify(final Authentication authentication, final Notifiable obj, final NotificationType type) {
-        log.info("New '" + type + "' notification request at NotificationManager");
+        LOG.info("New '" + type + "' notification request at NotificationManager");
 
         if (obj != null) {
             try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -141,14 +141,14 @@ public class NotificationManager implements Notifications {
                 final byte[] bytes = outputStream.toByteArray();
                 final NotificationJobEntity job = new NotificationJobEntity(type, bytes);
                 dao.persist(job);
-                log.info("New notification job for '" + type + "' created");
+                LOG.info("New notification job for '" + type + "' created");
                 if (!hostedInBean) {
                     processJobs();
                 }
             } catch (IWSException e) {
-                log.error("Preparing notification job failed: " + e.getMessage(), e);
+                LOG.error("Preparing notification job failed: " + e.getMessage(), e);
             } catch (IOException e) {
-                log.warn("Serializing of Notifiable instance for NotificationType " + type + " failed: " + e.getMessage(), e);
+                LOG.warn("Serializing of Notifiable instance for NotificationType " + type + " failed: " + e.getMessage(), e);
             }
         }
     }
@@ -158,7 +158,7 @@ public class NotificationManager implements Notifications {
      */
     @Override
     public void notify(final UserEntity user) {
-        log.info("New 'user' notification request at NotificationManager");
+        LOG.info("New 'user' notification request at NotificationManager");
 
         if (user != null) {
             try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -168,14 +168,14 @@ public class NotificationManager implements Notifications {
                 final byte[] bytes = outputStream.toByteArray();
                 final NotificationJobEntity job = new NotificationJobEntity(NotificationType.RESET_PASSWORD, bytes);
                 dao.persist(job);
-                log.info("New notification job for '" + NotificationType.RESET_PASSWORD + "' created");
+                LOG.info("New notification job for '" + NotificationType.RESET_PASSWORD + "' created");
                 if (!hostedInBean) {
                     processJobs();
                 }
             } catch (IWSException e) {
-                log.error("Preparing notification job failed: " + e.getMessage(), e);
+                LOG.error("Preparing notification job failed: " + e.getMessage(), e);
             } catch (IOException e) {
-                log.warn("Serializing of Notifiable instance for NotificationType.RESET_PASSWORD failed: " + e.getMessage(), e);
+                LOG.warn("Serializing of Notifiable instance for NotificationType.RESET_PASSWORD failed: " + e.getMessage(), e);
             }
         }
     }

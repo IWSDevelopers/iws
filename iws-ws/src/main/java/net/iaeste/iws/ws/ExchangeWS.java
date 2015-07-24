@@ -57,7 +57,6 @@ import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
-import javax.persistence.PersistenceException;
 import javax.xml.ws.BindingType;
 import javax.xml.ws.WebServiceContext;
 
@@ -71,7 +70,7 @@ import javax.xml.ws.WebServiceContext;
 @WebService(name = "exchangeWS", serviceName = "exchangeWSService", portName = "exchangeWS", targetNamespace = "http://ws.iws.iaeste.net/")
 public class ExchangeWS implements Exchange {
 
-    private static final Logger log = LoggerFactory.getLogger(ExchangeWS.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ExchangeWS.class);
 
     /**
      * Injection of the IWS Exchange Bean Instance, which embeds the
@@ -123,7 +122,7 @@ public class ExchangeWS implements Exchange {
     public OfferStatisticsResponse fetchOfferStatistics(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final OfferStatisticsRequest request) {
-        log.info(requestLogger.prepareLogMessage(token, "fetchOfferStatistics"));
+        LOG.info(requestLogger.prepareLogMessage(token, "fetchOfferStatistics"));
         OfferStatisticsResponse response;
 
         try {
@@ -131,7 +130,7 @@ public class ExchangeWS implements Exchange {
         } catch (RuntimeException e) {
             // The EJB's are all annotated with Transactional Logic, so if an
             // error is flying by - then it is caught here.
-            log.error("Transactional Problem: " + e.getMessage(), e);
+            LOG.error("Transactional Problem: " + e.getMessage(), e);
             response = new OfferStatisticsResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
         }
 
@@ -147,7 +146,7 @@ public class ExchangeWS implements Exchange {
     public EmployerResponse processEmployer(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final ProcessEmployerRequest request) {
-        log.info(requestLogger.prepareLogMessage(token, "processEmployer"));
+        LOG.info(requestLogger.prepareLogMessage(token, "processEmployer"));
         EmployerResponse response;
 
         try {
@@ -155,7 +154,7 @@ public class ExchangeWS implements Exchange {
         } catch (RuntimeException e) {
             // The EJB's are all annotated with Transactional Logic, so if an
             // error is flying by - then it is caught here.
-            log.error("Transactional Problem: " + e.getMessage(), e);
+            LOG.error("Transactional Problem: " + e.getMessage(), e);
             response = new EmployerResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
         }
 
@@ -171,7 +170,7 @@ public class ExchangeWS implements Exchange {
     public FetchEmployerResponse fetchEmployers(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final FetchEmployerRequest request) {
-        log.info(requestLogger.prepareLogMessage(token, "fetchEmployers"));
+        LOG.info(requestLogger.prepareLogMessage(token, "fetchEmployers"));
         FetchEmployerResponse response;
 
         try {
@@ -179,7 +178,7 @@ public class ExchangeWS implements Exchange {
         } catch (RuntimeException e) {
             // The EJB's are all annotated with Transactional Logic, so if an
             // error is flying by - then it is caught here.
-            log.error("Transactional Problem: " + e.getMessage(), e);
+            LOG.error("Transactional Problem: " + e.getMessage(), e);
             response = new FetchEmployerResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
         }
 
@@ -195,7 +194,7 @@ public class ExchangeWS implements Exchange {
     public OfferResponse processOffer(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final ProcessOfferRequest request) {
-        log.info(requestLogger.prepareLogMessage(token, "processOffer"));
+        LOG.info(requestLogger.prepareLogMessage(token, "processOffer"));
         OfferResponse response;
 
         try {
@@ -203,7 +202,7 @@ public class ExchangeWS implements Exchange {
         } catch (RuntimeException e) {
             // The EJB's are all annotated with Transactional Logic, so if an
             // error is flying by - then it is caught here.
-            log.error("Transactional Problem: " + e.getMessage(), e);
+            LOG.error("Transactional Problem: " + e.getMessage(), e);
             response = new OfferResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
         }
 
@@ -219,7 +218,7 @@ public class ExchangeWS implements Exchange {
     public OfferResponse deleteOffer(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final DeleteOfferRequest request) {
-        log.info(requestLogger.prepareLogMessage(token, "deleteOffer"));
+        LOG.info(requestLogger.prepareLogMessage(token, "deleteOffer"));
         OfferResponse response;
 
         try {
@@ -227,7 +226,7 @@ public class ExchangeWS implements Exchange {
         } catch (RuntimeException e) {
             // The EJB's are all annotated with Transactional Logic, so if an
             // error is flying by - then it is caught here.
-            log.error("Transactional Problem: " + e.getMessage(), e);
+            LOG.error("Transactional Problem: " + e.getMessage(), e);
             response = new OfferResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
         }
 
@@ -243,7 +242,7 @@ public class ExchangeWS implements Exchange {
     public OfferCSVUploadResponse uploadOffers(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final OfferCSVUploadRequest request) {
-        log.info(requestLogger.prepareLogMessage(token, "uploadOffers"));
+        LOG.info(requestLogger.prepareLogMessage(token, "uploadOffers"));
         OfferCSVUploadResponse response;
 
         try {
@@ -251,7 +250,7 @@ public class ExchangeWS implements Exchange {
         } catch (RuntimeException e) {
             // The EJB's are all annotated with Transactional Logic, so if an
             // error is flying by - then it is caught here.
-            log.error("Transactional Problem: " + e.getMessage(), e);
+            LOG.error("Transactional Problem: " + e.getMessage(), e);
             response = new OfferCSVUploadResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
         }
 
@@ -267,7 +266,7 @@ public class ExchangeWS implements Exchange {
     public FetchOffersResponse fetchOffers(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final FetchOffersRequest request) {
-        log.info(requestLogger.prepareLogMessage(token, "fetchOffers"));
+        LOG.info(requestLogger.prepareLogMessage(token, "fetchOffers"));
         FetchOffersResponse response;
 
         try {
@@ -275,7 +274,7 @@ public class ExchangeWS implements Exchange {
         } catch (RuntimeException e) {
             // The EJB's are all annotated with Transactional Logic, so if an
             // error is flying by - then it is caught here.
-            log.error("Transactional Problem: " + e.getMessage(), e);
+            LOG.error("Transactional Problem: " + e.getMessage(), e);
             response = new FetchOffersResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
         }
 
@@ -291,7 +290,7 @@ public class ExchangeWS implements Exchange {
     public OfferCSVDownloadResponse downloadOffers(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final OfferCSVDownloadRequest request) {
-        log.info(requestLogger.prepareLogMessage(token, "downloadOffers"));
+        LOG.info(requestLogger.prepareLogMessage(token, "downloadOffers"));
         OfferCSVDownloadResponse response;
 
         try {
@@ -299,7 +298,7 @@ public class ExchangeWS implements Exchange {
         } catch (RuntimeException e) {
             // The EJB's are all annotated with Transactional Logic, so if an
             // error is flying by - then it is caught here.
-            log.error("Transactional Problem: " + e.getMessage(), e);
+            LOG.error("Transactional Problem: " + e.getMessage(), e);
             response = new OfferCSVDownloadResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
         }
 
@@ -314,7 +313,7 @@ public class ExchangeWS implements Exchange {
     @WebResult(name = "response")
     public FetchGroupsForSharingResponse fetchGroupsForSharing(
             @WebParam(name = "token") final AuthenticationToken token) {
-        log.info(requestLogger.prepareLogMessage(token, "fetchGroupsForSharing"));
+        LOG.info(requestLogger.prepareLogMessage(token, "fetchGroupsForSharing"));
         FetchGroupsForSharingResponse response;
 
         try {
@@ -322,7 +321,7 @@ public class ExchangeWS implements Exchange {
         } catch (RuntimeException e) {
             // The EJB's are all annotated with Transactional Logic, so if an
             // error is flying by - then it is caught here.
-            log.error("Transactional Problem: " + e.getMessage(), e);
+            LOG.error("Transactional Problem: " + e.getMessage(), e);
             response = new FetchGroupsForSharingResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
         }
 
@@ -338,7 +337,7 @@ public class ExchangeWS implements Exchange {
     public FallibleResponse processPublishingGroup(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final ProcessPublishingGroupRequest request) {
-        log.info(requestLogger.prepareLogMessage(token, "processPublishingGroup"));
+        LOG.info(requestLogger.prepareLogMessage(token, "processPublishingGroup"));
         FallibleResponse response;
 
         try {
@@ -346,7 +345,7 @@ public class ExchangeWS implements Exchange {
         } catch (RuntimeException e) {
             // The EJB's are all annotated with Transactional Logic, so if an
             // error is flying by - then it is caught here.
-            log.error("Transactional Problem: " + e.getMessage(), e);
+            LOG.error("Transactional Problem: " + e.getMessage(), e);
             response = new FallibleResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
         }
 
@@ -362,7 +361,7 @@ public class ExchangeWS implements Exchange {
     public FetchPublishingGroupResponse fetchPublishingGroups(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final FetchPublishGroupsRequest request) {
-        log.info(requestLogger.prepareLogMessage(token, "fetchPublishingGroups"));
+        LOG.info(requestLogger.prepareLogMessage(token, "fetchPublishingGroups"));
         FetchPublishingGroupResponse response;
 
         try {
@@ -370,7 +369,7 @@ public class ExchangeWS implements Exchange {
         } catch (RuntimeException e) {
             // The EJB's are all annotated with Transactional Logic, so if an
             // error is flying by - then it is caught here.
-            log.error("Transactional Problem: " + e.getMessage(), e);
+            LOG.error("Transactional Problem: " + e.getMessage(), e);
             response = new FetchPublishingGroupResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
         }
 
@@ -387,7 +386,7 @@ public class ExchangeWS implements Exchange {
     public FallibleResponse deletePublishingGroup(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final DeletePublishingGroupRequest request) {
-        log.info(requestLogger.prepareLogMessage(token, "deletePublishingGroup"));
+        LOG.info(requestLogger.prepareLogMessage(token, "deletePublishingGroup"));
         FallibleResponse response;
 
         try {
@@ -395,7 +394,7 @@ public class ExchangeWS implements Exchange {
         } catch (RuntimeException e) {
             // The EJB's are all annotated with Transactional Logic, so if an
             // error is flying by - then it is caught here.
-            log.error("Transactional Problem: " + e.getMessage(), e);
+            LOG.error("Transactional Problem: " + e.getMessage(), e);
             response = new FallibleResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
         }
 
@@ -411,7 +410,7 @@ public class ExchangeWS implements Exchange {
     public PublishOfferResponse processPublishOffer(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final PublishOfferRequest request) {
-        log.info(requestLogger.prepareLogMessage(token, "processPublishOffer"));
+        LOG.info(requestLogger.prepareLogMessage(token, "processPublishOffer"));
         PublishOfferResponse response;
 
         try {
@@ -419,7 +418,7 @@ public class ExchangeWS implements Exchange {
         } catch (RuntimeException e) {
             // The EJB's are all annotated with Transactional Logic, so if an
             // error is flying by - then it is caught here.
-            log.error("Transactional Problem: " + e.getMessage(), e);
+            LOG.error("Transactional Problem: " + e.getMessage(), e);
             response = new PublishOfferResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
         }
 
@@ -435,7 +434,7 @@ public class ExchangeWS implements Exchange {
     public FetchPublishedGroupsResponse fetchPublishedGroups(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final FetchPublishedGroupsRequest request) {
-        log.info(requestLogger.prepareLogMessage(token, "fetchPublishedGroups"));
+        LOG.info(requestLogger.prepareLogMessage(token, "fetchPublishedGroups"));
         FetchPublishedGroupsResponse response;
 
         try {
@@ -443,7 +442,7 @@ public class ExchangeWS implements Exchange {
         } catch (RuntimeException e) {
             // The EJB's are all annotated with Transactional Logic, so if an
             // error is flying by - then it is caught here.
-            log.error("Transactional Problem: " + e.getMessage(), e);
+            LOG.error("Transactional Problem: " + e.getMessage(), e);
             response = new FetchPublishedGroupsResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
         }
 
@@ -459,7 +458,7 @@ public class ExchangeWS implements Exchange {
     public FallibleResponse processHideForeignOffers(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final HideForeignOffersRequest request) {
-        log.info(requestLogger.prepareLogMessage(token, "processHideForeignOffers"));
+        LOG.info(requestLogger.prepareLogMessage(token, "processHideForeignOffers"));
         FallibleResponse response;
 
         try {
@@ -467,7 +466,7 @@ public class ExchangeWS implements Exchange {
         } catch (RuntimeException e) {
             // The EJB's are all annotated with Transactional Logic, so if an
             // error is flying by - then it is caught here.
-            log.error("Transactional Problem: " + e.getMessage(), e);
+            LOG.error("Transactional Problem: " + e.getMessage(), e);
             response = new FallibleResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
         }
 
@@ -483,7 +482,7 @@ public class ExchangeWS implements Exchange {
     public FallibleResponse rejectOffer(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final RejectOfferRequest request) {
-        log.info(requestLogger.prepareLogMessage(token, "rejectOffer"));
+        LOG.info(requestLogger.prepareLogMessage(token, "rejectOffer"));
         FallibleResponse response;
 
         try {
@@ -491,7 +490,7 @@ public class ExchangeWS implements Exchange {
         } catch (RuntimeException e) {
             // The EJB's are all annotated with Transactional Logic, so if an
             // error is flying by - then it is caught here.
-            log.error("Transactional Problem: " + e.getMessage(), e);
+            LOG.error("Transactional Problem: " + e.getMessage(), e);
             response = new FallibleResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
         }
 

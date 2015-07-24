@@ -53,7 +53,7 @@ import java.util.Map;
  */
 public final class ActiveSessions {
 
-    private static final Logger log = LoggerFactory.getLogger(ActiveSessions.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ActiveSessions.class);
 
     // Singleton Instance Object & Lock Object
     private static final Object INSTANCE_LOCK = new Object();
@@ -131,7 +131,7 @@ public final class ActiveSessions {
      * @param token Session Token
      */
     public void registerToken(final String token) {
-        log.debug("{}Registering Token in the Active Session Monitor.", readTrace(token));
+        LOG.debug("{}Registering Token in the Active Session Monitor.", readTrace(token));
         synchronized (lock) {
             if (tokens.containsKey(token)) {
                 tokens.put(token, new Date());
@@ -163,7 +163,7 @@ public final class ActiveSessions {
             }
         }
 
-        log.trace("{}The token was last used {}.", readTrace(token), lastAccess);
+        LOG.trace("{}The token was last used {}.", readTrace(token), lastAccess);
         return lastAccess;
     }
 
@@ -173,7 +173,7 @@ public final class ActiveSessions {
      * @param token Session Token
      */
     public void removeToken(final String token) {
-        log.debug("{}Removing token from the Active Session Monitor.", readTrace(token));
+        LOG.debug("{}Removing token from the Active Session Monitor.", readTrace(token));
         synchronized (lock) {
             tokens.remove(token);
         }
@@ -194,7 +194,7 @@ public final class ActiveSessions {
         if (lastAccess != null) {
             result = lastAccess.after(mustBeAfter);
         } else {
-            log.info("{}Token has expired, it is {} ms since last access.", readTrace(token), maxMillisToLive);
+            LOG.info("{}Token has expired, it is {} ms since last access.", readTrace(token), maxMillisToLive);
             result = false;
         }
 
@@ -208,7 +208,7 @@ public final class ActiveSessions {
      * @param token Token to update
      */
     public void updateToken(final String token) {
-        log.trace("{}Updating the last access for the token to now.", readTrace(token));
+        LOG.trace("{}Updating the last access for the token to now.", readTrace(token));
         synchronized (lock) {
             if (tokens.containsKey(token)) {
                 tokens.put(token, new Date());
@@ -228,7 +228,7 @@ public final class ActiveSessions {
      * @return List of Sessions that have expired
      */
     public List<String> findAndRemoveExpiredTokens() {
-        log.debug("Attempting to find and remove expired Tokens.");
+        LOG.debug("Attempting to find and remove expired Tokens.");
         final List<String> expiredTokens = new ArrayList<>(10);
         // Although we always should narrow the scope of variables, we also have
         // to remember that the Synchronized block is a special case, that

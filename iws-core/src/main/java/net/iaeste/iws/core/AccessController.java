@@ -49,7 +49,7 @@ import java.io.Serializable;
  */
 public final class AccessController extends CommonController implements Access {
 
-    private static final Logger log = LoggerFactory.getLogger(AccessController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AccessController.class);
 
     private static final String AUTHENTICATION_REQUEST_ERROR = "The Authentication Request Object is undefined.";
 
@@ -68,8 +68,8 @@ public final class AccessController extends CommonController implements Access {
      */
     @Override
     public AuthenticationResponse generateSession(final AuthenticationRequest request) {
-        if (log.isTraceEnabled()) {
-            log.trace("Starting generateSession()");
+        if (LOG.isTraceEnabled()) {
+            LOG.trace("Starting generateSession()");
         }
         AuthenticationResponse response;
 
@@ -79,11 +79,17 @@ public final class AccessController extends CommonController implements Access {
             final AccessService service = factory.prepareAuthenticationService();
             response = service.generateSession(request);
         } catch (IWSException e) {
+            // Generally, Exceptions should always be either logged or rethrown.
+            // In our case, we're transforming the Exception into an Error
+            // Object which can be returned to the User. However, to ensure
+            // that we're not loosing anything - the Exception is also logged
+            // here as a debug message
+            LOG.debug(e.getMessage(), e);
             response = new AuthenticationResponse(e.getError(), e.getMessage());
         }
 
-        if (log.isTraceEnabled()) {
-            log.trace("Finished generateSession()");
+        if (LOG.isTraceEnabled()) {
+            LOG.trace("Finished generateSession()");
         }
         return response;
     }
@@ -93,8 +99,8 @@ public final class AccessController extends CommonController implements Access {
      */
     @Override
     public FallibleResponse requestResettingSession(final AuthenticationRequest request) {
-        if (log.isTraceEnabled()) {
-            log.trace("Starting requestResettingSession()");
+        if (LOG.isTraceEnabled()) {
+            LOG.trace("Starting requestResettingSession()");
         }
         FallibleResponse response;
 
@@ -105,11 +111,17 @@ public final class AccessController extends CommonController implements Access {
             service.requestResettingSession(request);
             response = new FallibleResponse();
         } catch (IWSException e) {
+            // Generally, Exceptions should always be either logged or rethrown.
+            // In our case, we're transforming the Exception into an Error
+            // Object which can be returned to the User. However, to ensure
+            // that we're not loosing anything - the Exception is also logged
+            // here as a debug message
+            LOG.debug(e.getMessage(), e);
             response = new AuthenticationResponse(e.getError(), e.getMessage());
         }
 
-        if (log.isTraceEnabled()) {
-            log.trace("Finished requestResettingSession()");
+        if (LOG.isTraceEnabled()) {
+            LOG.trace("Finished requestResettingSession()");
         }
         return response;
     }
@@ -119,8 +131,8 @@ public final class AccessController extends CommonController implements Access {
      */
     @Override
     public AuthenticationResponse resetSession(final String resetSessionToken) {
-        if (log.isTraceEnabled()) {
-            log.trace("Starting resetSession()");
+        if (LOG.isTraceEnabled()) {
+            LOG.trace("Starting resetSession()");
         }
         AuthenticationResponse response;
 
@@ -130,11 +142,17 @@ public final class AccessController extends CommonController implements Access {
             final AuthenticationToken token = service.resetSession(resetSessionToken);
             response = new AuthenticationResponse(token);
         } catch (IWSException e) {
+            // Generally, Exceptions should always be either logged or rethrown.
+            // In our case, we're transforming the Exception into an Error
+            // Object which can be returned to the User. However, to ensure
+            // that we're not loosing anything - the Exception is also logged
+            // here as a debug message
+            LOG.debug(e.getMessage(), e);
             response = new AuthenticationResponse(e.getError(), e.getMessage());
         }
 
-        if (log.isTraceEnabled()) {
-            log.trace("Finished resetSession()");
+        if (LOG.isTraceEnabled()) {
+            LOG.trace("Finished resetSession()");
         }
         return response;
     }
@@ -144,8 +162,8 @@ public final class AccessController extends CommonController implements Access {
      */
     @Override
     public <T extends Serializable> FallibleResponse saveSessionData(final AuthenticationToken token, final SessionDataRequest<T> request) {
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting saveSessionData()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Starting saveSessionData()"));
         }
         FallibleResponse response;
 
@@ -156,10 +174,16 @@ public final class AccessController extends CommonController implements Access {
             service.saveSessionData(token, request);
             response = new FallibleResponse();
         } catch (IWSException e) {
+            // Generally, Exceptions should always be either logged or rethrown.
+            // In our case, we're transforming the Exception into an Error
+            // Object which can be returned to the User. However, to ensure
+            // that we're not loosing anything - the Exception is also logged
+            // here as a debug message
+            LOG.debug(e.getMessage(), e);
             response = new FallibleResponse(e.getError(), e.getMessage());
         }
 
-        log.trace(formatLogMessage(token, "Finished saveSessionData()"));
+        LOG.trace(formatLogMessage(token, "Finished saveSessionData()"));
         return response;
     }
 
@@ -168,8 +192,8 @@ public final class AccessController extends CommonController implements Access {
      */
     @Override
     public <T extends Serializable> SessionDataResponse<T> readSessionData(final AuthenticationToken token) {
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting readSessionData()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Starting readSessionData()"));
         }
         SessionDataResponse<T> response;
 
@@ -179,11 +203,17 @@ public final class AccessController extends CommonController implements Access {
             final AccessService service = factory.prepareAuthenticationService();
             response = service.fetchSessionData(token);
         } catch (IWSException e) {
+            // Generally, Exceptions should always be either logged or rethrown.
+            // In our case, we're transforming the Exception into an Error
+            // Object which can be returned to the User. However, to ensure
+            // that we're not loosing anything - the Exception is also logged
+            // here as a debug message
+            LOG.debug(e.getMessage(), e);
             response = new SessionDataResponse(e.getError(), e.getMessage());
         }
 
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished readSessionData()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Finished readSessionData()"));
         }
         return response;
     }
@@ -193,8 +223,8 @@ public final class AccessController extends CommonController implements Access {
      */
     @Override
     public FallibleResponse verifySession(final AuthenticationToken token) {
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting verifySession()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Starting verifySession()"));
         }
         FallibleResponse response;
 
@@ -202,11 +232,17 @@ public final class AccessController extends CommonController implements Access {
             verifyPrivateAccess(token);
             response = new FallibleResponse();
         } catch (IWSException e) {
+            // Generally, Exceptions should always be either logged or rethrown.
+            // In our case, we're transforming the Exception into an Error
+            // Object which can be returned to the User. However, to ensure
+            // that we're not loosing anything - the Exception is also logged
+            // here as a debug message
+            LOG.debug(e.getMessage(), e);
             response = new FallibleResponse(e.getError(), e.getMessage());
         }
 
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished verifySession()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Finished verifySession()"));
         }
         return response;
     }
@@ -216,8 +252,8 @@ public final class AccessController extends CommonController implements Access {
      */
     @Override
     public FallibleResponse deprecateSession(final AuthenticationToken token) {
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting deprecateSession()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Starting deprecateSession()"));
         }
         FallibleResponse response;
 
@@ -228,11 +264,17 @@ public final class AccessController extends CommonController implements Access {
             service.deprecateSession(token);
             response = new FallibleResponse();
         } catch (IWSException e) {
+            // Generally, Exceptions should always be either logged or rethrown.
+            // In our case, we're transforming the Exception into an Error
+            // Object which can be returned to the User. However, to ensure
+            // that we're not loosing anything - the Exception is also logged
+            // here as a debug message
+            LOG.debug(e.getMessage(), e);
             response = new FallibleResponse(e.getError(), e.getMessage());
         }
 
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished deprecateSession()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Finished deprecateSession()"));
         }
         return response;
     }
@@ -242,8 +284,8 @@ public final class AccessController extends CommonController implements Access {
      */
     @Override
     public FallibleResponse forgotPassword(final String username) {
-        if (log.isTraceEnabled()) {
-            log.trace("Starting forgotPassword()");
+        if (LOG.isTraceEnabled()) {
+            LOG.trace("Starting forgotPassword()");
         }
         FallibleResponse response;
 
@@ -253,11 +295,17 @@ public final class AccessController extends CommonController implements Access {
             service.forgotPassword(username);
             response = new FallibleResponse();
         } catch (IWSException e) {
+            // Generally, Exceptions should always be either logged or rethrown.
+            // In our case, we're transforming the Exception into an Error
+            // Object which can be returned to the User. However, to ensure
+            // that we're not loosing anything - the Exception is also logged
+            // here as a debug message
+            LOG.debug(e.getMessage(), e);
             response = new FallibleResponse(e.getError(), e.getMessage());
         }
 
-        if (log.isTraceEnabled()) {
-            log.trace("Finished forgotPassword()");
+        if (LOG.isTraceEnabled()) {
+            LOG.trace("Finished forgotPassword()");
         }
         return response;
     }
@@ -267,8 +315,8 @@ public final class AccessController extends CommonController implements Access {
      */
     @Override
     public FallibleResponse resetPassword(final Password password) {
-        if (log.isTraceEnabled()) {
-            log.trace("Starting resetPassword()");
+        if (LOG.isTraceEnabled()) {
+            LOG.trace("Starting resetPassword()");
         }
         FallibleResponse response;
 
@@ -279,11 +327,17 @@ public final class AccessController extends CommonController implements Access {
             service.resetPassword(password);
             response = new FallibleResponse();
         } catch (IWSException e) {
+            // Generally, Exceptions should always be either logged or rethrown.
+            // In our case, we're transforming the Exception into an Error
+            // Object which can be returned to the User. However, to ensure
+            // that we're not loosing anything - the Exception is also logged
+            // here as a debug message
+            LOG.debug(e.getMessage(), e);
             response = new FallibleResponse(e.getError(), e.getMessage());
         }
 
-        if (log.isTraceEnabled()) {
-            log.trace("Finished resetPassword()");
+        if (LOG.isTraceEnabled()) {
+            LOG.trace("Finished resetPassword()");
         }
         return response;
     }
@@ -293,8 +347,8 @@ public final class AccessController extends CommonController implements Access {
      */
     @Override
     public FallibleResponse updatePassword(final AuthenticationToken token, final Password password) {
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting updatePassword()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Starting updatePassword()"));
         }
         FallibleResponse response;
 
@@ -306,11 +360,17 @@ public final class AccessController extends CommonController implements Access {
             service.updatePassword(authentication, password);
             response = new FallibleResponse();
         } catch (IWSException e) {
+            // Generally, Exceptions should always be either logged or rethrown.
+            // In our case, we're transforming the Exception into an Error
+            // Object which can be returned to the User. However, to ensure
+            // that we're not loosing anything - the Exception is also logged
+            // here as a debug message
+            LOG.debug(e.getMessage(), e);
             response = new FallibleResponse(e.getError(), e.getMessage());
         }
 
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished updatePassword()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Finished updatePassword()"));
         }
         return response;
     }
@@ -320,8 +380,8 @@ public final class AccessController extends CommonController implements Access {
      */
     @Override
     public FetchPermissionResponse fetchPermissions(final AuthenticationToken token) {
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting fetchPermissions()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Starting fetchPermissions()"));
         }
         FetchPermissionResponse response;
 
@@ -331,11 +391,17 @@ public final class AccessController extends CommonController implements Access {
             final AccessService service = factory.prepareAuthenticationService();
             response = service.findPermissions(authentication, token.getGroupId());
         } catch (IWSException e) {
+            // Generally, Exceptions should always be either logged or rethrown.
+            // In our case, we're transforming the Exception into an Error
+            // Object which can be returned to the User. However, to ensure
+            // that we're not loosing anything - the Exception is also logged
+            // here as a debug message
+            LOG.debug(e.getMessage(), e);
             response = new FetchPermissionResponse(e.getError(), e.getMessage());
         }
 
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished fetchPermissions()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Finished fetchPermissions()"));
         }
         return response;
     }

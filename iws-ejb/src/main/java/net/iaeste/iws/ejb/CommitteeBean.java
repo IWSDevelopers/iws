@@ -66,7 +66,7 @@ import javax.persistence.EntityManager;
 @TransactionManagement(TransactionManagementType.CONTAINER)
 public class CommitteeBean implements Committees {
 
-    private static final Logger log = LoggerFactory.getLogger(CommitteeBean.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CommitteeBean.class);
     @Inject @IWSBean private EntityManager entityManager;
     @Inject @IWSBean private Notifications notifications;
     @Inject @IWSBean private SessionRequestBean session;
@@ -133,9 +133,9 @@ public class CommitteeBean implements Committees {
 
         try {
             response = controller.fetchCommittees(token, request);
-            log.info(session.generateLogAndUpdateSession("fetchCommittees", start, response, token));
+            LOG.info(session.generateLogAndUpdateSession("fetchCommittees", start, response, token));
         } catch (RuntimeException e) {
-            log.error(session.generateLogAndSaveRequest("fetchCommittees", start, e, token, request), e);
+            LOG.error(session.generateLogAndSaveRequest("fetchCommittees", start, e, token, request), e);
             response = new FetchCommitteeResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -152,9 +152,9 @@ public class CommitteeBean implements Committees {
 
         try {
             response = controller.processCommittee(token, request);
-            log.info(session.generateLogAndUpdateSession("processCommittee", start, response, token));
+            LOG.info(session.generateLogAndUpdateSession("processCommittee", start, response, token));
         } catch (RuntimeException e) {
-            log.error(session.generateLogAndSaveRequest("processCommittee", start, e, token, request), e);
+            LOG.error(session.generateLogAndSaveRequest("processCommittee", start, e, token, request), e);
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -171,9 +171,9 @@ public class CommitteeBean implements Committees {
 
         try {
             response = controller.fetchInternationalGroups(token, request);
-            log.info(session.generateLogAndUpdateSession("fetchInternationalGroups", start, response, token));
+            LOG.info(session.generateLogAndUpdateSession("fetchInternationalGroups", start, response, token));
         } catch (RuntimeException e) {
-            log.error(session.generateLogAndSaveRequest("fetchInternationalGroups", start, e, token, request), e);
+            LOG.error(session.generateLogAndSaveRequest("fetchInternationalGroups", start, e, token, request), e);
             response = new FetchInternationalGroupResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -190,9 +190,9 @@ public class CommitteeBean implements Committees {
 
         try {
             response = controller.processInternationalGroup(token, request);
-            log.info(session.generateLogAndUpdateSession("processInternationalGroup", start, response, token));
+            LOG.info(session.generateLogAndUpdateSession("processInternationalGroup", start, response, token));
         } catch (RuntimeException e) {
-            log.error(session.generateLogAndSaveRequest("processInternationalGroup", start, e, token, request), e);
+            LOG.error(session.generateLogAndSaveRequest("processInternationalGroup", start, e, token, request), e);
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -209,9 +209,9 @@ public class CommitteeBean implements Committees {
 
         try {
             response = controller.fetchCountrySurvey(token, request);
-            log.info(session.generateLogAndUpdateSession("fetchCountrySurvey", start, response, token));
+            LOG.info(session.generateLogAndUpdateSession("fetchCountrySurvey", start, response, token));
         } catch (RuntimeException e) {
-            log.error(session.generateLogAndSaveRequest("fetchCountrySurvey", start, e, token, request), e);
+            LOG.error(session.generateLogAndSaveRequest("fetchCountrySurvey", start, e, token, request), e);
             response = new FetchCountrySurveyRespose(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -228,9 +228,9 @@ public class CommitteeBean implements Committees {
 
         try {
             response = controller.processCountrySurvey(token, request);
-            log.info(session.generateLogAndUpdateSession("processCountrySurvey", start, response, token));
+            LOG.info(session.generateLogAndUpdateSession("processCountrySurvey", start, response, token));
         } catch (RuntimeException e) {
-            log.error(session.generateLogAndSaveRequest("processCountrySurvey", start, e, token, request), e);
+            LOG.error(session.generateLogAndSaveRequest("processCountrySurvey", start, e, token, request), e);
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 

@@ -43,7 +43,7 @@ import org.slf4j.LoggerFactory;
  */
 public final class CommitteeController extends CommonController implements Committees {
 
-    private static final Logger log = LoggerFactory.getLogger(CommitteeController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CommitteeController.class);
 
     /**
      * Default Constructor, takes a ServiceFactory as input parameter, and uses
@@ -60,8 +60,8 @@ public final class CommitteeController extends CommonController implements Commi
      */
     @Override
     public FetchCommitteeResponse fetchCommittees(final AuthenticationToken token, final FetchCommitteeRequest request) {
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting fetchCommittees()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Starting fetchCommittees()"));
         }
         FetchCommitteeResponse response;
 
@@ -72,11 +72,17 @@ public final class CommitteeController extends CommonController implements Commi
             final CommitteeService service = factory.prepareCommitteeService();
             response = service.fetchCommittees(request);
         } catch (IWSException e) {
+            // Generally, Exceptions should always be either logged or rethrown.
+            // In our case, we're transforming the Exception into an Error
+            // Object which can be returned to the User. However, to ensure
+            // that we're not loosing anything - the Exception is also LOG.ed
+            // here as a debug message
+            LOG.debug(e.getMessage(), e);
             response = new FetchCommitteeResponse(e.getError(), e.getMessage());
         }
 
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished fetchCommittees()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Finished fetchCommittees()"));
         }
         return response;
     }
@@ -86,8 +92,8 @@ public final class CommitteeController extends CommonController implements Commi
      */
     @Override
     public FallibleResponse processCommittee(final AuthenticationToken token, final CommitteeRequest request) {
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting processCommittee()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Starting processCommittee()"));
         }
         FallibleResponse response;
 
@@ -99,11 +105,17 @@ public final class CommitteeController extends CommonController implements Commi
             service.processCommittee(authentication, request);
             response = new FallibleResponse();
         } catch (IWSException e) {
+            // Generally, Exceptions should always be either logged or rethrown.
+            // In our case, we're transforming the Exception into an Error
+            // Object which can be returned to the User. However, to ensure
+            // that we're not loosing anything - the Exception is also LOG.ed
+            // here as a debug message
+            LOG.debug(e.getMessage(), e);
             response = new FallibleResponse(e.getError(), e.getMessage());
         }
 
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished processCommittee()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Finished processCommittee()"));
         }
         return response;
     }
@@ -113,8 +125,8 @@ public final class CommitteeController extends CommonController implements Commi
      */
     @Override
     public FetchInternationalGroupResponse fetchInternationalGroups(final AuthenticationToken token, final FetchInternationalGroupRequest request) {
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting fetchInternationalGroups()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Starting fetchInternationalGroups()"));
         }
         FetchInternationalGroupResponse response;
 
@@ -125,11 +137,17 @@ public final class CommitteeController extends CommonController implements Commi
             final CommitteeService service = factory.prepareCommitteeService();
             response = service.fetchInternationalGroups(request);
         } catch (IWSException e) {
+            // Generally, Exceptions should always be either logged or rethrown.
+            // In our case, we're transforming the Exception into an Error
+            // Object which can be returned to the User. However, to ensure
+            // that we're not loosing anything - the Exception is also LOG.ed
+            // here as a debug message
+            LOG.debug(e.getMessage(), e);
             response = new FetchInternationalGroupResponse(e.getError(), e.getMessage());
         }
 
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished fetchInternationalGroups()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Finished fetchInternationalGroups()"));
         }
         return response;
     }
@@ -139,8 +157,8 @@ public final class CommitteeController extends CommonController implements Commi
      */
     @Override
     public FallibleResponse processInternationalGroup(final AuthenticationToken token, final InternationalGroupRequest request) {
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting processInternationalGroup()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Starting processInternationalGroup()"));
         }
         FallibleResponse response;
 
@@ -152,11 +170,17 @@ public final class CommitteeController extends CommonController implements Commi
             service.processInternationalGroup(authentication, request);
             response = new FallibleResponse();
         } catch (IWSException e) {
+            // Generally, Exceptions should always be either logged or rethrown.
+            // In our case, we're transforming the Exception into an Error
+            // Object which can be returned to the User. However, to ensure
+            // that we're not loosing anything - the Exception is also LOG.ed
+            // here as a debug message
+            LOG.debug(e.getMessage(), e);
             response = new FallibleResponse(e.getError(), e.getMessage());
         }
 
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished processInternationalGroup()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Finished processInternationalGroup()"));
         }
         return response;
     }
@@ -166,8 +190,8 @@ public final class CommitteeController extends CommonController implements Commi
      */
     @Override
     public FetchCountrySurveyRespose fetchCountrySurvey(final AuthenticationToken token, final FetchCountrySurveyRequest request) {
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting fetchCountrySurvey()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Starting fetchCountrySurvey()"));
         }
         FetchCountrySurveyRespose response;
 
@@ -178,11 +202,17 @@ public final class CommitteeController extends CommonController implements Commi
             final CommitteeService service = factory.prepareCommitteeService();
             response = service.fetchCountrySurvey(authentication, request);
         } catch (IWSException e) {
+            // Generally, Exceptions should always be either logged or rethrown.
+            // In our case, we're transforming the Exception into an Error
+            // Object which can be returned to the User. However, to ensure
+            // that we're not loosing anything - the Exception is also LOG.ed
+            // here as a debug message
+            LOG.debug(e.getMessage(), e);
             response = new FetchCountrySurveyRespose(e.getError(), e.getMessage());
         }
 
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished fetchCountrySurvey()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Finished fetchCountrySurvey()"));
         }
         return response;
     }
@@ -192,8 +222,8 @@ public final class CommitteeController extends CommonController implements Commi
      */
     @Override
     public FallibleResponse processCountrySurvey(final AuthenticationToken token, final CountrySurveyRequest request) {
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting processCountrySurvey()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Starting processCountrySurvey()"));
         }
         FallibleResponse response;
 
@@ -205,11 +235,17 @@ public final class CommitteeController extends CommonController implements Commi
             service.processCountrySurvey(authentication, request);
             response = new FallibleResponse();
         } catch (IWSException e) {
+            // Generally, Exceptions should always be either logged or rethrown.
+            // In our case, we're transforming the Exception into an Error
+            // Object which can be returned to the User. However, to ensure
+            // that we're not loosing anything - the Exception is also LOG.ed
+            // here as a debug message
+            LOG.debug(e.getMessage(), e);
             response = new FallibleResponse(e.getError(), e.getMessage());
         }
 
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished processCountrySurvey()"));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(formatLogMessage(token, "Finished processCountrySurvey()"));
         }
         return response;
     }

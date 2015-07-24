@@ -40,7 +40,7 @@ import java.util.Properties;
  */
 public class Producer {
 
-    private static final Logger log = LoggerFactory.getLogger(Producer.class);
+    private static final Logger LOG = LoggerFactory.getLogger(Producer.class);
 
     //See https://docs.jboss.org/author/display/WFLY8/Command+line+parameters
     private static final String JBOSS_CONFIG_DIR = "jboss.server.config.dir";
@@ -106,7 +106,7 @@ public class Producer {
 
         if (dir != null) {
             final String file = dir + File.separator + PROPERTIES_FILE;
-            log.debug("Reading the IWS Properties from '" + file + "'.");
+            LOG.debug("Reading the IWS Properties from '" + file + "'.");
 
             try (InputStream stream = new FileInputStream(file)) {
                 final Properties properties = new Properties();
@@ -114,14 +114,14 @@ public class Producer {
 
                 mySettings = new Settings(properties);
             } catch (FileNotFoundException e) {
-                log.warn("Properties file was not found, reverting to default values.", e);
+                LOG.warn("Properties file was not found, reverting to default values.", e);
                 mySettings = new Settings();
             } catch (IOException e) {
-                log.warn("Properties file could not be loaded, reverting to default values.", e);
+                LOG.warn("Properties file could not be loaded, reverting to default values.", e);
                 mySettings = new Settings();
             }
         } else {
-            log.warn("Application Server Configuration Path cannot be read.");
+            LOG.warn("Application Server Configuration Path cannot be read.");
             mySettings = new Settings();
         }
 

@@ -38,7 +38,7 @@ import java.util.UUID;
  */
 public class FileMigrator implements Migrator<IW3FileEntity> {
 
-    private static final Logger log = LoggerFactory.getLogger(FileMigrator.class);
+    private static final Logger LOG = LoggerFactory.getLogger(FileMigrator.class);
 
     @Autowired
     private IWSDao iwsDao;
@@ -88,7 +88,7 @@ public class FileMigrator implements Migrator<IW3FileEntity> {
             }
         }
 
-        log.info("Completed migrating block with {} files and {} folders.", files, folders);
+        LOG.info("Completed migrating block with {} files and {} folders.", files, folders);
         return new MigrationResult(folders + files, skipped);
     }
 
@@ -115,7 +115,7 @@ public class FileMigrator implements Migrator<IW3FileEntity> {
         final boolean persisted;
 
         if (groupEntity == null) {
-            log.info("Skipping folder (missing Group): [" + oldEntity.getFileid() + "] " + oldEntity.getFilename());
+            LOG.info("Skipping folder (missing Group): [" + oldEntity.getFileid() + "] " + oldEntity.getFilename());
             persisted = false;
         } else {
             final FolderEntity entity = new FolderEntity();
@@ -124,6 +124,7 @@ public class FileMigrator implements Migrator<IW3FileEntity> {
             entity.setGroup(findGroup(oldEntity));
             entity.setFoldername(oldEntity.getFilename().trim());
             entity.setOldIW3FileId(oldEntity.getFileid());
+            entity.setPrivacy(Privacy.PROTECTED);
             entity.setModified(readDate(oldEntity.getModified(), new Date()));
             entity.setCreated(readDate(entity.getCreated(), entity.getModified()));
 
@@ -140,10 +141,10 @@ public class FileMigrator implements Migrator<IW3FileEntity> {
         final boolean persisted;
 
         if (userEntity == null) {
-            log.info("Skipping file (missing User): [" + oldEntity.getFileid() + "] " + oldEntity.getFilename());
+            LOG.info("Skipping file (missing User): [" + oldEntity.getFileid() + "] " + oldEntity.getFilename());
             persisted = false;
         } else if (groupEntity == null) {
-            log.info("Skipping file (missing Group): [" + oldEntity.getFileid() + "] " + oldEntity.getFilename());
+            LOG.info("Skipping file (missing Group): [" + oldEntity.getFileid() + "] " + oldEntity.getFilename());
             persisted = false;
         } else {
             final FileEntity entity = new FileEntity();

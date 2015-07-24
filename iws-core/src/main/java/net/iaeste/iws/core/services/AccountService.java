@@ -68,7 +68,7 @@ import java.util.UUID;
  */
 public final class AccountService extends CommonService<AccessDao> {
 
-    private static final Logger log = LoggerFactory.getLogger(AccountService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AccountService.class);
     private final Notifications notifications;
 
     public AccountService(final Settings settings, final AccessDao dao, final Notifications notifications) {
@@ -533,10 +533,10 @@ public final class AccountService extends CommonService<AccessDao> {
             // We have a User Account, that was never activated. This we can
             // delete completely
             if (!dao.findStudentWithApplications(user).isEmpty()) {
-                log.info("Expired Account to be deleted is a Student Account with Applications. Only private information is removed.");
+                LOG.info("Expired Account to be deleted is a Student Account with Applications. Only private information is removed.");
                 deleteAccountData(user);
             //} else if (!dao.findHistory(user).isEmpty()) {
-            //    log.info("Damn, we found some history for user " + user.getUsername());
+            //    LOG.info("Damn, we found some history for user " + user.getUsername());
             } else {
                 deletePerson(user.getPerson());
                 // We'll just remove the Student Account, if added - since we
@@ -603,14 +603,14 @@ public final class AccountService extends CommonService<AccessDao> {
             dao.delete(user);
             deletePerson(person);
 
-            log.info(formatLogMessage(authentication, "Deleted the new user %s completely.", user));
+            LOG.info(formatLogMessage(authentication, "Deleted the new user %s completely.", user));
         } else {
             deleteAccountData(user);
             for (final UserGroupEntity userGroup : groupRelations) {
                 notifications.notify(authentication, userGroup, NotificationType.CHANGE_IN_GROUP_MEMBERS);
             }
 
-            log.info(formatLogMessage(authentication, "Deleted all private data for user %s, including %d sessions.", user, deletedSessions));
+            LOG.info(formatLogMessage(authentication, "Deleted all private data for user %s, including %d sessions.", user, deletedSessions));
         }
     }
 

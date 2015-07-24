@@ -69,7 +69,7 @@ import javax.persistence.PersistenceContext;
 @TransactionManagement(TransactionManagementType.CONTAINER)
 public class StudentBean implements Students {
 
-    private static final Logger log = LoggerFactory.getLogger(StudentBean.class);
+    private static final Logger LOG = LoggerFactory.getLogger(StudentBean.class);
     @Inject @IWSBean private EntityManager entityManager;
     @Inject @IWSBean private Notifications notifications;
     @Inject @IWSBean private SessionRequestBean session;
@@ -139,9 +139,9 @@ public class StudentBean implements Students {
 
         try {
             response = controller.createStudent(token, request);
-            log.info(session.generateLogAndUpdateSession("createStudent", start, response, token));
+            LOG.info(session.generateLogAndUpdateSession("createStudent", start, response, token));
         } catch (RuntimeException e) {
-            log.error(session.generateLogAndSaveRequest("createStudent", start, e, token, request), e);
+            LOG.error(session.generateLogAndSaveRequest("createStudent", start, e, token, request), e);
             response = new CreateUserResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -159,9 +159,9 @@ public class StudentBean implements Students {
 
         try {
             response = controller.processStudent(token, request);
-            log.info(session.generateLogAndUpdateSession("processStudent", start, response, token));
+            LOG.info(session.generateLogAndUpdateSession("processStudent", start, response, token));
         } catch (RuntimeException e) {
-            log.error(session.generateLogAndSaveRequest("processStudent", start, e, token, request), e);
+            LOG.error(session.generateLogAndSaveRequest("processStudent", start, e, token, request), e);
             response = new StudentResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -179,9 +179,9 @@ public class StudentBean implements Students {
 
         try {
             response = controller.fetchStudents(token, request);
-            log.info(session.generateLogAndUpdateSession("fetchStudents", start, response, token));
+            LOG.info(session.generateLogAndUpdateSession("fetchStudents", start, response, token));
         } catch (RuntimeException e) {
-            log.error(session.generateLogAndSaveRequest("fetchStudents", start, e, token, request), e);
+            LOG.error(session.generateLogAndSaveRequest("fetchStudents", start, e, token, request), e);
             response = new FetchStudentsResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -199,9 +199,9 @@ public class StudentBean implements Students {
 
         try {
             response = controller.processStudentApplication(token, request);
-            log.info(session.generateLogAndUpdateSession("processStudentApplication", start, response, token));
+            LOG.info(session.generateLogAndUpdateSession("processStudentApplication", start, response, token));
         } catch (RuntimeException e) {
-            log.error(session.generateLogAndSaveRequest("processStudentApplication", start, e, token, request), e);
+            LOG.error(session.generateLogAndSaveRequest("processStudentApplication", start, e, token, request), e);
             response = new StudentApplicationResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -219,9 +219,9 @@ public class StudentBean implements Students {
 
         try {
             response = controller.fetchStudentApplications(token, request);
-            log.info(session.generateLogAndUpdateSession("fetchStudentApplications", start, response, token));
+            LOG.info(session.generateLogAndUpdateSession("fetchStudentApplications", start, response, token));
         } catch (RuntimeException e) {
-            log.error(session.generateLogAndSaveRequest("fetchStudentApplications", start, e, token, request), e);
+            LOG.error(session.generateLogAndSaveRequest("fetchStudentApplications", start, e, token, request), e);
             response = new FetchStudentApplicationsResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -239,9 +239,9 @@ public class StudentBean implements Students {
 
         try {
             response = controller.processApplicationStatus(token, request);
-            log.info(session.generateLogAndUpdateSession("processApplicationStatus", start, response, token));
+            LOG.info(session.generateLogAndUpdateSession("processApplicationStatus", start, response, token));
         } catch (RuntimeException e) {
-            log.error(session.generateLogAndSaveRequest("processApplicationStatus", start, e, token, request), e);
+            LOG.error(session.generateLogAndSaveRequest("processApplicationStatus", start, e, token, request), e);
             response = new StudentApplicationResponse(IWSErrors.ERROR, e.getMessage());
         }
 

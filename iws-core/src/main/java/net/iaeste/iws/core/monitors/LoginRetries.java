@@ -46,7 +46,7 @@ import java.util.Map;
  */
 public final class LoginRetries {
 
-    private static final Logger log = LoggerFactory.getLogger(LoginRetries.class);
+    private static final Logger LOG = LoggerFactory.getLogger(LoginRetries.class);
 
     // Singleton Instance Object & Lock Object
     private static final Object INSTANCE_LOCK = new Object();
@@ -108,7 +108,7 @@ public final class LoginRetries {
      * @param user User to register
      */
     public void registerUser(final String user) {
-        log.debug("Registering User {} in the Login Retry Monitor.", user);
+        LOG.debug("Registering User {} in the Login Retry Monitor.", user);
         final DateFormat format = new SimpleDateFormat(IWSConstants.DATE_TIME_FORMAT, IWSConstants.DEFAULT_LOCALE);
         final Date when = new Date(new Date().getTime() - blockedPeriod);
         final String key = toLower(user);
@@ -212,7 +212,7 @@ public final class LoginRetries {
      * @param user User to remove
      */
     public void removeAuthenticatedUser(final String user) {
-        log.debug("Removing User {} from the Login Retry Monitor.", user);
+        LOG.debug("Removing User {} from the Login Retry Monitor.", user);
         synchronized (lock) {
             users.remove(user);
         }

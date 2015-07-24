@@ -17,14 +17,13 @@ package net.iaeste.iws.core;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
-import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.api.util.Verifiable;
 import net.iaeste.iws.common.utils.HashcodeGenerator;
 import net.iaeste.iws.core.exceptions.SessionException;
-import net.iaeste.iws.core.services.ServiceFactory;
 import net.iaeste.iws.core.monitors.ActiveSessions;
+import net.iaeste.iws.core.services.ServiceFactory;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.entities.GroupEntity;
@@ -42,7 +41,7 @@ import org.slf4j.LoggerFactory;
  */
 class CommonController {
 
-    private static final Logger log = LoggerFactory.getLogger(CommonController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CommonController.class);
 
     private static final String NULL_REQUEST = " Object may not be null.";
     protected final ServiceFactory factory;
@@ -84,19 +83,12 @@ class CommonController {
      * a new {@code Authentication} Object, that will be returned, this Object
      * will contain the User & Group Entities for the action.
      *
-     * @param token      Authentication Token
-     * @param permission Permission to be checked
-     * @param group      Group to use instead of the one from the Token
+     * @param token           Authentication Token
+     * @param permission      Permission to be checked
+     * @param externalGroupId Public id of the Group to use
      * @return Authentication Object
      * @throws VerificationException if neither authenticated nor authorized
      */
-    Authentication verifyAccess(final AuthenticationToken token, final Permission permission, final Group group) {
-        verify(token, "Invalid Authentication Token provided.");
-        verify(group);
-
-        return verifyAccess(token, permission, group.getGroupId());
-    }
-
     private Authentication verifyAccess(final AuthenticationToken token, final Permission permission, final String externalGroupId) {
         final ActiveSessions sessions = factory.getActiveSessions();
 
@@ -161,8 +153,8 @@ class CommonController {
      * @see Verifiable#verify()
      */
     void verify(final Verifiable verifiable, final String... message) {
-        if (log.isTraceEnabled() && (verifiable != null)) {
-            log.trace("Verifying Object {}", verifiable.getClass().getName());
+        if (LOG.isTraceEnabled() && (verifiable != null)) {
+            LOG.trace("Verifying Object {}", verifiable.getClass().getName());
         }
 
         if (verifiable == null) {
@@ -174,12 +166,29 @@ class CommonController {
         verifiable.verify();
     }
 
+    /**
+     * Internal method to verify the validity of a given e-mail address. If the
+     * address does not match what the IWS allows, then a
+     * {@code VerificationException} is thrown.
+     *
+     * @param value Value to verify if is a proper e-mail address
+     * @throws VerificationException if not a valid e-mail address
+     */
     void verifyEmail(final String value) {
         if ((value != null) && !IWSConstants.EMAIL_PATTERN.matcher(value).matches()) {
             throw new VerificationException(prepareErrorText("Invalid e-mail address provided."));
         }
     }
 
+    /**
+     * Internal method to verify if the given code being used matches the size
+     * of the one used within the IWS. If the code doesn't match, then a
+     * {@code VerificationException} is thrown.
+     *
+     * @param code    Code to verify if matches an IWS HashCode
+     * @param message Optional error messsage
+     * @throws VerificationException if not a valid IWS HashCode
+     */
     void verifyCode(final String code, final String... message) {
         if ((code == null) || (code.length() != HashcodeGenerator.HASHCODE_LENGTH)) {
             throw new VerificationException(prepareErrorText("Invalid Code Object", message));

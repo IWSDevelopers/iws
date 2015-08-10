@@ -17,6 +17,8 @@ package net.iaeste.iws.ejb;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.UserStatus;
 import net.iaeste.iws.api.exceptions.IWSException;
+import net.iaeste.iws.api.util.Date;
+import net.iaeste.iws.api.util.DateTime;
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.core.monitors.ActiveSessions;
 import net.iaeste.iws.core.notifications.Notifications;
@@ -46,7 +48,6 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -83,24 +84,21 @@ public class StateBean {
     private static final long SYSTEM_ACCOUNT = 2553L;
 
     /**
-     * The initial Expiration, is when the Timer should run for the first time,
-     * this is set to be in at 2 in the morning, so neither the startup will nor
-     * any other peak load periods will be disturbed by a potentially big
-     * database operation.<br />
-     *   The initial time is calculated using our internal Date Object which is
-     * set to use midnight of the startup-date as base. This is a time in the
-     * past, so to ensure that it is starting at 2 in the morning (time with the
-     * lowest activity), we simply add 26 hours to it.
-    */
-    private static final Long INITIAL_EXPIRATION = new net.iaeste.iws.api.util.Date().toDate().getTime() + (26 * 60 * 60 * 1000L);
+     * Midnight Offset, is the time in milli seconds from midnight, when we are
+     * going to run cleanup. The Offset is used together with the current
+     * timestamp to calculate when to start the initial and all subsequent
+     * runs.<br />
+     *   The run is set for each morning at 2:00.
+     */
+    private static final Long MIDNIGHT_OFFSET = 2 * 60 * 60 * 1000L;
 
     /**
-    * The interval between invocations of the Timer is set to be 24 hours,
-    * which is infrequent enough to ensure that it is not disrupting normal
-    * operations, yet frequent enough to ensure that garbage is removed from
-    * the system in a timely fashion.
-    */
-    private static final Long INTERVAL_DURATION = 86400000L;
+     * The interval between invocations of the Timer is set to be 24 hours,
+     * which is infrequent enough to ensure that it is not disrupting normal
+     * operations, yet frequent enough to ensure that garbage is removed from
+     * the system in a timely fashion.
+     */
+    private static final Long INTERVAL_DURATION = 24 * 60 * 60 * 1000L;
 
     @Inject @IWSBean private Notifications notifications;
     @Inject @IWSBean private EntityManager entityManager;
@@ -146,9 +144,13 @@ public class StateBean {
         // Second, we're registering the Timer Service. This will ensure that the
         // Bean is invoked at 2 in the morning and every 24 hours later.
         final TimerConfig config = new TimerConfig(StateBean.class.getSimpleName(), false);
-        timerService.createIntervalTimer(INITIAL_EXPIRATION, INTERVAL_DURATION, config);
-        final DateFormat dateFormatter = new SimpleDateFormat(IWSConstants.DATE_TIME_FORMAT, IWSConstants.DEFAULT_LOCALE);
-        LOG.info("First cleanup run scheduled to begin at " + dateFormatter.format(new Date(INITIAL_EXPIRATION)));
+        // The Milli to Start, is calculated with 1970-01-01 00:00:00 as
+        // timestamp, and as the Timer Service expects a number of millis
+        // before it should be invoked, then we need to subtract the current
+        // time from the calculated time.
+        final long initialExpiration = (new Date().plusDays(1).getTime() - new java.util.Date().getTime()) + MIDNIGHT_OFFSET;
+        timerService.createIntervalTimer(initialExpiration, INTERVAL_DURATION, config);
+        LOG.info("First cleanup run scheduled to begin at {}", new DateTime(initialExpiration + new java.util.Date().getTime()));
 
         // Now, remove all deprecated Sessions from the Server. These Sessions
         // may or may not work correctly, since IW4 with JSF is combining the
@@ -172,7 +174,7 @@ public class StateBean {
      */
     @Timeout
     public void doCleanup(final Timer timer) {
-        LOG.info("Timout occurred, will start the Cleanup");
+        LOG.info("Timeout occurred, will start the Cleanup");
         final long start = System.nanoTime();
 
         // For the suspension & deleting, we need to use an Authentication
@@ -189,7 +191,7 @@ public class StateBean {
 
         // Second, we'll deal with accounts which are inactive. For more
         // information, see the Trac ticket #720.
-        final int expired = removeUnusedAccounts();
+        final int expired = removeUnusedNewAccounts();
         final int suspended = suspendInactiveAccounts(authentication);
         final int deleted = deleteSuspendedAccounts(authentication);
 
@@ -211,7 +213,7 @@ public class StateBean {
         // Iterate over the currently active sessions and remove them.
         final List<SessionEntity> sessions = accessDao.findActiveSessions();
         for (final SessionEntity session : sessions) {
-            if (session.getModified().before(date)) {
+            if (session.getModified().before(date.toDate())) {
                 // Remove the found Session from the ActiveSessions Registry ...
                 activeSessions.removeToken(session.getSessionKey());
                 // ... and remove it from the database as well
@@ -229,7 +231,7 @@ public class StateBean {
      *
      * @return Number of Expired (never activated) Accounts
      */
-    private int removeUnusedAccounts() {
+    private int removeUnusedNewAccounts() {
         final Long days = settings.getAccountUnusedRemovedDays();
         LOG.debug("Checking of any accounts exists which has expired, i.e. status NEW after {} days.", days);
         int accounts = 0;
@@ -281,23 +283,24 @@ public class StateBean {
         // is an SQL query to solve the issue, which must be converted to JPA:
         // -----------------------------------
         // select
-        //   s.user_id,
-        //   s.max(modified)
+        //   u.id,
+        //   u.firstname,
+        //   u.lastname,
+        //   max(s.modified)
         // from
-        //   sessions s,
-        //   users u
-        // where s.user_id = u.id
-        //   and u.status = 'ACTIVE'
-        //   and modified < 'DATE'::date
-        // group by user_id
-        // order by max(modified);
+        //   sessions s
+        //   join users u on s.user_id = u.id
+        // where u.status = 'ACTIVE'
+        //   and s.modified < 'DATE'::date
+        // group by u.id, u.firstname, u.lastname
+        // order by max(s.modified);
         // -----------------------------------
         final Long days = settings.getAccountInactiveDays();
         LOG.info("Fetching the list of Users to be suspended.");
         final List<UserEntity> users = accessDao.findInactiveAccounts(days);
         if (!users.isEmpty()) {
             for (final UserEntity user : users) {
-                LOG.info("Suspending the User {} {} <{}>.", user.getFirstname(), user.getLastname(), user.getUsername());
+                LOG.info("Attempting to suspend the User {} {} <{}>.", user.getFirstname(), user.getLastname(), user.getUsername());
                 service.suspendUser(authentication, user);
             }
         }
@@ -309,11 +312,26 @@ public class StateBean {
     /**
      * Delete inactive users. Accounts which have status SUSPENDED will after a
      * period of y days be deleted, meaning that all private information will be
-     * removed, and account will have the status set to DELETED.
+     * removed, and account will have the status set to DELETED.<br />
+     *   Note, that although accounts should be deleted, we cannot leave member
+     * groups without an owner. Accounts which is currently owner, will simply
+     * be ignored.
      *
      * @return Number of Deleted Accounts
      */
     private int deleteSuspendedAccounts(final Authentication authentication) {
+        // select
+        //   u.id,
+        //   u.firstname,
+        //   u.lastname,
+        //   max(s.modified)
+        // from
+        //   sessions s
+        //   join users u on s.user_id = u.id
+        // where u.status = 'ACTIVE'
+        //   and s.modified < '2014-09-01'::date
+        // group by u.id, u.firstname, u.lastname
+        // order by max(s.modified);
         final Long days = settings.getAccountSuspendedDays();
         LOG.debug("Checking if Accounts exists with status SUSPENDED after {} days.", days);
         int accounts = 0;
@@ -322,7 +340,7 @@ public class StateBean {
         if (!suspendedUsers.isEmpty()) {
             for (final UserEntity user : suspendedUsers) {
                 try {
-                    LOG.info("Deleting Suspended Account for {} {} <{}>.", user.getFirstname(), user.getLastname(), user.getUsername());
+                    LOG.info("Attempting to delete Suspended Account for {} {} <{}>.", user.getFirstname(), user.getLastname(), user.getUsername());
                     service.deletePrivateData(authentication, user);
                     accounts++;
                 } catch (IWSException e) {

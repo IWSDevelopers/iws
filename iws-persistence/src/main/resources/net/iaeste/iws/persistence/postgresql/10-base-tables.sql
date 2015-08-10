@@ -761,6 +761,33 @@ create table files (
 
 
 -- =============================================================================
+-- FileData
+-- -----------------------------------------------------------------------------
+-- Storing of data can be done either in the database or file system. Since the
+-- IWS is configured in production to use replication - it is possible to rely
+-- on this for backup, as it reduces the number of sources for data to one. This
+-- table contain the content of files which doesn't exist in the file system.
+--   To ensure that the Entities will not attempt to load it, the link is
+-- reversed, so the foreign key is in this table.
+-- =============================================================================
+create sequence filedata_sequence start with 1 increment by 1 no cycle;
+create table filedata (
+    id               integer default nextval('filedata_sequence'),
+    file_id          integer,
+    file_data        bytea,
+    created          timestamp   default now(),
+
+    /* Primary & Foreign Keys */
+    constraint filedata_pk               primary key (id),
+    constraint filedata_fk_file_id       foreign key (file_id) references files (id),
+
+    /* Not Null Constraints */
+    constraint filedata_notnull_id       check (id is not null),
+    constraint filedata_notnull_created  check (id is not null)
+);
+
+
+-- =============================================================================
 -- Attachments
 -- -----------------------------------------------------------------------------
 -- Files can be attached to many kinds of documents. And as the IWS requires a

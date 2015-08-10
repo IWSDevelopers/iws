@@ -18,3 +18,21 @@ alter table only files alter column privacy set default 'PROTECTED';
 update persons set understood_privacy = false, accept_newsletters = true;
 update files set privacy = 'PROTECTED';
 update folders set privacy = 'PROTECTED';
+
+-- New table for the IWS, which contain file data - to revert a design
+-- mistake forced by a formed administrator.
+create sequence filedata_sequence start with 1 increment by 1 no cycle;
+create table filedata (
+    id               integer default nextval('filedata_sequence'),
+    file_id          integer,
+    file_data        bytea,
+    created          timestamp   default now(),
+
+    /* Primary & Foreign Keys */
+    constraint filedata_pk               primary key (id),
+    constraint filedata_fk_file_id       foreign key (file_id) references files (id),
+
+    /* Not Null Constraints */
+    constraint filedata_notnull_id       check (id is not null),
+    constraint filedata_notnull_created  check (id is not null)
+);

@@ -42,7 +42,7 @@ import java.util.Date;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "DateTime")
-public class DateTime implements Serializable, Comparable<DateTime> {
+public final class DateTime implements Serializable, Comparable<DateTime> {
 
     /**{@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -70,6 +70,10 @@ public class DateTime implements Serializable, Comparable<DateTime> {
      */
     public DateTime(final org.joda.time.DateTime dateTime) {
         timestamp = dateTime.toDate();
+    }
+
+    public DateTime(final long millis) {
+        timestamp = new Date(millis);
     }
 
     /**
@@ -148,7 +152,7 @@ public class DateTime implements Serializable, Comparable<DateTime> {
      */
     @Override
     public String toString() {
-        final DateFormat formatter = new SimpleDateFormat(IWSConstants.DATE_FORMAT, IWSConstants.DEFAULT_LOCALE);
+        final DateFormat formatter = new SimpleDateFormat(IWSConstants.DATE_TIME_FORMAT, IWSConstants.DEFAULT_LOCALE);
         return formatter.format(timestamp);
     }
 
@@ -156,7 +160,7 @@ public class DateTime implements Serializable, Comparable<DateTime> {
      * {@inheritDoc}
      */
     @Override
-    public int compareTo(DateTime o) {
+    public int compareTo(final DateTime o) {
         if (equals(o)) {
             return 0;
         } else if (isBefore(o)) {

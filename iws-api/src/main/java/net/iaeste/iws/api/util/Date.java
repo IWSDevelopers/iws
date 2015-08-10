@@ -69,13 +69,22 @@ public final class Date implements Serializable, Comparable<Date> {
     }
 
     /**
-    * Creates a new Date instance, based on the given JodaTime DateMidnight
-    * Object.
-    *
-    * @param date {@code DateMidnight} instance, to base this instance on
-    */
+     * Creates a new Date instance, based on the given JodaTime DateMidnight
+     * Object.
+     *
+     * @param date {@code DateMidnight} instance, to base this instance on
+     */
     public Date(final DateMidnight date) {
         midnight = date.toDate();
+    }
+
+    /**
+     * Creates a new Date instance, based on the given milli seconds.
+     *
+     * @param millis Milli Seconds to base this instance on.
+     */
+    public Date(final long millis) {
+        midnight = new java.util.Date(millis);
     }
 
     /**
@@ -102,6 +111,16 @@ public final class Date implements Serializable, Comparable<Date> {
         } catch (ParseException e) {
             throw new VerificationException(e);
         }
+    }
+
+    /**
+     * Reads the milli seconds since Epoch (1970-01-01 00:00:00), from the
+     * internal Data.
+     *
+     * @return Millis since Epoch
+     */
+    public long getTime() {
+        return midnight.getTime();
     }
 
     /**

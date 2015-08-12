@@ -807,3 +807,104 @@ insert into user_to_group (external_id, user_id, group_id, role_id) values ('9ab
 -- Germany is set as Alumni Coordinator, for our testing we're suspending this group
 insert into user_to_group (external_id, user_id, group_id, role_id) values ('48b86ad0-a8c9-4f79-840b-2d930c76ffd2', 26, 6, 1);
 update groups set status = 'SUSPENDED' where id = 6;
+
+-- Add new Table called FileData - which has a foreign key into the Files table.
+-- This way, we can read the File table without knowledge of data and later read
+-- out the data when requested.
+-- Files & Folders
+-- Create Folder Structure for Board, 2 NC, 2 LC & SID/IDT
+-- Board ID: 3
+-- NC Tunisia ID: 165
+-- SID ID: 4
+-- Create File for same
+-- Root Folder eid = afec3bc0-296b-4bf2-8a9e-c2d7b74e93a0
+-- Make sure that we have at least 3 Folder depth, with last being public, middle or first being private
+-- Folder Structure for our tests:
+--  Root
+--    - Board Minutes PUBLIC
+--       - AC PUBLIC
+--          - 2014 PUBLIC
+--       - Finances PROTECTED
+--          - 2014 PUBLIC
+--          - 2015 PROTECTED
+--    - SID 2014 PUBLIC
+--       - Administration PUBLIC
+--       - IWUG PUBLIC
+--    - SID 2015 PROTECTED
+--       - Administration PUBLIC
+--       - IWUG PUBLIC
+--    - NC Tunisia Travel Documents PUBLIC
+--       - 2015 PUBLIC
+--          - EU PUBLIC
+--          - Other PUBLIC
+--       - 2014 PROTECTED
+--          - EU PUBLIC
+--          - Other PUBLIC
+-- For all of the above, we need a sample file also. This will have data stored
+-- in a new table as mentioned above. As the database is configured in production
+-- to use data replication, it is a more safe and reliable mechanism to use this,
+-- than to have to set up backup routines which is not synchronized with the database.
+insert into folders (external_id, parent_id, group_id, foldername, privacy) values
+  -- Board
+  ('6adc3bac-c85c-4dfa-b9d8-3d9b848314af', (select id from folders where external_id = 'afec3bc0-296b-4bf2-8a9e-c2d7b74e93a0'), 3, 'Minutes', 'PUBLIC'),
+  ('c9bde21a-011e-42e4-8985-b1da95c0fbdf', (select id from folders where external_id = '6adc3bac-c85c-4dfa-b9d8-3d9b848314af'), 3, 'AC', 'PUBLIC'),
+  ('af0a0c34-7037-4153-a707-65a1ed0b380b', (select id from folders where external_id = 'c9bde21a-011e-42e4-8985-b1da95c0fbdf'), 3, '2014', 'PUBLIC'),
+  ('b54a005d-d9cd-4456-9263-7ab3833ab303', (select id from folders where external_id = '6adc3bac-c85c-4dfa-b9d8-3d9b848314af'), 3, 'Finances', 'PROTECTED'),
+  ('4126e3c4-2e79-4ee1-a73f-a3ab5f9e52a5', (select id from folders where external_id = 'b54a005d-d9cd-4456-9263-7ab3833ab303'), 3, '2014', 'PUBLIC'),
+  ('9dd06a36-4e02-4a7d-9a46-da78648eaaae', (select id from folders where external_id = 'b54a005d-d9cd-4456-9263-7ab3833ab303'), 3, '2015', 'PROTECTED'),
+  -- SID
+  ('d8d6d7eb-754a-4e3b-8d4d-7657339096d1', (select id from folders where external_id = 'afec3bc0-296b-4bf2-8a9e-c2d7b74e93a0'), 4, '2014', 'PUBLIC'),
+  ('01749318-9f20-4369-bd05-555c18e643ad', (select id from folders where external_id = 'd8d6d7eb-754a-4e3b-8d4d-7657339096d1'), 4, 'Administration', 'PUBLIC'),
+  ('888f6c83-fcae-4e4a-9f8c-4fb02c2ec8e2', (select id from folders where external_id = 'd8d6d7eb-754a-4e3b-8d4d-7657339096d1'), 4, 'IWUG', 'PUBLIC'),
+  ('60ba5c47-3dce-41a1-94f9-e0dafe2f717a', (select id from folders where external_id = 'afec3bc0-296b-4bf2-8a9e-c2d7b74e93a0'), 4, '2015', 'PROTECTED'),
+  ('a4fa7715-3a10-470f-8538-e8ee13666819', (select id from folders where external_id = '60ba5c47-3dce-41a1-94f9-e0dafe2f717a'), 4, 'Administration', 'PUBLIC'),
+  ('f50bed53-7295-4b91-8746-78136df0a189', (select id from folders where external_id = '60ba5c47-3dce-41a1-94f9-e0dafe2f717a'), 4, 'IWUG', 'PUBLIC'),
+  -- NC Tunisia
+  ('94a6d74f-c510-4302-83fd-cd79ea8a4c9a', (select id from folders where external_id = 'afec3bc0-296b-4bf2-8a9e-c2d7b74e93a0'), 165, 'Travel Documents', 'PUBLIC'),
+  ('b0ed8121-f359-4bc5-8ce8-bc5c4a7de536', (select id from folders where external_id = '94a6d74f-c510-4302-83fd-cd79ea8a4c9a'), 165, '2015', 'PUBLIC'),
+  ('ed5e0487-0605-428d-b40c-78e88df85d8d', (select id from folders where external_id = 'b0ed8121-f359-4bc5-8ce8-bc5c4a7de536'), 165, 'EU', 'PUBLIC'),
+  ('0328281b-cf80-4c7a-8ad7-04721eaa45aa', (select id from folders where external_id = 'b0ed8121-f359-4bc5-8ce8-bc5c4a7de536'), 165, 'Other', 'PUBLIC'),
+  ('df7a45f5-2aed-4529-a527-488ad538e03a', (select id from folders where external_id = '94a6d74f-c510-4302-83fd-cd79ea8a4c9a'), 165, '2014', 'PROTECTED'),
+  ('30a460be-641e-4cb9-a336-5eab00c19c3a', (select id from folders where external_id = 'df7a45f5-2aed-4529-a527-488ad538e03a'), 165, 'EU', 'PUBLIC'),
+  ('bb7953a8-8b7a-43a2-84fe-dca74291abd3', (select id from folders where external_id = 'df7a45f5-2aed-4529-a527-488ad538e03a'), 165, 'Other', 'PUBLIC');
+
+-- Files & File Data; UserId is set to 1, as it is only a marker for the creator of the file.
+insert into files (external_id, group_id, user_id, privacy, folder_id, filename) values
+  ('c79898dc-590c-44a7-8fc0-b5c4e83cb092',   3, 1, 'PUBLIC',    (select id from folders where external_id = '6adc3bac-c85c-4dfa-b9d8-3d9b848314af'), 'bla01.txt'),
+  ('78fe35da-7fe1-44a2-b155-8630af1625c6',   3, 1, 'PROTECTED', (select id from folders where external_id = '6adc3bac-c85c-4dfa-b9d8-3d9b848314af'), 'bla02.txt'),
+  ('81c2ca20-c46c-49fd-9b87-f40650e76cc1',   3, 1, 'PUBLIC',    (select id from folders where external_id = 'c9bde21a-011e-42e4-8985-b1da95c0fbdf'), 'bla03.txt'),
+  ('4f5082ea-0210-4333-aa09-35caad27eb07',   3, 1, 'PROTECTED', (select id from folders where external_id = 'c9bde21a-011e-42e4-8985-b1da95c0fbdf'), 'bla04.txt'),
+  ('a4339ac1-9544-4db3-94d5-61fa9510308e',   3, 1, 'PUBLIC',    (select id from folders where external_id = 'af0a0c34-7037-4153-a707-65a1ed0b380b'), 'bla05.txt'),
+  ('b77ac424-2091-488d-8f89-d696d7aab65b',   3, 1, 'PROTECTED', (select id from folders where external_id = 'af0a0c34-7037-4153-a707-65a1ed0b380b'), 'bla06.txt'),
+  ('b809da57-5dbe-4528-93a6-7c78b30a2838',   3, 1, 'PUBLIC',    (select id from folders where external_id = 'b54a005d-d9cd-4456-9263-7ab3833ab303'), 'bla07.txt'),
+  ('cd0eeb3d-550d-4e39-a860-d6ced061fa68',   3, 1, 'PROTECTED', (select id from folders where external_id = 'b54a005d-d9cd-4456-9263-7ab3833ab303'), 'bla08.txt'),
+  ('523db27d-30e1-4c3b-8c12-85546e12cf28',   3, 1, 'PUBLIC',    (select id from folders where external_id = '4126e3c4-2e79-4ee1-a73f-a3ab5f9e52a5'), 'bla09.txt'),
+  ('30dafa8c-630f-49ca-9cac-d77ab3de4caf',   3, 1, 'PROTECTED', (select id from folders where external_id = '4126e3c4-2e79-4ee1-a73f-a3ab5f9e52a5'), 'bla10.txt'),
+  ('e4efbbbd-37b0-4251-9dce-bc764b94747a',   3, 1, 'PUBLIC',    (select id from folders where external_id = '9dd06a36-4e02-4a7d-9a46-da78648eaaae'), 'bla11.txt'),
+  ('1c6cc336-128f-459e-9eea-d39a768ac58d',   3, 1, 'PROTECTED', (select id from folders where external_id = '9dd06a36-4e02-4a7d-9a46-da78648eaaae'), 'bla12.txt'),
+  ('a8870b01-d07d-4325-a6c3-887903fe56c0',   4, 1, 'PUBLIC',    (select id from folders where external_id = 'd8d6d7eb-754a-4e3b-8d4d-7657339096d1'), 'bla13.txt'),
+  ('8e338f4b-24c6-4d5a-ba56-ff229fcbb27a',   4, 1, 'PROTECTED', (select id from folders where external_id = 'd8d6d7eb-754a-4e3b-8d4d-7657339096d1'), 'bla14.txt'),
+  ('3266da15-bb21-4f01-a02f-6258de1f5f59',   4, 1, 'PUBLIC',    (select id from folders where external_id = '01749318-9f20-4369-bd05-555c18e643ad'), 'bla15.txt'),
+  ('017855a9-70c6-4c27-9b73-ef8eaf721dc4',   4, 1, 'PROTECTED', (select id from folders where external_id = '01749318-9f20-4369-bd05-555c18e643ad'), 'bla16.txt'),
+  ('824f2080-5ecf-458f-80aa-b8cdc52b15ec',   4, 1, 'PUBLIC',    (select id from folders where external_id = '888f6c83-fcae-4e4a-9f8c-4fb02c2ec8e2'), 'bla17.txt'),
+  ('0aa391b9-8bfa-4022-afac-ccf266afa6f4',   4, 1, 'PROTECTED', (select id from folders where external_id = '888f6c83-fcae-4e4a-9f8c-4fb02c2ec8e2'), 'bla18.txt'),
+  ('91455b31-b962-4847-bff1-edc5a2a4cd86',   4, 1, 'PUBLIC',    (select id from folders where external_id = '60ba5c47-3dce-41a1-94f9-e0dafe2f717a'), 'bla19.txt'),
+  ('8b1aa34d-eb60-47f1-b7ea-05ee9336ec44',   4, 1, 'PROTECTED', (select id from folders where external_id = '60ba5c47-3dce-41a1-94f9-e0dafe2f717a'), 'bla20.txt'),
+  ('9c7dcf0c-57fd-4e09-bfdb-fe3c494dbb6a',   4, 1, 'PUBLIC',    (select id from folders where external_id = 'a4fa7715-3a10-470f-8538-e8ee13666819'), 'bla21.txt'),
+  ('ad93425d-8453-405a-9201-5ab7bde6856c',   4, 1, 'PROTECTED', (select id from folders where external_id = 'a4fa7715-3a10-470f-8538-e8ee13666819'), 'bla22.txt'),
+  ('744ac803-8903-4b5c-b402-dbd5866439d0',   4, 1, 'PUBLIC',    (select id from folders where external_id = 'f50bed53-7295-4b91-8746-78136df0a189'), 'bla23.txt'),
+  ('ec67f5b0-03e6-421b-ae28-c1e0fe389fb1',   4, 1, 'PROTECTED', (select id from folders where external_id = 'f50bed53-7295-4b91-8746-78136df0a189'), 'bla24.txt'),
+  ('ec64c7ea-7cf2-452b-bf45-9bb5e860f511', 165, 1, 'PUBLIC',    (select id from folders where external_id = '94a6d74f-c510-4302-83fd-cd79ea8a4c9a'), 'bla25.txt'),
+  ('3d2ce586-5149-46df-8b1a-38be81b0774c', 165, 1, 'PROTECTED', (select id from folders where external_id = '94a6d74f-c510-4302-83fd-cd79ea8a4c9a'), 'bla26.txt'),
+  ('f35ee28a-351d-4f97-8b7c-591a6a1a4a10', 165, 1, 'PUBLIC',    (select id from folders where external_id = 'b0ed8121-f359-4bc5-8ce8-bc5c4a7de536'), 'bla27.txt'),
+  ('6f4c52a1-d29a-4a5c-adaf-3e0fd18354ef', 165, 1, 'PROTECTED', (select id from folders where external_id = 'b0ed8121-f359-4bc5-8ce8-bc5c4a7de536'), 'bla28.txt'),
+  ('b85b2efc-bc77-4f07-b79c-81f8cfaf4e4c', 165, 1, 'PUBLIC',    (select id from folders where external_id = 'ed5e0487-0605-428d-b40c-78e88df85d8d'), 'bla29.txt'),
+  ('86b7a8be-910c-4874-8e00-ed44d09e8eb9', 165, 1, 'PROTECTED', (select id from folders where external_id = 'ed5e0487-0605-428d-b40c-78e88df85d8d'), 'bla30.txt'),
+  ('76c8b70d-65bf-4fbb-9223-2b841cffdc68', 165, 1, 'PUBLIC',    (select id from folders where external_id = '0328281b-cf80-4c7a-8ad7-04721eaa45aa'), 'bla31.txt'),
+  ('cc5eff9b-6efe-4c4d-8908-ca60a4c2f018', 165, 1, 'PROTECTED', (select id from folders where external_id = '0328281b-cf80-4c7a-8ad7-04721eaa45aa'), 'bla32.txt'),
+  ('6b1710a7-a663-41b6-843c-401545758fbf', 165, 1, 'PUBLIC',    (select id from folders where external_id = 'df7a45f5-2aed-4529-a527-488ad538e03a'), 'bla33.txt'),
+  ('28aef385-1f20-4f3e-a063-43a5a3921004', 165, 1, 'PROTECTED', (select id from folders where external_id = 'df7a45f5-2aed-4529-a527-488ad538e03a'), 'bla34.txt'),
+  ('064472ab-9969-4c76-bb52-a7cf5634836e', 165, 1, 'PUBLIC',    (select id from folders where external_id = '30a460be-641e-4cb9-a336-5eab00c19c3a'), 'bla35.txt'),
+  ('300e67f3-20a4-4e90-849f-400fb66235fb', 165, 1, 'PROTECTED', (select id from folders where external_id = '30a460be-641e-4cb9-a336-5eab00c19c3a'), 'bla36.txt'),
+  ('1138e2fa-2dc3-4ad2-ae4c-e505f466170e', 165, 1, 'PUBLIC',    (select id from folders where external_id = 'bb7953a8-8b7a-43a2-84fe-dca74291abd3'), 'bla37.txt'),
+  ('db830305-bd0e-4708-a1d1-0a6d94eb01aa', 165, 1, 'PROTECTED', (select id from folders where external_id = 'bb7953a8-8b7a-43a2-84fe-dca74291abd3'), 'bla38.txt');

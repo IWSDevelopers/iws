@@ -96,13 +96,7 @@ public final class ExchangeJpaDao extends BasicJpaDao implements ExchangeDao {
         final Query query = entityManager.createNamedQuery("employer.findEmployerByValues");
         query.setParameter("gid", authentication.getGroup().getId());
         query.setParameter("name", employer.getName());
-        // Note by Kim; If someone can explain why PostgreSQL throws an
-        // exception with function 'lower(bytea) unknown', when we're trying to
-        // make a lowercase comparison of the Department field, then let me know
-        //   Note II by Kim; By upgrading to JPA 2.1, using Hibernate 4.3, the
-        // problem here is gone - but multiple tests are failing, which needs
-        // to be investigated!
-        //query.setParameter("department", employer.getDepartment());
+        query.setParameter("department", employer.getDepartment());
         query.setParameter("workingPlace", employer.getWorkingPlace());
 
         return findSingleResult(query, "Employer");

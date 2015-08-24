@@ -203,10 +203,7 @@ public class IWSJpaDao implements IWSDao {
         final Query query = entityManager.createNamedQuery("employer.findEmployerByValues");
         query.setParameter("gid", group.getId());
         query.setParameter("name", employer.getName());
-        // Note by Kim; If someone can explain why PostgreSQL throws an
-        // exception with function 'lower(bytea) unknown', when we're trying to
-        // make a lowercase comparison of the Department field, then let me know
-        //query.setParameter("department", employer.getDepartment());
+        query.setParameter("department", employer.getDepartment());
         query.setParameter("workingPlace", employer.getWorkingPlace());
 
         return findSingleResult(query, "Employer");

@@ -578,7 +578,7 @@ public final class ExchangeMapper extends CommonMapper {
             ws.setLivingCostFrequency(map(api.getLivingCostFrequency()));
             ws.setLodgingBy(api.getLodgingBy());
             ws.setLodgingCost(api.getLodgingCost());
-            ws.setPaymentFrequency(map(api.getPaymentFrequency()));
+            ws.setLodgingCostFrequency(map(api.getLodgingCostFrequency()));
             ws.setNominationDeadline(map(api.getNominationDeadline()));
             ws.setNumberOfHardCopies(api.getNumberOfHardCopies());
             ws.setAdditionalInformation(api.getAdditionalInformation());
@@ -638,7 +638,7 @@ public final class ExchangeMapper extends CommonMapper {
             api.setLivingCostFrequency(map(ws.getLivingCostFrequency()));
             api.setLodgingBy(ws.getLodgingBy());
             api.setLodgingCost(ws.getLodgingCost());
-            api.setPaymentFrequency(map(ws.getPaymentFrequency()));
+            api.setLodgingCostFrequency(map(ws.getLodgingCostFrequency()));
             api.setNominationDeadline(map(ws.getNominationDeadline()));
             api.setNumberOfHardCopies(ws.getNumberOfHardCopies());
             api.setAdditionalInformation(ws.getAdditionalInformation());

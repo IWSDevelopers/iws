@@ -367,8 +367,8 @@ public class CommonMapper {
             ws.setGroupName(api.getGroupName());
             ws.setFullName(api.getFullName());
             ws.setListName(api.getListName());
-            ws.setPrivateList(api.getPrivateList());
-            ws.setPublicList(api.getPublicList());
+            ws.setPrivateList(api.hasPrivateList());
+            ws.setPublicList(api.hasPublicList());
             ws.setGroupType(map(api.getGroupType()));
             ws.setDescription(api.getDescription());
             ws.setMonitoringLevel(map(api.getMonitoringLevel()));

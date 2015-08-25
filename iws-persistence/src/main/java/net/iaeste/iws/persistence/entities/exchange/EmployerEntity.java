@@ -56,9 +56,9 @@ import java.util.Date;
         @NamedQuery(name = "employer.findEmployerByValues",
                 query = "select e from EmployerEntity e " +
                         "where e.group.id = :gid" +
-                        "  and lower(trim(e.name)) = lower(trim(:name))" +
-                        "  and lower(trim(e.department)) = lower(trim(:department))" +
-                        "  and lower(trim(e.workingPlace)) = lower(trim(:workingPlace))")
+                        "  and lower(trim(both from e.name)) = lower(trim(both from :name))" +
+                        "  and lower(trim(both from e.department)) = lower(trim(both from :department))" +
+                        "  and lower(trim(both from e.workingPlace)) = lower(trim(both from :workingPlace))")
 })
 @Entity
 @Table(name = "employers")

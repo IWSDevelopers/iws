@@ -167,8 +167,8 @@ public final class GroupService {
         groupEntity.setDescription(group.getDescription());
         groupEntity.setFullName(GroupUtil.prepareFullGroupName(type, group, basename));
         groupEntity.setListName(GroupUtil.prepareListName(type, groupEntity.getFullName(), entity.getCountry() != null ? entity.getCountry().getCountryName() : null));
-        groupEntity.setPrivateList(group.getPrivateList() && group.getGroupType().getMayHavePrivateMailinglist());
-        groupEntity.setPublicList(group.getPublicList() && group.getGroupType().getMayHavePublicMailinglist());
+        groupEntity.setPrivateList(group.hasPrivateList() && group.getGroupType().getMayHavePrivateMailinglist());
+        groupEntity.setPublicList(group.hasPublicList() && group.getGroupType().getMayHavePublicMailinglist());
         groupEntity.setMonitoringLevel(group.getMonitoringLevel());
 
         dao.persist(authentication, entity, groupEntity);
@@ -190,8 +190,8 @@ public final class GroupService {
         groupEntity.setDescription(entity.getDescription());
         groupEntity.setFullName(entity.getFullName());
         groupEntity.setListName(entity.getListName());
-        groupEntity.setPrivateList(group.getPrivateList() && group.getGroupType().getMayHavePrivateMailinglist());
-        groupEntity.setPublicList(group.getPublicList() && group.getGroupType().getMayHavePublicMailinglist());
+        groupEntity.setPrivateList(group.hasPrivateList() && group.getGroupType().getMayHavePrivateMailinglist());
+        groupEntity.setPublicList(group.hasPublicList() && group.getGroupType().getMayHavePublicMailinglist());
         // Monitoring is allowed to be updated
         groupEntity.setMonitoringLevel(group.getMonitoringLevel());
 

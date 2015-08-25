@@ -165,17 +165,7 @@ public final class Group extends AbstractVerification {
      * @return Public list if set, otherwise private list if set or null if not
      */
     public String getListName() {
-        String list = null;
-
-        if (listName != null) {
-            if (publicList != null && publicList == true) {
-                list = listName + '@' + IWSConstants.PUBLIC_EMAIL_ADDRESS;
-            } else if (privateList != null && privateList == true) {
-                list = listName + '@' + IWSConstants.PRIVATE_EMAIL_ADDRESS;
-            }
-        }
-
-        return list;
+        return listName;
     }
 
     /**
@@ -194,8 +184,12 @@ public final class Group extends AbstractVerification {
         this.privateList = privateList;
     }
 
-    public Boolean getPrivateList() {
-        return privateList;
+    public boolean hasPrivateList() {
+        return groupType != null && groupType.getMayHavePrivateMailinglist() && privateList;
+    }
+
+    public String getPrivateList() {
+        return hasPrivateList() && (listName != null) ? listName + '@' + IWSConstants.PRIVATE_EMAIL_ADDRESS : null;
     }
 
     /**
@@ -206,7 +200,7 @@ public final class Group extends AbstractVerification {
      * for a group where it is not allowed, will be ignored. Attempting to set
      * the value to null will result in an IllegalArgument Exception.
      *
-     * @param privateList True or False, depending on the GroupType
+     * @param publicList True or False, depending on the GroupType
      * @throws IllegalArgumentException if set to null
      */
     public void setPublicList(final Boolean publicList) {
@@ -214,8 +208,12 @@ public final class Group extends AbstractVerification {
         this.publicList = publicList;
     }
 
-    public Boolean getPublicList() {
-        return publicList;
+    public boolean hasPublicList() {
+        return groupType != null && groupType.getMayHavePublicMailinglist() && publicList;
+    }
+
+    public String getPublicList() {
+        return hasPublicList() && (listName != null) ? listName + '@' + IWSConstants.PUBLIC_EMAIL_ADDRESS : null;
     }
 
     /**

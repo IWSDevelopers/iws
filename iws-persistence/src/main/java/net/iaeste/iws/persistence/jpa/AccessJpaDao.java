@@ -39,6 +39,7 @@ import javax.persistence.Query;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -732,18 +733,40 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
      */
     @Override
     public List<UserEntity> findInactiveAccounts(final Long daysBeforeBecomingInactive) {
-        final Date date = new Date(new Date().getTime() - daysBeforeBecomingInactive * DAY_IN_MILLIS);
-        final Query query = entityManager.createNamedQuery("session.findLastUserSession");
-        query.setParameter("days", date);
+        // We need to run a query with more than just a sub-select, we need a
+        // pre-query to things on. We could do this with a view, but views must
+        // be mapped and requires entities. Alternatively, we can use this
+        // native query, which uses standard SQL - in a form not (yet)
+        // supported by JPA. The latter was chosen to reduce complexity for
+        // something which is running as a cron job.
+        final String jpql =
+                "with activity as (" +
+                "  select" +
+                "    u.id           as id," +
+                "    max(s.created) as latest" +
+                "  from" +
+                "    users u" +
+                "    left join sessions s on u.id = s.user_id" +
+                "  where u.status = 'ACTIVE'" +
+                "  group by" +
+                "    u.id)" +
+                "select id " +
+                "from activity " +
+                "where latest is null" +
+                "   or latest < :date";
 
-        // This is a special Query, which isn't mapped to any Object, so we have
-        // to do the mapping ourselves. In this case, we're only interested in
-        // the first Object, which is the UserId - this can then be used to
-        // fetch the actual List of Users.
-        final List<Object[]> result = query.getResultList();
-        final List<Long> userIds = new ArrayList<>(result.size());
-        for (final Object[] objects : result) {
-            userIds.add((Long) objects[0]);
+        final Query query = entityManager.createNativeQuery(jpql);
+        final int expires = (int) -daysBeforeBecomingInactive;
+        final Date date = new net.iaeste.iws.api.util.Date().plusDays(expires).toDate();
+        query.setParameter("date", date);
+
+        // Our native query is returning a list of UserId's. These must be read
+        // out and converted so we can use them to fetch the actual User
+        // entities, which we are interested in.
+        final List<Object> result = query.getResultList();
+        final Collection<Long> userIds = new ArrayList<>(result.size());
+        for (final Object objects : result) {
+            userIds.add(((Integer) objects).longValue());
         }
 
         // Okay, now we have a list of UserId's, which we can use to retrieve
@@ -773,7 +796,7 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
      * @return Unique result
      */
     @Override
-    protected <T extends IWSEntity> T findUniqueResult(final Query query, final String entityName) {
+    protected final <T extends IWSEntity> T findUniqueResult(final Query query, final String entityName) {
         final List<T> found = query.getResultList();
 
         if (found.isEmpty()) {
@@ -787,11 +810,11 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
         return super.findUniqueResult(query, entityName);
     }
 
-    private String generateTimestamp() {
+    private static String generateTimestamp() {
         // Format is: Year + Month + Date + Hour24 + Minute + Second + Millis
         // Example: 20140503193432987 -> May 3rd, 2014 at 19:34:43.987
         final String timestampFormat = "yyyyMMddHHmmssSSS";
-        DateFormat formatter = new SimpleDateFormat(timestampFormat, IWSConstants.DEFAULT_LOCALE);
+        final DateFormat formatter = new SimpleDateFormat(timestampFormat, IWSConstants.DEFAULT_LOCALE);
 
         return formatter.format(new Date());
     }

@@ -282,18 +282,19 @@ public class StateBean {
         // at a number of parameters, which either is or should be indexed! This
         // is an SQL query to solve the issue, which must be converted to JPA:
         // -----------------------------------
-        // select
-        //   u.id,
-        //   u.firstname,
-        //   u.lastname,
-        //   max(s.modified)
-        // from
-        //   sessions s
-        //   join users u on s.user_id = u.id
-        // where u.status = 'ACTIVE'
-        //   and s.modified < 'DATE'::date
-        // group by u.id, u.firstname, u.lastname
-        // order by max(s.modified);
+        // with activity as (
+        //   select
+        //     u.id           as id,
+        //     max(s.created) as latest
+        //   from
+        //     users u
+        //     left join sessions s on u.id = s.user_id
+        //   where u.status = 'ACTIVE'
+        //   group by u.id)
+        // select id
+        // from activity
+        // where latest is null
+        //    or latest < :date;
         // -----------------------------------
         final Long days = settings.getAccountInactiveDays();
         LOG.info("Fetching the list of Users to be suspended.");

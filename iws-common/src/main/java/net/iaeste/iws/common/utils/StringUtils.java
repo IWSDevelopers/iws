@@ -142,45 +142,51 @@ public final class StringUtils {
     /**
      * Converts String into its lower-case plain ASCII transcription.
      * Unknown (non-mapped) characters are replaced by '_'.
-     * Keeps '_', '.' and '@' in the input string.
+     * Keeps '_', '.' and '@' in the input string. Note, that the Normalizer is
+     * not working correctly for all the character's we're using, hence we are
+     * using a self-controlled replace mechanism which works on a trimmed
+     * version of the String and also converts it to lower case.
      *
      * @param  input the String to be converted
      * @return String in plain ASCII
      */
     public static String convertToAsciiMailAlias(final String input) {
-        //Normalizer doesn't touch e.g. Norwegaian character
-        //return Normalizer.normalize(input, Normalizer.Form.NFD).replaceAll("[\\p{InCombiningDiacriticalMarks}]", "").replaceAll(" ", "_");
-        //TODO: what is the representation of &nbsp; in Java's String? simple space, &nbsp;, \u00a0, ...?
-        return input.replaceAll("[ \\u00a0]", "_")
-                    .replaceAll("[ÀÁÂÃĀĂĄàáâãāăą]", "a")
-                    .replaceAll("[Åå]", "aa")
-                    .replaceAll("[ÄäÆæ]", "ae")
-                    .replaceAll("[ÇĆĈĊČçćĉċč]", "c")
-                    .replaceAll("[ÐĎĐďđ]", "d")
-                    .replaceAll("[ÈÉÊËĒĔĖĘĚèéêëēĕėęě]", "e")
-                    .replaceAll("[ĜĞĠĢĝğġģ]", "g")
-                    .replaceAll("[ĤĦĥħ]", "h")
-                    .replaceAll("[ÌÍÎÏĨĪĬĮİìíîïĩīĭįı]", "i")
-                    .replaceAll("[Ĳĳ]", "ij")
-                    .replaceAll("[Ĵĵ]", "j")
-                    .replaceAll("[Ķķĸ]", "k")
-                    .replaceAll("[ĹĻĽĿŁĺļľŀł]", "l")
-                    .replaceAll("[ÑŃŅŇŊñńņňŉŋ]", "n")
-                    .replaceAll("[ÒÓÔÕŌŎŐðòóôõōŏő]", "o")
-                    .replaceAll("[ŒÖØœöø]", "oe")
-                    .replaceAll("[ŔŖŘŕŗř]", "r")
-                    .replaceAll("[ŚŜŞŠśŝşšſ]", "s")
-                    .replaceAll("[ß]", "ss")
-                    .replaceAll("[ŢŤŦţťŧ]", "t")
-                    .replaceAll("[Þþ]", "th")
-                    .replaceAll("[ÙÚÛŨŪŬŮŰŲùúûũūŭůűų]", "u")
-                    .replaceAll("[Üü]", "ue")
-                    .replaceAll("[Ŵŵ]", "w")
-                    .replaceAll("[ÝŶŸýÿŷ]", "y")
-                    .replaceAll("[ŹŻŽźżž]", "z")
-                    .replaceAll("[×÷]", "")
-                    .replaceAll("[^a-zA-Z0-9_'\\.@]", "_")
-                    .toLowerCase(IWSConstants.DEFAULT_LOCALE);
+        if (input == null) {
+            // See Trac task #984
+            throw new IllegalArgumentException("Cannot process an undefined (null) e-mail address.");
+        } else {
+            return input.trim()
+                        .replaceAll("[ \\u00a0]", "_")
+                        .replaceAll("[ÀÁÂÃĀĂĄàáâãāăą]", "a")
+                        .replaceAll("[Åå]", "aa")
+                        .replaceAll("[ÄäÆæ]", "ae")
+                        .replaceAll("[ÇĆĈĊČçćĉċč]", "c")
+                        .replaceAll("[ÐĎĐďđ]", "d")
+                        .replaceAll("[ÈÉÊËĒĔĖĘĚèéêëēĕėęě]", "e")
+                        .replaceAll("[ĜĞĠĢĝğġģ]", "g")
+                        .replaceAll("[ĤĦĥħ]", "h")
+                        .replaceAll("[ÌÍÎÏĨĪĬĮİìíîïĩīĭįı]", "i")
+                        .replaceAll("[Ĳĳ]", "ij")
+                        .replaceAll("[Ĵĵ]", "j")
+                        .replaceAll("[Ķķĸ]", "k")
+                        .replaceAll("[ĹĻĽĿŁĺļľŀł]", "l")
+                        .replaceAll("[ÑŃŅŇŊñńņňŉŋ]", "n")
+                        .replaceAll("[ÒÓÔÕŌŎŐðòóôõōŏő]", "o")
+                        .replaceAll("[ŒÖØœöø]", "oe")
+                        .replaceAll("[ŔŖŘŕŗř]", "r")
+                        .replaceAll("[ŚŜŞŠśŝşšſ]", "s")
+                        .replaceAll("[ß]", "ss")
+                        .replaceAll("[ŢŤŦţťŧ]", "t")
+                        .replaceAll("[Þþ]", "th")
+                        .replaceAll("[ÙÚÛŨŪŬŮŰŲùúûũūŭůűų]", "u")
+                        .replaceAll("[Üü]", "ue")
+                        .replaceAll("[Ŵŵ]", "w")
+                        .replaceAll("[ÝŶŸýÿŷ]", "y")
+                        .replaceAll("[ŹŻŽźżž]", "z")
+                        .replaceAll("[×÷]", "")
+                        .replaceAll("[^a-zA-Z0-9_'\\.@]", "_")
+                        .toLowerCase(IWSConstants.DEFAULT_LOCALE);
+        }
     }
 
     public static String removeLineBreaks(final String input) {

@@ -95,14 +95,16 @@ public final class Country extends AbstractVerification {
     // =========================================================================
 
     /**
-     * Sets the Country Code, the two letter Country Code, which is specified by
-     * the UN.<br />
+     * Sets the Country Code, i.e. the two letter "commonly used" code, which
+     * follows the ISO-3166-1 alpha 2, with an Exception for the United Kingdom
+     * or Great Britain, where the code used is UK.<br />
      *   This method throws an {@code IllegalArgumentException} if the given
      * value is not a valid Country Code, i.e. it must not be null and the value
      * has to be two characters.
      *
      * @param countryCode UN Country Code
      * @throws IllegalArgumentException If either null or not two characters long
+     * @see <a href="https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2">ISO-3166-1 alpha-2</a>
      */
     public void setCountryCode(final String countryCode) throws IllegalArgumentException {
         ensureNotNullAndExactLength("countryCode", countryCode, 2);

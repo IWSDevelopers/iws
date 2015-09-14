@@ -316,7 +316,8 @@ public class StateBean {
      * removed, and account will have the status set to DELETED.<br />
      *   Note, that although accounts should be deleted, we cannot leave member
      * groups without an owner. Accounts which is currently owner, will simply
-     * be ignored.
+     * be ignored. The rule applies only to currently active Groups. Groups
+     * which have been suspended will be ignored.
      *
      * @return Number of Deleted Accounts
      */

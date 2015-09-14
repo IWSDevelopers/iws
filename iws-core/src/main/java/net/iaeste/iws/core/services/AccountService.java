@@ -22,6 +22,7 @@ import static net.iaeste.iws.core.transformers.AdministrationTransformer.transfo
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.Role;
 import net.iaeste.iws.api.dtos.User;
+import net.iaeste.iws.api.enums.GroupStatus;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.enums.Privacy;
@@ -671,7 +672,7 @@ public final class AccountService extends CommonService<AccessDao> {
                 case INTERNATIONAL:
                 case NATIONAL:
                 case MEMBER:
-                    if (entity.getRole().getId() == InternalConstants.ROLE_OWNER) {
+                    if ((entity.getRole().getId() == InternalConstants.ROLE_OWNER) && (entity.getGroup().getStatus() == GroupStatus.ACTIVE)) {
                         throw new IWSException(IWSErrors.PROCESSING_FAILURE, "Users who are currently the Owner of a Group with type '" + type.getDescription() + "', cannot be deleted.");
                     }
             }

@@ -262,6 +262,29 @@ create view problem_groups as
   from groups
   where id in (select ids from gids);
 
+-- =============================================================================
+-- The NC's List
+-- =============================================================================
+create view ncs_list as
+  select
+    u.id         as user_id,
+    g.id         as group_id,
+    gt.id        as grouptype_id,
+    u.firstname  as firstname,
+    u.lastname   as lastname,
+    u.username   as username,
+    g.group_name as groupname,
+    gt.grouptype as grouptype,
+    u2g.created  as since
+  from users u
+    join user_to_group u2g on u.id = u2g.user_id
+    join groups g on g.id = u2g.group_id
+    join grouptypes gt on gt.id = g.grouptype_id
+  where u.status = 'ACTIVE'
+    and g.status = 'ACTIVE'
+    and u2g.on_public_list = true
+    and gt.id in (0, 3, 4)
+  order by gt.id asc, g.group_name asc, u.firstname asc, u.lastname asc;
 
 -- =============================================================================
 -- The Emergency List

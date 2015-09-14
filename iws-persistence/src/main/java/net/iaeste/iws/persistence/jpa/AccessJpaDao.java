@@ -783,6 +783,22 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
         return users;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public UserEntity findNcsMember(final String username) {
+        final Query query = entityManager.createNamedQuery("usergroup.userOnNcsList");
+        query.setParameter("username", username);
+        final List<UserEntity> found = query.getResultList();
+
+        UserEntity result = null;
+        if (found != null && found.size() == 1) {
+            result = found.get(0);
+        }
+
+        return result;
+    }
+
     // =========================================================================
     // Internal Methods
     // =========================================================================

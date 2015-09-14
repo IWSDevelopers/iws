@@ -14,7 +14,6 @@
  */
 package net.iaeste.iws.ejb.notifications.consumers;
 
-import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.NotificationFrequency;
 import net.iaeste.iws.api.enums.UserStatus;
@@ -396,7 +395,7 @@ public class NotificationSystemAdministration implements Observer {
             final UserGroupEntity userGroup = accessDao.findGroupMemberByUsernameAndGroupExternalId(emailAddress, groupExternalId);
 
             if (groupType == GroupType.NATIONAL) {
-                if (isRoleForNcsList(role) && UserStatus.ACTIVE.name().equals(userStatus) && userGroup != null) {
+                if (accessDao.findNcsMember(emailAddress) != null) {
                     addToNcsList(emailAddress);
                 } else {
                     removeFromNcsList(emailAddress);
@@ -434,12 +433,12 @@ public class NotificationSystemAdministration implements Observer {
         }
     }
 
-    private static boolean isRoleForNcsList(final String role) {
-        final Set<String> rolesForNcsList = new HashSet<>(2);
-        rolesForNcsList.add("owner");
-        rolesForNcsList.add("moderator");
-        return rolesForNcsList.contains(role.toLowerCase(IWSConstants.DEFAULT_LOCALE));
-    }
+    //private static boolean isRoleForNcsList(final String role) {
+    //    final Set<String> rolesForNcsList = new HashSet<>(2);
+    //    rolesForNcsList.add("owner");
+    //    rolesForNcsList.add("moderator");
+    //    return rolesForNcsList.contains(role.toLowerCase(IWSConstants.DEFAULT_LOCALE));
+    //}
 
     private void updateListSubscription(final MailingListEntity mailingList, final String emailAddress, final boolean onList) {
         if (mailingList != null) {

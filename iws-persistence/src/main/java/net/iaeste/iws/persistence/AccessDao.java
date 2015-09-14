@@ -303,4 +303,13 @@ public interface AccessDao extends BasicDao {
      * @return List of Inactive Accounts
      */
     List<UserEntity> findInactiveAccounts(Long daysBeforeBecomingInactive);
+
+    /**
+     * Returns the Entity for the User, if the User is on the NC's mailing list,
+     * otherwise a null is returned.
+     *
+     * @param username User's username (e-mail address)
+     * @return Found User Entity if on the list, otherwise null
+     */
+    UserEntity findNcsMember(String username);
 }

@@ -173,6 +173,7 @@ import java.util.Map;
         @NamedQuery(name = "usergroup.emergencylist",
                 query = "select ug from UserGroupEntity ug " +
                         "where ug.group.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
+                        "  and ug.user.status = " + EntityConstants.USER_STATUS_ACTIVE +
                         "  and ug.role.id <= " + EntityConstants.ROLE_MODERATOR +
                         "  and ug.group.groupType.grouptype = " + EntityConstants.GROUPTYPE_NATIONAL),
         // Under IW3, the schema for the NC's mailing list was that
@@ -187,12 +188,21 @@ import java.util.Map;
                         "where ug.group.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
                         "  and ug.user.status = " + EntityConstants.USER_STATUS_ACTIVE +
                         // IW3 variant, where we're looking at the role
-                        "  and (ug.role.id <= " + EntityConstants.ROLE_MODERATOR +
+                        //"  and (ug.role.id <= " + EntityConstants.ROLE_MODERATOR +
                         // IWS variant, which is less restrictive
-                        "    or ug.onPublicList = true)" +
+                        "  and ug.onPublicList = true" +
                         "  and (ug.group.groupType.grouptype = " + EntityConstants.GROUPTYPE_ADMINISTRATION +
                         "    or ug.group.groupType.grouptype = " + EntityConstants.GROUPTYPE_INTERNATIONAL +
                         "    or ug.group.groupType.grouptype = " + EntityConstants.GROUPTYPE_NATIONAL + ')'),
+        @NamedQuery(name = "usergroup.userOnNcsList",
+                query = "select distinct ug.user from UserGroupEntity ug " +
+                        "where ug.group.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
+                        "  and ug.user.status = " + EntityConstants.USER_STATUS_ACTIVE +
+                        "  and ug.onPublicList = true" +
+                        "  and (ug.group.groupType.grouptype = " + EntityConstants.GROUPTYPE_ADMINISTRATION +
+                        "    or ug.group.groupType.grouptype = " + EntityConstants.GROUPTYPE_INTERNATIONAL +
+                        "    or ug.group.groupType.grouptype = " + EntityConstants.GROUPTYPE_NATIONAL + ')' +
+                        "  and ug.user.username = :username"),
         @NamedQuery(name = "usergroup.findByUsernameAndGroupExternalId",
                 query = "select ug from UserGroupEntity ug " +
                         "where ug.group.externalId = :egid" +

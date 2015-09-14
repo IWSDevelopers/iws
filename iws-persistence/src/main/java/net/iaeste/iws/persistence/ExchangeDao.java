@@ -24,9 +24,7 @@ import net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity;
 import net.iaeste.iws.persistence.entities.exchange.PublishingGroupEntity;
 import net.iaeste.iws.persistence.exceptions.IdentificationException;
 import net.iaeste.iws.persistence.exceptions.PersistenceException;
-import net.iaeste.iws.persistence.views.DomesticOfferStatisticsView;
 import net.iaeste.iws.persistence.views.EmployerView;
-import net.iaeste.iws.persistence.views.ForeignOfferStatisticsView;
 
 import java.util.Date;
 import java.util.List;
@@ -38,10 +36,6 @@ import java.util.Set;
  * @since   IWS 1.0
  */
 public interface ExchangeDao extends BasicDao {
-
-    List<ForeignOfferStatisticsView> findForeignOfferStatistics(GroupEntity group, Integer year);
-
-    List<DomesticOfferStatisticsView> findDomesticOfferStatistics(GroupEntity group, Integer year);
 
     EmployerEntity findEmployer(Authentication authentication, String externalId);
 
@@ -265,7 +259,15 @@ public interface ExchangeDao extends BasicDao {
 
     List<AttachmentEntity> findAttachments(String table, Long id);
 
-    List<OfferEntity> findExpiredOffers(Date currentDate, Integer exchangeYear);
+    /**
+     * Finds a list of Offers which has expiired, meaning that the nominational
+     * deadline has been exceeded. Please see Trac ticket #1020 for more
+     * information.
+     *
+     * @param currentDate Current Date
+     * @return List of Expired Offers
+     */
+    List<OfferEntity> findExpiredOffers(Date currentDate);
 
     /**
      * Sets given state for given list of offer IDs

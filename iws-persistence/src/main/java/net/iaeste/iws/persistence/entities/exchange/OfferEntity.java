@@ -96,9 +96,8 @@ import java.util.Map;
                         "  and o.employer.name = :employer"),
         @NamedQuery(name = "offer.findExpired",
                 query = "select o from OfferEntity o " +
-                        "where o.nominationDeadline <= :date" +
-                        "  and o.status = 'SHARED'" +
-                        "  and o.exchangeYear = :exchangeYear"),
+                        "where o.nominationDeadline < :date" +
+                        "  and o.status = 'SHARED'"),
         @NamedQuery(name = "offer.updateStateByIds",
                 query = "update OfferEntity o " +
                         "set o.status = :status " +
@@ -120,9 +119,9 @@ public class OfferEntity extends AbstractUpdateable<OfferEntity> implements Exte
     /**
      * The content of this Entity is exposed externally, however to avoid that
      * someone tries to spoof the system by second guessing our Sequence values,
-     * An External Id is used, the External Id is a Uniqie UUID value, which in
+     * An External Id is used, the External Id is a Unique UUID value, which in
      * all external references is referred to as the "Id". Although this can be
-     * classified as StO (Security through Obscrutity), there is no need to
+     * classified as StO (Security through Obscurity), there is no need to
      * expose more information than necessary.
      */
     @Column(name = "external_id", length = 36, unique = true, nullable = false, updatable = false)

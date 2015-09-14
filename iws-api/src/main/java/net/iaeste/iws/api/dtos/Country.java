@@ -102,7 +102,7 @@ public final class Country extends AbstractVerification {
      * value is not a valid Country Code, i.e. it must not be null and the value
      * has to be two characters.
      *
-     * @param countryCode UN Country Code
+     * @param countryCode Country Code
      * @throws IllegalArgumentException If either null or not two characters long
      * @see <a href="https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2">ISO-3166-1 alpha-2</a>
      */

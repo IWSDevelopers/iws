@@ -27,10 +27,10 @@ import javax.persistence.Table;
  * @since   IWS 1.0
  */
 @Entity
-@NamedQueries(@NamedQuery(name = "view.findStatisticsForForeignOffersForGroupAndYear",
+@NamedQueries(@NamedQuery(name = "view.findStatisticsForForeignOffersForGroupAndYears",
         query = "select s from ForeignOfferStatisticsView s " +
                 "where s.id.groupId = :gid" +
-                "  and s.exchangeYear = :year"))
+                "  and s.exchangeYear in :years"))
 @Table(name = "foreign_offer_statistics")
 public class ForeignOfferStatisticsView {
 

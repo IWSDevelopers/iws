@@ -15,8 +15,11 @@
 package net.iaeste.iws.persistence;
 
 import net.iaeste.iws.api.util.Paginatable;
+import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.views.AttachedFileView;
+import net.iaeste.iws.persistence.views.DomesticOfferStatisticsView;
 import net.iaeste.iws.persistence.views.EmployerView;
+import net.iaeste.iws.persistence.views.ForeignOfferStatisticsView;
 import net.iaeste.iws.persistence.views.OfferSharedToGroupView;
 import net.iaeste.iws.persistence.views.OfferView;
 import net.iaeste.iws.persistence.views.SharedOfferView;
@@ -34,6 +37,10 @@ import java.util.List;
  * @since   IWS 1.0
  */
 public interface ViewsDao {
+
+    List<ForeignOfferStatisticsView> findForeignOfferStatistics(GroupEntity group, Integer year);
+
+    List<DomesticOfferStatisticsView> findDomesticOfferStatistics(GroupEntity group, Integer year);
 
     EmployerView findEmployer(Long groupId, String externalId);
 

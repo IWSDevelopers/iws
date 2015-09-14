@@ -195,13 +195,19 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
     }
 
     /**
-     * The method is checking that a Reference Number is valid for a new Offer.
-     * This means that the Country Code is correct, and that the Exchange Year
-     * is also correct. If either is failing, then a Verification Exception is
-     * thrown.
+     * This method is checking the Offer Reference Number, and verifying that
+     * new Offers follow the requirements:
+     * <ul>
+     * <li>Offer must follow the Regex: [A-Z]{2}-[0-9]{4}-[A-Z0-9\-]{1,8}</li>
+     * <li>The Country Code must be the official one for the given Committee.</li>
+     * <li>The Year must be either current Year (prior to September 1st) or next year (enforced after September 1st)</li>
+     * </ul>
+     * If either of these is failing, then the method will throw a new
+     * ${code VerificationException}.
      *
      * @param offer Offer to verify
      * @throws VerificationException if the Reference Number is invalid
+     * @see <a href="https://trac.iaeste.net/ticket/1020">Ticket #1020</a>
      */
     public static void verifyRefnoValidity(final OfferEntity offer) throws ExchangeException {
         final String countryCode = offer.getEmployer().getGroup().getCountry().getCountryCode();
@@ -235,7 +241,7 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
         } else {
             // Prior to September 1st, we're allowing both the current and next
             // year.
-            if (foundYear != currentYear || foundYear != exchangeYear) {
+            if ((foundYear != currentYear) || (foundYear != exchangeYear)) {
                 throw new VerificationException("The Exchange Year for the Reference Number '" + refno + "- is invalid, expected is " + currentYear + " or " + exchangeYear + '.');
             }
         }
@@ -275,6 +281,7 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
             final PublishingGroupEntity newEntity = transform(request.getPublishingGroup());
 
             final List<String> groupIds = new ArrayList<>();
+            // Server logs showed that we have a NullPointer Exception in the next line. Meaning that our Validation failed !!!
             for (final Group group : request.getPublishingGroup().getGroups()) {
                 if (!group.getGroupId().equals(authentication.getGroup().getExternalId())) {
                     groupIds.add(group.getGroupId());
@@ -338,7 +345,7 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
             final List<GroupEntity> resharing = new ArrayList<>();
             final List<OfferGroupEntity> reshareGroups = new ArrayList<>();
 
-            for(final OfferGroupEntity offerGroup : allOfferGroups) {
+            for (final OfferGroupEntity offerGroup : allOfferGroups) {
                 if (groups.contains(offerGroup.getGroup())) {
                     if (EnumSet.of(OfferState.CLOSED, OfferState.EXPIRED, OfferState.REJECTED).contains(offerGroup.getStatus())) {
                         resharing.add(offerGroup.getGroup());
@@ -426,11 +433,11 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
         offerGroups.remove(offerGroupToReject);
 
         final EnumSet<OfferState> activeStates = EnumSet.of(OfferState.SHARED,
-                                                            OfferState.AT_EMPLOYER,
-                                                            OfferState.ACCEPTED,
-                                                            OfferState.APPLICATIONS,
-                                                            OfferState.COMPLETED,
-                                                            OfferState.NOMINATIONS);
+                OfferState.AT_EMPLOYER,
+                OfferState.ACCEPTED,
+                OfferState.APPLICATIONS,
+                OfferState.COMPLETED,
+                OfferState.NOMINATIONS);
         boolean updateOfferState = true;
         for (final OfferGroupEntity offerGroup : offerGroups) {
             if (activeStates.contains(offerGroup.getStatus())) {
@@ -449,6 +456,7 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
 
     /**
      * Returns highest OfferGroup state from all unshared OfferGroups
+     *
      * @param offer
      * @param offerGroups
      * @return OfferState
@@ -456,7 +464,7 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
     private OfferState unshareOfferFromGroups(final OfferEntity offer, final List<OfferGroupEntity> offerGroups) {
         OfferState result = OfferState.NEW; //first possible state for offer
 
-        for(final OfferGroupEntity offerGroup : offerGroups) {
+        for (final OfferGroupEntity offerGroup : offerGroups) {
             if (offerGroup.getStatus() != result && (offer.getStatus() == offerGroup.getStatus() || isOtherCurrentOfferGroupStateHigher(offer.getStatus(), offerGroup.getStatus()))) {
                 result = offerGroup.getStatus();
             }

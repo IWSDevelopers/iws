@@ -56,30 +56,6 @@ public final class ExchangeJpaDao extends BasicJpaDao implements ExchangeDao {
      * {@inheritDoc}
      */
     @Override
-    public List<ForeignOfferStatisticsView> findForeignOfferStatistics(final GroupEntity group, final Integer year) {
-        final Query query = entityManager.createNamedQuery("view.findStatisticsForForeignOffersForGroupAndYear");
-        query.setParameter("gid", group.getId());
-        query.setParameter("year", year);
-
-        return query.getResultList();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<DomesticOfferStatisticsView> findDomesticOfferStatistics(final GroupEntity group, final Integer year) {
-        final Query query = entityManager.createNamedQuery("view.findStatisticsForDomesticOffersForGroupAndYear");
-        query.setParameter("gid", group.getId());
-        query.setParameter("year", year);
-
-        return query.getResultList();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public EmployerEntity findEmployer(final Authentication authentication, final String externalId) {
         final Query query = entityManager.createNamedQuery("employer.findByExternalId");
         query.setParameter("eid", externalId);
@@ -445,10 +421,9 @@ public final class ExchangeJpaDao extends BasicJpaDao implements ExchangeDao {
      * {@inheritDoc}
      */
     @Override
-    public List<OfferEntity> findExpiredOffers(final Date currentDate, final Integer exchangeYear) {
+    public List<OfferEntity> findExpiredOffers(final Date currentDate) {
         final Query query = entityManager.createNamedQuery("offer.findExpired");
         query.setParameter("date", currentDate);
-        query.setParameter("exchangeYear", exchangeYear);
 
         return query.getResultList();
     }

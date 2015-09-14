@@ -14,18 +14,12 @@
  */
 package net.iaeste.iws.ejb;
 
-import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.api.exceptions.IWSException;
-import net.iaeste.iws.api.util.AbstractVerification;
-import net.iaeste.iws.core.transformers.ExchangeTransformer;
 import net.iaeste.iws.ejb.cdi.IWSBean;
 import net.iaeste.iws.persistence.AccessDao;
-import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.ExchangeDao;
-import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
-import net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity;
 import net.iaeste.iws.persistence.jpa.AccessJpaDao;
 import net.iaeste.iws.persistence.jpa.ExchangeJpaDao;
 import org.joda.time.DateTime;
@@ -39,11 +33,8 @@ import javax.ejb.Singleton;
 import javax.ejb.TimerService;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author  Pavel Fiala / last $Author:$
@@ -84,9 +75,6 @@ public class ScheduleJobsBean {
         accessDao = new AccessJpaDao(iwsEntityManager);
     }
 
-    //for local testing
-    //@Schedule(second = "0", minute = "*/5", hour = "*", info="Every 1 hour, for testing only", persistent = false)
-    //for server
     @Schedule(second = "0", minute = "1", hour = "0", info = "Every day at 0:01 AM (server time)", persistent = false)
     private void processExpiredOffers() {
         LOG.info("processExpiredOffers started at " + new DateTime());
@@ -102,8 +90,8 @@ public class ScheduleJobsBean {
         }
 
         if (run) {
-            // We invcoke the logic in a try-finally block, so we can switch of
-            // the processing regardlessly of the outcome
+            // We invoke the logic in a try-finally block, so we can switch of
+            // the processing regardless of the outcome
 
             try {
                 // Now we invoke the actual logic, outside of the sync block,
@@ -121,53 +109,24 @@ public class ScheduleJobsBean {
         LOG.info("processExpiredOffers ended at " + new DateTime());
     }
 
+    /**
+     * Runs the Offer Expiration. Although the state for an Offer is part of
+     * both the Offer & Offer Shares, only the Offer itself is updated, thus
+     * avoiding that any information is lost.<br />
+     *   Offers expire if the Nomination Deadline passed. Please see Trac Ticket
+     * #1020 for more on the discussion.
+     */
     private void runExpiredOfferProcessing() {
         try {
-            final UserEntity systemUser = accessDao.findUserByUsername("system.user@iaeste.net");
-            if (systemUser != null) {
-                final List<OfferEntity> offers = exchangeDao.findExpiredOffers(new Date(), AbstractVerification.calculateExchangeYear());
-                LOG.info("Found " + offers.size() + " expired offers for exchange year " + AbstractVerification.calculateExchangeYear());
-                if (!offers.isEmpty()) {
+            final List<OfferEntity> offers = exchangeDao.findExpiredOffers(new Date());
+            LOG.info("Found " + offers.size() + " expired offers.");
 
-                    final List<Long> ids = new ArrayList<>(offers.size());
-                    for (final OfferEntity offer : offers) {
-                        ids.add(offer.getId());
-                    }
-
-                    final List<OfferGroupEntity> offerGroups = exchangeDao.findInfoForSharedOffers(ids);
-                    final Map<Long, List<OfferGroupEntity>> sharingInfo = prepareOfferGroupMap(ids, offerGroups);
-
-                    for (final OfferEntity offer : offers) {
-                        final Authentication authentication = new Authentication(new AuthenticationToken(), systemUser, offer.getEmployer().getGroup(), "empty-trace-id-for-system-user");
-                        for (final OfferGroupEntity offerGroup : sharingInfo.get(offer.getId())) {
-                            final OfferGroupEntity modifiedOfferGroup = new OfferGroupEntity(offerGroup);
-                            modifiedOfferGroup.setStatus(OfferState.EXPIRED);
-                            exchangeDao.persist(authentication, offerGroup, modifiedOfferGroup);
-                        }
-                        OfferEntity modifiedOffer = ExchangeTransformer.transform(ExchangeTransformer.transform(offer));
-                        modifiedOffer.setStatus(OfferState.EXPIRED);
-                        exchangeDao.persist(authentication, offer, modifiedOffer);
-                    }
-                }
-            } else {
-                LOG.warn("System user was not found");
+            for (final OfferEntity offer : offers) {
+                offer.setStatus(OfferState.EXPIRED);
+                exchangeDao.persist( offer);
             }
         } catch (IllegalArgumentException | IWSException e) {
             LOG.error("Error in processing expired offers", e);
         }
-    }
-
-    private Map<Long, List<OfferGroupEntity>> prepareOfferGroupMap(final List<Long> ids, final List<OfferGroupEntity> offerGroups) {
-        final Map<Long, List<OfferGroupEntity>> result = new HashMap<>(ids.size());
-
-        for (final Long id : ids) {
-            result.put(id, new ArrayList<OfferGroupEntity>());
-        }
-
-        for (final OfferGroupEntity offerGroup : offerGroups) {
-            result.get(offerGroup.getOffer().getId()).add(offerGroup);
-        }
-
-        return result;
     }
 }

@@ -168,12 +168,12 @@ public final class HashcodeGenerator {
     }
 
     /**
-     * Generates a Cryptographical Checksum based on the given algorithm, and
+     * Generates a Cryptographic Checksum based on the given algorithm, and
      * the provided string. If the given string is invalid, i.e. null, then the
      * method will also return a null value. Otherwise, it will return the
      * generated checksum.
      *
-     * @param  algorithm  The Cryptographical Hash Algorithm to use
+     * @param  algorithm  The Cryptographic Hash Algorithm to use
      * @param  str        The value to hash
      * @param  salt       Salt for the hashing
      * @return The Hash value for the given string
@@ -193,7 +193,7 @@ public final class HashcodeGenerator {
     }
 
     /**
-     * Prepares a digest with a givel Algorithm. This Digest can then be used
+     * Prepares a digest with a given Algorithm. This Digest can then be used
      * to generate a Hashcode value. The method will return a null value, if
      * an invalid Algorithm is issued. However, since this is an internal
      * method, it is assumed that all provided algorithms are valid. If not,

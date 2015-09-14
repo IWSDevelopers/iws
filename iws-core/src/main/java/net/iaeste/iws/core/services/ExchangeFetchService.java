@@ -89,7 +89,7 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
     }
 
     private OfferStatistics readDomesticStatistics(final GroupEntity nationalGroup, final Integer year) {
-        final List<DomesticOfferStatisticsView> records = dao.findDomesticOfferStatistics(nationalGroup, year);
+        final List<DomesticOfferStatisticsView> records = viewsDao.findDomesticOfferStatistics(nationalGroup, year);
 
         final Map<OfferState, Integer> statistics = new EnumMap<>(OfferState.class);
         for (final DomesticOfferStatisticsView stats : records) {
@@ -100,7 +100,7 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
     }
 
     private OfferStatistics readForeignStatistics(final GroupEntity nationalGroup, final Integer year) {
-        final List<ForeignOfferStatisticsView> records = dao.findForeignOfferStatistics(nationalGroup, year);
+        final List<ForeignOfferStatisticsView> records = viewsDao.findForeignOfferStatistics(nationalGroup, year);
 
         final Map<OfferState, Integer> statistics = new EnumMap<>(OfferState.class);
         for (final ForeignOfferStatisticsView stats : records) {

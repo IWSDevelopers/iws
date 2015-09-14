@@ -73,7 +73,10 @@ public class Beans {
                 .addScript("net/iaeste/iws/persistence/19-base-data.sql")
                 .addScript("net/iaeste/iws/persistence/hsqldb/30-exchange-tables.sql")
                 .addScript("net/iaeste/iws/persistence/35-exchange-views.sql")
-                .addScript("net/iaeste/iws/persistence/39-exchange-data.sql")
+                // Note, that the EmbeddedDatabase builder in Spring 4+ frowns
+                // upon empty files, so we have to comment it out to avoid
+                // errors when preparing the fake database for the tests.
+                //.addScript("net/iaeste/iws/persistence/39-exchange-data.sql")
                 .addScript("net/iaeste/iws/persistence/hsqldb/20-mailing-list-tables.sql")
                 .addScript("net/iaeste/iws/persistence/90-initial-test-data.sql")
                 .build();

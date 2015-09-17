@@ -15,9 +15,11 @@
 package net.iaeste.iws.client.exchange;
 
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
 
 import net.iaeste.iws.api.Exchange;
+import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.Address;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.dtos.Country;
@@ -130,6 +132,91 @@ public final class EmployerTest extends AbstractTest {
         assertThat(updated.getBusiness(), is("MyBusiness"));
         assertThat(updated.getAddress().getStreet1(), is("MyStreet"));
         assertThat(updated.getAddress().getCity(), is("MyCity"));
+    }
+
+    @Test
+    public void testProcessingEmployer() {
+        final Exchange client = new ExchangeClient();
+        final String name = "New Employer Name";
+        final String department = "New Department";
+        String business = "New Business";
+        String employeesCount = "Updated Employee Count";
+        String website = "New Website";
+        String workingPlace = "New Working Place";
+        Boolean canteen = false;
+        String nearestAirport = "New Airport";
+        String nearestPublicTransport = "New Public Transportation";
+
+        final EmployerResponse create = client.processEmployer(token, new ProcessEmployerRequest(createEmployer(token, "The Employer")));
+        assertThat(create.isOk(), is(true));
+        final Employer employer = create.getEmployer();
+
+        // First, verify that all the fields we wish to change has a different value
+        assertThat(employer.getName(), is(not(name)));
+        assertThat(employer.getDepartment(), is(not(department)));
+        assertThat(employer.getBusiness(), is(not(business)));
+        assertThat(employer.getEmployeesCount(), is(not(employeesCount)));
+        assertThat(employer.getWebsite(), is(not(website)));
+        assertThat(employer.getWorkingPlace(), is(not(workingPlace)));
+        assertThat(employer.getCanteen(), is(not(canteen)));
+        assertThat(employer.getNearestAirport(), is(not(nearestAirport)));
+        assertThat(employer.getNearestPublicTransport(), is(not(nearestPublicTransport)));
+
+        // Now, update the Employer values and save the updated Employer
+        employer.setName(name);
+        employer.setDepartment(department);
+        employer.setBusiness(business);
+        employer.setEmployeesCount(employeesCount);
+        employer.setWebsite(website);
+        employer.setWorkingPlace(workingPlace);
+        employer.setCanteen(canteen);
+        employer.setNearestAirport(nearestAirport);
+        employer.setNearestPublicTransport(nearestPublicTransport);
+        final EmployerResponse update = client.processEmployer(token, new ProcessEmployerRequest(employer));
+
+        // Now verify that the request went through, and that our updated
+        // Employer object contain the new values
+        assertThat(update.isOk(), is(true));
+        final Employer updated = update.getEmployer();
+        assertThat(updated.getName(), is(name));
+        assertThat(updated.getDepartment(), is(department));
+        assertThat(updated.getBusiness(), is(business));
+        assertThat(updated.getEmployeesCount(), is(employeesCount));
+        assertThat(updated.getWebsite(), is(website));
+        assertThat(updated.getWorkingPlace(), is(workingPlace));
+        assertThat(updated.getCanteen(), is(canteen));
+        assertThat(updated.getNearestAirport(), is(nearestAirport));
+        assertThat(updated.getNearestPublicTransport(), is(nearestPublicTransport));
+    }
+
+    /**
+     * IAESTE Switzerland have reported a problem, where the duplicate Offer
+     * functionality in IW4 lead to a Unique Constraint Violation in the IWS.
+     * The error was because the Employer used in the duplication was somehow
+     * changed, so the values were correct, but the Id was that from the newest
+     * "similar" Employer.<br />
+     *   The IWS should be able to catch this case and correctly return an error
+     * rather than throwing SQL Exceptions.
+     */
+    @Test
+    public void testProcessingAlmostIdenticalEmployers() {
+        final Exchange client = new ExchangeClient();
+
+        // First, we create & retrieve two new Employers
+        final EmployerResponse save1 = client.processEmployer(token, new ProcessEmployerRequest(createEmployer(token, "The Employer")));
+        assertThat(save1.isOk(), is(true));
+        final Employer employer1 = save1.getEmployer();
+        final EmployerResponse save2 = client.processEmployer(token, new ProcessEmployerRequest(createEmployer(token, "The Same Employer")));
+        assertThat(save2.isOk(), is(true));
+        final Employer employer2 = save2.getEmployer();
+
+        // Now, we swap the Id's and try to save the Employer.
+        employer1.setEmployerId(employer2.getEmployerId());
+        final ProcessEmployerRequest request = new ProcessEmployerRequest(employer1);
+        final EmployerResponse response = client.processEmployer(token, request);
+        assertThat(response.isOk(), is(false));
+        assertThat(response.getError(), is(IWSErrors.OBJECT_IDENTIFICATION_ERROR));
+        assertThat(response.getMessage(), is("Processing failed, as this Employer already exist with a different Id than provided."));
     }
 
     // =========================================================================

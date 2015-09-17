@@ -91,11 +91,9 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
 
     private EmployerEntity process(final Authentication authentication, final Employer employer) {
         final String externalId = employer.getEmployerId();
-        EmployerEntity entity;
+        EmployerEntity entity = dao.findUniqueEmployer(authentication, employer);
 
         if (externalId == null) {
-            entity = dao.findUniqueEmployer(authentication, employer);
-
             if (entity == null) {
                 final GroupEntity nationalGroup = accessDao.findNationalGroup(authentication.getUser());
                 entity = transform(employer);
@@ -107,10 +105,23 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
                 dao.persist(authentication, entity, transform(employer));
             }
         } else {
-            entity = dao.findEmployer(authentication, externalId);
-            final EmployerEntity updated = transform(employer);
-            processAddress(authentication, entity.getAddress(), employer.getAddress());
-            dao.persist(authentication, entity, updated);
+            if (entity == null) {
+                entity = dao.findEmployer(authentication, externalId);
+                final EmployerEntity updated = transform(employer);
+                processAddress(authentication, entity.getAddress(), employer.getAddress());
+                dao.persist(authentication, entity, updated);
+            } else if (externalId.equals(entity.getExternalId())) {
+                processAddress(authentication, entity.getAddress(), employer.getAddress());
+                dao.persist(authentication, entity, transform(employer));
+            } else {
+                // We now have the absurd case, that we have two "identical"
+                // Objects, but with different Id's. This error handling was
+                // added as there is a problem with IW4 Offer Duplication, where
+                // a list of n similar Employers may be fetched, but for some
+                // strange reason, the IW4 always picks the most recent Id for
+                // the Employer - regardless if this is the correct Id or not.
+                throw new IdentificationException("Processing failed, as this Employer already exist with a different Id than provided.");
+            }
         }
 
         return entity;

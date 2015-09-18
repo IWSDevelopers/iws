@@ -44,7 +44,7 @@
                 <configuration>
                     <!-- The surefire plugin supports running the execution of
                          the JUnit tests in parallel, and with various options
-                         set. Although the "advertized" advantage is to speed up
+                         set. Although the "advertised" advantage is to speed up
                          the test suite, is more or less crap, there is another
                          advantage to running things in parallel. And that is
                          to see how the system handles multiple threads that
@@ -117,10 +117,6 @@
     </profiles>
 
     <dependencies>
-        <dependency>
-            <groupId>joda-time</groupId>
-            <artifactId>joda-time</artifactId>
-        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>

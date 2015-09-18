@@ -62,16 +62,6 @@ public final class DateTime implements Serializable, Comparable<DateTime> {
         timestamp = new Date();
     }
 
-    /**
-     * Creates a new Date instance, based on the given JodaTime DateMidnight
-     * Object.
-     *
-     * @param dateTime {@code org.joda.time.DateTime} instance, to base this instance on
-     */
-    public DateTime(final org.joda.time.DateTime dateTime) {
-        timestamp = dateTime.toDate();
-    }
-
     public DateTime(final long millis) {
         timestamp = new Date(millis);
     }
@@ -82,12 +72,7 @@ public final class DateTime implements Serializable, Comparable<DateTime> {
      * @param dateTime {@code java.util.Date} instance, to base this instance on
      */
     public DateTime(final Date dateTime) {
-        // Note, that there seems to be a difference between how JodaTime and
-        // Date is being instantiated, and this is causing a test problem. At
-        // the moment, the goal is to ensure that the builds are clean, so the
-        // JodaTime Object is used.
-        //timestamp = new Date(dateTime.getTime());
-        timestamp = new org.joda.time.DateTime(dateTime).toDate();
+        timestamp = dateTime != null ? new Date(dateTime.getTime()) : new Date();
     }
 
     /**

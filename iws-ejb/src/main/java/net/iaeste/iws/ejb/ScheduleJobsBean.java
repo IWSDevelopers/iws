@@ -16,13 +16,13 @@ package net.iaeste.iws.ejb;
 
 import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.api.exceptions.IWSException;
+import net.iaeste.iws.api.util.DateTime;
 import net.iaeste.iws.ejb.cdi.IWSBean;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.ExchangeDao;
 import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
 import net.iaeste.iws.persistence.jpa.AccessJpaDao;
 import net.iaeste.iws.persistence.jpa.ExchangeJpaDao;
-import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

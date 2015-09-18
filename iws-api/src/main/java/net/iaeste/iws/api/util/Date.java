@@ -14,9 +14,11 @@
  */
 package net.iaeste.iws.api.util;
 
+import static net.iaeste.iws.api.constants.IWSConstants.DATE_FORMAT;
+import static net.iaeste.iws.api.constants.IWSConstants.DEFAULT_LOCALE;
+
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.exceptions.VerificationException;
-import org.joda.time.DateMidnight;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -29,18 +31,18 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 /**
- * Java has a Data Obejct, This is terrible, and the fixes are suppose to be
- * coming with <a href="http://jcp.org/en/jsr/detail?id=310">JSR-310</a>. In the
- * meantime, JodaTime will provide the required functionality. The primary
- * reason for encapsulating the Date functionality here, is to ensure that the
- * formats are also consisting with our needs. Which follows the
- * <a href="http://en.wikipedia.org/wiki/ISO_8601">ISO</a> standard.<br />
- * This class is a Date only class. Meaning that there is no time information
- * present.<br />
- *   Note; there is a problem with JodaTime and WebServices, meaning that we
- * need to create a special mapping or use a different internal Class for it.
- * For this reason, the usage of JodaTime is used here to protect the internal
- * Date. Thus hoping to trick the WS to disclose it.
+ * Java has a Date Object, which is terrible, and the fixes are suppose to be
+ * coming with <a href="http://jcp.org/en/jsr/detail?id=310">JSR-310</a>.
+ * However, this is not available before Java 8, and as IW4 is bound to Java7,
+ * we need to resolve this in a different way.<br />
+ *   Initially, JodaTime was uses for this, but it is a big dependency, which
+ * has seen many changes over time, and rather than continuously update this
+ * Class to reflect the latest version - it has been updated to use standard
+ * Java functionality to provide the same features.<br />
+ *   The Date class is written, so it is compliant with the
+ * <a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> standard, which
+ * means that it is only containing a date (set to midnight), and no time
+ * information at all.
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -65,17 +67,7 @@ public final class Date implements Serializable, Comparable<Date> {
      * Creates a new Date instance set to the Current Millisecond.
      */
     public Date() {
-        midnight = new DateMidnight().toDate();
-    }
-
-    /**
-     * Creates a new Date instance, based on the given JodaTime DateMidnight
-     * Object.
-     *
-     * @param date {@code DateMidnight} instance, to base this instance on
-     */
-    public Date(final DateMidnight date) {
-        midnight = date.toDate();
+        midnight = getMidnight();
     }
 
     /**
@@ -84,7 +76,7 @@ public final class Date implements Serializable, Comparable<Date> {
      * @param millis Milli Seconds to base this instance on.
      */
     public Date(final long millis) {
-        midnight = new java.util.Date(millis);
+        midnight = getMidnight(millis);
     }
 
     /**
@@ -93,7 +85,7 @@ public final class Date implements Serializable, Comparable<Date> {
      * @param date {@code java.util.Date} instance, to base this instance on
      */
     public Date(final java.util.Date date) {
-        midnight = new java.util.Date(date.getTime());
+        midnight = getMidnight(date);
     }
 
     /**
@@ -105,17 +97,12 @@ public final class Date implements Serializable, Comparable<Date> {
      * @see IWSConstants#DATE_FORMAT
      */
     public Date(final String date) {
-        final DateFormat formatter = new SimpleDateFormat(IWSConstants.DATE_FORMAT, IWSConstants.DEFAULT_LOCALE);
-        try {
-            midnight = new DateMidnight(formatter.parse(date)).toDate();
-        } catch (ParseException e) {
-            throw new VerificationException(e);
-        }
+        midnight = getMidnight(date);
     }
 
     /**
      * Reads the milli seconds since Epoch (1970-01-01 00:00:00), from the
-     * internal Data.
+     * internal Data, note that they will reflect midnight at the given Date.
      *
      * @return Millis since Epoch
      */
@@ -163,18 +150,10 @@ public final class Date implements Serializable, Comparable<Date> {
      * @return New Date instance with the given days added
      */
     public Date plusDays(final int days) {
-        return new Date(new DateMidnight(midnight).plusDays(days));
-    }
+        final Calendar calendar = getCalendar();
+        calendar.add(Calendar.DATE, days);
 
-    /**
-     * Returns a new Date instance with the basic value of the current plus the
-     * given number of Weeks.
-     *
-     * @param weeks Number of weeks to add to the current
-     * @return New Date instance with the given weeks added
-     */
-    public Date plusWeeks(final int weeks) {
-        return new Date(new DateMidnight(midnight).plusWeeks(weeks));
+        return new Date(calendar.getTime());
     }
 
     /**
@@ -183,11 +162,11 @@ public final class Date implements Serializable, Comparable<Date> {
      * @return The year for this Date
      */
     public int getCurrentYear() {
-        return new DateMidnight(midnight).toGregorianCalendar().get(Calendar.YEAR);
+        return getCalendar().get(Calendar.YEAR);
     }
 
     public int getCurrentMonth() {
-        return new DateMidnight(midnight).toGregorianCalendar().get(Calendar.MONTH);
+        return getCalendar().get(Calendar.MONTH);
     }
 
     /**
@@ -235,6 +214,40 @@ public final class Date implements Serializable, Comparable<Date> {
             return -1;
         } else {
             return 1;
+        }
+    }
+
+    // =========================================================================
+    // Internal Methods
+    // =========================================================================
+
+    private Calendar getCalendar() {
+        final Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(midnight.getTime());
+
+        return calendar;
+    }
+
+    private static java.util.Date getMidnight() {
+        return getMidnight(new java.util.Date());
+    }
+
+    private static java.util.Date getMidnight(final long millis) {
+        return getMidnight(new java.util.Date(millis));
+    }
+
+    private static java.util.Date getMidnight(final java.util.Date timestamp) {
+        final DateFormat formatter = new SimpleDateFormat(DATE_FORMAT, DEFAULT_LOCALE);
+        return getMidnight(formatter.format(timestamp));
+    }
+
+    private static java.util.Date getMidnight(final String date) {
+        final DateFormat formatter = new SimpleDateFormat(DATE_FORMAT, DEFAULT_LOCALE);
+
+        try {
+            return formatter.parse(date);
+        } catch (ParseException e) {
+            throw new VerificationException(e);
         }
     }
 }

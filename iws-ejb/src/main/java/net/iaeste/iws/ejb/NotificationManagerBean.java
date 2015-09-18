@@ -15,6 +15,7 @@
 package net.iaeste.iws.ejb;
 
 import net.iaeste.iws.api.exceptions.IWSException;
+import net.iaeste.iws.api.util.DateTime;
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.common.notification.Notifiable;
 import net.iaeste.iws.common.notification.NotificationType;
@@ -30,7 +31,6 @@ import net.iaeste.iws.persistence.NotificationDao;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.jpa.AccessJpaDao;
 import net.iaeste.iws.persistence.jpa.NotificationJpaDao;
-import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

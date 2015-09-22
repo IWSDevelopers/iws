@@ -43,7 +43,14 @@ public interface Storage {
     FolderResponse processFolder(AuthenticationToken token, FolderRequest request);
 
     /**
-     * Fetches a folder with subfolders and files meta data (no content).
+     * Fetches a Folder with sub Folders and Files meta data (no content). The
+     * data being retrieved is both data belonging to Groups, which the current
+     * User is a member of, but also data from Folders and Files, which has been
+     * published by the Owning Group, provided that the Groups is allowed to
+     * publish such information.<br />
+     *   The lookup of shared Folders and Files, is done with thorough sets of
+     * checks, to ensure that data cannot be viewed if there is any element in
+     * the tree not permitting it.
      *
      * @param token   User Authentication Token
      * @param request FetchFolder Request Object

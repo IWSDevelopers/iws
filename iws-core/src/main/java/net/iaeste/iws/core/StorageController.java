@@ -96,7 +96,7 @@ public final class StorageController extends CommonController implements Storage
     @Override
     public FetchFolderResponse fetchFolder(final AuthenticationToken token, final FetchFolderRequest request) {
         if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Starting processFile()"));
+            LOG.trace(formatLogMessage(token, "Starting fetchFolder()"));
         }
         FetchFolderResponse response;
 
@@ -117,7 +117,7 @@ public final class StorageController extends CommonController implements Storage
         }
 
         if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Finished processFile()"));
+            LOG.trace(formatLogMessage(token, "Finished fetchFolder()"));
         }
         return response;
     }

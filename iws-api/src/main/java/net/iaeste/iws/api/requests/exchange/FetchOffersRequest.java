@@ -132,7 +132,7 @@ public final class FetchOffersRequest extends AbstractPaginatable {
         return retrieveCurrentAndNextExchangeYear;
     }
 
-// =========================================================================
+    // =========================================================================
     // Standard Request Methods
     // =========================================================================
 

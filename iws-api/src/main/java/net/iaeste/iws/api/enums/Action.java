@@ -42,6 +42,13 @@ public enum Action {
     UPGRADE,
 
     /**
+     * Allows a Data Object with location information to be moved, i.e. a Folder
+     * or a File can be moved from one Folder to another, provided both have the
+     * same Group ownership.
+     */
+    MOVE,
+
+    /**
      * Processing a record means either Creating a new record or update an
      * existing, based on the current state of the system.
      */

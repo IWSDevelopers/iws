@@ -248,6 +248,17 @@ public final class Offer extends AbstractVerification {
     }
 
     /**
+     * Retrieves the Exchange Year for the given Offer. Note, this function
+     * only works on persisted Offers, as non-persisted Offers have not yet
+     * been verified.
+     *
+     * @return Exchange Year of the given, persisted, Offer.
+     */
+    public Integer getExchangeYear() {
+        return Integer.valueOf(refNo.substring(3,7));
+    }
+
+    /**
      * Sets the Type of Offer, meaning if this Offer is either Reserved, Limited
      * or Open. The type is closely linked together with the Reference Number.
      *

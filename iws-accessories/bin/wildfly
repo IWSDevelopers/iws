@@ -178,7 +178,7 @@ doClean () {
         rm -fr ${standalone}/work/jboss.web/default-host/* 2>/dev/null
 
         echo "Cleaning (Reverting) WildFly Standalone Configuration"
-        cp ${configuration}/standalone-clean.xml ${configuration}/standalone-iws.xml
+        cp ${configuration}/standalone-iws-clean.xml ${configuration}/standalone-iws.xml
         rm -fr ${configuration}/standalone_xml_history 2>/dev/null
     fi
 }

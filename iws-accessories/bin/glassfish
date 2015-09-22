@@ -4,6 +4,9 @@
 # Glassfish Control Script
 # -----------------------------------------------------------------------------
 # History:
+#   Version 1.03 - 2015-09-22, Kim Jensen <Kim.Jensen@dawn.dk>
+#     o Removed deployment of IWS
+#     o Renamed deployment of IW4
 #   Version 1.02 - 2014-12-12, Kim Jensen <Kim.jensen@dawn.dk>
 #     o Added another kill command to the stop function
 #   Version 1.01 - 2014-10-28, Kim Jensen <Kim.Jensen@dawn.dk>
@@ -19,8 +22,7 @@
 #     o doStop        ( Void )   :: Attempts to stop Glassfish
 #     o doStatus      ( Void )   :: Retrieves the Glassfish status
 #     o doClean       ( Void )   :: Cleans existing test results
-#     o doDeployIWS   ( Void )   :: Deploys latest IWS Snapshot
-#     o doDeployIW4   ( Void )   :: Deploys latest IW4 Snapshot
+#     o doDeploy      ( Void )   :: Deploys latest IW4 Snapshot
 #     o doLog         ( Void )   :: Tails the Glassfish Server Log
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
@@ -49,7 +51,7 @@ readonly scriptLockFD="200"
 readonly scriptLock="/tmp/.`basename $0`.lock"
 
 # Script specific information, should only be altered, if logic is updated
-readonly scriptVersion="1.00"
+readonly scriptVersion="1.03"
 readonly scriptAuthor="Kim Jensen"
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
@@ -68,8 +70,7 @@ show_help () {
     echo "    stop       Attempts to stop Glassfish"
     echo "    status     Retrieves the status of Glassfish"
     echo "    clean      Cleanup of Glassfish, removing all deployments & log files"
-    echo "    deployIWS  Deploys latest IWS Snapshot"
-    echo "    deployIW4  Deploys latest IW4 Snapshot"
+    echo "    deploy     Deploys latest IW4 Snapshot"
     echo "    log        Tails the Glassfish Server Log"
     echo
 }
@@ -186,22 +187,12 @@ doClean () {
 }
 
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-# doDeployIWS - Deploys latest IWS Snapshot
+# doDeploy - Deploys latest IW4 Snapshot
 # -----------------------------------------------------------------------------
 # Param  -> Void
 # Return -> Void
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-doDeployIWS () {
-    cp ${iwRoot}/iws/iws-ear/target/iws.ear ${instance}/autodeploy
-}
-
-# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-# doDeployIW4 - Deploys latest IW4 Snapshot
-# -----------------------------------------------------------------------------
-# Param  -> Void
-# Return -> Void
-# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-doDeployIW4 () {
+doDeploy () {
     cp ${iwRoot}/iw4/iw4-fe/target/intraweb.war ${instance}/autodeploy
 }
 
@@ -235,10 +226,8 @@ elif [ $# = 1 ]; then
         doStatus
     elif [ "${action}" = "clean" ]; then
         doClean
-    elif [ "${action}" = "deployIWS" ]; then
-        doDeployIWS
-    elif [ "${action}" = "deployIW4" ]; then
-        doDeployIW4
+    elif [ "${action}" = "deploy" ]; then
+        doDeploy
     elif [ "${action}" = "log" ]; then
         doLog
     else

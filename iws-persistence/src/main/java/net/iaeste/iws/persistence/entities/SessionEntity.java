@@ -67,7 +67,10 @@ import java.util.Date;
                         "where s.deprecated = '0'"),
         @NamedQuery(name = "session.deleteUserSessions",
                 query = "delete from SessionEntity s " +
-                        "where s.user.id = :uid")
+                        "where s.user.id = :uid" +
+                        "  and id not in (" +
+                        "    select r.session.id from RequestEntity r" +
+                        "    where r.session.user.id = :uid)")
 })
 @Entity
 @Table(name = "sessions")

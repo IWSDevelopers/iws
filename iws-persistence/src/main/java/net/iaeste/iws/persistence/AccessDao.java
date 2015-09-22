@@ -105,6 +105,15 @@ public interface AccessDao extends BasicDao {
 
     Integer deprecateSession(SessionEntity session);
 
+    /**
+     * Deletes all sessions for a given User, provided no error information is
+     * associated with the session. All sessions with such information will be
+     * deleted manually by the administrators, once the cause of the error has
+     * been identified and potential bugs fixed.
+     *
+     * @param user User to delete all Sessions for
+     * @return Number of Sessions deleted
+     */
     int deleteSessions(UserEntity user);
 
     /**

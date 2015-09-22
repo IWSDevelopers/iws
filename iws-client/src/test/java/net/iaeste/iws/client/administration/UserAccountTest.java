@@ -162,21 +162,20 @@ public final class UserAccountTest extends AbstractAdministration {
     public void testDeletingActiveUser() {
         // 1. Login as Austria
         //      - The test is using Austria per default
-
         // 2. Create a new User
         final String username = "mozart@iaeste.at";
         final CreateUserRequest createRequest = new CreateUserRequest(username, "Wolfgang", "Amadeus");
         final CreateUserResponse createResponse = administration.createUser(token, createRequest);
         assertThat(createResponse.isOk(), is(true));
 
-        // 3. Acticate the new User
+        // 3. Activate the NEW User
         final NotificationType type = NotificationType.ACTIVATE_USER;
         final NotificationField field = NotificationField.CODE;
         final String activationCode = spy.getNext(type).getFields().get(field);
         final Fallible activateResponse = administration.activateUser(activationCode);
         assertThat(activateResponse.isOk(), is(true));
 
-        // 4. Delete the new User
+        // 4. Delete the ACTIVE User
         final UserRequest deleteRequest = new UserRequest();
         deleteRequest.setUser(createResponse.getUser());
         deleteRequest.setNewStatus(UserStatus.DELETED);

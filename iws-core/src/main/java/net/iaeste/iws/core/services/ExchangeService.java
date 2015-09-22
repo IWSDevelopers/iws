@@ -146,18 +146,20 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
         final String externalId = givenOffer.getOfferId();
 
         if (externalId == null) {
-            // Add the Group to the Offer, otherwise our refno checks will fail
+            // Add the Group to the Offer, otherwise our ref-no checks will fail
             newEntity.getEmployer().setGroup(authentication.getGroup());
-            // Before we can persist the Offer, we need to check that the refno
+            // Before we can persist the Offer, we need to check that the ref-no
             // is valid. Since the Country is part of the Group, we can simply
-            // compare the refno with that
+            // compare the ref-no with that.
             verifyRefnoValidity(newEntity);
 
             final OfferEntity existingEntity = dao.findOfferByRefNo(authentication, newEntity.getRefNo());
             if (existingEntity == null) {
                 // Create a new Offer
 
-                newEntity.setExchangeYear(calculateExchangeYear());
+                // We're setting the Exchange Year to the one from the Offer
+                // ref-no. Since this should be the controlling number.
+                newEntity.setExchangeYear(givenOffer.getExchangeYear());
                 // Add the employer to the Offer
                 newEntity.setEmployer(employer);
                 // Set the Offer status to New
@@ -226,7 +228,7 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
         final String[] parts = toUpper(refno).split("-");
 
         // First, we're checking that the CountryCode is correct. Since we've
-        // splitted the Reference Number into at least 3 parts ("-" is allowed
+        // split the Reference Number into at least 3 parts ("-" is allowed
         // in the running number part), we can just look at the first one.
         if (!countryCode.equals(parts[0])) {
             throw new VerificationException("The reference number is not valid for this country. Received '" + parts[0] + "' but expected '" + countryCode + "'.");
@@ -379,12 +381,12 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
             newSharing.removeAll(resharing);
 
             if (!newSharing.isEmpty()) {
-                updateOfferState = keepOfferGroups.isEmpty() ? true : updateOfferState;
+                updateOfferState = keepOfferGroups.isEmpty() || updateOfferState;
                 keepOfferGroups.addAll(publishOffer(authentication, offer, newSharing));
             }
 
             if (!resharing.isEmpty()) {
-                updateOfferState = keepOfferGroups.isEmpty() ? true : updateOfferState;
+                updateOfferState = keepOfferGroups.isEmpty() || updateOfferState;
                 keepOfferGroups.addAll(republishOffer(authentication, offer, reshareGroups));
             }
 
@@ -627,12 +629,17 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
 
     private List<OfferGroupEntity> republishOffer(final Authentication authentication, final OfferEntity offer, final List<OfferGroupEntity> offerGroups) {
         final List<OfferGroupEntity> result = new ArrayList<>(offerGroups.size());
+
+        offer.setStatus(OfferState.SHARED);
+        dao.persist(authentication, offer);
+
         for (final OfferGroupEntity offerGroup : offerGroups) {
             //TODO reset application states?
             offerGroup.setStatus(OfferState.SHARED);
             dao.persist(authentication, offerGroup);
             result.add(offerGroup);
         }
+
         return result;
     }
 

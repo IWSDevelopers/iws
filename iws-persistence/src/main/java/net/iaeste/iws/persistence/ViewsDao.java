@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.persistence;
 
+import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.api.util.Paginatable;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.views.AttachedFileView;
@@ -26,6 +27,7 @@ import net.iaeste.iws.persistence.views.SharedOfferView;
 import net.iaeste.iws.persistence.views.StudentView;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * This DAO contains the various views that exists, and is used mainly for
@@ -48,11 +50,11 @@ public interface ViewsDao {
 
     List<EmployerView> findEmployers(Long groupId, Paginatable page, String partialName);
 
-    List<OfferView> findDomesticOffers(Authentication authentication, Integer exchangeYear, Paginatable page);
+    List<OfferView> findDomesticOffers(Authentication authentication, Integer exchangeYear, Set<OfferState> states, Boolean retrieveCurrentAndNextExchangeYear, Paginatable page);
 
     List<OfferView> findDomesticOffersByOfferIds(Authentication authentication, Integer exchangeYear, List<String> offerIds);
 
-    List<SharedOfferView> findSharedOffers(Authentication authentication, Integer exchangeYear, Paginatable page);
+    List<SharedOfferView> findSharedOffers(Authentication authentication, Integer exchangeYear, Set<OfferState> states, Boolean retrieveCurrentAndNextExchangeYear, Paginatable page);
 
     List<SharedOfferView> findSharedOffersByOfferIds(Authentication authentication, Integer exchangeYear, List<String> offerIds);
 

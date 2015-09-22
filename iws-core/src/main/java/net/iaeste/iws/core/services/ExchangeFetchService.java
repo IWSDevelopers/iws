@@ -189,16 +189,13 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
     }
 
     public FetchOffersResponse fetchOffers(final Authentication authentication, final FetchOffersRequest request) {
-        final Paginatable page = request.getPagingInformation();
-        final int year = request.getExchangeYear();
-
         final FetchOffersResponse response;
         switch (request.getFetchType()) {
             case DOMESTIC:
-                response = new FetchOffersResponse(findDomesticOffers(authentication, year, page));
+                response = new FetchOffersResponse(findDomesticOffers(authentication, request));
                 break;
             case SHARED:
-                response = new FetchOffersResponse(findSharedOffers(authentication, year, page));
+                response = new FetchOffersResponse(findSharedOffers(authentication, request));
                 break;
             default:
                 throw new PermissionException("The search type is not permitted.");
@@ -207,8 +204,8 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
         return response;
     }
 
-    private List<Offer> findDomesticOffers(final Authentication authentication, final int exchangeYear, final Paginatable page) {
-        final List<OfferView> found = viewsDao.findDomesticOffers(authentication, exchangeYear, page);
+    private List<Offer> findDomesticOffers(final Authentication authentication, final FetchOffersRequest request) {
+        final List<OfferView> found = viewsDao.findDomesticOffers(authentication, request.getExchangeYear(), request.getStates(), request.getRetrieveCurrentAndNextExchangeYear(), request.getPagingInformation());
         final List<Offer> result = new ArrayList<>(found.size());
 
         for (final OfferView view : found) {
@@ -223,8 +220,8 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
         return result;
     }
 
-    private List<Offer> findSharedOffers(final Authentication authentication, final int exchangeYear, final Paginatable page) {
-        final List<SharedOfferView> found = viewsDao.findSharedOffers(authentication, exchangeYear, page);
+    private List<Offer> findSharedOffers(final Authentication authentication, final FetchOffersRequest request) {
+        final List<SharedOfferView> found = viewsDao.findSharedOffers(authentication, request.getExchangeYear(), request.getStates(), request.getRetrieveCurrentAndNextExchangeYear(), request.getPagingInformation());
         final List<Offer> result = new ArrayList<>(found.size());
 
         for (final SharedOfferView view : found) {

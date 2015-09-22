@@ -32,7 +32,8 @@ import javax.persistence.Table;
         @NamedQuery(name = "view.findDomesticOffersByGroupAndYears",
             query = "select o from OfferView o " +
                     "where o.groupId = :gid" +
-                    "  and o.exchangeYear in :years"),
+                    "  and o.exchangeYear in :years" +
+                    "  and o.offer.status in :states"),
         @NamedQuery(name = "view.findDomesticOffersByGroupAndYearAndOfferExternalId",
             query = "select o from OfferView o " +
                     "where o.groupId = :gid" +

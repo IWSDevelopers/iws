@@ -171,6 +171,8 @@ public final class ExchangeMapper extends CommonMapper {
 
             ws.setFetchType(map(api.getFetchType()));
             ws.setExchangeYear(api.getExchangeYear());
+            ws.getStates().addAll(mapApiStateCollection(api.getStates()));
+            ws.setRetrieveCurrentAndNextExchangeYear(api.getRetrieveCurrentAndNextExchangeYear());
         }
 
         return ws;
@@ -446,6 +448,22 @@ public final class ExchangeMapper extends CommonMapper {
         }
 
         return api;
+    }
+
+    private static List<net.iaeste.iws.ws.OfferState> mapApiStateCollection(final Collection<OfferState> api) {
+        final List<net.iaeste.iws.ws.OfferState> ws;
+
+        if (api != null) {
+            ws = new ArrayList<>(api.size());
+
+            for (final OfferState state : api) {
+                ws.add(map(state));
+            }
+        } else {
+            ws = new ArrayList<>(0);
+        }
+
+        return ws;
     }
 
     private static Map<String, OfferCSVUploadResponse.ProcessingResult> map(final net.iaeste.iws.ws.OfferCSVUploadResponse.ProcessingResult ws) {

@@ -15,6 +15,7 @@
 package net.iaeste.iws.persistence.jpa;
 
 import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.api.util.Paginatable;
 import net.iaeste.iws.persistence.Authentication;
@@ -34,6 +35,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -53,7 +55,7 @@ public final class ViewsJpaDao extends BasicJpaDao implements ViewsDao {
     public List<ForeignOfferStatisticsView> findForeignOfferStatistics(final GroupEntity group, final Integer year) {
         final Query query = entityManager.createNamedQuery("view.findStatisticsForForeignOffersForGroupAndYears");
         query.setParameter("gid", group.getId());
-        query.setParameter("years", prepareExchangeYears(year));
+        query.setParameter("years", prepareExchangeYears(year, false));
 
         return query.getResultList();
     }
@@ -65,7 +67,7 @@ public final class ViewsJpaDao extends BasicJpaDao implements ViewsDao {
     public List<DomesticOfferStatisticsView> findDomesticOfferStatistics(final GroupEntity group, final Integer year) {
         final Query query = entityManager.createNamedQuery("view.findStatisticsForDomesticOffersForGroupAndYears");
         query.setParameter("gid", group.getId());
-        query.setParameter("years", prepareExchangeYears(year));
+        query.setParameter("years", prepareExchangeYears(year, false));
 
         return query.getResultList();
     }
@@ -120,10 +122,11 @@ public final class ViewsJpaDao extends BasicJpaDao implements ViewsDao {
      * {@inheritDoc}
      */
     @Override
-    public List<OfferView> findDomesticOffers(final Authentication authentication, final Integer exchangeYear, final Paginatable page) {
+    public List<OfferView> findDomesticOffers(final Authentication authentication, final Integer exchangeYear, final Set<OfferState> states, final Boolean retrieveCurrentAndNextExchangeYear, final Paginatable page) {
         final Query query = entityManager.createNamedQuery("view.findDomesticOffersByGroupAndYears");
         query.setParameter("gid", authentication.getGroup().getId());
-        query.setParameter("years", prepareExchangeYears(exchangeYear));
+        query.setParameter("years", prepareExchangeYears(exchangeYear, retrieveCurrentAndNextExchangeYear));
+        query.setParameter("states", states);
 
         // Todo 2014-01-23 by Kim; When Trac Task #719 is finished, then we'll use the pagination
         //return fetchList(query, page);
@@ -147,10 +150,11 @@ public final class ViewsJpaDao extends BasicJpaDao implements ViewsDao {
      * {@inheritDoc}
      */
     @Override
-    public List<SharedOfferView> findSharedOffers(Authentication authentication, Integer exchangeYear, final Paginatable page) {
+    public List<SharedOfferView> findSharedOffers(final Authentication authentication, final Integer exchangeYear, final Set<OfferState> states, final Boolean retrieveCurrentAndNextExchangeYear, final Paginatable page) {
         final Query query = entityManager.createNamedQuery("view.findSharedOffersByGroupAndYears");
         query.setParameter("gid", authentication.getGroup().getId());
-        query.setParameter("years", prepareExchangeYears(exchangeYear));
+        query.setParameter("years", prepareExchangeYears(exchangeYear, retrieveCurrentAndNextExchangeYear));
+        query.setParameter("states", states);
 
         // Todo 2014-01-23 by Kim; When Trac Task #719 is finished, then we'll use the pagination
         //return fetchList(query, page);
@@ -216,19 +220,24 @@ public final class ViewsJpaDao extends BasicJpaDao implements ViewsDao {
      * include information from the ongoing Calendar Year. Thus trying to fix a
      * Usability problem for Users, when the Exchange Year changes in
      * September.<br />
+     *   Note, following a User complaint, the list of years is made optional,
+     * and can be controlled via a flag. If the flag is set (default false),
+     * then information from both years is retrieved, otherwise only for the
+     * given year.<br />
      *   Basically, what will happen is that if the provided Exchange Year is
      * either the current Calendar Year or the next Exchange Year, then both
      * will be returned, of an earlier year was given, then only that will be
      * returned.
      *
-     * @param exchangeYear Echange Year to base list on
+     * @param exchangeYear                       Exchange Year to base list on
+     * @param retrieveCurrentAndNextExchangeYear Combine if true, otherwise not
      * @return List with either given Exchange Year or current + next
      */
-    private static List<Integer> prepareExchangeYears(final Integer exchangeYear) {
+    private static List<Integer> prepareExchangeYears(final Integer exchangeYear, final Boolean retrieveCurrentAndNextExchangeYear) {
         final int currentYear = new Date().getCurrentYear();
         final List<Integer> years = new ArrayList<>(2);
 
-        if (exchangeYear >= currentYear) {
+        if (retrieveCurrentAndNextExchangeYear && (exchangeYear >= currentYear)) {
             years.add(currentYear);
             years.add(currentYear + 1);
         } else {

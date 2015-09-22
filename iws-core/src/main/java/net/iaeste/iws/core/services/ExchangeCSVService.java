@@ -61,6 +61,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -137,11 +138,13 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
         final List<String> offerIds = request.getOfferIds();
         final Paginatable page = request.getPagingInformation();
         final Integer exchangeYear = request.getExchangeYear();
+        final Set<OfferState> states = EnumSet.allOf(OfferState.class);
+        states.remove(OfferState.DELETED);
 
         final List<OfferView> found;
         if (offerIds.isEmpty()) {
             //paging could make a problem here if it returns only some offers
-            found = viewsDao.findDomesticOffers(authentication, exchangeYear, page);
+            found = viewsDao.findDomesticOffers(authentication, exchangeYear, states, false, page);
         } else {
             found = viewsDao.findDomesticOffersByOfferIds(authentication, exchangeYear, offerIds);
         }
@@ -158,11 +161,13 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
         final List<String> offerIds = request.getOfferIds();
         final Paginatable page = request.getPagingInformation();
         final Integer exchangeYear = request.getExchangeYear();
+        final Set<OfferState> states = EnumSet.allOf(OfferState.class);
+        states.remove(OfferState.DELETED);
 
         final List<SharedOfferView> found;
         if (offerIds.isEmpty()) {
             //paging could make a problem here if it returns only some offers
-            found = viewsDao.findSharedOffers(authentication, exchangeYear, page);
+            found = viewsDao.findSharedOffers(authentication, exchangeYear, states, false, page);
         } else {
             found = viewsDao.findSharedOffersByOfferIds(authentication, exchangeYear, offerIds);
         }

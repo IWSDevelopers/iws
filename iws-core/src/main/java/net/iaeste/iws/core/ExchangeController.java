@@ -303,7 +303,7 @@ public final class ExchangeController extends CommonController implements Exchan
      * {@inheritDoc}
      */
     @Override
-    public OfferCSVDownloadResponse downloadOffers(AuthenticationToken token, OfferCSVDownloadRequest request) {
+    public OfferCSVDownloadResponse downloadOffers(final AuthenticationToken token, final OfferCSVDownloadRequest request) {
         if (LOG.isTraceEnabled()) {
             LOG.trace(formatLogMessage(token, "Starting downloadOffers()"));
         }

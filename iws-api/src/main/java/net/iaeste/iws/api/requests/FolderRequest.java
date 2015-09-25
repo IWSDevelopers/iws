@@ -41,7 +41,7 @@ public final class FolderRequest extends AbstractVerification implements Actiona
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     /** Default allowed Actions for the Folder Request. */
-    private static final Set<Action> allowed = EnumSet.of(Action.PROCESS, Action.DELETE);
+    private static final Set<Action> allowed = EnumSet.of(Action.PROCESS, Action.MOVE, Action.DELETE);
 
     /** Action to perform against the given Folder. */
     @XmlElement(required = true, nillable = false)

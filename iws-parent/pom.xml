@@ -284,10 +284,10 @@
                 <!-- For our in-memory testing, we're using HSQLDB -->
                 <groupId>org.hsqldb</groupId>
                 <artifactId>hsqldb</artifactId>
-                <!-- Note, there seems to be a bug in 2.3.3, which causes
-                     test-setup problems with sub-queries for our inserts, so
-                     please don't upgrade. -->
-                <version>2.3.2</version>
+                <!-- The IWS Storage functionality requires support for Common
+                     Table Expression, CTE, and HyperSQL is only supporting
+                     this as of version 2.3.3. -->
+                <version>2.3.3</version>
             </dependency>
             <dependency>
                 <groupId>cglib</groupId>

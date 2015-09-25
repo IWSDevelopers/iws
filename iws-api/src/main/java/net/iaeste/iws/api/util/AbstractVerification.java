@@ -500,7 +500,7 @@ public abstract class AbstractVerification implements Verifiable {
      * @param value The value for the Id
      * @throws IllegalArgumentException if the Id doesn't follow the correct format
      */
-    protected static void ensureValidId(final String field, final String value) throws IllegalArgumentException {
+    public static void ensureValidId(final String field, final String value) throws IllegalArgumentException {
         if ((value != null) && !UUID_PATTERN.matcher(value).matches()) {
             // The error message is deliberately not showing the format of our Id
             // type - no need to grant hackers too much information, since all

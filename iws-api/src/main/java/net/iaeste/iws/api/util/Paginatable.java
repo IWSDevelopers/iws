@@ -23,19 +23,20 @@ import net.iaeste.iws.api.enums.SortingField;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
- * @noinspection BooleanMethodNameMustStartWithQuestion
  */
 public interface Paginatable {
 
     /**
-     * The maximum allowed numberof objects to be retrieved in a single request.
+     * The maximum allowed number of objects to be retrieved in a single
+     * request.
      */
     int MAX_PAGE_SIZE = 100;
 
     /**
-     * The number for for the first page to be loaded.
+     * The number for for the first page to be loaded. It is set to start with
+     * 1, as this is a
      */
-    int FIRST_PAGE = 0;
+    int FIRST_PAGE = 1;
 
     /**
      * The default sorting order.

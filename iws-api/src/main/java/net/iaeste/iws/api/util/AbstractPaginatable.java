@@ -49,7 +49,7 @@ public abstract class AbstractPaginatable extends AbstractVerification {
      * @see Paginatable#FIRST_PAGE
      */
     public void setPageNumber(final int pageNumber) {
-        if (pageNumber < 0) {
+        if (pageNumber < Paginatable.FIRST_PAGE) {
             throw new VerificationException("Invalid Page number.");
         }
 

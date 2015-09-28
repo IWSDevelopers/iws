@@ -250,9 +250,10 @@ public final class OfferTest extends AbstractTest {
         assertThat(updateResponse.isOk(), is(true));
         final Offer updatedOffer = updateResponse.getOffer();
 
-        // Now, we have the inial Offer, and the updated Offer
+        // Now, we have the initial Offer, and the updated Offer
         assertThat(updatedOffer.getOfferId(), is(savedOffer.getOfferId()));
         assertThat(updatedOffer.getModified().isAfter(savedOffer.getModified()), is(true));
+        // ToDo There's a funny bug here, which have resulted in test failures; Expected: is "25-Sep-2015 23:15:44" but: was "25-Sep-2015 23:15:45"
         assertThat(updatedOffer.getCreated().toString(), is(savedOffer.getCreated().toString()));
         assertThat(updatedOffer.getWorkDescription(), is(not(initialOffer.getWorkDescription())));
         assertThat(updatedOffer.getWorkDescription(), is("Whatever"));

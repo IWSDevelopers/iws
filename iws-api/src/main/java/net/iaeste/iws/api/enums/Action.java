@@ -17,6 +17,15 @@ package net.iaeste.iws.api.enums;
 import javax.xml.bind.annotation.XmlType;
 
 /**
+ * When a IWS Processing Request is made, then it can sometimes be hard from the
+ * context to guess what needs to be done. And to avoid that we split up the
+ * Processing requests in more special parts, an Action is instead assigned, so
+ * it is possible to tell what should be done.<br />
+ *   The Actions described in this Enum is of a more general nature, not all
+ * Actions apply to the same Request, which is why all Processing Requests is
+ * also having a list of allowed Actions, which the requested Action is checked
+ * against.
+ *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.1
@@ -25,7 +34,8 @@ import javax.xml.bind.annotation.XmlType;
 public enum Action {
 
     /**
-     * Create a new Cooperating Institution.
+     * Create a new Object, depending on the Context, it can be Group, User or
+     * new Committee, i.e. Co-operating Institution or anything else.
      */
     CREATE,
 
@@ -42,17 +52,17 @@ public enum Action {
     UPGRADE,
 
     /**
+     * Processing a record means either Creating a new record or update an
+     * existing, based on the current state of the system.
+     */
+    PROCESS,
+
+    /**
      * Allows a Data Object with location information to be moved, i.e. a Folder
      * or a File can be moved from one Folder to another, provided both have the
      * same Group ownership.
      */
     MOVE,
-
-    /**
-     * Processing a record means either Creating a new record or update an
-     * existing, based on the current state of the system.
-     */
-    PROCESS,
 
     /**
      * Change the National Secretary.

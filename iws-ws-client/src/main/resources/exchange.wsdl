@@ -494,8 +494,8 @@
         <xs:sequence>
           <xs:element name="fetchType" type="tns:fetchType"/>
           <xs:element name="exchangeYear" type="xs:int"/>
-          <xs:element maxOccurs="unbounded" minOccurs="0" name="states" nillable="true" type="tns:OfferState"/>
-          <xs:element name="retrieveCurrentAndNextExchangeYear" nillable="true" type="xs:boolean"/>
+          <xs:element maxOccurs="unbounded" name="states" type="tns:OfferState"/>
+          <xs:element name="retrieveCurrentAndNextExchangeYear" type="xs:boolean"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>

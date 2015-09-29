@@ -49,10 +49,10 @@ public final class FetchOffersRequest extends AbstractPaginatable {
             OfferState.COMPLETED,    OfferState.AT_EMPLOYER, OfferState.ACCEPTED,
             OfferState.EXPIRED,      OfferState.REJECTED);
 
-    @XmlElement(required = true,  nillable = false) private FetchType fetchType;
-    @XmlElement(required = true,  nillable = false) private Integer exchangeYear;
-    @XmlElement(required = false, nillable = true)  private Set<OfferState> states = ALLOWED;
-    @XmlElement(required = false, nillable = true)  private boolean retrieveCurrentAndNextExchangeYear = false;
+    @XmlElement(required = true, nillable = false) private FetchType fetchType;
+    @XmlElement(required = true, nillable = false) private Integer exchangeYear;
+    @XmlElement(required = true, nillable = false) private Set<OfferState> states = ALLOWED;
+    @XmlElement(required = true, nillable = false) private boolean retrieveCurrentAndNextExchangeYear = false;
 
     // =========================================================================
     // Object Constructors

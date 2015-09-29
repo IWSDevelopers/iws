@@ -91,6 +91,10 @@ public class BasicJpaDao implements BasicDao {
     public void persist(final Authentication authentication, final IWSEntity entityToPersist) {
         ensureUpdateableHasExternalId(entityToPersist);
 
+        if ((entityToPersist instanceof Updateable<?>) && (entityToPersist.getId() != null)) {
+            ((Updateable) entityToPersist).setModified(new Date());
+        }
+
         // We have to start by persisting the entityToPersist, to have an Id
         entityManager.persist(entityToPersist);
 
@@ -369,7 +373,7 @@ public class BasicJpaDao implements BasicDao {
      * group moderators.
      *
      * @param entity Entity to check for monitoring
-     * @param group  Grop to check for monitoring
+     * @param group  Group to check for monitoring
      * @return Combined result for the monitoring
      */
     private MonitoringLevel findMonitoringLevel(final IWSEntity entity, final GroupEntity group) {

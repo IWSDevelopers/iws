@@ -41,14 +41,19 @@ public enum NotificationType {
     USERNAME_UPDATED,
 
     /**
-     * For Activating newly created User Accounts.
+     * For Activating newly created User Account.
      */
-    ACTIVATE_USER,
+    ACTIVATE_NEW_USER,
 
     /**
-     * When a User is either being suspended or re-activated.
+     * For Activating a suspended User Account.
      */
-    SUSPEND_USER,
+    ACTIVATE_SUSPENDED_USER,
+
+    /**
+     * For Suspending an Active User Account.
+     */
+    SUSPEND_ACTIVE_USER,
 
     /**
      * New user is being created

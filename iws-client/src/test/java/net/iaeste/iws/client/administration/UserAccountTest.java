@@ -86,7 +86,7 @@ public final class UserAccountTest extends AbstractAdministration {
 
         // To ensure that we can use the account, we have to activate it. Once
         // it is activated, we can move on to the actual test.
-        final String activationCode = readCode(NotificationType.ACTIVATE_USER);
+        final String activationCode = readCode(NotificationType.ACTIVATE_NEW_USER);
         final Fallible activateResponse = administration.activateUser(activationCode);
         assertThat(activateResponse.isOk(), is(true));
 
@@ -169,7 +169,7 @@ public final class UserAccountTest extends AbstractAdministration {
         assertThat(createResponse.isOk(), is(true));
 
         // 3. Activate the NEW User
-        final NotificationType type = NotificationType.ACTIVATE_USER;
+        final NotificationType type = NotificationType.ACTIVATE_NEW_USER;
         final NotificationField field = NotificationField.CODE;
         final String activationCode = spy.getNext(type).getFields().get(field);
         final Fallible activateResponse = administration.activateUser(activationCode);
@@ -197,7 +197,7 @@ public final class UserAccountTest extends AbstractAdministration {
         assertThat(deleteResponse.isOk(), is(true));
 
         // Okay, now we're using the activation link to activate the Account
-        final NotificationType type = NotificationType.ACTIVATE_USER;
+        final NotificationType type = NotificationType.ACTIVATE_NEW_USER;
         final NotificationField field = NotificationField.CODE;
         final String activationCode = spy.getNext(type).getFields().get(field);
         final Fallible activateResponse = administration.activateUser(activationCode);
@@ -247,7 +247,7 @@ public final class UserAccountTest extends AbstractAdministration {
         assertThat(result.getUser(), is(not(nullValue())));
         assertThat(result.getUser().getUserId(), is(not(nullValue())));
         // Creating a new User should generate an Activate User notification
-        final NotificationType type = NotificationType.ACTIVATE_USER;
+        final NotificationType type = NotificationType.ACTIVATE_NEW_USER;
         assertThat(spy.size(type), is(1));
         final String activationCode = spy.getNext(type).getFields().get(NotificationField.CODE);
         assertThat(activationCode, is(not(nullValue())));
@@ -266,7 +266,7 @@ public final class UserAccountTest extends AbstractAdministration {
         final Fallible result = administration.createUser(token, createUserRequest);
         assertThat(result.isOk(), is(true));
         // Creating a new User should generate an Activate User notification
-        final NotificationType type = NotificationType.ACTIVATE_USER;
+        final NotificationType type = NotificationType.ACTIVATE_NEW_USER;
         assertThat(spy.size(type), is(1));
         final String activationCode = spy.getNext(type).getFields().get(NotificationField.CODE);
         assertThat(activationCode, is(not(nullValue())));

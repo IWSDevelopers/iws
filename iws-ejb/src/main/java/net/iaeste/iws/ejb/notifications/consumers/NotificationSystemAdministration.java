@@ -242,12 +242,12 @@ public class NotificationSystemAdministration implements Observer {
         final NotificationProcessTaskStatus status;
         final UserEntity user = accessDao.findUserByUsername(username);
         if (user != null) {
-            LOG.info("User " + user.getId() + " to prepare " + NotificationType.ACTIVATE_USER + " notification for found");
-            UserNotificationEntity userNotification = notificationDao.findUserNotificationSetting(user, NotificationType.ACTIVATE_USER);
+            LOG.info("User " + user.getId() + " to prepare " + NotificationType.ACTIVATE_NEW_USER + " notification for found");
+            UserNotificationEntity userNotification = notificationDao.findUserNotificationSetting(user, NotificationType.ACTIVATE_NEW_USER);
             if (userNotification == null) {
-                userNotification = new UserNotificationEntity(user, NotificationType.ACTIVATE_USER, NotificationFrequency.IMMEDIATELY);
+                userNotification = new UserNotificationEntity(user, NotificationType.ACTIVATE_NEW_USER, NotificationFrequency.IMMEDIATELY);
                 notificationDao.persist(userNotification);
-                LOG.info("Notification setting " + NotificationType.ACTIVATE_USER + " for user " + user.getId() + " created");
+                LOG.info("Notification setting " + NotificationType.ACTIVATE_NEW_USER + " for user " + user.getId() + " created");
             }
 
             status = NotificationProcessTaskStatus.OK;

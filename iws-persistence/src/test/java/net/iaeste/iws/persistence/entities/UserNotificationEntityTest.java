@@ -56,13 +56,13 @@ public class UserNotificationEntityTest {
         assertThat(user.getUsername(), is("austria@iaeste.at"));
         final Query query = entityManager.createNamedQuery("notifications.findSettingByUserAndType");
         query.setParameter("id", user.getId());
-        query.setParameter("type", NotificationType.ACTIVATE_USER);
+        query.setParameter("type", NotificationType.ACTIVATE_NEW_USER);
         final List<UserNotificationEntity> foundBefore = query.getResultList();
 
         final UserNotificationEntity entity = new UserNotificationEntity();
         entity.setUser(user);
         entity.setFrequency(NotificationFrequency.IMMEDIATELY);
-        entity.setType(NotificationType.ACTIVATE_USER);
+        entity.setType(NotificationType.ACTIVATE_NEW_USER);
 
         entityManager.persist(entity);
 

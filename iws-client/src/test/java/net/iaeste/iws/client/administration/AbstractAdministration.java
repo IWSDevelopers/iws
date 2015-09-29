@@ -47,7 +47,7 @@ public abstract class AbstractAdministration extends AbstractTest {
         final NotificationSpy spy = NotificationSpy.getInstance();
         final User user = createUser(token, username, firstname, lastname);
 
-        final String activationCode = spy.getNext(NotificationType.ACTIVATE_USER).getFields().get(NotificationField.CODE);
+        final String activationCode = spy.getNext(NotificationType.ACTIVATE_NEW_USER).getFields().get(NotificationField.CODE);
         administration.activateUser(activationCode);
 
         return user;

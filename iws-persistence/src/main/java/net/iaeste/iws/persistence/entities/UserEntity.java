@@ -555,7 +555,7 @@ public class UserEntity extends AbstractUpdateable<UserEntity> implements Extern
         // the second purpose is to ensure that only those Notification Types,
         // which is allowed for this Entity is being delivered.
         switch (type) {
-            case ACTIVATE_USER:
+            case ACTIVATE_NEW_USER:
                 // Activating a user requires that the password is returned
                 fields.put(NotificationField.CLEARTEXT_PASSWORD, temporary);
             case RESET_PASSWORD:
@@ -580,6 +580,10 @@ public class UserEntity extends AbstractUpdateable<UserEntity> implements Extern
                 break;
             case PROCESS_EMAIL_ALIAS:
                 fields.put(NotificationField.EMAIL, data);
+                break;
+            case SUSPEND_ACTIVE_USER:
+            case ACTIVATE_SUSPENDED_USER:
+                // Ignore for now
                 break;
             default:
                 throw new NotificationException("NotificationType " + type + " is not supported in this context.");

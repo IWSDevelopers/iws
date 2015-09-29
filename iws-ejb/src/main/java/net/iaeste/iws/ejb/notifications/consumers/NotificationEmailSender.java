@@ -64,7 +64,6 @@ import java.util.Map;
  * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
- * @noinspection ObjectAllocationInLoop
  */
 public class NotificationEmailSender implements Observer {
     private Long id = null;
@@ -77,12 +76,9 @@ public class NotificationEmailSender implements Observer {
 
     private static final Logger LOG = LoggerFactory.getLogger(NotificationEmailSender.class);
 
-    //Need to be EJB to use @resource
-//    @Resource(mappedName = "iwsEmailQueue")
     private static final String QUEUE_NAME = "jms/queue/iwsEmailQueue";
     private Queue queue;
 
-//    @Resource(mappedName = "iwsQueueConnectionFactory")
     private static final String QUEUE_FACTORY_NAME = "jms/factory/iwsQueueConnectionFactory";
     private QueueConnectionFactory queueConnectionFactory;
 
@@ -110,18 +106,18 @@ public class NotificationEmailSender implements Observer {
         try {
             final Context context = new InitialContext();
 
-            queueConnectionFactory = (QueueConnectionFactory)context.lookup(QUEUE_FACTORY_NAME);
+            queueConnectionFactory = (QueueConnectionFactory) context.lookup(QUEUE_FACTORY_NAME);
             queueConnection = queueConnectionFactory.createQueueConnection();
             queueConnection.start();
 
-            queue = (Queue)context.lookup(QUEUE_NAME);
+            queue = (Queue) context.lookup(QUEUE_NAME);
             context.close();
 
             session = queueConnection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE);
             sender = session.createSender(queue);
             //TODO added for FFMQ, keep it for glassfish?
             sender.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
-        } catch (NamingException |JMSException e) {
+        } catch (NamingException | JMSException e) {
             throw new IWSException(IWSErrors.ERROR, "Queue sender (NotificationEmailSender) initialization failed.", e);
         }
     }
@@ -217,7 +213,7 @@ public class NotificationEmailSender implements Observer {
         if ((task != null) && (task.getObject() != null)) {
             LOG.info("Processing email notification job task " + task.getId());
             try (final ByteArrayInputStream inputStream = new ByteArrayInputStream(task.getObject());
-                 final ObjectInputStream objectStream = new ObjectInputStream(inputStream);) {
+                 final ObjectInputStream objectStream = new ObjectInputStream(inputStream)) {
                 final Map<NotificationField, String> fields = (Map<NotificationField, String>) objectStream.readObject();
                 NotificationProcessTaskStatus processedStatus = NotificationProcessTaskStatus.ERROR;
                 //TODO task is not processed, so value false is hardcoded for now, should be changed or deleted once problems are solved
@@ -302,7 +298,7 @@ public class NotificationEmailSender implements Observer {
 
     // printout of the activation link for easier testing of add user functionality
     private static void debugLogActivationLink(Map<NotificationField, String> fields, NotificationType notificationType) {
-        if(notificationType == NotificationType.ACTIVATE_USER && LOG.isDebugEnabled()) {
+        if (notificationType == NotificationType.ACTIVATE_NEW_USER && LOG.isDebugEnabled()) {
             String hostname;
             try {
                 hostname = InetAddress.getLocalHost().getHostName();
@@ -321,7 +317,7 @@ public class NotificationEmailSender implements Observer {
         final UserEntity user;
 
         switch (type) {
-            case ACTIVATE_USER:
+            case ACTIVATE_NEW_USER:
                 user = accessDao.findUserByUsername(fields.get(NotificationField.EMAIL));
                 if (user != null) {
                     result.add(user);
@@ -352,7 +348,7 @@ public class NotificationEmailSender implements Observer {
         final String result;
 
         switch (type) {
-            case ACTIVATE_USER:
+            case ACTIVATE_NEW_USER:
             case NEW_GROUP_OWNER:
             case RESET_PASSWORD:
             case RESET_SESSION:

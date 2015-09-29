@@ -61,20 +61,12 @@ public class NotificationMessageGeneratorFreemarker implements NotificationMessa
      */
     @Override
     public Map<String, String> generateFromTemplate(final Map<NotificationField, String> fields, final NotificationType type) {
-//        switch (obj.getNotificationSubject()) {
-//            case USER:
-//                return processUser((UserEntity)obj, type);
-//            case GROUP:
-//                throw new NotImplementedException("Notifications for group are not implemented");
-//            case OFFER:
-//                throw new NotImplementedException("Notifications for offer are not implemented");
-//            default:
-//        }
         final String templateName;
         final String titleTemplateName;
         final String dir;
+
         switch (type) {
-            case ACTIVATE_USER:
+            case ACTIVATE_NEW_USER:
                 templateName = "activateUser.ftl";
                 titleTemplateName = "activateUserTitle.ftl";
                 dir = USER_TEMPLATE_DIR;
@@ -101,7 +93,6 @@ public class NotificationMessageGeneratorFreemarker implements NotificationMessa
                 break;
             default:
                 throw new NotificationException("NotificationType " + type + " is not supported in this context.");
-//                throw new IWSException(IWSErrors.ERROR, "Unsupported object for notification");
         }
 
         return generate(dir, templateName, titleTemplateName, fields);

@@ -355,7 +355,7 @@ public final class CommitteeService extends CommonService<CommitteeDao> {
 
         notifications.notify(authentication, user, NotificationType.NEW_USER);
         notifications.notify(authentication, user, NotificationType.PROCESS_EMAIL_ALIAS);
-        notifications.notify(authentication, user, NotificationType.ACTIVATE_USER);
+        notifications.notify(authentication, user, NotificationType.ACTIVATE_NEW_USER);
     }
 
     private void changeExistingOwnerRole(final Authentication authentication, final RoleEntity role, final GroupEntity... groups) {

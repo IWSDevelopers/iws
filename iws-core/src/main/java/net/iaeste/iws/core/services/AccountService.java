@@ -96,7 +96,7 @@ public final class AccountService extends CommonService<AccessDao> {
             user = createStudentAccount(authentication, request);
         } else {
             user = createUserAccount(authentication, request);
-            notifications.notify(authentication, user, NotificationType.ACTIVATE_USER);
+            notifications.notify(authentication, user, NotificationType.ACTIVATE_NEW_USER);
         }
 
         return new CreateUserResponse(transform(user));
@@ -486,22 +486,25 @@ public final class AccountService extends CommonService<AccessDao> {
                         user.setModified(new Date());
                         dao.persist(authentication, user);
                         notifications.notify(authentication, user, findNotificationType(newStatus));
+                        LOG.info("Changed status for {} to {}.", user, newStatus);
                     } else {
                         throw new IWSException(IWSErrors.PROCESSING_FAILURE, "Cannot revive a deleted user, please create a new Account.");
                     }
                     break;
                 case DELETED:
                     deletePrivateData(authentication, user);
+                    LOG.info("Deleting private data from {}.", user);
                     break;
             }
         } else if (newStatus == UserStatus.DELETED) {
             deleteNewUser(user);
+            LOG.info("Deleting new Account for {}.", user, newStatus);
         }
     }
 
     /**
      * Although the same functionality is present in the updateUserStatus()
-     * method, there's a problem with invokingthe Notification for Suspending
+     * method, there's a problem with invoking the Notification for Suspending
      * Users via the Cron job. The purpose of the notification is to remove the
      * User's e-mail Aliases and access to Mailing lists. However, it is the
      * long term goal to have all this functionality moved to Database Views,
@@ -558,10 +561,10 @@ public final class AccountService extends CommonService<AccessDao> {
                 type = NotificationType.NEW_USER;
                 break;
             case ACTIVE:
-                type = NotificationType.ACTIVATE_USER;
+                type = NotificationType.ACTIVATE_SUSPENDED_USER;
                 break;
             case SUSPENDED:
-                type = NotificationType.SUSPEND_USER;
+                type = NotificationType.SUSPEND_ACTIVE_USER;
                 break;
             default:
                 type = null;

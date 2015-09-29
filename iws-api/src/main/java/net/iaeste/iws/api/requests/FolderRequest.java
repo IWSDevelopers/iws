@@ -49,7 +49,8 @@ public final class FolderRequest extends AbstractVerification implements Actiona
 
     /**
      * The Id of the Parent Folder, if nothing given - the Group's root folder
-     * is used. This value is only used when creating new Folders.
+     * is used. This value is used when creating new Folders and when moving
+     * Folders.
      */
     @XmlElement(required = true, nillable = true)
     private String parentId = null;

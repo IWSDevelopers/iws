@@ -66,7 +66,7 @@ import javax.xml.ws.WebServiceContext;
  * @since   IWS 1.1
  */
 @SOAPBinding(style = SOAPBinding.Style.RPC)
-@BindingType(javax.xml.ws.soap.SOAPBinding.SOAP12HTTP_BINDING)
+//@BindingType(javax.xml.ws.soap.SOAPBinding.SOAP12HTTP_BINDING)
 @WebService(name = "exchangeWS", serviceName = "exchangeWSService", portName = "exchangeWS", targetNamespace = "http://ws.iws.iaeste.net/")
 public class ExchangeWS implements Exchange {
 

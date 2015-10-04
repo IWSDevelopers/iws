@@ -31,7 +31,7 @@ import java.util.Map;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "ProcessOfferRequest", propOrder = { "offer" })
+@XmlType(name = "processOfferRequest", propOrder = { "offer" })
 public final class ProcessOfferRequest extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */

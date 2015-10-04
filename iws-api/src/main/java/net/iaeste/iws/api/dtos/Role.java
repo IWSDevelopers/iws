@@ -39,7 +39,7 @@ import java.util.Set;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "Role", propOrder = { "roleId", "roleName", "permissions" })
+@XmlType(name = "role", propOrder = { "roleId", "roleName", "permissions" })
 public final class Role extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */

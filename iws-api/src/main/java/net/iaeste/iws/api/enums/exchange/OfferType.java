@@ -25,7 +25,7 @@ import java.util.Set;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.1
  */
-@XmlType(name = "OfferType")
+@XmlType(name = "offerType")
 public enum OfferType implements Descriptable<OfferType> {
 
     OPEN("Open", "", EnumSet.of(ExchangeType.AC, ExchangeType.IW, ExchangeType.COBE)),

@@ -34,7 +34,7 @@ import java.util.Set;
  * @since   IWS 1.1
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "FolderRequest", propOrder = { "action", "parentId", "folder" })
+@XmlType(name = "folderRequest", propOrder = { "action", "parentId", "folder" })
 public final class FolderRequest extends AbstractVerification implements Actionable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */

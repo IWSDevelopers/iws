@@ -31,7 +31,7 @@ import java.util.Map;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "AccountNameRequest", propOrder = { "user", "firstname", "lastname" })
+@XmlType(name = "accountNameRequest", propOrder = { "user", "firstname", "lastname" })
 public final class AccountNameRequest extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */

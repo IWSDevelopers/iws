@@ -30,7 +30,7 @@ import java.util.Map;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "FetchRoleRequest", propOrder = { "groupId" })
+@XmlType(name = "fetchRoleRequest", propOrder = { "groupId" })
 public final class FetchRoleRequest extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */

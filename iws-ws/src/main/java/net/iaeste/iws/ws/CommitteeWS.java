@@ -25,7 +25,7 @@ import net.iaeste.iws.api.requests.FetchInternationalGroupRequest;
 import net.iaeste.iws.api.requests.InternationalGroupRequest;
 import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchCommitteeResponse;
-import net.iaeste.iws.api.responses.FetchCountrySurveyRespose;
+import net.iaeste.iws.api.responses.FetchCountrySurveyResponse;
 import net.iaeste.iws.api.responses.FetchInternationalGroupResponse;
 import net.iaeste.iws.ejb.CommitteeBean;
 import net.iaeste.iws.ejb.cdi.IWSBean;
@@ -49,7 +49,7 @@ import javax.xml.ws.WebServiceContext;
  * @since   IWS 1.1
  */
 @SOAPBinding(style = SOAPBinding.Style.RPC)
-@BindingType(javax.xml.ws.soap.SOAPBinding.SOAP12HTTP_BINDING)
+//@BindingType(javax.xml.ws.soap.SOAPBinding.SOAP12HTTP_BINDING)
 @WebService(name = "committeeWS", serviceName = "committeeWSService", portName = "committeeWS", targetNamespace = "http://ws.iws.iaeste.net/")
 public class CommitteeWS implements Committees {
 
@@ -198,11 +198,11 @@ public class CommitteeWS implements Committees {
     @Override
     @WebMethod
     @WebResult(name = "response")
-    public FetchCountrySurveyRespose fetchCountrySurvey(
+    public FetchCountrySurveyResponse fetchCountrySurvey(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final FetchCountrySurveyRequest request) {
         LOG.info(requestLogger.prepareLogMessage(token, "fetchCountrySurvey"));
-        FetchCountrySurveyRespose response;
+        FetchCountrySurveyResponse response;
 
         try {
             response = bean.fetchCountrySurvey(token, request);
@@ -210,7 +210,7 @@ public class CommitteeWS implements Committees {
             // The EJB's are all annotated with Transactional Logic, so if an
             // error is flying by - then it is caught here.
             LOG.error("Transactional Problem: " + e.getMessage(), e);
-            response = new FetchCountrySurveyRespose(IWSErrors.FATAL, "Internal error occurred while handling the request.");
+            response = new FetchCountrySurveyResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
         }
 
         return response;

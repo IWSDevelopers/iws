@@ -33,7 +33,7 @@ import java.util.Map;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "DatePeriod", propOrder = { "fromDate", "toDate" })
+@XmlType(name = "datePeriod", propOrder = { "fromDate", "toDate" })
 public final class DatePeriod extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */

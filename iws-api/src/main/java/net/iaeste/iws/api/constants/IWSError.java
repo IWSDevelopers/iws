@@ -26,7 +26,7 @@ import java.io.Serializable;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
-@XmlType(name = "IWSError")
+@XmlType(name = "iwsError")
 public final class IWSError implements Serializable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */

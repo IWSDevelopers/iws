@@ -31,8 +31,8 @@ import java.util.Map;
  * @since   IWS 1.1
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "OfferCSVUploadResponse", propOrder = { "processingResult", "errors" })
-public class OfferCSVUploadResponse extends FallibleResponse {
+@XmlType(name = "offerCSVUploadResponse", propOrder = { "processingResult", "errors" })
+public final class OfferCSVUploadResponse extends FallibleResponse {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -41,7 +41,7 @@ public class OfferCSVUploadResponse extends FallibleResponse {
      * Each CSV record to be updated will have a tri-state. Either it was added,
      * updated or there were processing errors.
      */
-    @XmlType(name = "ProcessingResult")
+    @XmlType(name = "processingResult")
     public enum ProcessingResult { ADDED, UPDATED, ERROR }
 
     /**

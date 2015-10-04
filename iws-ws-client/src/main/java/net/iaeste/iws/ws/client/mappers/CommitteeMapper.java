@@ -24,7 +24,7 @@ import net.iaeste.iws.api.requests.InternationalGroupRequest;
 import net.iaeste.iws.api.requests.CountrySurveyRequest;
 import net.iaeste.iws.api.responses.FetchCommitteeResponse;
 import net.iaeste.iws.api.responses.FetchInternationalGroupResponse;
-import net.iaeste.iws.api.responses.FetchCountrySurveyRespose;
+import net.iaeste.iws.api.responses.FetchCountrySurveyResponse;
 
 import java.util.Collection;
 import java.util.EnumSet;
@@ -133,11 +133,11 @@ public final class CommitteeMapper extends CommonMapper {
         return ws;
     }
 
-    public static FetchCountrySurveyRespose map(final net.iaeste.iws.ws.FetchCountrySurveyRespose ws) {
-        FetchCountrySurveyRespose api = null;
+    public static FetchCountrySurveyResponse map(final net.iaeste.iws.ws.FetchCountrySurveyRespose ws) {
+        FetchCountrySurveyResponse api = null;
 
         if (ws != null) {
-            api = new FetchCountrySurveyRespose(map(ws.getError()), ws.getMessage());
+            api = new FetchCountrySurveyResponse(map(ws.getError()), ws.getMessage());
 
             api.setSurvey(map(ws.getSurvey()));
         }

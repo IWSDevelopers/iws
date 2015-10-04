@@ -27,14 +27,14 @@ import javax.xml.bind.annotation.XmlType;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
-@XmlType(name = "GroupType")
+@XmlType(name = "groupType")
 public enum GroupType implements Descriptable<GroupType> {
 
     /**
      * The Administration Group is present to ensure that certain users may
      * perform special tasks, that is otherwise not allowed. For example, to
      * avoid data corruption, it is not allowed for users to change their first
-     * and lastnames. However, there are cases where you wish to change them,
+     * and last names. However, there are cases where you wish to change them,
      * such as marriage where the family name is changed.<br />
      *   This GroupType will have both a public Mailing list and a public file
      * folder for others to view the content of, if the files have been marked

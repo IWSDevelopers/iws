@@ -1,8 +1,13 @@
-<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://ws.iws.iaeste.net/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="accessWSService" targetNamespace="http://ws.iws.iaeste.net/">
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://ws.iws.iaeste.net/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="accessWSService" targetNamespace="http://ws.iws.iaeste.net/">
+  <wsdl:documentation>
+      Service: IWS Access Service
+      Version: 1.1
+      Owner: IAESTE A.s.b.l.
+  </wsdl:documentation>
   <wsdl:types>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://ws.iws.iaeste.net/" targetNamespace="http://ws.iws.iaeste.net/" version="1.0">
 
-  <xs:complexType final="extension restriction" name="AuthenticationRequest">
+  <xs:complexType final="extension restriction" name="authenticationRequest">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
@@ -17,24 +22,24 @@
     <xs:sequence/>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="AuthenticationResponse">
+  <xs:complexType final="extension restriction" name="authenticationResponse">
     <xs:complexContent>
-      <xs:extension base="tns:FallibleResponse">
+      <xs:extension base="tns:fallibleResponse">
         <xs:sequence>
-          <xs:element name="token" type="tns:AuthenticationToken"/>
+          <xs:element name="token" type="tns:authenticationToken"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType name="FallibleResponse">
+  <xs:complexType name="fallibleResponse">
     <xs:sequence>
-      <xs:element name="error" type="tns:IWSError"/>
+      <xs:element name="error" type="tns:iwsError"/>
       <xs:element name="message" type="xs:string"/>
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="AuthenticationToken">
+  <xs:complexType final="extension restriction" name="authenticationToken">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
@@ -45,49 +50,49 @@
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="IWSError">
+  <xs:complexType final="extension restriction" name="iwsError">
     <xs:sequence>
       <xs:element name="error" type="xs:int"/>
       <xs:element name="description" type="xs:string"/>
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="FetchPermissionResponse">
+  <xs:complexType final="extension restriction" name="fetchPermissionResponse">
     <xs:complexContent>
-      <xs:extension base="tns:FallibleResponse">
+      <xs:extension base="tns:fallibleResponse">
         <xs:sequence>
           <xs:element name="userId" type="xs:string"/>
-          <xs:element maxOccurs="unbounded" name="authorizations" type="tns:Authorization"/>
+          <xs:element maxOccurs="unbounded" name="authorizations" type="tns:authorization"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="Authorization">
+  <xs:complexType final="extension restriction" name="authorization">
     <xs:sequence>
-      <xs:element name="userGroup" type="tns:UserGroup"/>
+      <xs:element name="userGroup" type="tns:userGroup"/>
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="UserGroup">
+  <xs:complexType final="extension restriction" name="userGroup">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
           <xs:element name="userGroupId" nillable="true" type="xs:string"/>
-          <xs:element name="user" type="tns:User"/>
-          <xs:element name="group" type="tns:Group"/>
-          <xs:element name="role" type="tns:Role"/>
+          <xs:element name="user" type="tns:user"/>
+          <xs:element name="group" type="tns:group"/>
+          <xs:element name="role" type="tns:role"/>
           <xs:element name="title" nillable="true" type="xs:string"/>
           <xs:element name="onPublicList" type="xs:boolean"/>
           <xs:element name="onPrivateList" type="xs:boolean"/>
           <xs:element name="writeToPrivateList" type="xs:boolean"/>
-          <xs:element name="memberSince" nillable="true" type="tns:Date"/>
+          <xs:element name="memberSince" nillable="true" type="tns:date"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="User">
+  <xs:complexType final="extension restriction" name="user">
     <xs:complexContent>
       <xs:extension base="tns:abstractDto">
         <xs:sequence>
@@ -96,11 +101,11 @@
           <xs:element name="alias" nillable="true" type="xs:string"/>
           <xs:element name="firstname" nillable="true" type="xs:string"/>
           <xs:element name="lastname" nillable="true" type="xs:string"/>
-          <xs:element name="person" nillable="true" type="tns:Person"/>
-          <xs:element name="status" nillable="true" type="tns:UserStatus"/>
-          <xs:element name="type" type="tns:UserType"/>
-          <xs:element name="privacy" type="tns:Privacy"/>
-          <xs:element name="notifications" type="tns:NotificationFrequency"/>
+          <xs:element name="person" nillable="true" type="tns:person"/>
+          <xs:element name="status" nillable="true" type="tns:userStatus"/>
+          <xs:element name="type" type="tns:userType"/>
+          <xs:element name="privacy" type="tns:privacy"/>
+          <xs:element name="notifications" type="tns:notificationFrequency"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -114,18 +119,18 @@
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="Person">
+  <xs:complexType final="extension restriction" name="person">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
-          <xs:element name="nationality" nillable="true" type="tns:Country"/>
-          <xs:element name="address" nillable="true" type="tns:Address"/>
+          <xs:element name="nationality" nillable="true" type="tns:country"/>
+          <xs:element name="address" nillable="true" type="tns:address"/>
           <xs:element name="alternateEmail" nillable="true" type="xs:string"/>
           <xs:element name="phone" nillable="true" type="xs:string"/>
           <xs:element name="mobile" nillable="true" type="xs:string"/>
           <xs:element name="fax" nillable="true" type="xs:string"/>
-          <xs:element name="birthday" nillable="true" type="tns:Date"/>
-          <xs:element name="gender" nillable="true" type="tns:Gender"/>
+          <xs:element name="birthday" nillable="true" type="tns:date"/>
+          <xs:element name="gender" nillable="true" type="tns:gender"/>
           <xs:element name="understoodPrivacySettings" nillable="true" type="xs:boolean"/>
           <xs:element name="acceptNewsletters" nillable="true" type="xs:boolean"/>
         </xs:sequence>
@@ -133,7 +138,7 @@
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="Country">
+  <xs:complexType final="extension restriction" name="country">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
@@ -144,16 +149,16 @@
           <xs:element name="nationality" nillable="true" type="xs:string"/>
           <xs:element name="citizens" nillable="true" type="xs:string"/>
           <xs:element name="phonecode" nillable="true" type="xs:string"/>
-          <xs:element name="currency" type="tns:Currency"/>
+          <xs:element name="currency" type="tns:currency"/>
           <xs:element name="languages" nillable="true" type="xs:string"/>
-          <xs:element name="membership" nillable="true" type="tns:Membership"/>
+          <xs:element name="membership" nillable="true" type="tns:membership"/>
           <xs:element name="memberSince" nillable="true" type="xs:int"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="Address">
+  <xs:complexType final="extension restriction" name="address">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
@@ -163,19 +168,19 @@
           <xs:element name="city" nillable="true" type="xs:string"/>
           <xs:element name="state" nillable="true" type="xs:string"/>
           <xs:element name="pobox" nillable="true" type="xs:string"/>
-          <xs:element name="country" nillable="true" type="tns:Country"/>
+          <xs:element name="country" nillable="true" type="tns:country"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="Date">
+  <xs:complexType final="extension restriction" name="date">
     <xs:sequence>
       <xs:element name="midnight" type="xs:dateTime"/>
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="Group">
+  <xs:complexType final="extension restriction" name="group">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
@@ -185,46 +190,46 @@
           <xs:element name="listName" nillable="true" type="xs:string"/>
           <xs:element name="privateList" type="xs:boolean"/>
           <xs:element name="publicList" type="xs:boolean"/>
-          <xs:element name="groupType" type="tns:GroupType"/>
+          <xs:element name="groupType" type="tns:groupType"/>
           <xs:element name="description" nillable="true" type="xs:string"/>
-          <xs:element name="monitoringLevel" nillable="true" type="tns:MonitoringLevel"/>
-          <xs:element name="country" nillable="true" type="tns:Country"/>
+          <xs:element name="monitoringLevel" nillable="true" type="tns:monitoringLevel"/>
+          <xs:element name="country" nillable="true" type="tns:country"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="Role">
+  <xs:complexType final="extension restriction" name="role">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
           <xs:element name="roleId" nillable="true" type="xs:string"/>
           <xs:element name="roleName" type="xs:string"/>
-          <xs:element maxOccurs="unbounded" name="permissions" type="tns:Permission"/>
+          <xs:element maxOccurs="unbounded" name="permissions" type="tns:permission"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="SessionDataResponse">
+  <xs:complexType final="extension restriction" name="sessionDataResponse">
     <xs:complexContent>
-      <xs:extension base="tns:FallibleResponse">
+      <xs:extension base="tns:fallibleResponse">
         <xs:sequence>
           <xs:element name="sessionData" nillable="true" type="xs:base64Binary"/>
-          <xs:element name="modified" nillable="true" type="tns:DateTime"/>
-          <xs:element name="created" nillable="true" type="tns:DateTime"/>
+          <xs:element name="modified" nillable="true" type="tns:dateTime"/>
+          <xs:element name="created" nillable="true" type="tns:dateTime"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType name="DateTime">
+  <xs:complexType final="extension restriction" name="dateTime">
     <xs:sequence>
       <xs:element name="timestamp" type="xs:dateTime"/>
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="Password">
+  <xs:complexType final="extension restriction" name="password">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
@@ -235,7 +240,7 @@
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="SessionDataRequest">
+  <xs:complexType final="extension restriction" name="sessionDataRequest">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
@@ -245,7 +250,7 @@
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:simpleType name="Currency">
+  <xs:simpleType name="currency">
     <xs:restriction base="xs:string">
       <xs:enumeration value="AED"/>
       <xs:enumeration value="AFN"/>
@@ -414,7 +419,7 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="Membership">
+  <xs:simpleType name="membership">
     <xs:restriction base="xs:string">
       <xs:enumeration value="UNKNOWN"/>
       <xs:enumeration value="FULL_MEMBER"/>
@@ -426,7 +431,7 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="Gender">
+  <xs:simpleType name="gender">
     <xs:restriction base="xs:string">
       <xs:enumeration value="MALE"/>
       <xs:enumeration value="FEMALE"/>
@@ -434,7 +439,7 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="UserStatus">
+  <xs:simpleType name="userStatus">
     <xs:restriction base="xs:string">
       <xs:enumeration value="NEW"/>
       <xs:enumeration value="ACTIVE"/>
@@ -443,7 +448,7 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="UserType">
+  <xs:simpleType name="userType">
     <xs:restriction base="xs:string">
       <xs:enumeration value="VOLUNTEER"/>
       <xs:enumeration value="EMPLOYED"/>
@@ -453,7 +458,7 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="Privacy">
+  <xs:simpleType name="privacy">
     <xs:restriction base="xs:string">
       <xs:enumeration value="PUBLIC"/>
       <xs:enumeration value="PROTECTED"/>
@@ -461,7 +466,7 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="NotificationFrequency">
+  <xs:simpleType name="notificationFrequency">
     <xs:restriction base="xs:string">
       <xs:enumeration value="IMMEDIATELY"/>
       <xs:enumeration value="DAILY"/>
@@ -469,7 +474,7 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="GroupType">
+  <xs:simpleType name="groupType">
     <xs:restriction base="xs:string">
       <xs:enumeration value="ADMINISTRATION"/>
       <xs:enumeration value="PRIVATE"/>
@@ -482,7 +487,7 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="MonitoringLevel">
+  <xs:simpleType name="monitoringLevel">
     <xs:restriction base="xs:string">
       <xs:enumeration value="NONE"/>
       <xs:enumeration value="MARKED"/>
@@ -490,7 +495,7 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="Permission">
+  <xs:simpleType name="permission">
     <xs:restriction base="xs:string">
       <xs:enumeration value="FETCH_COUNTRIES"/>
       <xs:enumeration value="PROCESS_COUNTRY"/>
@@ -534,23 +539,23 @@
 </xs:schema>
   </wsdl:types>
   <wsdl:message name="forgotPasswordResponse">
-    <wsdl:part name="response" type="tns:FallibleResponse">
+    <wsdl:part name="response" type="tns:fallibleResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="generateSession">
-    <wsdl:part name="request" type="tns:AuthenticationRequest">
+    <wsdl:part name="request" type="tns:authenticationRequest">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="requestResettingSession">
-    <wsdl:part name="request" type="tns:AuthenticationRequest">
+    <wsdl:part name="request" type="tns:authenticationRequest">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="verifySession">
-    <wsdl:part name="token" type="tns:AuthenticationToken">
+    <wsdl:part name="token" type="tns:authenticationToken">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="readSessionDataResponse">
-    <wsdl:part name="response" type="tns:SessionDataResponse">
+    <wsdl:part name="response" type="tns:sessionDataResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="forgotPassword">
@@ -558,43 +563,43 @@
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="resetSessionResponse">
-    <wsdl:part name="response" type="tns:AuthenticationResponse">
+    <wsdl:part name="response" type="tns:authenticationResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="fetchPermissionsResponse">
-    <wsdl:part name="response" type="tns:FetchPermissionResponse">
+    <wsdl:part name="response" type="tns:fetchPermissionResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="resetPasswordResponse">
-    <wsdl:part name="response" type="tns:FallibleResponse">
+    <wsdl:part name="response" type="tns:fallibleResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="fetchPermissions">
-    <wsdl:part name="token" type="tns:AuthenticationToken">
+    <wsdl:part name="token" type="tns:authenticationToken">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="deprecateSession">
-    <wsdl:part name="token" type="tns:AuthenticationToken">
+    <wsdl:part name="token" type="tns:authenticationToken">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="requestResettingSessionResponse">
-    <wsdl:part name="response" type="tns:FallibleResponse">
+    <wsdl:part name="response" type="tns:fallibleResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="readSessionData">
-    <wsdl:part name="token" type="tns:AuthenticationToken">
+    <wsdl:part name="token" type="tns:authenticationToken">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="resetPassword">
-    <wsdl:part name="password" type="tns:Password">
+    <wsdl:part name="password" type="tns:password">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="updatePasswordResponse">
-    <wsdl:part name="response" type="tns:FallibleResponse">
+    <wsdl:part name="response" type="tns:fallibleResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="verifySessionResponse">
-    <wsdl:part name="response" type="tns:FallibleResponse">
+    <wsdl:part name="response" type="tns:fallibleResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="resetSession">
@@ -602,30 +607,31 @@
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="generateSessionResponse">
-    <wsdl:part name="response" type="tns:AuthenticationResponse">
+    <wsdl:part name="response" type="tns:authenticationResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="saveSessionData">
-    <wsdl:part name="token" type="tns:AuthenticationToken">
+    <wsdl:part name="token" type="tns:authenticationToken">
     </wsdl:part>
-    <wsdl:part name="request" type="tns:SessionDataRequest">
+    <wsdl:part name="request" type="tns:sessionDataRequest">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="updatePassword">
-    <wsdl:part name="token" type="tns:AuthenticationToken">
+    <wsdl:part name="token" type="tns:authenticationToken">
     </wsdl:part>
-    <wsdl:part name="password" type="tns:Password">
+    <wsdl:part name="password" type="tns:password">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="deprecateSessionResponse">
-    <wsdl:part name="response" type="tns:FallibleResponse">
+    <wsdl:part name="response" type="tns:fallibleResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="saveSessionDataResponse">
-    <wsdl:part name="response" type="tns:FallibleResponse">
+    <wsdl:part name="response" type="tns:fallibleResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:portType name="accessWS">
+    <wsdl:documentation>IAESTE A.s.b.l. Access WebService</wsdl:documentation>
     <wsdl:operation name="generateSession">
       <wsdl:input message="tns:generateSession" name="generateSession">
     </wsdl:input>
@@ -694,110 +700,110 @@
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="accessWSServiceSoapBinding" type="tns:accessWS">
-    <soap12:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
     <wsdl:operation name="generateSession">
-      <soap12:operation soapAction="" style="rpc"/>
+      <soap:operation soapAction="" style="rpc"/>
       <wsdl:input name="generateSession">
-        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="generateSessionResponse">
-        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="fetchPermissions">
-      <soap12:operation soapAction="" style="rpc"/>
+      <soap:operation soapAction="" style="rpc"/>
       <wsdl:input name="fetchPermissions">
-        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="fetchPermissionsResponse">
-        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="requestResettingSession">
-      <soap12:operation soapAction="" style="rpc"/>
+      <soap:operation soapAction="" style="rpc"/>
       <wsdl:input name="requestResettingSession">
-        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="requestResettingSessionResponse">
-        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="deprecateSession">
-      <soap12:operation soapAction="" style="rpc"/>
+      <soap:operation soapAction="" style="rpc"/>
       <wsdl:input name="deprecateSession">
-        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="deprecateSessionResponse">
-        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="verifySession">
-      <soap12:operation soapAction="" style="rpc"/>
+      <soap:operation soapAction="" style="rpc"/>
       <wsdl:input name="verifySession">
-        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="verifySessionResponse">
-        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="readSessionData">
-      <soap12:operation soapAction="" style="rpc"/>
+      <soap:operation soapAction="" style="rpc"/>
       <wsdl:input name="readSessionData">
-        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="readSessionDataResponse">
-        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="resetPassword">
-      <soap12:operation soapAction="" style="rpc"/>
+      <soap:operation soapAction="" style="rpc"/>
       <wsdl:input name="resetPassword">
-        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="resetPasswordResponse">
-        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="forgotPassword">
-      <soap12:operation soapAction="" style="rpc"/>
+      <soap:operation soapAction="" style="rpc"/>
       <wsdl:input name="forgotPassword">
-        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="forgotPasswordResponse">
-        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="resetSession">
-      <soap12:operation soapAction="" style="rpc"/>
+      <soap:operation soapAction="" style="rpc"/>
       <wsdl:input name="resetSession">
-        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="resetSessionResponse">
-        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="saveSessionData">
-      <soap12:operation soapAction="" style="rpc"/>
+      <soap:operation soapAction="" style="rpc"/>
       <wsdl:input name="saveSessionData">
-        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="saveSessionDataResponse">
-        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="updatePassword">
-      <soap12:operation soapAction="" style="rpc"/>
+      <soap:operation soapAction="" style="rpc"/>
       <wsdl:input name="updatePassword">
-        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="updatePasswordResponse">
-        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
   </wsdl:binding>
   <wsdl:service name="accessWSService">
     <wsdl:port binding="tns:accessWSServiceSoapBinding" name="accessWS">
-      <soap12:address location="http://localhost:9080/iws-ws/accessWS"/>
+      <soap:address location="http://localhost:9080/iws-ws/accessWS"/>
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

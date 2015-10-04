@@ -31,7 +31,7 @@ import java.util.Map;
  * @since   IWS 1.1
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "OfferCSVUploadRequest", propOrder = { "data", "delimiter" })
+@XmlType(name = "offerCSVUploadRequest", propOrder = { "data", "delimiter" })
 public class OfferCSVUploadRequest extends AbstractPaginatable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
@@ -40,7 +40,7 @@ public class OfferCSVUploadRequest extends AbstractPaginatable {
     /**
      * Available CSV fields delimiters.
      */
-    @XmlType(name = "FieldDelimiter")
+    @XmlType(name = "fieldDelimiter")
     public enum FieldDelimiter {
 
         COMMA(','),

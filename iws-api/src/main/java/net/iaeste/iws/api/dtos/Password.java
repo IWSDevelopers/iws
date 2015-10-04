@@ -35,7 +35,7 @@ import java.util.UUID;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "Password", propOrder = { "newPassword", "identification" })
+@XmlType(name = "password", propOrder = { "newPassword", "identification" })
 public final class Password extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */

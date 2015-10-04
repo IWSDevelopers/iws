@@ -493,13 +493,13 @@ public final class ExchangeMapper extends CommonMapper {
         return api;
     }
 
-    private static CSVProcessingErrors map(final net.iaeste.iws.ws.CSVProcessingErrors ws) {
+    private static CSVProcessingErrors map(final net.iaeste.iws.ws.CsvProcessingErrors ws) {
         CSVProcessingErrors api = null;
 
         if ((ws != null) && (ws.getCsvErrors() != null)) {
             api = new CSVProcessingErrors();
 
-            for (final net.iaeste.iws.ws.CSVProcessingErrors.CsvErrors.Entry entry : ws.getCsvErrors().getEntry()) {
+            for (final net.iaeste.iws.ws.CsvProcessingErrors.CsvErrors.Entry entry : ws.getCsvErrors().getEntry()) {
                 api.put(entry.getKey(), entry.getValue());
             }
         }

@@ -29,8 +29,8 @@ import javax.xml.bind.annotation.XmlType;
  * @since   IWS 1.1
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "FetchCountrySurveyRespose", propOrder = { "survey" })
-public final class FetchCountrySurveyRespose extends FallibleResponse {
+@XmlType(name = "fetchCountrySurveyRespose", propOrder = { "survey" })
+public final class FetchCountrySurveyResponse extends FallibleResponse {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -47,7 +47,7 @@ public final class FetchCountrySurveyRespose extends FallibleResponse {
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.
      */
-    public FetchCountrySurveyRespose() {
+    public FetchCountrySurveyResponse() {
     }
 
     /**
@@ -55,7 +55,7 @@ public final class FetchCountrySurveyRespose extends FallibleResponse {
      *
      * @param survey Survey Of Country Object
      */
-    public FetchCountrySurveyRespose(final CountrySurvey survey) {
+    public FetchCountrySurveyResponse(final CountrySurvey survey) {
         this.survey = survey;
     }
 
@@ -65,7 +65,7 @@ public final class FetchCountrySurveyRespose extends FallibleResponse {
      * @param error   IWS Error Object
      * @param message Error Message
      */
-    public FetchCountrySurveyRespose(final IWSError error, final String message) {
+    public FetchCountrySurveyResponse(final IWSError error, final String message) {
         super(error, message);
     }
 
@@ -94,14 +94,14 @@ public final class FetchCountrySurveyRespose extends FallibleResponse {
         if (this == obj) {
             return true;
         }
-        if (!(obj instanceof FetchCountrySurveyRespose)) {
+        if (!(obj instanceof FetchCountrySurveyResponse)) {
             return false;
         }
         if (!super.equals(obj)) {
             return false;
         }
 
-        final FetchCountrySurveyRespose that = (FetchCountrySurveyRespose) obj;
+        final FetchCountrySurveyResponse that = (FetchCountrySurveyResponse) obj;
 
         return !(survey != null ? !survey.equals(that.survey) : that.survey != null);
     }

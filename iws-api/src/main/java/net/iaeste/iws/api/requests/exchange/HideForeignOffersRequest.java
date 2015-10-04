@@ -32,7 +32,7 @@ import java.util.Set;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "HideForeignOffersRequest", propOrder = { "offers" })
+@XmlType(name = "hideForeignOffersRequest", propOrder = { "offers" })
 public final class HideForeignOffersRequest extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */

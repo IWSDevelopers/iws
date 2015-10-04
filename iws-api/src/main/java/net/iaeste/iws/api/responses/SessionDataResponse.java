@@ -39,7 +39,7 @@ import java.util.Arrays;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "SessionDataResponse", propOrder = { "sessionData", "modified", "created" })
+@XmlType(name = "sessionDataResponse", propOrder = { "sessionData", "modified", "created" })
 public final class SessionDataResponse<T extends Serializable> extends FallibleResponse {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */

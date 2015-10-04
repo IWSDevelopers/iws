@@ -47,7 +47,7 @@ import java.util.Map;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "User", propOrder = { "userId", "username", "alias", "firstname", "lastname", "person", "status", "type", "privacy", "notifications" })
+@XmlType(name = "user", propOrder = { "userId", "username", "alias", "firstname", "lastname", "person", "status", "type", "privacy", "notifications" })
 public final class User extends AbstractDto {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */

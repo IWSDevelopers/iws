@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlType;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
-@XmlType(name = "PaymentFrequency")
+@XmlType(name = "paymentFrequency")
 public enum PaymentFrequency implements Descriptable<PaymentFrequency> {
 
     /**

@@ -32,7 +32,7 @@ import java.util.Map;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "File", propOrder = { "fileId", "privacy", "group", "user", "folderId", "filename", "filedata", "filesize", "mimetype", "description", "keywords", "checksum", "modified", "created" })
+@XmlType(name = "file", propOrder = { "fileId", "privacy", "group", "user", "folderId", "filename", "filedata", "filesize", "mimetype", "description", "keywords", "checksum", "modified", "created" })
 public final class File extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */

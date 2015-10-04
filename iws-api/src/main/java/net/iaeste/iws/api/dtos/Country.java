@@ -40,7 +40,7 @@ import java.util.Map;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "Country", propOrder = { "countryCode", "countryName", "countryNameFull", "countryNameNative", "nationality", "citizens", "phonecode", "currency", "languages", "membership", "memberSince" })
+@XmlType(name = "country", propOrder = { "countryCode", "countryName", "countryNameFull", "countryNameNative", "nationality", "citizens", "phonecode", "currency", "languages", "membership", "memberSince" })
 public final class Country extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */

@@ -34,7 +34,7 @@ import java.util.List;
  * @since   IWS 1.1
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "GroupList", propOrder = { "groups" })
+@XmlType(name = "groupList", propOrder = { "groups" })
 public class GroupList implements Serializable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */

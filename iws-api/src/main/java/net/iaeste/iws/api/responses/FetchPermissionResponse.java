@@ -39,7 +39,7 @@ import java.util.Map;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "FetchPermissionResponse", propOrder = { "userId", "authorizations" })
+@XmlType(name = "fetchPermissionResponse", propOrder = { "userId", "authorizations" })
 public final class FetchPermissionResponse extends FallibleResponse {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */

@@ -119,7 +119,7 @@ public class StateBean {
      * ensure that the system is working using this as base.<br />
      *   Second part is to have a timer service (cron job), which will once per
      * day run and perform certain cleanup actions.<br />
-     *   This method is run once the Bean is inistialized and will perform two
+     *   This method is run once the Bean is initialized and will perform two
      * things, first it will initialize the Timer Service, so it can run at
      * frequent Intervals, secondly, it will initialize the Sessions.<br />
      *   Heavier maintenance operations like cleaning up accounts is left for

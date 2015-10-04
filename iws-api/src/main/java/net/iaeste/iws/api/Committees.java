@@ -24,7 +24,7 @@ import net.iaeste.iws.api.requests.CountrySurveyRequest;
 import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchCommitteeResponse;
 import net.iaeste.iws.api.responses.FetchInternationalGroupResponse;
-import net.iaeste.iws.api.responses.FetchCountrySurveyRespose;
+import net.iaeste.iws.api.responses.FetchCountrySurveyResponse;
 
 /**
  * Control of National Committees and International Groups is done via the
@@ -212,7 +212,7 @@ public interface Committees {
      * @param request Fetch Survey of Country Request Object
      * @return Response Object with the Survey information or error information
      */
-    FetchCountrySurveyRespose fetchCountrySurvey(AuthenticationToken token, FetchCountrySurveyRequest request);
+    FetchCountrySurveyResponse fetchCountrySurvey(AuthenticationToken token, FetchCountrySurveyRequest request);
 
     /**
      * Processes the Survey of Countries for the given Country. The processing

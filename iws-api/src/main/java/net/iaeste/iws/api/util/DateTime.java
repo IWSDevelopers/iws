@@ -41,7 +41,7 @@ import java.util.Date;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "DateTime")
+@XmlType(name = "dateTime")
 public final class DateTime implements Serializable, Comparable<DateTime> {
 
     /**{@link IWSConstants#SERIAL_VERSION_UID}. */

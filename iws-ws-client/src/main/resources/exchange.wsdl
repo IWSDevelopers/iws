@@ -1,8 +1,13 @@
-<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://ws.iws.iaeste.net/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="exchangeWSService" targetNamespace="http://ws.iws.iaeste.net/">
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://ws.iws.iaeste.net/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="exchangeWSService" targetNamespace="http://ws.iws.iaeste.net/">
+  <wsdl:documentation>
+      Service: IWS Exchange Service
+      Version: 1.1
+      Owner: IAESTE A.s.b.l.
+  </wsdl:documentation>
   <wsdl:types>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://ws.iws.iaeste.net/" targetNamespace="http://ws.iws.iaeste.net/" version="1.0">
 
-  <xs:complexType final="extension restriction" name="AuthenticationToken">
+  <xs:complexType final="extension restriction" name="authenticationToken">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
@@ -17,7 +22,7 @@
     <xs:sequence/>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="DeletePublishingGroupRequest">
+  <xs:complexType final="extension restriction" name="deletePublishingGroupRequest">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
@@ -27,53 +32,53 @@
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType name="FallibleResponse">
+  <xs:complexType name="fallibleResponse">
     <xs:sequence>
-      <xs:element name="error" type="tns:IWSError"/>
+      <xs:element name="error" type="tns:iwsError"/>
       <xs:element name="message" type="xs:string"/>
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="IWSError">
+  <xs:complexType final="extension restriction" name="iwsError">
     <xs:sequence>
       <xs:element name="error" type="xs:int"/>
       <xs:element name="description" type="xs:string"/>
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType name="OfferCSVUploadRequest">
+  <xs:complexType name="offerCSVUploadRequest">
     <xs:complexContent>
-      <xs:extension base="tns:AbstractPaginatable">
+      <xs:extension base="tns:abstractPaginatable">
         <xs:sequence>
           <xs:element name="data" type="xs:base64Binary"/>
-          <xs:element name="delimiter" nillable="true" type="tns:FieldDelimiter"/>
+          <xs:element name="delimiter" nillable="true" type="tns:fieldDelimiter"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType abstract="true" name="AbstractPaginatable">
+  <xs:complexType abstract="true" name="abstractPaginatable">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
-          <xs:element name="page" type="tns:Page"/>
+          <xs:element name="page" type="tns:page"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType name="Page">
+  <xs:complexType name="page">
     <xs:sequence>
       <xs:element name="pageNumber" type="xs:int"/>
       <xs:element name="pageSize" type="xs:int"/>
       <xs:element name="sortAscending" type="xs:boolean"/>
-      <xs:element minOccurs="0" name="sortBy" type="tns:SortingField"/>
+      <xs:element minOccurs="0" name="sortBy" type="tns:sortingField"/>
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType name="OfferCSVUploadResponse">
+  <xs:complexType final="extension restriction" name="offerCSVUploadResponse">
     <xs:complexContent>
-      <xs:extension base="tns:FallibleResponse">
+      <xs:extension base="tns:fallibleResponse">
         <xs:sequence>
           <xs:element name="processingResult">
             <xs:complexType>
@@ -82,7 +87,7 @@
                   <xs:complexType>
                     <xs:sequence>
                       <xs:element minOccurs="0" name="key" type="xs:string"/>
-                      <xs:element minOccurs="0" name="value" type="tns:ProcessingResult"/>
+                      <xs:element minOccurs="0" name="value" type="tns:processingResult"/>
                     </xs:sequence>
                   </xs:complexType>
                 </xs:element>
@@ -96,7 +101,7 @@
                   <xs:complexType>
                     <xs:sequence>
                       <xs:element minOccurs="0" name="key" type="xs:string"/>
-                      <xs:element minOccurs="0" name="value" type="tns:CSVProcessingErrors"/>
+                      <xs:element minOccurs="0" name="value" type="tns:csvProcessingErrors"/>
                     </xs:sequence>
                   </xs:complexType>
                 </xs:element>
@@ -108,7 +113,7 @@
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="CSVProcessingErrors">
+  <xs:complexType final="extension restriction" name="csvProcessingErrors">
     <xs:sequence>
       <xs:element name="csvErrors">
         <xs:complexType>
@@ -127,37 +132,37 @@
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="FetchPublishGroupsRequest">
+  <xs:complexType final="extension restriction" name="fetchPublishGroupsRequest">
     <xs:complexContent>
-      <xs:extension base="tns:AbstractPaginatable">
+      <xs:extension base="tns:abstractPaginatable">
         <xs:all/>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="FetchPublishingGroupResponse">
+  <xs:complexType final="extension restriction" name="fetchPublishingGroupResponse">
     <xs:complexContent>
-      <xs:extension base="tns:FallibleResponse">
+      <xs:extension base="tns:fallibleResponse">
         <xs:sequence>
-          <xs:element maxOccurs="unbounded" name="publishingGroups" nillable="true" type="tns:PublishingGroup"/>
+          <xs:element maxOccurs="unbounded" name="publishingGroups" nillable="true" type="tns:publishingGroup"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="PublishingGroup">
+  <xs:complexType final="extension restriction" name="publishingGroup">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
           <xs:element name="publishingGroupId" nillable="true" type="xs:string"/>
           <xs:element name="name" type="xs:string"/>
-          <xs:element maxOccurs="unbounded" name="groups" type="tns:Group"/>
+          <xs:element maxOccurs="unbounded" name="groups" type="tns:group"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="Group">
+  <xs:complexType final="extension restriction" name="group">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
@@ -167,16 +172,16 @@
           <xs:element name="listName" nillable="true" type="xs:string"/>
           <xs:element name="privateList" type="xs:boolean"/>
           <xs:element name="publicList" type="xs:boolean"/>
-          <xs:element name="groupType" type="tns:GroupType"/>
+          <xs:element name="groupType" type="tns:groupType"/>
           <xs:element name="description" nillable="true" type="xs:string"/>
-          <xs:element name="monitoringLevel" nillable="true" type="tns:MonitoringLevel"/>
-          <xs:element name="country" nillable="true" type="tns:Country"/>
+          <xs:element name="monitoringLevel" nillable="true" type="tns:monitoringLevel"/>
+          <xs:element name="country" nillable="true" type="tns:country"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="Country">
+  <xs:complexType final="extension restriction" name="country">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
@@ -187,16 +192,16 @@
           <xs:element name="nationality" nillable="true" type="xs:string"/>
           <xs:element name="citizens" nillable="true" type="xs:string"/>
           <xs:element name="phonecode" nillable="true" type="xs:string"/>
-          <xs:element name="currency" type="tns:Currency"/>
+          <xs:element name="currency" type="tns:currency"/>
           <xs:element name="languages" nillable="true" type="xs:string"/>
-          <xs:element name="membership" nillable="true" type="tns:Membership"/>
+          <xs:element name="membership" nillable="true" type="tns:membership"/>
           <xs:element name="memberSince" nillable="true" type="xs:int"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="HideForeignOffersRequest">
+  <xs:complexType final="extension restriction" name="hideForeignOffersRequest">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
@@ -206,37 +211,37 @@
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="FetchEmployerRequest">
+  <xs:complexType final="extension restriction" name="fetchEmployerRequest">
     <xs:complexContent>
-      <xs:extension base="tns:AbstractPaginatable">
+      <xs:extension base="tns:abstractPaginatable">
         <xs:sequence>
-          <xs:element name="type" nillable="true" type="tns:EmployerFetchType"/>
+          <xs:element name="type" nillable="true" type="tns:employerFetchType"/>
           <xs:element name="field" nillable="true" type="xs:string"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="FetchEmployerResponse">
+  <xs:complexType final="extension restriction" name="fetchEmployerResponse">
     <xs:complexContent>
-      <xs:extension base="tns:FallibleResponse">
+      <xs:extension base="tns:fallibleResponse">
         <xs:sequence>
-          <xs:element maxOccurs="unbounded" name="employers" nillable="true" type="tns:Employer"/>
+          <xs:element maxOccurs="unbounded" name="employers" nillable="true" type="tns:employer"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="Employer">
+  <xs:complexType final="extension restriction" name="employer">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
           <xs:element name="employerId" nillable="true" type="xs:string"/>
-          <xs:element name="group" type="tns:Group"/>
+          <xs:element name="group" type="tns:group"/>
           <xs:element name="name" type="xs:string"/>
           <xs:element name="department" type="xs:string"/>
           <xs:element name="business" nillable="true" type="xs:string"/>
-          <xs:element name="address" type="tns:Address"/>
+          <xs:element name="address" type="tns:address"/>
           <xs:element name="employeesCount" nillable="true" type="xs:string"/>
           <xs:element name="website" nillable="true" type="xs:string"/>
           <xs:element name="workingPlace" type="xs:string"/>
@@ -248,7 +253,7 @@
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="Address">
+  <xs:complexType final="extension restriction" name="address">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
@@ -258,13 +263,13 @@
           <xs:element name="city" nillable="true" type="xs:string"/>
           <xs:element name="state" nillable="true" type="xs:string"/>
           <xs:element name="pobox" nillable="true" type="xs:string"/>
-          <xs:element name="country" nillable="true" type="tns:Country"/>
+          <xs:element name="country" nillable="true" type="tns:country"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="RejectOfferRequest">
+  <xs:complexType final="extension restriction" name="rejectOfferRequest">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
@@ -274,53 +279,53 @@
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="ProcessEmployerRequest">
+  <xs:complexType final="extension restriction" name="processEmployerRequest">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
-          <xs:element name="employer" type="tns:Employer"/>
+          <xs:element name="employer" type="tns:employer"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="EmployerResponse">
+  <xs:complexType final="extension restriction" name="employerResponse">
     <xs:complexContent>
-      <xs:extension base="tns:FallibleResponse">
+      <xs:extension base="tns:fallibleResponse">
         <xs:sequence>
-          <xs:element name="employer" nillable="true" type="tns:Employer"/>
+          <xs:element name="employer" nillable="true" type="tns:employer"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="PublishOfferRequest">
+  <xs:complexType final="extension restriction" name="publishOfferRequest">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
           <xs:element maxOccurs="unbounded" name="offerIds" nillable="true" type="xs:string"/>
           <xs:element maxOccurs="unbounded" name="groupIds" nillable="true" type="xs:string"/>
-          <xs:element name="nominationDeadline" nillable="true" type="tns:Date"/>
+          <xs:element name="nominationDeadline" nillable="true" type="tns:date"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="Date">
+  <xs:complexType final="extension restriction" name="date">
     <xs:sequence>
       <xs:element name="midnight" type="xs:dateTime"/>
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="PublishOfferResponse">
+  <xs:complexType final="extension restriction" name="publishOfferResponse">
     <xs:complexContent>
-      <xs:extension base="tns:FallibleResponse">
+      <xs:extension base="tns:fallibleResponse">
         <xs:all/>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="DeleteOfferRequest">
+  <xs:complexType final="extension restriction" name="deleteOfferRequest">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
@@ -330,94 +335,94 @@
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="OfferResponse">
+  <xs:complexType final="extension restriction" name="offerResponse">
     <xs:complexContent>
-      <xs:extension base="tns:FallibleResponse">
+      <xs:extension base="tns:fallibleResponse">
         <xs:sequence>
-          <xs:element name="offer" nillable="true" type="tns:Offer"/>
+          <xs:element name="offer" nillable="true" type="tns:offer"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="Offer">
+  <xs:complexType final="extension restriction" name="offer">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
           <xs:element name="offerId" nillable="true" type="xs:string"/>
           <xs:element name="refNo" type="xs:string"/>
-          <xs:element name="offerType" type="tns:OfferType"/>
-          <xs:element name="exchangeType" nillable="true" type="tns:ExchangeType"/>
+          <xs:element name="offerType" type="tns:offerType"/>
+          <xs:element name="exchangeType" nillable="true" type="tns:exchangeType"/>
           <xs:element name="oldRefNo" nillable="true" type="xs:string"/>
-          <xs:element name="employer" type="tns:Employer"/>
+          <xs:element name="employer" type="tns:employer"/>
           <xs:element name="workDescription" type="xs:string"/>
-          <xs:element name="typeOfWork" nillable="true" type="tns:TypeOfWork"/>
+          <xs:element name="typeOfWork" nillable="true" type="tns:typeOfWork"/>
           <xs:element name="weeklyHours" type="xs:float"/>
           <xs:element name="dailyHours" nillable="true" type="xs:float"/>
           <xs:element name="weeklyWorkDays" nillable="true" type="xs:float"/>
-          <xs:element maxOccurs="unbounded" name="studyLevels" type="tns:StudyLevel"/>
-          <xs:element maxOccurs="unbounded" name="fieldOfStudies" nillable="true" type="tns:FieldOfStudy"/>
+          <xs:element maxOccurs="unbounded" name="studyLevels" type="tns:studyLevel"/>
+          <xs:element maxOccurs="unbounded" name="fieldOfStudies" nillable="true" type="tns:fieldOfStudy"/>
           <xs:element maxOccurs="unbounded" name="specializations" nillable="true" type="xs:string"/>
           <xs:element name="previousTrainingRequired" nillable="true" type="xs:boolean"/>
           <xs:element name="otherRequirements" nillable="true" type="xs:string"/>
           <xs:element name="minimumWeeks" type="xs:int"/>
           <xs:element name="maximumWeeks" type="xs:int"/>
-          <xs:element name="period1" type="tns:DatePeriod"/>
-          <xs:element name="period2" nillable="true" type="tns:DatePeriod"/>
-          <xs:element name="unavailable" nillable="true" type="tns:DatePeriod"/>
-          <xs:element name="language1" type="tns:Language"/>
-          <xs:element name="language1Level" type="tns:LanguageLevel"/>
-          <xs:element name="language1Operator" nillable="true" type="tns:LanguageOperator"/>
-          <xs:element name="language2" nillable="true" type="tns:Language"/>
-          <xs:element name="language2Level" nillable="true" type="tns:LanguageLevel"/>
-          <xs:element name="language2Operator" nillable="true" type="tns:LanguageOperator"/>
-          <xs:element name="language3" nillable="true" type="tns:Language"/>
-          <xs:element name="language3Level" nillable="true" type="tns:LanguageLevel"/>
+          <xs:element name="period1" type="tns:datePeriod"/>
+          <xs:element name="period2" nillable="true" type="tns:datePeriod"/>
+          <xs:element name="unavailable" nillable="true" type="tns:datePeriod"/>
+          <xs:element name="language1" type="tns:language"/>
+          <xs:element name="language1Level" type="tns:languageLevel"/>
+          <xs:element name="language1Operator" nillable="true" type="tns:languageOperator"/>
+          <xs:element name="language2" nillable="true" type="tns:language"/>
+          <xs:element name="language2Level" nillable="true" type="tns:languageLevel"/>
+          <xs:element name="language2Operator" nillable="true" type="tns:languageOperator"/>
+          <xs:element name="language3" nillable="true" type="tns:language"/>
+          <xs:element name="language3Level" nillable="true" type="tns:languageLevel"/>
           <xs:element name="payment" nillable="true" type="xs:decimal"/>
-          <xs:element name="paymentFrequency" nillable="true" type="tns:PaymentFrequency"/>
-          <xs:element name="currency" nillable="true" type="tns:Currency"/>
+          <xs:element name="paymentFrequency" nillable="true" type="tns:paymentFrequency"/>
+          <xs:element name="currency" nillable="true" type="tns:currency"/>
           <xs:element name="deduction" nillable="true" type="xs:string"/>
           <xs:element name="livingCost" nillable="true" type="xs:decimal"/>
-          <xs:element name="livingCostFrequency" nillable="true" type="tns:PaymentFrequency"/>
+          <xs:element name="livingCostFrequency" nillable="true" type="tns:paymentFrequency"/>
           <xs:element name="lodgingBy" nillable="true" type="xs:string"/>
           <xs:element name="lodgingCost" nillable="true" type="xs:decimal"/>
-          <xs:element name="lodgingCostFrequency" nillable="true" type="tns:PaymentFrequency"/>
-          <xs:element name="nominationDeadline" nillable="true" type="tns:Date"/>
+          <xs:element name="lodgingCostFrequency" nillable="true" type="tns:paymentFrequency"/>
+          <xs:element name="nominationDeadline" nillable="true" type="tns:date"/>
           <xs:element name="numberOfHardCopies" nillable="true" type="xs:int"/>
           <xs:element name="additionalInformation" nillable="true" type="xs:string"/>
           <xs:element name="privateComment" nillable="true" type="xs:string"/>
-          <xs:element name="status" nillable="true" type="tns:OfferState"/>
-          <xs:element name="modified" nillable="true" type="tns:DateTime"/>
-          <xs:element name="created" nillable="true" type="tns:DateTime"/>
+          <xs:element name="status" nillable="true" type="tns:offerState"/>
+          <xs:element name="modified" nillable="true" type="tns:dateTime"/>
+          <xs:element name="created" nillable="true" type="tns:dateTime"/>
           <xs:element name="nsFirstname" nillable="true" type="xs:string"/>
           <xs:element name="nsLastname" nillable="true" type="xs:string"/>
-          <xs:element name="shared" nillable="true" type="tns:DateTime"/>
+          <xs:element name="shared" nillable="true" type="tns:dateTime"/>
           <xs:element name="hidden" nillable="true" type="xs:boolean"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="DatePeriod">
+  <xs:complexType final="extension restriction" name="datePeriod">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
-          <xs:element name="fromDate" type="tns:Date"/>
-          <xs:element name="toDate" type="tns:Date"/>
+          <xs:element name="fromDate" type="tns:date"/>
+          <xs:element name="toDate" type="tns:date"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="DateTime">
+  <xs:complexType final="extension restriction" name="dateTime">
     <xs:sequence>
       <xs:element name="timestamp" type="xs:dateTime"/>
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType name="OfferCSVDownloadRequest">
+  <xs:complexType name="offerCSVDownloadRequest">
     <xs:complexContent>
-      <xs:extension base="tns:AbstractPaginatable">
+      <xs:extension base="tns:abstractPaginatable">
         <xs:sequence>
           <xs:element name="fetchType" type="tns:fetchType"/>
           <xs:element maxOccurs="unbounded" name="offerIds" type="xs:string"/>
@@ -427,9 +432,9 @@
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType name="OfferCSVDownloadResponse">
+  <xs:complexType final="extension restriction" name="offerCSVDownloadResponse">
     <xs:complexContent>
-      <xs:extension base="tns:FallibleResponse">
+      <xs:extension base="tns:fallibleResponse">
         <xs:sequence>
           <xs:element name="data" nillable="true" type="xs:base64Binary"/>
         </xs:sequence>
@@ -437,20 +442,20 @@
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="ProcessPublishingGroupRequest">
+  <xs:complexType final="extension restriction" name="processPublishingGroupRequest">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
-          <xs:element name="publishingGroup" type="tns:PublishingGroup"/>
+          <xs:element name="publishingGroup" type="tns:publishingGroup"/>
           <xs:element name="deletePublishingGroup" type="xs:boolean"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="FetchPublishedGroupsRequest">
+  <xs:complexType final="extension restriction" name="fetchPublishedGroupsRequest">
     <xs:complexContent>
-      <xs:extension base="tns:AbstractPaginatable">
+      <xs:extension base="tns:abstractPaginatable">
         <xs:sequence>
           <xs:element maxOccurs="unbounded" name="offerIds" type="xs:string"/>
           <xs:element name="exchangeYear" type="xs:int"/>
@@ -459,9 +464,9 @@
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="FetchPublishedGroupsResponse">
+  <xs:complexType final="extension restriction" name="fetchPublishedGroupsResponse">
     <xs:complexContent>
-      <xs:extension base="tns:FallibleResponse">
+      <xs:extension base="tns:fallibleResponse">
         <xs:sequence>
           <xs:element name="offersGroups">
             <xs:complexType>
@@ -470,7 +475,7 @@
                   <xs:complexType>
                     <xs:sequence>
                       <xs:element minOccurs="0" name="key" type="xs:string"/>
-                      <xs:element minOccurs="0" name="value" type="tns:GroupList"/>
+                      <xs:element minOccurs="0" name="value" type="tns:groupList"/>
                     </xs:sequence>
                   </xs:complexType>
                 </xs:element>
@@ -482,36 +487,36 @@
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType name="GroupList">
+  <xs:complexType name="groupList">
     <xs:sequence>
-      <xs:element maxOccurs="unbounded" name="groups" nillable="true" type="tns:Group"/>
+      <xs:element maxOccurs="unbounded" name="groups" nillable="true" type="tns:group"/>
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="FetchOffersRequest">
+  <xs:complexType final="extension restriction" name="fetchOffersRequest">
     <xs:complexContent>
-      <xs:extension base="tns:AbstractPaginatable">
+      <xs:extension base="tns:abstractPaginatable">
         <xs:sequence>
           <xs:element name="fetchType" type="tns:fetchType"/>
           <xs:element name="exchangeYear" type="xs:int"/>
-          <xs:element maxOccurs="unbounded" name="states" type="tns:OfferState"/>
+          <xs:element maxOccurs="unbounded" name="states" type="tns:offerState"/>
           <xs:element name="retrieveCurrentAndNextExchangeYear" type="xs:boolean"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="FetchOffersResponse">
+  <xs:complexType final="extension restriction" name="fetchOffersResponse">
     <xs:complexContent>
-      <xs:extension base="tns:FallibleResponse">
+      <xs:extension base="tns:fallibleResponse">
         <xs:sequence>
-          <xs:element maxOccurs="unbounded" name="offers" nillable="true" type="tns:Offer"/>
+          <xs:element maxOccurs="unbounded" name="offers" nillable="true" type="tns:offer"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="OfferStatisticsRequest">
+  <xs:complexType final="extension restriction" name="offerStatisticsRequest">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
@@ -521,18 +526,18 @@
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="OfferStatisticsResponse">
+  <xs:complexType final="extension restriction" name="offerStatisticsResponse">
     <xs:complexContent>
-      <xs:extension base="tns:FallibleResponse">
+      <xs:extension base="tns:fallibleResponse">
         <xs:sequence>
-          <xs:element name="dommesticStatistics" nillable="true" type="tns:OfferStatistics"/>
-          <xs:element name="foreignStatistics" nillable="true" type="tns:OfferStatistics"/>
+          <xs:element name="dommesticStatistics" nillable="true" type="tns:offerStatistics"/>
+          <xs:element name="foreignStatistics" nillable="true" type="tns:offerStatistics"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="OfferStatistics">
+  <xs:complexType final="extension restriction" name="offerStatistics">
     <xs:sequence>
       <xs:element name="statistics">
         <xs:complexType>
@@ -540,7 +545,7 @@
             <xs:element maxOccurs="unbounded" minOccurs="0" name="entry">
               <xs:complexType>
                 <xs:sequence>
-                  <xs:element minOccurs="0" name="key" type="tns:OfferState"/>
+                  <xs:element minOccurs="0" name="key" type="tns:offerState"/>
                   <xs:element minOccurs="0" name="value" type="xs:int"/>
                 </xs:sequence>
               </xs:complexType>
@@ -552,41 +557,41 @@
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="ProcessOfferRequest">
+  <xs:complexType final="extension restriction" name="processOfferRequest">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
-          <xs:element name="offer" type="tns:Offer"/>
+          <xs:element name="offer" type="tns:offer"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="FetchGroupsForSharingResponse">
+  <xs:complexType final="extension restriction" name="fetchGroupsForSharingResponse">
     <xs:complexContent>
-      <xs:extension base="tns:FallibleResponse">
+      <xs:extension base="tns:fallibleResponse">
         <xs:sequence>
-          <xs:element maxOccurs="unbounded" name="groups" nillable="true" type="tns:Group"/>
+          <xs:element maxOccurs="unbounded" name="groups" nillable="true" type="tns:group"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:simpleType name="FieldDelimiter">
+  <xs:simpleType name="fieldDelimiter">
     <xs:restriction base="xs:string">
       <xs:enumeration value="COMMA"/>
       <xs:enumeration value="SEMICOLON"/>
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="SortingField">
+  <xs:simpleType name="sortingField">
     <xs:restriction base="xs:string">
       <xs:enumeration value="CREATED"/>
       <xs:enumeration value="NAME"/>
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="ProcessingResult">
+  <xs:simpleType name="processingResult">
     <xs:restriction base="xs:string">
       <xs:enumeration value="ADDED"/>
       <xs:enumeration value="UPDATED"/>
@@ -594,7 +599,7 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="GroupType">
+  <xs:simpleType name="groupType">
     <xs:restriction base="xs:string">
       <xs:enumeration value="ADMINISTRATION"/>
       <xs:enumeration value="PRIVATE"/>
@@ -607,7 +612,7 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="MonitoringLevel">
+  <xs:simpleType name="monitoringLevel">
     <xs:restriction base="xs:string">
       <xs:enumeration value="NONE"/>
       <xs:enumeration value="MARKED"/>
@@ -615,7 +620,7 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="Currency">
+  <xs:simpleType name="currency">
     <xs:restriction base="xs:string">
       <xs:enumeration value="AED"/>
       <xs:enumeration value="AFN"/>
@@ -784,7 +789,7 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="Membership">
+  <xs:simpleType name="membership">
     <xs:restriction base="xs:string">
       <xs:enumeration value="UNKNOWN"/>
       <xs:enumeration value="FULL_MEMBER"/>
@@ -796,7 +801,7 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="EmployerFetchType">
+  <xs:simpleType name="employerFetchType">
     <xs:restriction base="xs:string">
       <xs:enumeration value="ALL"/>
       <xs:enumeration value="NAME"/>
@@ -804,7 +809,7 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="OfferType">
+  <xs:simpleType name="offerType">
     <xs:restriction base="xs:string">
       <xs:enumeration value="OPEN"/>
       <xs:enumeration value="LIMITED"/>
@@ -812,7 +817,7 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="ExchangeType">
+  <xs:simpleType name="exchangeType">
     <xs:restriction base="xs:string">
       <xs:enumeration value="IW"/>
       <xs:enumeration value="AC"/>
@@ -820,7 +825,7 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="TypeOfWork">
+  <xs:simpleType name="typeOfWork">
     <xs:restriction base="xs:string">
       <xs:enumeration value="R"/>
       <xs:enumeration value="O"/>
@@ -828,7 +833,7 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="StudyLevel">
+  <xs:simpleType name="studyLevel">
     <xs:restriction base="xs:string">
       <xs:enumeration value="B"/>
       <xs:enumeration value="M"/>
@@ -836,7 +841,7 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="FieldOfStudy">
+  <xs:simpleType name="fieldOfStudy">
     <xs:restriction base="xs:string">
       <xs:enumeration value="AERONAUTIC_ENGINEERING"/>
       <xs:enumeration value="AGRICULTURE"/>
@@ -868,7 +873,7 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="Language">
+  <xs:simpleType name="language">
     <xs:restriction base="xs:string">
       <xs:enumeration value="ENGLISH"/>
       <xs:enumeration value="ARABIC"/>
@@ -911,7 +916,7 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="LanguageLevel">
+  <xs:simpleType name="languageLevel">
     <xs:restriction base="xs:string">
       <xs:enumeration value="E"/>
       <xs:enumeration value="G"/>
@@ -919,14 +924,14 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="LanguageOperator">
+  <xs:simpleType name="languageOperator">
     <xs:restriction base="xs:string">
       <xs:enumeration value="A"/>
       <xs:enumeration value="O"/>
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="PaymentFrequency">
+  <xs:simpleType name="paymentFrequency">
     <xs:restriction base="xs:string">
       <xs:enumeration value="DAILY"/>
       <xs:enumeration value="WEEKLY"/>
@@ -936,7 +941,7 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="OfferState">
+  <xs:simpleType name="offerState">
     <xs:restriction base="xs:string">
       <xs:enumeration value="NEW"/>
       <xs:enumeration value="OPEN"/>
@@ -953,7 +958,7 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="Specialization">
+  <xs:simpleType name="specialization">
     <xs:restriction base="xs:string">
       <xs:enumeration value="ADMINISTRATION"/>
       <xs:enumeration value="AEROSPACE_ENGINEERING"/>
@@ -1160,164 +1165,165 @@
 </xs:schema>
   </wsdl:types>
   <wsdl:message name="deletePublishingGroup">
-    <wsdl:part name="token" type="tns:AuthenticationToken">
+    <wsdl:part name="token" type="tns:authenticationToken">
     </wsdl:part>
-    <wsdl:part name="request" type="tns:DeletePublishingGroupRequest">
+    <wsdl:part name="request" type="tns:deletePublishingGroupRequest">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="downloadOffersResponse">
-    <wsdl:part name="response" type="tns:OfferCSVDownloadResponse">
+    <wsdl:part name="response" type="tns:offerCSVDownloadResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="uploadOffers">
-    <wsdl:part name="token" type="tns:AuthenticationToken">
+    <wsdl:part name="token" type="tns:authenticationToken">
     </wsdl:part>
-    <wsdl:part name="request" type="tns:OfferCSVUploadRequest">
+    <wsdl:part name="request" type="tns:offerCSVUploadRequest">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="fetchPublishingGroups">
-    <wsdl:part name="token" type="tns:AuthenticationToken">
+    <wsdl:part name="token" type="tns:authenticationToken">
     </wsdl:part>
-    <wsdl:part name="request" type="tns:FetchPublishGroupsRequest">
+    <wsdl:part name="request" type="tns:fetchPublishGroupsRequest">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="fetchOfferStatisticsResponse">
-    <wsdl:part name="response" type="tns:OfferStatisticsResponse">
+    <wsdl:part name="response" type="tns:offerStatisticsResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="processHideForeignOffers">
-    <wsdl:part name="token" type="tns:AuthenticationToken">
+    <wsdl:part name="token" type="tns:authenticationToken">
     </wsdl:part>
-    <wsdl:part name="request" type="tns:HideForeignOffersRequest">
+    <wsdl:part name="request" type="tns:hideForeignOffersRequest">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="processHideForeignOffersResponse">
-    <wsdl:part name="response" type="tns:FallibleResponse">
+    <wsdl:part name="response" type="tns:fallibleResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="fetchEmployers">
-    <wsdl:part name="token" type="tns:AuthenticationToken">
+    <wsdl:part name="token" type="tns:authenticationToken">
     </wsdl:part>
-    <wsdl:part name="request" type="tns:FetchEmployerRequest">
+    <wsdl:part name="request" type="tns:fetchEmployerRequest">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="rejectOffer">
-    <wsdl:part name="token" type="tns:AuthenticationToken">
+    <wsdl:part name="token" type="tns:authenticationToken">
     </wsdl:part>
-    <wsdl:part name="request" type="tns:RejectOfferRequest">
+    <wsdl:part name="request" type="tns:rejectOfferRequest">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="processEmployer">
-    <wsdl:part name="token" type="tns:AuthenticationToken">
+    <wsdl:part name="token" type="tns:authenticationToken">
     </wsdl:part>
-    <wsdl:part name="request" type="tns:ProcessEmployerRequest">
+    <wsdl:part name="request" type="tns:processEmployerRequest">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="processPublishOffer">
-    <wsdl:part name="token" type="tns:AuthenticationToken">
+    <wsdl:part name="token" type="tns:authenticationToken">
     </wsdl:part>
-    <wsdl:part name="request" type="tns:PublishOfferRequest">
+    <wsdl:part name="request" type="tns:publishOfferRequest">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="fetchOffersResponse">
-    <wsdl:part name="response" type="tns:FetchOffersResponse">
+    <wsdl:part name="response" type="tns:fetchOffersResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="processOfferResponse">
-    <wsdl:part name="response" type="tns:OfferResponse">
+    <wsdl:part name="response" type="tns:offerResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="fetchGroupsForSharingResponse">
-    <wsdl:part name="response" type="tns:FetchGroupsForSharingResponse">
+    <wsdl:part name="response" type="tns:fetchGroupsForSharingResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="downloadOffers">
-    <wsdl:part name="token" type="tns:AuthenticationToken">
+    <wsdl:part name="token" type="tns:authenticationToken">
     </wsdl:part>
-    <wsdl:part name="request" type="tns:OfferCSVDownloadRequest">
+    <wsdl:part name="request" type="tns:offerCSVDownloadRequest">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="fetchPublishedGroupsResponse">
-    <wsdl:part name="response" type="tns:FetchPublishedGroupsResponse">
+    <wsdl:part name="response" type="tns:fetchPublishedGroupsResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="fetchOffers">
-    <wsdl:part name="token" type="tns:AuthenticationToken">
+    <wsdl:part name="token" type="tns:authenticationToken">
     </wsdl:part>
-    <wsdl:part name="request" type="tns:FetchOffersRequest">
+    <wsdl:part name="request" type="tns:fetchOffersRequest">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="fetchOfferStatistics">
-    <wsdl:part name="token" type="tns:AuthenticationToken">
+    <wsdl:part name="token" type="tns:authenticationToken">
     </wsdl:part>
-    <wsdl:part name="request" type="tns:OfferStatisticsRequest">
+    <wsdl:part name="request" type="tns:offerStatisticsRequest">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="fetchGroupsForSharing">
-    <wsdl:part name="token" type="tns:AuthenticationToken">
+    <wsdl:part name="token" type="tns:authenticationToken">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="rejectOfferResponse">
-    <wsdl:part name="response" type="tns:FallibleResponse">
+    <wsdl:part name="response" type="tns:fallibleResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="processPublishingGroupResponse">
-    <wsdl:part name="response" type="tns:FallibleResponse">
+    <wsdl:part name="response" type="tns:fallibleResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="fetchPublishingGroupsResponse">
-    <wsdl:part name="response" type="tns:FetchPublishingGroupResponse">
+    <wsdl:part name="response" type="tns:fetchPublishingGroupResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="fetchEmployersResponse">
-    <wsdl:part name="response" type="tns:FetchEmployerResponse">
+    <wsdl:part name="response" type="tns:fetchEmployerResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="deleteOffer">
-    <wsdl:part name="token" type="tns:AuthenticationToken">
+    <wsdl:part name="token" type="tns:authenticationToken">
     </wsdl:part>
-    <wsdl:part name="request" type="tns:DeleteOfferRequest">
+    <wsdl:part name="request" type="tns:deleteOfferRequest">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="deleteOfferResponse">
-    <wsdl:part name="response" type="tns:OfferResponse">
+    <wsdl:part name="response" type="tns:offerResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="processPublishOfferResponse">
-    <wsdl:part name="response" type="tns:PublishOfferResponse">
+    <wsdl:part name="response" type="tns:publishOfferResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="processPublishingGroup">
-    <wsdl:part name="token" type="tns:AuthenticationToken">
+    <wsdl:part name="token" type="tns:authenticationToken">
     </wsdl:part>
-    <wsdl:part name="request" type="tns:ProcessPublishingGroupRequest">
+    <wsdl:part name="request" type="tns:processPublishingGroupRequest">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="fetchPublishedGroups">
-    <wsdl:part name="token" type="tns:AuthenticationToken">
+    <wsdl:part name="token" type="tns:authenticationToken">
     </wsdl:part>
-    <wsdl:part name="request" type="tns:FetchPublishedGroupsRequest">
+    <wsdl:part name="request" type="tns:fetchPublishedGroupsRequest">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="uploadOffersResponse">
-    <wsdl:part name="response" type="tns:OfferCSVUploadResponse">
+    <wsdl:part name="response" type="tns:offerCSVUploadResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="processEmployerResponse">
-    <wsdl:part name="response" type="tns:EmployerResponse">
+    <wsdl:part name="response" type="tns:employerResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="processOffer">
-    <wsdl:part name="token" type="tns:AuthenticationToken">
+    <wsdl:part name="token" type="tns:authenticationToken">
     </wsdl:part>
-    <wsdl:part name="request" type="tns:ProcessOfferRequest">
+    <wsdl:part name="request" type="tns:processOfferRequest">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="deletePublishingGroupResponse">
-    <wsdl:part name="response" type="tns:FallibleResponse">
+    <wsdl:part name="response" type="tns:fallibleResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:portType name="exchangeWS">
+    <wsdl:documentation>IAESTE A.s.b.l. Exchange WebService</wsdl:documentation>
     <wsdl:operation name="deletePublishingGroup">
       <wsdl:input message="tns:deletePublishingGroup" name="deletePublishingGroup">
     </wsdl:input>
@@ -1416,155 +1422,155 @@
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="exchangeWSServiceSoapBinding" type="tns:exchangeWS">
-    <soap12:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
     <wsdl:operation name="deletePublishingGroup">
-      <soap12:operation soapAction="" style="rpc"/>
+      <soap:operation soapAction="" style="rpc"/>
       <wsdl:input name="deletePublishingGroup">
-        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="deletePublishingGroupResponse">
-        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="uploadOffers">
-      <soap12:operation soapAction="" style="rpc"/>
+      <soap:operation soapAction="" style="rpc"/>
       <wsdl:input name="uploadOffers">
-        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="uploadOffersResponse">
-        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="fetchPublishingGroups">
-      <soap12:operation soapAction="" style="rpc"/>
+      <soap:operation soapAction="" style="rpc"/>
       <wsdl:input name="fetchPublishingGroups">
-        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="fetchPublishingGroupsResponse">
-        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="processHideForeignOffers">
-      <soap12:operation soapAction="" style="rpc"/>
+      <soap:operation soapAction="" style="rpc"/>
       <wsdl:input name="processHideForeignOffers">
-        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="processHideForeignOffersResponse">
-        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="rejectOffer">
-      <soap12:operation soapAction="" style="rpc"/>
+      <soap:operation soapAction="" style="rpc"/>
       <wsdl:input name="rejectOffer">
-        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="rejectOfferResponse">
-        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="fetchEmployers">
-      <soap12:operation soapAction="" style="rpc"/>
+      <soap:operation soapAction="" style="rpc"/>
       <wsdl:input name="fetchEmployers">
-        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="fetchEmployersResponse">
-        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="processPublishOffer">
-      <soap12:operation soapAction="" style="rpc"/>
+      <soap:operation soapAction="" style="rpc"/>
       <wsdl:input name="processPublishOffer">
-        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="processPublishOfferResponse">
-        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="processEmployer">
-      <soap12:operation soapAction="" style="rpc"/>
+      <soap:operation soapAction="" style="rpc"/>
       <wsdl:input name="processEmployer">
-        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="processEmployerResponse">
-        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="deleteOffer">
-      <soap12:operation soapAction="" style="rpc"/>
+      <soap:operation soapAction="" style="rpc"/>
       <wsdl:input name="deleteOffer">
-        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="deleteOfferResponse">
-        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="downloadOffers">
-      <soap12:operation soapAction="" style="rpc"/>
+      <soap:operation soapAction="" style="rpc"/>
       <wsdl:input name="downloadOffers">
-        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="downloadOffersResponse">
-        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="processPublishingGroup">
-      <soap12:operation soapAction="" style="rpc"/>
+      <soap:operation soapAction="" style="rpc"/>
       <wsdl:input name="processPublishingGroup">
-        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="processPublishingGroupResponse">
-        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="fetchPublishedGroups">
-      <soap12:operation soapAction="" style="rpc"/>
+      <soap:operation soapAction="" style="rpc"/>
       <wsdl:input name="fetchPublishedGroups">
-        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="fetchPublishedGroupsResponse">
-        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="fetchOffers">
-      <soap12:operation soapAction="" style="rpc"/>
+      <soap:operation soapAction="" style="rpc"/>
       <wsdl:input name="fetchOffers">
-        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="fetchOffersResponse">
-        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="fetchOfferStatistics">
-      <soap12:operation soapAction="" style="rpc"/>
+      <soap:operation soapAction="" style="rpc"/>
       <wsdl:input name="fetchOfferStatistics">
-        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="fetchOfferStatisticsResponse">
-        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="processOffer">
-      <soap12:operation soapAction="" style="rpc"/>
+      <soap:operation soapAction="" style="rpc"/>
       <wsdl:input name="processOffer">
-        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="processOfferResponse">
-        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="fetchGroupsForSharing">
-      <soap12:operation soapAction="" style="rpc"/>
+      <soap:operation soapAction="" style="rpc"/>
       <wsdl:input name="fetchGroupsForSharing">
-        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="fetchGroupsForSharingResponse">
-        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
   </wsdl:binding>
   <wsdl:service name="exchangeWSService">
     <wsdl:port binding="tns:exchangeWSServiceSoapBinding" name="exchangeWS">
-      <soap12:address location="http://localhost:9080/iws-ws/exchangeWS"/>
+      <soap:address location="http://localhost:9080/iws-ws/exchangeWS"/>
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

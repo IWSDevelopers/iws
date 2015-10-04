@@ -49,7 +49,7 @@ import java.util.Calendar;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "Date", propOrder = { "midnight" })
+@XmlType(name = "date", propOrder = { "midnight" })
 public final class Date implements Serializable, Comparable<Date> {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */

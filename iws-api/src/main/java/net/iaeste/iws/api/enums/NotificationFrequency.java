@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlType;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
-@XmlType(name = "NotificationFrequency")
+@XmlType(name = "notificationFrequency")
 public enum NotificationFrequency implements Descriptable<NotificationFrequency> {
 
     /**

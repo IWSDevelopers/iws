@@ -35,7 +35,7 @@ import java.util.Map;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "AuthenticationToken", propOrder = { "token", "groupId" })
+@XmlType(name = "authenticationToken", propOrder = { "token", "groupId" })
 public final class AuthenticationToken extends AbstractVerification implements Traceable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */

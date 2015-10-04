@@ -33,7 +33,7 @@ import java.util.regex.Pattern;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "Group", propOrder = { "groupId", "groupName", "fullName", "listName", "privateList", "publicList", "groupType", "description", "monitoringLevel", "country" })
+@XmlType(name = "group", propOrder = { "groupId", "groupName", "fullName", "listName", "privateList", "publicList", "groupType", "description", "monitoringLevel", "country" })
 public final class Group extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */

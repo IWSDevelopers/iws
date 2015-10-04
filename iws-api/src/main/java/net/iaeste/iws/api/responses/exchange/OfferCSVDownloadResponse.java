@@ -29,8 +29,8 @@ import javax.xml.bind.annotation.XmlType;
  * @since   IWS 1.1
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "OfferCSVDownloadResponse", propOrder = { "data" })
-public class OfferCSVDownloadResponse extends FallibleResponse {
+@XmlType(name = "offerCSVDownloadResponse", propOrder = { "data" })
+public final class OfferCSVDownloadResponse extends FallibleResponse {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;

@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlType;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
-@XmlType(name = "StudyLevel")
+@XmlType(name = "studyLevel")
 public enum StudyLevel implements Descriptable<StudyLevel> {
 
     B("Begin (1-3 semesters)"),

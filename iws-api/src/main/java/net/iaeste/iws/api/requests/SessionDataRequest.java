@@ -43,7 +43,7 @@ import java.util.Map;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "SessionDataRequest", propOrder = { "sessionData" })
+@XmlType(name = "sessionDataRequest", propOrder = { "sessionData" })
 public final class SessionDataRequest<T extends Serializable> extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */

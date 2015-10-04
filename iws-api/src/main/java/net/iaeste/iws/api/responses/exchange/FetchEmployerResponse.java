@@ -17,7 +17,6 @@ package net.iaeste.iws.api.responses.exchange;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.dtos.exchange.Employer;
-import net.iaeste.iws.api.requests.exchange.FetchEmployerRequest;
 import net.iaeste.iws.api.responses.FallibleResponse;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -32,7 +31,7 @@ import java.util.List;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "FetchEmployerResponse", propOrder = { "employers" })
+@XmlType(name = "fetchEmployerResponse", propOrder = { "employers" })
 public final class FetchEmployerResponse extends FallibleResponse {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */

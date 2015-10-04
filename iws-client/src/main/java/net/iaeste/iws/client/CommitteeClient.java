@@ -25,7 +25,7 @@ import net.iaeste.iws.api.requests.CountrySurveyRequest;
 import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchCommitteeResponse;
 import net.iaeste.iws.api.responses.FetchInternationalGroupResponse;
-import net.iaeste.iws.api.responses.FetchCountrySurveyRespose;
+import net.iaeste.iws.api.responses.FetchCountrySurveyResponse;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -83,7 +83,7 @@ public final class CommitteeClient implements Committees {
      * {@inheritDoc}
      */
     @Override
-    public FetchCountrySurveyRespose fetchCountrySurvey(final AuthenticationToken token, final FetchCountrySurveyRequest request) {
+    public FetchCountrySurveyResponse fetchCountrySurvey(final AuthenticationToken token, final FetchCountrySurveyRequest request) {
         return client.fetchCountrySurvey(token, request);
     }
 

@@ -41,7 +41,7 @@ import javax.xml.bind.annotation.XmlType;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
-@XmlType(name = "Specialization")
+@XmlType(name = "specialization")
 public enum Specialization implements Descriptable<Specialization> {
 
     ADMINISTRATION("Administration"),

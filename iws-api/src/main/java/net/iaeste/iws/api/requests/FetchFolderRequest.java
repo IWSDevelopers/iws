@@ -30,7 +30,7 @@ import java.util.Map;
  * @since   IWS 1.1
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "FetchFolderRequest", propOrder = { "folderId" })
+@XmlType(name = "fetchFolderRequest", propOrder = { "folderId" })
 public final class FetchFolderRequest extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */

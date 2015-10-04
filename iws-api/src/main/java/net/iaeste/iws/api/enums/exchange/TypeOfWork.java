@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlType;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
-@XmlType(name = "TypeOfWork")
+@XmlType(name = "typeOfWork")
 public enum TypeOfWork implements Descriptable<TypeOfWork> {
 
     R("Research and Development"),

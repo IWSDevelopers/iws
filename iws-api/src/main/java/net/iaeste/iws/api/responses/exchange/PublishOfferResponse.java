@@ -28,7 +28,7 @@ import javax.xml.bind.annotation.XmlType;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "PublishOfferResponse", propOrder = {})
+@XmlType(name = "publishOfferResponse", propOrder = {})
 public final class PublishOfferResponse extends FallibleResponse {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */

@@ -31,7 +31,7 @@ import java.util.Map;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "ProcessPublishingGroupRequest", propOrder = { "publishingGroup", "deletePublishingGroup" })
+@XmlType(name = "processPublishingGroupRequest", propOrder = { "publishingGroup", "deletePublishingGroup" })
 public final class ProcessPublishingGroupRequest extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */

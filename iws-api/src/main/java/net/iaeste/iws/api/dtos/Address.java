@@ -30,7 +30,7 @@ import java.util.Map;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "Address", propOrder = { "street1", "street2", "postalCode", "city", "state", "pobox", "country" })
+@XmlType(name = "address", propOrder = { "street1", "street2", "postalCode", "city", "state", "pobox", "country" })
 public final class Address extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */

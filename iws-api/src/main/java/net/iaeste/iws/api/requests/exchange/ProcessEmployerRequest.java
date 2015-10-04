@@ -31,7 +31,7 @@ import java.util.Map;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "ProcessEmployerRequest", propOrder = { "employer" })
+@XmlType(name = "processEmployerRequest", propOrder = { "employer" })
 public final class ProcessEmployerRequest extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */

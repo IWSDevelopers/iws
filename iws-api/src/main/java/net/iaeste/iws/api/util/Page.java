@@ -28,7 +28,7 @@ import java.io.Serializable;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "Page", propOrder = { "pageNumber", "pageSize", "sortAscending", "sortBy" })
+@XmlType(name = "page", propOrder = { "pageNumber", "pageSize", "sortAscending", "sortBy" })
 public class Page implements Paginatable, Serializable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */

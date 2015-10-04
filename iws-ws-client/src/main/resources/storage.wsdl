@@ -1,8 +1,13 @@
-<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://ws.iws.iaeste.net/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="storageWSService" targetNamespace="http://ws.iws.iaeste.net/">
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://ws.iws.iaeste.net/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="storageWSService" targetNamespace="http://ws.iws.iaeste.net/">
+  <wsdl:documentation>
+      Service: IWS Storage Service
+      Version: 1.1
+      Owner: IAESTE A.s.b.l.
+  </wsdl:documentation>
   <wsdl:types>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://ws.iws.iaeste.net/" targetNamespace="http://ws.iws.iaeste.net/" version="1.0">
 
-  <xs:complexType final="extension restriction" name="AuthenticationToken">
+  <xs:complexType final="extension restriction" name="authenticationToken">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
@@ -17,26 +22,26 @@
     <xs:sequence/>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="FileRequest">
+  <xs:complexType final="extension restriction" name="fileRequest">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
-          <xs:element name="action" type="tns:Action"/>
-          <xs:element name="file" type="tns:File"/>
-          <xs:element name="type" type="tns:StorageType"/>
+          <xs:element name="action" type="tns:action"/>
+          <xs:element name="file" type="tns:file"/>
+          <xs:element name="type" type="tns:storageType"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="File">
+  <xs:complexType final="extension restriction" name="file">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
           <xs:element name="fileId" nillable="true" type="xs:string"/>
-          <xs:element name="privacy" type="tns:Privacy"/>
-          <xs:element name="group" nillable="true" type="tns:Group"/>
-          <xs:element name="user" nillable="true" type="tns:User"/>
+          <xs:element name="privacy" type="tns:privacy"/>
+          <xs:element name="group" nillable="true" type="tns:group"/>
+          <xs:element name="user" nillable="true" type="tns:user"/>
           <xs:element name="folderId" nillable="true" type="xs:string"/>
           <xs:element name="filename" type="xs:string"/>
           <xs:element name="filedata" nillable="true" type="xs:base64Binary"/>
@@ -45,14 +50,14 @@
           <xs:element name="description" nillable="true" type="xs:string"/>
           <xs:element name="keywords" nillable="true" type="xs:string"/>
           <xs:element name="checksum" nillable="true" type="xs:long"/>
-          <xs:element name="modified" nillable="true" type="tns:Date"/>
-          <xs:element name="created" nillable="true" type="tns:Date"/>
+          <xs:element name="modified" nillable="true" type="tns:date"/>
+          <xs:element name="created" nillable="true" type="tns:date"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="Group">
+  <xs:complexType final="extension restriction" name="group">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
@@ -62,16 +67,16 @@
           <xs:element name="listName" nillable="true" type="xs:string"/>
           <xs:element name="privateList" type="xs:boolean"/>
           <xs:element name="publicList" type="xs:boolean"/>
-          <xs:element name="groupType" type="tns:GroupType"/>
+          <xs:element name="groupType" type="tns:groupType"/>
           <xs:element name="description" nillable="true" type="xs:string"/>
-          <xs:element name="monitoringLevel" nillable="true" type="tns:MonitoringLevel"/>
-          <xs:element name="country" nillable="true" type="tns:Country"/>
+          <xs:element name="monitoringLevel" nillable="true" type="tns:monitoringLevel"/>
+          <xs:element name="country" nillable="true" type="tns:country"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="Country">
+  <xs:complexType final="extension restriction" name="country">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
@@ -82,16 +87,16 @@
           <xs:element name="nationality" nillable="true" type="xs:string"/>
           <xs:element name="citizens" nillable="true" type="xs:string"/>
           <xs:element name="phonecode" nillable="true" type="xs:string"/>
-          <xs:element name="currency" type="tns:Currency"/>
+          <xs:element name="currency" type="tns:currency"/>
           <xs:element name="languages" nillable="true" type="xs:string"/>
-          <xs:element name="membership" nillable="true" type="tns:Membership"/>
+          <xs:element name="membership" nillable="true" type="tns:membership"/>
           <xs:element name="memberSince" nillable="true" type="xs:int"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="User">
+  <xs:complexType final="extension restriction" name="user">
     <xs:complexContent>
       <xs:extension base="tns:abstractDto">
         <xs:sequence>
@@ -100,11 +105,11 @@
           <xs:element name="alias" nillable="true" type="xs:string"/>
           <xs:element name="firstname" nillable="true" type="xs:string"/>
           <xs:element name="lastname" nillable="true" type="xs:string"/>
-          <xs:element name="person" nillable="true" type="tns:Person"/>
-          <xs:element name="status" nillable="true" type="tns:UserStatus"/>
-          <xs:element name="type" type="tns:UserType"/>
-          <xs:element name="privacy" type="tns:Privacy"/>
-          <xs:element name="notifications" type="tns:NotificationFrequency"/>
+          <xs:element name="person" nillable="true" type="tns:person"/>
+          <xs:element name="status" nillable="true" type="tns:userStatus"/>
+          <xs:element name="type" type="tns:userType"/>
+          <xs:element name="privacy" type="tns:privacy"/>
+          <xs:element name="notifications" type="tns:notificationFrequency"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -118,18 +123,18 @@
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="Person">
+  <xs:complexType final="extension restriction" name="person">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
-          <xs:element name="nationality" nillable="true" type="tns:Country"/>
-          <xs:element name="address" nillable="true" type="tns:Address"/>
+          <xs:element name="nationality" nillable="true" type="tns:country"/>
+          <xs:element name="address" nillable="true" type="tns:address"/>
           <xs:element name="alternateEmail" nillable="true" type="xs:string"/>
           <xs:element name="phone" nillable="true" type="xs:string"/>
           <xs:element name="mobile" nillable="true" type="xs:string"/>
           <xs:element name="fax" nillable="true" type="xs:string"/>
-          <xs:element name="birthday" nillable="true" type="tns:Date"/>
-          <xs:element name="gender" nillable="true" type="tns:Gender"/>
+          <xs:element name="birthday" nillable="true" type="tns:date"/>
+          <xs:element name="gender" nillable="true" type="tns:gender"/>
           <xs:element name="understoodPrivacySettings" nillable="true" type="xs:boolean"/>
           <xs:element name="acceptNewsletters" nillable="true" type="xs:boolean"/>
         </xs:sequence>
@@ -137,7 +142,7 @@
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="Address">
+  <xs:complexType final="extension restriction" name="address">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
@@ -147,43 +152,43 @@
           <xs:element name="city" nillable="true" type="xs:string"/>
           <xs:element name="state" nillable="true" type="xs:string"/>
           <xs:element name="pobox" nillable="true" type="xs:string"/>
-          <xs:element name="country" nillable="true" type="tns:Country"/>
+          <xs:element name="country" nillable="true" type="tns:country"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="Date">
+  <xs:complexType final="extension restriction" name="date">
     <xs:sequence>
       <xs:element name="midnight" type="xs:dateTime"/>
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="FileResponse">
+  <xs:complexType final="extension restriction" name="fileResponse">
     <xs:complexContent>
-      <xs:extension base="tns:FallibleResponse">
+      <xs:extension base="tns:fallibleResponse">
         <xs:sequence>
-          <xs:element name="file" nillable="true" type="tns:File"/>
+          <xs:element name="file" nillable="true" type="tns:file"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType name="FallibleResponse">
+  <xs:complexType name="fallibleResponse">
     <xs:sequence>
-      <xs:element name="error" type="tns:IWSError"/>
+      <xs:element name="error" type="tns:iwsError"/>
       <xs:element name="message" type="xs:string"/>
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="IWSError">
+  <xs:complexType final="extension restriction" name="iwsError">
     <xs:sequence>
       <xs:element name="error" type="xs:int"/>
       <xs:element name="description" type="xs:string"/>
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="FetchFolderRequest">
+  <xs:complexType final="extension restriction" name="fetchFolderRequest">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
@@ -193,85 +198,86 @@
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="FetchFolderResponse">
+  <xs:complexType final="extension restriction" name="fetchFolderResponse">
     <xs:complexContent>
-      <xs:extension base="tns:FallibleResponse">
+      <xs:extension base="tns:fallibleResponse">
         <xs:sequence>
-          <xs:element name="folder" nillable="true" type="tns:Folder"/>
+          <xs:element name="folder" nillable="true" type="tns:folder"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="Folder">
+  <xs:complexType final="extension restriction" name="folder">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
           <xs:element name="folderId" nillable="true" type="xs:string"/>
           <xs:element name="parentId" nillable="true" type="xs:string"/>
-          <xs:element name="group" type="tns:Group"/>
+          <xs:element name="group" type="tns:group"/>
           <xs:element name="foldername" type="xs:string"/>
-          <xs:element maxOccurs="unbounded" name="folders" nillable="true" type="tns:Folder"/>
-          <xs:element maxOccurs="unbounded" name="files" nillable="true" type="tns:File"/>
-          <xs:element name="privacy" nillable="true" type="tns:Privacy"/>
-          <xs:element name="modified" nillable="true" type="tns:Date"/>
-          <xs:element name="created" nillable="true" type="tns:Date"/>
+          <xs:element maxOccurs="unbounded" name="folders" nillable="true" type="tns:folder"/>
+          <xs:element maxOccurs="unbounded" name="files" nillable="true" type="tns:file"/>
+          <xs:element name="privacy" nillable="true" type="tns:privacy"/>
+          <xs:element name="modified" nillable="true" type="tns:date"/>
+          <xs:element name="created" nillable="true" type="tns:date"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="FolderRequest">
+  <xs:complexType final="extension restriction" name="folderRequest">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
-          <xs:element name="action" type="tns:Action"/>
+          <xs:element name="action" type="tns:action"/>
           <xs:element name="parentId" nillable="true" type="xs:string"/>
-          <xs:element name="folder" nillable="true" type="tns:Folder"/>
+          <xs:element name="folder" nillable="true" type="tns:folder"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="FolderResponse">
+  <xs:complexType final="extension restriction" name="folderResponse">
     <xs:complexContent>
-      <xs:extension base="tns:FallibleResponse">
+      <xs:extension base="tns:fallibleResponse">
         <xs:sequence>
-          <xs:element name="folder" nillable="true" type="tns:Folder"/>
+          <xs:element name="folder" nillable="true" type="tns:folder"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="FetchFileRequest">
+  <xs:complexType final="extension restriction" name="fetchFileRequest">
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
           <xs:element name="fileId" type="xs:string"/>
           <xs:element name="groupId" nillable="true" type="xs:string"/>
-          <xs:element name="type" type="tns:StorageType"/>
+          <xs:element name="type" type="tns:storageType"/>
           <xs:element name="readFileData" nillable="true" type="xs:boolean"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="FetchFileResponse">
+  <xs:complexType final="extension restriction" name="fetchFileResponse">
     <xs:complexContent>
-      <xs:extension base="tns:FallibleResponse">
+      <xs:extension base="tns:fallibleResponse">
         <xs:sequence>
-          <xs:element name="file" nillable="true" type="tns:File"/>
+          <xs:element name="file" nillable="true" type="tns:file"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:simpleType name="Action">
+  <xs:simpleType name="action">
     <xs:restriction base="xs:string">
       <xs:enumeration value="CREATE"/>
       <xs:enumeration value="UPDATE"/>
       <xs:enumeration value="UPGRADE"/>
       <xs:enumeration value="PROCESS"/>
+      <xs:enumeration value="MOVE"/>
       <xs:enumeration value="CHANGE_NS"/>
       <xs:enumeration value="MERGE"/>
       <xs:enumeration value="ACTIVATE"/>
@@ -280,7 +286,7 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="Privacy">
+  <xs:simpleType name="privacy">
     <xs:restriction base="xs:string">
       <xs:enumeration value="PUBLIC"/>
       <xs:enumeration value="PROTECTED"/>
@@ -288,7 +294,7 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="GroupType">
+  <xs:simpleType name="groupType">
     <xs:restriction base="xs:string">
       <xs:enumeration value="ADMINISTRATION"/>
       <xs:enumeration value="PRIVATE"/>
@@ -301,7 +307,7 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="MonitoringLevel">
+  <xs:simpleType name="monitoringLevel">
     <xs:restriction base="xs:string">
       <xs:enumeration value="NONE"/>
       <xs:enumeration value="MARKED"/>
@@ -309,7 +315,7 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="Currency">
+  <xs:simpleType name="currency">
     <xs:restriction base="xs:string">
       <xs:enumeration value="AED"/>
       <xs:enumeration value="AFN"/>
@@ -478,7 +484,7 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="Membership">
+  <xs:simpleType name="membership">
     <xs:restriction base="xs:string">
       <xs:enumeration value="UNKNOWN"/>
       <xs:enumeration value="FULL_MEMBER"/>
@@ -490,7 +496,7 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="Gender">
+  <xs:simpleType name="gender">
     <xs:restriction base="xs:string">
       <xs:enumeration value="MALE"/>
       <xs:enumeration value="FEMALE"/>
@@ -498,7 +504,7 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="UserStatus">
+  <xs:simpleType name="userStatus">
     <xs:restriction base="xs:string">
       <xs:enumeration value="NEW"/>
       <xs:enumeration value="ACTIVE"/>
@@ -507,7 +513,7 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="UserType">
+  <xs:simpleType name="userType">
     <xs:restriction base="xs:string">
       <xs:enumeration value="VOLUNTEER"/>
       <xs:enumeration value="EMPLOYED"/>
@@ -517,7 +523,7 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="NotificationFrequency">
+  <xs:simpleType name="notificationFrequency">
     <xs:restriction base="xs:string">
       <xs:enumeration value="IMMEDIATELY"/>
       <xs:enumeration value="DAILY"/>
@@ -525,7 +531,7 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="StorageType">
+  <xs:simpleType name="storageType">
     <xs:restriction base="xs:string">
       <xs:enumeration value="OWNER"/>
       <xs:enumeration value="FOLDER"/>
@@ -536,46 +542,47 @@
 </xs:schema>
   </wsdl:types>
   <wsdl:message name="processFolder">
-    <wsdl:part name="token" type="tns:AuthenticationToken">
+    <wsdl:part name="token" type="tns:authenticationToken">
     </wsdl:part>
-    <wsdl:part name="request" type="tns:FolderRequest">
+    <wsdl:part name="request" type="tns:folderRequest">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="processFolderResponse">
-    <wsdl:part name="response" type="tns:FolderResponse">
+    <wsdl:part name="response" type="tns:folderResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="fetchFile">
-    <wsdl:part name="token" type="tns:AuthenticationToken">
+    <wsdl:part name="token" type="tns:authenticationToken">
     </wsdl:part>
-    <wsdl:part name="request" type="tns:FetchFileRequest">
+    <wsdl:part name="request" type="tns:fetchFileRequest">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="fetchFolderResponse">
-    <wsdl:part name="response" type="tns:FetchFolderResponse">
+    <wsdl:part name="response" type="tns:fetchFolderResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="processFile">
-    <wsdl:part name="token" type="tns:AuthenticationToken">
+    <wsdl:part name="token" type="tns:authenticationToken">
     </wsdl:part>
-    <wsdl:part name="request" type="tns:FileRequest">
+    <wsdl:part name="request" type="tns:fileRequest">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="processFileResponse">
-    <wsdl:part name="response" type="tns:FileResponse">
+    <wsdl:part name="response" type="tns:fileResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="fetchFolder">
-    <wsdl:part name="token" type="tns:AuthenticationToken">
+    <wsdl:part name="token" type="tns:authenticationToken">
     </wsdl:part>
-    <wsdl:part name="request" type="tns:FetchFolderRequest">
+    <wsdl:part name="request" type="tns:fetchFolderRequest">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="fetchFileResponse">
-    <wsdl:part name="response" type="tns:FetchFileResponse">
+    <wsdl:part name="response" type="tns:fetchFileResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:portType name="storageWS">
+    <wsdl:documentation>IAESTE A.s.b.l. Storage WebService</wsdl:documentation>
     <wsdl:operation name="processFile">
       <wsdl:input message="tns:processFile" name="processFile">
     </wsdl:input>
@@ -602,47 +609,47 @@
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="storageWSServiceSoapBinding" type="tns:storageWS">
-    <soap12:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
     <wsdl:operation name="processFile">
-      <soap12:operation soapAction="" style="rpc"/>
+      <soap:operation soapAction="" style="rpc"/>
       <wsdl:input name="processFile">
-        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="processFileResponse">
-        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="fetchFolder">
-      <soap12:operation soapAction="" style="rpc"/>
+      <soap:operation soapAction="" style="rpc"/>
       <wsdl:input name="fetchFolder">
-        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="fetchFolderResponse">
-        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="processFolder">
-      <soap12:operation soapAction="" style="rpc"/>
+      <soap:operation soapAction="" style="rpc"/>
       <wsdl:input name="processFolder">
-        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="processFolderResponse">
-        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="fetchFile">
-      <soap12:operation soapAction="" style="rpc"/>
+      <soap:operation soapAction="" style="rpc"/>
       <wsdl:input name="fetchFile">
-        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="fetchFileResponse">
-        <soap12:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
   </wsdl:binding>
   <wsdl:service name="storageWSService">
     <wsdl:port binding="tns:storageWSServiceSoapBinding" name="storageWS">
-      <soap12:address location="http://localhost:9080/iws-ws/storageWS"/>
+      <soap:address location="http://localhost:9080/iws-ws/storageWS"/>
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

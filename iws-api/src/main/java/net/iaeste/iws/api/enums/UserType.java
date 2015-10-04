@@ -41,7 +41,7 @@ import javax.xml.bind.annotation.XmlType;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
-@XmlType(name = "UserType")
+@XmlType(name = "userType")
 public enum UserType implements Descriptable<UserType> {
 
     /**

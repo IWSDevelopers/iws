@@ -33,7 +33,7 @@ import java.util.Map;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "ProcessStudentApplicationsRequest", propOrder = { "studentApplication" })
+@XmlType(name = "processStudentApplicationsRequest", propOrder = { "studentApplication" })
 public class ProcessStudentApplicationsRequest extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */

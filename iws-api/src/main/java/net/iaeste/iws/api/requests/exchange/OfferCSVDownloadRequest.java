@@ -34,7 +34,7 @@ import java.util.Map;
  * @since   IWS 1.1
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "OfferCSVDownloadRequest", propOrder = { "fetchType", "offerIds", "exchangeYear" })
+@XmlType(name = "offerCSVDownloadRequest", propOrder = { "fetchType", "offerIds", "exchangeYear" })
 public class OfferCSVDownloadRequest extends AbstractPaginatable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */

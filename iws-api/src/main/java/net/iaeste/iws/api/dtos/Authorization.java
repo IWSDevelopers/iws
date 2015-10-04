@@ -30,7 +30,7 @@ import java.io.Serializable;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "Authorization", propOrder = { "userGroup" })
+@XmlType(name = "authorization", propOrder = { "userGroup" })
 public final class Authorization implements Serializable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */

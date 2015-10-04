@@ -46,7 +46,7 @@ import java.util.Map;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "FetchCountryRequest", propOrder = { "countryIds", "membership", "countryType" })
+@XmlType(name = "fetchCountryRequest", propOrder = { "countryIds", "membership", "countryType" })
 public final class FetchCountryRequest extends AbstractPaginatable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */

@@ -36,7 +36,7 @@ import java.util.Set;
  * @since   IWS 1.1
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "Folder", propOrder = { "folderId", "parentId", "group", "foldername", "folders", "files", "privacy", "modified", "created" })
+@XmlType(name = "folder", propOrder = { "folderId", "parentId", "group", "foldername", "folders", "files", "privacy", "modified", "created" })
 public final class Folder extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */

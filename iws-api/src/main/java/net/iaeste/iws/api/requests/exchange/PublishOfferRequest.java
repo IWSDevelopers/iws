@@ -34,7 +34,7 @@ import java.util.Set;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "PublishOfferRequest", propOrder = { "offerIds", "groupIds", "nominationDeadline" })
+@XmlType(name = "publishOfferRequest", propOrder = { "offerIds", "groupIds", "nominationDeadline" })
 public final class PublishOfferRequest extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */

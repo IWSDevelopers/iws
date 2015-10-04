@@ -29,7 +29,7 @@ import net.iaeste.iws.api.requests.CountrySurveyRequest;
 import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchCommitteeResponse;
 import net.iaeste.iws.api.responses.FetchInternationalGroupResponse;
-import net.iaeste.iws.api.responses.FetchCountrySurveyRespose;
+import net.iaeste.iws.api.responses.FetchCountrySurveyResponse;
 import net.iaeste.iws.core.services.CommitteeService;
 import net.iaeste.iws.core.services.ServiceFactory;
 import net.iaeste.iws.persistence.Authentication;
@@ -189,11 +189,11 @@ public final class CommitteeController extends CommonController implements Commi
      * {@inheritDoc}
      */
     @Override
-    public FetchCountrySurveyRespose fetchCountrySurvey(final AuthenticationToken token, final FetchCountrySurveyRequest request) {
+    public FetchCountrySurveyResponse fetchCountrySurvey(final AuthenticationToken token, final FetchCountrySurveyRequest request) {
         if (LOG.isTraceEnabled()) {
             LOG.trace(formatLogMessage(token, "Starting fetchCountrySurvey()"));
         }
-        FetchCountrySurveyRespose response;
+        FetchCountrySurveyResponse response;
 
         try {
             verify(request);
@@ -208,7 +208,7 @@ public final class CommitteeController extends CommonController implements Commi
             // that we're not loosing anything - the Exception is also LOG.ed
             // here as a debug message
             LOG.debug(e.getMessage(), e);
-            response = new FetchCountrySurveyRespose(e.getError(), e.getMessage());
+            response = new FetchCountrySurveyResponse(e.getError(), e.getMessage());
         }
 
         if (LOG.isTraceEnabled()) {

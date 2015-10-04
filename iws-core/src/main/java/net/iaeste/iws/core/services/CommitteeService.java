@@ -37,7 +37,7 @@ import net.iaeste.iws.api.requests.InternationalGroupRequest;
 import net.iaeste.iws.api.requests.CountrySurveyRequest;
 import net.iaeste.iws.api.responses.FetchCommitteeResponse;
 import net.iaeste.iws.api.responses.FetchInternationalGroupResponse;
-import net.iaeste.iws.api.responses.FetchCountrySurveyRespose;
+import net.iaeste.iws.api.responses.FetchCountrySurveyResponse;
 import net.iaeste.iws.common.configuration.InternalConstants;
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.common.exceptions.IllegalActionException;
@@ -851,7 +851,7 @@ public final class CommitteeService extends CommonService<CommitteeDao> {
     // Fetch & Process Survey of Country logic
     // =========================================================================
 
-    public FetchCountrySurveyRespose fetchCountrySurvey(final Authentication authentication, final FetchCountrySurveyRequest request) {
+    public FetchCountrySurveyResponse fetchCountrySurvey(final Authentication authentication, final FetchCountrySurveyRequest request) {
         throw new NotImplementedException("Method pending implementation, see Trac #924.");
     }
 

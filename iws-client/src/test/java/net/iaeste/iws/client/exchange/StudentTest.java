@@ -56,7 +56,6 @@ import net.iaeste.iws.api.responses.student.StudentResponse;
 import net.iaeste.iws.api.util.AbstractVerification;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.api.util.DatePeriod;
-import net.iaeste.iws.api.util.DateTime;
 import net.iaeste.iws.client.AbstractTest;
 import net.iaeste.iws.client.ExchangeClient;
 import net.iaeste.iws.client.StudentClient;
@@ -277,7 +276,7 @@ public final class StudentTest extends AbstractTest {
     @Test
     public void testUpdateStudentApplication() {
         final Date nominationDeadline = new Date().plusDays(20);
-        final Offer offer = TestData.prepareMinimalOffer("PL-2014-001002", "Employer");
+        final Offer offer = TestData.prepareMinimalOffer("PL-" + exchangeYear + "-001002", "Employer");
 
         final ProcessOfferRequest offerRequest = new ProcessOfferRequest(offer);
         final OfferResponse saveResponse = exchange.processOffer(token, offerRequest);
@@ -419,7 +418,6 @@ public final class StudentTest extends AbstractTest {
         assertThat("Application state is NOMINATED", nominateStudentResponse.getStudentApplication().getStatus(), is(ApplicationStatus.NOMINATED));
         assertThat(nominateStudentResponse.getStudentApplication().getNominatedAt(), not(nullValue()));
 
-        final DateTime beforeNominationDate = new DateTime();
         final FetchStudentApplicationsRequest fetchApplicationsRequest = new FetchStudentApplicationsRequest(offerId);
         final FetchStudentApplicationsResponse fetchApplicationsResponse = students.fetchStudentApplications(austriaTokenWithNationalGroup, fetchApplicationsRequest);
 

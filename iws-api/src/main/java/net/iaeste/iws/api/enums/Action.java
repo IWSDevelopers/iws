@@ -30,7 +30,7 @@ import javax.xml.bind.annotation.XmlType;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.1
  */
-@XmlType(name = "Action")
+@XmlType(name = "action")
 public enum Action {
 
     /**

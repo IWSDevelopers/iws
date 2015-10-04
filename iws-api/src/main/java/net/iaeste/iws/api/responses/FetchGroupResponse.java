@@ -31,7 +31,7 @@ import java.util.List;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "FetchGroupResponse", propOrder = { "group", "members", "students", "subGroups" })
+@XmlType(name = "fetchGroupResponse", propOrder = { "group", "members", "students", "subGroups" })
 public final class FetchGroupResponse extends FallibleResponse {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */

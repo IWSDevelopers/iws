@@ -31,7 +31,7 @@ import java.util.Map;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "SearchUserRequest", propOrder = { "group", "name" })
+@XmlType(name = "searchUserRequest", propOrder = { "group", "name" })
 public final class SearchUserRequest extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */

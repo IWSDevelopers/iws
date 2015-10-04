@@ -32,7 +32,7 @@ import java.util.Map;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "OwnerRequest", propOrder = { "group", "user", "title" })
+@XmlType(name = "ownerRequest", propOrder = { "group", "user", "title" })
 public final class OwnerRequest extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */

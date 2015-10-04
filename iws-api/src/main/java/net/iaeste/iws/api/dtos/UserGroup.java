@@ -37,7 +37,7 @@ import java.util.Map;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "UserGroup", propOrder = { "userGroupId", "user", "group", "role", "title", "onPublicList", "onPrivateList", "writeToPrivateList", "memberSince" })
+@XmlType(name = "userGroup", propOrder = { "userGroupId", "user", "group", "role", "title", "onPublicList", "onPrivateList", "writeToPrivateList", "memberSince" })
 public final class UserGroup extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */

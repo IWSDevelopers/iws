@@ -26,7 +26,7 @@ import net.iaeste.iws.api.requests.CountrySurveyRequest;
 import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchCommitteeResponse;
 import net.iaeste.iws.api.responses.FetchInternationalGroupResponse;
-import net.iaeste.iws.api.responses.FetchCountrySurveyRespose;
+import net.iaeste.iws.api.responses.FetchCountrySurveyResponse;
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.core.CommitteeController;
 import net.iaeste.iws.core.notifications.Notifications;
@@ -203,16 +203,16 @@ public class CommitteeBean implements Committees {
      * {@inheritDoc}
      */
     @Override
-    public FetchCountrySurveyRespose fetchCountrySurvey(final AuthenticationToken token, final FetchCountrySurveyRequest request) {
+    public FetchCountrySurveyResponse fetchCountrySurvey(final AuthenticationToken token, final FetchCountrySurveyRequest request) {
         final long start = System.nanoTime();
-        FetchCountrySurveyRespose response;
+        FetchCountrySurveyResponse response;
 
         try {
             response = controller.fetchCountrySurvey(token, request);
             LOG.info(session.generateLogAndUpdateSession("fetchCountrySurvey", start, response, token));
         } catch (RuntimeException e) {
             LOG.error(session.generateLogAndSaveRequest("fetchCountrySurvey", start, e, token, request), e);
-            response = new FetchCountrySurveyRespose(IWSErrors.ERROR, e.getMessage());
+            response = new FetchCountrySurveyResponse(IWSErrors.ERROR, e.getMessage());
         }
 
         return response;

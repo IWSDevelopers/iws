@@ -30,7 +30,7 @@ import java.util.Map;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "FetchPublishGroupsRequest", propOrder = {})
+@XmlType(name = "fetchPublishGroupsRequest", propOrder = {})
 public final class FetchPublishGroupsRequest extends AbstractPaginatable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */

@@ -34,7 +34,7 @@ import java.util.Set;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "UserGroupAssignmentRequest", propOrder = { "userGroup", "action" })
+@XmlType(name = "userGroupAssignmentRequest", propOrder = { "userGroup", "action" })
 public final class UserGroupAssignmentRequest extends AbstractVerification implements Actionable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */

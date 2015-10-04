@@ -31,7 +31,7 @@ import java.util.Map;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "FetchGroupRequest", propOrder = { "groupId", "groupType", "usersToFetch", "fetchStudents", "fetchSubGroups" })
+@XmlType(name = "fetchGroupRequest", propOrder = { "groupId", "groupType", "usersToFetch", "fetchStudents", "fetchSubGroups" })
 public final class FetchGroupRequest extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */

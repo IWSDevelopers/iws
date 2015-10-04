@@ -44,7 +44,7 @@ import java.util.List;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
-@XmlType(name = "FieldOfStudy")
+@XmlType(name = "fieldOfStudy")
 public enum FieldOfStudy implements Descriptable<FieldOfStudy> {
 
     AERONAUTIC_ENGINEERING("Aeronautic Engineering", Arrays.asList(

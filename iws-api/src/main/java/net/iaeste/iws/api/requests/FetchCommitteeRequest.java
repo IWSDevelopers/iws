@@ -36,8 +36,8 @@ import java.util.Set;
  * @since   IWS 1.1
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "FetchCommitteeRequest", propOrder = { "countryIds", "membership", "statuses" })
-public class FetchCommitteeRequest extends AbstractPaginatable {
+@XmlType(name = "fetchCommitteeRequest", propOrder = { "countryIds", "membership", "statuses" })
+public final class FetchCommitteeRequest extends AbstractPaginatable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;

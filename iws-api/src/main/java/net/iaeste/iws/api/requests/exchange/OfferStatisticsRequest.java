@@ -30,7 +30,7 @@ import java.util.Map;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "OfferStatisticsRequest", propOrder = { "exchangeYear" })
+@XmlType(name = "offerStatisticsRequest", propOrder = { "exchangeYear" })
 public final class OfferStatisticsRequest extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */

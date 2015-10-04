@@ -31,7 +31,7 @@ import java.util.Map;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "FetchFileRequest", propOrder = { "fileId", "groupId", "type", "readFileData" })
+@XmlType(name = "fetchFileRequest", propOrder = { "fileId", "groupId", "type", "readFileData" })
 public final class FetchFileRequest extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */

@@ -21,7 +21,7 @@ import javax.xml.bind.annotation.XmlType;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
-@XmlType(name = "GroupStatus")
+@XmlType(name = "groupStatus")
 public enum GroupStatus {
 
     /**

@@ -31,7 +31,7 @@ import java.util.Map;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "OfferStatistics", propOrder = { "statistics", "exchangeYear" })
+@XmlType(name = "offerStatistics", propOrder = { "statistics", "exchangeYear" })
 public final class OfferStatistics implements Serializable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */

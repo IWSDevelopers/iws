@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlType;
 * @version $Revision:$ / $Date:$
 * @since   IWS 1.0
 */
-@XmlType(name = "Currency")
+@XmlType(name = "currency")
 public enum Currency implements Descriptable<Currency> {
 
     AED("United Arab Emirates Dirham"),

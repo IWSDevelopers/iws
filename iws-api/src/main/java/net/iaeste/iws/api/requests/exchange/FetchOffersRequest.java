@@ -36,7 +36,7 @@ import java.util.Set;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "FetchOffersRequest", propOrder = { "fetchType", "exchangeYear", "states", "retrieveCurrentAndNextExchangeYear" })
+@XmlType(name = "fetchOffersRequest", propOrder = { "fetchType", "exchangeYear", "states", "retrieveCurrentAndNextExchangeYear" })
 public final class FetchOffersRequest extends AbstractPaginatable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */

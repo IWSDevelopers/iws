@@ -25,7 +25,7 @@ import net.iaeste.iws.api.requests.CountrySurveyRequest;
 import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchCommitteeResponse;
 import net.iaeste.iws.api.responses.FetchInternationalGroupResponse;
-import net.iaeste.iws.api.responses.FetchCountrySurveyRespose;
+import net.iaeste.iws.api.responses.FetchCountrySurveyResponse;
 import net.iaeste.iws.client.CommitteeClient;
 import net.iaeste.iws.fitnesse.exceptions.StopTestException;
 
@@ -100,7 +100,7 @@ public final class CommitteeCaller implements Committees {
      * {@inheritDoc}
      */
     @Override
-    public FetchCountrySurveyRespose fetchCountrySurvey(final AuthenticationToken token, final FetchCountrySurveyRequest request) {
+    public FetchCountrySurveyResponse fetchCountrySurvey(final AuthenticationToken token, final FetchCountrySurveyRequest request) {
         try {
             return caller.fetchCountrySurvey(token, request);
         } catch (RuntimeException e) {

@@ -33,7 +33,7 @@ import java.util.Set;
  * @since   IWS 1.1
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "FetchInternationalGroupRequest", propOrder = { "statuses" })
+@XmlType(name = "fetchInternationalGroupRequest", propOrder = { "statuses" })
 public final class FetchInternationalGroupRequest extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */

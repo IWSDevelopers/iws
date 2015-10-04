@@ -40,7 +40,7 @@ import java.util.Map;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "PublishingGroup", propOrder = { "publishingGroupId", "name", "groups" })
+@XmlType(name = "publishingGroup", propOrder = { "publishingGroupId", "name", "groups" })
 public final class PublishingGroup extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */

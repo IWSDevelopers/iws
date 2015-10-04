@@ -32,7 +32,7 @@ import java.util.Map;
  */
 @Deprecated
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "DeletePublishingGroupRequest", propOrder = { "publishingGroupId" })
+@XmlType(name = "deletePublishingGroupRequest", propOrder = { "publishingGroupId" })
 public final class DeletePublishingGroupRequest extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */

@@ -31,7 +31,7 @@ import javax.xml.bind.annotation.XmlType;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "AbstractPaginatable", propOrder = { "page" })
+@XmlType(name = "abstractPaginatable", propOrder = { "page" })
 public abstract class AbstractPaginatable extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */

@@ -30,7 +30,7 @@ import javax.xml.bind.annotation.XmlType;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "OfferStatisticsResponse", propOrder = { "dommesticStatistics", "foreignStatistics" })
+@XmlType(name = "offerStatisticsResponse", propOrder = { "dommesticStatistics", "foreignStatistics" })
 public final class OfferStatisticsResponse extends FallibleResponse {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */

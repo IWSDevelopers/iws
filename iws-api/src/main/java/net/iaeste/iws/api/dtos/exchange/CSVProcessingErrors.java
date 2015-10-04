@@ -31,7 +31,7 @@ import java.util.Set;
  * @since   IWS 1.1
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "CSVProcessingErrors", propOrder = { "csvErrors" })
+@XmlType(name = "csvProcessingErrors", propOrder = { "csvErrors" })
 public final class CSVProcessingErrors implements Serializable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */

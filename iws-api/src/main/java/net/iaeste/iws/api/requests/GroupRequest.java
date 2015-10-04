@@ -32,7 +32,7 @@ import java.util.Map;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "GroupRequest", propOrder = { "group", "user" })
+@XmlType(name = "groupRequest", propOrder = { "group", "user" })
 public final class GroupRequest extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */

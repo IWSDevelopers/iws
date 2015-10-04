@@ -70,7 +70,7 @@ import java.util.Set;
  */
 public class CommonMapper {
 
-    protected static IWSError map(final net.iaeste.iws.ws.IWSError ws) {
+    protected static IWSError map(final net.iaeste.iws.ws.IwsError ws) {
         return new IWSError(ws.getError(), ws.getDescription());
     }
 
@@ -494,7 +494,7 @@ public class CommonMapper {
     }
 
     // =========================================================================
-    // Convertion of Collections
+    // Conversion of Collections
     // =========================================================================
 
     protected static List<Group> mapWSGroupCollection(final Collection<net.iaeste.iws.ws.Group> ws) {
@@ -583,7 +583,7 @@ public class CommonMapper {
     }
 
     // =========================================================================
-    // Convertion of Enums
+    // Conversion of Enums
     // =========================================================================
 
     protected static net.iaeste.iws.ws.Action map(final Action api) {
@@ -838,7 +838,7 @@ public class CommonMapper {
     }
 
     // =========================================================================
-    // Internal Convertion of some WebService specific things
+    // Internal Conversion of some WebService specific things
     // =========================================================================
 
     private static java.util.Date map(final XMLGregorianCalendar calendar) {

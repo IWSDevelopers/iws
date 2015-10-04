@@ -36,7 +36,7 @@ import java.util.Map;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "Person", propOrder = { "nationality", "address", "alternateEmail", "phone", "mobile", "fax", "birthday", "gender", "understoodPrivacySettings", "acceptNewsletters" })
+@XmlType(name = "person", propOrder = { "nationality", "address", "alternateEmail", "phone", "mobile", "fax", "birthday", "gender", "understoodPrivacySettings", "acceptNewsletters" })
 public final class Person extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */

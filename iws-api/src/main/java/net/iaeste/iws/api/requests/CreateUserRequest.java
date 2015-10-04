@@ -47,7 +47,7 @@ import java.util.Map;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "CreateUserRequest", propOrder = { "username", "password", "firstname", "lastname", "studentAccount" })
+@XmlType(name = "createUserRequest", propOrder = { "username", "password", "firstname", "lastname", "studentAccount" })
 public final class CreateUserRequest extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */

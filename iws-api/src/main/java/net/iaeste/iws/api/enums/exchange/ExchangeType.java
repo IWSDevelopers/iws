@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlType;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.1
  */
-@XmlType(name = "ExchangeType")
+@XmlType(name = "exchangeType")
 public enum ExchangeType implements Descriptable<ExchangeType> {
 
     IW("IntraWeb"),

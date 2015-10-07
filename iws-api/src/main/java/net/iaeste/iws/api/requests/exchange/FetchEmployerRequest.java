@@ -32,14 +32,15 @@ import java.util.Map;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "fetchEmployerRequest", propOrder = { "type", "field" })
+@XmlType(name = "fetchEmployerRequest", propOrder = { "type", "field", "fetchOfferReferenceNumbers" })
 public final class FetchEmployerRequest extends AbstractPaginatable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    @XmlElement(required = true, nillable = true) private EmployerFetchType type = EmployerFetchType.ALL;
-    @XmlElement(required = true, nillable = true) private String field = null;
+    @XmlElement(required = true, nillable = false) private EmployerFetchType type = EmployerFetchType.ALL;
+    @XmlElement(required = true, nillable = true)  private String field = null;
+    @XmlElement(required = true, nillable = true)  private Boolean fetchOfferReferenceNumbers = false;
 
     // =========================================================================
     // Standard Setters & Getters
@@ -68,6 +69,21 @@ public final class FetchEmployerRequest extends AbstractPaginatable {
         return field;
     }
 
+    /**
+     * If the list of Offer Reference Numbers which is currently using a given
+     * Employer should also be fetched. The result is stored together with the
+     * Employer Object.
+     *
+     * @param fetchOfferReferenceNumbers If Offer Reference Numbers should be fetched
+     */
+    public void setFetchOfferReferenceNumbers(final Boolean fetchOfferReferenceNumbers) {
+        this.fetchOfferReferenceNumbers = fetchOfferReferenceNumbers;
+    }
+
+    public Boolean getFetchOfferReferenceNumbers() {
+        return fetchOfferReferenceNumbers == null ? false : fetchOfferReferenceNumbers;
+    }
+
     // =========================================================================
     // Standard Response Methods
     // =========================================================================
@@ -77,7 +93,14 @@ public final class FetchEmployerRequest extends AbstractPaginatable {
      */
     @Override
     public Map<String, String> validate() {
-        return new HashMap<>(0);
+        final Map<String, String> validation = new HashMap<>(0);
+
+        isNotNull(validation, "type", type);
+        if (type != EmployerFetchType.ALL) {
+            isNotNull(validation, "field", field);
+        }
+
+        return validation;
     }
 
     /**

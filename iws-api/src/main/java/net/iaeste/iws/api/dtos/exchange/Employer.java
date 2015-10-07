@@ -18,12 +18,15 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.dtos.Address;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.util.AbstractVerification;
+import net.iaeste.iws.api.util.DateTime;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -34,7 +37,7 @@ import java.util.Map;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "employer", propOrder = { "employerId", "group", "name", "department", "business", "address", "employeesCount", "website", "workingPlace", "canteen", "nearestAirport", "nearestPublicTransport" })
+@XmlType(name = "employer", propOrder = { "employerId", "group", "name", "department", "business", "address", "employeesCount", "website", "workingPlace", "canteen", "nearestAirport", "nearestPublicTransport", "offerReferenceNumbers", "modified", "created" })
 public final class Employer extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
@@ -57,6 +60,12 @@ public final class Employer extends AbstractVerification {
     @XmlElement(required = true, nillable = true)  private Boolean canteen = null;
     @XmlElement(required = true, nillable = true)  private String nearestAirport = null;
     @XmlElement(required = true, nillable = true)  private String nearestPublicTransport = null;
+    // Following fields is reporting fields, and not part of the actual
+    // contract, hence they are not part of the equals, hashCode or toString
+    // methods
+    @XmlElement(required = false, nillable = true) private List<String> offerReferenceNumbers = new ArrayList<>();
+    @XmlElement(required = true, nillable = true)  private DateTime modified = null;
+    @XmlElement(required = true, nillable = true)  private DateTime created = null;
 
     // =========================================================================
     // Object Constructors
@@ -88,6 +97,9 @@ public final class Employer extends AbstractVerification {
             canteen = employer.canteen;
             nearestAirport = employer.nearestAirport;
             nearestPublicTransport = employer.nearestPublicTransport;
+            offerReferenceNumbers = employer.offerReferenceNumbers;
+            modified = employer.modified;
+            created = employer.created;
         }
     }
 
@@ -324,6 +336,50 @@ public final class Employer extends AbstractVerification {
 
     public String getNearestPublicTransport() {
         return nearestPublicTransport;
+    }
+
+    /**
+     * If requested, then this will be a list of all the Offer's listed by their
+     * Reference number's, which is registered with Employer in the IWS.<br />
+     *   Note; this is a reporting field, which means that it is ignored by the
+     * IWS.
+     *
+     * @param offerReferenceNumbers List of Offer Reference Numbers
+     */
+    public void setOfferReferenceNumbers(List<String> offerReferenceNumbers) {
+        this.offerReferenceNumbers = offerReferenceNumbers;
+    }
+
+    public List<String> getOfferReferenceNumbers() {
+        return offerReferenceNumbers;
+    }
+
+    /**
+     * Sets the Employer latest modification DateTime. Note, this field is
+     * controlled by the IWS, and cannot be altered by users.
+     *
+     * @param modified DateTime of latest modification
+     */
+    public void setModified(DateTime modified) {
+        this.modified = modified;
+    }
+
+    public DateTime getModified() {
+        return modified;
+    }
+
+    /**
+     * Sets the Employer Creation DateTime. Note, this field is controlled by
+     * the IWS, and cannot be altered by users.
+     *
+     * @param created Employer Creation DateTime
+     */
+    public void setCreated(DateTime created) {
+        this.created = created;
+    }
+
+    public DateTime getCreated() {
+        return created;
     }
 
     // =========================================================================

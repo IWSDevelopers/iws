@@ -36,13 +36,13 @@ import java.util.Map;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "fetchPublishedGroupsRequest", propOrder = { "offerIds", "exchangeYear" })
+@XmlType(name = "fetchPublishedGroupsRequest", propOrder = { "identifiers", "exchangeYear" })
 public final class FetchPublishedGroupsRequest extends AbstractPaginatable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    @XmlElement(required = true, nillable = false) private List<String> offerIds = null;
+    @XmlElement(required = true, nillable = false) private List<String> identifiers = null;
     @XmlElement(required = true, nillable = false) private Integer exchangeYear;
 
     // =========================================================================
@@ -60,10 +60,10 @@ public final class FetchPublishedGroupsRequest extends AbstractPaginatable {
     /**
      * Default Constructor.
      *
-     * @param offerIds offerIds of the offer for which the sharing info is to be fetched
+     * @param identifiers identifiers of the offer for which the sharing info is to be fetched
      */
-    public FetchPublishedGroupsRequest(final List<String> offerIds) {
-        setOfferIds(offerIds);
+    public FetchPublishedGroupsRequest(final List<String> identifiers) {
+        setIdentifiers(identifiers);
         this.exchangeYear = calculateExchangeYear();
     }
 
@@ -72,22 +72,22 @@ public final class FetchPublishedGroupsRequest extends AbstractPaginatable {
     // =========================================================================
 
     /**
-     * Sets the list of OfferIds to read the sharing information for. The list
-     * must be valid, i.e. not null or empty and the values must all be valid
-     * OfferIds.<br />
-     *   If attempted to set invalid ids, then the method will throw an
-     * {@code IllegalArgumentException}.
+     * Sets a list of Identifiers, meaning either the Id of the Offers or their
+     * Reference Number, which both can be used to uniquely identify an
+     * Offer.<br />
+     *   The method will thrown an {@code IllegalArgumentException} if the given
+     * value is null.
      *
-     * @param offerIds List of Offer Ids
-     * @throws IllegalArgumentException if the given argument is invalid
+     * @param identifiers List of OfferId's or Reference Numbers to be fetched, may be empty
+     * @throws IllegalArgumentException if the parameter is null
      */
-    public void setOfferIds(final List<String> offerIds) throws IllegalArgumentException {
-        ensureNotNullOrEmptyAndValidIds("offerIds", offerIds);
-        this.offerIds = offerIds;
+    public void setIdentifiers(final List<String> identifiers) throws IllegalArgumentException {
+        ensureNotNullAndValidIdentifiers("identifiers", identifiers);
+        this.identifiers = identifiers;
     }
 
-    public List<String> getOfferIds() {
-        return offerIds;
+    public List<String> getIdentifiers() {
+        return identifiers;
     }
 
     /**
@@ -121,7 +121,7 @@ public final class FetchPublishedGroupsRequest extends AbstractPaginatable {
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(0);
 
-        isNotNull(validation, "OfferIds", offerIds);
+        isNotNull(validation, "identifiers", identifiers);
         isNotNull(validation, "exchangeYear", exchangeYear);
 
         return validation;

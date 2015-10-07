@@ -62,9 +62,25 @@ public enum OfferState implements Descriptable<OfferState> {
     CLOSED("Closed"),
     COMPLETED("Completed"),
     AT_EMPLOYER("At Employer"),
-    ACCEPTED("Application accepted"),
+    ACCEPTED("Accepted"),
     EXPIRED("Expired"),
-    REJECTED("Rejected");
+    REJECTED("Rejected"),
+
+    // Following is the missing values from IW3. They are added here, so the
+    // API contain both old and new values in an attempt at correcting the
+    // Exchange Process.
+    CANCELLED("Cancelled"),
+    EXCHANGED("Exchanged"),
+    NOMINATION_REJECTED("Nomination Rejected"),
+    NOT_ACCEPTED("Not Accepted"),
+    DECLINED("Declined"),
+    SN_COMPLETE("SN Complete"),
+    TAKEN("Taken"),
+    NOMINATION_ACCEPTED("Nomination Accepted"),
+    VIEWED("Viewed"),
+    WAITING_SN("Waiting"),
+    AC_EXCHANGED("AC Exchanged"),
+    UNKNOWN("Unknown");
 
     // =========================================================================
     // Private Constructor & functionality

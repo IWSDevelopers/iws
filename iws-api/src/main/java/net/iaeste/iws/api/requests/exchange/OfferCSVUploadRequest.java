@@ -32,7 +32,7 @@ import java.util.Map;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "offerCSVUploadRequest", propOrder = { "data", "delimiter" })
-public class OfferCSVUploadRequest extends AbstractPaginatable {
+public final class OfferCSVUploadRequest extends AbstractPaginatable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;

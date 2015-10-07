@@ -267,7 +267,7 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
         // Extract required information and fetch the ... LONG ... list of results
         final Long parentId = authentication.getGroup().getParentId();
         final Integer exchangeYear = request.getExchangeYear();
-        final List<String> externalOfferIds = request.getOfferIds();
+        final List<String> externalOfferIds = request.getIdentifiers();
         final List<OfferSharedToGroupView> shared = viewsDao.findSharedToGroup(parentId, exchangeYear, externalOfferIds);
 
         // Prepare resulting map, and iterate over the list and fill in the details

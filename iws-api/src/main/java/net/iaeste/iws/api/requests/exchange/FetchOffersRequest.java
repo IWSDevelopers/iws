@@ -25,8 +25,10 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -36,7 +38,7 @@ import java.util.Set;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "fetchOffersRequest", propOrder = { "fetchType", "exchangeYear", "states", "retrieveCurrentAndNextExchangeYear" })
+@XmlType(name = "fetchOffersRequest", propOrder = { "fetchType", "identifiers", "exchangeYear", "states", "retrieveCurrentAndNextExchangeYear" })
 public final class FetchOffersRequest extends AbstractPaginatable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
@@ -49,8 +51,9 @@ public final class FetchOffersRequest extends AbstractPaginatable {
             OfferState.COMPLETED,    OfferState.AT_EMPLOYER, OfferState.ACCEPTED,
             OfferState.EXPIRED,      OfferState.REJECTED);
 
-    @XmlElement(required = true, nillable = false) private FetchType fetchType;
-    @XmlElement(required = true, nillable = false) private Integer exchangeYear;
+    @XmlElement(required = true, nillable = false) private FetchType fetchType = null;
+    @XmlElement(required = true, nillable = false) private List<String> identifiers = new ArrayList<>(0);
+    @XmlElement(required = true, nillable = false) private Integer exchangeYear = calculateExchangeYear();
     @XmlElement(required = true, nillable = false) private Set<OfferState> states = ALLOWED;
     @XmlElement(required = true, nillable = false) private boolean retrieveCurrentAndNextExchangeYear = false;
 
@@ -63,8 +66,6 @@ public final class FetchOffersRequest extends AbstractPaginatable {
      * for WebServices to work properly.
      */
     public FetchOffersRequest() {
-        this.fetchType = null;
-        this.exchangeYear = calculateExchangeYear();
     }
 
     /**
@@ -72,20 +73,52 @@ public final class FetchOffersRequest extends AbstractPaginatable {
      */
     public FetchOffersRequest(final FetchType fetchType) {
         this.fetchType = fetchType;
-        this.exchangeYear = calculateExchangeYear();
     }
 
     // =========================================================================
     // Standard Setters & Getters
     // =========================================================================
 
-    public void setFetchType(final FetchType fetchType) {
+    /**
+     * Sets the mandatory FetchType for the CSV Downloading of Offers, the type
+     * can be either Domestic (a Committee's own Offers) or Shared (Offers from
+     * other Committee's). However, the value cannot be null.<br />
+     *   The method will thrown an {@code IllegalArgumentException} if the given
+     * value is null.
+     *
+     * @param fetchType Type of Offers to be fetched
+     * @throws IllegalArgumentException if the parameter is null
+     */
+    public void setFetchType(final FetchType fetchType) throws IllegalArgumentException {
         ensureNotNull("fetchType", fetchType);
         this.fetchType = fetchType;
     }
 
     public FetchType getFetchType() {
         return fetchType;
+    }
+
+    /**
+     * Sets a list of Identifiers, meaning either the Id of the Offers or their
+     * Reference Number, which both can be used to uniquely identify an
+     * Offer.<br />
+     *   The Identifiers must either belong to the Country (if the FetchType is
+     * domestic) or the Identifiers must belong to Offers shared (if the
+     * FetchType is shared). If the list of Identifiers is empty, then all
+     * Offers matching the FetchType and Exchange Year will be retrieved.<br />
+     *   The method will thrown an {@code IllegalArgumentException} if the given
+     * value is null.
+     *
+     * @param identifiers List of OfferId's or Reference Numbers to be fetched, may be empty
+     * @throws IllegalArgumentException if the parameter is null
+     */
+    public void setIdentifiers(final List<String> identifiers) throws IllegalArgumentException {
+        ensureNotNullAndValidIdentifiers("identifiers", identifiers);
+        this.identifiers = identifiers;
+    }
+
+    public List<String> getIdentifiers() {
+        return identifiers;
     }
 
     public void setExchangeYear(final Integer exchangeYear) {
@@ -144,6 +177,7 @@ public final class FetchOffersRequest extends AbstractPaginatable {
         final Map<String, String> validation = new HashMap<>(0);
 
         isNotNull(validation, "fetchType", fetchType);
+        isNotNull(validation, "identifiers", identifiers);
         isNotNull(validation, "exchangeYear", exchangeYear);
         isNotNull(validation, "states", states);
         isNotNull(validation, "retrieveCurrentAndNextExchangeYear", retrieveCurrentAndNextExchangeYear);

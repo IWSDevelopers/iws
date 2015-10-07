@@ -17,6 +17,8 @@ package net.iaeste.iws.api.requests.exchange;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.FetchType;
 import net.iaeste.iws.api.enums.SortingField;
+import net.iaeste.iws.api.enums.exchange.OfferState;
+import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.api.util.AbstractPaginatable;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -24,9 +26,11 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -34,15 +38,24 @@ import java.util.Map;
  * @since   IWS 1.1
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "offerCSVDownloadRequest", propOrder = { "fetchType", "offerIds", "exchangeYear" })
-public class OfferCSVDownloadRequest extends AbstractPaginatable {
+@XmlType(name = "offerCSVDownloadRequest", propOrder = { "fetchType", "identifiers", "exchangeYear", "states", "retrieveCurrentAndNextExchangeYear" })
+public final class OfferCSVDownloadRequest extends AbstractPaginatable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    @XmlElement(required = true, nillable = false) private FetchType fetchType;
-    @XmlElement(required = true, nillable = false) private List<String> offerIds;
-    @XmlElement(required = true, nillable = false) private Integer exchangeYear;
+    /** Allowed States for an Offer to be retrieved. */
+    private static final Set<OfferState> ALLOWED = EnumSet.of(
+            OfferState.NEW,          OfferState.OPEN,        OfferState.SHARED,
+            OfferState.APPLICATIONS, OfferState.NOMINATIONS, OfferState.CLOSED,
+            OfferState.COMPLETED,    OfferState.AT_EMPLOYER, OfferState.ACCEPTED,
+            OfferState.EXPIRED,      OfferState.REJECTED);
+
+    @XmlElement(required = true, nillable = false) private FetchType fetchType = null;
+    @XmlElement(required = true, nillable = false) private List<String> identifiers = null;
+    @XmlElement(required = true, nillable = false) private Integer exchangeYear = null;
+    @XmlElement(required = true, nillable = false) private Set<OfferState> states = ALLOWED;
+    @XmlElement(required = true, nillable = false) private boolean retrieveCurrentAndNextExchangeYear = false;
 
     // =========================================================================
     // Object Constructors
@@ -53,14 +66,13 @@ public class OfferCSVDownloadRequest extends AbstractPaginatable {
      * for WebServices to work properly.
      */
     public OfferCSVDownloadRequest() {
-        this.fetchType = null;
-        this.offerIds = new ArrayList<>(0);
+        this.identifiers = new ArrayList<>(0);
         this.exchangeYear = calculateExchangeYear();
     }
 
-    public OfferCSVDownloadRequest(final FetchType fetchType, final List<String> offerIds, final Integer exchangeYear) {
+    public OfferCSVDownloadRequest(final FetchType fetchType, final List<String> identifiers, final Integer exchangeYear) {
         this.fetchType = fetchType;
-        this.offerIds = offerIds;
+        this.identifiers = identifiers;
         this.exchangeYear = exchangeYear;
     }
 
@@ -88,24 +100,26 @@ public class OfferCSVDownloadRequest extends AbstractPaginatable {
     }
 
     /**
-     * Sets a list of Offer Id's, which is suppose to be fetched. The Id's must
-     * either belong to the Country (if the FetchType is domestic) or the Id's
-     * must belong to Offers shared (if the FetchType is shared). If the list
-     * of Id's is empty, then all Offers matching the FetchType and Exchange
-     * Year will be retrieved.<br />
+     * Sets a list of Identifiers, meaning either the Id of the Offers or their
+     * Reference Number, which both can be used to uniquely identify an
+     * Offer.<br />
+     *   The Identifiers must either belong to the Country (if the FetchType is
+     * domestic) or the Identifiers must belong to Offers shared (if the
+     * FetchType is shared). If the list of Identifiers is empty, then all
+     * Offers matching the FetchType and Exchange Year will be retrieved.<br />
      *   The method will thrown an {@code IllegalArgumentException} if the given
      * value is null.
      *
-     * @param offerIds List of OfferId's to be fetched, may be empty
+     * @param identifiers List of OfferId's or Reference Numbers to be fetched, may be empty
      * @throws IllegalArgumentException if the parameter is null
      */
-    public void setOfferIds(final List<String> offerIds) throws IllegalArgumentException {
-        ensureNotNull("offerIds", offerIds);
-        this.offerIds = offerIds;
+    public void setIdentifiers(final List<String> identifiers) throws IllegalArgumentException {
+        ensureNotNullAndValidIdentifiers("identifiers", identifiers);
+        this.identifiers = identifiers;
     }
 
-    public List<String> getOfferIds() {
-        return offerIds;
+    public List<String> getIdentifiers() {
+        return identifiers;
     }
 
     /**
@@ -113,7 +127,7 @@ public class OfferCSVDownloadRequest extends AbstractPaginatable {
      * year must be within the known Exchange years for IAESTE, which
      * theoretically is from the founding year until the current. However, the
      * IWS is only having data from 2004 and onward. The latest year to read
-     * from will be the current Exhange Year.<br />
+     * from will be the current Exchange Year.<br />
      *   The method will thrown an {@code IllegalArgumentException} if the given
      * value is null.
      *
@@ -131,6 +145,41 @@ public class OfferCSVDownloadRequest extends AbstractPaginatable {
         return exchangeYear;
     }
 
+    /**
+     * Sets the different States, that an Offer can have. By default all States
+     * are allowed.
+     *
+     * @param states The States to use in the filter
+     */
+    public void setStates(Set<OfferState> states) {
+        ensureNotNullAndContains("states", states, ALLOWED);
+        this.states = states;
+    }
+
+    public Set<OfferState> getStates() {
+        return states;
+    }
+
+    /**
+     * Sets the flag to determine if Offers from both the current Exchange Year
+     * and the new Exchange Year shall be fetched. This option will allow Users
+     * to see Offers from both years following September 1st, when the new
+     * Exchange Year starts. By default, this is set to false, so only the
+     * Exchange year counts.<br />
+     *   This value is mandatory. If set to null, then a
+     * {$code VerificationException} is thrown.
+     *
+     * @param retrieveCurrentAndNextExchangeYear True if both shall be retrieved
+     */
+    public void setRetrieveCurrentAndNextExchangeYear(final boolean retrieveCurrentAndNextExchangeYear) throws VerificationException {
+        ensureNotNull("retrieveCurrentAndNextExchangeYear", retrieveCurrentAndNextExchangeYear);
+        this.retrieveCurrentAndNextExchangeYear = retrieveCurrentAndNextExchangeYear;
+    }
+
+    public boolean getRetrieveCurrentAndNextExchangeYear() {
+        return retrieveCurrentAndNextExchangeYear;
+    }
+
     // =========================================================================
     // Standard Request Methods
     // =========================================================================
@@ -143,8 +192,10 @@ public class OfferCSVDownloadRequest extends AbstractPaginatable {
         final Map<String, String> validation = new HashMap<>(0);
 
         isNotNull(validation, "fetchType", fetchType);
-        isNotNull(validation, "offerIds", offerIds);
+        isNotNull(validation, "identifiers", identifiers);
         isNotNull(validation, "exchangeYear", exchangeYear);
+        isNotNull(validation, "states", states);
+        isNotNull(validation, "retrieveCurrentAndNextExchangeYear", retrieveCurrentAndNextExchangeYear);
 
         return validation;
     }

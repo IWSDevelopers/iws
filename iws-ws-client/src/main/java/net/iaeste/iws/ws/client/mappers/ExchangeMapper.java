@@ -142,6 +142,7 @@ public final class ExchangeMapper extends CommonMapper {
 
             ws.setType(map(api.getFetchType()));
             ws.setField(api.getFetchField());
+            ws.setFetchOfferReferenceNumbers(api.getFetchOfferReferenceNumbers());
         }
 
         return ws;
@@ -170,6 +171,7 @@ public final class ExchangeMapper extends CommonMapper {
             ws = new net.iaeste.iws.ws.FetchOffersRequest();
 
             ws.setFetchType(map(api.getFetchType()));
+            ws.getIdentifiers().addAll(mapStringCollection(api.getIdentifiers()));
             ws.setExchangeYear(api.getExchangeYear());
             ws.getStates().addAll(mapApiStateCollection(api.getStates()));
             ws.setRetrieveCurrentAndNextExchangeYear(api.getRetrieveCurrentAndNextExchangeYear());
@@ -299,8 +301,10 @@ public final class ExchangeMapper extends CommonMapper {
             ws = new net.iaeste.iws.ws.OfferCSVDownloadRequest();
 
             ws.setFetchType(map(api.getFetchType()));
-            ws.getOfferIds().addAll(mapStringCollection(api.getOfferIds()));
+            ws.getIdentifiers().addAll(mapStringCollection(api.getIdentifiers()));
             ws.setExchangeYear(api.getExchangeYear());
+            ws.getStates().addAll(mapApiStateCollection(api.getStates()));
+            ws.setRetrieveCurrentAndNextExchangeYear(api.getRetrieveCurrentAndNextExchangeYear());
         }
 
         return ws;
@@ -360,7 +364,7 @@ public final class ExchangeMapper extends CommonMapper {
             ws = new net.iaeste.iws.ws.FetchPublishedGroupsRequest();
 
             ws.setPage(map(api.getPagingInformation()));
-            ws.getOfferIds().addAll(mapStringCollection(api.getOfferIds()));
+            ws.getIdentifiers().addAll(mapStringCollection(api.getIdentifiers()));
             ws.setExchangeYear(api.getExchangeYear());
         }
 
@@ -525,6 +529,9 @@ public final class ExchangeMapper extends CommonMapper {
             api.setCanteen(ws.isCanteen());
             api.setNearestAirport(ws.getNearestAirport());
             api.setNearestPublicTransport(ws.getNearestPublicTransport());
+            api.setOfferReferenceNumbers(mapStringCollection(ws.getOfferReferenceNumbers()));
+            api.setModified(map(ws.getModified()));
+            api.setCreated(map(ws.getCreated()));
         }
 
         return api;

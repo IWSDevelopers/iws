@@ -908,7 +908,7 @@ public final class OfferTest extends AbstractTest {
 
     /**
      * The code has been altered, we're now making the primary validation checks
-     * in the setters, and throwin a standard Illegal Argument Exception if the
+     * in the setters, and throws a standard Illegal Argument Exception if the
      * value is crap.<br />
      *   Secondly, the test was renamed, the API is only referring to one kind
      * of Id's, this is internally known as the "External Id", but outside this
@@ -916,8 +916,10 @@ public final class OfferTest extends AbstractTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testFetchSharedOfferBadIdFormat() {
-        final List<String> offerIds = new ArrayList<>(0);
-        offerIds.add(PL_YEAR + "-000001");
+        final List<String> offerIds = new ArrayList<>(1);
+        // The Identifiers allowed can be either IWS Id's (UUID) or an Offer
+        // Reference Number.
+        offerIds.add("invalid Id.");
         final FetchPublishedGroupsRequest fetchPublishRequest = new FetchPublishedGroupsRequest(offerIds);
         final FetchPublishedGroupsResponse fetchPublishResponse = exchange.fetchPublishedGroups(token, fetchPublishRequest);
 

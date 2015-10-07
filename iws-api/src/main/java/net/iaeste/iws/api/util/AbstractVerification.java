@@ -21,6 +21,7 @@ import net.iaeste.iws.api.exceptions.VerificationException;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -45,7 +46,7 @@ public abstract class AbstractVerification implements Verifiable {
     private static final String ERROR_NOT_NULL = "The field %s may not be null.";
     private static final String ERROR_NOT_EMPTY = "The field %s may not be empty.";
     private static final String ERROR_NOT_LONGER = "The field %s may not be longer than %d characters.";
-    private static final String ERROR_COLLECTION_LONGER = "The field %s may not containt more than %d Objects.";
+    private static final String ERROR_COLLECTION_LONGER = "The field %s may not contain more than %d Objects.";
     private static final String ERROR_ARRAY_LONGER = "The field %s may not be longer than %d bytes.";
     private static final String ERROR_TOO_SHORT = "The field %s must be at least %d characters long";
     private static final String ERROR_NOT_EXACT_LENGTH = "The field %s is not matching the required length %d.";
@@ -54,6 +55,7 @@ public abstract class AbstractVerification implements Verifiable {
     private static final String ERROR_ILLEGAL_VALUES = "The field %s contain illegal value %s.";
     private static final String ERROR_DELIMITER_FOUND = "THe field %s contains the internally used delimiter '%s'.";
     private static final String ERROR_INVALID = "The field %s is invalid.";
+    private static final String ERROR_INVALID_IDENTIFIER = "The field %s is not a valid Identifier as it neither matches an IWS Id or Offer Reference Number.";
     private static final String ERROR_INVALID_REGEX = "The field %s does not follow the required format %s.";
     private static final String ERROR_NOT_VERIFABLE = "The field %s is not verifiable.";
     private static final String ERROR_INVALID_EMAIL = "The e-mail address %s (%s) is invalid.";
@@ -510,17 +512,47 @@ public abstract class AbstractVerification implements Verifiable {
     }
 
     /**
+     * Throws an {@code IllegalArgumentException} if the given value is neither
+     * an IWS Id (UUID) or a valid Offer Reference Number.
+     *
+     * @param field Name of the Identifier
+     * @param value The value of the Identifier
+     * @throws IllegalArgumentException
+     */
+    protected static void ensureValidIdentifier(final String field, final String value) throws IllegalArgumentException {
+        if ((value != null) && !(UUID_PATTERN.matcher(value).matches() || REFNO_PATTERN.matcher(value).matches())) {
+            throw new IllegalArgumentException(format(ERROR_INVALID_IDENTIFIER, field));
+        }
+    }
+
+    /**
      * Throws an {@code IllegalArgumentException} if the given Id is invalid,
      * i.e. if it not null and the format doesn't match the required format.
      *
-     * @param field Name of the Id
-     * @param value The value for the Id
+     * @param field  Name of the Id
+     * @param values The value for the Id
      * @throws IllegalArgumentException if the Id doesn't follow the correct format
      */
-    protected static void ensureValidIds(final String field, final Collection<String> value) throws IllegalArgumentException {
-        if (value != null) {
-            for (final String id : value) {
+    protected static void ensureValidIds(final String field, final Collection<String> values) throws IllegalArgumentException {
+        if (values != null) {
+            for (final String id : values) {
                 ensureValidId(field, id);
+            }
+        }
+    }
+
+    /**
+     * Throws an {@code IllegalArgumentException} if the given list of
+     * Identifiers contain invalid identifiers.
+     *
+     * @param field  Name of the field
+     * @param values List of Identifiers to check for validity
+     * @throws IllegalArgumentException if the list contain invalid identifiers
+     */
+    protected static void ensureValidIdentifiers(final String field, final List<String> values) throws IllegalArgumentException {
+        if (values != null) {
+            for (final String id : values) {
+                ensureValidIdentifier(field, id);
             }
         }
     }
@@ -536,6 +568,19 @@ public abstract class AbstractVerification implements Verifiable {
     protected static void ensureNotNullAndValidId(final String field, final String value) throws IllegalArgumentException {
         ensureNotNull(field, value);
         ensureValidId(field, value);
+    }
+
+    /**
+     * Throws an {@code IllegalArgumentException} if the given list of
+     * identifiers is either null or contain invalid entries.
+     *
+     * @param field  Name of the field
+     * @param values List of Identifiers to check
+     * @throws IllegalArgumentException if the values is null or invalid
+     */
+    protected static void ensureNotNullAndValidIdentifiers(final String field, final List<String> values) {
+        ensureNotNull(field, values);
+        ensureValidIdentifiers(field, values);
     }
 
     /**

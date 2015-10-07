@@ -135,7 +135,7 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
     }
 
     private byte[] findDomesticOffers(final Authentication authentication, final OfferCSVDownloadRequest request) {
-        final List<String> offerIds = request.getOfferIds();
+        final List<String> offerIds = request.getIdentifiers();
         final Paginatable page = request.getPagingInformation();
         final Integer exchangeYear = request.getExchangeYear();
 
@@ -158,7 +158,7 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
     }
 
     private byte[] findSharedOffers(final Authentication authentication, final OfferCSVDownloadRequest request) {
-        final List<String> offerIds = request.getOfferIds();
+        final List<String> offerIds = request.getIdentifiers();
         final Paginatable page = request.getPagingInformation();
         final Integer exchangeYear = request.getExchangeYear();
         final Set<OfferState> states = EnumSet.allOf(OfferState.class);

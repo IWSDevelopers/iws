@@ -411,15 +411,18 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
                     newOfferState = OfferState.OPEN;
                 }
 
-
                 if (oldOfferState != newOfferState) {
                     offer.setStatus(newOfferState);
                 }
             }
 
             if (request.getNominationDeadline() != null) {
+                if (request.getNominationDeadline().isBefore(new Date())) {
+                    offer.setStatus(OfferState.EXPIRED);
+                }
                 offer.setNominationDeadline(request.getNominationDeadline().toDate());
             }
+
             dao.persist(authentication, offer);
         }
     }

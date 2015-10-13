@@ -42,6 +42,7 @@ public enum OfferFields {
     DEADLINE("Deadline", "setNominationDeadline", true, true, Date.class),
     COMMENT("Comment", "setPrivateComment", true, true, String.class),
     EMPLOYER("Employer", "setName", true, true, String.class),
+    DEPARTMENT("Department", "setDepartment", true, true, String.class), // Currently unused, should be added
     STREET1("Street1", "setStreet1", true, true, String.class),
     STREET2("Street2", "setStreet2", true, true, String.class),
     POSTBOX("PostBox", "setPobox", true, true, String.class),

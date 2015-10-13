@@ -14,18 +14,14 @@
  */
 package net.iaeste.iws.core.transformers;
 
-import static net.iaeste.iws.api.enums.exchange.OfferFields.CITY;
-import static net.iaeste.iws.api.enums.exchange.OfferFields.POSTAL_CODE;
-import static net.iaeste.iws.api.enums.exchange.OfferFields.POST_BOX;
-import static net.iaeste.iws.api.enums.exchange.OfferFields.STATE;
-import static net.iaeste.iws.api.enums.exchange.OfferFields.STREET_1;
-import static net.iaeste.iws.api.enums.exchange.OfferFields.STREET_2;
+import static net.iaeste.iws.core.transformers.CsvTransformer.transformString;
 
 import net.iaeste.iws.api.dtos.Address;
 import net.iaeste.iws.api.dtos.Country;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.Person;
 import net.iaeste.iws.api.enums.GroupType;
+import net.iaeste.iws.api.enums.exchange.OfferFields;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.api.util.DatePeriod;
 import net.iaeste.iws.persistence.entities.AddressEntity;
@@ -34,8 +30,8 @@ import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.GroupTypeEntity;
 import net.iaeste.iws.persistence.entities.PersonEntity;
 import org.apache.commons.csv.CSVRecord;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import java.util.Map;
 
 /**
  * Transformation of Common Objects.
@@ -45,8 +41,6 @@ import org.slf4j.LoggerFactory;
  * @since   IWS 1.0
  */
 public final class CommonTransformer {
-
-    private static final Logger LOG = LoggerFactory.getLogger(CommonTransformer.class);
 
     /**
      * Private Constructor, this is a utility class.
@@ -164,20 +158,19 @@ public final class CommonTransformer {
         return type;
     }
 
-    public static Address addressFromCsv(final CSVRecord record) {
+    public static Address addressFromCsv(final CSVRecord record, final Map<String, String> errors) {
         Address address = null;
 
         if (record != null) {
             address = new Address();
 
-            address.setStreet1(record.get(STREET_1.getField()));
-            address.setStreet2(record.get(STREET_2.getField()));
-            address.setPostalCode(record.get(POSTAL_CODE.getField()));
-            address.setCity(record.get(CITY.getField()));
-            address.setState(record.get(STATE.getField()));
-            address.setPobox(record.get(POST_BOX.getField()));
-            //following causes exception because there are not all required fields in CSV file
-            //address.setCountry(countryFromCsv(record));
+            transformString(errors, address, OfferFields.STREET1, record);
+            transformString(errors, address, OfferFields.STREET2, record);
+            transformString(errors, address, OfferFields.POSTAL_CODE, record);
+            transformString(errors, address, OfferFields.CITY, record);
+            transformString(errors, address, OfferFields.STATE, record);
+            transformString(errors, address, OfferFields.POSTBOX, record);
+            // Skipping the Country from the CSV, since it is set via the Group
         }
 
         return address;
@@ -217,18 +210,6 @@ public final class CommonTransformer {
         }
 
         return entity;
-    }
-
-    public static Country countryFromCsv(final CSVRecord record) {
-        Country country = null;
-
-        if (record != null) {
-            country = new Country();
-
-            country.setCountryName(record.get("Country"));
-        }
-
-        return country;
     }
 
     public static Country transform(final CountryEntity entity) {

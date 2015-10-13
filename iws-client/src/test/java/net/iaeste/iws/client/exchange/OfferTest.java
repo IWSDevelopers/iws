@@ -66,10 +66,8 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -1306,7 +1304,7 @@ public final class OfferTest extends AbstractTest {
             austriaTokenWithNationalGroup.setGroupId(austriaTokenNationallGroup.getGroupId());
         }
 
-        final Offer offer = TestData.prepareMinimalOffer(AT_YEAR + "-01T453-R", "Austria A/S");
+        final Offer offer = TestData.prepareFullOffer(AT_YEAR + "-01T453-R", "Austria A/S");
         final Date nominationDeadline = new Date().plusDays(20);
 
         final ProcessOfferRequest saveRequest = new ProcessOfferRequest(offer);
@@ -1338,14 +1336,7 @@ public final class OfferTest extends AbstractTest {
 
         OfferCSVUploadRequest uploadRequest = new OfferCSVUploadRequest(outboxCsvResponse.getData(), OfferCSVUploadRequest.FieldDelimiter.COMMA);
         OfferCSVUploadResponse uploadResponse = exchange.uploadOffers(austriaTokenWithNationalGroup, uploadRequest);
-
         assertThat(uploadResponse.isOk(), is(true));
-        final Map<String, OfferCSVUploadResponse.ProcessingResult> processingResult = uploadResponse.getProcessingResult();
-        EnumSet<OfferCSVUploadResponse.ProcessingResult> okProcessingResults = EnumSet.of(OfferCSVUploadResponse.ProcessingResult.UPDATED, OfferCSVUploadResponse.ProcessingResult.ADDED);
-        assertThat(processingResult, is(not(nullValue())));
-        for (final String refNo : processingResult.keySet()) {
-            assertTrue(okProcessingResults.contains(processingResult.get(refNo)));
-        }
     }
 
     /**

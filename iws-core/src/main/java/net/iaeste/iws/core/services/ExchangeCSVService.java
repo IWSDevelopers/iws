@@ -240,19 +240,32 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
         }
     }
 
+    private Offer extractOfferFromCSV(final Authentication authentication, final Map<String, String> errors, final CSVRecord record) {
+        // Extract the Country from the Authentication Information
+        final Country country = CommonTransformer.transform(authentication.getGroup().getCountry());
+
+        // Read the Address from the CSV and assign the found Country to it
+        final Address address = CommonTransformer.addressFromCsv(record, errors);
+        address.setCountry(country);
+
+        // Read the Employer from the CSV, and assign the transformed Address from it
+        final Employer employer = ExchangeTransformer.employerFromCsv(record, errors);
+        employer.setAddress(address);
+
+        // Read the Offer from the CSV, and assign the transformed Employer to it
+        final Offer offer = ExchangeTransformer.offerFromCsv(record, errors);
+        offer.setEmployer(employer);
+
+        return offer;
+    }
+
     private void process(final Map<String, OfferCSVUploadResponse.ProcessingResult> processingResult, final Map<String, CSVProcessingErrors> errors, final Authentication authentication, final CSVRecord record) {
         String refNo = "";
         final Map<String, String> conversionErrors = new HashMap<>(0);
 
         try {
-            refNo = record.get(OfferFields.REFNO.getField());
-            final Offer csvOffer = ExchangeTransformer.offerFromCsv(record, conversionErrors);
-            final Employer csvEmployer = ExchangeTransformer.employerFromCsv(record, conversionErrors);
-            final Address csvAddress = CommonTransformer.addressFromCsv(record);
-            final Country country = CommonTransformer.transform(authentication.getGroup().getCountry());
-            csvAddress.setCountry(country);
-            csvEmployer.setAddress(csvAddress);
-            csvOffer.setEmployer(csvEmployer);
+            refNo = record.get(OfferFields.REF_NO.getField());
+            final Offer csvOffer = extractOfferFromCSV(authentication, conversionErrors, record);
 
             final CSVProcessingErrors validationErrors = new CSVProcessingErrors(csvOffer.validate());
             validationErrors.putAll(conversionErrors);
@@ -266,8 +279,8 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
                     //keep original offer state
                     newEntity.setStatus(existingEntity.getStatus());
 
-                    csvEmployer.setEmployerId(existingEntity.getEmployer().getExternalId());
-                    final EmployerEntity employerEntity = process(authentication, csvEmployer);
+                    csvOffer.getEmployer().setEmployerId(existingEntity.getEmployer().getExternalId());
+                    final EmployerEntity employerEntity = process(authentication, csvOffer.getEmployer());
                     existingEntity.setEmployer(employerEntity);
 
                     newEntity.setExternalId(existingEntity.getExternalId());
@@ -280,7 +293,7 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
                     // new one.
                     final EmployerEntity employer = process(authentication, csvOffer.getEmployer());
 
-                    // Add the Group to the Offer, otherwise our refno checks will fail
+                    // Add the Group to the Offer, otherwise our ref.no checks will fail
                     employer.setGroup(authentication.getGroup());
 
                     newEntity.setEmployer(employer);
@@ -321,7 +334,7 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
 
     /**
      * Processes an Employer from the CSV file. This is done by first trying to
-     * lookup the Employer via the unique characteristica for an Employer - and
+     * lookup the Employer via the unique characteristics for an Employer - and
      * only of no existing records is found, will a new record be created. If
      * a record is found, the changes will be merged and potentially also
      * persisted.<br />
@@ -369,71 +382,71 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
     private List<String> createForeignFirstRow() {
         final List<String> result = new ArrayList<>();
 
-        result.add(OfferFields.REFNO.getField());
-        result.add(OfferFields.DEADLINE.getField());
-        result.add(OfferFields.COMMENT.getField());
-        result.add(OfferFields.EMPLOYER.getField());
-        result.add(OfferFields.STREET_1.getField());
-        result.add(OfferFields.STREET_2.getField());
-        result.add(OfferFields.POST_BOX.getField());
-        result.add(OfferFields.POSTAL_CODE.getField());
-        result.add(OfferFields.CITY.getField());
-        result.add(OfferFields.STATE.getField());
-        result.add(OfferFields.COUNTRY.getField());
-        result.add(OfferFields.WEBSITE.getField());
-        result.add(OfferFields.WORKPLACE.getField());
-        result.add(OfferFields.BUSINESS.getField());
-        result.add(OfferFields.RESPONSIBLE.getField());
-        result.add(OfferFields.AIRPORT.getField());
-        result.add(OfferFields.TRANSPORT.getField());
-        result.add(OfferFields.EMPLOYEES.getField());
-        result.add(OfferFields.HOURS_WEEKLY.getField());
-        result.add(OfferFields.HOURS_DAILY.getField());
-        result.add(OfferFields.CANTEEN.getField());
-        result.add(OfferFields.FACULTY.getField());
-        result.add(OfferFields.SPECIALIZATION.getField());
-        result.add(OfferFields.TRAINING_REQUIRED.getField());
-        result.add(OfferFields.OTHER_REQUIREMENTS.getField());
-        result.add(OfferFields.WORKKIND.getField());
-        result.add(OfferFields.WEEKS_MIN.getField());
-        result.add(OfferFields.WEEKS_MAX.getField());
-        result.add(OfferFields.FROM.getField());
-        result.add(OfferFields.TO.getField());
-        result.add(OfferFields.STUDY_COMPLETED_BEGINNING.getField());
-        result.add(OfferFields.STUDY_COMPLETED_MIDDLE.getField());
-        result.add(OfferFields.STUDY_COMPLETED_END.getField());
-        result.add(OfferFields.WORK_TYPE_P.getField());
-        result.add(OfferFields.WORK_TYPE_R.getField());
-        result.add(OfferFields.WORK_TYPE_W.getField());
-        result.add(OfferFields.WORK_TYPE_N.getField());
-        result.add(OfferFields.LANGUAGE_1.getField());
-        result.add(OfferFields.LANGUAGE_1_LEVEL.getField());
-        result.add(OfferFields.LANGUAGE_1_OR.getField());
-        result.add(OfferFields.LANGUAGE_2.getField());
-        result.add(OfferFields.LANGUAGE_2_LEVEL.getField());
-        result.add(OfferFields.LANGUAGE_2_OR.getField());
-        result.add(OfferFields.LANGUAGE_3.getField());
-        result.add(OfferFields.LANGUAGE_3_LEVEL.getField());
-        result.add(OfferFields.CURRENCY.getField());
-        result.add(OfferFields.PAYMENT.getField());
-        result.add(OfferFields.PAYMENT_FREQUENCY.getField());
-        result.add(OfferFields.DEDUCTION.getField());
-        result.add(OfferFields.LODGING.getField());
-        result.add(OfferFields.LODGING_COST.getField());
-        result.add(OfferFields.LODGING_COST_FREQUENCY.getField());
-        result.add(OfferFields.LIVING_COST.getField());
-        result.add(OfferFields.LIVING_COST_FREQUENCY.getField());
-        result.add(OfferFields.NO_HARD_COPIES.getField());
-        result.add(OfferFields.STATUS.getField());
-        result.add(OfferFields.PERIOD_2_FROM.getField());
-        result.add(OfferFields.PERIOD_2_TO.getField());
-        result.add(OfferFields.HOLIDAYS_FROM.getField());
-        result.add(OfferFields.HOLIDAYS_TO.getField());
-        result.add(OfferFields.ADDITIONAL_INFO.getField());
-        result.add(OfferFields.SHARED.getField());
-        result.add(OfferFields.LAST_MODIFIED.getField());
-        result.add(OfferFields.NS_FIRST_NAME.getField());
-        result.add(OfferFields.NS_LAST_NAME.getField());
+        addForeignField(result, OfferFields.REF_NO);
+        addForeignField(result, OfferFields.DEADLINE);
+        addForeignField(result, OfferFields.COMMENT);
+        addForeignField(result, OfferFields.EMPLOYER);
+        addForeignField(result, OfferFields.STREET1);
+        addForeignField(result, OfferFields.STREET2);
+        addForeignField(result, OfferFields.POSTBOX);
+        addForeignField(result, OfferFields.POSTAL_CODE);
+        addForeignField(result, OfferFields.CITY);
+        addForeignField(result, OfferFields.STATE);
+        addForeignField(result, OfferFields.COUNTRY);
+        addForeignField(result, OfferFields.WEBSITE);
+        addForeignField(result, OfferFields.WORKPLACE);
+        addForeignField(result, OfferFields.BUSINESS);
+        addForeignField(result, OfferFields.RESPONSIBLE);
+        addForeignField(result, OfferFields.AIRPORT);
+        addForeignField(result, OfferFields.TRANSPORT);
+        addForeignField(result, OfferFields.EMPLOYEES);
+        addForeignField(result, OfferFields.HOURS_WEEKLY);
+        addForeignField(result, OfferFields.HOURS_DAILY);
+        addForeignField(result, OfferFields.CANTEEN);
+        addForeignField(result, OfferFields.FACULTY);
+        addForeignField(result, OfferFields.SPECIALIZATION);
+        addForeignField(result, OfferFields.TRAINING_REQUIRED);
+        addForeignField(result, OfferFields.OTHER_REQUIREMENTS);
+        addForeignField(result, OfferFields.WORK_KIND);
+        addForeignField(result, OfferFields.WEEKS_MIN);
+        addForeignField(result, OfferFields.WEEKS_MAX);
+        addForeignField(result, OfferFields.FROM);
+        addForeignField(result, OfferFields.TO);
+        addForeignField(result, OfferFields.STUDY_COMPLETED_BEGINNING);
+        addForeignField(result, OfferFields.STUDY_COMPLETED_MIDDLE);
+        addForeignField(result, OfferFields.STUDY_COMPLETED_END);
+        addForeignField(result, OfferFields.WORK_TYPE_P);
+        addForeignField(result, OfferFields.WORK_TYPE_R);
+        addForeignField(result, OfferFields.WORK_TYPE_W);
+        addForeignField(result, OfferFields.WORK_TYPE_N);
+        addForeignField(result, OfferFields.LANGUAGE_1);
+        addForeignField(result, OfferFields.LANGUAGE_1_LEVEL);
+        addForeignField(result, OfferFields.LANGUAGE_1_OR);
+        addForeignField(result, OfferFields.LANGUAGE_2);
+        addForeignField(result, OfferFields.LANGUAGE_2_LEVEL);
+        addForeignField(result, OfferFields.LANGUAGE_2_OR);
+        addForeignField(result, OfferFields.LANGUAGE_3);
+        addForeignField(result, OfferFields.LANGUAGE_3_LEVEL);
+        addForeignField(result, OfferFields.CURRENCY);
+        addForeignField(result, OfferFields.PAYMENT);
+        addForeignField(result, OfferFields.PAYMENT_FREQUENCY);
+        addForeignField(result, OfferFields.DEDUCTION);
+        addForeignField(result, OfferFields.LODGING);
+        addForeignField(result, OfferFields.LODGING_COST);
+        addForeignField(result, OfferFields.LODGING_COST_FREQUENCY);
+        addForeignField(result, OfferFields.LIVING_COST);
+        addForeignField(result, OfferFields.LIVING_COST_FREQUENCY);
+        addForeignField(result, OfferFields.NO_HARD_COPIES);
+        addForeignField(result, OfferFields.STATUS);
+        addForeignField(result, OfferFields.PERIOD_2_FROM);
+        addForeignField(result, OfferFields.PERIOD_2_TO);
+        addForeignField(result, OfferFields.HOLIDAYS_FROM);
+        addForeignField(result, OfferFields.HOLIDAYS_TO);
+        addForeignField(result, OfferFields.ADDITIONAL_INFO);
+        addForeignField(result, OfferFields.SHARED);
+        addForeignField(result, OfferFields.LAST_MODIFIED);
+        addForeignField(result, OfferFields.NS_FIRST_NAME);
+        addForeignField(result, OfferFields.NS_LAST_NAME);
 
         return result;
     }
@@ -441,71 +454,83 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
     private List<String> createDomesticFirstRow() {
         final List<String> result = new ArrayList<>();
 
-        result.add(OfferFields.REFNO.getField());
-        result.add(OfferFields.OFFER_TYPE.getField());
-        result.add(OfferFields.EXCHANGE_TYPE.getField());
-        result.add(OfferFields.DEADLINE.getField());
-        result.add(OfferFields.COMMENT.getField());
-        result.add(OfferFields.EMPLOYER.getField());
-        result.add(OfferFields.STREET_1.getField());
-        result.add(OfferFields.STREET_2.getField());
-        result.add(OfferFields.POST_BOX.getField());
-        result.add(OfferFields.POSTAL_CODE.getField());
-        result.add(OfferFields.CITY.getField());
-        result.add(OfferFields.STATE.getField());
-        result.add(OfferFields.COUNTRY.getField());
-        result.add(OfferFields.WEBSITE.getField());
-        result.add(OfferFields.WORKPLACE.getField());
-        result.add(OfferFields.BUSINESS.getField());
-        result.add(OfferFields.RESPONSIBLE.getField());
-        result.add(OfferFields.AIRPORT.getField());
-        result.add(OfferFields.TRANSPORT.getField());
-        result.add(OfferFields.EMPLOYEES.getField());
-        result.add(OfferFields.HOURS_WEEKLY.getField());
-        result.add(OfferFields.HOURS_DAILY.getField());
-        result.add(OfferFields.CANTEEN.getField());
-        result.add(OfferFields.FACULTY.getField());
-        result.add(OfferFields.SPECIALIZATION.getField());
-        result.add(OfferFields.TRAINING_REQUIRED.getField());
-        result.add(OfferFields.OTHER_REQUIREMENTS.getField());
-        result.add(OfferFields.WORKKIND.getField());
-        result.add(OfferFields.WEEKS_MIN.getField());
-        result.add(OfferFields.WEEKS_MAX.getField());
-        result.add(OfferFields.FROM.getField());
-        result.add(OfferFields.TO.getField());
-        result.add(OfferFields.STUDY_COMPLETED_BEGINNING.getField());
-        result.add(OfferFields.STUDY_COMPLETED_MIDDLE.getField());
-        result.add(OfferFields.STUDY_COMPLETED_END.getField());
-        result.add(OfferFields.WORK_TYPE_P.getField());
-        result.add(OfferFields.WORK_TYPE_R.getField());
-        result.add(OfferFields.WORK_TYPE_W.getField());
-        result.add(OfferFields.WORK_TYPE_N.getField());
-        result.add(OfferFields.LANGUAGE_1.getField());
-        result.add(OfferFields.LANGUAGE_1_LEVEL.getField());
-        result.add(OfferFields.LANGUAGE_1_OR.getField());
-        result.add(OfferFields.LANGUAGE_2.getField());
-        result.add(OfferFields.LANGUAGE_2_LEVEL.getField());
-        result.add(OfferFields.LANGUAGE_2_OR.getField());
-        result.add(OfferFields.LANGUAGE_3.getField());
-        result.add(OfferFields.LANGUAGE_3_LEVEL.getField());
-        result.add(OfferFields.CURRENCY.getField());
-        result.add(OfferFields.PAYMENT.getField());
-        result.add(OfferFields.PAYMENT_FREQUENCY.getField());
-        result.add(OfferFields.DEDUCTION.getField());
-        result.add(OfferFields.LODGING.getField());
-        result.add(OfferFields.LODGING_COST.getField());
-        result.add(OfferFields.LODGING_COST_FREQUENCY.getField());
-        result.add(OfferFields.LIVING_COST.getField());
-        result.add(OfferFields.LIVING_COST_FREQUENCY.getField());
-        result.add(OfferFields.NO_HARD_COPIES.getField());
-        result.add(OfferFields.STATUS.getField());
-        result.add(OfferFields.PERIOD_2_FROM.getField());
-        result.add(OfferFields.PERIOD_2_TO.getField());
-        result.add(OfferFields.HOLIDAYS_FROM.getField());
-        result.add(OfferFields.HOLIDAYS_TO.getField());
-        result.add(OfferFields.ADDITIONAL_INFO.getField());
-        result.add(OfferFields.SHARED.getField());
+        addDomesticField(result, OfferFields.REF_NO);
+        addDomesticField(result, OfferFields.OFFER_TYPE);
+        addDomesticField(result, OfferFields.EXCHANGE_TYPE);
+        addDomesticField(result, OfferFields.DEADLINE);
+        addDomesticField(result, OfferFields.COMMENT);
+        addDomesticField(result, OfferFields.EMPLOYER);
+        addDomesticField(result, OfferFields.STREET1);
+        addDomesticField(result, OfferFields.STREET2);
+        addDomesticField(result, OfferFields.POSTBOX);
+        addDomesticField(result, OfferFields.POSTAL_CODE);
+        addDomesticField(result, OfferFields.CITY);
+        addDomesticField(result, OfferFields.STATE);
+        addDomesticField(result, OfferFields.COUNTRY);
+        addDomesticField(result, OfferFields.WEBSITE);
+        addDomesticField(result, OfferFields.WORKPLACE);
+        addDomesticField(result, OfferFields.BUSINESS);
+        addDomesticField(result, OfferFields.RESPONSIBLE);
+        addDomesticField(result, OfferFields.AIRPORT);
+        addDomesticField(result, OfferFields.TRANSPORT);
+        addDomesticField(result, OfferFields.EMPLOYEES);
+        addDomesticField(result, OfferFields.HOURS_WEEKLY);
+        addDomesticField(result, OfferFields.HOURS_DAILY);
+        addDomesticField(result, OfferFields.CANTEEN);
+        addDomesticField(result, OfferFields.FACULTY);
+        addDomesticField(result, OfferFields.SPECIALIZATION);
+        addDomesticField(result, OfferFields.TRAINING_REQUIRED);
+        addDomesticField(result, OfferFields.OTHER_REQUIREMENTS);
+        addDomesticField(result, OfferFields.WORK_KIND);
+        addDomesticField(result, OfferFields.WEEKS_MIN);
+        addDomesticField(result, OfferFields.WEEKS_MAX);
+        addDomesticField(result, OfferFields.FROM);
+        addDomesticField(result, OfferFields.TO);
+        addDomesticField(result, OfferFields.STUDY_COMPLETED_BEGINNING);
+        addDomesticField(result, OfferFields.STUDY_COMPLETED_MIDDLE);
+        addDomesticField(result, OfferFields.STUDY_COMPLETED_END);
+        addDomesticField(result, OfferFields.WORK_TYPE_P);
+        addDomesticField(result, OfferFields.WORK_TYPE_R);
+        addDomesticField(result, OfferFields.WORK_TYPE_W);
+        addDomesticField(result, OfferFields.WORK_TYPE_N);
+        addDomesticField(result, OfferFields.LANGUAGE_1);
+        addDomesticField(result, OfferFields.LANGUAGE_1_LEVEL);
+        addDomesticField(result, OfferFields.LANGUAGE_1_OR);
+        addDomesticField(result, OfferFields.LANGUAGE_2);
+        addDomesticField(result, OfferFields.LANGUAGE_2_LEVEL);
+        addDomesticField(result, OfferFields.LANGUAGE_2_OR);
+        addDomesticField(result, OfferFields.LANGUAGE_3);
+        addDomesticField(result, OfferFields.LANGUAGE_3_LEVEL);
+        addDomesticField(result, OfferFields.CURRENCY);
+        addDomesticField(result, OfferFields.PAYMENT);
+        addDomesticField(result, OfferFields.PAYMENT_FREQUENCY);
+        addDomesticField(result, OfferFields.DEDUCTION);
+        addDomesticField(result, OfferFields.LODGING);
+        addDomesticField(result, OfferFields.LODGING_COST);
+        addDomesticField(result, OfferFields.LODGING_COST_FREQUENCY);
+        addDomesticField(result, OfferFields.LIVING_COST);
+        addDomesticField(result, OfferFields.LIVING_COST_FREQUENCY);
+        addDomesticField(result, OfferFields.NO_HARD_COPIES);
+        addDomesticField(result, OfferFields.STATUS);
+        addDomesticField(result, OfferFields.PERIOD_2_FROM);
+        addDomesticField(result, OfferFields.PERIOD_2_TO);
+        addDomesticField(result, OfferFields.HOLIDAYS_FROM);
+        addDomesticField(result, OfferFields.HOLIDAYS_TO);
+        addDomesticField(result, OfferFields.ADDITIONAL_INFO);
+        addDomesticField(result, OfferFields.SHARED);
 
         return result;
+    }
+
+    private void addForeignField(final List<String> row, final OfferFields field) {
+        if (field.isForForeignCSVOffer()) {
+            row.add(field.getField());
+        }
+    }
+
+    private void addDomesticField(final List<String> row, final OfferFields field) {
+        if (field.isForDomesticCSVOffer()) {
+            row.add(field.getField());
+        }
     }
 }

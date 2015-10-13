@@ -14,6 +14,9 @@
  */
 package net.iaeste.iws.core.transformers;
 
+import static net.iaeste.iws.api.enums.exchange.OfferFields.STUDY_COMPLETED_BEGINNING;
+import static net.iaeste.iws.api.enums.exchange.OfferFields.STUDY_COMPLETED_END;
+import static net.iaeste.iws.api.enums.exchange.OfferFields.STUDY_COMPLETED_MIDDLE;
 import static net.iaeste.iws.common.utils.StringUtils.toLower;
 
 import net.iaeste.iws.api.constants.IWSConstants;
@@ -37,7 +40,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.EnumSet;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -58,197 +60,8 @@ public final class CsvTransformer {
     private CsvTransformer() {
     }
 
-    public static Float toFloat(final Map<String, String> errors, final CSVRecord record, final OfferFields field) {
-        final String input = record.get(field.getField());
-        Float result = null;
-
-        if (input != null && !input.isEmpty()) {
-            try {
-                result = Float.parseFloat(input);
-            } catch (NumberFormatException e) {
-                errors.put(field.getField(), e.getMessage());
-            }
-        }
-
-        return result;
-    }
-
-    public static Integer toInteger(final Map<String, String> errors, final CSVRecord record, final OfferFields field) {
-        final String input = record.get(field.getField());
-        Integer result = null;
-
-        if (input != null && !input.isEmpty()) {
-            try {
-                result = Integer.parseInt(input);
-            } catch (NumberFormatException e) {
-                errors.put(field.getField(), e.getMessage());
-            }
-        }
-
-        return result;
-    }
-
-    public static BigDecimal toBigDecimal(final Map<String, String> errors, final CSVRecord record, final OfferFields field) {
-        final String input = record.get(field.getField());
-        BigDecimal result = null;
-
-        if (input != null && !input.isEmpty()) {
-            try {
-                result = new BigDecimal(input);
-            } catch (NumberFormatException e) {
-                errors.put(field.getField(), e.getMessage());
-            }
-        }
-
-        return result;
-    }
-
-    public static DatePeriod toDatePeriod(final Map<String, String> errors, final CSVRecord record, final OfferFields inputFrom, final OfferFields inputTo) {
-        final Date from = toDate(errors, record, inputFrom);
-        final Date to = toDate(errors, record, inputTo);
-        DatePeriod result = null;
-
-        if ((from != null) || (to != null)) {
-            try {
-                result = new DatePeriod();
-                result.setFromDate(from);
-                result.setToDate(to);
-            } catch (IllegalArgumentException e) {
-                errors.put(inputFrom.getField() + '/' + inputTo.getField(), e.getMessage());
-            }
-        }
-
-        return result;
-    }
-
-    public static Date toDate(final Map<String, String> errors, final CSVRecord record, final OfferFields field) {
-        final String input = record.get(field.getField());
-        Date result = null;
-
-        if (input != null && !input.isEmpty()) {
-            final DateFormat formatter = new SimpleDateFormat(IWSConstants.DATE_FORMAT, IWSConstants.DEFAULT_LOCALE);
-            try {
-                result = new Date(formatter.parse(input));
-            } catch (ParseException e) {
-                errors.put(field.getField(), e.getMessage());
-            }
-        }
-
-        return result;
-    }
-
-    public static Boolean toBoolean(final Map<String, String> errors, final CSVRecord record, final OfferFields field) {
-        final String input = record.get(field.getField());
-        Boolean result = null;
-
-        if (input != null && !input.isEmpty()) {
-            result = "yes".equalsIgnoreCase(input);
-        }
-
-        return result;
-    }
-
-    public static <T extends Enum<T>> T toEnum(final Map<String, String> errors, final CSVRecord record, final OfferFields field, final Class<T> enumType) {
-        final String input = record.get(field.getField());
-        T result = null;
-
-        if (input != null && !input.isEmpty()) {
-            try {
-                result = Enum.valueOf(enumType, input);
-            } catch (IllegalArgumentException e) {
-                errors.put(field.getField(), e.getMessage());
-            }
-        }
-
-        return result;
-    }
-
-    public static TypeOfWork toTypeOfWork(final Map<String, String> errors, final String field, final String inputP, final String inputR, final String inputW, final String inputN) {
-        TypeOfWork result = null;
-        Boolean typeR = "yes".equalsIgnoreCase(inputP);
-        Boolean typeO = "yes".equalsIgnoreCase(inputR);
-        Boolean typeF = "yes".equalsIgnoreCase(inputW);
-        //inputN is ignored
-
-        int sum = (typeR ? 1 : 0) + (typeO ? 1 : 0) + (typeF ? 1 : 0);
-
-        if (sum > 1) {
-            //error
-        } else if (typeR) {
-            result = TypeOfWork.R;
-        } else if (typeO) {
-            result = TypeOfWork.O;
-        } else if (typeF) {
-            result = TypeOfWork.F;
-        }
-
-        return result;
-    }
-
-    public static Set<StudyLevel> toStudyLevels(final Map<String, String> errors, final String field, final String inputBeginning, final String inputMiddle, final String inputEnd) {
-        Set<StudyLevel> result = new HashSet<>();
-        Boolean levelBeginning = "yes".equalsIgnoreCase(inputBeginning);
-        Boolean levelMiddle = "yes".equalsIgnoreCase(inputMiddle);
-        Boolean levelEnd = "yes".equalsIgnoreCase(inputEnd);
-
-        if (levelBeginning) {
-            result.add(StudyLevel.B);
-        }
-        if (levelMiddle) {
-            result.add(StudyLevel.M);
-        }
-        if (levelEnd) {
-            result.add(StudyLevel.E);
-        }
-
-        return result;
-    }
-
-    public static <E extends Enum<E> & Descriptable<E>> Set<E> toEnumSet(final Map<String, String> errors, final CSVRecord record, final OfferFields field, final Class<E> enumType) {
-        final String input = record.get(field.getField());
-        Set<E> result = null;
-
-        try {
-            result = CollectionTransformer.explodeEnumSet(enumType, input);
-        } catch (IllegalArgumentException e) {
-            errors.put(field.getField(), e.getMessage());
-        }
-
-        return result;
-    }
-
-    public static Set<String> toStringSet(final Map<String, String> errors, final CSVRecord record, final OfferFields field) {
-        Set<String> result = CollectionTransformer.explodeStringSet(record.get(field.getField()));
-
-        // Note, change was made as part of ticket #966. However, this method
-        // is *not* suppose to make error handling, this is done via the setter.
-        // So the construction needs some refactoring. Below, is an example of
-        // how it can be done better, using the information we have in the
-        // OfferFields enum type, and using a reflective invocation of the
-        // Object setter to invoke the error checks.
-        //   Having the error check here is disturbing, but can be considered an
-        // extra safeguard. What would be better, is if the CSV from Korea that
-        // caused the problem could be found. It will enlighten precisely how
-        // it was possible to circumvent the IWS safeguards.
-        //   Update; Korea informed that they simply added the extra
-        // Specializations within the Offer Form, meaning that it was *not* a
-        // via the CSV upload mechanism. Please see ticket #971.
-        //if (field == OfferFields.SPECIALIZATION) {
-        //    final int max = IWSExchangeConstants.MAX_OFFER_SPECIALIZATIONS;
-        //    if (result.size() > max) {
-        //        errors.put(field.getField(), "The field specializations may not containt more than " + max + " Objects.");
-        //    }
-        //}
-
-        return result;
-    }
-
-    // =========================================================================
-    // Improved version of the converting of CSV to Verifiable Object fields
-    // =========================================================================
-
     public static void transformString(final Map<String, String> errors, final Verifiable obj, final OfferFields field, final CSVRecord record) {
-        invokeMethodOnObject(errors, obj, field, record.get(field));
+        invokeMethodOnObject(errors, obj, field, record.get(field.getField()));
     }
 
     public static void transformBoolean(final Map<String, String> errors, final Verifiable obj, final OfferFields field, final CSVRecord record) {
@@ -322,7 +135,7 @@ public final class CsvTransformer {
 
         if ((value != null) && !value.isEmpty()) {
             try {
-                final T theEnum = Enum.valueOf(enumType, value);
+                final T theEnum = Enum.valueOf(enumType, value.toUpperCase(IWSConstants.DEFAULT_LOCALE));
                 invokeMethodOnObject(errors, obj, field, theEnum);
             } catch (IllegalArgumentException e) {
                 errors.put(field.getField(), e.getMessage());
@@ -342,21 +155,24 @@ public final class CsvTransformer {
     }
 
     public static void transformStringSet(final Map<String, String> errors, final Verifiable obj, final OfferFields field, final CSVRecord record) {
-        Set<String> set = CollectionTransformer.explodeStringSet(record.get(field));
+        Set<String> set = CollectionTransformer.explodeStringSet(record.get(field.getField()));
         invokeMethodOnObject(errors, obj, field, set);
     }
 
-    public static void transformTypeOfWork(final Map<String, String> errors, final Verifiable obj, final OfferFields field, final String inputP, final String inputR, final String inputW, final String inputN) {
-        Boolean typeR = convertBoolean(inputP);
-        Boolean typeO = convertBoolean(inputR);
-        Boolean typeF = convertBoolean(inputW);
+    public static void transformTypeOfWork(final Map<String, String> errors, final Verifiable obj, final OfferFields field, final CSVRecord record) {
+        Boolean typeR = convertBoolean(record.get(OfferFields.WORK_TYPE_P.getField()));
+        Boolean typeO = convertBoolean(record.get(OfferFields.WORK_TYPE_R.getField()));
+        Boolean typeF = convertBoolean(record.get(OfferFields.WORK_TYPE_W.getField()));
 
-        if (convertBoolean(inputN)) {
+        if (convertBoolean(record.get(OfferFields.WORK_TYPE_N.getField()))) {
             LOG.info("Ignoring the TypeOfWork 'N'.");
         }
 
-        if (((typeR ? 1 : 0) + (typeO ? 1 : 0) + (typeF ? 1 : 0)) > 1) {
+        final int sum = ((typeR ? 1 : 0) + (typeO ? 1 : 0) + (typeF ? 1 : 0));
+        if (sum > 1) {
             errors.put(field.getField(), "Multiple TypeOfWork is set, only one is allowed.");
+        } else if (sum == 0) {
+            errors.put(field.getField(), "No TypeOfWork defined.");
         } else {
             TypeOfWork value = null;
             if (typeR) {
@@ -371,17 +187,24 @@ public final class CsvTransformer {
         }
     }
 
-    public static void transformStudyLevels(final Map<String, String> errors, final Verifiable obj, final OfferFields field, final String inputBeginning, final String inputMiddle, final String inputEnd) {
+    public static void transformStudyLevels(final Map<String, String> errors, final Verifiable obj, final OfferFields field, final CSVRecord record) {
         Set<StudyLevel> value = EnumSet.noneOf(StudyLevel.class);
+        final Boolean beginning = convertBoolean(record.get(STUDY_COMPLETED_BEGINNING.getField()));
+        final Boolean middle = convertBoolean(record.get(STUDY_COMPLETED_MIDDLE.getField()));
+        final Boolean end = convertBoolean(record.get(STUDY_COMPLETED_END.getField()));
 
-        if ("yes".equals(toLower(inputBeginning))) {
-            value.add(StudyLevel.B);
-        }
-        if ("yes".equals(toLower(inputMiddle))) {
-            value.add(StudyLevel.M);
-        }
-        if ("yes".equals(toLower(inputEnd))) {
-            value.add(StudyLevel.E);
+        if (!beginning && !middle && !end) {
+            errors.put(field.getField(), "No StudyLevel defined.");
+        } else {
+            if (beginning) {
+                value.add(StudyLevel.B);
+            }
+            if (middle) {
+                value.add(StudyLevel.M);
+            }
+            if (end) {
+                value.add(StudyLevel.E);
+            }
         }
 
         invokeMethodOnObject(errors, obj, field, value);
@@ -412,7 +235,7 @@ public final class CsvTransformer {
     }
 
     /**
-     * Reflective invocation of the Object Setter methods. To enfoce the Setter
+     * Reflective invocation of the Object Setter methods. To enforce the Setter
      * Validation checks on the values. Required to avoid that illegal values is
      * being processed.<br />
      *   The method will also catch any thrown IllegalArgument Exceptions and
@@ -425,9 +248,9 @@ public final class CsvTransformer {
      * @throws IWSException If a Reflection Error occurred.
      */
     private static <O extends Verifiable> void invokeMethodOnObject(final Map<String, String> errors, final O obj, final OfferFields field, final Object... args) throws IWSException {
-        if (field.getMethod() != null) {
+        if ((field.getMethod() != null) && (field.isForDomesticCSVOffer())) {
             try {
-                final Method implementation = obj.getClass().getMethod(field.getField());
+                final Method implementation = obj.getClass().getMethod(field.getMethod(), field.getArgumentClasses());
                 implementation.invoke(obj, args);
             } catch (IllegalArgumentException e) {
                 LOG.debug("Setter " + field.getMethod() + " Invocation Error: " + e.getMessage());
@@ -440,7 +263,7 @@ public final class CsvTransformer {
                 throw new IWSException(IWSErrors.FATAL, e.getMessage(), e);
             }
         } else {
-            LOG.warn("Cannot set field " + field + ", as there is no method associated with it.");
+            LOG.warn("Cannot set field " + field.getField() + ", as there is no method associated with it.");
         }
     }
 }

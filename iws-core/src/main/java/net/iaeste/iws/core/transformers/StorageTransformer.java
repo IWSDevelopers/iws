@@ -21,6 +21,9 @@ import net.iaeste.iws.api.dtos.Folder;
 import net.iaeste.iws.persistence.entities.FileEntity;
 import net.iaeste.iws.persistence.entities.FolderEntity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -32,6 +35,36 @@ public final class StorageTransformer {
      * Private Constructor, this is a utility class.
      */
     private StorageTransformer() {
+    }
+
+    public static List<Folder> transformFolders(final List<FolderEntity> entities) {
+        final List<Folder> result;
+
+        if (entities.isEmpty()) {
+            result = new ArrayList<>(0);
+        } else {
+            result = new ArrayList<>(entities.size());
+            for (final FolderEntity entity : entities) {
+                result.add(transform(entity));
+            }
+        }
+
+        return result;
+    }
+
+    public static List<File> transformFiles(final List<FileEntity> entities) {
+        final List<File> result;
+
+        if (entities.isEmpty()) {
+            result = new ArrayList<>(0);
+        } else {
+            result = new ArrayList<>(entities.size());
+            for (final FileEntity entity : entities) {
+                result.add(transform(entity));
+            }
+        }
+
+        return result;
     }
 
     public static File transform(final FileEntity entity) {

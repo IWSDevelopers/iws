@@ -189,7 +189,7 @@ public interface Exchange {
      * @param token   User Authentication Token
      * @param request contains name of the Publishing Group and list of Groups the Publishing Group consists of
      * @return Standard Error Object
-     * @deprecated please use the delete flag for the processPublishingGroup requst
+     * @deprecated please use the delete flag for the processPublishingGroup request
      */
     @Deprecated
     FallibleResponse deletePublishingGroup(AuthenticationToken token, DeletePublishingGroupRequest request);

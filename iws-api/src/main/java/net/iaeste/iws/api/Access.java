@@ -42,7 +42,7 @@ import java.io.Serializable;
  * It is important to underline, that a User may only have 1 (one) active
  * Session at the time. Meaning, that the same user may not log into different
  * IWS based systems at the same time. This feature was added to prevent Account
- * misusage. Though the consequences of attempting will simply be a
+ * misuse. Though the consequences of attempting will simply be a
  * rejection.<br />
  *   The interface is annotated with the WebService annotations and XML elements
  * used by JAXB, although some are implicit so named, it is helpful to

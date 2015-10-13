@@ -181,7 +181,7 @@ public interface Administration {
      * Retrieves the details about a user. The amount of details depends upon
      * the users privacy settings. If the privacy settings are high, then only
      * the user itself can view all the details.<br />
-     *   Note, that by default all pricacy settings are set to high, meaning
+     *   Note, that by default all privacy settings are set to high, meaning
      * that users have to actively lower them before others can view this
      * information.
      *
@@ -261,10 +261,10 @@ public interface Administration {
      * use this request to assign a new owner to a Group, this is handled via a
      * {@link #changeGroupOwner} request.
      *
-     * @param token   Authentication information about the user invoking the
-     *                request
-     * @param request Request data, must contain the UserGroup settings
-     * @return Respose with altered relation and error information
+     * @param token    Authentication information about the user invoking the
+     *                 request
+     * @param request  Request data, must contain the UserGroup settings
+     * @return Response with altered relation and error information
      */
     ProcessUserGroupResponse processUserGroupAssignment(AuthenticationToken token, UserGroupAssignmentRequest request);
 
@@ -275,10 +275,10 @@ public interface Administration {
      * limited to this, otherwise the search will be among all users where the
      * status is either active or new.
      *
-     * @param token   Authentication information about the user invoking the
-     *                request
-     * @param request Request data, must contain the name and optionally Group
-     * @return Respose with altered relation and error information
+     * @param token    Authentication information about the user invoking the
+     *                 request
+     * @param request  Request data, must contain the name and optionally Group
+     * @return Response with altered relation and error information
      */
     SearchUserResponse searchUsers(AuthenticationToken token, SearchUserRequest request);
 

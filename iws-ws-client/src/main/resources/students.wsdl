@@ -970,6 +970,18 @@
       <xs:enumeration value="ACCEPTED"/>
       <xs:enumeration value="EXPIRED"/>
       <xs:enumeration value="REJECTED"/>
+      <xs:enumeration value="CANCELLED"/>
+      <xs:enumeration value="EXCHANGED"/>
+      <xs:enumeration value="NOMINATION_REJECTED"/>
+      <xs:enumeration value="NOT_ACCEPTED"/>
+      <xs:enumeration value="DECLINED"/>
+      <xs:enumeration value="SN_COMPLETE"/>
+      <xs:enumeration value="TAKEN"/>
+      <xs:enumeration value="NOMINATION_ACCEPTED"/>
+      <xs:enumeration value="VIEWED"/>
+      <xs:enumeration value="WAITING_SN"/>
+      <xs:enumeration value="AC_EXCHANGED"/>
+      <xs:enumeration value="UNKNOWN"/>
     </xs:restriction>
   </xs:simpleType>
 

@@ -215,7 +215,7 @@
     <xs:complexContent>
       <xs:extension base="tns:abstractPaginatable">
         <xs:sequence>
-          <xs:element name="type" nillable="true" type="tns:employerFetchType"/>
+          <xs:element name="type" type="tns:employerFetchType"/>
           <xs:element name="field" nillable="true" type="xs:string"/>
           <xs:element name="fetchOfferReferenceNumbers" nillable="true" type="xs:boolean"/>
         </xs:sequence>

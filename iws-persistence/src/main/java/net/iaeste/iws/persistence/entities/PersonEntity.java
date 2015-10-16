@@ -16,7 +16,6 @@ package net.iaeste.iws.persistence.entities;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.Gender;
-import net.iaeste.iws.api.enums.Privacy;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -31,7 +30,6 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.xml.bind.annotation.XmlElement;
 import java.util.Date;
 
 /**
@@ -251,7 +249,11 @@ public class PersonEntity extends AbstractUpdateable<PersonEntity> {
     @Override
     public void merge(final PersonEntity obj) {
         if (obj != null) {
-            address = which(address, obj.address);
+            // We're skipping the Address here, since the Address is another
+            // Entity, which must be dealt with separately. It should be noted,
+            // that also merging the Address in here is the source if a nasty
+            // error, which was hard to find, see Trac ticket #1028.
+            //address = which(address, obj.address);
             email = which(email, obj.email);
             phone = which(phone, obj.phone);
             mobile = which(mobile, obj.mobile);

@@ -91,7 +91,7 @@ public final class ExchangeMapper extends CommonMapper {
         if (ws != null) {
             api = new OfferStatisticsResponse(map(ws.getError()), ws.getMessage());
 
-            api.setDommesticStatistics(map(ws.getDommesticStatistics()));
+            api.setDomesticStatistics(map(ws.getDomesticStatistics()));
             api.setForeignStatistics(map(ws.getForeignStatistics()));
         }
 

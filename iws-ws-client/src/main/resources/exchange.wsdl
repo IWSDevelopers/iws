@@ -537,7 +537,7 @@
     <xs:complexContent>
       <xs:extension base="tns:fallibleResponse">
         <xs:sequence>
-          <xs:element name="dommesticStatistics" nillable="true" type="tns:offerStatistics"/>
+          <xs:element name="domesticStatistics" nillable="true" type="tns:offerStatistics"/>
           <xs:element name="foreignStatistics" nillable="true" type="tns:offerStatistics"/>
         </xs:sequence>
       </xs:extension>

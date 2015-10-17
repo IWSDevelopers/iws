@@ -82,7 +82,7 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
         final GroupEntity nationalGroup = findNationalGroup(authentication);
 
         final OfferStatisticsResponse response = new OfferStatisticsResponse();
-        response.setDommesticStatistics(readDomesticStatistics(nationalGroup, year));
+        response.setDomesticStatistics(readDomesticStatistics(nationalGroup, year));
         response.setForeignStatistics(readForeignStatistics(nationalGroup, year));
 
         return response;

@@ -30,13 +30,13 @@ import javax.xml.bind.annotation.XmlType;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "offerStatisticsResponse", propOrder = { "dommesticStatistics", "foreignStatistics" })
+@XmlType(name = "offerStatisticsResponse", propOrder = { "domesticStatistics", "foreignStatistics" })
 public final class OfferStatisticsResponse extends FallibleResponse {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    @XmlElement(required = true, nillable = true) private OfferStatistics dommesticStatistics = null;
+    @XmlElement(required = true, nillable = true) private OfferStatistics domesticStatistics = null;
     @XmlElement(required = true, nillable = true) private OfferStatistics foreignStatistics = null;
 
     // =========================================================================
@@ -46,7 +46,7 @@ public final class OfferStatisticsResponse extends FallibleResponse {
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.
-     * Constructor is used in {@code OfferResponse} when deleteing an offer.
+     * Constructor is used in {@code OfferResponse} when deleting an offer.
      */
     public OfferStatisticsResponse() {
     }
@@ -65,12 +65,14 @@ public final class OfferStatisticsResponse extends FallibleResponse {
     // Standard Setters & Getters
     // =========================================================================
 
-    public void setDommesticStatistics(final OfferStatistics dommesticStatistics) {
-        this.dommesticStatistics = dommesticStatistics;
+    public void setDomesticStatistics(final OfferStatistics domesticStatistics) {
+        this.domesticStatistics = domesticStatistics;
     }
 
-    public OfferStatistics getDommesticStatistics() {
-        return dommesticStatistics;
+    public OfferStatistics getDomesticStatistics() {
+        // If the response is null - then we're just returning an empty
+        // Statistics Object, to avoid NullPointerExceptions.
+        return domesticStatistics != null ? domesticStatistics : new OfferStatistics();
     }
 
     public void setForeignStatistics(final OfferStatistics foreignStatistics) {
@@ -78,7 +80,9 @@ public final class OfferStatisticsResponse extends FallibleResponse {
     }
 
     public OfferStatistics getForeignStatistics() {
-        return foreignStatistics;
+        // If the response is null - then we're just returning an empty
+        // Statistics Object, to avoid NullPointerExceptions.
+        return foreignStatistics != null ? foreignStatistics : new OfferStatistics();
     }
 
     // =========================================================================
@@ -102,7 +106,7 @@ public final class OfferStatisticsResponse extends FallibleResponse {
 
         final OfferStatisticsResponse that = (OfferStatisticsResponse) obj;
 
-        if ((dommesticStatistics != null) ? !dommesticStatistics.equals(that.dommesticStatistics) : (that.dommesticStatistics != null)) {
+        if ((domesticStatistics != null) ? !domesticStatistics.equals(that.domesticStatistics) : (that.domesticStatistics != null)) {
             return false;
         }
 
@@ -116,7 +120,7 @@ public final class OfferStatisticsResponse extends FallibleResponse {
     public int hashCode() {
         int result = super.hashCode();
 
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((dommesticStatistics != null) ? dommesticStatistics.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((domesticStatistics != null) ? domesticStatistics.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + ((foreignStatistics != null) ? foreignStatistics.hashCode() : 0);
 
         return result;
@@ -128,7 +132,7 @@ public final class OfferStatisticsResponse extends FallibleResponse {
     @Override
     public String toString() {
         return "OfferStatisticsResponse{" +
-                "dommesticStatistics=" + dommesticStatistics +
+                "domesticStatistics=" + domesticStatistics +
                 ", foreignStatistics=" + foreignStatistics +
                 '}';
     }

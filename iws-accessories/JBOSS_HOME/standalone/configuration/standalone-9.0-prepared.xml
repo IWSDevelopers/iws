@@ -473,7 +473,19 @@
             </filters>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:webservices:2.0">
-            <wsdl-host>${jboss.bind.address:127.0.0.1}</wsdl-host>
+            <!-- It was requested that the URL written in our WSDL files would
+                 reflect the name of our service, i.e. iws.iaeste.net, and not
+                 localhost. According to the RedHat Documentation [1], it is
+                 done by adding the line following two lines, instead of the
+                 original line (commented out).
+                 [1] https://docs.jboss.org/author/display/JBWS/Published+WSDL+customization-->
+            <modify-wsdl-address>true</modify-wsdl-address>
+            <wsdl-host>jbossws.undefined.host</wsdl-host>
+            <!--<wsdl-host>${jboss.bind.address:127.0.0.1}</wsdl-host>-->
+            <!-- Explicitly setting the Ports, this will ensure that WildFly is
+                 writing the correct port in the generated WSDL file. -->
+            <wsdl-port>9080</wsdl-port>
+            <wsdl-secure-port>9443</wsdl-secure-port>
             <endpoint-config name="Standard-Endpoint-Config"/>
             <endpoint-config name="Recording-Endpoint-Config">
                 <pre-handler-chain name="recording-handlers" protocol-bindings="##SOAP11_HTTP ##SOAP11_HTTP_MTOM ##SOAP12_HTTP ##SOAP12_HTTP_MTOM">

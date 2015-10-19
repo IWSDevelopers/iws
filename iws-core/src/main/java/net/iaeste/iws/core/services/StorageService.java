@@ -35,9 +35,11 @@ import net.iaeste.iws.api.responses.FetchFileResponse;
 import net.iaeste.iws.api.responses.FetchFolderResponse;
 import net.iaeste.iws.api.responses.FileResponse;
 import net.iaeste.iws.api.responses.FolderResponse;
+import net.iaeste.iws.api.util.AbstractVerification;
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.core.exceptions.StorageException;
 import net.iaeste.iws.core.exceptions.UnsupportedOperationException;
+import net.iaeste.iws.core.transformers.StorageTransformer;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.entities.FileEntity;
@@ -45,6 +47,8 @@ import net.iaeste.iws.persistence.entities.FolderEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.IWSEntity;
 import net.iaeste.iws.persistence.entities.UserGroupEntity;
+import net.iaeste.iws.persistence.exceptions.IdentificationException;
+import net.iaeste.iws.persistence.exceptions.PersistenceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -75,7 +79,7 @@ public final class StorageService extends CommonService<AccessDao> {
     //   Note; JPA Prefers Named Queries over Dynamic Queries - since Named
     // Queries can be better Cached. Criteria Queries is a more type-safe way to
     // do things, but it makes the code loads harder to read and understand - so
-    // we're disencouraging the usage thereof. Also because modern IDE's like
+    // we're discouraging the usage thereof. Also because modern IDE's like
     // IntelliJ is capable at parsing and reading the Named and Dynamic Queries
     // and thus ensuring that they're not containing mistakes.
     private final EntityManager entityManager;
@@ -87,7 +91,7 @@ public final class StorageService extends CommonService<AccessDao> {
 
     /**
      * It is possible to create/update and delete folders, provided that a few
-     * criterias have been met.<br />
+     * criteria's have been met.<br />
      *   Creating or renaming folders can only be done, if no other folders
      * exists with the same name. This is to ensure that it is easier for users
      * to distinguish between folders, as similar names will only cause
@@ -98,7 +102,7 @@ public final class StorageService extends CommonService<AccessDao> {
      * possible to spoof the system by sending different Id's along.
      *
      * @param authentication User Authentication Object
-     * @param request        User Processing Reuqest Object
+     * @param request        User Processing Request Object
      * @return Processing response, folder is null if deleted
      */
     public FolderResponse processFolder(final Authentication authentication, final FolderRequest request) {
@@ -124,10 +128,10 @@ public final class StorageService extends CommonService<AccessDao> {
                     if (foundParentEntity == null) {
                         // Not good - we cannot find any parent matching
                         // the given Parent Folder Id
-                        throw new StorageException("Cannot create new subfolder for illegal Parent");
+                        throw new StorageException("Cannot create new sub Folder for illegal Parent");
                     }
 
-                    // Processing a new Subfolder. Let's just make sure that
+                    // Processing a new sub Folder. Let's just make sure that
                     // a similar name doesn't exist, if so - we'll throw an
                     // Error. Although the IWS doesn't really care for it,
                     // the old IW3 style was that the folders were building
@@ -158,7 +162,7 @@ public final class StorageService extends CommonService<AccessDao> {
             } else {
                 // Requesting to process an existing Folder, with a given
                 // External Folder Id
-                final FolderEntity existingFolder = findFolder(folderExternalId);
+                final FolderEntity existingFolder = findFolders(folderExternalId).get(0);
                 if (existingFolder == null) {
                     throw new StorageException("The requested folder with Id '" + folderExternalId + "' could not be found.");
                 }
@@ -188,7 +192,7 @@ public final class StorageService extends CommonService<AccessDao> {
             // we simple deal with deleting. Deleting Folders is allowed,
             // provided that the Folder is empty, meaning that we have no
             // references from other Folders or Files.
-            final FolderEntity foundFolder = findFolder(request.getFolder().getFolderId());
+            final FolderEntity foundFolder = findFolders(request.getFolder().getFolderId()).get(0);
             if (foundFolder == null) {
                 throw new StorageException("The requested folder with Id '" + folderExternalId + "' could not be found.");
             }
@@ -197,9 +201,9 @@ public final class StorageService extends CommonService<AccessDao> {
             }
             // Now, let's see if it contains data. Only empty folders can be
             // deleted from the system
-            final List<FolderEntity> subfolders = readSubFolders(foundFolder);
+            final List<FolderEntity> subFolders = readSubFolders(foundFolder);
             final List<FileEntity> files = findFiles(foundFolder);
-            if (subfolders.isEmpty() && files.isEmpty()) {
+            if (subFolders.isEmpty() && files.isEmpty()) {
                 LOG.info(formatLogMessage(authentication, "Deleting folder %s from the system.", foundFolder));
                 dao.delete(foundFolder);
                 folder = null;
@@ -211,58 +215,118 @@ public final class StorageService extends CommonService<AccessDao> {
         return new FolderResponse(folder);
     }
 
+    /**
+     * This method will retrieve the information
+     *
+     * @param authentication User Authentication Object
+     * @param request        User Processing Request Object
+     * @return Fetching Response, with sub Folders & Files
+     */
     public FetchFolderResponse fetchFolder(final Authentication authentication, final FetchFolderRequest request) {
-        final String folderId = request.getFolderId();
-        final FolderEntity folderEntity;
+        // First, let's see if we can find the Folder, with Permission checks
+        final FolderEntity folderEntity = retrieveFolderWithPermissionChecks(authentication, request.getFolderId());
 
-        // First, fetch the list of UserGroup relations that we have for the
-        // user. It is needed to iterate over. Unfortunately, we need to do
-        // this either by sorting the lists according to Groups, or simply
-        // using double iterations. Sorting will be costly for very small
-        // sets of data. But the double iteration should be less problematic
-        // regardlessly.
-        final List<UserGroupEntity> u2gList = dao.findAllUserGroups(authentication.getUser());
-
-        if (folderId == null) {
-            LOG.info(formatLogMessage(authentication, "Reading the Root Folder."));
-            // Fetch the root folder
-            folderEntity = findFolder(ROOT_FOLDER_EID);
-        } else {
-            LOG.info(formatLogMessage(authentication, "Reading the Folder with Id {}.", folderId));
-            // Fetch the content of the desired folder, including the files.
-            folderEntity = findFolder(folderId);
-
-            if (folderEntity == null) {
-                throw new IWSException(IWSErrors.ILLEGAL_ACTION, "User attempted to access a Folder that doesn't exist.");
-            } else if (folderEntity.getGroup().getGroupType().getFolderType() == GroupType.FolderType.Private) {
-                FolderEntity allowedEntity = null;
-                final long fid = folderEntity.getGroup().getId();
-                for (final UserGroupEntity entity : u2gList) {
-                    if (fid == entity.getGroup().getId()) {
-                        allowedEntity = folderEntity;
-                    }
-                }
-                if (allowedEntity == null) {
-                    throw new IWSException(IWSErrors.ILLEGAL_ACTION, "User attempted to gain access a Folder without permissions.");
-                }
-            } else if (folderEntity.getGroup().getGroupType().getFolderType() != GroupType.FolderType.None) {
-                throw new IWSException(IWSErrors.ILLEGAL_ACTION, "User attempted to gain access an illegal Folder.");
-            }
-            // We're only having Public folders left :-)
-        }
-
-        // Prepare the Folder to be returned with subfolders
-        final Folder folder = transform(folderEntity);
-        folder.setFolders(readFolders(u2gList, folderEntity));
-        folder.setFiles(readFiles(authentication, u2gList, folderEntity));
-        // For now, we're forcing an empty result, since the complexity of the
-        // query requires that we add a View that can handle it properly
-        folder.setFiles(new ArrayList<File>(0));
-        // Now set the result
+        // Next, prepare the Response Object, which will contain the Folder
+        // and additionally all sub Folders & Files belonging to it.
         final FetchFolderResponse response = new FetchFolderResponse();
+        final Folder folder = transform(folderEntity);
         response.setFolder(folder);
 
+        // Read and set the sub Folders
+        folder.setFolders(StorageTransformer.transformFolders(readFolders(authentication, folderEntity)));
+
+        // Read and set the Files belonging to the Folder
+        folder.setFiles(StorageTransformer.transformFiles(readFiles(authentication, folderEntity)));
+
+        // That's it - we're done
         return response;
+    }
+
+    private FolderEntity retrieveFolderWithPermissionChecks(final Authentication authentication, final String externalFolderId) {
+        // Next step, we're retrieving the Folder hierarchy from the Database,
+        // based on the Folder Id from the Request, or if none were set in the
+        // Request, we're just using the Root folder Id
+        final String folderId = externalFolderId == null ? ROOT_FOLDER_EID : externalFolderId;
+        LOG.debug(formatLogMessage(authentication, "Reading the Folder with Id {}.", folderId));
+
+        // Before continuing, we have to verify that the User is permitted to
+        // view the Folder in question, if not permitted then we're expecting
+        // an Exception, otherwise the requested Folder.
+        return findAndVerifyFolderPermissions(authentication, folderId);
+    }
+
+    private FolderEntity findAndVerifyFolderPermissions(final Authentication authentication, final String externalFolderId) {
+        final List<FolderEntity> folders = findFolders(externalFolderId);
+
+        // Run the pre-checks, to verify that there is no problems and that the
+        // User is permitted to read the Folder.
+        if (folders.isEmpty()) {
+            // Simple error case, the User have requested a not existing Folder.
+            throw new IdentificationException("No Folders were found, matching the Id " + externalFolderId + ".");
+        } else if (!ROOT_FOLDER_EID.equals(folders.get(folders.size() - 1).getExternalId())) {
+            // Very strange error case. The last Folder in the Structure should
+            // be the Root folder, if not - then it is an error case, since we
+            // then cannot traverse the tree. This specific case must then be
+            // corrected in the database!
+            throw new PersistenceException("Error in the Database, the Folder Tree is incorrect.");
+        } else if (folders.size() > 1) {
+            // Now we just have to run the Permission Check for the Folder, this
+            // is done if the size of the Folder Tree found is larger than 1,
+            // since a List with only a single Element must be the root.
+            throwIfNotPermittedToAccessFolder(authentication, folders);
+        }
+
+        // That was it, we have completed the checks - now we can return the
+        // first element from the List, since this is the Requested Folder.
+        return folders.get(0);
+    }
+
+    private void throwIfNotPermittedToAccessFolder(final Authentication authentication, final List<FolderEntity> folders) {
+        // Database calls are costly, iterating over internal things is cheap
+        // in comparison. So we start by checking if the Folder is Public
+        // and that all Folders in the tree are also Public. If that is the case,
+        // then we don't need to make any further checks.
+        boolean isGroupPublic = isFolderPublic(folders);
+
+        if (!isGroupPublic) {
+            // If the Folder is not Public, then we need to check the user
+            // permissions, meaning that we have to verify that the User is a
+            // member of the Group, which the Folder belongs to.
+            if (!isUserGroupMember(authentication, folders)) {
+                throw new IWSException(IWSErrors.ILLEGAL_ACTION, "Unauthorized attempt at accessing the Folder " + folders.get(0).getExternalId() + '.');
+            }
+        }
+    }
+
+    private static boolean isFolderPublic(final List<FolderEntity> folders) {
+        boolean isGroupPublic = true;
+
+        for (final FolderEntity folder : folders) {
+            // The Root folder is Public, and all sub Folders must also be
+            // Public, otherwise a different check must be made.
+            if (folder.getPrivacy() != Privacy.PUBLIC) {
+                isGroupPublic = false;
+            }
+        }
+
+        return isGroupPublic;
+    }
+
+    private boolean isUserGroupMember(final Authentication authentication, final List<FolderEntity> folders) {
+        // Now we need the Group of the folder, so we can compare if the User a
+        // member of the Group, and thus we can omit further checks
+        final GroupEntity folderGroup = folders.get(0).getGroup();
+
+        boolean groupMember = false;
+        // Now, iterate over all the UserGroup relations that the User has, to
+        // ensure that the User is permitted to access the Files.
+        for (final UserGroupEntity userGroup : dao.findAllUserGroups(authentication.getUser())) {
+            if (userGroup.getGroup().getId().equals(folderGroup.getId())) {
+                groupMember = true;
+            }
+        }
+
+        return groupMember;
     }
 
     public FileResponse processFile(final Authentication authentication, final FileRequest request) {
@@ -279,7 +343,7 @@ public final class StorageService extends CommonService<AccessDao> {
             if (folderId == null) {
                 folderEntity = null;
             } else {
-                folderEntity = findFolder(folderId);
+                folderEntity = findFolders(folderId).get(0);
             }
 
             final FileEntity entity = processFile(authentication, request.getFile(), folderEntity);
@@ -338,33 +402,25 @@ public final class StorageService extends CommonService<AccessDao> {
      * to the current User can be read, as can all folders which belong Groups
      * with Public folders.
      *
-     * @param u2gList User Group Relations
+     * @param authentication User Authentication information
      * @param folder  Parent Folder to find sub folders for
      * @return Folder List
      */
-    private List<Folder> readFolders(final List<UserGroupEntity> u2gList, final FolderEntity folder) {
-        final List<FolderEntity> found = readSubFolders(folder);
+    private List<FolderEntity> readFolders(final Authentication authentication, final FolderEntity folder) {
+        final String jql =
+                "select f FROM FolderEntity f " +
+                "where f.parentId = :pid" +
+                "  and ((f.group.groupType.folderType = '" + GroupType.FolderType.Public + "'" +
+                "    and f.privacy = '" + Privacy.PUBLIC + "')" +
+                "  or (f.group.id in (" +
+                "      select u2g.group.id" +
+                "      from UserGroupEntity u2g" +
+                "      where u2g.user.id = :uid)))";
+        final Query query = entityManager.createQuery(jql);
+        query.setParameter("uid", authentication.getUser().getId());
+        query.setParameter("pid", folder.getId());
 
-        final List<Folder> folders = new ArrayList<>(found.size());
-        for (final FolderEntity entity : found) {
-            final GroupType.FolderType type = entity.getGroup().getGroupType().getFolderType();
-            if (type == GroupType.FolderType.Public) {
-                final Folder subFolder = transform(entity);
-                subFolder.setParentId(folder.getExternalId());
-                folders.add(subFolder);
-            } else if (type == GroupType.FolderType.Private) {
-                final long gid = entity.getGroup().getId();
-                for (final UserGroupEntity u2g : u2gList) {
-                    if (gid == u2g.getGroup().getId()) {
-                        final Folder subFolder = transform(entity);
-                        subFolder.setParentId(folder.getExternalId());
-                        folders.add(subFolder);
-                    }
-                }
-            }
-        }
-
-        return folders;
+        return query.getResultList();
     }
 
     /**
@@ -373,30 +429,25 @@ public final class StorageService extends CommonService<AccessDao> {
      * that it is either a public folder (via GroupType) or a folder belonging
      * to a Group, which the user is a member of.
      *
-     * @param authentication     User Authentication Information
-     * @param parentFolderEntity Folder to read the content of
+     * @param authentication User Authentication Information
+     * @param folder         Folder to read the content of
      * @return List of Files to be shown
      */
-    private List<File> readFiles(final Authentication authentication, final List<UserGroupEntity> u2gList, final FolderEntity parentFolderEntity) {
-        final List<FileEntity> found = findFiles(parentFolderEntity);
+    private List<FileEntity> readFiles(final Authentication authentication, final FolderEntity folder) {
+        final String jql =
+                "select f FROM FileEntity f " +
+                "where f.folder.id = :fid" +
+                "  and ((f.group.groupType.folderType = '" + GroupType.FolderType.Public + "'" +
+                "    and f.privacy = '" + Privacy.PUBLIC + "')" +
+                "  or (f.group.id in (" +
+                "      select u2g.group.id" +
+                "      from UserGroupEntity u2g" +
+                "      where u2g.user.id = :uid)))";
+        final Query query = entityManager.createQuery(jql);
+        query.setParameter("uid", authentication.getUser().getId());
+        query.setParameter("fid", folder.getId());
 
-        // Now the checks. These are very complex as we have to follow a set of
-        // rules, to ensure that the data protection and privacy requirements
-        // are upheld.
-        //   A) If the file is marked PRIVATE, then the current user *must* be
-        //      the owner, otherwise the file is not shown
-        //   B) If the file is marked PROTECTED, then the user must be a member
-        //      of the Group the file belongs to
-        //   C) If the file is marked PUBLIC
-        final List<File> files = new ArrayList<>(found.size());
-        for (final FileEntity entity : found) {
-            final FileEntity file = checkFile(authentication, entity, u2gList);
-            if (file != null) {
-                files.add(transform(file));
-            }
-        }
-
-        return files;
+        return query.getResultList();
     }
 
     /**
@@ -477,16 +528,25 @@ public final class StorageService extends CommonService<AccessDao> {
     //  DAO Methods
     // =========================================================================
 
-    private FolderEntity findFolder(final String externalId) {
-        // Reading a specific folder is paramount to finding content. However,
-        // we need to ensure that the user is allowed to see it. The query below
-        // will handle this, by testing that the folder is either public or
-        // belongs to a group that the user is a member of.
+    private List<FolderEntity> findFolders(final String eid) {
+        final List<FolderEntity> folders;
+
+        if (ROOT_FOLDER_EID.equals(eid)) {
+            folders = new ArrayList<>(1);
+            folders.add(findRootFolder());
+        } else {
+            folders = findFoldersRecursively(eid);
+        }
+
+        return folders;
+    }
+
+    private FolderEntity findRootFolder() {
         final String jql =
                 "select f from FolderEntity f " +
                 "where f.externalId = :eid";
         final Query query = entityManager.createQuery(jql);
-        query.setParameter("eid", externalId);
+        query.setParameter("eid", ROOT_FOLDER_EID);
 
         return getSingleResultWithException(query, "Could not uniquely identify the folder by its Id.");
     }
@@ -555,11 +615,105 @@ public final class StorageService extends CommonService<AccessDao> {
     private FileEntity readFile(final String externalFileId) {
         final String jql =
                 "select f from FileEntity f " +
-                "where f.id = :efid";
+                        "where f.id = :efid";
         final Query query = entityManager.createQuery(jql);
         query.setParameter("efid", externalFileId);
 
         return getSingleResultWithException(query, "Could not uniquely identify the file by its Id.");
+    }
+
+    /**
+     * The IWS Folder Structure is based on the Adjacency Tree Model [1]. This
+     * is a fairly simple construction, where each node is having a reference
+     * to a parent.<br />
+     *   Problem here, is to find all the nodes from a branch and down to the
+     * root, so we can verify the permissions. To do so, we need to recursively
+     * lookup the Tree using the given Id. Doing a recursive lookup by iterating
+     * over the elements is not a good idea, it is very performance costly, so
+     * instead a solution with a minimal amount of Database Activity is
+     * required.<br />
+     *   SQL:1999 is having a nice solution ready called Common Table Expression
+     * or CTE [2]. This is supported by the majority of DBMS, but is not mapped
+     * into JPA! So, rather than using JPA to have an elegant solution, we must
+     * instead use a native Query. Only problem with using a Native Query is
+     * that we cannot utilize the JPA based prepared statement, instead we have
+     * to revert to injecting the Id directly into the Query :-(<br />
+     *   Luckily we're saved by the fact that all input validation is in place
+     * and the given Id must be valid - this way we can safely run the Query,
+     * but with the hope that next generation JPA will have support for Common
+     * Table Expressions. It should be noted that some JPA tricks exist [3], but
+     * they do not seem to work with our data model.<br />
+     *   Note; that although PostgreSQL have had support for CTE for quite a
+     * while, HyperSQL is a different story [4].
+     *   For more information, please see the following list of Links:
+     * <ul>
+     *   <li>[1] <a href="http://kawoolutions.com/SQL_Database_Design/15._Advanced_Data_Structures/15.1_Trees">SQL Tree Structures</a></li>
+     *   <li>[2] <a href="https://en.wikipedia.org/wiki/Hierarchical_and_recursive_queries_in_SQL#Common_table_expression">CTE Queries</a></li>
+     *   <li>[3] <a href="http://www.tikalk.com/java/load-tree-jpa-and-hibernate/">Potential JPA solution</a></li>
+     *   <li>[4] <a href="http://sourceforge.net/p/hsqldb/discussion/73674/thread/33731466/">CTE in HyperSQL</a></li>
+     * </ul>
+     *
+     * @param externalId External Id of the Folder to find the structure for
+     * @return Sorted list of Folders - first matches given Id and last is the root
+     */
+    private List<FolderEntity> findFoldersRecursively(final String externalId) {
+        // Following JPA Query will fetch the Folders for the Id's, which we
+        // can find via the Native Query call. We're doing it this way, with two
+        // selects to minimize the complexity of the logic here.
+        final List<Long> ids = findFolderIds(externalId);
+        final List<FolderEntity> folders;
+
+        if (ids.isEmpty()) {
+            folders = new ArrayList<>(0);
+        } else {
+            final String jql = "select f from FolderEntity f where f.id in :ids order by f.id desc";
+            final Query query = entityManager.createQuery(jql);
+            query.setParameter("ids", ids);
+
+            folders = query.getResultList();
+        }
+
+        return folders;
+    }
+
+    /**
+     * This method will use a Native SQL Query, based on the SQL:1999 Common
+     * Table Expression, CTE, functionality, which is implemented in most
+     * Databases, but is not mapped over to JPA.
+     *
+     * @param externalId External Id of the Folder to find the structure for
+     * @return Sorted list of Folders - first matches given Id and last is the root
+     */
+    private List<Long> findFolderIds(final String externalId) {
+        // Despite the fact that the Id's should be verified before we're
+        // coming so deep in, there may be other ways to invoke this
+        // functionality. So we're enforcing a check on the Id before using
+        // it in the Native Query.
+        AbstractVerification.ensureValidId("Folder Id", externalId);
+
+        // Native Query to retrieve the Id's for the Tree starting with the
+        // deepest (requested Id) and going up to the root. Query utilizes
+        // the SQL:1999 Common Table Expression to achieve a Recursive lookup.
+        final String nativeSQL =
+                "with recursive tree (id, parent_id) as (\n" +
+                "    select\n" +
+                "      f1.id,\n" +
+                "      f1.parent_id\n" +
+                "    from folders f1\n" +
+                "    where f1.external_id = '" + externalId + "'\n" +
+                "  union\n" +
+                "    select\n" +
+                "      f2.id,\n" +
+                "      f2.parent_id\n" +
+                "    from folders f2\n" +
+                "    inner join tree t on f2.id = t.parent_id)\n" +
+                "select id from tree " +
+                "order by id desc";
+        final Query nativeQuery = entityManager.createNativeQuery(nativeSQL);
+
+        // The Native Query is returning a list of Integers, but the JPA Query
+        // requires a list of Longs. So we have to convert the list.
+        return toLong(nativeQuery.getResultList());
     }
 
     private <T extends IWSEntity> T getSingleResultWithException(final Query query, final String name) {
@@ -575,5 +729,15 @@ public final class StorageService extends CommonService<AccessDao> {
         }
 
         return entity;
+    }
+
+    private List<Long> toLong(final List<Integer> integers) {
+        final List<Long> longs = new ArrayList<>(integers.size());
+
+        for (final Integer id : integers) {
+            longs.add(id.longValue());
+        }
+
+        return longs;
     }
 }

@@ -27,7 +27,7 @@ public enum Institution implements Descriptable<Institution> {
     ASSOCIATION("Association"),
     UNIVERSITY("University"),
     NGO("NGO"),
-    GOVERNMENT_INSTITUTIONS("Government Instutions"),
+    GOVERNMENT_INSTITUTIONS("Government Institutions"),
     OTHER("Other");
 
     // =========================================================================

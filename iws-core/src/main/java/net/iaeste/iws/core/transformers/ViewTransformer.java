@@ -262,6 +262,7 @@ public final class ViewTransformer {
         result.add(embeddedOffer.getNominationDeadline());
         result.add(null);
         result.add(embeddedEmployer.getName());
+        result.add(embeddedEmployer.getDepartment());
         result.add(embeddedAddress.getStreet1());
         result.add(embeddedAddress.getStreet2());
         result.add(embeddedAddress.getPobox());

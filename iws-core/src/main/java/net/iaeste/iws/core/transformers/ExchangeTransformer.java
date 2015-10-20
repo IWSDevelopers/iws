@@ -285,7 +285,7 @@ public final class ExchangeTransformer {
             result = new Employer();
 
             transformString(errors, result, EMPLOYER, record);
-            // Department is not in CSV!
+            transformString(errors, result, DEPARTMENT, record);
             transformString(errors, result, BUSINESS, record);
             // Address is read read & assigned separately
             transformString(errors, result, EMPLOYEES, record);

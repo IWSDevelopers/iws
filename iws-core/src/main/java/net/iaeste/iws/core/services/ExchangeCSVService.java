@@ -386,6 +386,7 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
         addForeignField(result, OfferFields.DEADLINE);
         addForeignField(result, OfferFields.COMMENT);
         addForeignField(result, OfferFields.EMPLOYER);
+        addForeignField(result, OfferFields.DEPARTMENT);
         addForeignField(result, OfferFields.STREET1);
         addForeignField(result, OfferFields.STREET2);
         addForeignField(result, OfferFields.POSTBOX);
@@ -460,6 +461,7 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
         addDomesticField(result, OfferFields.DEADLINE);
         addDomesticField(result, OfferFields.COMMENT);
         addDomesticField(result, OfferFields.EMPLOYER);
+        addDomesticField(result, OfferFields.DEPARTMENT);
         addDomesticField(result, OfferFields.STREET1);
         addDomesticField(result, OfferFields.STREET2);
         addDomesticField(result, OfferFields.POSTBOX);

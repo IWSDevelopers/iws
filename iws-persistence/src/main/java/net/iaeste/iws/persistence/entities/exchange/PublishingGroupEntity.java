@@ -247,8 +247,7 @@ public class PublishingGroupEntity extends AbstractUpdateable<PublishingGroupEnt
      */
     @Override
     public void merge(final PublishingGroupEntity obj) {
-        // don't merge if objects are not the same entity
-        if ((id != null) && (obj != null) && externalId.equals(obj.externalId)) {
+        if (canMerge(obj)) {
             name = which(name, obj.name);
             list = which(list, obj.list);
         }

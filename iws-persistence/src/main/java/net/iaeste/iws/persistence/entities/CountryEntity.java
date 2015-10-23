@@ -321,7 +321,7 @@ public class CountryEntity extends AbstractUpdateable<CountryEntity> implements 
      */
     @Override
     public void merge(final CountryEntity obj) {
-        if ((obj != null) && (id != null) && id.equals(obj.id)) {
+        if (canMerge(obj)) {
             countryName = which(countryName, obj.countryName);
             countryNameFull = which(countryNameFull, obj.countryNameFull);
             countryNameNative = which(countryNameNative, obj.countryNameNative);

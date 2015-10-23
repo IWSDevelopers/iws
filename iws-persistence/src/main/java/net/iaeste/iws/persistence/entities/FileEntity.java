@@ -337,8 +337,7 @@ public class FileEntity extends AbstractUpdateable<FileEntity> implements Extern
      */
     @Override
     public void merge(final FileEntity obj) {
-        // don't merge if objects are not the same entity
-        if ((id != null) && (obj != null) && externalId.equals(obj.externalId)) {
+        if (canMerge(obj)) {
             // Note; Id & ExternalId are *not* allowed to be updated!
             privacy = which(privacy, obj.privacy);
             filename = which(filename, obj.filename);

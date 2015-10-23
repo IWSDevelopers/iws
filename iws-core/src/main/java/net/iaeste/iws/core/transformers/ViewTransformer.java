@@ -418,6 +418,7 @@ public final class ViewTransformer {
         result.add(embeddedOffer.getNominationDeadline() != null ? formatter.format(embeddedOffer.getNominationDeadline()) : "");
         result.add(embeddedOffer.getPrivateComment());
         result.add(embeddedEmployer.getName());
+        result.add(embeddedEmployer.getDepartment());
         result.add(embeddedAddress.getStreet1());
         result.add(embeddedAddress.getStreet2());
         result.add(embeddedAddress.getPobox());

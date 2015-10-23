@@ -824,8 +824,7 @@ public class OfferEntity extends AbstractUpdateable<OfferEntity> implements Exte
      */
     @Override
     public void merge(final OfferEntity obj) {
-        // don't merge if objects are not the same entity
-        if ((id != null) && (obj != null) && externalId.equals(obj.externalId)) {
+        if (canMerge(obj)) {
             // Note, Id, ExternalId & refno are *not* allowed to be updated!
             // Also note, oldOfferId and oldRefNo are *not* allowed to be updated!
             offerType = which(offerType, obj.offerType);

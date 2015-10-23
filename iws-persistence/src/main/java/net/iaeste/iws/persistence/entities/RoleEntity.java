@@ -308,7 +308,7 @@ public class RoleEntity extends AbstractUpdateable<RoleEntity> implements Extern
      */
     @Override
     public void merge(final RoleEntity obj) {
-        if ((obj != null) && (id != null) && id.equals(obj.id)) {
+        if (canMerge(obj)) {
             role = which(role, obj.role);
             description = which(description, obj.description);
         }

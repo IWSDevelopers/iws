@@ -252,7 +252,7 @@ public class SessionEntity extends AbstractUpdateable<SessionEntity> implements 
      */
     @Override
     public void merge(final SessionEntity obj) {
-        if ((obj != null) && (id != null) && id.equals(obj.id)) {
+        if (canMerge(obj)) {
             deprecated = which(deprecated, obj.deprecated);
             sessionData = which(sessionData, obj.sessionData);
         }

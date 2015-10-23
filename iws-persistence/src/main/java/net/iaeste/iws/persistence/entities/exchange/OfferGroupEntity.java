@@ -379,8 +379,7 @@ public class OfferGroupEntity extends AbstractUpdateable<OfferGroupEntity> imple
      */
     @Override
     public void merge(final OfferGroupEntity obj) {
-        // don't merge if objects are not the same entity
-        if ((id != null) && (obj != null) && externalId.equals(obj.externalId)) {
+        if (canMerge(obj)) {
             comment = which(comment, obj.comment);
             status = which(status, obj.status);
         }

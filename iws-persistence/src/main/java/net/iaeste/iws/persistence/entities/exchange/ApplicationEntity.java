@@ -565,8 +565,7 @@ public class ApplicationEntity extends AbstractUpdateable<ApplicationEntity> imp
      */
     @Override
     public void merge(final ApplicationEntity obj) {
-        // don't merge if objects are not the same entity
-        if ((id != null) && (obj != null) && externalId.equals(obj.externalId)) {
+        if (canMerge(obj)) {
             status = which(status, obj.status);
             nominatedAt = which(nominatedAt, obj.nominatedAt);
             fieldOfStudies = which(fieldOfStudies, obj.fieldOfStudies);

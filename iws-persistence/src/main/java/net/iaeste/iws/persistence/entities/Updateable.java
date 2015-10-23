@@ -28,7 +28,7 @@ public interface Updateable<T> extends IWSEntity {
 
     /**
      * To check whether an Entity contains any changes that needs persisting or
-     * not. To avoid unnessary merges.<br />
+     * not. To avoid unnecessary merges.<br />
      *   Note, not all fields may be needed for the diff, hence it must not be
      * implemented like a standard equals or hashCode comparison.
      *
@@ -44,7 +44,7 @@ public interface Updateable<T> extends IWSEntity {
      * these Id's differ, no merge will take place. Merging is purely intended
      * for updating Objects, where we wish to control which fields are updated.
      *
-     * @param obj Object to merge chages from
+     * @param obj Object to merge changes from
      */
     void merge(T obj);
 

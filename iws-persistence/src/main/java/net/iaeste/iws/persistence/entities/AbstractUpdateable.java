@@ -15,6 +15,7 @@
 package net.iaeste.iws.persistence.entities;
 
 import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.persistence.Externable;
 
 /**
  * To Implement the diff method required by the Updateable interface, we have
@@ -68,5 +69,67 @@ public abstract class AbstractUpdateable<T> implements Updateable<T> {
      */
     protected <E> E which(final E existing, final E changes) {
         return changes != null ? changes : existing;
+    }
+
+    /**
+     * To be able to merge changes from one Object into another, we need to make
+     * sure that certain conditions have been met. This method will take care of
+     * this by checking both Objects for null and compare relevant Id's.
+     *
+     * @param existing The existing IWS Entity we need to update
+     * @param changes  The changes to be merged in
+     * @return True if the records can be merged, otherwise false is returned
+     */
+    protected <E extends Externable<E>> boolean canMerge(final E existing, final E changes) {
+        // don't merge if objects are not the same entity
+        boolean result = false;
+
+        if ((existing != null) && (changes != null) && (existing.getId() != null)) {
+            final String existingExternalId = existing.getExternalId();
+            final String changesExternalId = changes.getExternalId();
+
+            if (changesExternalId == null || (existingExternalId.equals(changesExternalId))) {
+                result = true;
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * To be able to merge changes from one Object into the current, we need to
+     * make sure that certain conditions have been met. This method will take
+     * care of this by checking both Objects for null and compare relevant Id's.
+     *
+     * @param changes  The changes to be merged in
+     * @return True if the records can be merged, otherwise false is returned
+     */
+    protected boolean canMerge(final T changes) {
+        boolean result = false;
+
+        // Merging cannot be done if the Object to merge is null or if the
+        // current Object has not yet been persisted.
+        if ((changes != null) && (this.getId() != null)) {
+            // If we have an Externable Object, then we also have to verify that
+            // the Id's match, as we do not wish to merge two different Offers
+            // since it may potentially give Unique Constraint Violations.
+            if (this instanceof Externable) {
+                final String existingId = ((Externable) this).getExternalId();
+                final String givenId = ((Externable) changes).getExternalId();
+
+                // Often, changes are created using an empty Entity, i.e. an
+                // Entity which have not been persisted. So the check exclude
+                // these.
+                if (givenId == null || (existingId.equals(givenId))) {
+                    result = true;
+                }
+            } else {
+                // Not an external, then we'll just allow that they can be
+                // merged.
+                result = true;
+            }
+        }
+
+        return result;
     }
 }

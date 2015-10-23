@@ -248,7 +248,7 @@ public class PersonEntity extends AbstractUpdateable<PersonEntity> {
      */
     @Override
     public void merge(final PersonEntity obj) {
-        if (obj != null) {
+        if (canMerge(obj)) {
             // We're skipping the Address here, since the Address is another
             // Entity, which must be dealt with separately. It should be noted,
             // that also merging the Address in here is the source if a nasty

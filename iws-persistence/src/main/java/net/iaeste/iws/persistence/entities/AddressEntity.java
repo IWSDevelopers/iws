@@ -258,9 +258,7 @@ public class AddressEntity extends AbstractUpdateable<AddressEntity> {
      */
     @Override
     public void merge(final AddressEntity obj) {
-        // cannot compare external id, as the Addresses are embedded and not
-        // independent Objects.
-        if (obj != null) {
+        if (canMerge(obj)) {
             street1 = which(street1, obj.street1);
             street2 = which(street2, obj.street2);
             postalCode = which(postalCode, obj.postalCode);

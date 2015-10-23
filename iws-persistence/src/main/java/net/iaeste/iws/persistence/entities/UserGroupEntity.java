@@ -445,7 +445,7 @@ public class UserGroupEntity extends AbstractUpdateable<UserGroupEntity> impleme
      */
     @Override
     public void merge(final UserGroupEntity obj) {
-        if ((obj != null) && (id != null) && id.equals(obj.id)) {
+        if (canMerge(obj)) {
             title = which(title, obj.title);
             onPublicList = which(onPublicList, obj.onPublicList);
             onPrivateList = which(onPrivateList, obj.onPrivateList);

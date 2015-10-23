@@ -487,7 +487,7 @@ public class GroupEntity extends AbstractUpdateable<GroupEntity> implements Exte
      */
     @Override
     public void merge(final GroupEntity obj) {
-        if (obj != null) {
+        if (canMerge(obj)) {
             groupName = which(groupName, obj.groupName);
             fullName = which(fullName, obj.fullName);
             description = which(description, obj.description);

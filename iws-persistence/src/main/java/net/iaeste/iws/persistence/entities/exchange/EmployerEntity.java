@@ -349,8 +349,7 @@ public class EmployerEntity extends AbstractUpdateable<EmployerEntity> implement
      */
     @Override
     public void merge(final EmployerEntity obj) {
-        // don't merge if objects are not the same entity
-        if ((id != null) && (obj != null) && externalId.equals(obj.externalId)) {
+        if (canMerge(obj)) {
             name = which(name, obj.name);
             department = which(department, obj.department);
             business = which(business, obj.business);

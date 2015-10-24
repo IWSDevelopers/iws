@@ -43,7 +43,7 @@ public final class CommitteeRequest extends AbstractVerification implements Acti
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     /** Default allowed Actions for the Committee Request. */
-    private static final Set<Action> allowed = EnumSet.of(Action.CREATE, Action.UPDATE, Action.MERGE, Action.UPGRADE, Action.ACTIVATE, Action.SUSPEND, Action.DELETE);
+    private static final Set<Action> ALLOWED = EnumSet.of(Action.CREATE, Action.CHANGE_NS, Action.UPDATE, Action.MERGE, Action.UPGRADE, Action.ACTIVATE, Action.SUSPEND, Action.DELETE);
 
     /** The Id of the Country to create a new Cooperating Institution for. */
     @XmlElement(required = true, nillable = true) private String countryId = null;
@@ -51,11 +51,11 @@ public final class CommitteeRequest extends AbstractVerification implements Acti
     @XmlElement(required = true, nillable = true) private String institutionName = null;
     /** The official Abbreviation for the Institution, for creating & updating. */
     @XmlElement(required = true, nillable = true) private String institutionAbbreviation = null;
-    /** Firstname of the new National Secreraty for a new Cooperating Institution. */
+    /** Firstname of the new National Secretary for a new Cooperating Institution. */
     @XmlElement(required = true, nillable = true) private String firstname = null;
-    /** Lastname of the new National Secreraty for a new Cooperating Institution. */
+    /** Lastname of the new National Secretary for a new Cooperating Institution. */
     @XmlElement(required = true, nillable = true) private String lastname = null;
-    /** Username of the new National Secreraty for a new Cooperating Institution. */
+    /** Username of the new National Secretary for a new Cooperating Institution. */
     @XmlElement(required = true, nillable = true) private String username = null;
     /** National Committee (Staff) to update, upgrade, activate, suspend or delete. */
     @XmlElement(required = true, nillable = true) private Group nationalCommittee = null;
@@ -99,7 +99,7 @@ public final class CommitteeRequest extends AbstractVerification implements Acti
      */
     @Override
     public Set<Action> allowedActions() {
-        return allowed;
+        return ALLOWED;
     }
 
     /**
@@ -107,7 +107,7 @@ public final class CommitteeRequest extends AbstractVerification implements Acti
      */
     @Override
     public void setAction(final Action action) throws IllegalArgumentException {
-        ensureNotNullAndContains("action", action, allowed);
+        ensureNotNullAndContains("action", action, ALLOWED);
         this.action = action;
     }
 
@@ -274,7 +274,7 @@ public final class CommitteeRequest extends AbstractVerification implements Acti
                 case CHANGE_NS:
                     // Updating means changing the current National Secretary,
                     // however doing so means internal checks for an existing
-                    // new National Secretary or a potentional new National
+                    // new National Secretary or a potential new National
                     // Secretary.
                 case UPGRADE:
                 case ACTIVATE:

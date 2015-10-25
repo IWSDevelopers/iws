@@ -79,6 +79,8 @@ public final class StorageTest extends AbstractTest {
         final FetchFolderRequest request = new FetchFolderRequest();
         final FetchFolderResponse response = storage.fetchFolder(token, request);
         assertThat(response.isOk(), is(true));
+        assertThat(response.getFolder().getFolders().size(), is(2));
+        assertThat(response.getFolder().getFiles().size(), is(0));
     }
 
     @Test

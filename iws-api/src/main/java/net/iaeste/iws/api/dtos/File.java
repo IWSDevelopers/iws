@@ -39,7 +39,11 @@ public final class File extends AbstractVerification {
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     @XmlElement(required = true, nillable = true) private String fileId = null;
-    @XmlElement(required = true, nillable = false) private Privacy privacy = Privacy.PROTECTED;
+    // For now, we're setting the default privacy value to public, so as the
+    // Library primarily consists of public data. It is therefore an opt-in
+    // value to add enhanced privacy rather than an opt-out. This was a decision
+    // made at the Annual IDT Meeting in Stuttgart on October 24th, 2015.
+    @XmlElement(required = true, nillable = false) private Privacy privacy = Privacy.PUBLIC;
     @XmlElement(required = true, nillable = true) private Group group = null;
     @XmlElement(required = true, nillable = true) private User user = null;
     @XmlElement(required = true, nillable = true) private String folderId = null;

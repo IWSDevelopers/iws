@@ -249,7 +249,7 @@ public final class AccessService extends CommonService<AccessDao> {
     }
 
     /**
-     * Resets the usersession, by finding the Account via the token. Only
+     * Resets the user session, by finding the Account via the token. Only
      * accounts that are currently Active can have their passwords reset.
      *
      * @param password           New Password for the user
@@ -275,11 +275,11 @@ public final class AccessService extends CommonService<AccessDao> {
     /**
      * Updates a users Password (and Salt). The method checks the users current
      * Password against the one provided, and only if there is a match, will
-     * the syste update the new Password. If the old Password is invalid, then
+     * the system update the new Password. If the old Password is invalid, then
      * the check should catch it.<br />
      *   If the old Password is invalid, then an Invalid
      *
-     * @param authentication Authentication Object, with User & optinal Group
+     * @param authentication Authentication Object, with User & optional Group
      * @param password       New Password for the user
      */
     public void updatePassword(final Authentication authentication, final Password password) {
@@ -305,7 +305,7 @@ public final class AccessService extends CommonService<AccessDao> {
      * the specific Group, unless the user is either not a member of the given
      * group, or the group is invalid, in which case, an Exception is thrown.
      *
-     * @param authentication  Authentication Object, with User & optinal Group
+     * @param authentication  Authentication Object, with User & optional Group
      * @param externalGroupId If only the permissions for the given Groups
      *                        should be fetched
      * @return List of Authorization Objects
@@ -372,12 +372,12 @@ public final class AccessService extends CommonService<AccessDao> {
      *   If the user was found (Entity exists matching the credentials), then
      * this Entity is returned, otherwise a {@code IWSException} is thrown.
      *
-     * @param request Authentication Requst Object with username and password
+     * @param request Authentication Request Object with username and password
      * @return Found UserEntity
      * @throws IWSException if no user account exists or matches the credentials
      */
     private UserEntity findUserFromCredentials(final AuthenticationRequest request) throws IWSException {
-        // First, find an Entity exists for the given (lowercased) username
+        // First, find an Entity exists for the given (lowerCased) username
         final String username = toLower(request.getUsername());
         final UserEntity user = dao.findActiveUserByUsername(username);
 
@@ -386,7 +386,7 @@ public final class AccessService extends CommonService<AccessDao> {
                 // Okay, an Active  UserEntity Object was found, now to match if
                 // the Password is correct, we first have to read it out of the
                 // Request Object, lowercase and generate a salted
-                // cryptographical hashvalue for it, which we can then match
+                // cryptographic hash value for it, which we can then match
                 // directly with the stored value from the UserEntity
                 final String password = toLower(request.getPassword());
                 final String hashcode;

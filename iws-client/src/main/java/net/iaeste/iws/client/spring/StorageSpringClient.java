@@ -48,7 +48,7 @@ public class StorageSpringClient implements Storage {
 
     /**
      * Injects the {@code EntityManager} instance required to invoke our
-     * transactional daos. The EntityManager instance can only be injected into
+     * transactional DAOs. The EntityManager instance can only be injected into
      * the Spring Beans, we cannot create a Spring Bean for the Committees EJB
      * otherwise.
      *
@@ -57,11 +57,11 @@ public class StorageSpringClient implements Storage {
     @PersistenceContext
     public void init(final EntityManager entityManager) {
         // Create the Notification Spy, and inject it
-        final Notifications notitications = NotificationSpy.getInstance();
+        final Notifications notifications = NotificationSpy.getInstance();
         final NotificationManagerBean notificationBean = new NotificationManagerBean();
-        notificationBean.setNotifications(notitications);
+        notificationBean.setNotifications(notifications);
 
-        // Create a new SessionRequestBean instance wiht out entityManager
+        // Create a new SessionRequestBean instance with our entityManager
         final SessionRequestBean sessionRequestBean = new SessionRequestBean();
         sessionRequestBean.setEntityManager(entityManager);
         sessionRequestBean.postConstruct();

@@ -124,6 +124,7 @@ public final class StorageTransformer {
             result.setFolderId(entity.getExternalId());
             result.setGroup(CommonTransformer.transform(entity.getGroup()));
             result.setFoldername(entity.getFoldername());
+            result.setPrivacy(entity.getPrivacy());
             result.setModified(convert(entity.getModified()));
             result.setCreated(convert(entity.getCreated()));
         }
@@ -140,6 +141,7 @@ public final class StorageTransformer {
             entity.setExternalId(folder.getFolderId());
             entity.setFoldername(folder.getFoldername());
             entity.setGroup(CommonTransformer.transform(folder.getGroup()));
+            entity.setPrivacy(folder.getPrivacy());
         }
 
         return entity;

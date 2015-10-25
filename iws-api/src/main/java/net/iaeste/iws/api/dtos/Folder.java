@@ -43,15 +43,19 @@ public final class Folder extends AbstractVerification {
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     /** Default allowed Actions for the Committee Request. */
-    private static final Set<Privacy> allowed = EnumSet.of(Privacy.PRIVATE, Privacy.PROTECTED);
+    private static final Set<Privacy> ALLOWED = EnumSet.of(Privacy.PUBLIC, Privacy.PROTECTED, Privacy.PRIVATE);
 
     @XmlElement(required = true, nillable = true)  private String folderId = null;
     @XmlElement(required = true, nillable = true)  private String parentId = null;
     @XmlElement(required = true, nillable = false) private Group group = null;
     @XmlElement(required = true, nillable = false) private String foldername = null;
-    @XmlElement(required = true, nillable = true)  private List<Folder> folders = null;
-    @XmlElement(required = true, nillable = true)  private List<File> files = null;
-    @XmlElement(required = true, nillable = true)  private Privacy privacy = Privacy.PROTECTED;
+    @XmlElement(required = true, nillable = true)  private List<Folder> folders = new ArrayList<>();
+    @XmlElement(required = true, nillable = true)  private List<File> files = new ArrayList<>();
+    // For now, we're setting the default privacy value to public, so as the
+    // Library primarily consists of public data. It is therefore an opt-in
+    // value to add enhanced privacy rather than an opt-out. This was a decision
+    // made at the Annual IDT Meeting in Stuttgart on October 24th, 2015.
+    @XmlElement(required = true, nillable = true)  private Privacy privacy = Privacy.PUBLIC;
     @XmlElement(required = true, nillable = true)  private Date modified = null;
     @XmlElement(required = true, nillable = true)  private Date created = null;
 
@@ -163,11 +167,11 @@ public final class Folder extends AbstractVerification {
      * @param folders List of sub Folders, empty if none.
      */
     public void setFolders(final List<Folder> folders) {
-        this.folders = folders;
+        this.folders.addAll(folders);
     }
 
     public List<Folder> getFolders() {
-        return folders == null ? new ArrayList<Folder>(0) : folders;
+        return folders;
     }
 
     /**
@@ -177,11 +181,11 @@ public final class Folder extends AbstractVerification {
      * @param files List of Files, empty if none.
      */
     public void setFiles(final List<File> files) {
-        this.files = files;
+        this.files.addAll(files);
     }
 
     public List<File> getFiles() {
-        return files == null ? new ArrayList<File>(0) : files;
+        return files;
     }
 
     /**
@@ -197,7 +201,7 @@ public final class Folder extends AbstractVerification {
      * @throws IllegalArgumentException if value is null or not allowed
      */
     public void setPrivacy(final Privacy privacy) throws IllegalArgumentException {
-        ensureNotNullAndContains("privacy", privacy, allowed);
+        ensureNotNullAndContains("privacy", privacy, ALLOWED);
         this.privacy = privacy;
     }
 

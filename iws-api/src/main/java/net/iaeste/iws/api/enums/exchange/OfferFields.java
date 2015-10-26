@@ -97,10 +97,10 @@ public enum OfferFields {
     LIVING_COST_FREQUENCY("LivingCostFrequency", "setLivingCostFrequency", true, true, PaymentFrequency.class),
     NO_HARD_COPIES("NoHardCopies", "setNumberOfHardCopies", true, true, Integer.class),
     STATUS("Status", null, true, true), // Not supported to set this via CSV
-    PERIOD_2_FROM("Period2_From", "setPeriod2", true, true, Date.class),
-    PERIOD_2_TO("Period2_To", "setPeriod2", true, true, Date.class),
-    HOLIDAYS_FROM("Holidays_From", "setUnavailable", true, true, Date.class),
-    HOLIDAYS_TO("Holidays_To", "setUnavailable", true, true, Date.class),
+    PERIOD_2_FROM("Period2_From", "setPeriod2", true, true, DatePeriod.class),
+    PERIOD_2_TO("Period2_To", "setPeriod2", true, true, DatePeriod.class),
+    HOLIDAYS_FROM("Holidays_From", "setUnavailable", true, true, DatePeriod.class),
+    HOLIDAYS_TO("Holidays_To", "setUnavailable", true, true, DatePeriod.class),
     ADDITIONAL_INFO("Additional_Info", "setAdditionalInformation", true, true, String.class),
     SHARED("Shared", null, true, true), // Not supported to set this via CSV
     LAST_MODIFIED("Last modified", null, false, true), // Not supported to set this via CSV

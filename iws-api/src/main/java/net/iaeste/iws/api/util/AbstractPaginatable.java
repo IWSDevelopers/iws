@@ -65,7 +65,7 @@ public abstract class AbstractPaginatable extends AbstractVerification {
      * @see Paginatable#MAX_PAGE_SIZE
      */
     public void setPageSize(final int pageSize) {
-        if ((pageSize <= 0) || (pageSize >= Paginatable.MAX_PAGE_SIZE)) {
+        if ((pageSize <= 0) || (pageSize > Paginatable.MAX_PAGE_SIZE)) {
             throw new VerificationException("Invalid Page Size.");
         }
 

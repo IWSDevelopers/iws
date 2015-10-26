@@ -30,6 +30,7 @@ import net.iaeste.iws.api.enums.Currency;
 import net.iaeste.iws.api.enums.Gender;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.Language;
+import net.iaeste.iws.api.enums.MailReply;
 import net.iaeste.iws.api.enums.Membership;
 import net.iaeste.iws.api.enums.MonitoringLevel;
 import net.iaeste.iws.api.enums.NotificationFrequency;
@@ -343,11 +344,14 @@ public class CommonMapper {
             api = new Group();
 
             api.setGroupId(ws.getGroupId());
+            api.setParentId(ws.getParentId());
             api.setGroupName(ws.getGroupName());
             api.setFullName(ws.getFullName());
             api.setListName(ws.getListName());
             api.setPrivateList(ws.isPrivateList());
+            api.setPrivateListReplyTo(map(ws.getPrivateListReplyTo()));
             api.setPublicList(ws.isPublicList());
+            api.setPublicListReplyTo(map(ws.getPublicListReplyTo()));
             api.setGroupType(map(ws.getGroupType()));
             api.setDescription(ws.getDescription());
             api.setMonitoringLevel(map(ws.getMonitoringLevel()));
@@ -364,11 +368,14 @@ public class CommonMapper {
             ws = new net.iaeste.iws.ws.Group();
 
             ws.setGroupId(api.getGroupId());
+            ws.setParentId(api.getParentId());
             ws.setGroupName(api.getGroupName());
             ws.setFullName(api.getFullName());
             ws.setListName(api.getListName());
             ws.setPrivateList(api.hasPrivateList());
+            ws.setPrivateListReplyTo(map(api.getPrivateListReplyTo()));
             ws.setPublicList(api.hasPublicList());
+            ws.setPublicListReplyTo(map(api.getPublicListReplyTo()));
             ws.setGroupType(map(api.getGroupType()));
             ws.setDescription(api.getDescription());
             ws.setMonitoringLevel(map(api.getMonitoringLevel()));
@@ -644,6 +651,14 @@ public class CommonMapper {
 
     protected static net.iaeste.iws.ws.Membership map(final Membership api) {
         return api != null ? net.iaeste.iws.ws.Membership.valueOf(api.name()) : null;
+    }
+
+    private static MailReply map(final net.iaeste.iws.ws.MailReply ws) {
+        return MailReply.valueOf(ws.value());
+    }
+
+    private static net.iaeste.iws.ws.MailReply map(final MailReply api) {
+        return api != null ? net.iaeste.iws.ws.MailReply.valueOf(api.name()) : null;
     }
 
     private static MonitoringLevel map(final net.iaeste.iws.ws.MonitoringLevel ws) {

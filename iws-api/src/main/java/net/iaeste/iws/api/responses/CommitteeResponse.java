@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2015, IAESTE Internet Development Team. All rights reserved.
  * ----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.responses.FetchCommitteeResponse
+ * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.responses.CommitteeResponse
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -22,23 +22,21 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   IWS 1.1
+ * @since   IWS 1.2
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "fetchCommitteeResponse", propOrder = { "committees" })
-public final class FetchCommitteeResponse extends FallibleResponse {
+@XmlType(name = "committeeResponse", propOrder = { "committee" })
+public final class CommitteeResponse extends FallibleResponse {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    @XmlElement(required = true, nillable = false)
-    private List<UserGroup> committees = new ArrayList<>();
+    @XmlElement(required = true, nillable = true)
+    private UserGroup committee = null;
 
     // =========================================================================
     // Object Constructors
@@ -48,11 +46,11 @@ public final class FetchCommitteeResponse extends FallibleResponse {
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.
      */
-    public FetchCommitteeResponse() {
+    public CommitteeResponse() {
     }
 
-    public FetchCommitteeResponse(final List<UserGroup> committees) {
-        this.committees.addAll(committees);
+    public CommitteeResponse(final UserGroup committee) {
+        this.committee = committee;
     }
 
     /**
@@ -61,7 +59,7 @@ public final class FetchCommitteeResponse extends FallibleResponse {
      * @param error    IWS Error Object
      * @param message  Error Message
      */
-    public FetchCommitteeResponse(final IWSError error, final String message) {
+    public CommitteeResponse(final IWSError error, final String message) {
         super(error, message);
     }
 
@@ -69,12 +67,12 @@ public final class FetchCommitteeResponse extends FallibleResponse {
     // Standard Setters & Getters
     // =========================================================================
 
-    public void setCommittees(final List<UserGroup> committees) {
-        this.committees.addAll(committees);
+    public void setCommittee(final UserGroup committee) {
+        this.committee = committee;
     }
 
-    public List<UserGroup> getCommittees() {
-        return committees;
+    public UserGroup getCommittee() {
+        return committee;
     }
 
     // =========================================================================
@@ -85,19 +83,20 @@ public final class FetchCommitteeResponse extends FallibleResponse {
      * {@inheritDoc}
      */
     @Override
-    public boolean equals(final Object obj) {
+    public boolean equals(Object obj) {
         if (this == obj) {
             return true;
         }
-        if (!(obj instanceof FetchCommitteeResponse)) {
+        if (!(obj instanceof CommitteeResponse)) {
             return false;
         }
         if (!super.equals(obj)) {
             return false;
         }
 
-        final FetchCommitteeResponse that = (FetchCommitteeResponse) obj;
-        return !((committees != null) ? !committees.equals(that.committees) : (that.committees != null));
+        final CommitteeResponse that = (CommitteeResponse) obj;
+
+        return !(committee != null ? !committee.equals(that.committee) : that.committee != null);
     }
 
     /**
@@ -107,7 +106,7 @@ public final class FetchCommitteeResponse extends FallibleResponse {
     public int hashCode() {
         int result = super.hashCode();
 
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((committees != null) ? committees.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((committee != null) ? committee.hashCode() : 0);
 
         return result;
     }
@@ -117,8 +116,8 @@ public final class FetchCommitteeResponse extends FallibleResponse {
      */
     @Override
     public String toString() {
-        return "FetchCommitteeResponse{" +
-                "committees=" + committees +
+        return "CommitteeResponse{" +
+                "committee=" + committee +
                 '}';
     }
 }

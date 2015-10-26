@@ -91,8 +91,8 @@ public final class DeleteGroup extends AbstractFixture<Fallible> {
         group.setDescription(description);
     }
 
-//    public void setCountryId(final String countryId) {
-//        group.setCountryId(countryId);
+//    public void setCountryCode(final String countryCode) {
+//        group.setCountryCode(countryCode);
 //    }
 
     public void deleteGroup() {

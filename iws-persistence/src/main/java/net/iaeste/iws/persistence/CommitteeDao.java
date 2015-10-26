@@ -47,6 +47,8 @@ public interface CommitteeDao extends BasicDao {
 
     GroupEntity findGroupByName(String groupName);
 
+    GroupEntity findGroupByNameAndType(String groupName, GroupType type);
+
     GroupTypeEntity findGroupTypeByType(GroupType type);
 
     RoleEntity findRole(Long id);

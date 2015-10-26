@@ -22,6 +22,7 @@ import net.iaeste.iws.api.requests.FetchInternationalGroupRequest;
 import net.iaeste.iws.api.requests.FetchCountrySurveyRequest;
 import net.iaeste.iws.api.requests.InternationalGroupRequest;
 import net.iaeste.iws.api.requests.CountrySurveyRequest;
+import net.iaeste.iws.api.responses.CommitteeResponse;
 import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchCommitteeResponse;
 import net.iaeste.iws.api.responses.FetchInternationalGroupResponse;
@@ -59,7 +60,7 @@ public final class CommitteeClient implements Committees {
      * {@inheritDoc}
      */
     @Override
-    public FallibleResponse processCommittee(final AuthenticationToken token, final CommitteeRequest request) {
+    public CommitteeResponse processCommittee(final AuthenticationToken token, final CommitteeRequest request) {
         return client.processCommittee(token, request);
     }
 

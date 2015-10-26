@@ -24,6 +24,7 @@ import net.iaeste.iws.api.requests.FetchCommitteeRequest;
 import net.iaeste.iws.api.requests.FetchCountrySurveyRequest;
 import net.iaeste.iws.api.requests.FetchInternationalGroupRequest;
 import net.iaeste.iws.api.requests.InternationalGroupRequest;
+import net.iaeste.iws.api.responses.CommitteeResponse;
 import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchCommitteeResponse;
 import net.iaeste.iws.api.responses.FetchCountrySurveyResponse;
@@ -67,11 +68,12 @@ public final class CommitteeWSClient extends CommonWSClient implements Committee
 
         // make sure to initialize tlsParams prior to this call somewhere
         //http.setTlsClientParameters(getTlsParams());
+
         // The CXF will by default attempt to read the URL from the WSDL at the
         // Server, which is normally given with the server's name. However, as
-        // we're running via a loadbalancer and/or proxies, this address may not
-        // be available or resolvable via DNS. Instead, we force using the same
-        // WSDL for requests as we use for accessing the server.
+        // we're running via a load balancer and/or proxies, this address may
+        // not be available or resolvable via DNS. Instead, we force using the
+        // same WSDL for requests as we use for accessing the server.
         // Binding: http://cxf.apache.org/docs/client-http-transport-including-ssl-support.html#ClientHTTPTransport%28includingSSLsupport%29-Howtooverridetheserviceaddress?
         ((BindingProvider) client).getRequestContext().put(ENDPOINT_ADDRESS, wsdlLocation);
 
@@ -103,7 +105,7 @@ public final class CommitteeWSClient extends CommonWSClient implements Committee
      * {@inheritDoc}
      */
     @Override
-    public FallibleResponse processCommittee(final AuthenticationToken token, final CommitteeRequest request) {
+    public CommitteeResponse processCommittee(final AuthenticationToken token, final CommitteeRequest request) {
         return map(client.processCommittee(map(token), map(request)));
     }
 

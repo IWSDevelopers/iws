@@ -94,6 +94,7 @@ public final class CountriesTest extends AbstractAdministration {
         final FetchCountryResponse response = administration.fetchCountries(token, request);
 
         assertThat(response.isOk(), is(true));
-        assertThat(response.getCountries().size(), is(86));
+        // 86 members + 2 listed
+        assertThat(response.getCountries().size(), is(88));
     }
 }

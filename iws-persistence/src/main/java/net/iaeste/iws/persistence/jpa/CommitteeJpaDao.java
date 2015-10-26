@@ -161,6 +161,23 @@ public class CommitteeJpaDao extends BasicJpaDao implements CommitteeDao {
      * {@inheritDoc}
      */
     @Override
+    public GroupEntity findGroupByNameAndType(final String groupName, final GroupType type) {
+        final String jql =
+                "select g from GroupEntity g " +
+                "where lower(g.groupName) = lower(:name)" +
+                "  and g.groupType.grouptype = :type";
+
+        final Query query = entityManager.createQuery(jql);
+        query.setParameter("name", groupName.trim());
+        query.setParameter("type", type);
+
+        return findSingleResult(query, "group");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public GroupTypeEntity findGroupTypeByType(final GroupType type) {
         final Query query = entityManager.createNamedQuery("grouptype.findByType");
         query.setParameter("type", type);

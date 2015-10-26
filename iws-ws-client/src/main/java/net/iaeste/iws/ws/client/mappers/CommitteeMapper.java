@@ -17,14 +17,15 @@ package net.iaeste.iws.ws.client.mappers;
 import net.iaeste.iws.api.dtos.CountrySurvey;
 import net.iaeste.iws.api.enums.GroupStatus;
 import net.iaeste.iws.api.requests.CommitteeRequest;
-import net.iaeste.iws.api.requests.FetchCommitteeRequest;
-import net.iaeste.iws.api.requests.FetchInternationalGroupRequest;
-import net.iaeste.iws.api.requests.FetchCountrySurveyRequest;
-import net.iaeste.iws.api.requests.InternationalGroupRequest;
 import net.iaeste.iws.api.requests.CountrySurveyRequest;
+import net.iaeste.iws.api.requests.FetchCommitteeRequest;
+import net.iaeste.iws.api.requests.FetchCountrySurveyRequest;
+import net.iaeste.iws.api.requests.FetchInternationalGroupRequest;
+import net.iaeste.iws.api.requests.InternationalGroupRequest;
+import net.iaeste.iws.api.responses.CommitteeResponse;
 import net.iaeste.iws.api.responses.FetchCommitteeResponse;
-import net.iaeste.iws.api.responses.FetchInternationalGroupResponse;
 import net.iaeste.iws.api.responses.FetchCountrySurveyResponse;
+import net.iaeste.iws.api.responses.FetchInternationalGroupResponse;
 
 import java.util.Collection;
 import java.util.EnumSet;
@@ -69,7 +70,7 @@ public final class CommitteeMapper extends CommonMapper {
         if (api != null) {
             ws = new net.iaeste.iws.ws.CommitteeRequest();
 
-            ws.setCountryId(api.getCountryId());
+            ws.setCountryCode(api.getCountryCode());
             ws.setInstitutionName(api.getInstitutionName());
             ws.setInstitutionAbbreviation(api.getInstitutionAbbreviation());
             ws.setFirstname(api.getFirstname());
@@ -81,6 +82,18 @@ public final class CommitteeMapper extends CommonMapper {
         }
 
         return ws;
+    }
+
+    public static CommitteeResponse map(final net.iaeste.iws.ws.CommitteeResponse ws) {
+        CommitteeResponse api = null;
+
+        if (ws != null) {
+            api = new CommitteeResponse(map(ws.getError()), ws.getMessage());
+
+            api.setCommittee(map(ws.getCommittee()));
+        }
+
+        return api;
     }
 
     public static net.iaeste.iws.ws.FetchInternationalGroupRequest map(final FetchInternationalGroupRequest api) {

@@ -154,31 +154,29 @@ public final class CommitteeService extends CommonService<CommitteeDao> {
     }
 
     private void createCommittee(final Authentication authentication, final CommitteeRequest request) {
-        final CountryEntity country = dao.findCountry(request.getCountryId());
-        if (country != null) {
-            if ((country.getMembership() != Membership.ASSOCIATE_MEMBER) && (country.getMembership() != Membership.FULL_MEMBER)) {
-                final String groupname = country.getCountryName() + ", " + request.getInstitutionAbbreviation();
-                if (country.getMembership() == Membership.COOPERATING_INSTITUTION) {
-                    final GroupEntity group = dao.findGroupByName(groupname);
-                    if (group == null) {
-                        // No Committee exists with the name, which is good, as
-                        // we can then create a new Cooperating Institution
-                        doCreateCommittee(authentication, request, country, groupname);
-                    } else {
-                        throw new IllegalActionException("A Committee with the name " + groupname + "already exist.");
-                    }
+        // If we don't find a Country, an exception is thrown!
+        final CountryEntity country = dao.findCountry(request.getCountryCode());
+
+        if ((country.getMembership() != Membership.ASSOCIATE_MEMBER) && (country.getMembership() != Membership.FULL_MEMBER)) {
+            final String groupName = country.getCountryName() + ", " + request.getInstitutionAbbreviation();
+            if (country.getMembership() == Membership.COOPERATING_INSTITUTION) {
+                final GroupEntity group = dao.findGroupByNameAndType(groupName, GroupType.NATIONAL);
+                if (group == null) {
+                    // No Committee exists with the name, which is good, as
+                    // we can then create a new Cooperating Institution
+                    doCreateCommittee(authentication, request, country, groupName);
                 } else {
-                    // Country is currently not a Cooperating Institution, so
-                    // we'll create the first new one for it
-                    doCreateCommittee(authentication, request, country, groupname);
-                    country.setMembership(Membership.COOPERATING_INSTITUTION);
-                    dao.persist(authentication, country);
+                    throw new IllegalActionException("A Committee with the name " + groupName + " already exist.");
                 }
             } else {
-                throw new IllegalActionException("Cannot create a new Cooperating Institution for a Member Country.");
+                // Country is currently not a Cooperating Institution, so
+                // we'll create the first new one for it
+                doCreateCommittee(authentication, request, country, groupName);
+                country.setMembership(Membership.COOPERATING_INSTITUTION);
+                dao.persist(authentication, country);
             }
         } else {
-            throw new IllegalActionException("Cannot create a Committee for a not existing Country.");
+            throw new IllegalActionException("Cannot create a new Cooperating Institution for a Member Country.");
         }
     }
 
@@ -206,16 +204,16 @@ public final class CommitteeService extends CommonService<CommitteeDao> {
         return group;
     }
 
-    private static String prepareGroupDescription(final GroupType type, final String fullname) {
+    private static String prepareGroupDescription(final GroupType type, final String fullName) {
         final String description;
 
         switch (type) {
             case MEMBER:
             case NATIONAL:
-                description = fullname + type.getDescription();
+                description = fullName + ' ' + type.getDescription();
                 break;
             default:
-                description = fullname;
+                description = fullName;
         }
 
         return description;
@@ -239,7 +237,7 @@ public final class CommitteeService extends CommonService<CommitteeDao> {
             final UserGroupEntity privateUserGroup = new UserGroupEntity(user, privateGroup, owner);
             dao.persist(privateUserGroup);
 
-            // Now, we can send of Notitications about a new User Account and
+            // Now, we can send of Notifications about a new User Account and
             // ensure that the e-mail alias is being properly processed
             notifications.notify(authentication, user, NotificationType.NEW_USER);
             notifications.notify(authentication, user, NotificationType.PROCESS_EMAIL_ALIAS);
@@ -716,7 +714,7 @@ public final class CommitteeService extends CommonService<CommitteeDao> {
                 notifications.notify(authentication, userEntity, NotificationType.NEW_GROUP_OWNER);
                 LOG.info(formatLogMessage(authentication, "Created new International Group %s with Coordinator %s", group.getGroupName(), user.getFirstname() + ' ' + user.getLastname()));
             } else {
-                throw new VerificationException("Attempting to greate a new International Group failed as no Coordinator provided doesn't exist.");
+                throw new VerificationException("Attempting to create a new International Group failed as no Coordinator provided doesn't exist.");
             }
         } else {
             throw new PersistenceException("Group cannot be created, another Group with the same name exists.");

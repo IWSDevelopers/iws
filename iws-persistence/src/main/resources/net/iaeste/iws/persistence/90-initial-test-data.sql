@@ -808,6 +808,10 @@ insert into user_to_group (external_id, user_id, group_id, role_id) values ('9ab
 insert into user_to_group (external_id, user_id, group_id, role_id) values ('48b86ad0-a8c9-4f79-840b-2d930c76ffd2', 26, 6, 1);
 update groups set status = 'SUSPENDED' where id = 6;
 
+-- Non Member Country, for our Committee Testing
+insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('AA', 'Aardvark', 'Aardvark', 'EUR', null, 'LISTED');
+insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('AB', 'Absinthe', 'Absinthe', 'EUR', null, 'LISTED');
+
 -- Add new Table called FileData - which has a foreign key into the Files table.
 -- This way, we can read the File table without knowledge of data and later read
 -- out the data when requested.

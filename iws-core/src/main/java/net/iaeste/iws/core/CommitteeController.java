@@ -26,6 +26,7 @@ import net.iaeste.iws.api.requests.FetchInternationalGroupRequest;
 import net.iaeste.iws.api.requests.FetchCountrySurveyRequest;
 import net.iaeste.iws.api.requests.InternationalGroupRequest;
 import net.iaeste.iws.api.requests.CountrySurveyRequest;
+import net.iaeste.iws.api.responses.CommitteeResponse;
 import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchCommitteeResponse;
 import net.iaeste.iws.api.responses.FetchInternationalGroupResponse;
@@ -91,11 +92,11 @@ public final class CommitteeController extends CommonController implements Commi
      * {@inheritDoc}
      */
     @Override
-    public FallibleResponse processCommittee(final AuthenticationToken token, final CommitteeRequest request) {
+    public CommitteeResponse processCommittee(final AuthenticationToken token, final CommitteeRequest request) {
         if (LOG.isTraceEnabled()) {
             LOG.trace(formatLogMessage(token, "Starting processCommittee()"));
         }
-        FallibleResponse response;
+        CommitteeResponse response;
 
         try {
             verify(request);
@@ -103,7 +104,7 @@ public final class CommitteeController extends CommonController implements Commi
 
             final CommitteeService service = factory.prepareCommitteeService();
             service.processCommittee(authentication, request);
-            response = new FallibleResponse();
+            response = new CommitteeResponse();
         } catch (IWSException e) {
             // Generally, Exceptions should always be either logged or rethrown.
             // In our case, we're transforming the Exception into an Error
@@ -111,7 +112,7 @@ public final class CommitteeController extends CommonController implements Commi
             // that we're not loosing anything - the Exception is also LOG.ed
             // here as a debug message
             LOG.debug(e.getMessage(), e);
-            response = new FallibleResponse(e.getError(), e.getMessage());
+            response = new CommitteeResponse(e.getError(), e.getMessage());
         }
 
         if (LOG.isTraceEnabled()) {

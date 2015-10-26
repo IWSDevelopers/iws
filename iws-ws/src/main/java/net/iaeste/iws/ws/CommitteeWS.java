@@ -23,6 +23,7 @@ import net.iaeste.iws.api.requests.FetchCommitteeRequest;
 import net.iaeste.iws.api.requests.FetchCountrySurveyRequest;
 import net.iaeste.iws.api.requests.FetchInternationalGroupRequest;
 import net.iaeste.iws.api.requests.InternationalGroupRequest;
+import net.iaeste.iws.api.responses.CommitteeResponse;
 import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchCommitteeResponse;
 import net.iaeste.iws.api.responses.FetchCountrySurveyResponse;
@@ -40,7 +41,6 @@ import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
-import javax.xml.ws.BindingType;
 import javax.xml.ws.WebServiceContext;
 
 /**
@@ -126,11 +126,11 @@ public class CommitteeWS implements Committees {
     @Override
     @WebMethod
     @WebResult(name = "response")
-    public FallibleResponse processCommittee(
+    public CommitteeResponse processCommittee(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final CommitteeRequest request) {
         LOG.info(requestLogger.prepareLogMessage(token, "processCommittee"));
-        FallibleResponse response;
+        CommitteeResponse response;
 
         try {
             response = bean.processCommittee(token, request);
@@ -138,7 +138,7 @@ public class CommitteeWS implements Committees {
             // The EJB's are all annotated with Transactional Logic, so if an
             // error is flying by - then it is caught here.
             LOG.error("Transactional Problem: " + e.getMessage(), e);
-            response = new FallibleResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
+            response = new CommitteeResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
         }
 
         return response;

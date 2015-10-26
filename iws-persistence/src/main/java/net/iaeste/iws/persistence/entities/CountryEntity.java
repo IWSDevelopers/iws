@@ -43,7 +43,6 @@ import java.util.Date;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
- * @noinspection AssignmentToDateFieldFromParameter
  */
 @NamedQueries({
         @NamedQuery(name = "country.findAll",
@@ -92,7 +91,7 @@ public class CountryEntity extends AbstractUpdateable<CountryEntity> implements 
     @Column(name = "citizens")
     private String citizens = null;
 
-    @Monitored(name="Country phonecode", level = MonitoringLevel.DETAILED)
+    @Monitored(name="Country phone code", level = MonitoringLevel.DETAILED)
     @Column(name = "phonecode")
     private String phonecode = null;
 
@@ -141,7 +140,7 @@ public class CountryEntity extends AbstractUpdateable<CountryEntity> implements 
     /**
      * Default Constructor.
      *
-     * @param countryCode The two-letter UN specificed Country Code
+     * @param countryCode The two-letter UN specified Country Code
      * @param countryName The name of the Country
      */
     public CountryEntity(final String countryCode, final String countryName) {

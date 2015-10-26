@@ -23,6 +23,7 @@ import net.iaeste.iws.api.requests.FetchInternationalGroupRequest;
 import net.iaeste.iws.api.requests.FetchCountrySurveyRequest;
 import net.iaeste.iws.api.requests.InternationalGroupRequest;
 import net.iaeste.iws.api.requests.CountrySurveyRequest;
+import net.iaeste.iws.api.responses.CommitteeResponse;
 import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchCommitteeResponse;
 import net.iaeste.iws.api.responses.FetchInternationalGroupResponse;
@@ -146,16 +147,16 @@ public class CommitteeBean implements Committees {
      * {@inheritDoc}
      */
     @Override
-    public FallibleResponse processCommittee(final AuthenticationToken token, final CommitteeRequest request) {
+    public CommitteeResponse processCommittee(final AuthenticationToken token, final CommitteeRequest request) {
         final long start = System.nanoTime();
-        FallibleResponse response;
+        CommitteeResponse response;
 
         try {
             response = controller.processCommittee(token, request);
             LOG.info(session.generateLogAndUpdateSession("processCommittee", start, response, token));
         } catch (RuntimeException e) {
             LOG.error(session.generateLogAndSaveRequest("processCommittee", start, e, token, request), e);
-            response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
+            response = new CommitteeResponse(IWSErrors.ERROR, e.getMessage());
         }
 
         return response;

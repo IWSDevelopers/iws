@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://ws.iws.iaeste.net/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="accessWSService" targetNamespace="http://ws.iws.iaeste.net/">
   <wsdl:documentation>
       Service: IWS Access Service
-      Version: 1.1
+      Version: 1.1.20151026
       Owner: IAESTE A.s.b.l.
   </wsdl:documentation>
   <wsdl:types>
@@ -185,11 +185,14 @@
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
           <xs:element name="groupId" nillable="true" type="xs:string"/>
+          <xs:element name="parentId" nillable="true" type="xs:string"/>
           <xs:element name="groupName" type="xs:string"/>
           <xs:element name="fullName" nillable="true" type="xs:string"/>
           <xs:element name="listName" nillable="true" type="xs:string"/>
           <xs:element name="privateList" type="xs:boolean"/>
+          <xs:element name="privateListReplyTo" type="tns:mailReply"/>
           <xs:element name="publicList" type="xs:boolean"/>
+          <xs:element name="publicListReplyTo" type="tns:mailReply"/>
           <xs:element name="groupType" type="tns:groupType"/>
           <xs:element name="description" nillable="true" type="xs:string"/>
           <xs:element name="monitoringLevel" nillable="true" type="tns:monitoringLevel"/>
@@ -471,6 +474,14 @@
       <xs:enumeration value="IMMEDIATELY"/>
       <xs:enumeration value="DAILY"/>
       <xs:enumeration value="WEEKLY"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="mailReply">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="REPLY_TO_SENDER"/>
+      <xs:enumeration value="REPLY_TO_LIST"/>
+      <xs:enumeration value="NO_REPLY"/>
     </xs:restriction>
   </xs:simpleType>
 

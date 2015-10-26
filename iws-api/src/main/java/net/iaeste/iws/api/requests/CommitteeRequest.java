@@ -36,7 +36,7 @@ import java.util.Set;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "committeeRequest", propOrder = { "countryId", "institutionName", "institutionAbbreviation", "firstname", "lastname", "username", "nationalCommittee", "nationalSecretary", "action" })
+@XmlType(name = "committeeRequest", propOrder = { "countryCode", "institutionName", "institutionAbbreviation", "firstname", "lastname", "username", "nationalCommittee", "nationalSecretary", "action" })
 public final class CommitteeRequest extends AbstractVerification implements Actionable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
@@ -46,7 +46,7 @@ public final class CommitteeRequest extends AbstractVerification implements Acti
     private static final Set<Action> ALLOWED = EnumSet.of(Action.CREATE, Action.CHANGE_NS, Action.UPDATE, Action.MERGE, Action.UPGRADE, Action.ACTIVATE, Action.SUSPEND, Action.DELETE);
 
     /** The Id of the Country to create a new Cooperating Institution for. */
-    @XmlElement(required = true, nillable = true) private String countryId = null;
+    @XmlElement(required = true, nillable = true) private String countryCode = null;
     /** The name of the Institution to use when creating a new Cooperating Institution. */
     @XmlElement(required = true, nillable = true) private String institutionName = null;
     /** The official Abbreviation for the Institution, for creating & updating. */
@@ -126,21 +126,21 @@ public final class CommitteeRequest extends AbstractVerification implements Acti
      *   The method will throw an IllegalArgument Exception, if the CountryId
      * is set to null or is not exactly 2 characters long.
      *
-     * @param countryId Two-letter Country Code
+     * @param countryCode Two-letter Country Code
      * @throws IllegalArgumentException if null or not exactly 2 characters long
      */
-    public void setCountryId(final String countryId) throws IllegalArgumentException {
-        ensureNotNullAndExactLength("countryId", countryId, 2);
-        this.countryId = countryId;
+    public void setCountryCode(final String countryCode) throws IllegalArgumentException {
+        ensureNotNullAndExactLength("countryCode", countryCode, 2);
+        this.countryCode = countryCode;
     }
 
-    public String getCountryId() {
-        return countryId;
+    public String getCountryCode() {
+        return countryCode;
     }
 
     /**
      * Sets the Institution Name, which is the name of the Cooperating
-     * Institition, to either create or update. The name is most often the name
+     * Institution, to either create or update. The name is most often the name
      * of the University or Department, for which a Cooperating Institution is
      * to be added.<br />
      *   The method will throw an IllegalArgument Exception, if the name is set
@@ -200,9 +200,9 @@ public final class CommitteeRequest extends AbstractVerification implements Acti
     }
 
     /**
-     * Sets the Usenrame for creating a new National Secretary, which is done
-     * when creating a new Committee or can optionaly be used when setting a new
-     * National Secretary for an existing Committee.<br />
+     * Sets the Username for creating a new National Secretary, which is done
+     * when creating a new Committee or can optionally be used when setting a
+     * new National Secretary for an existing Committee.<br />
      *   The username must be a valid e-mail address, otherwise the method will
      * throw an IllegalArgument Exception.
      *
@@ -255,7 +255,7 @@ public final class CommitteeRequest extends AbstractVerification implements Acti
         if (action != null) {
             switch (action) {
                 case CREATE:
-                    isNotNull(validation, "countryId", countryId);
+                    isNotNull(validation, "countryCode", countryCode);
                     isNotNull(validation, "institutionName", institutionName);
                     isNotNull(validation, "institutionAbbreviation", institutionAbbreviation);
                     isNotNull(validation, "firstname", firstname);
@@ -268,7 +268,7 @@ public final class CommitteeRequest extends AbstractVerification implements Acti
                     isNotNull(validation, "institutionAbbreviation", institutionAbbreviation);
                     break;
                 case MERGE:
-                    isNotNull(validation, "countryId", countryId);
+                    isNotNull(validation, "countryCode", countryCode);
                     isNotNull(validation, "nationalSecretary", nationalSecretary);
                     break;
                 case CHANGE_NS:

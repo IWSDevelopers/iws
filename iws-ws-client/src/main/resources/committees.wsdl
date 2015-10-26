@@ -57,7 +57,7 @@
     <xs:complexContent>
       <xs:extension base="tns:fallibleResponse">
         <xs:sequence>
-          <xs:element maxOccurs="unbounded" minOccurs="0" name="committees" nillable="true" type="tns:userGroup"/>
+          <xs:element maxOccurs="unbounded" name="committees" type="tns:userGroup"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>

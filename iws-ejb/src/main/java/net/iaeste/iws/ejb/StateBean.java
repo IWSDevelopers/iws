@@ -18,7 +18,6 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.UserStatus;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.util.Date;
-import net.iaeste.iws.api.util.DateTime;
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.core.monitors.ActiveSessions;
 import net.iaeste.iws.core.notifications.Notifications;
@@ -34,6 +33,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
+import javax.ejb.ScheduleExpression;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.ejb.Timeout;
@@ -83,23 +83,6 @@ public class StateBean {
      */
     private static final long SYSTEM_ACCOUNT = 2553L;
 
-    /**
-     * Midnight Offset, is the time in milli seconds from midnight, when we are
-     * going to run cleanup. The Offset is used together with the current
-     * timestamp to calculate when to start the initial and all subsequent
-     * runs.<br />
-     *   The run is set for each morning at 2:00.
-     */
-    private static final Long MIDNIGHT_OFFSET = 2 * 60 * 60 * 1000L;
-
-    /**
-     * The interval between invocations of the Timer is set to be 24 hours,
-     * which is infrequent enough to ensure that it is not disrupting normal
-     * operations, yet frequent enough to ensure that garbage is removed from
-     * the system in a timely fashion.
-     */
-    private static final Long INTERVAL_DURATION = 24 * 60 * 60 * 1000L;
-
     @Inject @IWSBean private Notifications notifications;
     @Inject @IWSBean private EntityManager entityManager;
     @Inject @IWSBean private Settings settings;
@@ -135,22 +118,16 @@ public class StateBean {
         accessDao = new AccessJpaDao(entityManager);
         service = new AccountService(settings, accessDao, notifications);
 
-        // Just to ensure that at the startup - no other timers exists, which
-        // may cause conflicts with the new ones we're adding
-        for (final Timer timer : timerService.getTimers()) {
-            timer.cancel();
-        }
-
         // Second, we're registering the Timer Service. This will ensure that the
-        // Bean is invoked at 2 in the morning and every 24 hours later.
-        final TimerConfig config = new TimerConfig(StateBean.class.getSimpleName(), false);
-        // The Milli to Start, is calculated with 1970-01-01 00:00:00 as
-        // timestamp, and as the Timer Service expects a number of millis
-        // before it should be invoked, then we need to subtract the current
-        // time from the calculated time.
-        final long initialExpiration = (new Date().plusDays(1).getTime() - new java.util.Date().getTime()) + MIDNIGHT_OFFSET;
-        timerService.createIntervalTimer(initialExpiration, INTERVAL_DURATION, config);
-        LOG.info("First cleanup run scheduled to begin at {}", new DateTime(initialExpiration + new java.util.Date().getTime()));
+        // Bean is invoked daily at 2 in the morning.
+        final TimerConfig timerConfig = new TimerConfig();
+        timerConfig.setInfo("IWS State Cleaner");
+        timerConfig.setPersistent(false);
+        final ScheduleExpression expression = new ScheduleExpression();
+        final String[] time = settings.getRunCleanTime().split(":", 2);
+        expression.hour(time[0]).minute(time[1]);
+        timerService.createCalendarTimer(expression, timerConfig);
+        LOG.info("First cleanup run scheduled to begin at {}", expression.toString());
 
         // Now, remove all deprecated Sessions from the Server. These Sessions
         // may or may not work correctly, since IW4 with JSF is combining the
@@ -187,7 +164,7 @@ public class StateBean {
 
         // First, let's get rid of those pesky expired sessions. For more
         // information, see the Trac ticket #900.
-        removeDeprecatedsessions();
+        removeDeprecatedSessions();
 
         // Second, we'll deal with accounts which are inactive. For more
         // information, see the Trac ticket #720.
@@ -203,7 +180,7 @@ public class StateBean {
     /**
      * Remove deprecated Sessions.
      */
-    private int removeDeprecatedsessions() {
+    private int removeDeprecatedSessions() {
         // First, let's calculate the time of expiry. All Sessions with a
         // modification date before this, will be deprecated
         final Long timeout = settings.getMaxIdleTimeForSessions();

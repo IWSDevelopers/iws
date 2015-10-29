@@ -26,6 +26,12 @@ package net.iaeste.iws.common.configuration;
 public interface InternalConstants {
 
     /**
+     * The time in hours and minutes, when the IWS State Bean which performs
+     * regular cleanups, should run. The format must be HH:MM.
+     */
+    String RUN_CLEAN_TIME = "02:00";
+
+    /**
      * Accounts, which have been created but not activated before this number of
      * days, is considered dead. If the user is unable to activate the account
      * before this time - it is very unlikely that it will ever be activated,

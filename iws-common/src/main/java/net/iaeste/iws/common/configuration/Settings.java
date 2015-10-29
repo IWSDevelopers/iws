@@ -31,6 +31,7 @@ public final class Settings {
 
     private final Properties properties;
 
+    private static final String PROPERTY_RUN_CLEAN_TIME = "run.clean.time";
     private static final String PROPERTY_ROOT_FILE_PATH = "root.file.path";
     private static final String PROPERTY_MAX_ACTIVE_TOKENS = "max.active.tokens";
     private static final String PROPERTY_MAX_LOGIN_RETRIES = "max.login.retries";
@@ -55,6 +56,7 @@ public final class Settings {
         this.properties = new Properties();
 
         properties.setProperty(PROPERTY_ROOT_FILE_PATH, System.getProperty("java.io.tmpdir"));
+        properties.setProperty(PROPERTY_RUN_CLEAN_TIME, InternalConstants.RUN_CLEAN_TIME);
         properties.setProperty(PROPERTY_MAX_ACTIVE_TOKENS, String.valueOf(InternalConstants.MAX_ACTIVE_TOKENS));
         properties.setProperty(PROPERTY_MAX_LOGIN_RETRIES, String.valueOf(InternalConstants.MAX_LOGIN_RETRIES));
         properties.setProperty(PROPERTY_MAX_IDLE_TIME_FOR_SESSIONS, String.valueOf(InternalConstants.MAX_SESSION_IDLE_PERIOD));
@@ -84,6 +86,10 @@ public final class Settings {
     // =========================================================================
     // Standard Setters & Getters
     // =========================================================================
+
+    public String getRunCleanTime() {
+        return properties.getProperty(PROPERTY_RUN_CLEAN_TIME);
+    }
 
     public String getRootFilePath() {
         return properties.getProperty(PROPERTY_ROOT_FILE_PATH);

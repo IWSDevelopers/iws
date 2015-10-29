@@ -168,13 +168,14 @@ doClean () {
         configuration=${standalone}/configuration
 
         echo "Cleaning WildFly Log files"
-        rm -fr ${standalone}/log/*.log* 2>/dev/null
+        rm -fr ${standalone}/log 2>/dev/null
+        mkdir ${standalone}/log 2>/dev/null
 
         echo "Cleaning WildFly Data & Deployments"
         rm -fr ${standalone}/data/* 2>/dev/null
         rm -fr ${standalone}/deployments/* 2>/dev/null
-        rm -fr ${standalone}/tmp/vfs/deployment/* 2>/dev/null
-        rm -fr ${standalone}/tmp/vfs/temp/* 2>/dev/null
+        rm -fr ${standalone}/tmp/* 2>/dev/null
+        mkdir  ${standalone}/tmp/auth 2>/dev/null
         rm -fr ${standalone}/work/jboss.web/default-host/* 2>/dev/null
 
         echo "Cleaning (Reverting) WildFly Standalone Configuration"

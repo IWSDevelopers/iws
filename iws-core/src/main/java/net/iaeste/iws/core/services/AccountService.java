@@ -24,6 +24,7 @@ import net.iaeste.iws.api.dtos.Role;
 import net.iaeste.iws.api.dtos.User;
 import net.iaeste.iws.api.enums.GroupStatus;
 import net.iaeste.iws.api.enums.GroupType;
+import net.iaeste.iws.api.enums.MailReply;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.enums.Privacy;
 import net.iaeste.iws.api.enums.UserStatus;
@@ -157,6 +158,9 @@ public final class AccountService extends CommonService<AccessDao> {
             studentGroup.setGroupName(memberGroup.getGroupName() + '.' + type.getDescription());
             studentGroup.setGroupType(dao.findGroupType(type));
             studentGroup.setParentId(memberGroup.getId());
+            studentGroup.setExternalParentId(memberGroup.getExternalId());
+            studentGroup.setPrivateReplyTo(MailReply.NO_REPLY);
+            studentGroup.setPublicReplyTo(MailReply.NO_REPLY);
             dao.persist(studentGroup);
         }
 

@@ -739,6 +739,10 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
         // native query, which uses standard SQL - in a form not (yet)
         // supported by JPA. The latter was chosen to reduce complexity for
         // something which is running as a cron job.
+        //   Note; The query below is assuming that Users have logged into the
+        // IWS. The latest time is present if they have, if they haven't, then
+        // they are still listed even if younger than 1 year, so the latest flag
+        // must also be evaluated!
         final String jpql =
                 "with activity as (" +
                 "  select" +

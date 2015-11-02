@@ -155,6 +155,8 @@ public final class EmbeddedConverter {
         group.setPrivateList(embedded.getPrivateList());
         group.setPublicList(embedded.getPublicList());
         group.setGroupType(embedded.getGroupType());
+        group.setPrivateListReplyTo(embedded.getPrivateReplyTo());
+        group.setPublicListReplyTo(embedded.getPublicReplyTo());
 
         return group;
     }

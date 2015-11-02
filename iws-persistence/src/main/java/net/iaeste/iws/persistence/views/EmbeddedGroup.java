@@ -16,6 +16,7 @@ package net.iaeste.iws.persistence.views;
 
 import net.iaeste.iws.api.enums.GroupStatus;
 import net.iaeste.iws.api.enums.GroupType;
+import net.iaeste.iws.api.enums.MailReply;
 import net.iaeste.iws.api.enums.MonitoringLevel;
 
 import javax.persistence.Column;
@@ -46,6 +47,9 @@ public class EmbeddedGroup {
     @Column(name = "group_parent_id", insertable = false, updatable = false)
     private Long parentId = null;
 
+    @Column(name = "group_external_parent_id", insertable = false, updatable = false)
+    private String externalParentId = null;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "group_grouptype", insertable = false, updatable = false)
     private GroupType groupType = null;
@@ -65,6 +69,14 @@ public class EmbeddedGroup {
     @Enumerated(EnumType.STRING)
     @Column(name = "group_status", insertable = false, updatable = false)
     private GroupStatus status = null;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "group_private_list_reply", insertable = false, updatable = false)
+    private MailReply privateReplyTo = null;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "group_public_list_reply", insertable = false, updatable = false)
+    private MailReply publicReplyTo = null;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "group_monitoring_level", insertable = false, updatable = false)
@@ -96,6 +108,14 @@ public class EmbeddedGroup {
 
     public Long getParentId() {
         return parentId;
+    }
+
+    public void setExternalParentId(final String externalParentId) {
+        this.externalParentId = externalParentId;
+    }
+
+    public String getExternalParentId() {
+        return externalParentId;
     }
 
     public void setGroupType(final GroupType groupType) {
@@ -144,6 +164,22 @@ public class EmbeddedGroup {
 
     public GroupStatus getStatus() {
         return status;
+    }
+
+    public void setPrivateReplyTo(final MailReply privateReplyTo) {
+        this.privateReplyTo = privateReplyTo;
+    }
+
+    public MailReply getPrivateReplyTo() {
+        return privateReplyTo;
+    }
+
+    public void setPublicReplyTo(final MailReply publicReplyTo) {
+        this.publicReplyTo = publicReplyTo;
+    }
+
+    public MailReply getPublicReplyTo() {
+        return publicReplyTo;
     }
 
     public void setMonitoringLevel(final MonitoringLevel monitoringLevel) {

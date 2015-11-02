@@ -204,11 +204,11 @@ public final class Group extends AbstractVerification {
     }
 
     public boolean hasPrivateList() {
-        return groupType != null && groupType.getMayHavePrivateMailinglist() && privateList;
+        return (groupType != null) && groupType.getMayHavePrivateMailinglist() && privateList;
     }
 
     public String getPrivateList() {
-        return hasPrivateList() && (listName != null) ? listName + '@' + IWSConstants.PRIVATE_EMAIL_ADDRESS : null;
+        return (hasPrivateList() && (listName != null)) ? (listName + '@' + IWSConstants.PRIVATE_EMAIL_ADDRESS) : null;
     }
 
     /**
@@ -246,11 +246,11 @@ public final class Group extends AbstractVerification {
     }
 
     public boolean hasPublicList() {
-        return groupType != null && groupType.getMayHavePublicMailinglist() && publicList;
+        return (groupType != null) && groupType.getMayHavePublicMailinglist() && publicList;
     }
 
     public String getPublicList() {
-        return hasPublicList() && (listName != null) ? listName + '@' + IWSConstants.PUBLIC_EMAIL_ADDRESS : null;
+        return (hasPublicList() && (listName != null)) ? (listName + '@' + IWSConstants.PUBLIC_EMAIL_ADDRESS) : null;
     }
 
     /**
@@ -424,7 +424,7 @@ public final class Group extends AbstractVerification {
         if ((description != null) ? !description.equals(group.description) : (group.description != null)) {
             return false;
         }
-        if ((monitoringLevel != null) ? monitoringLevel != group.monitoringLevel : (group.monitoringLevel != null)) {
+        if ((monitoringLevel != null) ? (monitoringLevel != group.monitoringLevel) : (group.monitoringLevel != null)) {
             return false;
         }
         return !((country != null) ? !country.equals(group.country) : (group.country != null));
@@ -437,17 +437,17 @@ public final class Group extends AbstractVerification {
     public int hashCode() {
         int result = IWSConstants.HASHCODE_INITIAL_VALUE;
 
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((groupId != null) ? groupId.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((parentId != null) ? parentId.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((groupName != null) ? groupName.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((fullName != null) ? fullName.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((listName != null) ? listName.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((privateList != null) ? privateList.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((publicList != null) ? publicList.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((groupType != null) ? groupType.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((description != null) ? description.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((monitoringLevel != null) ? monitoringLevel.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((country != null) ? country.hashCode() : 0);
+        result = (IWSConstants.HASHCODE_MULTIPLIER * result) + ((groupId != null) ? groupId.hashCode() : 0);
+        result = (IWSConstants.HASHCODE_MULTIPLIER * result) + ((parentId != null) ? parentId.hashCode() : 0);
+        result = (IWSConstants.HASHCODE_MULTIPLIER * result) + ((groupName != null) ? groupName.hashCode() : 0);
+        result = (IWSConstants.HASHCODE_MULTIPLIER * result) + ((fullName != null) ? fullName.hashCode() : 0);
+        result = (IWSConstants.HASHCODE_MULTIPLIER * result) + ((listName != null) ? listName.hashCode() : 0);
+        result = (IWSConstants.HASHCODE_MULTIPLIER * result) + ((privateList != null) ? privateList.hashCode() : 0);
+        result = (IWSConstants.HASHCODE_MULTIPLIER * result) + ((publicList != null) ? publicList.hashCode() : 0);
+        result = (IWSConstants.HASHCODE_MULTIPLIER * result) + ((groupType != null) ? groupType.hashCode() : 0);
+        result = (IWSConstants.HASHCODE_MULTIPLIER * result) + ((description != null) ? description.hashCode() : 0);
+        result = (IWSConstants.HASHCODE_MULTIPLIER * result) + ((monitoringLevel != null) ? monitoringLevel.hashCode() : 0);
+        result = (IWSConstants.HASHCODE_MULTIPLIER * result) + ((country != null) ? country.hashCode() : 0);
 
         return result;
     }

@@ -98,6 +98,7 @@ public final class CommonTransformer {
             group = new Group();
 
             group.setGroupId(entity.getExternalId());
+            group.setParentId(entity.getExternalParentId());
             group.setGroupType(transform(entity.getGroupType()));
             group.setGroupName(entity.getGroupName());
             group.setFullName(entity.getFullName());
@@ -105,6 +106,8 @@ public final class CommonTransformer {
             group.setPublicList(entity.getPublicList());
             group.setListName(entity.getListName());
             group.setDescription(entity.getDescription());
+            group.setPrivateListReplyTo(entity.getPrivateReplyTo());
+            group.setPublicListReplyTo(entity.getPublicReplyTo());
             group.setMonitoringLevel(entity.getMonitoringLevel());
             if (entity.getCountry() != null) {
                 group.setCountry(transform(entity.getCountry()));
@@ -128,6 +131,8 @@ public final class CommonTransformer {
             entity.setPublicList(group.hasPrivateList());
             entity.setListName(group.getListName());
             entity.setDescription(group.getDescription());
+            entity.setPrivateReplyTo(group.getPrivateListReplyTo());
+            entity.setPublicReplyTo(group.getPublicListReplyTo());
             entity.setMonitoringLevel(group.getMonitoringLevel());
             if (group.getCountry() != null) {
                 entity.setCountry(transform(group.getCountry()));

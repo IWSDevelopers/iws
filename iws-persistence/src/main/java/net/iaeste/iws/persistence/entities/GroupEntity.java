@@ -16,6 +16,7 @@ package net.iaeste.iws.persistence.entities;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.GroupStatus;
+import net.iaeste.iws.api.enums.MailReply;
 import net.iaeste.iws.common.exceptions.NotificationException;
 import net.iaeste.iws.persistence.monitoring.Monitored;
 import net.iaeste.iws.api.enums.MonitoringLevel;
@@ -168,7 +169,7 @@ public class GroupEntity extends AbstractUpdateable<GroupEntity> implements Exte
      * someone tries to spoof the system by second guessing our Sequence values,
      * An External Id is used, the External Id is a Unique UUID value, which in
      * all external references is referred to as the "Id". Although this can be
-     * classified as StO (Security through Obscrutity), there is no need to
+     * classified as StO (Security through Obscurity), there is no need to
      * expose more information than necessary.
      */
     @Column(name = "external_id", length = 36, unique = true, nullable = false, updatable = false)
@@ -184,6 +185,9 @@ public class GroupEntity extends AbstractUpdateable<GroupEntity> implements Exte
      */
     @Column(name = "parent_id", updatable = false)
     private Long parentId = null;
+
+    @Column(name = "external_parent_id", updatable = false)
+    private String externalParentId = null;
 
     @ManyToOne(targetEntity = GroupTypeEntity.class)
     @JoinColumn(name = "grouptype_id", referencedColumnName = "id", nullable = false, updatable = false)
@@ -216,6 +220,16 @@ public class GroupEntity extends AbstractUpdateable<GroupEntity> implements Exte
     @Monitored(name="Group Has Public List", level = MonitoringLevel.DETAILED)
     @Column(name = "public_list", nullable = false)
     private Boolean publicList = null;
+
+    @Monitored(name="Group Private List ReplyTo", level = MonitoringLevel.DETAILED)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "private_list_reply", nullable = false)
+    private MailReply privateReplyTo = null;
+
+    @Monitored(name="Group Public List ReplyTo", level = MonitoringLevel.DETAILED)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "public_list_reply", nullable = false)
+    private MailReply publicReplyTo = null;
 
     @Monitored(name="Group Status", level = MonitoringLevel.DETAILED)
     @Enumerated(EnumType.STRING)
@@ -318,6 +332,14 @@ public class GroupEntity extends AbstractUpdateable<GroupEntity> implements Exte
         return parentId;
     }
 
+    public void setExternalParentId(String externalParentId) {
+        this.externalParentId = externalParentId;
+    }
+
+    public String getExternalParentId() {
+        return externalParentId;
+    }
+
     public void setGroupType(final GroupTypeEntity groupType) {
         this.groupType = groupType;
     }
@@ -380,6 +402,22 @@ public class GroupEntity extends AbstractUpdateable<GroupEntity> implements Exte
 
     public Boolean getPublicList() {
         return publicList;
+    }
+
+    public void setPrivateReplyTo(final MailReply privateReplyTo) {
+        this.privateReplyTo = privateReplyTo;
+    }
+
+    public MailReply getPrivateReplyTo() {
+        return privateReplyTo;
+    }
+
+    public void setPublicReplyTo(final MailReply publicReplyTo) {
+        this.publicReplyTo = publicReplyTo;
+    }
+
+    public MailReply getPublicReplyTo() {
+        return publicReplyTo;
     }
 
     public void setStatus(final GroupStatus status) {
@@ -460,7 +498,7 @@ public class GroupEntity extends AbstractUpdateable<GroupEntity> implements Exte
         // The ExternalId is sufficient to compare two internal GroupEntity
         // Objects, and even to compare if a not found external Group Object
         // matches an internal.
-        return !(externalId != null ? !externalId.equals(that.externalId) : that.externalId != null);
+        return !((externalId != null) ? !externalId.equals(that.externalId) : (that.externalId != null));
     }
 
     /**
@@ -469,7 +507,7 @@ public class GroupEntity extends AbstractUpdateable<GroupEntity> implements Exte
     @Override
     public int hashCode() {
         // The External Id is sufficient for the HashCode value of this Object
-        return externalId != null ? externalId.hashCode() : 0;
+        return (externalId != null) ? externalId.hashCode() : 0;
     }
 
     /**
@@ -494,6 +532,8 @@ public class GroupEntity extends AbstractUpdateable<GroupEntity> implements Exte
             listName = which(listName, obj.listName);
             privateList = which(privateList, obj.privateList);
             publicList = which(publicList, obj.publicList);
+            privateReplyTo = which(privateReplyTo, obj.privateReplyTo);
+            publicReplyTo = which(publicReplyTo, obj.publicReplyTo);
             monitoringLevel = which(monitoringLevel, obj.monitoringLevel);
         }
     }
@@ -538,7 +578,7 @@ public class GroupEntity extends AbstractUpdateable<GroupEntity> implements Exte
     public String toString() {
         return "GroupEntity{" +
                 "id='" + externalId + '\'' +
-                ", groupname='" + groupName + '\'' +
+                ", groupName='" + groupName + '\'' +
                 '}';
     }
 }

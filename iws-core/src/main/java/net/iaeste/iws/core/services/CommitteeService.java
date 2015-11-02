@@ -24,6 +24,7 @@ import net.iaeste.iws.api.dtos.User;
 import net.iaeste.iws.api.dtos.UserGroup;
 import net.iaeste.iws.api.enums.GroupStatus;
 import net.iaeste.iws.api.enums.GroupType;
+import net.iaeste.iws.api.enums.MailReply;
 import net.iaeste.iws.api.enums.Membership;
 import net.iaeste.iws.api.enums.UserStatus;
 import net.iaeste.iws.api.exceptions.IWSException;
@@ -183,21 +184,24 @@ public final class CommitteeService extends CommonService<CommitteeDao> {
     private void doCreateCommittee(final Authentication authentication, final CommitteeRequest request, final CountryEntity country, final String groupname) {
         final RoleEntity owner = dao.findRole(InternalConstants.ROLE_OWNER);
         final UserEntity ns = createNationalSecretary(authentication, owner, request);
-        final GroupEntity members = createGroup(authentication, authentication.getGroup().getId(), country, GroupType.MEMBER, groupname, request.getInstitutionName());
-        final GroupEntity staff = createGroup(authentication, members.getId(), country, GroupType.NATIONAL, groupname, request.getInstitutionName());
+        final GroupEntity members = createGroup(authentication, authentication.getGroup(), country, GroupType.MEMBER, groupname, request.getInstitutionName());
+        final GroupEntity staff = createGroup(authentication, members, country, GroupType.NATIONAL, groupname, request.getInstitutionName());
         final UserGroupEntity nsMembers = new UserGroupEntity(ns, members, owner);
         final UserGroupEntity nsStaff = new UserGroupEntity(ns, staff, owner);
         dao.persist(authentication, nsMembers);
         dao.persist(authentication, nsStaff);
     }
 
-    private GroupEntity createGroup(final Authentication authentication, final Long parentId, final CountryEntity country, final GroupType type, final String groupName, final String committeeName) {
+    private GroupEntity createGroup(final Authentication authentication, final GroupEntity parent, final CountryEntity country, final GroupType type, final String groupName, final String committeeName) {
         final GroupEntity group = new GroupEntity();
         group.setGroupName(groupName);
         group.setFullName(prepareGroupDescription(type, committeeName));
         group.setDescription(group.getFullName());
         group.setGroupType(dao.findGroupTypeByType(type));
-        group.setParentId(parentId);
+        group.setParentId(parent.getId());
+        group.setExternalParentId(parent.getExternalId());
+        group.setPrivateReplyTo(MailReply.REPLY_TO_LIST);
+        group.setPublicReplyTo(MailReply.REPLY_TO_SENDER);
         group.setCountry(country);
         dao.persist(authentication, group);
 
@@ -743,6 +747,9 @@ public final class CommitteeService extends CommonService<CommitteeDao> {
         groupEntity.setGroupType(dao.findGroupTypeByType(GroupType.INTERNATIONAL));
         // The Parent is set to the Group from the Authentication Object
         groupEntity.setParentId(authentication.getGroup().getId());
+        groupEntity.setExternalParentId(authentication.getGroup().getExternalId());
+        groupEntity.setPrivateReplyTo(MailReply.REPLY_TO_LIST);
+        groupEntity.setPublicReplyTo(MailReply.REPLY_TO_SENDER);
 
         // Save the new Group in the database
         dao.persist(authentication, groupEntity);

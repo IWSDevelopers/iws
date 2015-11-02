@@ -43,6 +43,7 @@ public final class FetchCommitteeRequest extends AbstractPaginatable {
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     private static final Set<GroupStatus> ALLOWED = EnumSet.of(GroupStatus.ACTIVE, GroupStatus.SUSPENDED);
+
     @XmlElement(required = true, nillable = true) private List<String> countryIds;
     @XmlElement(required = true, nillable = true) private Membership membership;
     @XmlElement(required = true, nillable = true) private Set<GroupStatus> statuses = EnumSet.copyOf(ALLOWED);

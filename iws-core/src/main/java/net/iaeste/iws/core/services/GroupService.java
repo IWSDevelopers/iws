@@ -23,6 +23,7 @@ import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.UserGroup;
 import net.iaeste.iws.api.enums.Action;
 import net.iaeste.iws.api.enums.GroupType;
+import net.iaeste.iws.api.enums.MailReply;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.requests.FetchGroupRequest;
@@ -574,11 +575,11 @@ public final class GroupService {
         // with the same name
         throwIfGroupnameIsUsed(parent, group.getGroupName());
         // Find pre-requisites
-        final CountryEntity country = parent.getCountry() != null ? dao.findCountryByCode(parent.getCountry().getCountryCode()) : null;
+        final CountryEntity country = (parent.getCountry() != null) ? dao.findCountryByCode(parent.getCountry().getCountryCode()) : null;
         final GroupTypeEntity groupType = dao.findGroupTypeByType(type);
         final String basename = GroupUtil.prepareBaseGroupName(
                 parent.getGroupType().getGrouptype(),
-                parent.getCountry() != null ? parent.getCountry().getCountryName() : null,
+                (parent.getCountry() != null) ? parent.getCountry().getCountryName() : null,
                 parent.getGroupName(),
                 parent.getFullName());
 
@@ -590,9 +591,12 @@ public final class GroupService {
         groupEntity.setDescription(group.getDescription());
         groupEntity.setFullName(GroupUtil.prepareFullGroupName(type, group, basename));
         groupEntity.setParentId(parent.getId());
-        groupEntity.setPublicList(type.getMayHavePublicMailinglist());
+        groupEntity.setExternalParentId(parent.getExternalId());
         groupEntity.setPrivateList(type.getMayHavePrivateMailinglist());
-        groupEntity.setListName(GroupUtil.prepareListName(type, groupEntity.getFullName(), country != null ? country.getCountryName() : null));
+        groupEntity.setPublicList(type.getMayHavePublicMailinglist());
+        groupEntity.setPrivateReplyTo(MailReply.REPLY_TO_LIST);
+        groupEntity.setPublicReplyTo(MailReply.REPLY_TO_SENDER);
+        groupEntity.setListName(GroupUtil.prepareListName(type, groupEntity.getFullName(), (country != null) ? country.getCountryName() : null));
 
         // Save the new Group in the database
         dao.persist(authentication, groupEntity);

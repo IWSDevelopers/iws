@@ -26,6 +26,7 @@ import net.iaeste.iws.api.dtos.Address;
 import net.iaeste.iws.api.dtos.File;
 import net.iaeste.iws.api.dtos.Person;
 import net.iaeste.iws.api.enums.GroupType;
+import net.iaeste.iws.api.enums.MailReply;
 import net.iaeste.iws.api.enums.StorageType;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.common.configuration.Settings;
@@ -184,6 +185,8 @@ public class CommonService<T extends BasicDao> {
         // set them accordingly
         group.setPrivateList(type.getMayHavePrivateMailinglist());
         group.setPublicList(type.getMayHavePublicMailinglist());
+        group.setPrivateReplyTo(MailReply.REPLY_TO_LIST);
+        group.setPublicReplyTo(MailReply.REPLY_TO_SENDER);
         dao.persist(group);
 
         return group;

@@ -156,7 +156,7 @@ create table permissions (
 -- -----------------------------------------------------------------------------
 -- GroupTypes or MetaGroups, contains the common information for certain types
 -- of Groups, the Common information is the allowed Permissions or
--- functionionality. All Groups in the IW has to be assigned an overall type.
+-- functionality. All Groups in the IW has to be assigned an overall type.
 --   Please note, that certain GroupType, are designed so any given user may
 -- only be member of 1 (one), others are open, so users can be part of many.
 -- The restricted groups are: Administration, Members, National and Sar - In
@@ -195,7 +195,7 @@ create table grouptypes (
 -- consists of a type that links the functionality in. Since Groups are so
 -- fundamental for all purposes, the actual Id is never communicated out,
 -- instead has an External Id assigned, that is a standard UUID value.
---   The Group hiearchy starts with a Members Group, who all have the
+--   The Group hierarchy starts with a Members Group, who all have the
 -- Administration Group as their parent. The Administrator Group is purely
 -- there for system purposes, and can only perform the operations associated
 -- with setting up the system.
@@ -203,9 +203,9 @@ create table grouptypes (
 -- Group, which is used to link in data. This way, the Business Logic can be
 -- simplified significantly, since no distinctions has to be made when looking
 -- up data.
---   All Groups also have 2 Mailinglists, a public and a private. The table
+--   All Groups also have 2 Mailing lists, a public and a private. The table
 -- doesn't hold both names, only the first part (field: list_name), that is
--- then expanded when creating or updating the mailinglists, so the
+-- then expanded when creating or updating the mailing lists, so the
 -- "@iaeste.org" (public) or "@iaeste.net" (private) is appended. The only
 -- groups without a mailinglist, are the Private groups, since users have a
 -- public e-mail alias assigned.
@@ -221,6 +221,7 @@ create table groups (
     id                  integer default nextval('group_sequence'),
     external_id         varchar(36),
     parent_id           integer,
+    external_parent_id  varchar(36),
     grouptype_id        integer,
     group_name          varchar(50),
     full_name           varchar(125),
@@ -231,6 +232,8 @@ create table groups (
     public_list         boolean default false,
     status              varchar(10) default 'ACTIVE',
     monitoring_level    varchar(10) default 'NONE',
+    private_list_reply  varchar(20) default 'REPLY_TO_LIST',
+    public_list_reply   varchar(20) default 'REPLY_TO_SENDER',
     old_iw3_id          integer,
     modified            timestamp default now(),
     created             timestamp default now(),
@@ -244,7 +247,7 @@ create table groups (
     /* Unique Constraints */
     constraint group_unique_external_id unique (external_id),
     constraint group_unique_old_iw3_id  unique (old_iw3_id),
-    -- Required, since we otherwise cannot guarantee that mailinglists are unique
+    -- Required, since we otherwise cannot guarantee that mailing lists are unique
     constraint group_unique_full_name   unique (full_name),
     -- Required, to avoid that multiple identical Groups are being added. Since
     -- the Unique Constraint won't apply for null values, it means that it
@@ -254,24 +257,26 @@ create table groups (
     --constraint group_unique_name_parent unique (group_name, parent_id),
 
     /* Not Null & Other Constraints */
-    constraint group_notnull_id           check (id is not null),
-    constraint group_notnull_external_id  check (external_id is not null),
-    constraint group_notnull_grouptype_id check (grouptype_id is not null),
-    constraint group_notnull_name         check (group_name is not null),
-    constraint group_parent_before_id     check (parent_id <= id),
-    constraint group_private_list         check (private_list is not null),
-    constraint group_public_list          check (public_list is not null),
-    constraint group_notnull_status       check (status is not null),
-    constraint group_monitoring_level     check (monitoring_level is not null),
-    constraint group_notnull_modified     check (modified is not null),
-    constraint group_notnull_created      check (created is not null)
+    constraint group_notnull_id            check (id is not null),
+    constraint group_notnull_external_id   check (external_id is not null),
+    constraint group_notnull_grouptype_id  check (grouptype_id is not null),
+    constraint group_notnull_name          check (group_name is not null),
+    constraint group_parent_before_id      check (parent_id <= id),
+    constraint group_private_list          check (private_list is not null),
+    constraint group_public_list           check (public_list is not null),
+    constraint group_notnull_status        check (status is not null),
+    constraint group_monitoring_level      check (monitoring_level is not null),
+    constraint group_notnull_private_reply check (private_list_reply is not null),
+    constraint group_notnull_public_reply  check (public_list_reply is not null),
+    constraint group_notnull_modified      check (modified is not null),
+    constraint group_notnull_created       check (created is not null)
 );
 
 
 -- =============================================================================
 -- Roles
 -- -----------------------------------------------------------------------------
--- A User is asscociated to a Group with a Role, the Role serves as a "hat" for
+-- A User is associated to a Group with a Role, the Role serves as a "hat" for
 -- the User in the context of the Group. The role is only needed to hold the
 -- collection of permissions, that a User may perform on the data belonging to
 -- the Group.
@@ -514,9 +519,9 @@ create table users (
 -- All actions against the IWS, must be made with an active Session. The Session
 -- is closely linked to a person, and only a single active session can exists at
 -- the time.
---   The SessionKey is generated with a cryptographical checksum, that contains
+--   The SessionKey is generated with a cryptographic checksum, that contains
 -- both some unique entropy, and some user information. The created timestamp is
--- set when the user is logging in, and the modified is set everytime the user
+-- set when the user is logging in, and the modified is set every time the user
 -- makes a request.
 -- =============================================================================
 create sequence session_sequence start with 1 increment by 1;
@@ -586,7 +591,7 @@ create table requests (
 -- Although this is just a "relation" table - certain additional information is
 -- crammed into it, since a users association with a group also include
 -- information about how the user may access data, and how the system should
--- deal with information sent to the mailinglists of the Group.
+-- deal with information sent to the mailing lists of the Group.
 --   Further, a user can remain on the Group, but with the status  "Suspended",
 -- meaning that the user cannot access anything, but the status can be restored
 -- together with all other settings, if so desired.
@@ -714,7 +719,7 @@ create table folders (
 -- files were stored with "classic" file system information, so it was possible
 -- to browse the file structure. In IWS, the files are considered attachments to
 -- other Objects, so only relevant information is stored.
---   Relevant information is file name, size, mimetype and ownership, together
+--   Relevant information is file name, size, MIME type and ownership, together
 -- with some additional information that may or may nor be relevant depending on
 -- the context. The file itself is stored compressed, so the stored size will
 -- differ from the provided file size. The checksum is added to ensure that the
@@ -794,7 +799,7 @@ create table filedata (
 -- dynamic listing, we need a relation table to handle it. To avoid that
 -- multiple tables exists for each Objects that can contain the Attachments, a
 -- single Attachment table is made.
---   Attachments are considered binany, either they are there or they aren't.
+--   Attachments are considered binary, either they are there or they aren't.
 -- There is no state for an attachment, hence there is only a Created timestamp,
 -- no Modified! Further, as the attachment is dynamic in nature, the Table &
 -- Record which the Attachment belongs to are free fields. Mostly just use for

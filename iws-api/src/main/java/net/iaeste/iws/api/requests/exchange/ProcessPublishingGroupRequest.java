@@ -86,6 +86,9 @@ public final class ProcessPublishingGroupRequest extends AbstractVerification {
 
         isNotNull(validation, "publishingGroup", publishingGroup);
         isNotNull(validation, "deletePublishingGroup", deletePublishingGroup);
+        if (publishingGroup != null) {
+            validation.putAll(publishingGroup.validate());
+        }
 
         return validation;
     }

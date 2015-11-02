@@ -754,7 +754,7 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
                 "  where u.status = 'ACTIVE'" +
                 "  group by" +
                 "    u.id)" +
-                "select id " +
+                "select id, latest " +
                 "from activity " +
                 "where latest is null" +
                 "   or latest < :date";
@@ -767,24 +767,49 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
         // Our native query is returning a list of UserId's. These must be read
         // out and converted so we can use them to fetch the actual User
         // entities, which we are interested in.
-        final List<Object> result = query.getResultList();
+        final List<Object[]> result = query.getResultList();
         final Collection<Long> userIds = new ArrayList<>(result.size());
-        for (final Object objects : result) {
-            userIds.add(((Integer) objects).longValue());
+        final Collection<Long> unusedUIds = new ArrayList<>(0);
+        for (final Object[] record : result) {
+            // The latest timestamp is set if the user have logged in, so we can
+            // simply apply a null check and leave it with that :-)
+            if (record[1] != null) {
+                userIds.add(((Integer) record[0]).longValue());
+            } else {
+                unusedUIds.add(((Integer) record[0]).longValue());
+            }
         }
 
         // Okay, now we have a list of UserId's, which we can use to retrieve
         // the actual User Entities
-        final List<UserEntity> users;
-        if (!userIds.isEmpty()) {
-            final Query userQuery = entityManager.createNamedQuery("user.findUsersByIds");
-            userQuery.setParameter("ids", userIds);
-            users = userQuery.getResultList();
-        } else {
-            users = new ArrayList<>(0);
+        final List<UserEntity> users = findUsersById(userIds);
+
+        // Now, if we have some unused Id's, then it is important to check these
+        // as well, to see if they fall into the unused category. We apply the
+        // same rule, but to the Created timestamp.
+        final List<UserEntity> unusedUsers = findUsersById(unusedUIds);
+        for (final UserEntity user : unusedUsers) {
+            if (user.getCreated().before(date)) {
+                users.add(user);
+            }
         }
 
         return users;
+    }
+
+    private List<UserEntity> findUsersById(final Collection<Long> userIds) {
+        final List<UserEntity> result;
+
+        if (!userIds.isEmpty()) {
+            final Query userQuery = entityManager.createNamedQuery("user.findUsersByIds");
+            userQuery.setParameter("ids", userIds);
+
+            result = userQuery.getResultList();
+        } else {
+            result = new ArrayList<>(0);
+        }
+
+        return result;
     }
 
     /**

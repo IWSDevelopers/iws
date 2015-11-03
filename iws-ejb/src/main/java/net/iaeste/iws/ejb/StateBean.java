@@ -16,6 +16,7 @@ package net.iaeste.iws.ejb;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.UserStatus;
+import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.common.configuration.Settings;
@@ -25,9 +26,12 @@ import net.iaeste.iws.core.services.AccountService;
 import net.iaeste.iws.ejb.cdi.IWSBean;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
+import net.iaeste.iws.persistence.ExchangeDao;
 import net.iaeste.iws.persistence.entities.SessionEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
+import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
 import net.iaeste.iws.persistence.jpa.AccessJpaDao;
+import net.iaeste.iws.persistence.jpa.ExchangeJpaDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -89,6 +93,7 @@ public class StateBean {
     @Resource private TimerService timerService;
 
     private ActiveSessions activeSessions = null;
+    private ExchangeDao exchangeDao = null;
     private AccountService service = null;
     private AccessDao accessDao = null;
 
@@ -116,6 +121,7 @@ public class StateBean {
         // First, we need to initialize our dependencies
         activeSessions = ActiveSessions.getInstance(settings);
         accessDao = new AccessJpaDao(entityManager);
+        exchangeDao = new ExchangeJpaDao(entityManager);
         service = new AccountService(settings, accessDao, notifications);
 
         // Second, we're registering the Timer Service. This will ensure that the
@@ -166,7 +172,10 @@ public class StateBean {
         // information, see the Trac ticket #900.
         removeDeprecatedSessions();
 
-        // Second, we'll deal with accounts which are inactive. For more
+        // Second, we'll handle Offers which have expired.
+        runExpiredOfferProcessing();
+
+        // Finally, we'll deal with accounts which are inactive. For more
         // information, see the Trac ticket #720.
         final int expired = removeUnusedNewAccounts();
         final int suspended = suspendInactiveAccounts(authentication);
@@ -200,6 +209,32 @@ public class StateBean {
         }
 
         return count;
+    }
+
+    /**
+     * Runs the Offer Expiration. Although the state for an Offer is part of
+     * both the Offer & Offer Shares, only the Offer itself is updated, thus
+     * avoiding that any information is lost.<br />
+     * Offers expire if the Nomination Deadline passed. Please see Trac Ticket
+     * #1020 for more on the discussion. Please note, that although the code
+     * here is passing an auditing, there has been a problem with Offers that
+     * has suddenly expired, please see Trac ticket #1052 for details. For this
+     * reason, the method is now having increased logging.
+     */
+    private void runExpiredOfferProcessing() {
+        try {
+            final List<OfferEntity> offers = exchangeDao.findExpiredOffers(new java.util.Date());
+            LOG.info("Found {} Offers to expire.", offers.size());
+
+            for (final OfferEntity offer : offers) {
+                offer.setStatus(OfferState.EXPIRED);
+
+                accessDao.persist(offer);
+                LOG.info("Offer {} has expired.", offer.getRefNo());
+            }
+        } catch (IllegalArgumentException | IWSException e) {
+            LOG.error("Error in processing expired offers", e);
+        }
     }
 
     /**

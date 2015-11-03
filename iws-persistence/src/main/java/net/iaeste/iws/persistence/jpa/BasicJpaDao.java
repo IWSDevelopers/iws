@@ -205,7 +205,7 @@ public class BasicJpaDao implements BasicDao {
     public List<PermissionRoleEntity> findRoles(final GroupEntity group) {
         final Query query = entityManager.createNamedQuery("permissionRole.findByRoleToGroup");
         //final Query query = entityManager.createNamedQuery("role.findByGroup");
-        final Long cid = group.getCountry() != null ? group.getCountry().getId() : 0;
+        final Long cid = (group.getCountry() != null) ? group.getCountry().getId() : 0;
         query.setParameter("cid", cid);
         query.setParameter("gid", group.getId());
 
@@ -379,7 +379,7 @@ public class BasicJpaDao implements BasicDao {
     private MonitoringLevel findMonitoringLevel(final IWSEntity entity, final GroupEntity group) {
         final MonitoringLevel entityLevel = monitoringProcessor.findClassMonitoringLevel(entity);
         final MonitoringLevel groupLevel;
-        if (group != null && group.getMonitoringLevel() != null) {
+        if ((group != null) && (group.getMonitoringLevel() != null)) {
             groupLevel = group.getMonitoringLevel();
         } else {
             groupLevel = MonitoringLevel.NONE;
@@ -410,6 +410,7 @@ public class BasicJpaDao implements BasicDao {
         if (entity instanceof Externable) {
             if (((Externable<?>) entity).getExternalId() == null) {
                 ((Externable<?>) entity).setExternalId(UUID.randomUUID().toString());
+                ((Externable<?>) entity).setModified(new Date());
             }
         }
     }

@@ -103,8 +103,7 @@ public final class CommitteeController extends CommonController implements Commi
             final Authentication authentication = verifyAccess(token, Permission.PROCESS_COMMITTEE);
 
             final CommitteeService service = factory.prepareCommitteeService();
-            service.processCommittee(authentication, request);
-            response = new CommitteeResponse();
+            response = service.processCommittee(authentication, request);
         } catch (IWSException e) {
             // Generally, Exceptions should always be either logged or rethrown.
             // In our case, we're transforming the Exception into an Error

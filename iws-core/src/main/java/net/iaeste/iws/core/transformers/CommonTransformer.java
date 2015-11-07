@@ -274,28 +274,22 @@ public final class CommonTransformer {
     }
 
     static java.util.Date readFromDateFromPeriod(final DatePeriod period) {
-        return period != null ? convert(period.getFromDate()) : null;
+        return (period != null) ? convert(period.getFromDate()) : null;
     }
 
     static java.util.Date readToDateFromPeriod(final DatePeriod period) {
-        return period != null ? convert(period.getToDate()) : null;
+        return (period != null) ? convert(period.getToDate()) : null;
     }
 
     static java.util.Date convert(final Date date) {
-        return date != null ? date.toDate() : null;
+        return (date != null) ? date.toDate() : null;
     }
 
     static Date convert(final java.util.Date date) {
-        return date != null ? new Date(date) : null;
+        return (date != null) ? new Date(date) : null;
     }
 
     static String convertToYesNo(final Boolean value) {
-        final String result;
-        if (value != null && value) {
-            result = "Yes";
-        } else {
-            result = "No";
-        }
-        return result;
+        return ((value != null) && value) ? "Yes" : "No";
     }
 }

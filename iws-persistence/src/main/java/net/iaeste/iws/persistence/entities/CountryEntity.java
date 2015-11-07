@@ -52,7 +52,10 @@ import java.util.Date;
                         "where lower(c.countryName) = lower(:name)"),
         @NamedQuery(name = "country.findByCountryCode",
                 query = "select c from CountryEntity c " +
-                        "where c.countryCode = :code")
+                        "where c.countryCode = :code"),
+        @NamedQuery(name = "country.findByCountryCodes",
+                query = "select c from CountryEntity c " +
+                        "where c.countryCode in :codes")
 })
 @Entity
 @Table(name = "countries")

@@ -48,7 +48,7 @@ public final class CountryService {
 
     /**
      * Handles the processing of Country Objects, i.e. either saving new or
-     * updating existing countries. The method makes two lookups initially, to
+     * updating existing countries. The method makes two lookup initially, to
      * verify that the Country is not going to conflict with existing Countries,
      * example of conflicts, is that someone is trying to rename an existing
      * country to something that already exists.
@@ -77,7 +77,7 @@ public final class CountryService {
     }
 
     /**
-     * Retrieves a list of Countries, matching the criterias from the Request
+     * Retrieves a list of Countries, matching the criteria's from the Request
      * Object, and returns it.
      *
      * @param request Fetch Country Request information
@@ -89,39 +89,60 @@ public final class CountryService {
         final Membership membership = request.getMembership();
 
         final List<Country> countries;
+
+        // First case - if we have the Country Type Committees, then we expect
+        // to have the NS information present in the result. So for this type
+        // of requests, we must use the View. If the type of request is for
+        // Countries, then we will look broader and skip NS lookup, so for
+        // those we will use the Entity directly.
         if (request.getCountryType() == CountryType.COMMITTEES) {
             final List<CountryView> entities;
 
             if (membership != null) {
                 entities = dao.getCountries(membership, page);
             } else if ((countryCodes != null) && !countryCodes.isEmpty()) {
-                entities = dao.getCountries(countryCodes, page);
+                entities = dao.getMemberCountries(countryCodes, page);
             } else {
                 entities = dao.getAllCountries(page);
             }
 
             countries = transform(entities);
         } else {
-            countries = retrieveAllCountries();
+            if ((countryCodes != null) && !countryCodes.isEmpty()) {
+                countries = transformEntityList(dao.getCountries(countryCodes, page));
+            } else {
+                countries = retrieveAllCountries();
+            }
         }
 
         return new FetchCountryResponse(countries);
     }
 
     private List<Country> retrieveAllCountries() {
-        final List<Country> countries;
         final List<CountryEntity> entities = dao.findAllCountries();
 
-        countries = new ArrayList<>(entities.size());
+        final List<Country> countries = new ArrayList<>(entities.size());
         for (final CountryEntity entity : entities) {
             countries.add(CommonTransformer.transform(entity));
         }
+
         return countries;
     }
 
     // =========================================================================
     // Transformers
     // =========================================================================
+
+    private static List<Country> transformEntityList(final List<CountryEntity> entities) {
+        final List<Country> countries = new ArrayList<>(entities.size());
+
+        for (final CountryEntity entity : entities) {
+            final Country country = CommonTransformer.transform(entity);
+            countries.add(country);
+        }
+
+        return countries;
+    }
 
     /**
      * Returns a new list of Country Objects, matching the found Country View
@@ -153,7 +174,7 @@ public final class CountryService {
         final Country country = new Country();
 
         // Note, ignored lines are either not mapped in (additional details), or
-        // is mapped in via different views (NS & Listname) since they are not
+        // is mapped in via different views (NS & ListName) since they are not
         // uniquely distinguishable as Cooperating Institutions will have more
         // than one NS & list
         country.setCountryCode(view.getCountry().getCountryCode());
@@ -172,10 +193,10 @@ public final class CountryService {
     }
 
     /**
-     * Transforms a Country Object to the corresponsing Entity. Not all
+     * Transforms a Country Object to the corresponding Entity. Not all
      * information from the Country Object is mapped into the Entity, this
-     * includes the National Secretary and Listnamee - these are managed via
-     * the Group functionaity.
+     * includes the National Secretary and ListName - these are managed via
+     * the Group functionality.
      *
      * @param country Country Object
      * @return Country Entity

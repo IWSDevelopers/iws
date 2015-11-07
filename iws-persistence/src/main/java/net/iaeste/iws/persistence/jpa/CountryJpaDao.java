@@ -59,12 +59,32 @@ public final class CountryJpaDao extends BasicJpaDao implements CountryDao {
      * {@inheritDoc}
      */
     @Override
-    public List<CountryView> getCountries(final List<String> countryCodes, final Paginatable page) {
-        final Query query = entityManager.createNamedQuery("view.findCountriesByCountryCode");
+    public List<CountryEntity> getCountries(final List<String> countryCodes, final Paginatable page) {
+        // First, let's ensure that the list of Country Codes are all Upper Case
         final List<String> codes = new ArrayList<>(countryCodes.size());
         for (final String code : countryCodes) {
             codes.add(toUpper(code));
         }
+
+        final Query query = entityManager.createNamedQuery("country.findByCountryCodes");
+        query.setFirstResult((page.pageNumber() - 1) * page.pageSize());
+        query.setMaxResults(page.pageSize());
+        query.setParameter("codes", codes);
+
+        return query.getResultList();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<CountryView> getMemberCountries(List<String> countryCodes, Paginatable page) {
+        final List<String> codes = new ArrayList<>(countryCodes.size());
+        for (final String code : countryCodes) {
+            codes.add(toUpper(code));
+        }
+
+        final Query query = entityManager.createNamedQuery("view.findCountriesByCountryCode");
         query.setParameter("codes", codes);
 
         return fetchList(query, page);

@@ -26,8 +26,6 @@ import net.iaeste.iws.api.enums.GroupStatus;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.MailReply;
 import net.iaeste.iws.api.enums.Membership;
-import net.iaeste.iws.api.enums.UserStatus;
-import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.api.requests.CommitteeRequest;
@@ -60,7 +58,6 @@ import net.iaeste.iws.persistence.exceptions.PersistenceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -152,7 +149,7 @@ public final class CommitteeService extends CommonService<CommitteeDao> {
             case UPDATE:
             case MERGE:
             default:
-                throw new NotImplementedException("Method pending implementation.");
+                throw new NotImplementedException("Method not implemented, due to missing specifications.");
         }
 
         final UserGroup userGroup = AdministrationTransformer.transform(nsStaff);
@@ -210,35 +207,23 @@ public final class CommitteeService extends CommonService<CommitteeDao> {
         return nsStaff;
     }
 
-    private GroupEntity createGroup(final Authentication authentication, final GroupEntity parent, final CountryEntity country, final GroupType type, final String groupName, final String committeeName) {
+    private GroupEntity createGroup(final Authentication authentication, final GroupEntity parent, final CountryEntity country, final GroupType type, final String groupName, final String institution) {
         final GroupEntity group = new GroupEntity();
         group.setGroupName(groupName);
-        group.setFullName(prepareGroupDescription(type, committeeName));
-        group.setDescription(group.getFullName());
+        group.setFullName(groupName + ' ' + type.getDescription());
+        group.setDescription(country.getCountryName() + ' ' + institution);
         group.setGroupType(dao.findGroupTypeByType(type));
         group.setParentId(parent.getId());
         group.setExternalParentId(parent.getExternalId());
+        group.setListName(toLower(groupName.replace(", ", "_")));
+        group.setPublicList(type.getMayHavePublicMailinglist());
+        group.setPrivateList(type.getMayHavePrivateMailinglist());
         group.setPrivateReplyTo(MailReply.REPLY_TO_LIST);
         group.setPublicReplyTo(MailReply.REPLY_TO_SENDER);
         group.setCountry(country);
         dao.persist(authentication, group);
 
         return group;
-    }
-
-    private static String prepareGroupDescription(final GroupType type, final String fullName) {
-        final String description;
-
-        switch (type) {
-            case MEMBER:
-            case NATIONAL:
-                description = fullName + ' ' + type.getDescription();
-                break;
-            default:
-                description = fullName;
-        }
-
-        return description;
     }
 
     /**
@@ -346,7 +331,7 @@ public final class CommitteeService extends CommonService<CommitteeDao> {
         final RoleEntity owner = dao.findRole(InternalConstants.ROLE_OWNER);
         final UserEntity user = new UserEntity();
         // First, the Password. If no password is specified, then we'll generate
-        // one. Regardlessly, the password is set in the UserEntity, for the
+        // one. Regardless, the password is set in the UserEntity, for the
         // Notification
         final String password = PasswordGenerator.generatePassword();
 
@@ -551,19 +536,20 @@ public final class CommitteeService extends CommonService<CommitteeDao> {
                 final CountryEntity country = staff.getCountry();
                 final GroupEntity member = dao.findMemberGroupForStaff(staff);
 
-                // all Members of the Committee will have status Suspended, so
-                // we start by deleting them
-                deleteSuspendedMembers(authentication, member);
-
                 // Now, we will attempt to delete all Subgroups, doing so will
                 // only set the status flag, as the only data currently present
                 // in the system is Offers and derived data, which we cannot
-                // delete
+                // delete, User accounts will automatically ve cleaned up by the
+                // StateBean.
                 deleteGroupStructure(authentication, member);
 
-                // Finally, set status of the Country to former member
-                country.setMembership(Membership.FORMER_MEMBER);
-                dao.persist(authentication, country);
+                // Finally, set status of the Country to former member, but
+                // only if no other Committees exist for the Country.
+                List<GroupEntity> staffs = dao.findAllCommitteesForCountry(country);
+                if (staffs.isEmpty()) {
+                    country.setMembership(Membership.FORMER_MEMBER);
+                    dao.persist(authentication, country);
+                }
             } else {
                 throw new IllegalActionException("Cannot delete an active Committee.");
             }
@@ -604,59 +590,6 @@ public final class CommitteeService extends CommonService<CommitteeDao> {
         dao.persist(authentication, group);
     }
 
-    private void deletePerson(final UserEntity user) {
-        if (user.getPerson() != null) {
-            if (user.getPerson().getAddress() != null) {
-                dao.delete(user.getPerson().getAddress());
-            }
-            dao.delete(user.getPerson());
-        }
-    }
-
-    private void deleteSuspendedMembers(final Authentication authentication, final GroupEntity group) {
-        final List<UserGroupEntity> UserGroupEntity = dao.findGroupMembers(group, EnumSet.of(UserStatus.SUSPENDED));
-
-        for (final UserGroupEntity entity : UserGroupEntity) {
-            final UserEntity user = entity.getUser();
-            try {
-                deletePrivateData(authentication, user);
-            } catch (IWSException e) {
-                LOG.warn(formatLogMessage(authentication, "Unable to delete the Account for %s %s <%s>, reason: %s", user.getFirstname(), user.getLastname(), user.getUsername(), e.getMessage()));
-            }
-        }
-    }
-
-    public void deletePrivateData(final Authentication authentication, final UserEntity user) {
-        // First, delete the Sessions, they are linked to the User account, and
-        // not the users private Group
-        final int deletedSessions = dao.deleteSessions(user);
-
-        // Secondly, delete all data associated with the user, meaning the users
-        // private Group
-        final GroupEntity group = dao.findPrivateGroup(user);
-        dao.delete(group);
-
-        // Delete the private data
-        deletePerson(user);
-
-        // Now, remove and System specific data from the Account, and set the
-        // Status to deleted, thus preventing the account from being used
-        // anymore
-        user.setCode(null);
-        // We remove the Username from the account as well, since it may
-        // otherwise block if the user later on create a new Account. A
-        // deleted account should remaing deleted - and we do not wish to
-        // drop the Unique Constraint in the database.
-        user.setUsername(UUID.randomUUID() + "@iaeste.com");
-        user.setPassword(null);
-        user.setSalt(null);
-        user.setPerson(null);
-        user.setStatus(UserStatus.DELETED);
-        dao.persist(user);
-
-        LOG.info(formatLogMessage(authentication, "Deleted all private data for user %s, including %d sessions.", user, deletedSessions));
-    }
-
     // =========================================================================
     // Fetch & Process International Group logic
     // =========================================================================
@@ -664,7 +597,7 @@ public final class CommitteeService extends CommonService<CommitteeDao> {
     /**
      * Retrieves a List of International Groups with their respective Owners or
      * Coordinators. The list will consists of those International Groups,
-     * matching the requrested, i.e. Active and/or Suspended.
+     * matching the requested, i.e. Active and/or Suspended.
      *
      * @param request Request Object
      * @return List of International Groups, matching the request

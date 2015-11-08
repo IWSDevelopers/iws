@@ -232,7 +232,9 @@ public class CommitteeJpaDao extends BasicJpaDao implements CommitteeDao {
     public List<GroupEntity> findAllCommitteesForCountry(final CountryEntity country) {
         final String jql =
                 "select g from GroupEntity g " +
-                "where g.country.id = :cid";
+                "where g.country.id = :cid" +
+                "  and g.status <> " + EntityConstants.GROUP_STATUS_DELETED +
+                "  and g.groupType.grouptype = " + EntityConstants.GROUPTYPE_NATIONAL;
 
         final Query query = entityManager.createQuery(jql);
         query.setParameter("cid", country.getId());
@@ -303,11 +305,11 @@ public class CommitteeJpaDao extends BasicJpaDao implements CommitteeDao {
         final String jql =
                 "select g from GroupEntity g " +
                 "where g.status in :statuses" +
-                "  and g.id = :gpid";
+                "  and g.parentId = :gid";
 
         final Query query = entityManager.createQuery(jql);
         query.setParameter("statuses", EnumSet.of(GroupStatus.ACTIVE, GroupStatus.SUSPENDED));
-        query.setParameter("gpid", group.getId());
+        query.setParameter("gid", group.getId());
 
         return query.getResultList();
     }

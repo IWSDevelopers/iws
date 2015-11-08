@@ -334,12 +334,13 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
     }
 
     /**
-     * Method for processing publishing (sharing) of offer. Passing empty list of groups means complete unsharing
-     * of the offer. Otherwise the offer is unshared for groups that are not present in the request and shared to
+     * Method for processing publishing (sharing) of offer. Passing empty list
+     * of groups means complete unsharing of the offer. Otherwise the offer is
+     * unshared for groups that are not present in the request and shared to
      * such new groups in request for which there is no OfferGroupEntity.
      *
-     * @param authentication
-     * @param request
+     * @param authentication User & Group information
+     * @param request        Publish Offer Request information
      */
     public void processPublishOffer(final Authentication authentication, final PublishOfferRequest request) {
         //verify Group exist for given groupId
@@ -403,7 +404,7 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
 
                 if (!keepOfferGroups.isEmpty()) {
                     for (final OfferGroupEntity offerGroup : keepOfferGroups) {
-                        if (offerGroup.getStatus() != oldOfferState && isOtherCurrentOfferGroupStateHigher(newOfferState, offerGroup.getStatus())) {
+                        if ((offerGroup.getStatus() != oldOfferState) && isOtherCurrentOfferGroupStateHigher(newOfferState, offerGroup.getStatus())) {
                             newOfferState = offerGroup.getStatus();
                         }
                     }
@@ -418,6 +419,7 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
 
             if (request.getNominationDeadline() != null) {
                 if (request.getNominationDeadline().isBefore(new Date())) {
+                    LOG.info("Offer Nomination Deadline for {} is set to the past, so we are setting the Offer to Expired.", offer.getRefNo());
                     offer.setStatus(OfferState.EXPIRED);
                 }
                 offer.setNominationDeadline(request.getNominationDeadline().toDate());

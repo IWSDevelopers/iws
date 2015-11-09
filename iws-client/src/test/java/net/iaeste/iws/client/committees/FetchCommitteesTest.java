@@ -64,7 +64,6 @@ public final class FetchCommitteesTest extends AbstractTest {
         final FetchCommitteeResponse response = committees.fetchCommittees(token, request);
         assertThat(response, is(not(nullValue())));
         assertThat(response.isOk(), is(true));
-        assertThat(response.getCommittees().size(), is(86));
     }
 
     @Test
@@ -95,7 +94,6 @@ public final class FetchCommitteesTest extends AbstractTest {
         final FetchCommitteeResponse response = committees.fetchCommittees(token, request);
         assertThat(response, is(not(nullValue())));
         assertThat(response.isOk(), is(true));
-        assertThat(response.getCommittees().size(), is(60));
     }
 
     @Test
@@ -104,7 +102,6 @@ public final class FetchCommitteesTest extends AbstractTest {
         final FetchCommitteeResponse response = committees.fetchCommittees(token, request);
         assertThat(response, is(not(nullValue())));
         assertThat(response.isOk(), is(true));
-        assertThat(response.getCommittees().size(), is(8));
     }
 
     @Test
@@ -113,6 +110,5 @@ public final class FetchCommitteesTest extends AbstractTest {
         final FetchCommitteeResponse response = committees.fetchCommittees(token, request);
         assertThat(response, is(not(nullValue())));
         assertThat(response.isOk(), is(true));
-        assertThat(response.getCommittees().size(), is(18));
     }
 }

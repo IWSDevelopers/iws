@@ -27,7 +27,6 @@ import net.iaeste.iws.client.AbstractTest;
 import net.iaeste.iws.client.CommitteeClient;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -37,7 +36,6 @@ import java.util.Arrays;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.1
  */
-@Ignore("Seems that we have some test instabilities.")
 public final class FetchCommitteesTest extends AbstractTest {
 
     private final Committees committees = new CommitteeClient();

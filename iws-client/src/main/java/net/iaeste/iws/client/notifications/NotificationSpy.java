@@ -34,7 +34,6 @@ import java.util.List;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
- * @noinspection StaticNonFinalField, SynchronizationOnStaticField
  */
 public final class NotificationSpy implements Notifications {
 
@@ -132,7 +131,7 @@ public final class NotificationSpy implements Notifications {
     }
 
     /**
-     * Returns the number of Notiications currently being held in this Spy.
+     * Returns the number of Notifications currently being held in this Spy.
      *
      * @param types If defined, then it'll return number of matching messages
      * @return Number of Notifications in the Spy
@@ -160,7 +159,7 @@ public final class NotificationSpy implements Notifications {
      * empty.
      *
      * @param types If defined, then it'll fetch the first matching type
-     * @return First Notitication from the Stack or null if stack is empty
+     * @return First Notification from the Stack or null if stack is empty
      */
     public NotificationMessage getNext(final NotificationType... types) {
         NotificationMessage message = null;

@@ -24,6 +24,8 @@ import net.iaeste.iws.api.Committees;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.Country;
 import net.iaeste.iws.api.dtos.Group;
+import net.iaeste.iws.api.dtos.User;
+import net.iaeste.iws.api.dtos.UserGroup;
 import net.iaeste.iws.api.enums.Action;
 import net.iaeste.iws.api.enums.CountryType;
 import net.iaeste.iws.api.enums.GroupType;
@@ -39,12 +41,14 @@ import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.client.AbstractTest;
 import net.iaeste.iws.client.AdministrationClient;
 import net.iaeste.iws.client.CommitteeClient;
+import net.iaeste.iws.common.notification.NotificationType;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -64,6 +68,7 @@ public final class ProcessCommitteeTest extends AbstractTest {
     public void setup() {
         // We have configured Australia as a member of the Board
         token = login("australia@iaeste.au", "australia");
+        spy.clear();
     }
 
     /**
@@ -141,10 +146,6 @@ public final class ProcessCommitteeTest extends AbstractTest {
         assertThat(failedCreateResponse.getMessage(), is("Cannot create a new Cooperating Institution for a Member Country."));
     }
 
-    // =========================================================================
-    // Negative Testing of Committee Processing
-    // =========================================================================
-
     @Test
     public void testCreateCommitteeInvalidCountry() {
         final CommitteeRequest request = new CommitteeRequest();
@@ -197,12 +198,150 @@ public final class ProcessCommitteeTest extends AbstractTest {
     }
 
     // =========================================================================
-    // Testing Update Committee
+    // Testing NS Change of a Committee
     // =========================================================================
 
-    // =========================================================================
-    // Testing Merge Committee
-    // =========================================================================
+    @Test
+    public void testChangeCommitteeNS() {
+        final CommitteeResponse committee = createCommittee("AC", "Alan", "Miller", "AM");
+
+        // We need to make sure that the existing account is also active, so
+        // we will activate it.
+        final String activationCode = readCode(NotificationType.ACTIVATE_NEW_USER);
+        final Fallible activateResponse = administration.activateUser(activationCode);
+        assertThat(activateResponse.isOk(), is(true));
+
+        // Let's try to set the NS to a new User.
+        final CommitteeRequest request1 = new CommitteeRequest();
+        request1.setAction(Action.CHANGE_NS);
+        request1.setNationalCommittee(committee.getCommittee().getGroup());
+        request1.setFirstname("Bob");
+        request1.setLastname("Whitehead");
+        request1.setUsername("Bob@Whitehead.com");
+        final CommitteeResponse response1 = committees.processCommittee(token, request1);
+        assertThat(response1.isOk(), is(true));
+
+        // and now revert the NS
+        final CommitteeRequest request2 = new CommitteeRequest();
+        request2.setAction(Action.CHANGE_NS);
+        request2.setNationalCommittee(committee.getCommittee().getGroup());
+        request2.setNationalSecretary(committee.getCommittee().getUser());
+        final CommitteeResponse response2 = committees.processCommittee(token, request2);
+        assertThat(response2.isOk(), is(true));
+    }
+
+    @Test
+    public void testChangingNSofInvalidCommittee() {
+        final CommitteeRequest request = new CommitteeRequest();
+        request.setNationalCommittee(prepareInvalidGroup(GroupType.NATIONAL));
+        request.setNationalSecretary(prepareInvalidUser());
+
+        final CommitteeResponse response = committees.processCommittee(token, request);
+        assertThat(response.isOk(), is(false));
+        assertThat(response.getError(), is(IWSErrors.ILLEGAL_ACTION));
+        assertThat(response.getMessage(), is("Attempting to change National Secretary non-existing Committee."));
+    }
+
+    @Test
+    public void testChangingNsForSuspendedCommittee() {
+        final UserGroup committee = findCommittees(Membership.ASSOCIATE_MEMBER, 0);
+        final Group group = committee.getGroup();
+
+        // We have to suspend a committee before we can run this test.
+        final CommitteeRequest suspendRequest = new CommitteeRequest();
+        suspendRequest.setAction(Action.SUSPEND);
+        suspendRequest.setNationalCommittee(group);
+        final CommitteeResponse suspendResponse = committees.processCommittee(token, suspendRequest);
+        assertThat(suspendResponse.isOk(), is(true));
+
+        // Now run the actual test
+        final CommitteeRequest request = new CommitteeRequest();
+        request.setAction(Action.CHANGE_NS);
+        request.setNationalCommittee(group);
+        request.setNationalSecretary(prepareInvalidUser());
+        final CommitteeResponse response = committees.processCommittee(token, request);
+        assertThat(response.isOk(), is(false));
+        assertThat(response.getError(), is(IWSErrors.ILLEGAL_ACTION));
+        assertThat(response.getMessage(), is("Attempting to change National Secretary for a suspended Committee, is not allowed."));
+
+        // Wrap up the test with re-activating the committee.
+        final CommitteeRequest activateRequest = new CommitteeRequest();
+        activateRequest.setAction(Action.ACTIVATE);
+        activateRequest.setNationalCommittee(group);
+        final CommitteeResponse activateResponse = committees.processCommittee(token, activateRequest);
+        assertThat(activateResponse.isOk(), is(true));
+    }
+
+    @Test
+    public void testSetNsToSuspendedUser() {
+        // In our test database, the first Committee is Argentina, which have a
+        // suspended user as NS
+        final UserGroup committee = findCommittees(Membership.FULL_MEMBER, 0);
+
+        final CommitteeRequest request = new CommitteeRequest();
+        request.setAction(Action.CHANGE_NS);
+        request.setNationalCommittee(committee.getGroup());
+        request.setNationalSecretary(committee.getUser());
+
+        final CommitteeResponse response = committees.processCommittee(token, request);
+        assertThat(response.isOk(), is(false));
+        assertThat(response.getError(), is(IWSErrors.ILLEGAL_ACTION));
+        assertThat(response.getMessage(), is("National Secretary provided is not a valid User."));
+    }
+
+    @Test
+    public void testSetNsToExistingNs() {
+        final UserGroup committee = findCommittees(Membership.FULL_MEMBER, 1);
+
+        final CommitteeRequest request = new CommitteeRequest();
+        request.setAction(Action.CHANGE_NS);
+        request.setNationalCommittee(committee.getGroup());
+        request.setNationalSecretary(committee.getUser());
+
+        final CommitteeResponse response = committees.processCommittee(token, request);
+        assertThat(response.isOk(), is(false));
+        assertThat(response.getError(), is(IWSErrors.ILLEGAL_ACTION));
+        assertThat(response.getMessage(), is("Attempting to make existing National Secretary new National Secretary is not allowed."));
+    }
+
+    @Test
+    public void testSetNsToExistingUser1() {
+        // Tries to set the NS to a user which already exist with the given
+        // username in the system. Note, that the IWS is expected to fail, not
+        // because it is the same user, but because the username is already
+        // registered.
+        final UserGroup committee = findCommittees(Membership.FULL_MEMBER, 0);
+
+        final CommitteeRequest request = new CommitteeRequest();
+        request.setAction(Action.CHANGE_NS);
+        request.setNationalCommittee(committee.getGroup());
+        request.setFirstname(committee.getUser().getFirstname());
+        request.setLastname(committee.getUser().getLastname());
+        request.setUsername(committee.getUser().getUsername());
+
+        final CommitteeResponse response = committees.processCommittee(token, request);
+        assertThat(response.isOk(), is(false));
+        assertThat(response.getError(), is(IWSErrors.ILLEGAL_ACTION));
+        assertThat(response.getMessage(), is("Cannot create new National Secretary for existing User."));
+    }
+
+    @Test
+    public void testSetNsToExistingUser2() {
+        // This takes an existing user account from a different committee, and
+        // tries to set that as NS, which is illegal
+        final UserGroup committee1 = findCommittees(Membership.FULL_MEMBER, 0);
+        final UserGroup committee2 = findCommittees(Membership.FULL_MEMBER, 1);
+
+        final CommitteeRequest request = new CommitteeRequest();
+        request.setAction(Action.CHANGE_NS);
+        request.setNationalCommittee(committee1.getGroup());
+        request.setNationalSecretary(committee2.getUser());
+
+        final CommitteeResponse response = committees.processCommittee(token, request);
+        assertThat(response.isOk(), is(false));
+        assertThat(response.getError(), is(IWSErrors.ILLEGAL_ACTION));
+        assertThat(response.getMessage(), is("New National Secretary is not a member of the Committee."));
+    }
 
     // =========================================================================
     // Testing Upgrade Committee
@@ -439,6 +578,23 @@ public final class ProcessCommitteeTest extends AbstractTest {
         group.setPublicListReplyTo(MailReply.REPLY_TO_SENDER);
 
         return group;
+    }
+
+    private User prepareInvalidUser() {
+        final User user = new User();
+        user.setUserId(UUID.randomUUID().toString());
+
+        return user;
+    }
+
+    private UserGroup findCommittees(final Membership membership, final int index) {
+        final FetchCommitteeRequest request = new FetchCommitteeRequest();
+        request.setMembership(membership);
+
+        final FetchCommitteeResponse response = committees.fetchCommittees(token, request);
+        assertThat(response.isOk(), is(true));
+
+        return response.getCommittees().get(index);
     }
 
     private Group findNationalGroup(final String countryCode) {

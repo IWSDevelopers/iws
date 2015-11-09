@@ -246,6 +246,7 @@ public final class CommitteeService extends CommonService<CommitteeDao> {
 
             // Now, we can send of Notifications about a new User Account and
             // ensure that the e-mail alias is being properly processed
+            notifications.notify(authentication, user, NotificationType.ACTIVATE_NEW_USER);
             notifications.notify(authentication, user, NotificationType.NEW_USER);
             notifications.notify(authentication, user, NotificationType.PROCESS_EMAIL_ALIAS);
 
@@ -410,6 +411,10 @@ public final class CommitteeService extends CommonService<CommitteeDao> {
 
         group.setGroupName(user.getFirstname() + ' ' + user.getLastname());
         group.setGroupType(dao.findGroupTypeByType(GroupType.PRIVATE));
+        group.setPublicList(GroupType.PRIVATE.getMayHavePublicMailinglist());
+        group.setPrivateList(GroupType.PRIVATE.getMayHavePrivateMailinglist());
+        group.setPrivateReplyTo(MailReply.REPLY_TO_LIST);
+        group.setPublicReplyTo(MailReply.REPLY_TO_SENDER);
         dao.persist(authentication, group);
 
         return group;

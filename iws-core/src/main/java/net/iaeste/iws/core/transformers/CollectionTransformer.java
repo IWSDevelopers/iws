@@ -31,7 +31,7 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 /**
- * Tranformer for the Collections of values, handles various transformations
+ * Transformer for the Collections of values, handles various transformations
  * to/from a string value
  *
  * @author  Pavel Fiala / last $Author:$
@@ -60,7 +60,7 @@ public final class CollectionTransformer {
     public static <T extends Enum<T>> String concatEnumCollection(final Collection<T> collection) {
         final StringBuilder sb = new StringBuilder(10);
 
-        if (collection != null && !collection.isEmpty()) {
+        if ((collection != null) && !collection.isEmpty()) {
             final Iterator<T> iterator = collection.iterator();
 
             while (iterator.hasNext()) {
@@ -79,7 +79,7 @@ public final class CollectionTransformer {
      * Split a string value into a list of enum values
      *
      * @param enumType The Class object of the enum type from which to return a constant
-     * @param value    String which is splited into the list of enum values
+     * @param value    String which is split into the list of enum values
      * @return List of enum values
      */
     public static <E extends Enum<E> & Descriptable<E>> List<E> explodeEnumList(final Class<E> enumType, final String value) {
@@ -93,7 +93,7 @@ public final class CollectionTransformer {
                         final E enumValue = EnumUtil.valueOf(enumType, str);
                         result.add(enumValue);
                     } catch (IllegalArgumentException e) {
-                        LOG.info("Error converting value '" + str + "' to enum of type '" + enumType.getClass().getName() + "': " + e.getMessage(), e);
+                        LOG.info("Error converting value '" + str + "' to enum of type '" + enumType.getClass().getName() + "': " + e.getMessage());
                     }
                 }
             }

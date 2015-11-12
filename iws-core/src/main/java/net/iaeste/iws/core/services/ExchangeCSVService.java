@@ -256,6 +256,9 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
         final Offer offer = ExchangeTransformer.offerFromCsv(record, errors);
         offer.setEmployer(employer);
 
+        // Before returning, let's just verify the Offer.
+        errors.putAll(offer.validate());
+
         return offer;
     }
 
@@ -317,7 +320,7 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
                 errors.put(refNo, validationErrors);
             }
         } catch (IllegalArgumentException | IWSException e) {
-            LOG.warn(formatLogMessage(authentication, "CSV Offer with RefNo " + refNo + " has a Problem: " + e.getMessage()), e);
+            LOG.warn(formatLogMessage(authentication, "CSV Offer with RefNo " + refNo + " has a Problem: " + e.getMessage()));
             processingResult.put(refNo, OfferCSVUploadResponse.ProcessingResult.ERROR);
             if (errors.containsKey(refNo)) {
                 errors.get(refNo).put("general", e.getMessage());

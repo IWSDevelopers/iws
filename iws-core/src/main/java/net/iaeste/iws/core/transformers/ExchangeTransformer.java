@@ -138,7 +138,6 @@ public final class ExchangeTransformer {
 
             transformTypeOfWork(offerErrors, result, WORK_TYPE, record);
             transformStudyLevels(offerErrors, result, STUDY_COMPLETED, record);
-            //result.setStudyLevels(CsvTransformer.toStudyLevels(offerErrors, "StudyCompleted_*", record.get(STUDY_COMPLETED_BEGINNING.getField()), record.get(STUDY_COMPLETED_MIDDLE.getField()), record.get(STUDY_COMPLETED_END.getField())));
             transformEnumSet(offerErrors, result, FACULTY, record, FieldOfStudy.class);
             transformStringSet(offerErrors, result, SPECIALIZATION, record);
             transformBoolean(offerErrors, result, TRAINING_REQUIRED, record);

@@ -343,6 +343,7 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
      * @param request        Publish Offer Request information
      */
     public void processPublishOffer(final Authentication authentication, final PublishOfferRequest request) {
+        // ToDo for Kim - please rewrite this mess. It is one long unclear process!
         //verify Group exist for given groupId
         final List<GroupEntity> groups = getAndVerifyGroupExist(request.getGroupIds());
 
@@ -382,7 +383,7 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
             newSharing.removeAll(resharing);
 
             if (!newSharing.isEmpty()) {
-                updateOfferState = keepOfferGroups.isEmpty() || updateOfferState;
+                updateOfferState = keepOfferGroups.isEmpty();
                 keepOfferGroups.addAll(publishOffer(authentication, offer, newSharing));
             }
 
@@ -417,16 +418,35 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
                 }
             }
 
+            // The above logic is flawed, causing strange changes to the state
+            // of the Offer. The following is just a hack, until we have a
+            // proper process in place. The hack will simply based on current
+            // state & deadline correct the state.
             if (request.getNominationDeadline() != null) {
-                if (request.getNominationDeadline().isBefore(new Date())) {
-                    LOG.info("Offer Nomination Deadline for {} is set to the past, so we are setting the Offer to Expired.", offer.getRefNo());
-                    offer.setStatus(OfferState.EXPIRED);
-                }
+                offer.setStatus(evaluateOfferState(request.getNominationDeadline(), offer.getStatus(), offer.getRefNo()));
                 offer.setNominationDeadline(request.getNominationDeadline().toDate());
             }
 
             dao.persist(authentication, offer);
         }
+    }
+
+    private static OfferState evaluateOfferState(final Date deadline, final OfferState current, final String refno) {
+        OfferState state = current;
+
+        if (deadline != null) {
+            final Date now = new Date();
+
+            if ((current == OfferState.SHARED) && deadline.isBefore(now)) {
+                LOG.info("The Offer {} is currently shared but the deadline is {}. Changing Offer State to Expired.", refno, deadline);
+                state = OfferState.EXPIRED;
+            } else if ((current == OfferState.EXPIRED) && deadline.isAfter(now)) {
+                LOG.info("The Offer {} is currently expired but the deadline is {}. Changing Offer State to Shared.", refno, deadline);
+                state = OfferState.SHARED;
+            }
+        }
+
+        return state;
     }
 
     public void processHideForeignOffers(final Authentication authentication, final HideForeignOffersRequest request) {
@@ -483,7 +503,7 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
         OfferState result = OfferState.NEW; //first possible state for offer
 
         for (final OfferGroupEntity offerGroup : offerGroups) {
-            if (offerGroup.getStatus() != result && (offer.getStatus() == offerGroup.getStatus() || isOtherCurrentOfferGroupStateHigher(offer.getStatus(), offerGroup.getStatus()))) {
+            if ((offerGroup.getStatus() != result) && ((offer.getStatus() == offerGroup.getStatus()) || isOtherCurrentOfferGroupStateHigher(offer.getStatus(), offerGroup.getStatus()))) {
                 result = offerGroup.getStatus();
             }
 

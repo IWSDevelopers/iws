@@ -25,9 +25,7 @@ import net.iaeste.iws.persistence.entities.exchange.EmployerEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity;
 import net.iaeste.iws.persistence.entities.exchange.PublishingGroupEntity;
-import net.iaeste.iws.persistence.views.DomesticOfferStatisticsView;
 import net.iaeste.iws.persistence.views.EmployerView;
-import net.iaeste.iws.persistence.views.ForeignOfferStatisticsView;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -76,17 +74,6 @@ public final class ExchangeJpaDao extends BasicJpaDao implements ExchangeDao {
         query.setParameter("workingPlace", employer.getWorkingPlace());
 
         return findSingleResult(query, "Employer");
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public OfferEntity findOfferByOldOfferId(final Integer oldOfferId) {
-        final Query query = entityManager.createNamedQuery("offer.findByOldOfferId");
-        query.setParameter("ooid", oldOfferId);
-
-        return findSingleResult(query, "Offer");
     }
 
     /**
@@ -344,8 +331,8 @@ public final class ExchangeJpaDao extends BasicJpaDao implements ExchangeDao {
      */
     @Override
     public Integer unshareFromGroups(final Long offerId, final List<Long> groups) {
-        //TODO passing empty list fails, correct?
         final Query query = entityManager.createNamedQuery("offerGroup.deleteByOfferIdAndGroups");
+        groups.add(-1L); // JPA documentation is vague about empty lists, so this is a precaution
         query.setParameter("oid", offerId);
         query.setParameter("gids", groups);
 
@@ -357,8 +344,8 @@ public final class ExchangeJpaDao extends BasicJpaDao implements ExchangeDao {
      */
     @Override
     public Integer unshareFromGroups(final String externalId, final List<Long> groups) {
-        //TODO passing empty list fails, correct?
         final Query query = entityManager.createNamedQuery("offerGroup.deleteByOfferExternalIdAndGroups");
+        groups.add(-1L); // JPA documentation is vague about empty lists, so this is a precaution
         query.setParameter("eoid", externalId);
         query.setParameter("gids", groups);
 
@@ -488,36 +475,21 @@ public final class ExchangeJpaDao extends BasicJpaDao implements ExchangeDao {
      * {@inheritDoc}
      */
     @Override
-    public List<OfferGroupEntity> findInfoForSharedOffers(/*final*/ List<Long> offerIds) {
+    public List<OfferGroupEntity> findInfoForSharedOffers(final List<Long> offerIds) {
         final Query query = entityManager.createNamedQuery("offerGroup.findByOffers");
-        //TODO @Kim: is it possible to pass empty list? It was a bug but I don't know which version we are using now
-        //TODO see https://hibernate.atlassian.net/browse/HHH-6876
-        //TODO workaround to "unexpected end of subtree" exception when empty list is passed
-        if (offerIds.isEmpty()) {
-            offerIds = new ArrayList<>(1);
-            offerIds.add(-1L);
-        }
-
+        offerIds.add(-1L); // JPA documentation is vague about empty lists, so this is a precaution
         query.setParameter("oids", offerIds);
 
         return query.getResultList();
     }
 
     /**
-     *
      * {@inheritDoc}
      */
     @Override
-    public void hideOfferGroups(List<Long> ids) {
+    public void hideOfferGroups(final List<Long> ids) {
         final Query query = entityManager.createNamedQuery("offerGroup.hideByIds");
-        //TODO @Kim: is it possible to pass empty list? It was a bug but I don't know which version we are using now
-        //TODO see https://hibernate.atlassian.net/browse/HHH-6876
-        //TODO workaround to "unexpected end of subtree" exception when empty list is passed
-        if (ids.isEmpty()) {
-            ids = new ArrayList<>(1);
-            ids.add(-1L);
-        }
-
+        ids.add(-1L); // JPA documentation is vague about empty lists, so this is a precaution
         query.setParameter("ids", ids);
 
         query.executeUpdate();

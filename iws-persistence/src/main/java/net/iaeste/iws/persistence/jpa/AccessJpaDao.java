@@ -68,9 +68,8 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
     public UserEntity findActiveUserByUsername(final String username) {
         final Query query = entityManager.createNamedQuery("user.findActiveByUserName");
         query.setParameter("username", username);
-        final List<UserEntity> list = query.getResultList();
 
-        return resolveResultList(list);
+        return findSingleResult(query, "User");
     }
 
     /**
@@ -91,9 +90,8 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
     public UserEntity findUserByUsername(final String username) {
         final Query query = entityManager.createNamedQuery("user.findByUserName");
         query.setParameter("username", username);
-        final List<UserEntity> list = query.getResultList();
 
-        return resolveResultList(list);
+        return findSingleResult(query, "User");
     }
 
     /**
@@ -103,9 +101,8 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
     public UserEntity findActiveUserByCode(final String code) {
         final Query query = entityManager.createNamedQuery("user.findActiveByCode");
         query.setParameter("code", code);
-        final List<UserEntity> list = query.getResultList();
 
-        return resolveResultList(list);
+        return findSingleResult(query, "User");
     }
 
     /**
@@ -115,9 +112,8 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
     public UserEntity findNewUserByCode(final String code) {
         final Query query = entityManager.createNamedQuery("user.findNewByCode");
         query.setParameter("code", code);
-        final List<UserEntity> list = query.getResultList();
 
-        return resolveResultList(list);
+        return findSingleResult(query, "User");
     }
 
     /**
@@ -127,9 +123,8 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
     public UserEntity findUserByAlias(final String alias) {
         final Query query = entityManager.createNamedQuery("user.findByAlias");
         query.setParameter("alias", alias);
-        final List<UserEntity> list = query.getResultList();
 
-        return resolveResultList(list);
+        return findSingleResult(query, "User");
     }
 
     /**

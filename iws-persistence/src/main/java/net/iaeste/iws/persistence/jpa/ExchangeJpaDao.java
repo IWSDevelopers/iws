@@ -30,6 +30,7 @@ import net.iaeste.iws.persistence.views.EmployerView;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -57,7 +58,7 @@ public final class ExchangeJpaDao extends BasicJpaDao implements ExchangeDao {
     public EmployerEntity findEmployer(final Authentication authentication, final String externalId) {
         final Query query = entityManager.createNamedQuery("employer.findByExternalId");
         query.setParameter("eid", externalId);
-        query.setParameter("pgid", authentication.getGroup().getParentId());
+        query.setParameter("pid", authentication.getGroup().getParentId());
 
         return findUniqueResult(query, "Employer");
     }
@@ -115,7 +116,7 @@ public final class ExchangeJpaDao extends BasicJpaDao implements ExchangeDao {
     public OfferEntity findOfferByExternalId(final Authentication authentication, final String externalId) {
         final Query query = entityManager.createNamedQuery("offer.findByGroupAndExternalId");
         query.setParameter("gid", authentication.getGroup().getId());
-        query.setParameter("eoid", externalId);
+        query.setParameter("eid", externalId);
 
         return findSingleResult(query, "Offer");
     }
@@ -148,7 +149,7 @@ public final class ExchangeJpaDao extends BasicJpaDao implements ExchangeDao {
     public OfferEntity findOfferByExternalIdAndRefNo(final Authentication authentication, final String externalId, final String refNo) {
         final Query query = entityManager.createNamedQuery("offer.findByGroupAndExternalIdAndRefNo");
         query.setParameter("gid", authentication.getGroup().getId());
-        query.setParameter("eoid", externalId);
+        query.setParameter("eid", externalId);
         query.setParameter("refno", refNo);
         final List<OfferEntity> found = query.getResultList();
 
@@ -169,7 +170,7 @@ public final class ExchangeJpaDao extends BasicJpaDao implements ExchangeDao {
     public List<OfferEntity> findOffers(final Authentication authentication, final List<Long> offerIds) {
         final Query query = entityManager.createNamedQuery("offer.findByGroupAndIds");
         query.setParameter("gid", authentication.getGroup().getId());
-        query.setParameter("ids", offerIds);
+        query.setParameter("ids", expandEmptyCollection(offerIds, -1L));
 
         return query.getResultList();
     }
@@ -181,7 +182,7 @@ public final class ExchangeJpaDao extends BasicJpaDao implements ExchangeDao {
     public List<OfferEntity> findOffersByExternalId(final Authentication authentication, final Set<String> externalIds) {
         final Query query = entityManager.createNamedQuery("offer.findByGroupAndExternalIds");
         query.setParameter("gid", authentication.getGroup().getId());
-        query.setParameter("eoids", externalIds);
+        query.setParameter("eids", expandEmptyCollection(externalIds, ""));
 
         return query.getResultList();
     }
@@ -252,7 +253,7 @@ public final class ExchangeJpaDao extends BasicJpaDao implements ExchangeDao {
     public List<OfferGroupEntity> findInfoForSharedOfferAndGroup(final Long offerId, final List<Long> groupIds) {
         final Query query = entityManager.createNamedQuery("offerGroup.findByOfferAndGroupList");
         query.setParameter("oid", offerId);
-        query.setParameter("gids", groupIds);
+        query.setParameter("gids", expandEmptyCollection(groupIds, -1L));
 
         return query.getResultList();
     }
@@ -286,7 +287,7 @@ public final class ExchangeJpaDao extends BasicJpaDao implements ExchangeDao {
     @Override
     public List<OfferGroupEntity> findInfoForSharedOffers(final GroupEntity group, final Set<String> offerIds) {
         final Query query = entityManager.createNamedQuery("offerGroup.findByGroupAndExternalIds");
-        query.setParameter("eoids", offerIds);
+        query.setParameter("eoids", expandEmptyCollection(offerIds, ""));
         query.setParameter("gid", group.getId());
 
         return query.getResultList();
@@ -332,9 +333,8 @@ public final class ExchangeJpaDao extends BasicJpaDao implements ExchangeDao {
     @Override
     public Integer unshareFromGroups(final Long offerId, final List<Long> groups) {
         final Query query = entityManager.createNamedQuery("offerGroup.deleteByOfferIdAndGroups");
-        groups.add(-1L); // JPA documentation is vague about empty lists, so this is a precaution
         query.setParameter("oid", offerId);
-        query.setParameter("gids", groups);
+        query.setParameter("gids", expandEmptyCollection(groups, -1L));
 
         return query.executeUpdate();
     }
@@ -345,9 +345,8 @@ public final class ExchangeJpaDao extends BasicJpaDao implements ExchangeDao {
     @Override
     public Integer unshareFromGroups(final String externalId, final List<Long> groups) {
         final Query query = entityManager.createNamedQuery("offerGroup.deleteByOfferExternalIdAndGroups");
-        groups.add(-1L); // JPA documentation is vague about empty lists, so this is a precaution
         query.setParameter("eoid", externalId);
-        query.setParameter("gids", groups);
+        query.setParameter("gids", expandEmptyCollection(groups, -1L));
 
         return query.executeUpdate();
     }
@@ -358,7 +357,7 @@ public final class ExchangeJpaDao extends BasicJpaDao implements ExchangeDao {
     @Override
     public List<GroupEntity> findGroupByExternalIds(final List<String> externalIds) {
         final Query query = entityManager.createNamedQuery("group.findByExternalGroupIds");
-        query.setParameter("egids", externalIds);
+        query.setParameter("egids", expandEmptyCollection(externalIds, ""));
 
         return query.getResultList();
     }
@@ -421,14 +420,7 @@ public final class ExchangeJpaDao extends BasicJpaDao implements ExchangeDao {
     @Override
     public void updateOfferState(final List<Long> ids, final OfferState state) {
         final Query query = entityManager.createNamedQuery("offer.updateStateByIds");
-
-        //error when passing empty list
-        //QuerySyntaxException: unexpected end of subtree [delete from net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity og where og.id in ()]
-        if (ids.isEmpty()) {
-            ids.add(-1L);
-        }
-
-        query.setParameter("ids", ids);
+        query.setParameter("ids", expandEmptyCollection(ids, -1L));
         query.setParameter("status", state);
 
         query.executeUpdate();
@@ -440,14 +432,7 @@ public final class ExchangeJpaDao extends BasicJpaDao implements ExchangeDao {
     @Override
     public void updateOfferGroupState(final List<Long> ids, final OfferState state) {
         final Query query = entityManager.createNamedQuery("offerGroup.updateStateByIds");
-
-        //error when passing empty list
-        //QuerySyntaxException: unexpected end of subtree [delete from net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity og where og.id in ()]
-        if (ids.isEmpty()) {
-            ids.add(-1L);
-        }
-
-        query.setParameter("ids", ids);
+        query.setParameter("ids", expandEmptyCollection(ids, -1L));
         query.setParameter("status", state);
 
         query.executeUpdate();
@@ -459,14 +444,7 @@ public final class ExchangeJpaDao extends BasicJpaDao implements ExchangeDao {
     @Override
     public void deleteOfferGroup(final List<Long> ids) {
         final Query query = entityManager.createNamedQuery("offerGroup.deleteByIds");
-
-        //error when passing empty list
-        //QuerySyntaxException: unexpected end of subtree [delete from net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity og where og.id in ()]
-        if (ids.isEmpty()) {
-            ids.add(-1L);
-        }
-
-        query.setParameter("ids", ids);
+        query.setParameter("ids", expandEmptyCollection(ids, -1L));
 
         query.executeUpdate();
     }
@@ -477,8 +455,7 @@ public final class ExchangeJpaDao extends BasicJpaDao implements ExchangeDao {
     @Override
     public List<OfferGroupEntity> findInfoForSharedOffers(final List<Long> offerIds) {
         final Query query = entityManager.createNamedQuery("offerGroup.findByOffers");
-        offerIds.add(-1L); // JPA documentation is vague about empty lists, so this is a precaution
-        query.setParameter("oids", offerIds);
+        query.setParameter("oids", expandEmptyCollection(offerIds, -1L));
 
         return query.getResultList();
     }
@@ -489,8 +466,7 @@ public final class ExchangeJpaDao extends BasicJpaDao implements ExchangeDao {
     @Override
     public void hideOfferGroups(final List<Long> ids) {
         final Query query = entityManager.createNamedQuery("offerGroup.hideByIds");
-        ids.add(-1L); // JPA documentation is vague about empty lists, so this is a precaution
-        query.setParameter("ids", ids);
+        query.setParameter("ids", expandEmptyCollection(ids, -1L));
 
         query.executeUpdate();
     }

@@ -46,6 +46,7 @@ import net.iaeste.iws.persistence.views.IWSView;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -128,9 +129,9 @@ public class BasicJpaDao implements BasicDao {
      */
     @Override
     public void delete(final IWSEntity entity) {
-        // First, let's drop all Objects matching the entityToPersist. Since the record
-        // Id in the history table cannot be set up as a foreign key, we must
-        // do this manually
+        // First, let's drop all Objects matching the entityToPersist. Since
+        // the record Id in the history table cannot be set up as a foreign
+        // key, we must do this manually.
         final String tableName = monitoringProcessor.findClassMonitoringName(entity);
         final Query query = entityManager.createNamedQuery("monitoring.deleteChanges");
         query.setParameter("table", tableName);
@@ -363,6 +364,31 @@ public class BasicJpaDao implements BasicDao {
     // =========================================================================
 
     /**
+     * The JPA Documentation is vague when it comes to Empty lists used in the
+     * SQL 'in' expression. If the database doesn't support the empty list, then
+     * we may see an 'unexpected end of subtree' Exception if an empty list is
+     * passed.<br />
+     *   For more details, please see the Hibernate bug report
+     * <a href="https://hibernate.atlassian.net/browse/HHH-8091">8091</a>, which
+     * also explains this in details. Note at the time of writing this comment,
+     * there is no solution pending. Hence we're having this method which will
+     * provide a work-around.<br />
+     *   Basically, what the method does, is that it takes a list and expands
+     * it, if it is empty with the given value.
+     *
+     * @param collection Collection of values to expand if empty
+     * @param emptyValue new value to be added if the list is empty
+     * @return Collection with at least 1 element
+     */
+    protected <T> Collection<T> expandEmptyCollection(final Collection<T> collection, final T emptyValue) {
+        if (collection.isEmpty()) {
+            collection.add(emptyValue);
+        }
+
+        return collection;
+    }
+
+    /**
      * Monitoring of data is made based on the common monitoring level of both
      * the Entity & Group. If both have detailed level - then all information is
      * monitored. Otherwise if either is having either marked or detailed, then
@@ -410,20 +436,10 @@ public class BasicJpaDao implements BasicDao {
         if (entity instanceof Externable) {
             if (((Externable<?>) entity).getExternalId() == null) {
                 ((Externable<?>) entity).setExternalId(UUID.randomUUID().toString());
+                // Just to make sure that the modification date is always set
                 ((Externable<?>) entity).setModified(new Date());
             }
         }
-    }
-
-    /**
-     * Returns the lower case version of the String, using the default Locale
-     * for the conversion.
-     *
-     * @param str String to lower case
-     * @return Lower cased String
-     */
-    protected static String toLower(final String str) {
-        return str.toLowerCase(IWSConstants.DEFAULT_LOCALE);
     }
 
     /**
@@ -464,26 +480,12 @@ public class BasicJpaDao implements BasicDao {
 
         if (found.isEmpty()) {
             result = null;
-        } else  if (found.size() == 1) {
+        } else if (found.size() == 1) {
             result = found.get(0);
         } else {
             throw new IdentificationException("Multiple " + entityName + "s were found.");
         }
 
         return result;
-    }
-
-    protected static <T extends IWSEntity> T resolveResultList(final List<T> list) {
-        final T user;
-
-        if (list.size() == 1) {
-            user = list.get(0);
-        } else if (list.isEmpty()) {
-            user = null;
-        } else {
-            throw new IWSException(IWSErrors.DATABASE_CONSTRAINT_INCONSISTENCY, "Although Record should be unique, multiple records exists.");
-        }
-
-        return user;
     }
 }

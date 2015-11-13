@@ -64,7 +64,7 @@ import java.util.Map;
         @NamedQuery(name = "offer.findByGroupAndExternalIdAndRefNo",
                 query = "select o from OfferEntity o " +
                         "where o.employer.group.id = :gid" +
-                        "  and o.externalId = :eoid" +
+                        "  and o.externalId = :eid" +
                         "  and o.refNo = :refno"),
         @NamedQuery(name = "offer.findByGroupAndId",
                 query = "select o from OfferEntity o " +
@@ -77,11 +77,11 @@ import java.util.Map;
         @NamedQuery(name = "offer.findByGroupAndExternalIds",
                 query = "select o from OfferEntity o " +
                         "where o.employer.group.id = :gid" +
-                        "  and o.externalId in :eoids"),
+                        "  and o.externalId in :eids"),
         @NamedQuery(name = "offer.findByGroupAndExternalId",
                 query = "select o from OfferEntity o " +
                         "where o.employer.group.id = :gid" +
-                        "  and o.externalId = :eoid"),
+                        "  and o.externalId = :eid"),
         @NamedQuery(name = "offer.findByGroupAndRefNo",
                 query = "select o from OfferEntity o " +
                         "where o.employer.group.id = :gid" +
@@ -149,7 +149,7 @@ public class OfferEntity extends AbstractUpdateable<OfferEntity> implements Exte
 
     /**
      * The IW3 database contained two reference numbers, System & Local RefNo.
-     * The System refno is a generated reference number, whereas the local is
+     * The System refNo is a generated reference number, whereas the local is
      * there to map the Offer to the local database.<br />
      *   With IWS, there was a Board decision that the Reference numbers should
      * follow a certain format, which means that all new Offers must be
@@ -159,13 +159,6 @@ public class OfferEntity extends AbstractUpdateable<OfferEntity> implements Exte
      */
     @Column(name = "old_refno", length = 50)
     private String oldRefno = null;
-
-    /**
-     * To help migrating the Offer information and related data, we store the
-     * old Offer Id as well, this way we can better find the data later on.
-     */
-    @Column(name = "old_offer_id")
-    private Integer oldOfferId = null;
 
     @Column(name = "exchange_year", length = 4)
     private Integer exchangeYear = null;
@@ -427,14 +420,6 @@ public class OfferEntity extends AbstractUpdateable<OfferEntity> implements Exte
 
     public String getOldRefno() {
         return oldRefno;
-    }
-
-    public void setOldOfferId(final Integer oldOfferId) {
-        this.oldOfferId = oldOfferId;
-    }
-
-    public Integer getOldOfferId() {
-        return oldOfferId;
     }
 
     public void setExchangeYear(final Integer exchangeYear) {
@@ -825,7 +810,7 @@ public class OfferEntity extends AbstractUpdateable<OfferEntity> implements Exte
     @Override
     public void merge(final OfferEntity obj) {
         if (canMerge(obj)) {
-            // Note, Id, ExternalId & refno are *not* allowed to be updated!
+            // Note, Id, ExternalId & refNo are *not* allowed to be updated!
             // Also note, oldOfferId and oldRefNo are *not* allowed to be updated!
             offerType = which(offerType, obj.offerType);
             exchangeType = which(exchangeType, obj.exchangeType);

@@ -187,7 +187,6 @@ public class OfferMigrator implements Migrator<IW3OffersEntity> {
         final OfferEntity entity = new OfferEntity();
 
         entity.setRefNo(convertRefno(oldOffer.getSystemrefno(), oldOffer.getCreated()));
-        entity.setOldOfferId(oldOffer.getOfferid());
         entity.setOldRefno(convert(oldOffer.getLocalrefno()));
         entity.setEmployer(convertEmployer(oldOffer));
         entity.setWorkDescription(convert(oldOffer.getWorkkind()));

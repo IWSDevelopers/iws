@@ -400,10 +400,9 @@ public final class CommitteeService extends CommonService<CommitteeDao> {
     private static String generateActivationCode(final CommitteeRequest request) {
         final String clear = request.getUsername()
                            + request.getFirstname()
-                           + request.getLastname()
-                           + UUID.randomUUID();
+                           + request.getLastname();
 
-        return generateHash(clear);
+        return generateHash(clear, UUID.randomUUID().toString());
     }
 
     private GroupEntity createAndPersistPrivateGroup(final Authentication authentication, final UserEntity user) {

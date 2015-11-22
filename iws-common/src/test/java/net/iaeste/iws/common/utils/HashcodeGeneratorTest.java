@@ -17,7 +17,6 @@ package net.iaeste.iws.common.utils;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -28,39 +27,6 @@ import org.junit.Test;
 public class HashcodeGeneratorTest {
 
     private static final String USER_SALT = "";
-
-    /**
-     * Tests the MD5 generator method in the HashCode Generator library. The
-     * raw text, and expected information are taken from the MD5 Wikipedia
-     * page.
-     *
-     * @see <a href="http://en.wikipedia.org/wiki/MD5">MD5</a>
-     */
-    @Test
-    @Ignore("Ignored 2013-01-04 by Kim - Reason: Trac task #534 states that for a limited period we have to support the old Passwords. However, this requires that the Salting is skipped")
-    public void testGenerateMD5() {
-        // Preconditions for the test
-        final String textWithoutDot = "The quick brown fox jumps over the lazy dog";
-        final String textWithDot = "The quick brown fox jumps over the lazy dog.";
-        final String textEmpty = "";
-        final String textNull = null;
-        final String expectedWithoutDot = "0fe8aaf6e2e9078bc52c94d770c18a20";
-        final String expectedWithDot = "180268329af4c9519e462b90de2eb8a3";
-        final String expectedEmpty = "25fc6113c0f927d7ca6dcfb77abb9ff1";
-        final String expectedNull = null;
-
-        // Perform the testing
-        final String resultWithoutDot = HashcodeGenerator.generateMD5(textWithoutDot, USER_SALT);
-        final String resultWithDot = HashcodeGenerator.generateMD5(textWithDot, USER_SALT);
-        final String resultEmpty = HashcodeGenerator.generateMD5(textEmpty, USER_SALT);
-        final String resultNull = HashcodeGenerator.generateMD5(textNull, USER_SALT);
-
-        // Assertion checks against the responses with our predefined expectations
-        assertThat(resultWithoutDot, is(expectedWithoutDot));
-        assertThat(resultWithDot, is(expectedWithDot));
-        assertThat(resultEmpty, is(expectedEmpty));
-        assertThat(resultNull, is(expectedNull));
-    }
 
     /**
      * Tests the SHA-2 generator 256 bit method in the HashCode Generator

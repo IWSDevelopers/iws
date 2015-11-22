@@ -131,7 +131,7 @@ public class CommonService<T extends BasicDao> {
         user.setFirstname(firstname);
         user.setLastname(lastname);
         user.setAlias(generateUserAlias(firstname, lastname, studentAccount));
-        user.setCode(generateHash(username + firstname + lastname + UUID.randomUUID()));
+        user.setCode(generateHash(username + firstname + lastname, UUID.randomUUID().toString()));
         user.setPerson(createEmptyPerson(authentication));
         dao.persist(authentication, user);
 

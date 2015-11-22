@@ -703,7 +703,7 @@ public final class AccountService extends CommonService<AccessDao> {
         final Authentication authentication = new Authentication(user, UUID.randomUUID().toString());
 
         // Set a new code for the user to reply with, and set the new username
-        user.setCode(generateHash(UUID.randomUUID().toString()));
+        user.setCode(generateHash(UUID.randomUUID().toString(), UUID.randomUUID().toString()));
         user.setData(username);
         dao.persist(user);
 

@@ -15,8 +15,9 @@
 package net.iaeste.iws.common.utils;
 
 import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.api.constants.IWSErrors;
+import net.iaeste.iws.api.exceptions.IWSException;
 
-import java.math.BigInteger;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -71,37 +72,8 @@ public final class HashcodeGenerator {
      * @param  userSalt User specific salt value
      * @return MD5 Hashcode value
      */
-    public static String generateHash(final String str, final String... userSalt) {
+    public static String generateHash(final String str, final String userSalt) {
         return generateSHA256(str, userSalt);
-    }
-
-    /**
-     * Generates a new MD5 hashcode for the given String.
-     *
-     * @param  str      The string to generate an MD5 HashCode value for
-     * @param  userSalt User specific salt value
-     * @return MD5 Hashcode value
-     * @see <a href="http://en.wikipedia.org/wiki/MD5">Wikipedia MD5</a>
-     */
-    public static String generateMD5(final String str, final String... userSalt) {
-        //final String salt = prepareSalt(userSalt);
-        //return generateHashcode(HASHCODE_ALGORITHM_MD5, str, salt);
-        // The following is an attempt to make the Java MD5 calculation the same
-        // as the PHP variant. See: http://www.sergiy.ca/how-to-make-java-md5-and-sha-1-hashes-compatible-with-php-or-mysql/
-        String result = str;
-
-        if (str != null) {
-            final MessageDigest md = getDigest(HASHCODE_ALGORITHM_MD5);
-            md.update(str.getBytes());
-            final BigInteger hash = new BigInteger(1, md.digest());
-            result = hash.toString(16);
-
-            while (result.length() < 32) {
-                result = '0' + result;
-            }
-        }
-
-        return result;
     }
 
     /**
@@ -112,7 +84,7 @@ public final class HashcodeGenerator {
      * @return SHA-2 Hashcode value
      * @see <a href="http://en.wikipedia.org/wiki/Sha-2">Wikipedia SHA-2</a>
      */
-    static String generateSHA256(final String str, final String... userSalt) {
+    static String generateSHA256(final String str, final String userSalt) {
         final String salt = prepareSalt(userSalt);
         return generateHashcode(HASHCODE_ALGORITHM_SHA256, str, salt);
     }
@@ -125,7 +97,7 @@ public final class HashcodeGenerator {
      * @return SHA-2 Hashcode value
      * @see <a href="http://en.wikipedia.org/wiki/Sha-2">Wikipedia SHA-2</a>
      */
-    static String generateSHA384(final String str, final String... userSalt) {
+    static String generateSHA384(final String str, final String userSalt) {
         final String salt = prepareSalt(userSalt);
         return generateHashcode(HASHCODE_ALGORITHM_SHA384, str, salt);
     }
@@ -138,7 +110,7 @@ public final class HashcodeGenerator {
      * @return SHA-2 Hashcode value
      * @see <a href="http://en.wikipedia.org/wiki/Sha-2">Wikipedia SHA-2</a>
      */
-    static String generateSHA512(final String str, final String... userSalt) {
+    static String generateSHA512(final String str, final String userSalt) {
         final String salt = prepareSalt(userSalt);
         return generateHashcode(HASHCODE_ALGORITHM_SHA512, str, salt);
     }
@@ -155,16 +127,8 @@ public final class HashcodeGenerator {
      * @param userSalt User specific salt (optional)
      * @return salt for the hashcode generation
      */
-    private static String prepareSalt(final String... userSalt) {
-        final String salt;
-
-        if ((userSalt != null) && (userSalt.length == 1)) {
-            salt = userSalt[0];
-        } else {
-            salt = "";
-        }
-
-        return salt + HARDCODED_SALT;
+    private static String prepareSalt(final String userSalt) {
+        return userSalt + HARDCODED_SALT;
     }
 
     /**
@@ -179,14 +143,12 @@ public final class HashcodeGenerator {
      * @return The Hash value for the given string
      */
     private static String generateHashcode(final String algorithm, final String str, final String salt) {
-        final String result;
+        String result = null;
 
         if (str != null) {
             final MessageDigest digest = getDigest(algorithm);
             final byte[] bytes = digest.digest((salt + str).getBytes(CHARSET));
             result = convertBytesToHex(bytes);
-        } else {
-            result = null;
         }
 
         return result;
@@ -203,18 +165,15 @@ public final class HashcodeGenerator {
      * @return Message Digest for the given Algorithm
      */
     private static MessageDigest getDigest(final String algorithm) {
-        MessageDigest digest = null;
-
         try {
-            digest = MessageDigest.getInstance(algorithm);
-        } catch (final NoSuchAlgorithmException ignore) {
+            return MessageDigest.getInstance(algorithm);
+        } catch (final NoSuchAlgorithmException e) {
             // The MessageDigest method getInstance, if throwing a checked
             // NoSuchAlgorithm Exception. However, as we only use internal
             // values for the Algorithms, then we'll never face this problem.
             // Hence, the exception is ignored
+            throw new IWSException(IWSErrors.FATAL, e.getMessage(), e);
         }
-
-        return digest;
     }
 
     /**

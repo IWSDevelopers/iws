@@ -111,7 +111,7 @@ public final class AuthenticationRequest extends AbstractVerification {
         // Sharing the exact value that fails is not a good idea, hence we try
         // to anonymize it a bit. From a security perspective, it is called
         // "Security through Obscurity" - and it is not our only mechanism, but
-        // limitting the information that hackers may get, is always a good
+        // limiting the information that hackers may get, is always a good
         // idea :-)
         if ((username == null) || (password == null) || username.isEmpty() || password.isEmpty()) {
             validation.put("User Credentials", "Missing or invalid value.");
@@ -138,7 +138,7 @@ public final class AuthenticationRequest extends AbstractVerification {
             return false;
         }
 
-        return !((username != null) ? !username.equals(that.username) : (that.username != null));
+        return (username != null) ? username.equals(that.username) : (that.username == null);
     }
 
     /**
@@ -148,8 +148,8 @@ public final class AuthenticationRequest extends AbstractVerification {
     public int hashCode() {
         int hash = IWSConstants.HASHCODE_INITIAL_VALUE;
 
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((username != null) ? username.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((password != null) ? password.hashCode() : 0);
+        hash = (IWSConstants.HASHCODE_MULTIPLIER * hash) + ((username != null) ? username.hashCode() : 0);
+        hash = (IWSConstants.HASHCODE_MULTIPLIER * hash) + ((password != null) ? password.hashCode() : 0);
 
         return hash;
     }
@@ -159,9 +159,6 @@ public final class AuthenticationRequest extends AbstractVerification {
      */
     @Override
     public String toString() {
-        return "AuthenticationRequest{" +
-                "username='" + username + '\'' +
-                ", password='xxxxxxxx'" +
-                '}';
+        return "AuthenticationRequest{ username='" + username + "' }";
     }
 }

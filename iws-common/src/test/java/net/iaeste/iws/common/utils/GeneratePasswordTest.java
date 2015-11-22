@@ -49,7 +49,7 @@ public final class GeneratePasswordTest {
     @Test
     public void testGenerateUUIDs() {
         for (int i = 0; i < 5; i++) {
-            System.out.println(UUID.randomUUID().toString());
+            System.out.println(UUID.randomUUID());
         }
 
         assertThat(true, is(Boolean.TRUE));
@@ -63,11 +63,11 @@ public final class GeneratePasswordTest {
     @Test
     public void testPasswordGenerator() {
         final String password = PasswordGenerator.generatePassword();
-        assertThat(password.length(), Is.is(InternalConstants.GENERATED_PASSWORD_LENGTH));
+        assertThat(password.length(), is(InternalConstants.GENERATED_PASSWORD_LENGTH));
 
         final char[] chars = password.toCharArray();
         for (final char c : chars) {
-            assertThat(InternalConstants.PASSWORD_GENERATOR_CHARACTERS.contains(Character.toString(c)), Is.is(true));
+            assertThat(InternalConstants.ALLOWED_GENERATOR_CHARACTERS.contains(Character.toString(c)), Is.is(true));
         }
     }
 }

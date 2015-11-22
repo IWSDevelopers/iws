@@ -29,7 +29,7 @@ import org.junit.Test;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
-public class AuthenticationRequestTest {
+public final class AuthenticationRequestTest {
 
     @Test
     public void testClassFlow() {
@@ -50,7 +50,7 @@ public class AuthenticationRequestTest {
         assertThat(result, is(not(diff)));
         assertThat(result.getUsername(), is(username));
         assertThat(result.getPassword(), is(password));
-        assertThat(result.toString(), is("AuthenticationRequest{username='username', password='xxxxxxxx'}"));
+        assertThat(result.toString(), is("AuthenticationRequest{ username='username' }"));
         assertThat(result.toString(), is(same.toString()));
         assertThat(result.toString(), is(not(diff.toString())));
         assertThat(result.hashCode(), is(1569819734));

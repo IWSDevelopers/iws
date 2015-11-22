@@ -62,10 +62,10 @@ public class SessionEntityTest {
     public void testSessionEntity() {
         final UserEntity user = new UserEntity();
         final SessionEntity session = new SessionEntity();
-        final String key = HashcodeGenerator.generateHash("User Password, Date, IPNumber, and more");
+        final String key = HashcodeGenerator.generateHash("User Password, Date, IPNumber, and more", "");
         user.setUsername("alfa");
         user.setAlias("alias");
-        user.setPassword(HashcodeGenerator.generateHash("beta"));
+        user.setPassword(HashcodeGenerator.generateHash("beta", ""));
         user.setSalt(UUID.randomUUID().toString());
         user.setFirstname("Alpha");
         user.setLastname("Beta");
@@ -82,7 +82,7 @@ public class SessionEntityTest {
     @Test
     @Transactional
     public void testSessionJPAStorage() throws Exception {
-        final String key = HashcodeGenerator.generateHash("This is the test string to build the SHA Hash on.");
+        final String key = HashcodeGenerator.generateHash("This is the test string to build the SHA Hash on.", "");
         final SessionEntity entity = new SessionEntity();
         final Query userQuery = entityManager.createNamedQuery("user.findById");
         userQuery.setParameter("id", 1L);

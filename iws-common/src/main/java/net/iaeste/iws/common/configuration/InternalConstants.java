@@ -117,7 +117,7 @@ public interface InternalConstants {
      * cannot be misinterpreted when read, i.e. l and 1 should not be in the
      * list, since they can too easily be mistaken for each other.
      */
-    String PASSWORD_GENERATOR_CHARACTERS = "abcdefghjkmnpqrstuvwxzy23456789";
+    String ALLOWED_GENERATOR_CHARACTERS = "abcdefghjkmnpqrstuvwxzy23456789";
 
     /** Internal Id for the Owner Role. */
     long ROLE_OWNER = 1L;

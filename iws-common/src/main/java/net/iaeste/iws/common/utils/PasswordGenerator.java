@@ -46,7 +46,7 @@ public final class PasswordGenerator {
      * @see IWSConstants#GENERATED_PASSWORD_LENGTH
      */
     public static String generatePassword() {
-        final String allowedCharacters = InternalConstants.PASSWORD_GENERATOR_CHARACTERS;
+        final String allowedCharacters = InternalConstants.ALLOWED_GENERATOR_CHARACTERS;
         final int length = InternalConstants.GENERATED_PASSWORD_LENGTH;
 
         final char[] password = new char[length];

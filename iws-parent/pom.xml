@@ -37,14 +37,6 @@
             </roles>
         </developer>
         <developer>
-            <id>pavel</id>
-            <name>Pavel Fiala</name>
-            <email>pavel.fiala@iaeste.cz</email>
-            <roles>
-                <role>developer</role>
-            </roles>
-        </developer>
-        <developer>
             <id>martin</id>
             <name>Martin Eisfeld</name>
             <email>martin.eisfeld@gmx.net</email>
@@ -57,6 +49,23 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <!-- SonarQube Settings -->
+        <sonar.host.url>http://localhost:9000</sonar.host.url>
+        <sonar.language>java</sonar.language>
+        <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
+        <!-- The destination file for the code coverage report has to be set to the same value
+             in the parent pom and in each module pom. Then JaCoCo will add up information in
+             the same report, this way we get cross-module code coverage. -->
+        <!-- To separate the information from the Unit & Integration testing,
+             see: http://www.agile-engineering.net/2011/06/seperating-test-code-coverage-with.html -->
+        <sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
+        <sonar.jacoco.itReportPath>${project.basedir}/../target/jacoco-it.exec</sonar.jacoco.itReportPath>
+        <!-- Sonar is by default analyzing everything. But Generated Code is beyond our
+             control, so having error reports from this is just annoying.
+             Legend: *  - zero or more characters
+                     ** - zero or more directories -->
+        <sonar.exclusions>file:**/generated*/**</sonar.exclusions>
     </properties>
 
     <build>

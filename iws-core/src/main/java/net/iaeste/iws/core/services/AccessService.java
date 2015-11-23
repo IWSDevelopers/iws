@@ -343,7 +343,7 @@ public final class AccessService extends CommonService<AccessDao> {
             final SessionEntity session = dao.findActiveSession(token);
             final UserEntity user = session.getUser();
             dao.deprecateSession(session);
-            LOG.info("Deprecated inactive session for user " + user);
+            LOG.info("Deprecated inactive session for user {}", user);
         }
     }
 
@@ -454,13 +454,11 @@ public final class AccessService extends CommonService<AccessDao> {
     }
 
     private static Country readCountry(final UserPermissionView view) {
-        final Country country;
+        Country country = null;
 
         if (view .getCountryCode() != null) {
             country = new Country();
             country.setCountryCode(view.getCountryCode());
-        } else {
-            country = null;
         }
 
         return country;

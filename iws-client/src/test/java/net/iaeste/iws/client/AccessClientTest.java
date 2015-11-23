@@ -196,7 +196,7 @@ public final class AccessClientTest extends AbstractTest {
 
     @Test
     public void testCallWithInvalidToken() {
-        final AuthenticationToken invalidToken = new AuthenticationToken("9e107d9d372bb6826bd81d3542a419d6");
+        final AuthenticationToken invalidToken = new AuthenticationToken("5a15481fe88d39be1c83c2f72796cc8a70e84272640d5c7209ad9aefa642db11ae8fa1945bc308c15c36d591ea1d047692530c95b68fcc309bbe63889dba363e");
 
         final FetchPermissionResponse response = access.fetchPermissions(invalidToken);
         //final List<Authorization> permissions = response.getAuthorizations();

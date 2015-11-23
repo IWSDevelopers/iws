@@ -49,7 +49,6 @@ public final class HashcodeGenerator {
     private static final String HARDCODED_SALT = "The quick brown fox jumps over the lazy dog <.,:;-_ 1234567890 $%&/()=?>";
 
     // The Algorithm's, which we'll support
-    private static final String HASHCODE_ALGORITHM_MD5 = "MD5";
     private static final String HASHCODE_ALGORITHM_SHA256 = "SHA-256";
     private static final String HASHCODE_ALGORITHM_SHA384 = "SHA-384";
     private static final String HASHCODE_ALGORITHM_SHA512 = "SHA-512";

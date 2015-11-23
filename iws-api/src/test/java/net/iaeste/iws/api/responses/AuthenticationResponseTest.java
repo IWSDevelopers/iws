@@ -32,11 +32,10 @@ import org.junit.Test;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
- * @noinspection ResultOfObjectAllocationIgnored
  */
-public class AuthenticationResponseTest {
+public final class AuthenticationResponseTest {
 
-    private static final String TOKEN_KEY = "12345678901234567890123456789012";
+    private static final String TOKEN_KEY = "5a15481fe88d39be1c83c2f72796cc8a70e84272640d5c7209ad9aefa642db11ae8fa1945bc308c15c36d591ea1d047692530c95b68fcc309bbe63889dba363e";
 
     @Test
     public void testClassFlow() {
@@ -60,7 +59,7 @@ public class AuthenticationResponseTest {
         assertThat(result.getError(), is(IWSErrors.SUCCESS));
         assertThat(result.getMessage(), is(IWSConstants.SUCCESS));
         assertThat(result.toString(), is("AuthenticationResponse[token=AuthenticationToken{token='" + TOKEN_KEY + "', groupId='null'}]"));
-        assertThat(result.hashCode(), is(-236943602));
+        assertThat(result.hashCode(), is(308071176));
         assertThat(result.hashCode(), is(same.hashCode()));
         assertThat(result.hashCode(), is(not(diff.hashCode())));
         assertThat(diff.getError(), is(error));

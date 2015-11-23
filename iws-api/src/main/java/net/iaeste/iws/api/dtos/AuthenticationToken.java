@@ -45,7 +45,6 @@ public final class AuthenticationToken extends AbstractVerification implements T
     private static final int LENGTH_SHA2_512 = 128;
     private static final int LENGTH_SHA2_384 = 96;
     private static final int LENGTH_SHA2_256 = 64;
-    private static final int LENGTH_MD5 = 32;
 
     /** The actual token, stored as an ASCII value. */
     @XmlElement(required = true, nillable = false)
@@ -112,12 +111,12 @@ public final class AuthenticationToken extends AbstractVerification implements T
     // =========================================================================
 
     /**
-     * Sets the users Cryptographical Authentication Token, the token must be
-     * valid, i.e. not null and matching one of the supported cryptographical
+     * Sets the users Cryptographic Authentication Token, the token must be
+     * valid, i.e. not null and matching one of the supported cryptographic
      * algorithms. If the token is invalid, then the setter will throw an
      * {@code IllegalArgumentException.
      *
-     * @param  token  Cryptographical Authentication Token
+     * @param  token  Cryptographic Authentication Token
      * @throws IllegalArgumentException if the token is invalid
      */
     public void setToken(final String token) throws IllegalArgumentException {
@@ -129,7 +128,6 @@ public final class AuthenticationToken extends AbstractVerification implements T
             case LENGTH_SHA2_512:
             case LENGTH_SHA2_384:
             case LENGTH_SHA2_256:
-            case LENGTH_MD5:
                 this.token = token;
                 break;
             default:
@@ -140,7 +138,7 @@ public final class AuthenticationToken extends AbstractVerification implements T
     /**
      * Retrieves the Token from the object.
      *
-     * @return Cryptographical Token
+     * @return Cryptographic Token
      */
     public String getToken() {
         return token;
@@ -177,7 +175,7 @@ public final class AuthenticationToken extends AbstractVerification implements T
      */
     @Override
     public String getTraceId() {
-        return token != null ? token.substring(0, 8) : "none";
+        return (token != null) ? token.substring(0, 8) : "none";
     }
 
     // =========================================================================
@@ -216,7 +214,7 @@ public final class AuthenticationToken extends AbstractVerification implements T
             return false;
         }
 
-        return !((token != null) ? !token.equals(that.token) : (that.token != null));
+        return (token != null) ? token.equals(that.token) : (that.token == null);
     }
 
     /**
@@ -226,8 +224,8 @@ public final class AuthenticationToken extends AbstractVerification implements T
     public int hashCode() {
         int hash = IWSConstants.HASHCODE_INITIAL_VALUE;
 
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((token != null) ? token.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((groupId != null) ? groupId.hashCode() : 0);
+        hash = (IWSConstants.HASHCODE_MULTIPLIER * hash) + ((token != null) ? token.hashCode() : 0);
+        hash = (IWSConstants.HASHCODE_MULTIPLIER * hash) + ((groupId != null) ? groupId.hashCode() : 0);
 
         return hash;
     }

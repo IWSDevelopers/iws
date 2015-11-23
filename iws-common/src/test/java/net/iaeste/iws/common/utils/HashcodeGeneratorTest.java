@@ -24,18 +24,16 @@ import org.junit.Test;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
-public class HashcodeGeneratorTest {
+public final class HashcodeGeneratorTest {
 
     private static final String USER_SALT = "";
 
     /**
      * Tests the SHA-2 generator 256 bit method in the HashCode Generator
      * library. The raw text, and expected information are taken from the SHA-2
-     * Wikipedia page.<br />
+     * <a href="http://en.wikipedia.org/wiki/Sha-2">Wikipedia</a> page.<br />
      *   Note, that due to the addition of salt, the expected result will differ
-     * from the result of the wikipedia page.
-     *
-     * @see <a href="http://en.wikipedia.org/wiki/Sha-2">SHA-2</a>
+     * from the result of the Wikipedia page.
      */
     @Test
     public void testGenerateSHA256() {

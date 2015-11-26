@@ -73,7 +73,7 @@ public final class ConcurrentWSClient implements Runnable {
      * <p>The IWS Host, is the server where IWS is currently running, including
      * Protocol information, resolvable DNS name and port.</p>
      * <ul>
-     *   <li><b>http://localhost:8080</b> <i>if IWS is running locally under Glasfish.</i></li>
+     *   <li><b>http://localhost:8080</b> <i>if IWS is running locally under Glassfish.</i></li>
      *   <li><b>http://localhost:9080</b> <i>if IWS is running locally under WildFly.</i></li>
      *   <li><b>https://iws.iaeste.net:9443</b> <i>for the production IWS instance.</i></li>
      * </ul>
@@ -157,8 +157,8 @@ public final class ConcurrentWSClient implements Runnable {
     // Constants, Settings and Constructor
     // =========================================================================
 
-    private static final Logger LOG = LoggerFactory.getLogger(WSClient.class);
-    private static final Object lock = new Object();
+    private static final Logger LOG = LoggerFactory.getLogger(ConcurrentWSClient.class);
+    private final Object lock = new Object();
     private final String host;
     private final String username;
     private final String password;
@@ -210,7 +210,7 @@ public final class ConcurrentWSClient implements Runnable {
                     for (final Offer offer : domestic.getOffers()) {
                         final OfferResponse response = processOffer(token, offer);
                         if (!response.isOk()) {
-                            LOG.warn("Processing Offer with Reference Number '" + offer.getRefNo() + "' failed: " + processOffer(token, offer).getMessage());
+                            LOG.warn("Processing Offer with Reference Number '{}' failed: {}", offer.getRefNo(), processOffer(token, offer).getMessage());
                         }
                     }
                 }
@@ -219,7 +219,7 @@ public final class ConcurrentWSClient implements Runnable {
             } finally {
                 // Always remember to log out, otherwise the Account will be
                 // blocked for a longer time period
-                LOG.debug("Deprecated Session for user '" + username + "': " + deprecateSession(token).getMessage());
+                LOG.debug("Deprecated Session for user '{}': {}", username, deprecateSession(token).getMessage());
             }
         }
 
@@ -263,8 +263,8 @@ public final class ConcurrentWSClient implements Runnable {
     // =========================================================================
 
     /**
-     * <p>Sample IWS Login request. The request requires two parametes, username
-     * (the e-mail address whereby the User is registered), and the
+     * <p>Sample IWS Login request. The request requires two parameters,
+     * username (the e-mail address whereby the User is registered), and the
      * password.</p>
      *
      * <p>The method will build and send the Request Object, and return the
@@ -374,7 +374,7 @@ public final class ConcurrentWSClient implements Runnable {
     // Internal Methods
     // =========================================================================
 
-    private Group findGroupByType(final FetchPermissionResponse response, final GroupType type) {
+    private static Group findGroupByType(final FetchPermissionResponse response, final GroupType type) {
         Group group = null;
 
         for (final Authorization authorization : response.getAuthorizations()) {

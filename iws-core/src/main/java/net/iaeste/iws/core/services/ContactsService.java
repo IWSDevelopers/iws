@@ -66,7 +66,7 @@ public final class ContactsService {
             firstname = names[0];
             lastname = names[1];
         } else {
-            throw new IWSException(IWSErrors.ERROR, "Cannot determine search criterias.");
+            throw new IWSException(IWSErrors.ERROR, "Cannot determine search criteria's.");
         }
 
         final List<UserGroupEntity> entities;
@@ -123,7 +123,7 @@ public final class ContactsService {
     }
 
     /**
-     * The Conacts is used to retrieve the information about Groups and Users.
+     * The Contacts is used to retrieve the information about Groups and Users.
      * All information about Groups are fetched, and for users, the Privacy
      * rules apply.<br />
      *   By default all user information is private, meaning that only if a user
@@ -225,7 +225,7 @@ public final class ContactsService {
 
     /**
      * Retrieves the Group with complete details, and the list of Users
-     * currently linked to it. The Users are checked for pricavy, so only those
+     * currently linked to it. The Users are checked for privacy, so only those
      * with the privacy setting Public is being shown fully.
      *
      * @param externalGroupId External Group Id

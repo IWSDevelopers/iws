@@ -59,7 +59,6 @@ import net.iaeste.iws.api.util.DatePeriod;
 import net.iaeste.iws.client.AbstractTest;
 import net.iaeste.iws.client.ExchangeClient;
 import net.iaeste.iws.client.StudentClient;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -271,8 +270,6 @@ public final class StudentTest extends AbstractTest {
         assertThat(fetchedApplication.getNationality(), is(application.getNationality()));
     }
 
-    //TODO Kim, have a look at this test please
-    @Ignore("2013-04-21 Pavel - failing OfferGroupEntity with id xyz cannot be found even it exists in DB. See #515")
     @Test
     public void testUpdateStudentApplication() {
         final Date nominationDeadline = new Date().plusDays(20);
@@ -280,22 +277,21 @@ public final class StudentTest extends AbstractTest {
 
         final ProcessOfferRequest offerRequest = new ProcessOfferRequest(offer);
         final OfferResponse saveResponse = exchange.processOffer(token, offerRequest);
-        final String refNo = saveResponse.getOffer().getRefNo();
 
         // verify processResponse
         assertThat(saveResponse.isOk(), is(true));
 
         final FetchOffersRequest allOffersRequest = new FetchOffersRequest(FetchType.DOMESTIC);
-        FetchOffersResponse allOffersResponse = exchange.fetchOffers(token, allOffersRequest);
-        assertThat(allOffersResponse.getOffers().isEmpty(), is(false));
+        final FetchOffersResponse allOffersResponse1 = exchange.fetchOffers(token, allOffersRequest);
+        assertThat(allOffersResponse1.getOffers().isEmpty(), is(false));
 
-        Offer sharedOffer = findOfferFromResponse(saveResponse.getOffer().getRefNo(), allOffersResponse);
-        assertThat(sharedOffer, is(not(nullValue())));
-        assertThat(sharedOffer.getStatus(), is(OfferState.NEW));
-        assertThat(sharedOffer.getNominationDeadline(), is(not(nominationDeadline)));
+        final Offer sharedOffer1 = findOfferFromResponse(saveResponse.getOffer().getRefNo(), allOffersResponse1);
+        assertThat(sharedOffer1, is(not(nullValue())));
+        assertThat(sharedOffer1.getStatus(), is(OfferState.NEW));
+        assertThat(sharedOffer1.getNominationDeadline(), is(not(nominationDeadline)));
 
         final Set<String> offersToShare = new HashSet<>(1);
-        offersToShare.add(sharedOffer.getOfferId());
+        offersToShare.add(sharedOffer1.getOfferId());
 
         final List<String> groupIds = new ArrayList<>(2);
         groupIds.add(findNationalGroup(austriaToken).getGroupId());
@@ -308,7 +304,7 @@ public final class StudentTest extends AbstractTest {
         assertThat(publishResponse1.isOk(), is(true));
 
         final List<String> offersExternalId = new ArrayList<>(1);
-        offersExternalId.add(sharedOffer.getOfferId());
+        offersExternalId.add(sharedOffer1.getOfferId());
         final FetchPublishedGroupsRequest fetchPublishRequest = new FetchPublishedGroupsRequest(offersExternalId);
         final FetchPublishedGroupsResponse fetchPublishResponse1 = exchange.fetchPublishedGroups(token, fetchPublishRequest);
 
@@ -317,13 +313,13 @@ public final class StudentTest extends AbstractTest {
         final GroupList offerGroupsSharedTo = fetchPublishResponse1.getOffersGroups().get(offersExternalId.get(0));
         assertThat(2, is(offerGroupsSharedTo.size()));
 
-        allOffersResponse = exchange.fetchOffers(token, allOffersRequest);
-        assertThat(allOffersResponse.getOffers().isEmpty(), is(false));
-        sharedOffer = findOfferFromResponse(saveResponse.getOffer().getRefNo(), allOffersResponse);
-        assertThat(sharedOffer, is(not(nullValue())));
-        assertThat(sharedOffer.getRefNo(), is(saveResponse.getOffer().getRefNo()));
-        assertThat("The offer is shared now, the status has to be SHARED", sharedOffer.getStatus(), is(OfferState.SHARED));
-        assertThat(sharedOffer.getNominationDeadline(), is(nominationDeadline));
+        final FetchOffersResponse allOffersResponse2 = exchange.fetchOffers(token, allOffersRequest);
+        assertThat(allOffersResponse2.getOffers().isEmpty(), is(false));
+        final Offer sharedOffer2 = findOfferFromResponse(saveResponse.getOffer().getRefNo(), allOffersResponse2);
+        assertThat(sharedOffer2, is(not(nullValue())));
+        assertThat(sharedOffer2.getRefNo(), is(saveResponse.getOffer().getRefNo()));
+        assertThat("The offer is shared now, the status has to be SHARED", sharedOffer2.getStatus(), is(OfferState.SHARED));
+        assertThat(sharedOffer2.getNominationDeadline(), is(nominationDeadline));
 
         final CreateUserRequest createUserRequest1 = new CreateUserRequest("student_app002@university.edu", "password1", "Student1", "Graduate1");
         createUserRequest1.setStudentAccount(true);
@@ -337,24 +333,29 @@ public final class StudentTest extends AbstractTest {
         final Student student = fetchStudentsResponse.getStudents().get(0);
         student.setAvailable(new DatePeriod(new Date(), nominationDeadline));
 
-        StudentApplication application = new StudentApplication();
-        application.setOfferId(sharedOffer.getOfferId());
-        application.setStudent(student);
-        application.setStatus(ApplicationStatus.APPLIED);
-        application.setHomeAddress(TestData.prepareAddress("DE"));
-        application.setAddressDuringTerms(TestData.prepareAddress("AT"));
+        final StudentApplication application1 = new StudentApplication();
+        application1.setOfferId(sharedOffer2.getOfferId());
+        application1.setStudent(student);
+        application1.setStatus(ApplicationStatus.APPLIED);
+        application1.setHomeAddress(TestData.prepareAddress("DE"));
+        application1.setAddressDuringTerms(TestData.prepareAddress("AT"));
 
-        final ProcessStudentApplicationsRequest createStudentApplicationsRequest = new ProcessStudentApplicationsRequest(application);
+        final ProcessStudentApplicationsRequest createStudentApplicationsRequest = new ProcessStudentApplicationsRequest(application1);
+        // We have two Austrian Groups with the same permission; Staff & LC1.
+        // The problem is that the permission check is failing, so we need to
+        // add the Staff Group explicitly
+        // Setting the Staff Group, to avoid any permission error
+        austriaToken.setGroupId("9f2c4db6-38c9-4a2f-bdaf-141bd1eb4c13");
         final StudentApplicationResponse createStudentApplicationResponse = students.processStudentApplication(austriaToken, createStudentApplicationsRequest);
         assertThat(createStudentApplicationResponse.isOk(), is(true));
 
         //test updating existing application
-        application = createStudentApplicationResponse.getStudentApplication();
-        application.setUniversity("MyUniversity");
-        final ProcessStudentApplicationsRequest createStudentApplicationsRequest2 = new ProcessStudentApplicationsRequest(application);
+        final StudentApplication application2 = createStudentApplicationResponse.getStudentApplication();
+        application2.setUniversity("MyUniversity");
+        final ProcessStudentApplicationsRequest createStudentApplicationsRequest2 = new ProcessStudentApplicationsRequest(application2);
         final StudentApplicationResponse createStudentApplicationResponse2 = students.processStudentApplication(austriaToken, createStudentApplicationsRequest2);
         assertThat(createStudentApplicationResponse2.isOk(), is(true));
-        assertThat(createStudentApplicationResponse2.getStudentApplication().getUniversity(), is(application.getUniversity()));
+        assertThat(createStudentApplicationResponse2.getStudentApplication().getUniversity(), is(application2.getUniversity()));
     }
 
     @Test

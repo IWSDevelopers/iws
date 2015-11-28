@@ -187,9 +187,6 @@ import java.util.Map;
                 query = "select distinct ug from UserGroupEntity ug " +
                         "where ug.group.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
                         "  and ug.user.status = " + EntityConstants.USER_STATUS_ACTIVE +
-                        // IW3 variant, where we're looking at the role
-                        //"  and (ug.role.id <= " + EntityConstants.ROLE_MODERATOR +
-                        // IWS variant, which is less restrictive
                         "  and ug.onPublicList = true" +
                         "  and (ug.group.groupType.grouptype = " + EntityConstants.GROUPTYPE_ADMINISTRATION +
                         "    or ug.group.groupType.grouptype = " + EntityConstants.GROUPTYPE_INTERNATIONAL +
@@ -310,7 +307,7 @@ public class UserGroupEntity extends AbstractUpdateable<UserGroupEntity> impleme
      * {@inheritDoc}
      */
     @Override
-    public void setId(final Long id) {
+    public final void setId(final Long id) {
         this.id = id;
     }
 
@@ -318,7 +315,7 @@ public class UserGroupEntity extends AbstractUpdateable<UserGroupEntity> impleme
      * {@inheritDoc}
      */
     @Override
-    public Long getId() {
+    public final Long getId() {
         return id;
     }
 
@@ -326,7 +323,7 @@ public class UserGroupEntity extends AbstractUpdateable<UserGroupEntity> impleme
      * {@inheritDoc}
      */
     @Override
-    public void setExternalId(final String externalId) {
+    public final void setExternalId(final String externalId) {
         this.externalId = externalId;
     }
 
@@ -334,63 +331,63 @@ public class UserGroupEntity extends AbstractUpdateable<UserGroupEntity> impleme
      * {@inheritDoc}
      */
     @Override
-    public String getExternalId() {
+    public final String getExternalId() {
         return externalId;
     }
 
-    public void setUser(final UserEntity user) {
+    public final void setUser(final UserEntity user) {
         this.user = user;
     }
 
-    public UserEntity getUser() {
+    public final UserEntity getUser() {
         return user;
     }
 
-    public void setGroup(final GroupEntity group) {
+    public final void setGroup(final GroupEntity group) {
         this.group = group;
     }
 
-    public GroupEntity getGroup() {
+    public final GroupEntity getGroup() {
         return group;
     }
 
-    public void setRole(final RoleEntity role) {
+    public final void setRole(final RoleEntity role) {
         this.role = role;
     }
 
-    public RoleEntity getRole() {
+    public final RoleEntity getRole() {
         return role;
     }
 
-    public void setTitle(final String title) {
+    public final void setTitle(final String title) {
         this.title = title;
     }
 
-    public String getTitle() {
+    public final String getTitle() {
         return title;
     }
 
-    public void setOnPublicList(final Boolean onPublicList) {
+    public final void setOnPublicList(final Boolean onPublicList) {
         this.onPublicList = onPublicList;
     }
 
-    public Boolean getOnPublicList() {
+    public final Boolean getOnPublicList() {
         return onPublicList;
     }
 
-    public void setOnPrivateList(final Boolean onPrivateList) {
+    public final void setOnPrivateList(final Boolean onPrivateList) {
         this.onPrivateList = onPrivateList;
     }
 
-    public Boolean getOnPrivateList() {
+    public final Boolean getOnPrivateList() {
         return onPrivateList;
     }
 
-    public void setWriteToPrivateList(final Boolean writeToPrivateList) {
+    public final void setWriteToPrivateList(final Boolean writeToPrivateList) {
         this.writeToPrivateList = writeToPrivateList;
     }
 
-    public Boolean getWriteToPrivateList() {
+    public final Boolean getWriteToPrivateList() {
         return writeToPrivateList;
     }
 
@@ -398,7 +395,7 @@ public class UserGroupEntity extends AbstractUpdateable<UserGroupEntity> impleme
      * {@inheritDoc}
      */
     @Override
-    public void setModified(final Date modified) {
+    public final void setModified(final Date modified) {
         this.modified = modified;
     }
 
@@ -406,7 +403,7 @@ public class UserGroupEntity extends AbstractUpdateable<UserGroupEntity> impleme
      * {@inheritDoc}
      */
     @Override
-    public Date getModified() {
+    public final Date getModified() {
         return modified;
     }
 
@@ -414,7 +411,7 @@ public class UserGroupEntity extends AbstractUpdateable<UserGroupEntity> impleme
      * {@inheritDoc}
      */
     @Override
-    public void setCreated(final Date created) {
+    public final void setCreated(final Date created) {
         this.created = created;
     }
 
@@ -422,7 +419,7 @@ public class UserGroupEntity extends AbstractUpdateable<UserGroupEntity> impleme
      * {@inheritDoc}
      */
     @Override
-    public Date getCreated() {
+    public final Date getCreated() {
         return created;
     }
 
@@ -434,7 +431,7 @@ public class UserGroupEntity extends AbstractUpdateable<UserGroupEntity> impleme
      * {@inheritDoc}
      */
     @Override
-    public boolean diff(final UserGroupEntity obj) {
+    public final boolean diff(final UserGroupEntity obj) {
         // Until properly implemented, better return true to avoid that we're
         // missing updates!
         return true;
@@ -444,7 +441,7 @@ public class UserGroupEntity extends AbstractUpdateable<UserGroupEntity> impleme
      * {@inheritDoc}
      */
     @Override
-    public void merge(final UserGroupEntity obj) {
+    public final void merge(final UserGroupEntity obj) {
         if (canMerge(obj)) {
             title = which(title, obj.title);
             onPublicList = which(onPublicList, obj.onPublicList);
@@ -457,7 +454,7 @@ public class UserGroupEntity extends AbstractUpdateable<UserGroupEntity> impleme
      * {@inheritDoc}
      */
     @Override
-    public Map<NotificationField, String> prepareNotifiableFields(final NotificationType type) {
+    public final Map<NotificationField, String> prepareNotifiableFields(final NotificationType type) {
         final Map<NotificationField, String> fields = new EnumMap<>(NotificationField.class);
 
         switch (type) {

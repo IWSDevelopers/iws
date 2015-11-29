@@ -274,6 +274,40 @@ create table groups (
 
 
 -- =============================================================================
+-- Aliases
+-- -----------------------------------------------------------------------------
+-- For some Groups, we need static aliases, like the President address for the
+-- Board. Others like Co-operating Institutions becoming Full members also need
+-- a transition period where the old address is still functional.
+--   This table holds all static aliases, some are permanent and others have an
+-- expiration defined. For both, the alias is defined here, and the Group is the
+-- target, so a proper mailing list can be defined for it.
+--   Note, that an alias is the final e-mail address, i.e. @iaeste.org or
+-- @iaeste.net. No other rules is present except for the members of the Group in
+-- in question.
+-- =============================================================================
+create sequence alias_sequence start with 1 increment by 1;
+create table aliases (
+    id                  integer default nextval('alias_sequence'),
+    group_id            integer,
+    alias_address       varchar(100),
+    expires             date,
+    modified            timestamp default now(),
+    created             timestamp default now(),
+
+    /* Primary & Foreign Keys */
+    constraint alias_pk           primary key (id),
+    constraint alias_fk_group_id  foreign key (group_id) references groups (id),
+
+    /* Not Null Constraints */
+    constraint alias_notnull_id             check (id is not null),
+    constraint alias_notnull_alias_address  check (alias_address is not null),
+    constraint alias_notnull_modified       check (modified is not null),
+    constraint alias_notnull_created        check (created is not null)
+);
+
+
+-- =============================================================================
 -- Roles
 -- -----------------------------------------------------------------------------
 -- A User is associated to a Group with a Role, the Role serves as a "hat" for
@@ -477,6 +511,7 @@ create table users (
     firstname           varchar(50),
     lastname            varchar(50),
     person_id           integer,
+    eula_version        integer     default 0,
     status              varchar(25) default 'NEW',
     user_type           varchar(10) default 'VOLUNTEER',
     private_data        varchar(10) default 'PRIVATE',
@@ -485,6 +520,7 @@ create table users (
     temporary_data      varchar(128),
     temporary_expire    timestamp,
     old_iw3_id          integer,
+    password_changed    timestamp   default now(),
     modified            timestamp   default now(),
     created             timestamp   default now(),
 
@@ -499,17 +535,19 @@ create table users (
     constraint user_unique_code        unique (temporary_code),
 
     /* Not Null Constraints */
-    constraint user_notnull_id            check (id is not null),
-    constraint user_notnull_external_id   check (external_id is not null),
-    constraint user_notnull_username      check (username is not null),
-    constraint user_notnull_firstname     check (firstname is not null),
-    constraint user_notnull_lastname      check (lastname is not null),
-    constraint user_notnull_status        check (status is not null),
-    constraint user_notnull_user_type     check (user_type is not null),
-    constraint user_notnull_private_data  check (private_data is not null),
-    constraint user_notnull_notifications check (notifications is not null),
-    constraint user_notnull_modified      check (modified is not null),
-    constraint user_notnull_created       check (created is not null)
+    constraint user_notnull_id                check (id is not null),
+    constraint user_notnull_external_id       check (external_id is not null),
+    constraint user_notnull_username          check (username is not null),
+    constraint user_notnull_firstname         check (firstname is not null),
+    constraint user_notnull_lastname          check (lastname is not null),
+    constraint user_notnull_eula_version      check (eula_version is not null),
+    constraint user_notnull_status            check (status is not null),
+    constraint user_notnull_user_type         check (user_type is not null),
+    constraint user_notnull_private_data      check (private_data is not null),
+    constraint user_notnull_notifications     check (notifications is not null),
+    constraint user_notnull_password_changed  check (password_changed is not null),
+    constraint user_notnull_modified          check (modified is not null),
+    constraint user_notnull_created           check (created is not null)
 );
 
 

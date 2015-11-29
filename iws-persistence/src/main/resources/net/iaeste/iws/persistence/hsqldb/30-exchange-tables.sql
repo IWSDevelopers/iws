@@ -78,6 +78,7 @@ create table offers (
     old_offer_id              integer,
     old_refno                 varchar(50),
     exchange_year             integer,
+    local_committee_id        integer,
     -- General Work Description
     employer_id               integer,
     work_description          varchar(3000),
@@ -130,8 +131,9 @@ create table offers (
     created                   timestamp default now(),
 
     /* Primary & Foreign Keys */
-    constraint offer_pk             primary key (id),
-    constraint offer_fk_employer_id foreign key (employer_id) references employers (id),
+    constraint offer_pk                    primary key (id),
+    constraint offer_fk_employer_id        foreign key (employer_id) references employers (id),
+    constraint offer_fk_local_committee_id foreign key (local_committee_id) references groups (id),
 
     /* Unique Constraints */
     constraint offer_unique_external_id unique (external_id),

@@ -17,6 +17,8 @@ package net.iaeste.iws.api.util;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.Descriptable;
 
+import java.util.regex.Pattern;
+
 /**
  * Utility Class for the IWS Enumerated Objects.
  *
@@ -25,6 +27,8 @@ import net.iaeste.iws.api.enums.Descriptable;
  * @since   IWS 1.1
  */
 public final class EnumUtil {
+
+    private static final Pattern PATTERN_SPACE = Pattern.compile("[\\s]");
 
     /** Private Constructor, this is a utility Class. */
     private EnumUtil() {}
@@ -77,6 +81,6 @@ public final class EnumUtil {
      * @return Converted String
      */
     private static String convertToEnum(final String str) {
-        return str.trim().replaceAll("[\\s]", "_").toUpperCase(IWSConstants.DEFAULT_LOCALE);
+        return PATTERN_SPACE.matcher(str.trim()).replaceAll("_").toUpperCase(IWSConstants.DEFAULT_LOCALE);
     }
 }

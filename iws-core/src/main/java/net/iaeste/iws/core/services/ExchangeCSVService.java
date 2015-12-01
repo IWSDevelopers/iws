@@ -77,7 +77,7 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
 
     private static final Logger LOG = LoggerFactory.getLogger(ExchangeCSVService.class);
 
-    private static final char DELIMITER = ',';
+    private static final OfferCSVUploadRequest.FieldDelimiter DELIMITER = OfferCSVUploadRequest.FieldDelimiter.COMMA;
 
     private final AccessDao accessDao;
     private final ViewsDao viewsDao;
@@ -94,11 +94,11 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
         final Map<String, OfferCSVUploadResponse.ProcessingResult> processingResult = new HashMap<>();
         final Map<String, CSVProcessingErrors> errors = new HashMap<>();
 
-        final char fieldDelimiter = request.getDelimiter() != null ? request.getDelimiter().getDescription() : DELIMITER;
+        final OfferCSVUploadRequest.FieldDelimiter delimiter = (request.getDelimiter() != null) ? request.getDelimiter() : DELIMITER;
 
         try (ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(request.getData());
              Reader reader = new InputStreamReader(byteArrayInputStream, IWSConstants.DEFAULT_ENCODING);
-             CSVParser parser = getDefaultCsvParser(reader, fieldDelimiter)) {
+             CSVParser parser = getDefaultCsvParser(reader, delimiter.getDescription())) {
             final Map<String, Integer> headersMap = parser.getHeaderMap();
             final Set<String> headers = headersMap.keySet();
             final Set<String> expectedHeaders = new HashSet<>(createDomesticFirstRow());
@@ -109,6 +109,8 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
             } else {
                 throw new IWSException(IWSErrors.PROCESSING_FAILURE, "Invalid CSV header");
             }
+        } catch (IllegalArgumentException e) {
+            throw new IWSException(IWSErrors.PROCESSING_FAILURE, "The header is invalid: " + e.getMessage() + '.', e);
         } catch (IOException e) {
             throw new IWSException(IWSErrors.PROCESSING_FAILURE, "CSV upload processing failed", e);
         }
@@ -192,7 +194,7 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
 
     private CSVPrinter getDefaultCsvPrinter(final Appendable output) {
         try {
-            return CSVFormat.RFC4180.withDelimiter(DELIMITER)
+            return CSVFormat.RFC4180.withDelimiter(DELIMITER.getDescription())
                                     .withNullString("")
                                     .print(output);
         } catch (IOException e) {
@@ -240,7 +242,7 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
         }
     }
 
-    private Offer extractOfferFromCSV(final Authentication authentication, final Map<String, String> errors, final CSVRecord record) {
+    private static Offer extractOfferFromCSV(final Authentication authentication, final Map<String, String> errors, final CSVRecord record) {
         // Extract the Country from the Authentication Information
         final Country country = CommonTransformer.transform(authentication.getGroup().getCountry());
 
@@ -362,7 +364,7 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
             // No Id was set, so we're trying to find the Employer based on the
             // Unique information
             entity = dao.findUniqueEmployer(authentication, employer);
-            LOG.debug(formatLogMessage(authentication, "Unique Employer for name '%s' gave '%s'.", employer.getName(), entity != null ? entity.getName() : "null"));
+            LOG.debug(formatLogMessage(authentication, "Unique Employer for name '%s' gave '%s'.", employer.getName(), (entity != null) ? entity.getName() : "null"));
         }
 
         if (entity == null) {

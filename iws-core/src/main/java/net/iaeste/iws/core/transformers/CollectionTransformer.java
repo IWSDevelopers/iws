@@ -84,17 +84,14 @@ public final class CollectionTransformer {
      */
     public static <E extends Enum<E> & Descriptable<E>> List<E> explodeEnumList(final Class<E> enumType, final String value) {
         final List<E> result = new ArrayList<>(10);
+
         if (value != null) {
             final String[] array = SPLIT_PATTERN.split(value);
+
             for (final String str : array) {
                 if (!str.isEmpty()) {
-
-                    try {
-                        final E enumValue = EnumUtil.valueOf(enumType, str);
-                        result.add(enumValue);
-                    } catch (IllegalArgumentException e) {
-                        LOG.info("Error converting value '" + str + "' to enum of type '" + enumType.getClass().getName() + "': " + e.getMessage());
-                    }
+                    final E enumValue = EnumUtil.valueOf(enumType, str);
+                    result.add(enumValue);
                 }
             }
         }

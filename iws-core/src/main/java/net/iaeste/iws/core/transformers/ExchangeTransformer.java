@@ -158,7 +158,6 @@ public final class ExchangeTransformer {
             transformEnum(offerErrors, result, LANGUAGE_3_LEVEL, record, LanguageLevel.class);
             transformBigDecimal(offerErrors, result, PAYMENT, record);
             transformEnum(offerErrors, result, PAYMENT_FREQUENCY, record, PaymentFrequency.class);
-            // TODO Board/IWUG Question: Shouldn't this be set via the Country ?
             transformEnum(offerErrors, result, CURRENCY, record, Currency.class);
             transformString(offerErrors, result, DEDUCTION, record);
             transformBigDecimal(offerErrors, result, LIVING_COST, record);

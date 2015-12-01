@@ -36,7 +36,7 @@ import java.util.Set;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
-public class CollectionTransformerTest {
+public final class CollectionTransformerTest {
 
     @Test
     public void testConcatEnumCollection() {
@@ -161,58 +161,54 @@ public class CollectionTransformerTest {
 
     @Test
     public void testWithCommaDelimiter() {
-        final Collection<FieldOfStudy> result2 = explodeEnumSet(FieldOfStudy.class, "Physics, Electrical engineering");
-        assertThat(result2.size(), is(2));
-        assertThat(result2.contains(FieldOfStudy.PHYSICS), is(true));
-        assertThat(result2.contains(FieldOfStudy.ELECTRICAL_ENGINEERING), is(true));
-
-        final Collection<FieldOfStudy> result3 = explodeEnumSet(FieldOfStudy.class, "Mathematics, Physics, Computer Science");
-        assertThat(result3.size(), is(2));
-        assertThat(result3.contains(FieldOfStudy.MATHEMATICS), is(true));
-        assertThat(result3.contains(FieldOfStudy.PHYSICS), is(true));
-
-        final Collection<FieldOfStudy> result4 = explodeEnumSet(FieldOfStudy.class, "Finance, Physics, Mathematics or equivalent");
-        assertThat(result4.size(), is(1));
-        assertThat(result4.contains(FieldOfStudy.PHYSICS), is(true));
-
-        final Collection<FieldOfStudy> result6 = explodeEnumSet(FieldOfStudy.class, "Mechanical, Electrical, civil engineering");
-        assertThat(result6.size(), is(1));
-        assertThat(result6.contains(FieldOfStudy.CIVIL_ENGINEERING), is(true));
-
-        final Collection<FieldOfStudy> result7 = explodeEnumSet(FieldOfStudy.class, "PHYSICS, Mechanical engineering, electrical engineering, Microsystems technology");
-        assertThat(result7.size(), is(3));
-        assertThat(result7.contains(FieldOfStudy.PHYSICS), is(true));
-        assertThat(result7.contains(FieldOfStudy.MECHANICAL_ENGINEERING), is(true));
-        assertThat(result7.contains(FieldOfStudy.ELECTRICAL_ENGINEERING), is(true));
+        final Collection<FieldOfStudy> result = explodeEnumSet(FieldOfStudy.class, "Physics, Electrical engineering");
+        assertThat(result.size(), is(2));
+        assertThat(result.contains(FieldOfStudy.PHYSICS), is(true));
+        assertThat(result.contains(FieldOfStudy.ELECTRICAL_ENGINEERING), is(true));
     }
 
-    @Test
-    public void testNamesWithNoMatches() {
-        final Collection<FieldOfStudy> result1 = explodeEnumSet(FieldOfStudy.class, "Computer Science");
-        assertThat(result1.size(), is(0));
+    @Test(expected = IllegalArgumentException.class)
+    public void testNameWithNoMatch1() {
+        explodeEnumSet(FieldOfStudy.class, "Computer Science");
+    }
 
-        final Collection<FieldOfStudy> result2 = explodeEnumSet(FieldOfStudy.class, "ECONOMICS");
-        assertThat(result2.size(), is(0));
+    @Test(expected = IllegalArgumentException.class)
+    public void testNameWithNoMatch2() {
+        explodeEnumSet(FieldOfStudy.class, "ECONOMICS");
+    }
 
-        final Collection<FieldOfStudy> result3 = explodeEnumSet(FieldOfStudy.class, " ECONOMICS");
-        assertThat(result3.size(), is(0));
+    @Test(expected = IllegalArgumentException.class)
+    public void testNameWithNoMatch3() {
+        explodeEnumSet(FieldOfStudy.class, " ECONOMICS");
+    }
 
-        final Collection<FieldOfStudy> result4 = explodeEnumSet(FieldOfStudy.class, "Food Technology");
-        assertThat(result4.size(), is(0));
+    @Test(expected = IllegalArgumentException.class)
+    public void testNameWithNoMatch4() {
+        explodeEnumSet(FieldOfStudy.class, "Food Technology");
+    }
 
-        final Collection<FieldOfStudy> result5 = explodeEnumSet(FieldOfStudy.class, "Any scientific field is eligible");
-        assertThat(result5.size(), is(0));
+    @Test(expected = IllegalArgumentException.class)
+    public void testNameWithNoMatch5() {
+        explodeEnumSet(FieldOfStudy.class, "Any scientific field is eligible");
+    }
 
-        final Collection<FieldOfStudy> result6 = explodeEnumSet(FieldOfStudy.class, "finance , business administration");
-        assertThat(result6.size(), is(0));
+    @Test(expected = IllegalArgumentException.class)
+    public void testNameWithNoMatch6() {
+        explodeEnumSet(FieldOfStudy.class, "finance , business administration");
+    }
 
-        final Collection<FieldOfStudy> result7 = explodeEnumSet(FieldOfStudy.class, "Marketing, Business");
-        assertThat(result7.size(), is(0));
+    @Test(expected = IllegalArgumentException.class)
+    public void testNameWithNoMatch7() {
+        explodeEnumSet(FieldOfStudy.class, "Marketing, Business");
+    }
 
-        final Collection<FieldOfStudy> result8 = explodeEnumSet(FieldOfStudy.class, "ELECTRICAL_ENGINEERING OR MECHANICAL ENGINEERING");
-        assertThat(result8.size(), is(0));
+    @Test(expected = IllegalArgumentException.class)
+    public void testNameWithNoMatch8() {
+        explodeEnumSet(FieldOfStudy.class, "ELECTRICAL_ENGINEERING OR MECHANICAL ENGINEERING");
+    }
 
-        final Collection<FieldOfStudy> result9 = explodeEnumSet(FieldOfStudy.class, "Computer Science / Computer Engineering / Electrical Engineering");
-        assertThat(result9.size(), is(0));
+    @Test(expected = IllegalArgumentException.class)
+    public void testNameWithNoMatch9() {
+        explodeEnumSet(FieldOfStudy.class, "Computer Science / Computer Engineering / Electrical Engineering");
     }
 }

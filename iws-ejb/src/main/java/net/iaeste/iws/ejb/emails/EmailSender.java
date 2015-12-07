@@ -45,11 +45,12 @@ import java.util.Properties;
  * @since   IWS 1.0
  */
 @MessageDriven(
-        mappedName = "jms/queue/iwsEmailQueue", /*required by glassfish*/
+        mappedName = "jms/queue/iwsEmailQueue",
         activationConfig = {
                 @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue"),
                 @ActivationConfigProperty(propertyName = "destinationLookup", propertyValue = "jms/queue/iwsEmailQueue"),
-                @ActivationConfigProperty(propertyName = "acknowledgeMode", propertyValue = "Auto-acknowledge")
+                @ActivationConfigProperty(propertyName = "acknowledgeMode", propertyValue = "Auto-acknowledge"),
+                @ActivationConfigProperty(propertyName = "maxSession", propertyValue = "2")
         }
 )
 public class EmailSender implements MessageListener {
@@ -64,7 +65,6 @@ public class EmailSender implements MessageListener {
      * Log message could be deleted once we are sure it's working properly
      */
     public EmailSender() {
-        // TODO figure out why 30 bean instances is started initially - we're not sending that many mails!
         LOG.info("Starting EmailSender");
     }
 

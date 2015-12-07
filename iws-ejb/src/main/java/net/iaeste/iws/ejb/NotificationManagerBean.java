@@ -23,8 +23,6 @@ import net.iaeste.iws.common.utils.Observer;
 import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.ejb.cdi.IWSBean;
 import net.iaeste.iws.ejb.notifications.NotificationManager;
-import net.iaeste.iws.ejb.notifications.NotificationMessageGenerator;
-import net.iaeste.iws.ejb.notifications.NotificationMessageGeneratorFreemarker;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.NotificationDao;
@@ -117,9 +115,7 @@ public class NotificationManagerBean implements NotificationManagerLocal {
         dao = new NotificationJpaDao(entityManager);
         accessDao = new AccessJpaDao(entityManager);
 
-        final NotificationMessageGenerator generator = new NotificationMessageGeneratorFreemarker();
-        generator.setSettings(settings);
-        final NotificationManager notificationManager = new NotificationManager(entityManager, mailEntityManager, settings, generator, true);
+        final NotificationManager notificationManager = new NotificationManager(entityManager, mailEntityManager, settings, true);
         notificationManager.startupConsumers();
         notifications = notificationManager;
     }
@@ -139,7 +135,7 @@ public class NotificationManagerBean implements NotificationManagerLocal {
      */
     @Override
     public void notify(final Authentication authentication, final Notifiable obj, final NotificationType type) {
-        LOG.info("New '" + type + "' notification request at NotificationManagerBean");
+        LOG.info("New '{}' notification request at NotificationManagerBean", type);
         try {
             notifications.notify(authentication, obj, type);
         } catch (IWSException e) {
@@ -228,14 +224,14 @@ public class NotificationManagerBean implements NotificationManagerLocal {
         //TODO remove log messages when the processing works correctly, i.e. there is no need of timer rescheduling.
         //     the problem is that consumers doesn't see their tasks when they are called just after tasks' creation
         this.timer = null;
-        LOG.trace("processJobsScheduled started at " + new DateTime());
+        LOG.trace("processJobsScheduled started at {}", new DateTime());
         notifications.processJobs();
     }
 
     // Commented for now, since this causes huge stack traces!
     @Schedule(second = "*/30",minute = "*", hour = "*", info="Every 30 seconds", persistent = false)
     private void processJobsScheduled() {
-        LOG.trace("processJobsScheduled started at " + new DateTime());
+        LOG.trace("processJobsScheduled started at {}", new DateTime());
         final boolean run;
         synchronized (lock) {
             if (!processingIsRunning) {

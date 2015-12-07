@@ -20,6 +20,7 @@ package net.iaeste.iws.ejb.notifications.consumers;
  * @since   IWS 1.0
  */
 public enum NotificationProcessTaskStatus {
+
     NOT_FOR_ME,
     OK,
     ERROR

@@ -19,7 +19,7 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import java.io.Serializable;
 
 /**
- * These classes sind temporarily placed here. We need the functionality, but it
+ * These classes are temporarily placed here. We need the functionality, but it
  * should rightly be placed in the EJB module. Until the EJB module is ready,
  * and we have a GlassFish instance to deploy to, we will keep it here.
  *
@@ -29,7 +29,7 @@ import java.io.Serializable;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
-public class EmailMessage implements Serializable {
+public final class EmailMessage implements Serializable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;

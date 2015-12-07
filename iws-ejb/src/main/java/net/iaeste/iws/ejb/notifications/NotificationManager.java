@@ -62,22 +62,18 @@ public class NotificationManager implements Notifications {
 
     private static final Logger LOG = LoggerFactory.getLogger(NotificationManager.class);
 
+    private final List<Observer> observers = new ArrayList<>(10);
+
     private final EntityManager entityManager;
     private final EntityManager mailingEntityManager;
     private final Settings settings;
-
     private final NotificationDao dao;
-
-    private final NotificationMessageGenerator messageGenerator;
-    private final List<Observer> observers = new ArrayList<>(10);
-
     private final boolean hostedInBean;
 
-    public NotificationManager(final EntityManager entityManager, final EntityManager mailingEntityManager, final Settings settings, final NotificationMessageGenerator messageGenerator, final boolean hostedInBean) {
+    public NotificationManager(final EntityManager entityManager, final EntityManager mailingEntityManager, final Settings settings, final boolean hostedInBean) {
         this.entityManager = entityManager;
         this.mailingEntityManager = mailingEntityManager;
         this.settings = settings;
-        this.messageGenerator = messageGenerator;
         this.hostedInBean = hostedInBean;
 
         dao = new NotificationJpaDao(entityManager);
@@ -86,7 +82,7 @@ public class NotificationManager implements Notifications {
     /**
      * Startup notification manager - load from DB registered notification consumers and subcribe them to the manager
      */
-    public void startupConsumers() {
+    public final void startupConsumers() {
         final List<NotificationConsumerEntity> consumers = dao.findActiveNotificationConsumers();
         final NotificationConsumerClassLoader classLoader = new NotificationConsumerClassLoader();
 
@@ -102,7 +98,7 @@ public class NotificationManager implements Notifications {
      */
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public void processJobs() {
+    public final void processJobs() {
         final Date now = new Date();
         final List<NotificationJobEntity> unprocessedJobs = dao.findUnprocessedNotificationJobs(now);
         if (!unprocessedJobs.isEmpty()) {
@@ -114,6 +110,7 @@ public class NotificationManager implements Notifications {
                 dao.persist(job);
             }
         }
+
         //TODO call observers even there is no new job. however, there is probably some tasks in the db... can be removed once the db (transaction?) issue is solved
         notifyObservers();
     }
@@ -130,8 +127,8 @@ public class NotificationManager implements Notifications {
      * {@inheritDoc}
      */
     @Override
-    public void notify(final Authentication authentication, final Notifiable obj, final NotificationType type) {
-        LOG.info("New '" + type + "' notification request at NotificationManager");
+    public final void notify(final Authentication authentication, final Notifiable obj, final NotificationType type) {
+        LOG.info("New '{}' notification request at NotificationManager", type);
 
         if (obj != null) {
             try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -141,14 +138,14 @@ public class NotificationManager implements Notifications {
                 final byte[] bytes = outputStream.toByteArray();
                 final NotificationJobEntity job = new NotificationJobEntity(type, bytes);
                 dao.persist(job);
-                LOG.info("New notification job for '" + type + "' created");
+                LOG.info("New notification job for '{}' created", type);
                 if (!hostedInBean) {
                     processJobs();
                 }
             } catch (IWSException e) {
-                LOG.error("Preparing notification job failed: " + e.getMessage(), e);
+                LOG.error("Preparing notification job failed: {}", e.getMessage(), e);
             } catch (IOException e) {
-                LOG.warn("Serializing of Notifiable instance for NotificationType " + type + " failed: " + e.getMessage(), e);
+                LOG.warn("Serializing of Notifiable instance for NotificationType {} failed: {}", type, e.getMessage(), e);
             }
         }
     }
@@ -157,7 +154,7 @@ public class NotificationManager implements Notifications {
      * {@inheritDoc}
      */
     @Override
-    public void notify(final UserEntity user) {
+    public final void notify(final UserEntity user) {
         LOG.info("New 'user' notification request at NotificationManager");
 
         if (user != null) {
@@ -168,36 +165,32 @@ public class NotificationManager implements Notifications {
                 final byte[] bytes = outputStream.toByteArray();
                 final NotificationJobEntity job = new NotificationJobEntity(NotificationType.RESET_PASSWORD, bytes);
                 dao.persist(job);
-                LOG.info("New notification job for '" + NotificationType.RESET_PASSWORD + "' created");
+                LOG.info("New notification job for '{}' created", NotificationType.RESET_PASSWORD);
                 if (!hostedInBean) {
                     processJobs();
                 }
             } catch (IWSException e) {
-                LOG.error("Preparing notification job failed: " + e.getMessage(), e);
+                LOG.error("Preparing notification job failed: {}", e.getMessage(), e);
             } catch (IOException e) {
-                LOG.warn("Serializing of Notifiable instance for NotificationType.RESET_PASSWORD failed: " + e.getMessage(), e);
+                LOG.warn("Serializing of Notifiable instance for NotificationType.RESET_PASSWORD failed: {}", e.getMessage(), e);
             }
         }
     }
 
     @Override
-    public void addObserver(final Observer observer) {
+    public final void addObserver(final Observer observer) {
         observers.add(observer);
     }
 
     @Override
-    public void deleteObserver(final Observer observer) {
+    public final void deleteObserver(final Observer observer) {
         observers.remove(observer);
     }
 
     @Override
-    public void notifyObservers() {
+    public final void notifyObservers() {
         for (final Observer observer : observers) {
             observer.update(this);
         }
-    }
-
-    public int getObserversCount() {
-        return observers.size();
     }
 }

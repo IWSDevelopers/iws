@@ -48,20 +48,9 @@ import java.util.Properties;
         mappedName = "jms/queue/iwsEmailQueue", /*required by glassfish*/
         activationConfig = {
                 @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue"),
-                // Not sure if the following should be "destination" or "destinationLookup".
-                // I took the "destination", as that is what I've used in a JBoss 6.x project
-                // ... destinationLookup seems to work on glassfish
                 @ActivationConfigProperty(propertyName = "destinationLookup", propertyValue = "jms/queue/iwsEmailQueue"),
                 @ActivationConfigProperty(propertyName = "acknowledgeMode", propertyValue = "Auto-acknowledge")
         }
-//        activationConfig = {
-//                @ActivationConfigProperty(
-//                        propertyName = "destinationType",
-//                        propertyValue = "javax.jms.Queue"),
-//                @ActivationConfigProperty(/* required by jboss */
-//                        propertyName = "destinationLookup",
-//                        propertyValue = "jms/queue/iwsEmailQueue")
-//        }
 )
 public class EmailSender implements MessageListener {
 
@@ -72,7 +61,7 @@ public class EmailSender implements MessageListener {
     /**
      * Default constructor
      *
-     * Log message could be delated once we are sure it's working properly
+     * Log message could be deleted once we are sure it's working properly
      */
     public EmailSender() {
         // TODO figure out why 30 bean instances is started initially - we're not sending that many mails!
@@ -110,7 +99,7 @@ public class EmailSender implements MessageListener {
             message.setSubject(msg.getSubject());
             message.setText(msg.getMessage());
 
-            LOG.info("Sending email message to " + msg.getTo());
+            LOG.info("Sending email message to {}.", msg.getTo());
             Transport.send(message);
         } catch (MessagingException e) {
             throw new IWSException(IWSErrors.ERROR, "Sending to '" + msg.getTo() + "' failed.", e);
@@ -132,7 +121,7 @@ public class EmailSender implements MessageListener {
         try {
             return new InternetAddress(address);
         } catch (AddressException e) {
-            throw new IWSException(IWSErrors.ERROR, "Invalid Internet Address.", e);
+            throw new IWSException(IWSErrors.ERROR, "Invalid Internet Address: " + e.getMessage(), e);
         }
     }
 }

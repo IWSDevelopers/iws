@@ -23,8 +23,7 @@ import net.iaeste.iws.common.notification.NotificationType;
 import net.iaeste.iws.common.utils.Observable;
 import net.iaeste.iws.common.utils.Observer;
 import net.iaeste.iws.ejb.emails.EmailMessage;
-import net.iaeste.iws.ejb.notifications.NotificationMessageGenerator;
-import net.iaeste.iws.ejb.notifications.NotificationMessageGeneratorFreemarker;
+import net.iaeste.iws.ejb.notifications.MessageGenerator;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.NotificationDao;
 import net.iaeste.iws.persistence.entities.UserEntity;
@@ -51,8 +50,6 @@ import javax.persistence.EntityManager;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -66,36 +63,30 @@ import java.util.Map;
  * @since   IWS 1.0
  */
 public class NotificationEmailSender implements Observer {
+
     private Long id = null;
     private static final Integer ATTEMPTS_LIMIT = 3;
     private boolean initialized = false;
 
-    private NotificationMessageGenerator messageGenerator;
-    private NotificationDao dao;
-    private AccessDao accessDao;
+    private MessageGenerator messageGenerator = null;
+    private NotificationDao dao = null;
+    private AccessDao accessDao = null;
 
     private static final Logger LOG = LoggerFactory.getLogger(NotificationEmailSender.class);
 
     private static final String QUEUE_NAME = "jms/queue/iwsEmailQueue";
-    private Queue queue;
 
     private static final String QUEUE_FACTORY_NAME = "jms/factory/iwsQueueConnectionFactory";
-    private QueueConnectionFactory queueConnectionFactory;
 
     private QueueConnection queueConnection = null;
     private QueueSender sender = null;
     private QueueSession session = null;
 
-    public NotificationEmailSender() {
-    }
-
     @Override
-    public void init(final EntityManager iwsEntityManager, final EntityManager mailingEntityManager, final Settings settings) {
+    public final void init(final EntityManager iwsEntityManager, final EntityManager mailingEntityManager, final Settings settings) {
         dao = new NotificationJpaDao(iwsEntityManager);
         accessDao = new AccessJpaDao(iwsEntityManager);
-
-        messageGenerator = new NotificationMessageGeneratorFreemarker();
-        messageGenerator.setSettings(settings);
+        messageGenerator = new MessageGenerator(settings);
 
         initializeQueue();
 
@@ -103,66 +94,40 @@ public class NotificationEmailSender implements Observer {
     }
 
     private void initializeQueue() {
-        try {
-            final Context context = new InitialContext();
+        Context context = null;
 
-            queueConnectionFactory = (QueueConnectionFactory) context.lookup(QUEUE_FACTORY_NAME);
-            queueConnection = queueConnectionFactory.createQueueConnection();
+        try {
+            context = new InitialContext();
+            final QueueConnectionFactory factory = (QueueConnectionFactory) context.lookup(QUEUE_FACTORY_NAME);
+            queueConnection = factory.createQueueConnection();
             queueConnection.start();
 
-            queue = (Queue) context.lookup(QUEUE_NAME);
-            context.close();
+            final Queue queue = (Queue) context.lookup(QUEUE_NAME);
 
             session = queueConnection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE);
             sender = session.createSender(queue);
-            //TODO added for FFMQ, keep it for glassfish?
-            sender.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
+            sender.setDeliveryMode(DeliveryMode.PERSISTENT);
         } catch (NamingException | JMSException e) {
             throw new IWSException(IWSErrors.ERROR, "Queue sender (NotificationEmailSender) initialization failed.", e);
+        } finally {
+            close(context);
         }
     }
 
-//    private static Hashtable<String, String> getFfmqEnvironment() {
-////        try {
-//            final Hashtable<String, String> env = new Hashtable<>();
-//            env.put(Context.INITIAL_CONTEXT_FACTORY, FFMQConstants.JNDI_CONTEXT_FACTORY);
-//            env.put(Context.PROVIDER_URL, "vm://"+ MessageServer.engineName);
-//            return env;
-//    }
-
-//    private void initializeFfmqQueue() {
-//        try {
-//            final Hashtable<String, String> env = new Hashtable<>();
-//            env.put(Context.INITIAL_CONTEXT_FACTORY, FFMQConstants.JNDI_CONTEXT_FACTORY);
-//            env.put(Context.PROVIDER_URL, "vm://"+ MessageServer.engineName);
-//            //connection using 'vm://' protocol should have better performance, if not working, use tcp connection instead
-////            env.put(Context.PROVIDER_URL, "tcp://" + MessageServer.listenAddr + ":" + MessageServer.listenPort);
-//            final Context context = new InitialContext(env);
-//
-//            queueConnectionFactory = (QueueConnectionFactory)context.lookup(FFMQConstants.JNDI_QUEUE_CONNECTION_FACTORY_NAME);
-//            // end FFMQ specific
-//
-//            queueConnection = queueConnectionFactory.createQueueConnection();
-//            queueConnection.start();
-//
-//            //FFMQ specific
-//            queue = (Queue)context.lookup(MessageServer.queueNameForIws);
-//            context.close();
-//            // end FFMQ specific
-//
-//            session = queueConnection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE);
-//            sender = session.createSender(queue);
-//            //TODO added for FFMQ, keep it for glassfish?
-//            sender.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
-//        } catch (NamingException|JMSException e) {
-//            throw new IWSException(IWSErrors.ERROR, "Queue sender (NotificationEmailSender) initialization failed.", e);
-//        }
-//    }
+    private static void close(final Context context) {
+        if (context != null) {
+            try {
+                context.close();
+            } catch (NamingException e) {
+                LOG.warn(e.getMessage(), e);
+            }
+        }
+    }
 
     /**
-     * Method for unsubscibing from queue and closing connection
+     * Method for unsubscribing from queue and closing connection.
      */
-    public void stop() {
+    public final void stop() {
         try {
             sender.close();
             session.close();
@@ -173,12 +138,12 @@ public class NotificationEmailSender implements Observer {
     }
 
     @Override
-    public Long getId() {
+    public final Long getId() {
         return id;
     }
 
     @Override
-    public void setId(final Long id) {
+    public final void setId(final Long id) {
         this.id = id;
     }
 
@@ -186,17 +151,17 @@ public class NotificationEmailSender implements Observer {
      * {@inheritDoc}
      */
     @Override
-    public void update(final Observable subject) {
+    public final void update(final Observable subject) {
         if (initialized) {
             try {
                 processMessages();
-            } catch (Exception e) {
-                //catching all exceptions other than IWSException to prevent
-                //stopping notification processing and leaving error message in log
-                LOG.error("System error occured", e);
+            } catch (RuntimeException e) {
+                // Catching and logging all Runtime Exceptions, to prevent
+                // stopping notification processing
+                LOG.error("System error occurred: {}.", e.getMessage(), e);
             }
         } else {
-            LOG.warn("Update called for uninitialized observer");
+            LOG.warn("Update called for uninitialized observer.");
         }
     }
 
@@ -204,14 +169,14 @@ public class NotificationEmailSender implements Observer {
         //TODO this DB request doesn't work just after the task is persisted, I (Pavel) have no idea why. once it's solved, some TODOs in NotificationManager(Bean) could fixed
         final List<NotificationJobTasksView> jobTasks = dao.findUnprocessedNotificationJobTaskByConsumerId(id, ATTEMPTS_LIMIT);
         for (final NotificationJobTasksView jobTask : jobTasks) {
-            LOG.info("Processing email notification job task " + jobTask.getId());
+            LOG.info("Processing email notification job task {}.", jobTask.getId());
             processTask(jobTask);
         }
     }
 
     private void processTask(final NotificationJobTasksView task) {
         if ((task != null) && (task.getObject() != null)) {
-            LOG.info("Processing email notification job task " + task.getId());
+            LOG.info("Processing email notification job task {}.", task.getId());
             try (final ByteArrayInputStream inputStream = new ByteArrayInputStream(task.getObject());
                  final ObjectInputStream objectStream = new ObjectInputStream(inputStream)) {
                 final Map<NotificationField, String> fields = (Map<NotificationField, String>) objectStream.readObject();
@@ -222,24 +187,24 @@ public class NotificationEmailSender implements Observer {
                     processedStatus = processTask(fields, task.getNotificationType());
                 }
                 final boolean processed = processedStatus != NotificationProcessTaskStatus.ERROR;
-                LOG.info("Notification job task " + task.getId() + " attempt number is going to be updated to " + (task.getAttempts() + 1) + ", processed set to " + processed);
+                LOG.info("Notification job task {} attempt number is going to be updated to {}, processed set to {}.", task.getId(), task.getAttempts() + 1, processed);
                 dao.updateNotificationJobTask(task.getId(), processed, task.getAttempts() + 1);
-                LOG.info("Notification job task " + task.getId() + " was updated");
+                LOG.info("Notification job task {} was updated", task.getId());
             } catch (IOException | ClassNotFoundException e) {
                 final boolean processed = false;
-                LOG.info("Notification job task " + task.getId() + " failed, task is going to be updated to " + (task.getAttempts() + 1) + ", processed set to " + processed);
+                LOG.info("Notification job task {} failed, task is going to be updated to {}, processed set to " + processed, task.getId(), task.getAttempts() + 1);
                 dao.updateNotificationJobTask(task.getId(), processed, task.getAttempts() + 1);
-                LOG.info("Notification job task " + task.getId() + " was updated");
+                LOG.info("Notification job task {} was updated.", task.getId());
                 LOG.error(e.getMessage(), e);
             } catch (IWSException e) {
                 //prevent throwing IWSException out, it stops the timer to run this processing
                 final boolean processed = false;
                 dao.updateNotificationJobTask(task.getId(), processed, task.getAttempts() + 1);
-                LOG.error("Error during notification processing", e);
+                LOG.error("Error during notification processing.", e);
             }
         } else {
             if (task != null) {
-                LOG.error("Processing of the " + task + " which contains no Object, cannot be completed.");
+                LOG.error("Processing of the {} which contains no Object, cannot be completed.", task);
             } else {
                 LOG.error("Processing of a NULL task will not work.");
             }
@@ -254,31 +219,30 @@ public class NotificationEmailSender implements Observer {
         NotificationProcessTaskStatus ret = NotificationProcessTaskStatus.ERROR;
         final List<UserEntity> recipients = getRecipients(fields, type);
         if (recipients == null) {
-            LOG.info("Notification job task for " + type + " has no recipient");
+            LOG.info("Notification job task for {} has no recipient", type);
             return NotificationProcessTaskStatus.NOT_FOR_ME;
         }
 
         for (final UserEntity recipient : recipients) {
-            LOG.info("Notification job task for " + type + " has recipient " + recipient.getId());
+            LOG.info("Notification job task for {} has recipient {}", type, recipient.getId());
             try {
                 final UserNotificationEntity userSetting = dao.findUserNotificationSetting(recipient, type);
                 //Processing of other notification than 'IMMEDIATELY' ones will be triggered by a timer and all required information
                 //should be get from DB directly according to the NotificationType
-                if (userSetting != null && userSetting.getFrequency() == NotificationFrequency.IMMEDIATELY) {
-                    debugLogActivationLink(fields, type);
-                    LOG.info("User notification setting for " + type + " was found");
+                if ((userSetting != null) && (userSetting.getFrequency() == NotificationFrequency.IMMEDIATELY)) {
+                    LOG.info("User notification setting for {} was found", type);
                     try {
                         final ObjectMessage msg = session.createObjectMessage();
                         final EmailMessage emsg = new EmailMessage();
                         emsg.setTo(getTargetEmailAddress(recipient, type));
-                        final Map<String, String> messageData = messageGenerator.generateFromTemplate(fields, type);
-                        LOG.info("Email message for for " + type + " was generated");
+                        final Map<String, String> messageData = messageGenerator.generate(fields, type);
+                        LOG.info("Email message for for {} was generated", type);
                         emsg.setSubject(messageData.get("title"));
                         emsg.setMessage(messageData.get("body"));
                         msg.setObject(emsg);
 
                         sender.send(msg);
-                        LOG.info("Email message for for " + type + " was sent to message queue");
+                        LOG.info("Email message for for {} was sent to message queue", type);
                         ret = NotificationProcessTaskStatus.OK;
                     } catch (IWSException e) {
                         LOG.error("Notification message generating failed", e);
@@ -287,27 +251,14 @@ public class NotificationEmailSender implements Observer {
                         LOG.error("Error during sending notification message to JMS queue", e);
                     }
                 } else if (userSetting == null) {
-                    LOG.warn("User " + recipient.getId() + " has no setting for notification type '" + type + "'");
+                    LOG.warn("User {} has no setting for notification type '{}'", recipient.getId(), type);
                 }
             } catch (IWSException ignore) {
-                LOG.warn("User " + recipient.getId() + " has not proper notification setting for notification type " + type);
+                LOG.warn("User {} has not proper notification setting for notification type {}", recipient.getId(), type);
             }
         }
-        return ret;
-    }
 
-    // printout of the activation link for easier testing of add user functionality
-    private static void debugLogActivationLink(Map<NotificationField, String> fields, NotificationType notificationType) {
-        if (notificationType == NotificationType.ACTIVATE_NEW_USER && LOG.isDebugEnabled()) {
-            String hostname;
-            try {
-                hostname = InetAddress.getLocalHost().getHostName();
-            } catch (UnknownHostException e) {
-                // Just assume localhost
-                hostname = "localhost";
-            }
-            LOG.debug("***** ACTIVATION LINK https://" + hostname + "/intraweb/pages/activateUser.xhtml?code=" + fields.get(NotificationField.CODE) + " *****");
-        }
+        return ret;
     }
 
     //TODO probably not necessary to have the whole UserEntity, maybe just List<string> (emails) would be enough

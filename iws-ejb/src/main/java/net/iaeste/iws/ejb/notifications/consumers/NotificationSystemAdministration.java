@@ -45,7 +45,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.Date;
-import java.util.HashSet;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -82,7 +82,6 @@ public class NotificationSystemAdministration implements Observer {
         this.notificationDao = new NotificationJpaDao(iwsEntityManager);
         this.settings = settings;
 
-//        mailingListDao = new MailingListJpaDao(iwsEntityManager);
         mailingListEntityManager = mailingEntityManager;
 
         initialized = true;
@@ -97,14 +96,14 @@ public class NotificationSystemAdministration implements Observer {
             try {
                 processMessages();
             } catch (IWSException e) {
-                LOG.error("IWS error occurred", e);
-            } catch (Exception e) {
+                LOG.error("IWS error occurred: {}.", e.getMessage(), e);
+            } catch (RuntimeException e) {
                 //catching all exceptions other than IWSException to prevent
                 //stopping notification processing and leaving error message in log
-                LOG.error("System error occurred", e);
+                LOG.error("System error occurred: {}.", e.getMessage(), e);
             }
         } else {
-            LOG.warn("Update called for uninitialized observer");
+            LOG.warn("Update called for uninitialized observer.");
         }
     }
 
@@ -112,14 +111,14 @@ public class NotificationSystemAdministration implements Observer {
         //TODO this DB request doesn't work just after the task is persisted, I (Pavel) have no idea why. once it's solved, some TODOs in NotificationManager(Bean) could fixed
         final List<NotificationJobTasksView> jobTasks = notificationDao.findUnprocessedNotificationJobTaskByConsumerId(id, ATTEMPTS_LIMIT);
         for (final NotificationJobTasksView jobTask : jobTasks) {
-            LOG.info("Processing system notification job task " + jobTask.getId());
+            LOG.info("Processing system notification job task {}", jobTask.getId());
             processTask(jobTask);
         }
     }
 
     private void processTask(final NotificationJobTasksView task) {
         if ((task != null) && (task.getObject() != null)) {
-            LOG.info("Processing system notification job task " + task.getId());
+            LOG.info("Processing system notification job task {}", task.getId());
             try (final ByteArrayInputStream inputStream = new ByteArrayInputStream(task.getObject());
                  final ObjectInputStream objectStream = new ObjectInputStream(inputStream);) {
 
@@ -131,14 +130,14 @@ public class NotificationSystemAdministration implements Observer {
                     processedStatus = processTask(fields, task.getNotificationType());
                 }
                 final boolean processed = processedStatus != NotificationProcessTaskStatus.ERROR;
-                LOG.info("Notification job task " + task.getId() + " attempt number is going to be updated to " + (task.getAttempts() + 1) + ", processed set to " + processed);
+                LOG.info("Notification job task {} attempt number is going to be updated to {}, processed set to {}", task.getId(), task.getAttempts() + 1, processed);
                 notificationDao.updateNotificationJobTask(task.getId(), processed, task.getAttempts() + 1);
-                LOG.info("Notification job task " + task.getId() + " was updated");
+                LOG.info("Notification job task {} was updated", task.getId());
             } catch (IOException | ClassNotFoundException | IllegalArgumentException e) {
                 final boolean processed = false;
-                LOG.info("Notification job task " + task.getId() + " failed, task is going to be updated to " + (task.getAttempts() + 1) + ", processed set to " + processed);
+                LOG.info("Notification job task {} failed, task is going to be updated to {}, processed set to " + processed, task.getId(), task.getAttempts() + 1);
                 notificationDao.updateNotificationJobTask(task.getId(), processed, task.getAttempts() + 1);
-                LOG.info("Notification job task " + task.getId() + " was updated");
+                LOG.info("Notification job task {} was updated", task.getId());
                 LOG.error(e.getMessage(), e);
             } catch (IWSException e) {
                 //prevent throwing IWSException out, it stops the timer to run this processing
@@ -148,7 +147,7 @@ public class NotificationSystemAdministration implements Observer {
             }
         } else {
             if (task != null) {
-                LOG.error("Processing of the " + task + " which contains no Object, cannot be completed.");
+                LOG.error("Processing of the {} which contains no Object, cannot be completed.", task);
             } else {
                 LOG.error("Processing of a NULL task will not work.");
             }
@@ -183,6 +182,8 @@ public class NotificationSystemAdministration implements Observer {
                 break;
             case NEW_GROUP_OWNER:
                 processNewGroupOwner(fields.get(NotificationField.GROUP_TYPE), fields.get(NotificationField.EMAIL));
+                status = NotificationProcessTaskStatus.NOT_FOR_ME;
+                break;
             default:
                 // For all other cases
                 status = NotificationProcessTaskStatus.NOT_FOR_ME;
@@ -196,45 +197,45 @@ public class NotificationSystemAdministration implements Observer {
             final GroupType groupType = GroupType.valueOf(groupTypeName);
 
             if (groupType == GroupType.NATIONAL) {
-                LOG.info("New owner for group type " + groupType + ", adding user " + username + "to ncs list");
+                LOG.info("New owner for group type {}, adding user {}to ncs list.", GroupType.NATIONAL, username);
                 addToNcsList(username);
             }
         } catch (IllegalArgumentException e) {
-            LOG.error("Processing new group owner notification failed", e);
+            LOG.error("Processing new group owner notification failed.", e);
         }
     }
 
     private void addToNcsList(final String username) {
-        MailingListEntity ncsList = mailingListDao.findNcsList(settings.getNcsList());
+        final MailingListEntity ncsList = mailingListDao.findNcsList(settings.getNcsList());
 
         if (ncsList != null) {
-            MailingListMembershipEntity subscription = mailingListDao.findMailingListSubscription(ncsList.getId(), username);
+            final MailingListMembershipEntity subscription = mailingListDao.findMailingListSubscription(ncsList.getId(), username);
 
             if (subscription == null) {
-                LOG.info("Adding user " + username + " to ncs list");
-                subscription = new MailingListMembershipEntity();
-                subscription.setMailingList(ncsList);
-                subscription.setMember(StringUtils.toLower(username));
-                mailingListEntityManager.persist(subscription);
+                LOG.info("Adding user {} to ncs list.", username);
+                final MailingListMembershipEntity entity = new MailingListMembershipEntity();
+                entity.setMailingList(ncsList);
+                entity.setMember(StringUtils.toLower(username));
+                mailingListEntityManager.persist(entity);
             }
         } else {
-            LOG.error("NCs mailing list lookup failed using '" + settings.getNcsList() + "' address");
+            LOG.error("NCs mailing list lookup failed using '{}' address.", settings.getNcsList());
         }
     }
 
     private void removeFromNcsList(final String username) {
-        LOG.info("Deleting user " + username + " from ncs list");
-        MailingListEntity ncsList = mailingListDao.findNcsList(settings.getNcsList());
+        LOG.info("Deleting user {} from ncs list.", username);
+        final MailingListEntity ncsList = mailingListDao.findNcsList(settings.getNcsList());
 
         if (ncsList != null) {
-            MailingListMembershipEntity subscription = mailingListDao.findMailingListSubscription(ncsList.getId(), username);
+            final MailingListMembershipEntity subscription = mailingListDao.findMailingListSubscription(ncsList.getId(), username);
 
             if (subscription != null) {
                 mailingListEntityManager.remove(subscription);
-                LOG.info("User " + username + " deleted from ncs list");
+                LOG.info("User {} deleted from ncs list.", username);
             }
         } else {
-            LOG.error("NCs mailing list lookup failed using '" + settings.getNcsList() + "' address");
+            LOG.error("NCs mailing list lookup failed using '{}' address.", settings.getNcsList());
         }
     }
 
@@ -242,17 +243,18 @@ public class NotificationSystemAdministration implements Observer {
         final NotificationProcessTaskStatus status;
         final UserEntity user = accessDao.findUserByUsername(username);
         if (user != null) {
-            LOG.info("User " + user.getId() + " to prepare " + NotificationType.ACTIVATE_NEW_USER + " notification for found");
-            UserNotificationEntity userNotification = notificationDao.findUserNotificationSetting(user, NotificationType.ACTIVATE_NEW_USER);
+            LOG.info("User {} to prepare {} notification for found.", user.getId(), NotificationType.ACTIVATE_NEW_USER);
+            final UserNotificationEntity userNotification = notificationDao.findUserNotificationSetting(user, NotificationType.ACTIVATE_NEW_USER);
+
             if (userNotification == null) {
-                userNotification = new UserNotificationEntity(user, NotificationType.ACTIVATE_NEW_USER, NotificationFrequency.IMMEDIATELY);
-                notificationDao.persist(userNotification);
-                LOG.info("Notification setting " + NotificationType.ACTIVATE_NEW_USER + " for user " + user.getId() + " created");
+                final UserNotificationEntity entity = new UserNotificationEntity(user, NotificationType.ACTIVATE_NEW_USER, NotificationFrequency.IMMEDIATELY);
+                notificationDao.persist(entity);
+                LOG.info("Notification setting {} for user {} created.", NotificationType.ACTIVATE_NEW_USER, user.getId());
             }
 
             status = NotificationProcessTaskStatus.OK;
         } else {
-            LOG.warn("User " + username + " to prepare notification for was not found");
+            LOG.warn("User {} to prepare notification for was not found.", username);
             status = NotificationProcessTaskStatus.ERROR;
         }
 
@@ -265,16 +267,16 @@ public class NotificationSystemAdministration implements Observer {
     }
 
     private NotificationProcessTaskStatus prepareActivatedUser(final String username) {
-        NotificationProcessTaskStatus status;
+        final NotificationProcessTaskStatus status;
         final UserEntity user = accessDao.findActiveUserByUsername(username);
 
         if (user != null) {
-            LOG.info("Activated user " + user.getId() + " was found");
+            LOG.info("Activated user {} was found", user.getId());
             createUserMailingAlias(user);
             status = prepareActivatedUserNotificationSetting(user);
         }
         else {
-            LOG.warn("Activated user " + username + " was not found");
+            LOG.warn("Activated user {} was not found", username);
             status = NotificationProcessTaskStatus.ERROR;
         }
 
@@ -297,34 +299,34 @@ public class NotificationSystemAdministration implements Observer {
     }
 
     private void updateUsernameInMailingAlias(final String oldAddress, final String newAddress) {
-        if (newAddress != null && !newAddress.isEmpty()) {
+        if ((newAddress != null) && !newAddress.isEmpty()) {
             mailingListDao.updateUsernameInMailingAlias(oldAddress, newAddress);
         }
     }
 
     private NotificationProcessTaskStatus prepareActivatedUserNotificationSetting(final UserEntity user) {
-        final NotificationProcessTaskStatus status;
-        final Set<NotificationType> notificationTypes = new HashSet<>(16);
+        final Set<NotificationType> notificationTypes = EnumSet.noneOf(NotificationType.class);
         notificationTypes.add(NotificationType.UPDATE_USERNAME);
         notificationTypes.add(NotificationType.RESET_PASSWORD);
         notificationTypes.add(NotificationType.RESET_SESSION);
         notificationTypes.add(NotificationType.NEW_GROUP_OWNER);
+        final NotificationProcessTaskStatus status;
 
         if (user != null) {
             for (final NotificationType notificationType : notificationTypes) {
-                LOG.info("Setting " + notificationType + " for user " + user.getId());
-                UserNotificationEntity userNotification = notificationDao.findUserNotificationSetting(user, notificationType);
-                if (userNotification == null) {
-                    userNotification = new UserNotificationEntity(user, notificationType, NotificationFrequency.IMMEDIATELY);
-                    notificationDao.persist(userNotification);
-                    LOG.info("Setting " + notificationType + " for user " + user.getId() + " created");
+                LOG.info("Setting {} for user {}.", notificationType, user.getId());
+
+                if (notificationDao.findUserNotificationSetting(user, notificationType) == null) {
+                    final UserNotificationEntity entity = new UserNotificationEntity(user, notificationType, NotificationFrequency.IMMEDIATELY);
+                    notificationDao.persist(entity);
+                    LOG.info("Setting {} for user {} created.", notificationType, user.getId());
                 } else {
-                    LOG.info("Setting " + notificationType + " for user " + user.getId() + "exists already");
+                    LOG.info("Setting {} for user {} exists already.", notificationType, user.getId());
                 }
             }
             status = NotificationProcessTaskStatus.OK;
         } else {
-            LOG.warn("No user to set system notification for");
+            LOG.warn("No user to set system notification for.");
             status = NotificationProcessTaskStatus.ERROR;
         }
 
@@ -369,7 +371,6 @@ public class NotificationSystemAdministration implements Observer {
                 if (privateList != null) {
                     privateList.setListAddress(getPrivateListAddress(groupType, groupName, countryName));
                     privateList.setModified(new Date());
-//                    mailingListDao.persist(privateList);
                     mailingListEntityManager.persist(privateList);
                 } else {
                     LOG.error("Logic approach unclear: Modify non-existing list -> throw exception? ignore?");
@@ -403,18 +404,17 @@ public class NotificationSystemAdministration implements Observer {
             }
 
             //only active users can be subscribed to mailing lists
-            final boolean subscribedToPublicList = "true".equals(onPublicList) && UserStatus.ACTIVE.name().equals(userStatus) && userGroup != null;
-            final boolean subscribedToPrivateList = "true".equals(onPrivateList) && UserStatus.ACTIVE.name().equals(userStatus) && userGroup != null;
+            final boolean subscribedToPublicList = "true".equals(onPublicList) && UserStatus.ACTIVE.name().equals(userStatus) && (userGroup != null);
+            final boolean subscribedToPrivateList = "true".equals(onPrivateList) && UserStatus.ACTIVE.name().equals(userStatus) && (userGroup != null);
 
-            LOG.debug("Trying to update mailing list membership for user " + emailAddress + " with role " + role + " and status " + userStatus + " for list id '"
-                    + groupExternalId + "'. Membership private: " + subscribedToPrivateList + "; public: " + subscribedToPublicList);
+            LOG.debug("Trying to update mailing list membership for user {} with role {} and status {} for list id '{}'. Membership private: {}; public: {}", emailAddress, role, userStatus, groupExternalId, subscribedToPrivateList, subscribedToPublicList);
 
             if (hasPublicList(groupType)) {
                 final MailingListEntity publicMailingList = mailingListDao.findPublicMailingList(groupExternalId);
                 if (publicMailingList != null) {
-                    LOG.debug("Public mailing list has ID="+publicMailingList.getId());
+                    LOG.debug("Public mailing list has ID={}.", publicMailingList.getId());
                 } else {
-                    LOG.debug("Private mailing list with external ID '" + groupExternalId + "' was not found");
+                    LOG.debug("Private mailing list with external ID '{}' was not found.", groupExternalId);
                 }
                 updateListSubscription(publicMailingList, emailAddress, subscribedToPublicList);
             }
@@ -422,9 +422,9 @@ public class NotificationSystemAdministration implements Observer {
             if (hasPrivateList(groupType)) {
                 final MailingListEntity privateMailingList = mailingListDao.findPrivateMailingList(groupExternalId);
                 if (privateMailingList != null) {
-                    LOG.debug("Private mailing list has ID="+privateMailingList.getId());
+                    LOG.debug("Private mailing list has Id = {}.", privateMailingList.getId());
                 } else {
-                    LOG.debug("Private mailing list with external ID '" + groupExternalId + "' was not found");
+                    LOG.debug("Private mailing list with external Id '{}' was not found.", groupExternalId);
                 }
                 updateListSubscription(privateMailingList, emailAddress, subscribedToPrivateList);
             }
@@ -433,27 +433,19 @@ public class NotificationSystemAdministration implements Observer {
         }
     }
 
-    //private static boolean isRoleForNcsList(final String role) {
-    //    final Set<String> rolesForNcsList = new HashSet<>(2);
-    //    rolesForNcsList.add("owner");
-    //    rolesForNcsList.add("moderator");
-    //    return rolesForNcsList.contains(role.toLowerCase(IWSConstants.DEFAULT_LOCALE));
-    //}
-
     private void updateListSubscription(final MailingListEntity mailingList, final String emailAddress, final boolean onList) {
         if (mailingList != null) {
             final MailingListMembershipEntity subscription = mailingListDao.findMailingListSubscription(mailingList.getId(), emailAddress);
             if (subscription != null) {
-                LOG.debug("Mailing list subscription has ID="+subscription.getId());
+                LOG.debug("Mailing list subscription has Id = {}.", subscription.getId());
             } else {
-                LOG.debug("Subscription to list was not found");
+                LOG.debug("Subscription to list was not found.");
             }
-            if (subscription != null && !onList) {
-                LOG.debug("Removing user from mailing list");
-//                mailingListDao.delete(subscription);
+            if ((subscription != null) && !onList) {
+                LOG.debug("Removing user from mailing list.");
                 mailingListEntityManager.remove(subscription);
-            } else if (subscription == null && onList) {
-                LOG.debug("Adding user to mailing list");
+            } else if ((subscription == null) && onList) {
+                LOG.debug("Adding user to mailing list.");
                 createListSubscription(mailingList, emailAddress);
             }
         }
@@ -463,62 +455,60 @@ public class NotificationSystemAdministration implements Observer {
         final MailingListMembershipEntity subscription = new MailingListMembershipEntity();
         subscription.setMailingList(mailingList);
         subscription.setMember(emailAddress);
-//        mailingListDao.persist(subscription);
         mailingListEntityManager.persist(subscription);
     }
 
     private void updateUserSubscriptionEmail(final String oldAddress, final String newAddress) {
-        if (newAddress != null && !newAddress.isEmpty()) {
+        if ((newAddress != null) && !newAddress.isEmpty()) {
             mailingListDao.updateUserSubscriptionEmail(newAddress, oldAddress);
         }
     }
 
     private static boolean hasPublicList(final GroupType type) {
-        final boolean result;
-
-        switch (type) {
-            //TODO general secretary
-
-            case INTERNATIONAL:
-            case NATIONAL:
-                result = true;
-                break;
-            default:
-                result = false;
-        }
-
-        return result;
+        return type.getMayHavePublicMailinglist();
+        //final boolean result;
+        //
+        //switch (type) {
+        //    case ADMINISTRATION:
+        //    case INTERNATIONAL:
+        //    case NATIONAL:
+        //        result = true;
+        //        break;
+        //    default:
+        //        result = false;
+        //}
+        //
+        //return result;
     }
 
     private static boolean hasPrivateList(final GroupType type) {
-        final boolean result;
-
-        switch (type) {
-            //TODO general secretary
-
-            case INTERNATIONAL:
-            case LOCAL:
-            case MEMBER:
-            case NATIONAL:
-            case WORKGROUP:
-                result = true;
-                break;
-            default:
-                result = false;
-        }
-
-        return result;
+        return type.getMayHavePrivateMailinglist();
+        //final boolean result;
+        //
+        //switch (type) {
+        //    case ADMINISTRATION:
+        //    case INTERNATIONAL:
+        //    case LOCAL:
+        //    case MEMBER:
+        //    case NATIONAL:
+        //    case WORKGROUP:
+        //        result = true;
+        //        break;
+        //    default:
+        //        result = false;
+        //}
+        //
+        //return result;
     }
 
     private String getPublicListAddress(final GroupType type, final String groupName, final String countryName) {
         final String name;
 
         switch (type) {
-            //TODO general secretary
-
             case NATIONAL:
                 name = StringUtils.convertToAsciiMailAlias(countryName) + '@' + settings.getPublicMailAddress();
                 break;
+            case ADMINISTRATION:
             case INTERNATIONAL:
                 name = StringUtils.convertToAsciiMailAlias(groupName) + '@' + settings.getPublicMailAddress();
                 break;
@@ -533,10 +523,10 @@ public class NotificationSystemAdministration implements Observer {
         final String name;
 
         switch (type) {
-            //TODO general secretary
             case MEMBER:
                 name = StringUtils.convertToAsciiMailAlias(countryName) + '@' + settings.getPrivateMailAddress();
                 break;
+            case ADMINISTRATION:
             case INTERNATIONAL:
                 name = StringUtils.convertToAsciiMailAlias(groupName) + '@' + settings.getPrivateMailAddress();
                 break;
@@ -558,15 +548,15 @@ public class NotificationSystemAdministration implements Observer {
      * {@inheritDoc}
      */
     @Override
-    public Long getId() {
-        return id;
+    public final void setId(final Long id) {
+        this.id = id;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void setId(final Long id) {
-        this.id = id;
+    public final Long getId() {
+        return id;
     }
 }

@@ -323,9 +323,9 @@ public final class Offer extends AbstractVerification {
 
     /**
      * Sets the Offer Work Description. The field may be null, but if it is
-     * defined, then the length may not exceed 1000 characters.<br />
-     *   The method will thrown an {@code IllegalArgumentException} if the value
-     * is too long, the length may not exceed 3000 characters.
+     * defined, then the length may not exceed 3000 characters, if the field is
+     * longer than 3.000 characters, then an {@code IllegalArgumentException}
+     * will be thrown.
      *
      * @param workDescription Offer Work Description
      * @throws IllegalArgumentException if the length is too long

@@ -23,6 +23,7 @@ import net.iaeste.iws.common.notification.NotificationType;
 import net.iaeste.iws.common.utils.Observable;
 import net.iaeste.iws.common.utils.Observer;
 import net.iaeste.iws.ejb.emails.EmailMessage;
+import net.iaeste.iws.ejb.emails.MessageField;
 import net.iaeste.iws.ejb.notifications.MessageGenerator;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.NotificationDao;
@@ -235,10 +236,10 @@ public class NotificationEmailSender implements Observer {
                         final ObjectMessage msg = session.createObjectMessage();
                         final EmailMessage emsg = new EmailMessage();
                         emsg.setTo(getTargetEmailAddress(recipient, type));
-                        final Map<String, String> messageData = messageGenerator.generate(fields, type);
+                        final Map<MessageField, String> messageData = messageGenerator.generate(fields, type);
                         LOG.info("Email message for for {} was generated", type);
-                        emsg.setSubject(messageData.get("title"));
-                        emsg.setMessage(messageData.get("body"));
+                        emsg.setSubject(messageData.get(MessageField.SUBJECT));
+                        emsg.setMessage(messageData.get(MessageField.MESSAGE));
                         msg.setObject(emsg);
 
                         sender.send(msg);

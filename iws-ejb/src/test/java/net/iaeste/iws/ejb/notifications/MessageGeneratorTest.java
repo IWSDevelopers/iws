@@ -22,6 +22,7 @@ import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.common.exceptions.NotificationException;
 import net.iaeste.iws.common.notification.NotificationField;
 import net.iaeste.iws.common.notification.NotificationType;
+import net.iaeste.iws.ejb.emails.MessageField;
 import org.junit.Test;
 
 import java.util.EnumMap;
@@ -38,7 +39,7 @@ public final class MessageGeneratorTest {
     public void testGenerateGeneral() {
         final Settings settings = new Settings();
         final MessageGenerator generator = new MessageGenerator(settings);
-        final Map<NotificationField, String> fields = new EnumMap(NotificationField.class);
+        final Map<NotificationField, String> fields = new EnumMap<>(NotificationField.class);
 
         generator.generate(fields, NotificationType.GENERAL);
     }
@@ -48,21 +49,21 @@ public final class MessageGeneratorTest {
         final Settings settings = new Settings();
         settings.setBaseUrl("BASE_URL");
         final MessageGenerator generator = new MessageGenerator(settings);
-        final Map<NotificationField, String> fields = new EnumMap(NotificationField.class);
+        final Map<NotificationField, String> fields = new EnumMap<>(NotificationField.class);
         fields.put(NotificationField.CODE, "RESET_CODE");
 
-        final Map<String, String> result = generator.generate(fields, NotificationType.UPDATE_USERNAME);
+        final Map<MessageField, String> result = generator.generate(fields, NotificationType.UPDATE_USERNAME);
         assertThat(result.size(), is(2));
-        assertThat(result.get("title"), is("IntraWeb Email Address Change Confirmation"));
-        assertThat(result.get("body"), containsString("BASE_URL"));
-        assertThat(result.get("body"), containsString("RESET_CODE"));
+        assertThat(result.get(MessageField.SUBJECT), is("IntraWeb Email Address Change Confirmation"));
+        assertThat(result.get(MessageField.MESSAGE), containsString("BASE_URL"));
+        assertThat(result.get(MessageField.MESSAGE), containsString("RESET_CODE"));
     }
 
     @Test(expected = NotificationException.class)
     public void testGenerateUsernameUpdated() {
         final Settings settings = new Settings();
         final MessageGenerator generator = new MessageGenerator(settings);
-        final Map<NotificationField, String> fields = new EnumMap(NotificationField.class);
+        final Map<NotificationField, String> fields = new EnumMap<>(NotificationField.class);
 
         generator.generate(fields, NotificationType.USERNAME_UPDATED);
     }
@@ -72,24 +73,24 @@ public final class MessageGeneratorTest {
         final Settings settings = new Settings();
         settings.setBaseUrl("BASE_URL");
         final MessageGenerator generator = new MessageGenerator(settings);
-        final Map<NotificationField, String> fields = new EnumMap(NotificationField.class);
+        final Map<NotificationField, String> fields = new EnumMap<>(NotificationField.class);
         fields.put(NotificationField.CODE, "USER_CODE");
         fields.put(NotificationField.EMAIL, "USER_EMAIL");
         fields.put(NotificationField.CLEARTEXT_PASSWORD, "CLEAR_TEXT_PASSWORD");
 
-        final Map<String, String> result = generator.generate(fields, NotificationType.ACTIVATE_NEW_USER);
+        final Map<MessageField, String> result = generator.generate(fields, NotificationType.ACTIVATE_NEW_USER);
         assertThat(result.size(), is(2));
-        assertThat(result.get("title"), is("Your IAESTE A.s.b.l. IntraWeb Account"));
-        assertThat(result.get("body"), containsString("USER_CODE"));
-        assertThat(result.get("body"), containsString("USER_EMAIL"));
-        assertThat(result.get("body"), containsString("CLEAR_TEXT_PASSWORD"));
+        assertThat(result.get(MessageField.SUBJECT), is("Your IAESTE A.s.b.l. IntraWeb Account"));
+        assertThat(result.get(MessageField.MESSAGE), containsString("USER_CODE"));
+        assertThat(result.get(MessageField.MESSAGE), containsString("USER_EMAIL"));
+        assertThat(result.get(MessageField.MESSAGE), containsString("CLEAR_TEXT_PASSWORD"));
     }
 
     @Test(expected = NotificationException.class)
     public void testGenerateActivateSuspendedUser() {
         final Settings settings = new Settings();
         final MessageGenerator generator = new MessageGenerator(settings);
-        final Map<NotificationField, String> fields = new EnumMap(NotificationField.class);
+        final Map<NotificationField, String> fields = new EnumMap<>(NotificationField.class);
 
         generator.generate(fields, NotificationType.ACTIVATE_SUSPENDED_USER);
     }
@@ -98,7 +99,7 @@ public final class MessageGeneratorTest {
     public void testGenerateSuspendActiveUser() {
         final Settings settings = new Settings();
         final MessageGenerator generator = new MessageGenerator(settings);
-        final Map<NotificationField, String> fields = new EnumMap(NotificationField.class);
+        final Map<NotificationField, String> fields = new EnumMap<>(NotificationField.class);
 
         generator.generate(fields, NotificationType.SUSPEND_ACTIVE_USER);
     }
@@ -107,7 +108,7 @@ public final class MessageGeneratorTest {
     public void testGenerateNewUser() {
         final Settings settings = new Settings();
         final MessageGenerator generator = new MessageGenerator(settings);
-        final Map<NotificationField, String> fields = new EnumMap(NotificationField.class);
+        final Map<NotificationField, String> fields = new EnumMap<>(NotificationField.class);
 
         generator.generate(fields, NotificationType.NEW_USER);
     }
@@ -117,14 +118,14 @@ public final class MessageGeneratorTest {
         final Settings settings = new Settings();
         settings.setBaseUrl("BASE_URL");
         final MessageGenerator generator = new MessageGenerator(settings);
-        final Map<NotificationField, String> fields = new EnumMap(NotificationField.class);
+        final Map<NotificationField, String> fields = new EnumMap<>(NotificationField.class);
         fields.put(NotificationField.CODE, "RESET_CODE");
 
-        final Map<String, String> result = generator.generate(fields, NotificationType.RESET_PASSWORD);
+        final Map<MessageField, String> result = generator.generate(fields, NotificationType.RESET_PASSWORD);
         assertThat(result.size(), is(2));
-        assertThat(result.get("title"), is("IntraWeb Password Reset Request"));
-        assertThat(result.get("body"), containsString("BASE_URL"));
-        assertThat(result.get("body"), containsString("RESET_CODE"));
+        assertThat(result.get(MessageField.SUBJECT), is("IntraWeb Password Reset Request"));
+        assertThat(result.get(MessageField.MESSAGE), containsString("BASE_URL"));
+        assertThat(result.get(MessageField.MESSAGE), containsString("RESET_CODE"));
     }
 
     @Test
@@ -132,21 +133,21 @@ public final class MessageGeneratorTest {
         final Settings settings = new Settings();
         settings.setBaseUrl("BASE_URL");
         final MessageGenerator generator = new MessageGenerator(settings);
-        final Map<NotificationField, String> fields = new EnumMap(NotificationField.class);
+        final Map<NotificationField, String> fields = new EnumMap<>(NotificationField.class);
         fields.put(NotificationField.CODE, "RESET_CODE");
 
-        final Map<String, String> result = generator.generate(fields, NotificationType.RESET_SESSION);
+        final Map<MessageField, String> result = generator.generate(fields, NotificationType.RESET_SESSION);
         assertThat(result.size(), is(2));
-        assertThat(result.get("title"), is("IntraWeb Reset Session Request"));
-        assertThat(result.get("body"), containsString("BASE_URL"));
-        assertThat(result.get("body"), containsString("RESET_CODE"));
+        assertThat(result.get(MessageField.SUBJECT), is("IntraWeb Reset Session Request"));
+        assertThat(result.get(MessageField.MESSAGE), containsString("BASE_URL"));
+        assertThat(result.get(MessageField.MESSAGE), containsString("RESET_CODE"));
     }
 
     @Test(expected = NotificationException.class)
     public void testGenerateNewGroup() {
         final Settings settings = new Settings();
         final MessageGenerator generator = new MessageGenerator(settings);
-        final Map<NotificationField, String> fields = new EnumMap(NotificationField.class);
+        final Map<NotificationField, String> fields = new EnumMap<>(NotificationField.class);
 
         generator.generate(fields, NotificationType.NEW_GROUP);
     }
@@ -155,7 +156,7 @@ public final class MessageGeneratorTest {
     public void testGenerateChangeInGroupMembers() {
         final Settings settings = new Settings();
         final MessageGenerator generator = new MessageGenerator(settings);
-        final Map<NotificationField, String> fields = new EnumMap(NotificationField.class);
+        final Map<NotificationField, String> fields = new EnumMap<>(NotificationField.class);
 
         generator.generate(fields, NotificationType.CHANGE_IN_GROUP_MEMBERS);
     }
@@ -165,20 +166,20 @@ public final class MessageGeneratorTest {
         final Settings settings = new Settings();
         settings.setBaseUrl("BASE_URL");
         final MessageGenerator generator = new MessageGenerator(settings);
-        final Map<NotificationField, String> fields = new EnumMap(NotificationField.class);
+        final Map<NotificationField, String> fields = new EnumMap<>(NotificationField.class);
         fields.put(NotificationField.GROUP_NAME, "GROUP_NAME");
 
-        final Map<String, String> result = generator.generate(fields, NotificationType.NEW_GROUP_OWNER);
+        final Map<MessageField, String> result = generator.generate(fields, NotificationType.NEW_GROUP_OWNER);
         assertThat(result.size(), is(2));
-        assertThat(result.get("title"), is("IntraWeb Group Owner Assignment Notification"));
-        assertThat(result.get("body"), containsString("GROUP_NAME"));
+        assertThat(result.get(MessageField.SUBJECT), is("IntraWeb Group Owner Assignment Notification"));
+        assertThat(result.get(MessageField.MESSAGE), containsString("GROUP_NAME"));
     }
 
     @Test(expected = NotificationException.class)
     public void testGenerateProcessEmailAlias() {
         final Settings settings = new Settings();
         final MessageGenerator generator = new MessageGenerator(settings);
-        final Map<NotificationField, String> fields = new EnumMap(NotificationField.class);
+        final Map<NotificationField, String> fields = new EnumMap<>(NotificationField.class);
 
         generator.generate(fields, NotificationType.PROCESS_EMAIL_ALIAS);
     }
@@ -187,7 +188,7 @@ public final class MessageGeneratorTest {
     public void testGenerateProcessMailingList() {
         final Settings settings = new Settings();
         final MessageGenerator generator = new MessageGenerator(settings);
-        final Map<NotificationField, String> fields = new EnumMap(NotificationField.class);
+        final Map<NotificationField, String> fields = new EnumMap<>(NotificationField.class);
 
         generator.generate(fields, NotificationType.PROCESS_MAILING_LIST);
     }
@@ -196,7 +197,7 @@ public final class MessageGeneratorTest {
     public void testGenerateUserActivated() {
         final Settings settings = new Settings();
         final MessageGenerator generator = new MessageGenerator(settings);
-        final Map<NotificationField, String> fields = new EnumMap(NotificationField.class);
+        final Map<NotificationField, String> fields = new EnumMap<>(NotificationField.class);
 
         generator.generate(fields, NotificationType.USER_ACTIVATED);
     }
@@ -205,7 +206,7 @@ public final class MessageGeneratorTest {
     public void testGenerateNewStudent() {
         final Settings settings = new Settings();
         final MessageGenerator generator = new MessageGenerator(settings);
-        final Map<NotificationField, String> fields = new EnumMap(NotificationField.class);
+        final Map<NotificationField, String> fields = new EnumMap<>(NotificationField.class);
 
         generator.generate(fields, NotificationType.NEW_STUDENT);
     }

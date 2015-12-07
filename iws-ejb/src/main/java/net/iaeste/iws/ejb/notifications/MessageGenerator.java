@@ -20,11 +20,13 @@ import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.common.exceptions.NotificationException;
 import net.iaeste.iws.common.notification.NotificationField;
 import net.iaeste.iws.common.notification.NotificationType;
+import net.iaeste.iws.ejb.emails.MessageField;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,8 +47,8 @@ public final class MessageGenerator {
         this.settings = settings;
     }
 
-    public Map<String, String> generate(final Map<NotificationField, String> fields, final NotificationType type) {
-        final Map<String, String> result;
+    public Map<MessageField, String> generate(final Map<NotificationField, String> fields, final NotificationType type) {
+        final Map<MessageField, String> result;
 
         switch (type) {
             case ACTIVATE_NEW_USER:
@@ -71,16 +73,16 @@ public final class MessageGenerator {
         return result;
     }
 
-    private Map<String, String> generate(final String template, final Map<NotificationField, String> input) {
+    private Map<MessageField, String> generate(final String template, final Map<NotificationField, String> input) {
         final Map<String, String> parseMap = generateParseMap(input);
-        final Map<String, String> result = new HashMap<>(2);
+        final Map<MessageField, String> result = new EnumMap<>(MessageField.class);
 
         try {
             final String messageTemplate = readTemplate(template + MESSAGE);
             final String subjectTemplate = readTemplate(template + SUBJECT);
 
-            result.put("title", parseTemplate(subjectTemplate, parseMap));
-            result.put("body", parseTemplate(messageTemplate, parseMap));
+            result.put(MessageField.SUBJECT, parseTemplate(subjectTemplate, parseMap));
+            result.put(MessageField.MESSAGE, parseTemplate(messageTemplate, parseMap));
         } catch (IOException | RuntimeException e) {
             throw new IWSException(IWSErrors.ERROR, "Error during processing template", e);
         }

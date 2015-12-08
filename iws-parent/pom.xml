@@ -275,24 +275,23 @@
             <dependency>
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-validator</artifactId>
-                <!--<version>5.2.2.Final</version>-->
-                <version>4.3.2.Final</version>
+                <version>5.2.2.Final</version>
             </dependency>
             <dependency>
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-entitymanager</artifactId>
-                <!-- We're using Hibernate EntityManager for our Spring based
-                     testing, and it is also used under Glassfish. However, for
-                     our Spring based testing, the following versions are
-                     causing problems:
-                       Version 4.1.[7+].Final
-                       Version 4.2.*.Final
-                       Version 4.3.*.Final
-                     Note; it seems that Hibernate is supporting JPA 2.1 with
-                     the later versions, which is the reason why we're having
-                     problems. The fix should then be to move to JEE7, which
-                     will hopefully happen once we've either made a split of IWS
-                     & IW4 or have managed to migrate IW4 to JBoss. -->
+                <!-- We are using Spring & Hibernate for our testing, so we can
+                     create EntityManager instances to use. However, there is a
+                     problem in the combination of Spring & Hibernate, which is
+                     causing test errors as we cannot create the initial setup,
+                     which we need to run the tests.
+                       Problem is present when upgrading to either us the JEE 7
+                     framework, which includes JPA 2.1 or upgrading one or more
+                     of the frameworks; Spring & Hibernate to later versions.
+                       Until such time when it can be investigated what is
+                     causing the problems, we're going to stay with these
+                     versions, after all - it is not affecting production
+                     code. -->
                 <!--<version>5.0.5.Final</version>-->
                 <version>4.1.6.Final</version>
             </dependency>
@@ -319,36 +318,42 @@
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-context</artifactId>
                 <version>3.2.15.RELEASE</version>
+                <!-- Plese don't upgrade from 3.2.x; it leads to test problems. -->
                 <!--<version>4.2.3.RELEASE</version>-->
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-beans</artifactId>
                 <version>3.2.15.RELEASE</version>
+                <!-- Plese don't upgrade from 3.2.x; it leads to test problems. -->
                 <!--<version>4.2.3.RELEASE</version>-->
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-tx</artifactId>
                 <version>3.2.15.RELEASE</version>
+                <!-- Plese don't upgrade from 3.2.x; it leads to test problems. -->
                 <!--<version>4.2.3.RELEASE</version>-->
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-orm</artifactId>
                 <version>3.2.15.RELEASE</version>
+                <!-- Plese don't upgrade from 3.2.x; it leads to test problems. -->
                 <!--<version>4.2.3.RELEASE</version>-->
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-jdbc</artifactId>
                 <version>3.2.15.RELEASE</version>
+                <!-- Plese don't upgrade from 3.2.x; it leads to test problems. -->
                 <!--<version>4.2.3.RELEASE</version>-->
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-test</artifactId>
                 <version>3.2.15.RELEASE</version>
+                <!-- Plese don't upgrade from 3.2.x; it leads to test problems. -->
                 <!--<version>4.2.3.RELEASE</version>-->
             </dependency>
             <dependency>

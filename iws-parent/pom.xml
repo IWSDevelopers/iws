@@ -246,14 +246,26 @@
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <!-- It is the goal to move to WildFly 8.x which is JEE7
-                     compatible. Some of the JPA related things are causing
-                     problems if we're not moving to JPA 2.1, which is not part
-                     of JEE6. -->
                 <groupId>javax</groupId>
                 <artifactId>javaee-api</artifactId>
-                <version>6.0</version>
+                <version>7.0</version>
                 <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-csv</artifactId>
+                <version>1.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>1.7.13</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-simple</artifactId>
+                <version>1.7.13</version>
+                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.hibernate.javax.persistence</groupId>
@@ -263,8 +275,8 @@
             <dependency>
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-validator</artifactId>
-                <!--<version>5.2.1.Final</version>-->
-                <version>4.3.0.Final</version>
+                <!--<version>5.2.2.Final</version>-->
+                <version>4.3.2.Final</version>
             </dependency>
             <dependency>
                 <groupId>org.hibernate</groupId>
@@ -273,7 +285,7 @@
                      testing, and it is also used under Glassfish. However, for
                      our Spring based testing, the following versions are
                      causing problems:
-                       Version 4.1.[7-12].Final
+                       Version 4.1.[7+].Final
                        Version 4.2.*.Final
                        Version 4.3.*.Final
                      Note; it seems that Hibernate is supporting JPA 2.1 with
@@ -281,7 +293,7 @@
                      problems. The fix should then be to move to JEE7, which
                      will hopefully happen once we've either made a split of IWS
                      & IW4 or have managed to migrate IW4 to JBoss. -->
-                <!--<version>5.0.1.Final</version>-->
+                <!--<version>5.0.5.Final</version>-->
                 <version>4.1.6.Final</version>
             </dependency>
             <dependency>
@@ -306,60 +318,38 @@
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-context</artifactId>
-                <version>3.2.14.RELEASE</version>
+                <version>3.2.15.RELEASE</version>
+                <!--<version>4.2.3.RELEASE</version>-->
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-beans</artifactId>
-                <version>3.2.14.RELEASE</version>
+                <version>3.2.15.RELEASE</version>
+                <!--<version>4.2.3.RELEASE</version>-->
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-tx</artifactId>
-                <version>3.2.14.RELEASE</version>
+                <version>3.2.15.RELEASE</version>
+                <!--<version>4.2.3.RELEASE</version>-->
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-orm</artifactId>
-                <version>3.2.14.RELEASE</version>
+                <version>3.2.15.RELEASE</version>
+                <!--<version>4.2.3.RELEASE</version>-->
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-jdbc</artifactId>
-                <version>3.2.14.RELEASE</version>
+                <version>3.2.15.RELEASE</version>
+                <!--<version>4.2.3.RELEASE</version>-->
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-test</artifactId>
-                <version>3.2.14.RELEASE</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.commons</groupId>
-                <artifactId>commons-csv</artifactId>
-                <version>1.0</version>
-            </dependency>
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-api</artifactId>
-                <version>1.7.12</version>
-            </dependency>
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-log4j12</artifactId>
-                <version>1.7.12</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-simple</artifactId>
-                <version>1.7.12</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>log4j</groupId>
-                <artifactId>log4j</artifactId>
-                <version>1.2.17</version>
-                <scope>test</scope>
+                <version>3.2.15.RELEASE</version>
+                <!--<version>4.2.3.RELEASE</version>-->
             </dependency>
             <dependency>
                 <groupId>junit</groupId>

@@ -19,6 +19,12 @@
                 <filtering>false</filtering>
             </resource>
         </resources>
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>false</filtering>
+            </testResource>
+        </testResources>
         <!--<plugins>-->
             <!--<plugin>-->
                 <!--<artifactId>maven-antrun-plugin</artifactId>-->
@@ -101,11 +107,7 @@
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
+            <artifactId>slf4j-simple</artifactId>
         </dependency>
         <dependency>
             <!-- Needed to build the data sources -->

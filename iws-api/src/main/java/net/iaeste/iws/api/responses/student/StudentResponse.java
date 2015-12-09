@@ -51,6 +51,7 @@ public final class StudentResponse extends FallibleResponse {
      * for WebServices to work properly.
      */
     public StudentResponse() {
+        // Required for WebServices to work. Comment added to please Sonar.
     }
 
     /**

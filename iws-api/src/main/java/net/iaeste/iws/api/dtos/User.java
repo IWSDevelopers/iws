@@ -73,6 +73,7 @@ public final class User extends AbstractDto {
      * for WebServices to work properly.
      */
     public User() {
+        // Required for WebServices to work. Comment added to please Sonar.
     }
 
     /**

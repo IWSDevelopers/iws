@@ -48,6 +48,7 @@ public final class OfferStatisticsRequest extends AbstractVerification {
      * for WebServices to work properly.
      */
     public OfferStatisticsRequest() {
+        // Required for WebServices to work. Comment added to please Sonar.
     }
 
     /**

@@ -48,6 +48,7 @@ public final class ProcessGroupResponse extends FallibleResponse {
      * for WebServices to work properly.
      */
     public ProcessGroupResponse() {
+        // Required for WebServices to work. Comment added to please Sonar.
     }
 
     /**

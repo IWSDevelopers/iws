@@ -48,6 +48,7 @@ public final class EmployerResponse extends FallibleResponse {
      * for WebServices to work properly.
      */
     public EmployerResponse() {
+        // Required for WebServices to work. Comment added to please Sonar.
     }
 
     /**

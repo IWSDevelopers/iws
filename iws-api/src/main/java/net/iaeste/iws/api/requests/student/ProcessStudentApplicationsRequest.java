@@ -52,6 +52,7 @@ public class ProcessStudentApplicationsRequest extends AbstractVerification {
      * for WebServices to work properly.
      */
     public ProcessStudentApplicationsRequest() {
+        // Required for WebServices to work. Comment added to please Sonar.
     }
 
     /**

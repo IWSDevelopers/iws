@@ -63,12 +63,13 @@ public final class AuthenticationToken extends AbstractVerification implements T
      * for WebServices to work properly.
      */
     public AuthenticationToken() {
+        // Required for WebServices to work. Comment added to please Sonar.
     }
 
     /**
      * Default Constructor.
      *
-     * @param  token  The Token, i.e. currently active Cryptographical Checksum
+     * @param  token  The Token, i.e. currently active Cryptographic Checksum
      * @throws IllegalArgumentException if the token is invalid
      */
     public AuthenticationToken(final String token) throws IllegalArgumentException {

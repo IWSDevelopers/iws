@@ -49,6 +49,7 @@ public final class StudentRequest extends AbstractVerification {
      * for WebServices to work properly.
      */
     public StudentRequest() {
+        // Required for WebServices to work. Comment added to please Sonar.
     }
 
     public StudentRequest(final Student student) {

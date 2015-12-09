@@ -48,6 +48,7 @@ public final class CreateUserResponse extends FallibleResponse {
      * for WebServices to work properly.
      */
     public CreateUserResponse() {
+        // Required for WebServices to work. Comment added to please Sonar.
     }
 
     /**

@@ -134,6 +134,7 @@ public final class Offer extends AbstractVerification {
      * for WebServices to work properly.
      */
     public Offer() {
+        // Required for WebServices to work. Comment added to please Sonar.
     }
 
     /**

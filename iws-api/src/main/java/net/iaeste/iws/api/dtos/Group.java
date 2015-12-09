@@ -64,6 +64,7 @@ public final class Group extends AbstractVerification {
      * for WebServices to work properly.
      */
     public Group() {
+        // Required for WebServices to work. Comment added to please Sonar.
     }
 
     /**

@@ -49,6 +49,7 @@ public final class FetchCommitteeResponse extends FallibleResponse {
      * for WebServices to work properly.
      */
     public FetchCommitteeResponse() {
+        // Required for WebServices to work. Comment added to please Sonar.
     }
 
     public FetchCommitteeResponse(final List<UserGroup> committees) {

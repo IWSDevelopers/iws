@@ -73,6 +73,7 @@ public final class SessionDataRequest<T extends Serializable> extends AbstractVe
      * for WebServices to work properly.
      */
     public SessionDataRequest() {
+        // Required for WebServices to work. Comment added to please Sonar.
     }
 
     /**

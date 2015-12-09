@@ -51,6 +51,7 @@ public final class FetchGroupResponse extends FallibleResponse {
      * for WebServices to work properly.
      */
     public FetchGroupResponse() {
+        // Required for WebServices to work. Comment added to please Sonar.
     }
 
     /**

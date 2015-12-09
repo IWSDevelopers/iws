@@ -45,12 +45,6 @@ public final class FetchUserRequest extends AbstractVerification {
     // Object Constructors
     // =========================================================================
 
-    /**
-     * Default Constructor.
-     */
-    public FetchUserRequest() {
-    }
-
     // =========================================================================
     // Standard Setters & Getters
     // =========================================================================

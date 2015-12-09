@@ -62,6 +62,7 @@ public final class UserGroup extends AbstractVerification {
      * for WebServices to work properly.
      */
     public UserGroup() {
+        // Required for WebServices to work. Comment added to please Sonar.
     }
 
     /**

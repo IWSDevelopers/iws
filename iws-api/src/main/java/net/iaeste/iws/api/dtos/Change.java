@@ -56,6 +56,7 @@ public final class Change implements Serializable {
      * for WebServices to work properly.
      */
     public Change() {
+        // Required for WebServices to work. Comment added to please Sonar.
     }
 
     /**

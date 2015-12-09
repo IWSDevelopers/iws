@@ -68,6 +68,7 @@ public final class FolderRequest extends AbstractVerification implements Actiona
      * for WebServices to work properly.
      */
     public FolderRequest() {
+        // Required for WebServices to work. Comment added to please Sonar.
     }
 
     /**

@@ -46,9 +46,10 @@ public final class OfferResponse extends FallibleResponse {
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.
-     * Constructor is used in {@code OfferResponse} when deleteing an offer.
+     * Constructor is used in {@code OfferResponse} when deleting an offer.
      */
     public OfferResponse() {
+        // Required for WebServices to work. Comment added to please Sonar.
     }
 
     /**

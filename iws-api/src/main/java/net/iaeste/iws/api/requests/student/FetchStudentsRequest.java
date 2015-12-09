@@ -40,13 +40,6 @@ public final class FetchStudentsRequest extends AbstractPaginatable {
     // Object Constructors
     // =========================================================================
 
-    /**
-     * Empty Constructor, to use if the setters are invoked. This is required
-     * for WebServices to work properly.
-     */
-    public FetchStudentsRequest() {
-    }
-
     // =========================================================================
     // Standard Setters & Getters
     // =========================================================================

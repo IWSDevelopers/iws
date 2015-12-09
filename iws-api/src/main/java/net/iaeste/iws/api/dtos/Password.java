@@ -69,6 +69,7 @@ public final class Password extends AbstractVerification {
      * for WebServices to work properly.
      */
     public Password() {
+        // Required for WebServices to work. Comment added to please Sonar.
     }
 
     /**

@@ -49,6 +49,7 @@ public final class OfferStatisticsResponse extends FallibleResponse {
      * Constructor is used in {@code OfferResponse} when deleting an offer.
      */
     public OfferStatisticsResponse() {
+        // Required for WebServices to work. Comment added to please Sonar.
     }
 
     /**

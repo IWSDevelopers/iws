@@ -50,6 +50,7 @@ public final class GroupRequest extends AbstractVerification {
      * for WebServices to work properly.
      */
     public GroupRequest() {
+        // Required for WebServices to work. Comment added to please Sonar.
     }
 
     /**

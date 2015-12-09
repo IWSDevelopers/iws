@@ -43,6 +43,7 @@ public final class PublishOfferResponse extends FallibleResponse {
      * for WebServices to work properly.
      */
     public PublishOfferResponse() {
+        // Required for WebServices to work. Comment added to please Sonar.
     }
 
     /**

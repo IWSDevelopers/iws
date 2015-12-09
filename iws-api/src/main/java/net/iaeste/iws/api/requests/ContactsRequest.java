@@ -45,13 +45,6 @@ public final class ContactsRequest extends AbstractVerification {
     // Object Constructors
     // =========================================================================
 
-    /**
-     * Empty Constructor, to use if the setters are invoked. This is required
-     * for WebServices to work properly.
-     */
-    public ContactsRequest() {
-    }
-
     // =========================================================================
     // Standard Setters & Getters
     // =========================================================================

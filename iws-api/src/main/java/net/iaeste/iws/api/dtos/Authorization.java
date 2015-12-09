@@ -48,6 +48,7 @@ public final class Authorization implements Serializable {
      * for WebServices to work properly.
      */
     public Authorization() {
+        // Required for WebServices to work. Comment added to please Sonar.
     }
 
     /**

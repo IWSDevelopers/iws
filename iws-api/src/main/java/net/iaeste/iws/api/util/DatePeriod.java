@@ -51,6 +51,7 @@ public final class DatePeriod extends AbstractVerification {
      * for WebServices to work properly.
      */
     public DatePeriod() {
+        // Required for WebServices to work. Comment added to please Sonar.
     }
 
     /**

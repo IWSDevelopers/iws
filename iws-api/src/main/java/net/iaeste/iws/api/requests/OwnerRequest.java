@@ -51,6 +51,7 @@ public final class OwnerRequest extends AbstractVerification {
      * for WebServices to work properly.
      */
     public OwnerRequest() {
+        // Required for WebServices to work. Comment added to please Sonar.
     }
 
     /**

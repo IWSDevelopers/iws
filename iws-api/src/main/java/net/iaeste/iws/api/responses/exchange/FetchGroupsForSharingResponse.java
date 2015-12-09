@@ -51,6 +51,7 @@ public final class FetchGroupsForSharingResponse extends FallibleResponse {
      * for WebServices to work properly.
      */
     public FetchGroupsForSharingResponse() {
+        // Required for WebServices to work. Comment added to please Sonar.
     }
 
     public FetchGroupsForSharingResponse(final List<Group> groups) {

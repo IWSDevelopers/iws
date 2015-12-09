@@ -150,6 +150,7 @@ public final class StudentApplication extends AbstractVerification {
      * for WebServices to work properly.
      */
     public StudentApplication() {
+        // Required for WebServices to work. Comment added to please Sonar.
     }
 
     /**

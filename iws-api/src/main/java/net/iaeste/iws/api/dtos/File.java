@@ -66,6 +66,7 @@ public final class File extends AbstractVerification {
      * for WebServices to work properly.
      */
     public File() {
+        // Required for WebServices to work. Comment added to please Sonar.
     }
 
     /**

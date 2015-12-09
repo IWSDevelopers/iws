@@ -43,12 +43,6 @@ public final class FetchCountrySurveyRequest extends AbstractVerification {
     // Object Constructors
     // =========================================================================
 
-    /**
-     * Default Constructor.
-     */
-    public FetchCountrySurveyRequest() {
-    }
-
     // =========================================================================
     // Standard Setters & Getters
     // =========================================================================

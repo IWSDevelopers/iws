@@ -57,6 +57,7 @@ public final class StudentApplicationRequest extends AbstractVerification {
      * for WebServices to work properly.
      */
     public StudentApplicationRequest() {
+        // Required for WebServices to work. Comment added to please Sonar.
     }
 
     public StudentApplicationRequest(final String applicationId, final ApplicationStatus status) {

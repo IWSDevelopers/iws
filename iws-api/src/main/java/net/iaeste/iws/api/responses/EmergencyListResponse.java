@@ -48,6 +48,7 @@ public final class EmergencyListResponse extends FallibleResponse {
      * for WebServices to work properly.
      */
     public EmergencyListResponse() {
+        // Required for WebServices to work. Comment added to please Sonar.
     }
 
     /**

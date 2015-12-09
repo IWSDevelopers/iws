@@ -51,6 +51,7 @@ public final class FetchFileRequest extends AbstractVerification {
      * for WebServices to work properly.
      */
     public FetchFileRequest() {
+        // Required for WebServices to work. Comment added to please Sonar.
     }
 
     /**

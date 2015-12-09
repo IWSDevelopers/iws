@@ -49,6 +49,7 @@ public final class FetchPublishingGroupResponse extends FallibleResponse {
      * for WebServices to work properly.
      */
     public FetchPublishingGroupResponse() {
+        // Required for WebServices to work. Comment added to please Sonar.
     }
 
     public FetchPublishingGroupResponse(final List<PublishingGroup> publishingGroups) {

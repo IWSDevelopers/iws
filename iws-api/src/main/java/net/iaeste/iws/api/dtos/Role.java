@@ -58,6 +58,7 @@ public final class Role extends AbstractVerification {
      * for WebServices to work properly.
      */
     public Role() {
+        // Required for WebServices to work. Comment added to please Sonar.
     }
 
     /**

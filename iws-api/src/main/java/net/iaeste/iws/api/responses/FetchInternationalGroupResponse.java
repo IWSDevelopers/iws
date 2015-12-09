@@ -48,6 +48,7 @@ public final class FetchInternationalGroupResponse extends FallibleResponse {
      * for WebServices to work properly.
      */
     public FetchInternationalGroupResponse() {
+        // Required for WebServices to work. Comment added to please Sonar.
     }
 
     public FetchInternationalGroupResponse(final List<UserGroup> groups) {

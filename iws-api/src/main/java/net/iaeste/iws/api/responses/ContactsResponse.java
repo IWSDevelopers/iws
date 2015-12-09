@@ -51,6 +51,7 @@ public final class ContactsResponse extends FallibleResponse {
      * for WebServices to work properly.
      */
     public ContactsResponse() {
+        // Required for WebServices to work. Comment added to please Sonar.
     }
 
     /**

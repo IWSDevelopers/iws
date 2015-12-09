@@ -62,6 +62,7 @@ public final class UserGroupAssignmentRequest extends AbstractVerification imple
      * for WebServices to work properly.
      */
     public UserGroupAssignmentRequest() {
+        // Required for WebServices to work. Comment added to please Sonar.
     }
 
     /**

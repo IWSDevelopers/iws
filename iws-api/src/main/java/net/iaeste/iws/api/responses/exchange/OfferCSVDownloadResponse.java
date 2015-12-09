@@ -47,6 +47,7 @@ public final class OfferCSVDownloadResponse extends FallibleResponse {
      * for WebServices to work properly.
      */
     public OfferCSVDownloadResponse() {
+        // Required for WebServices to work. Comment added to please Sonar.
     }
 
     public OfferCSVDownloadResponse(final byte[] data) {

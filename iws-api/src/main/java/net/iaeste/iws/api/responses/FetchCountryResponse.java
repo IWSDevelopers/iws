@@ -48,6 +48,7 @@ public final class FetchCountryResponse extends FallibleResponse {
      * for WebServices to work properly.
      */
     public FetchCountryResponse() {
+        // Required for WebServices to work. Comment added to please Sonar.
     }
 
     public FetchCountryResponse(final List<Country> countries) {

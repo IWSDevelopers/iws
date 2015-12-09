@@ -62,6 +62,7 @@ public final class Person extends AbstractVerification {
      * for WebServices to work properly.
      */
     public Person() {
+        // Required for WebServices to work. Comment added to please Sonar.
     }
 
     /**

@@ -67,6 +67,7 @@ public final class Country extends AbstractVerification {
      * for WebServices to work properly.
      */
     public Country() {
+        // Required for WebServices to work. Comment added to please Sonar.
     }
 
     /**

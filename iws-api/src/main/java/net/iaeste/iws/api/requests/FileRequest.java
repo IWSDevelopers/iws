@@ -58,7 +58,7 @@ public final class FileRequest extends AbstractVerification implements Actionabl
      * The IWS supports different ways of working with Files. By default, all
      * files are stored as private files, where the type is explicitly set to
      * "Owner". To read files in different ways, i.e. if the file is an
-     * attachment, other internal criterias is used to determine if the user is
+     * attachment, other internal criteria's is used to determine if the user is
      * allowed, hence - it is important that the type is set accordingly.
      */
     @XmlElement(required = true, nillable = false)
@@ -73,6 +73,7 @@ public final class FileRequest extends AbstractVerification implements Actionabl
      * for WebServices to work properly.
      */
     public FileRequest() {
+        // Required for WebServices to work. Comment added to please Sonar.
     }
 
     /**

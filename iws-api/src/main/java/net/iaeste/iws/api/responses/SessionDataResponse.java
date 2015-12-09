@@ -58,6 +58,7 @@ public final class SessionDataResponse<T extends Serializable> extends FallibleR
      * for WebServices to work properly.
      */
     public SessionDataResponse() {
+        // Required for WebServices to work. Comment added to please Sonar.
     }
 
     /**

@@ -48,6 +48,7 @@ public final class FetchFolderRequest extends AbstractVerification {
      * for WebServices to work properly.
      */
     public FetchFolderRequest() {
+        // Required for WebServices to work. Comment added to please Sonar.
     }
 
     /**

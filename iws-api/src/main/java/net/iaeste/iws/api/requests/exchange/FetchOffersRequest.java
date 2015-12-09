@@ -66,6 +66,7 @@ public final class FetchOffersRequest extends AbstractPaginatable {
      * for WebServices to work properly.
      */
     public FetchOffersRequest() {
+        // Required for WebServices to work. Comment added to please Sonar.
     }
 
     /**

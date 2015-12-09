@@ -77,6 +77,7 @@ public final class CommitteeRequest extends AbstractVerification implements Acti
      * for WebServices to work properly.
      */
     public CommitteeRequest() {
+        // Required for WebServices to work. Comment added to please Sonar.
     }
 
     /**

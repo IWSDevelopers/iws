@@ -47,6 +47,7 @@ public final class CommitteeResponse extends FallibleResponse {
      * for WebServices to work properly.
      */
     public CommitteeResponse() {
+        // Required for WebServices to work. Comment added to please Sonar.
     }
 
     public CommitteeResponse(final UserGroup committee) {

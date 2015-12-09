@@ -75,6 +75,7 @@ public final class CreateUserRequest extends AbstractVerification {
      * for WebServices to work properly.
      */
     public CreateUserRequest() {
+        // Required for WebServices to work. Comment added to please Sonar.
     }
 
     /**

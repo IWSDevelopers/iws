@@ -60,6 +60,7 @@ public final class StudentAcceptance extends AbstractVerification {
      * for WebServices to work properly.
      */
     public StudentAcceptance() {
+        // Required for WebServices to work. Comment added to please Sonar.
     }
 
     /**

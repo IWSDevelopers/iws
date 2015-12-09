@@ -48,6 +48,7 @@ public final class FetchFileResponse extends FallibleResponse {
      * for WebServices to work properly.
      */
     public FetchFileResponse() {
+        // Required for WebServices to work. Comment added to please Sonar.
     }
 
     /**

@@ -49,6 +49,7 @@ public final class OfferStatistics implements Serializable {
     * for WebServices to work properly.
     */
     public OfferStatistics() {
+        // Required for WebServices to work. Comment added to please Sonar.
     }
 
     /**

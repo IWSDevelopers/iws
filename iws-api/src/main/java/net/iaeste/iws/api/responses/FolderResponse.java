@@ -51,6 +51,7 @@ public final class FolderResponse extends FallibleResponse {
      * for WebServices to work properly.
      */
     public FolderResponse() {
+        // Required for WebServices to work. Comment added to please Sonar.
     }
 
     /**

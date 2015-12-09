@@ -74,6 +74,7 @@ public final class PublishingGroup extends AbstractVerification {
      * for WebServices to work properly.
      */
     public PublishingGroup() {
+        // Required for WebServices to work. Comment added to please Sonar.
     }
 
     /**

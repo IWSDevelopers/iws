@@ -52,6 +52,7 @@ public final class InternationalGroupRequest extends AbstractVerification {
      * for WebServices to work properly.
      */
     public InternationalGroupRequest() {
+        // Required for WebServices to work. Comment added to please Sonar.
     }
 
     /**

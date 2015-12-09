@@ -63,6 +63,7 @@ public final class StudentAcceptanceConfirmation extends AbstractVerification {
      * for WebServices to work properly.
      */
     public StudentAcceptanceConfirmation() {
+        // Required for WebServices to work. Comment added to please Sonar.
     }
 
     /**

@@ -52,7 +52,7 @@
                                  Integration Tests, so we're writing the
                                  Coverage information to the the Integration
                                  Test file instead. -->
-                            <destFile>${project.basedir}/../target/jacoco.exec</destFile>
+                            <destFile>${project.basedir}/../iws-parent/target/jacoco.exec</destFile>
                         </configuration>
                         <executions>
                             <execution>

@@ -44,6 +44,14 @@
                 <role>developer</role>
             </roles>
         </developer>
+        <developer>
+            <id>pavel</id>
+            <name>Pavel Fiala</name>
+            <email>mpavel.fiala@iaeste.cz</email>
+            <roles>
+                <role>developer</role>
+            </roles>
+        </developer>
     </developers>
 
     <properties>
@@ -59,8 +67,8 @@
              the same report, this way we get cross-module code coverage. -->
         <!-- To separate the information from the Unit & Integration testing,
              see: http://www.agile-engineering.net/2011/06/seperating-test-code-coverage-with.html -->
-        <sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
-        <sonar.jacoco.itReportPath>${project.basedir}/../target/jacoco-it.exec</sonar.jacoco.itReportPath>
+        <sonar.jacoco.reportPath>${project.basedir}/../iws-parent/target/jacoco.exec</sonar.jacoco.reportPath>
+        <sonar.jacoco.itReportPath>${project.basedir}/../iws-parent/target/jacoco-it.exec</sonar.jacoco.itReportPath>
         <!-- Sonar is by default analyzing everything. But Generated Code is beyond our
              control, so having error reports from this is just annoying.
              Legend: *  - zero or more characters

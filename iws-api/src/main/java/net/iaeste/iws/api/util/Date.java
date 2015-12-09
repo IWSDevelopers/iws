@@ -183,7 +183,7 @@ public final class Date implements Serializable, Comparable<Date> {
         }
 
         final Date other = (Date) obj;
-        return !((midnight != null) ? !midnight.equals(other.midnight) : (other.midnight != null));
+        return (midnight != null) ? midnight.equals(other.midnight) : (other.midnight == null);
     }
 
     /**
@@ -199,22 +199,25 @@ public final class Date implements Serializable, Comparable<Date> {
      */
     @Override
     public String toString() {
-        final DateFormat formatter = new SimpleDateFormat(IWSConstants.DATE_FORMAT, IWSConstants.DEFAULT_LOCALE);
-        return formatter.format(midnight).toUpperCase(IWSConstants.DEFAULT_LOCALE);
+        final DateFormat formatter = new SimpleDateFormat(DATE_FORMAT, DEFAULT_LOCALE);
+        return formatter.format(midnight).toUpperCase(DEFAULT_LOCALE);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public int compareTo(Date o) {
+    public int compareTo(final Date o) {
+        final int result;
         if (equals(o)) {
-            return 0;
+            result = 0;
         } else if (isBefore(o)) {
-            return -1;
+            result = -1;
         } else {
-            return 1;
+            result = 1;
         }
+
+        return result;
     }
 
     // =========================================================================

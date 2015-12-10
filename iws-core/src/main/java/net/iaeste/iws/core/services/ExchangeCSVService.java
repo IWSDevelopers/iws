@@ -82,6 +82,11 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
     private final AccessDao accessDao;
     private final ViewsDao viewsDao;
 
+    /** For handling of the CSV rows, we need to know what we expect to have. */
+    private enum OfferCSVType {
+        DOMESTIC, FOREIGN, UPLOAD
+    }
+
     public ExchangeCSVService(final Settings settings, final ExchangeDao dao, final AccessDao accessDao, final ViewsDao viewsDao) {
         super(settings, dao);
 
@@ -101,8 +106,8 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
              CSVParser parser = getDefaultCsvParser(reader, delimiter.getDescription())) {
             final Map<String, Integer> headersMap = parser.getHeaderMap();
             final Set<String> headers = headersMap.keySet();
-            final Set<String> expectedHeaders = new HashSet<>(createDomesticFirstRow());
-            if (expectedHeaders.equals(headers)) {
+            final Set<String> expectedHeaders = new HashSet<>(createFirstRow(OfferCSVType.UPLOAD));
+            if (headers.containsAll(expectedHeaders)) {
                 for (final CSVRecord record : parser.getRecords()) {
                     process(processingResult, errors, authentication, record);
                 }
@@ -207,7 +212,7 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
              OutputStreamWriter streamWriter = new OutputStreamWriter(stream, IWSConstants.DEFAULT_ENCODING);
              BufferedWriter writer = new BufferedWriter(streamWriter);
              CSVPrinter printer = getDefaultCsvPrinter(writer)) {
-            printer.printRecord(createForeignFirstRow());
+            printer.printRecord(createFirstRow(OfferCSVType.FOREIGN));
 
             for (final SharedOfferView offer : offers) {
                 printer.printRecord(ViewTransformer.transformToStringList(offer));
@@ -227,7 +232,7 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
              OutputStreamWriter streamWriter = new OutputStreamWriter(stream, IWSConstants.DEFAULT_ENCODING);
              BufferedWriter writer = new BufferedWriter(streamWriter);
              CSVPrinter printer = getDefaultCsvPrinter(writer)) {
-            printer.printRecord(createDomesticFirstRow());
+            printer.printRecord(createFirstRow(OfferCSVType.DOMESTIC));
 
             for (final OfferView offer : offers) {
                 printer.printRecord(ViewTransformer.transformToStringList(offer));
@@ -384,160 +389,101 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
         return entity;
     }
 
-    private List<String> createForeignFirstRow() {
+    private static List<String> createFirstRow(final OfferCSVType type) {
         final List<String> result = new ArrayList<>();
 
-        addForeignField(result, OfferFields.REF_NO);
-        addForeignField(result, OfferFields.DEADLINE);
-        addForeignField(result, OfferFields.COMMENT);
-        addForeignField(result, OfferFields.EMPLOYER);
-        addForeignField(result, OfferFields.DEPARTMENT);
-        addForeignField(result, OfferFields.STREET1);
-        addForeignField(result, OfferFields.STREET2);
-        addForeignField(result, OfferFields.POSTBOX);
-        addForeignField(result, OfferFields.POSTAL_CODE);
-        addForeignField(result, OfferFields.CITY);
-        addForeignField(result, OfferFields.STATE);
-        addForeignField(result, OfferFields.COUNTRY);
-        addForeignField(result, OfferFields.WEBSITE);
-        addForeignField(result, OfferFields.WORKPLACE);
-        addForeignField(result, OfferFields.BUSINESS);
-        addForeignField(result, OfferFields.RESPONSIBLE);
-        addForeignField(result, OfferFields.AIRPORT);
-        addForeignField(result, OfferFields.TRANSPORT);
-        addForeignField(result, OfferFields.EMPLOYEES);
-        addForeignField(result, OfferFields.HOURS_WEEKLY);
-        addForeignField(result, OfferFields.HOURS_DAILY);
-        addForeignField(result, OfferFields.CANTEEN);
-        addForeignField(result, OfferFields.FACULTY);
-        addForeignField(result, OfferFields.SPECIALIZATION);
-        addForeignField(result, OfferFields.TRAINING_REQUIRED);
-        addForeignField(result, OfferFields.OTHER_REQUIREMENTS);
-        addForeignField(result, OfferFields.WORK_KIND);
-        addForeignField(result, OfferFields.WEEKS_MIN);
-        addForeignField(result, OfferFields.WEEKS_MAX);
-        addForeignField(result, OfferFields.FROM);
-        addForeignField(result, OfferFields.TO);
-        addForeignField(result, OfferFields.STUDY_COMPLETED_BEGINNING);
-        addForeignField(result, OfferFields.STUDY_COMPLETED_MIDDLE);
-        addForeignField(result, OfferFields.STUDY_COMPLETED_END);
-        addForeignField(result, OfferFields.WORK_TYPE_P);
-        addForeignField(result, OfferFields.WORK_TYPE_R);
-        addForeignField(result, OfferFields.WORK_TYPE_W);
-        addForeignField(result, OfferFields.WORK_TYPE_N);
-        addForeignField(result, OfferFields.LANGUAGE_1);
-        addForeignField(result, OfferFields.LANGUAGE_1_LEVEL);
-        addForeignField(result, OfferFields.LANGUAGE_1_OR);
-        addForeignField(result, OfferFields.LANGUAGE_2);
-        addForeignField(result, OfferFields.LANGUAGE_2_LEVEL);
-        addForeignField(result, OfferFields.LANGUAGE_2_OR);
-        addForeignField(result, OfferFields.LANGUAGE_3);
-        addForeignField(result, OfferFields.LANGUAGE_3_LEVEL);
-        addForeignField(result, OfferFields.CURRENCY);
-        addForeignField(result, OfferFields.PAYMENT);
-        addForeignField(result, OfferFields.PAYMENT_FREQUENCY);
-        addForeignField(result, OfferFields.DEDUCTION);
-        addForeignField(result, OfferFields.LODGING);
-        addForeignField(result, OfferFields.LODGING_COST);
-        addForeignField(result, OfferFields.LODGING_COST_FREQUENCY);
-        addForeignField(result, OfferFields.LIVING_COST);
-        addForeignField(result, OfferFields.LIVING_COST_FREQUENCY);
-        addForeignField(result, OfferFields.NO_HARD_COPIES);
-        addForeignField(result, OfferFields.STATUS);
-        addForeignField(result, OfferFields.PERIOD_2_FROM);
-        addForeignField(result, OfferFields.PERIOD_2_TO);
-        addForeignField(result, OfferFields.HOLIDAYS_FROM);
-        addForeignField(result, OfferFields.HOLIDAYS_TO);
-        addForeignField(result, OfferFields.ADDITIONAL_INFO);
-        addForeignField(result, OfferFields.SHARED);
-        addForeignField(result, OfferFields.LAST_MODIFIED);
-        addForeignField(result, OfferFields.NS_FIRST_NAME);
-        addForeignField(result, OfferFields.NS_LAST_NAME);
+        addField(result, OfferFields.REF_NO, type);
+        addField(result, OfferFields.OFFER_TYPE, type);
+        addField(result, OfferFields.EXCHANGE_TYPE, type);
+        addField(result, OfferFields.DEADLINE, type);
+        addField(result, OfferFields.COMMENT, type);
+        addField(result, OfferFields.EMPLOYER, type);
+        addField(result, OfferFields.DEPARTMENT, type);
+        addField(result, OfferFields.STREET1, type);
+        addField(result, OfferFields.STREET2, type);
+        addField(result, OfferFields.POSTBOX, type);
+        addField(result, OfferFields.POSTAL_CODE, type);
+        addField(result, OfferFields.CITY, type);
+        addField(result, OfferFields.STATE, type);
+        addField(result, OfferFields.COUNTRY, type);
+        addField(result, OfferFields.WEBSITE, type);
+        addField(result, OfferFields.WORKPLACE, type);
+        addField(result, OfferFields.BUSINESS, type);
+        addField(result, OfferFields.RESPONSIBLE, type);
+        addField(result, OfferFields.AIRPORT, type);
+        addField(result, OfferFields.TRANSPORT, type);
+        addField(result, OfferFields.EMPLOYEES, type);
+        addField(result, OfferFields.HOURS_WEEKLY, type);
+        addField(result, OfferFields.HOURS_DAILY, type);
+        addField(result, OfferFields.CANTEEN, type);
+        addField(result, OfferFields.FACULTY, type);
+        addField(result, OfferFields.SPECIALIZATION, type);
+        addField(result, OfferFields.TRAINING_REQUIRED, type);
+        addField(result, OfferFields.OTHER_REQUIREMENTS, type);
+        addField(result, OfferFields.WORK_KIND, type);
+        addField(result, OfferFields.WEEKS_MIN, type);
+        addField(result, OfferFields.WEEKS_MAX, type);
+        addField(result, OfferFields.FROM, type);
+        addField(result, OfferFields.TO, type);
+        // Following field is not used for domestic, foreign or upload
+        //addField(result, OfferFields.STUDY_COMPLETED, type);
+        addField(result, OfferFields.STUDY_COMPLETED_BEGINNING, type);
+        addField(result, OfferFields.STUDY_COMPLETED_MIDDLE, type);
+        addField(result, OfferFields.STUDY_COMPLETED_END, type);
+        // Following field is not used for domestic, foreign or upload
+        //addField(result, OfferFields.WORK_TYPE, type);
+        addField(result, OfferFields.WORK_TYPE_P, type);
+        addField(result, OfferFields.WORK_TYPE_R, type);
+        addField(result, OfferFields.WORK_TYPE_W, type);
+        addField(result, OfferFields.WORK_TYPE_N, type);
+        addField(result, OfferFields.LANGUAGE_1, type);
+        addField(result, OfferFields.LANGUAGE_1_LEVEL, type);
+        addField(result, OfferFields.LANGUAGE_1_OR, type);
+        addField(result, OfferFields.LANGUAGE_2, type);
+        addField(result, OfferFields.LANGUAGE_2_LEVEL, type);
+        addField(result, OfferFields.LANGUAGE_2_OR, type);
+        addField(result, OfferFields.LANGUAGE_3, type);
+        addField(result, OfferFields.LANGUAGE_3_LEVEL, type);
+        addField(result, OfferFields.CURRENCY, type);
+        addField(result, OfferFields.PAYMENT, type);
+        addField(result, OfferFields.PAYMENT_FREQUENCY, type);
+        addField(result, OfferFields.DEDUCTION, type);
+        addField(result, OfferFields.LODGING, type);
+        addField(result, OfferFields.LODGING_COST, type);
+        addField(result, OfferFields.LODGING_COST_FREQUENCY, type);
+        addField(result, OfferFields.LIVING_COST, type);
+        addField(result, OfferFields.LIVING_COST_FREQUENCY, type);
+        addField(result, OfferFields.NO_HARD_COPIES, type);
+        addField(result, OfferFields.STATUS, type);
+        addField(result, OfferFields.PERIOD_2_FROM, type);
+        addField(result, OfferFields.PERIOD_2_TO, type);
+        addField(result, OfferFields.HOLIDAYS_FROM, type);
+        addField(result, OfferFields.HOLIDAYS_TO, type);
+        addField(result, OfferFields.ADDITIONAL_INFO, type);
+        addField(result, OfferFields.SHARED, type);
+        addField(result, OfferFields.LAST_MODIFIED, type);
+        addField(result, OfferFields.NS_FIRST_NAME, type);
+        addField(result, OfferFields.NS_LAST_NAME, type);
 
         return result;
     }
 
-    private List<String> createDomesticFirstRow() {
-        final List<String> result = new ArrayList<>();
-
-        addDomesticField(result, OfferFields.REF_NO);
-        addDomesticField(result, OfferFields.OFFER_TYPE);
-        addDomesticField(result, OfferFields.EXCHANGE_TYPE);
-        addDomesticField(result, OfferFields.DEADLINE);
-        addDomesticField(result, OfferFields.COMMENT);
-        addDomesticField(result, OfferFields.EMPLOYER);
-        addDomesticField(result, OfferFields.DEPARTMENT);
-        addDomesticField(result, OfferFields.STREET1);
-        addDomesticField(result, OfferFields.STREET2);
-        addDomesticField(result, OfferFields.POSTBOX);
-        addDomesticField(result, OfferFields.POSTAL_CODE);
-        addDomesticField(result, OfferFields.CITY);
-        addDomesticField(result, OfferFields.STATE);
-        addDomesticField(result, OfferFields.COUNTRY);
-        addDomesticField(result, OfferFields.WEBSITE);
-        addDomesticField(result, OfferFields.WORKPLACE);
-        addDomesticField(result, OfferFields.BUSINESS);
-        addDomesticField(result, OfferFields.RESPONSIBLE);
-        addDomesticField(result, OfferFields.AIRPORT);
-        addDomesticField(result, OfferFields.TRANSPORT);
-        addDomesticField(result, OfferFields.EMPLOYEES);
-        addDomesticField(result, OfferFields.HOURS_WEEKLY);
-        addDomesticField(result, OfferFields.HOURS_DAILY);
-        addDomesticField(result, OfferFields.CANTEEN);
-        addDomesticField(result, OfferFields.FACULTY);
-        addDomesticField(result, OfferFields.SPECIALIZATION);
-        addDomesticField(result, OfferFields.TRAINING_REQUIRED);
-        addDomesticField(result, OfferFields.OTHER_REQUIREMENTS);
-        addDomesticField(result, OfferFields.WORK_KIND);
-        addDomesticField(result, OfferFields.WEEKS_MIN);
-        addDomesticField(result, OfferFields.WEEKS_MAX);
-        addDomesticField(result, OfferFields.FROM);
-        addDomesticField(result, OfferFields.TO);
-        addDomesticField(result, OfferFields.STUDY_COMPLETED_BEGINNING);
-        addDomesticField(result, OfferFields.STUDY_COMPLETED_MIDDLE);
-        addDomesticField(result, OfferFields.STUDY_COMPLETED_END);
-        addDomesticField(result, OfferFields.WORK_TYPE_P);
-        addDomesticField(result, OfferFields.WORK_TYPE_R);
-        addDomesticField(result, OfferFields.WORK_TYPE_W);
-        addDomesticField(result, OfferFields.WORK_TYPE_N);
-        addDomesticField(result, OfferFields.LANGUAGE_1);
-        addDomesticField(result, OfferFields.LANGUAGE_1_LEVEL);
-        addDomesticField(result, OfferFields.LANGUAGE_1_OR);
-        addDomesticField(result, OfferFields.LANGUAGE_2);
-        addDomesticField(result, OfferFields.LANGUAGE_2_LEVEL);
-        addDomesticField(result, OfferFields.LANGUAGE_2_OR);
-        addDomesticField(result, OfferFields.LANGUAGE_3);
-        addDomesticField(result, OfferFields.LANGUAGE_3_LEVEL);
-        addDomesticField(result, OfferFields.CURRENCY);
-        addDomesticField(result, OfferFields.PAYMENT);
-        addDomesticField(result, OfferFields.PAYMENT_FREQUENCY);
-        addDomesticField(result, OfferFields.DEDUCTION);
-        addDomesticField(result, OfferFields.LODGING);
-        addDomesticField(result, OfferFields.LODGING_COST);
-        addDomesticField(result, OfferFields.LODGING_COST_FREQUENCY);
-        addDomesticField(result, OfferFields.LIVING_COST);
-        addDomesticField(result, OfferFields.LIVING_COST_FREQUENCY);
-        addDomesticField(result, OfferFields.NO_HARD_COPIES);
-        addDomesticField(result, OfferFields.STATUS);
-        addDomesticField(result, OfferFields.PERIOD_2_FROM);
-        addDomesticField(result, OfferFields.PERIOD_2_TO);
-        addDomesticField(result, OfferFields.HOLIDAYS_FROM);
-        addDomesticField(result, OfferFields.HOLIDAYS_TO);
-        addDomesticField(result, OfferFields.ADDITIONAL_INFO);
-        addDomesticField(result, OfferFields.SHARED);
-
-        return result;
-    }
-
-    private void addForeignField(final List<String> row, final OfferFields field) {
-        if (field.isForForeignCSVOffer()) {
-            row.add(field.getField());
-        }
-    }
-
-    private void addDomesticField(final List<String> row, final OfferFields field) {
-        if (field.isForDomesticCSVOffer()) {
-            row.add(field.getField());
+    private static void addField(final List<String> row, final OfferFields field, final OfferCSVType type) {
+        switch (type) {
+            case FOREIGN:
+                if (field.isForForeignCSVOffer()) {
+                    row.add(field.getField());
+                }
+                break;
+            case DOMESTIC:
+                if (field.isForDomesticCSVOffer()) {
+                    row.add(field.getField());
+                }
+                break;
+            case UPLOAD:
+                if (field.isForUploadingCSVOffer()) {
+                    row.add(field.getField());
+                }
         }
     }
 }

@@ -37,7 +37,7 @@ import java.util.Map;
  */
 public final class MessageGenerator {
 
-    private static final String DIR = "templates/";
+    private static final String DIR = "/templates/";
     private static final String MESSAGE = "Message.tpl";
     private static final String SUBJECT = "Subject.tpl";
 
@@ -91,7 +91,7 @@ public final class MessageGenerator {
     }
 
     private static String readTemplate(final String name) throws IOException {
-        try (InputStream stream = ClassLoader.getSystemResourceAsStream(DIR + name);
+        try (InputStream stream = MessageGenerator.class.getResourceAsStream(DIR + name);
              InputStreamReader streamReader = new InputStreamReader(stream);
              BufferedReader reader = new BufferedReader(streamReader)) {
 

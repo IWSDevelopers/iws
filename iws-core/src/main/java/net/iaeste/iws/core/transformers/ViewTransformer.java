@@ -14,10 +14,9 @@
  */
 package net.iaeste.iws.core.transformers;
 
-import static net.iaeste.iws.common.utils.StringUtils.toLower;
 import static net.iaeste.iws.core.transformers.EmbeddedConverter.convert;
 
-import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.Address;
 import net.iaeste.iws.api.dtos.Country;
 import net.iaeste.iws.api.dtos.File;
@@ -27,28 +26,30 @@ import net.iaeste.iws.api.dtos.exchange.Employer;
 import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.dtos.exchange.Student;
 import net.iaeste.iws.api.dtos.exchange.StudentApplication;
-import net.iaeste.iws.api.enums.exchange.FieldOfStudy;
+import net.iaeste.iws.api.enums.exchange.OfferFields;
+import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.api.enums.exchange.StudyLevel;
 import net.iaeste.iws.api.enums.exchange.TypeOfWork;
+import net.iaeste.iws.api.exceptions.IWSException;
+import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.api.util.DateTime;
 import net.iaeste.iws.common.utils.StringUtils;
+import net.iaeste.iws.persistence.views.AbstractView;
 import net.iaeste.iws.persistence.views.ApplicationView;
 import net.iaeste.iws.persistence.views.AttachedFileView;
 import net.iaeste.iws.persistence.views.EmbeddedAddress;
 import net.iaeste.iws.persistence.views.EmbeddedCountry;
 import net.iaeste.iws.persistence.views.EmbeddedEmployer;
 import net.iaeste.iws.persistence.views.EmbeddedOffer;
-import net.iaeste.iws.persistence.views.EmbeddedOfferGroup;
 import net.iaeste.iws.persistence.views.EmployerView;
 import net.iaeste.iws.persistence.views.OfferSharedToGroupView;
 import net.iaeste.iws.persistence.views.OfferView;
 import net.iaeste.iws.persistence.views.SharedOfferView;
 import net.iaeste.iws.persistence.views.StudentView;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -173,8 +174,8 @@ public final class ViewTransformer {
     }
 
     /**
-     * Transforms the {@link net.iaeste.iws.persistence.views.ApplicationView}
-     * to an {@link net.iaeste.iws.api.dtos.exchange.StudentApplication} DTO Object.
+     * Transforms the {@link ApplicationView}
+     * to an {@link StudentApplication} DTO Object.
      * As the DTO contains several sub-objects, which again may contain certain
      * other objects, the transformer is building the entire Object Structure.
      *
@@ -239,330 +240,215 @@ public final class ViewTransformer {
         return file;
     }
 
-    /**
-     * Transforms the {@link SharedOfferView} to an {@link java.util.List <Object>} for CSVPrinter.
-     *
-     * @param view SharedOfferView to transform
-     * @return List of offer objects to be exported to CSV
-     */
-    public static List<Object> transformToStringList(final SharedOfferView view) {
-        //use following?
-        //public static List<String> transformToStringList(final Class<List> list, final SharedOfferView view) {
+    public static <V extends AbstractView<?>> List<Object> transformOfferToObjectList(final V view, final OfferFields.Type type) {
+        final List<Object> result;
+
+        // This is an interim stage, we need to somehow make the two different
+        // Objects more like, so we can use the same routine for transforming
+        // it, since at least 90% of the content is identical. What is annoying
+        // is the control of the ordering, as we could then just convert the
+        // sub-Objects without any problems. But as the are mixed for various
+        // historical reasons - we're currently sticking to it, until a better
+        // and more permanent solution is found.
+        if (view instanceof OfferView) {
+            final OfferView offer = (OfferView) view;
+            result = transformOfferToList(offer, type);
+        } else if (view instanceof SharedOfferView) {
+            final SharedOfferView offer = (SharedOfferView) view;
+            result = transformToStringList(offer, type);
+        } else {
+            throw new IWSException(IWSErrors.FATAL, "Provided Object is not a supported Offer View.");
+        }
+
+        return result;
+    }
+
+    private static List<Object> transformOfferToList(final OfferView view, final OfferFields.Type type) {
+        final EmbeddedOffer offer = view.getOffer();
+        final EmbeddedEmployer employer = view.getEmployer();
+        final String refNo = (offer.getOldRefNo() != null) ? offer.getOldRefNo() : offer.getRefNo();
         final List<Object> result = new ArrayList<>();
 
-        final EmbeddedOffer embeddedOffer = view.getOffer() != null ? view.getOffer() : new EmbeddedOffer();
-        final EmbeddedEmployer embeddedEmployer = view.getEmployer() != null ? view.getEmployer() : new EmbeddedEmployer();
-        final EmbeddedAddress embeddedAddress = view.getAddress() != null ? view.getAddress() : new EmbeddedAddress();
-        final EmbeddedCountry embeddedCountry = view.getCountry() != null ? view.getCountry() : new EmbeddedCountry();
-        final EmbeddedOfferGroup embeddedOfferGroup = view.getOfferGroup() != null ? view.getOfferGroup() : new EmbeddedOfferGroup();
+        addObjectIfRequired(OfferFields.REF_NO, type, result, refNo);
+        addObjectIfRequired(OfferFields.OFFER_TYPE, type, result, offer.getOfferType());
+        addObjectIfRequired(OfferFields.EXCHANGE_TYPE, type, result, offer.getExchangeType());
+        addDateIfRequired(OfferFields.DEADLINE, type, result, offer.getNominationDeadline());
+        addObjectIfRequired(OfferFields.COMMENT, type, result, offer.getPrivateComment());
 
-        final String exportedRefNo = embeddedOffer.getOldRefNo() != null ? embeddedOffer.getOldRefNo() : embeddedOffer.getRefNo();
+        addObjectIfRequired(OfferFields.EMPLOYER, type, result, employer.getName());
+        addObjectIfRequired(OfferFields.DEPARTMENT, type, result, employer.getDepartment());
+        addAddressIfRequired(OfferFields.STREET1, type, result, view.getAddress());
+        addCountryIfRequired(OfferFields.COUNTRY, type, result, view.getCountry());
 
-        result.add(exportedRefNo);
-        result.add(embeddedOffer.getNominationDeadline());
-        result.add(null);
-        result.add(embeddedEmployer.getName());
-        result.add(embeddedEmployer.getDepartment());
-        result.add(embeddedAddress.getStreet1());
-        result.add(embeddedAddress.getStreet2());
-        result.add(embeddedAddress.getPobox());
-        result.add(embeddedAddress.getPostalCode());
-        result.add(embeddedAddress.getCity());
-        result.add(embeddedAddress.getState());
-        result.add(embeddedCountry.getCountryName());
-        result.add(embeddedEmployer.getWebsite());
-        result.add(embeddedEmployer.getWorkingPlace());
-        result.add(embeddedEmployer.getBusiness());
-        result.add(null);
-        result.add(embeddedEmployer.getNearestAirport());
-        result.add(embeddedEmployer.getNearestPublicTransport());
-        result.add(embeddedEmployer.getNumberOfEmployees());
-        result.add(embeddedOffer.getWeeklyHours());
-        result.add(embeddedOffer.getDailyHours());
-        result.add(CommonTransformer.convertToYesNo(embeddedEmployer.getCanteen()));
+        commonOfferInformation(type, result, offer, employer);
 
-        String fieldOfStudiesString = "";
-        for (FieldOfStudy fieldOfStudy : CollectionTransformer.explodeEnumSet(FieldOfStudy.class, embeddedOffer.getFieldOfStudies())) {
-            if (fieldOfStudiesString.isEmpty()) {
-                fieldOfStudiesString = fieldOfStudy.getDescription();
-            } else {
-                fieldOfStudiesString = fieldOfStudiesString + ", " + fieldOfStudy.getDescription();
-            }
-        }
-        result.add(fieldOfStudiesString);
-
-        String specializationsString = "";
-        for (String specialization : CollectionTransformer.explodeStringSet(embeddedOffer.getSpecializations())) {
-            if ((specialization != null) && !specialization.isEmpty()) {
-                String parsed = specialization.charAt(0) + toLower(specialization).replace('_', ' ').substring(1);
-                if (!specializationsString.isEmpty()) {
-                    specializationsString = specializationsString + ", " + parsed;
-                } else {
-                    specializationsString = parsed;
-                }
-            }
-        }
-        result.add(specializationsString);
-
-        result.add(CommonTransformer.convertToYesNo(embeddedOffer.getPrevTrainingRequired()));
-        result.add(StringUtils.removeLineBreaks(embeddedOffer.getOtherRequirements()));
-        result.add(StringUtils.removeLineBreaks(embeddedOffer.getWorkDescription()));
-        result.add(embeddedOffer.getMinimumWeeks());
-        result.add(embeddedOffer.getMaximumWeeks());
-        result.add(embeddedOffer.getFromDate());
-        result.add(embeddedOffer.getToDate());
-
-        boolean studyBeginning = false;
-        boolean studyMiddle = false;
-        boolean studyEnd = false;
-
-        for (StudyLevel sl : CollectionTransformer.explodeEnumSet(StudyLevel.class, embeddedOffer.getStudyLevels())) {
-            switch (sl) {
-                case B:
-                    studyBeginning = true;
-                    break;
-                case M:
-                    studyMiddle = true;
-                    break;
-                case E:
-                    studyEnd = true;
-                    break;
-            }
-        }
-        result.add(CommonTransformer.convertToYesNo(studyBeginning));
-        result.add(CommonTransformer.convertToYesNo(studyMiddle));
-        result.add(CommonTransformer.convertToYesNo(studyEnd));
-
-        if (embeddedOffer.getTypeOfWork() == TypeOfWork.R) {
-            result.add(CommonTransformer.convertToYesNo(true));
-            result.add(CommonTransformer.convertToYesNo(false));
-            result.add(CommonTransformer.convertToYesNo(false));
-            result.add(CommonTransformer.convertToYesNo(false));
-        } else if (embeddedOffer.getTypeOfWork() == TypeOfWork.O) {
-            result.add(CommonTransformer.convertToYesNo(false));
-            result.add(CommonTransformer.convertToYesNo(true));
-            result.add(CommonTransformer.convertToYesNo(false));
-            result.add(CommonTransformer.convertToYesNo(false));
-        } else if (embeddedOffer.getTypeOfWork() == TypeOfWork.F) {
-            result.add(CommonTransformer.convertToYesNo(false));
-            result.add(CommonTransformer.convertToYesNo(false));
-            result.add(CommonTransformer.convertToYesNo(true));
-            result.add(CommonTransformer.convertToYesNo(false));
-        } else {
-            result.add(CommonTransformer.convertToYesNo(false));
-            result.add(CommonTransformer.convertToYesNo(false));
-            result.add(CommonTransformer.convertToYesNo(false));
-            result.add(CommonTransformer.convertToYesNo(false));
-        }
-
-        result.add(embeddedOffer.getLanguage1() != null ? embeddedOffer.getLanguage1().getDescription() : null);
-        result.add(embeddedOffer.getLanguage1Level() != null ? embeddedOffer.getLanguage1Level().getDescription() : null);
-        result.add(embeddedOffer.getLanguage1Operator() != null ? embeddedOffer.getLanguage1Operator().getDescription() : null);
-
-        result.add(embeddedOffer.getLanguage2() != null ? embeddedOffer.getLanguage2().getDescription() : null);
-        result.add(embeddedOffer.getLanguage2Level() != null ? embeddedOffer.getLanguage2Level().getDescription() : null);
-        result.add(embeddedOffer.getLanguage2Operator() != null ? embeddedOffer.getLanguage2Operator().getDescription() : null);
-
-        result.add(embeddedOffer.getLanguage3() != null ? embeddedOffer.getLanguage3().getDescription() : null);
-        result.add(embeddedOffer.getLanguage3Level() != null ? embeddedOffer.getLanguage3Level().getDescription() : null);
-
-        result.add(embeddedCountry.getCurrency()); //we want to keep abbreviation, not full description
-        result.add(embeddedOffer.getPayment());
-        result.add(embeddedOffer.getPaymentFrequency() != null ? embeddedOffer.getPaymentFrequency().getDescription() : null);
-        result.add(embeddedOffer.getDeduction());
-        result.add(embeddedOffer.getLodgingBy());
-        result.add(embeddedOffer.getLodgingCost());
-        result.add(embeddedOffer.getLodgingCostFrequency() != null ? embeddedOffer.getLodgingCostFrequency().getDescription() : null);
-        result.add(embeddedOffer.getLivingCost());
-        result.add(embeddedOffer.getLivingCostFrequency() != null ? embeddedOffer.getLivingCostFrequency().getDescription() : null);
-        result.add(embeddedOffer.getNumberOfHardCopies());
-        result.add(embeddedOfferGroup.getStatus() != null ? embeddedOfferGroup.getStatus().getDescription() : null);
-
-        result.add(embeddedOffer.getFromDate2());
-        result.add(embeddedOffer.getToDate2());
-
-        result.add(embeddedOffer.getUnavailableFrom());
-        result.add(embeddedOffer.getUnavailableTo());
-
-        result.add(StringUtils.removeLineBreaks(embeddedOffer.getAdditionalInformation()));
-        result.add(embeddedOfferGroup.getCreated());
-
-        result.add(embeddedOfferGroup.getModified());
-        result.add(view.getNsFirstname());
-        result.add(view.getNsLastname());
+        //TODO: Add The name of the country to whom this view is shared once available in the embeddedOfferView
+        addObjectIfRequired(OfferFields.SHARED, type, result, null);
+        addDateIfRequired(OfferFields.LAST_MODIFIED, type, result, offer.getModified());
+        addObjectIfRequired(OfferFields.NS_FIRST_NAME, type, result, view.getNsFirstname());
+        addObjectIfRequired(OfferFields.NS_LAST_NAME, type, result, view.getNsLastname());
 
         return result;
     }
 
     /**
-     * Transforms the {@link OfferView} to an {@link java.util.List <Object>} for CSVPrinter.
+     * Transforms the {@link SharedOfferView} to an {@link List <Object>} for CSVPrinter.
      *
-     * @param view OfferView to transform
-     * @return List of offer objects to be exported to CSV
+     * @param view SharedOfferView to transform
+     * @return List of view objects to be exported to CSV
      */
-    public static List<Object> transformToStringList(final OfferView view) {
-        final DateFormat formatter = new SimpleDateFormat(IWSConstants.DATE_FORMAT, IWSConstants.DEFAULT_LOCALE);        //use following?
-        //public static List<String> transformToStringList(final Class<List> list, final SharedOfferView view) {
+    private static List<Object> transformToStringList(final SharedOfferView view, final OfferFields.Type type) {
+        final EmbeddedOffer offer = view.getOffer();
+        final EmbeddedEmployer employer = view.getEmployer();
+        final String refNo = (offer.getOldRefNo() != null) ? offer.getOldRefNo() : offer.getRefNo();
         final List<Object> result = new ArrayList<>();
 
-        final EmbeddedOffer embeddedOffer = view.getOffer() != null ? view.getOffer() : new EmbeddedOffer();
-        final EmbeddedEmployer embeddedEmployer = view.getEmployer() != null ? view.getEmployer() : new EmbeddedEmployer();
-        final EmbeddedAddress embeddedAddress = view.getAddress() != null ? view.getAddress() : new EmbeddedAddress();
-        final EmbeddedCountry embeddedCountry = view.getCountry() != null ? view.getCountry() : new EmbeddedCountry();
-
-        final String exportedRefNo = embeddedOffer.getOldRefNo() != null ? embeddedOffer.getOldRefNo() : embeddedOffer.getRefNo();
-
-        result.add(exportedRefNo);
-        result.add(embeddedOffer.getOfferType());
-        result.add(embeddedOffer.getExchangeType());
-        result.add(embeddedOffer.getNominationDeadline() != null ? formatter.format(embeddedOffer.getNominationDeadline()) : "");
-        result.add(embeddedOffer.getPrivateComment());
-        result.add(embeddedEmployer.getName());
-        result.add(embeddedEmployer.getDepartment());
-        result.add(embeddedAddress.getStreet1());
-        result.add(embeddedAddress.getStreet2());
-        result.add(embeddedAddress.getPobox());
-        result.add(embeddedAddress.getPostalCode());
-        result.add(embeddedAddress.getCity());
-        result.add(embeddedAddress.getState());
-        result.add(embeddedCountry.getCountryName());
-        result.add(embeddedEmployer.getWebsite());
-        result.add(embeddedEmployer.getWorkingPlace());
-        result.add(embeddedEmployer.getBusiness());
-        result.add(null);
-        result.add(embeddedEmployer.getNearestAirport());
-        result.add(embeddedEmployer.getNearestPublicTransport());
-        result.add(embeddedEmployer.getNumberOfEmployees());
-        result.add(embeddedOffer.getWeeklyHours());
-        result.add(embeddedOffer.getDailyHours());
-        result.add(CommonTransformer.convertToYesNo(embeddedEmployer.getCanteen()));
-
-        String fieldOfStudiesString = "";
-        for (FieldOfStudy fieldOfStudy : CollectionTransformer.explodeEnumSet(FieldOfStudy.class, embeddedOffer.getFieldOfStudies())) {
-            if (fieldOfStudiesString.isEmpty()) {
-                fieldOfStudiesString = fieldOfStudy.name();
-            } else {
-                fieldOfStudiesString = fieldOfStudiesString + ", " + fieldOfStudy.name();
-            }
-        }
-        result.add(fieldOfStudiesString);
-
-
-        String specializationsString = "";
-        for (String spe : CollectionTransformer.explodeStringSet(embeddedOffer.getSpecializations())) {
-//            String toPut = spe.charAt(0) + spe.toLowerCase().replace('_', ' ').substring(1);
-            if (!specializationsString.isEmpty()) {
-                specializationsString = specializationsString + ", " + spe;
-            } else {
-                specializationsString = spe;
-            }
-        }
-        result.add(specializationsString);
-
-        result.add(CommonTransformer.convertToYesNo(embeddedOffer.getPrevTrainingRequired()));
-        result.add(StringUtils.removeLineBreaks(embeddedOffer.getOtherRequirements()));
-        result.add(StringUtils.removeLineBreaks(embeddedOffer.getWorkDescription()));
-        result.add(embeddedOffer.getMinimumWeeks());
-        result.add(embeddedOffer.getMaximumWeeks());
-        result.add(embeddedOffer.getFromDate() != null ? formatter.format(embeddedOffer.getFromDate()) : "");
-        result.add(embeddedOffer.getToDate() != null ? formatter.format(embeddedOffer.getToDate()) : "");
-
-        boolean studyBeginning = false;
-        boolean studyMiddle = false;
-        boolean studyEnd = false;
-
-        for (StudyLevel sl : CollectionTransformer.explodeEnumSet(StudyLevel.class, embeddedOffer.getStudyLevels())) {
-            switch (sl) {
-                case B:
-                    studyBeginning = true;
-                    break;
-                case M:
-                    studyMiddle = true;
-                    break;
-                case E:
-                    studyEnd = true;
-                    break;
-            }
-        }
-        result.add(CommonTransformer.convertToYesNo(studyBeginning));
-        result.add(CommonTransformer.convertToYesNo(studyMiddle));
-        result.add(CommonTransformer.convertToYesNo(studyEnd));
-
-        if (embeddedOffer.getTypeOfWork() == TypeOfWork.R) {
-            result.add(CommonTransformer.convertToYesNo(true));
-            result.add(CommonTransformer.convertToYesNo(false));
-            result.add(CommonTransformer.convertToYesNo(false));
-            result.add(CommonTransformer.convertToYesNo(false));
-        } else if (embeddedOffer.getTypeOfWork() == TypeOfWork.O) {
-            result.add(CommonTransformer.convertToYesNo(false));
-            result.add(CommonTransformer.convertToYesNo(true));
-            result.add(CommonTransformer.convertToYesNo(false));
-            result.add(CommonTransformer.convertToYesNo(false));
-        } else if (embeddedOffer.getTypeOfWork() == TypeOfWork.F) {
-            result.add(CommonTransformer.convertToYesNo(false));
-            result.add(CommonTransformer.convertToYesNo(false));
-            result.add(CommonTransformer.convertToYesNo(true));
-            result.add(CommonTransformer.convertToYesNo(false));
-        } else {
-            result.add(CommonTransformer.convertToYesNo(false));
-            result.add(CommonTransformer.convertToYesNo(false));
-            result.add(CommonTransformer.convertToYesNo(false));
-            result.add(CommonTransformer.convertToYesNo(false));
-        }
-
-//        result.add(embeddedOffer.getLanguage1() != null ? embeddedOffer.getLanguage1().getDescription() : null);
-//        result.add(embeddedOffer.getLanguage1Level() != null ? embeddedOffer.getLanguage1Level().getDescription() : null);
-//        result.add(embeddedOffer.getLanguage1Operator() != null ? embeddedOffer.getLanguage1Operator().getDescription() : null);
-
-        result.add(embeddedOffer.getLanguage1());
-        result.add(embeddedOffer.getLanguage1Level());
-        result.add(embeddedOffer.getLanguage1Operator());
-
-//        result.add(embeddedOffer.getLanguage2() != null ? embeddedOffer.getLanguage2().getDescription() : null);
-//        result.add(embeddedOffer.getLanguage2Level() != null ? embeddedOffer.getLanguage2Level().getDescription() : null);
-//        result.add(embeddedOffer.getLanguage2Operator() != null ? embeddedOffer.getLanguage2Operator().getDescription() : null);
-
-        result.add(embeddedOffer.getLanguage2());
-        result.add(embeddedOffer.getLanguage2Level());
-        result.add(embeddedOffer.getLanguage2Operator());
-
-//        result.add(embeddedOffer.getLanguage3() != null ? embeddedOffer.getLanguage3().getDescription() : null);
-//        result.add(embeddedOffer.getLanguage3Level() != null ? embeddedOffer.getLanguage3Level().getDescription() : null);
-
-        result.add(embeddedOffer.getLanguage3());
-        result.add(embeddedOffer.getLanguage3Level());
-
-//        result.add(embeddedCountry.getCurrency() != null ? embeddedCountry.getCurrency().getDescription() : null);
-        result.add(embeddedCountry.getCurrency());
-        result.add(embeddedOffer.getPayment());
-//        result.add(embeddedOffer.getPaymentFrequency() != null ? embeddedOffer.getPaymentFrequency().getDescription() : null);
-        result.add(embeddedOffer.getPaymentFrequency());
-        result.add(embeddedOffer.getDeduction());
-        result.add(embeddedOffer.getLodgingBy());
-        result.add(embeddedOffer.getLodgingCost());
-//        result.add(embeddedOffer.getLodgingCostFrequency() != null ? embeddedOffer.getLodgingCostFrequency().getDescription() : null);
-        result.add(embeddedOffer.getLodgingCostFrequency());
-        result.add(embeddedOffer.getLivingCost());
-//        result.add(embeddedOffer.getLivingCostFrequency() != null ? embeddedOffer.getLivingCostFrequency().getDescription() : null);
-        result.add(embeddedOffer.getLivingCostFrequency());
-        result.add(embeddedOffer.getNumberOfHardCopies());
-        result.add(embeddedOffer.getStatus() != null ? embeddedOffer.getStatus().getDescription() : null);
-
-        result.add(embeddedOffer.getFromDate2() != null ? formatter.format(embeddedOffer.getFromDate2()) : "");
-        result.add(embeddedOffer.getToDate2() != null ? formatter.format(embeddedOffer.getToDate2()) : "");
-
-        result.add(embeddedOffer.getUnavailableFrom() != null ? formatter.format(embeddedOffer.getUnavailableFrom()) : "");
-        result.add(embeddedOffer.getUnavailableTo() != null ? formatter.format(embeddedOffer.getUnavailableTo()) : "");
-
-        result.add(StringUtils.removeLineBreaks(embeddedOffer.getAdditionalInformation()));
-
-        //TODO: Add The name of the country to whom this offer is shared once available in the embeddedOfferView
+        addObjectIfRequired(OfferFields.REF_NO, type, result, refNo);
+        addObjectIfRequired(OfferFields.DEADLINE, type, result, offer.getNominationDeadline());
         result.add(null);
 
-        result.add(embeddedOffer.getModified() != null ? formatter.format(embeddedOffer.getModified()) : "");
-        result.add(view.getNsFirstname());
-        result.add(view.getNsLastname());
+        addObjectIfRequired(OfferFields.EMPLOYER, type, result, employer.getName());
+        addObjectIfRequired(OfferFields.DEPARTMENT, type, result, employer.getDepartment());
+        addAddressIfRequired(OfferFields.STREET1, type, result, view.getAddress());
+        addCountryIfRequired(OfferFields.COUNTRY, type, result, view.getCountry());
+
+        commonOfferInformation(type, result, offer, employer);
+
+        addDateIfRequired(OfferFields.SHARED, type, result, view.getOfferGroup().getCreated());
+        addDateIfRequired(OfferFields.LAST_MODIFIED, type, result, offer.getModified());
+        addObjectIfRequired(OfferFields.NS_FIRST_NAME, type, result, view.getNsFirstname());
+        addObjectIfRequired(OfferFields.NS_LAST_NAME, type, result, view.getNsLastname());
 
         return result;
+    }
+
+    private static void commonOfferInformation(final OfferFields.Type type, final List<Object> result, final EmbeddedOffer offer, final EmbeddedEmployer employer) {
+        addObjectIfRequired(OfferFields.WEBSITE, type, result, employer.getWebsite());
+        addObjectIfRequired(OfferFields.WORKPLACE, type, result, employer.getWorkingPlace());
+        addObjectIfRequired(OfferFields.BUSINESS, type, result, employer.getBusiness());
+        // Unsupported, yet required field
+        addObjectIfRequired(OfferFields.RESPONSIBLE, type, result, "");
+        addObjectIfRequired(OfferFields.AIRPORT, type, result, employer.getNearestAirport());
+        addObjectIfRequired(OfferFields.TRANSPORT, type, result, employer.getNearestPublicTransport());
+        addObjectIfRequired(OfferFields.EMPLOYEES, type, result, employer.getNumberOfEmployees());
+        addObjectIfRequired(OfferFields.HOURS_WEEKLY, type, result, offer.getWeeklyHours());
+        addObjectIfRequired(OfferFields.HOURS_DAILY, type, result, offer.getDailyHours());
+        addBooleanIfRequired(OfferFields.CANTEEN, type, result, employer.getCanteen());
+
+        addStringSetIfRequired(OfferFields.FACULTY, type, result, offer.getFieldOfStudies());
+        addStringSetIfRequired(OfferFields.SPECIALIZATION, type, result, offer.getSpecializations());
+        addBooleanIfRequired(OfferFields.TRAINING_REQUIRED, type, result, offer.getPrevTrainingRequired());
+        addTextIfRequired(OfferFields.OTHER_REQUIREMENTS, type, result, offer.getOtherRequirements());
+        addTextIfRequired(OfferFields.WORK_KIND, type, result, offer.getWorkDescription());
+        addObjectIfRequired(OfferFields.WEEKS_MIN, type, result, offer.getMinimumWeeks());
+        addObjectIfRequired(OfferFields.WEEKS_MAX, type, result, offer.getMaximumWeeks());
+        addDateIfRequired(OfferFields.FROM, type, result, offer.getFromDate());
+        addDateIfRequired(OfferFields.TO, type, result, offer.getToDate());
+        addStudyCompletedIfRequired(OfferFields.STUDY_COMPLETED, type, result, offer.getStudyLevels());
+        addWorkTypeIfRequired(OfferFields.WORK_TYPE, type , result, offer.getTypeOfWork());
+        addLanguageIfRequired(type, result, offer);
+        addFinansIfRequired(type, result, offer);
+        addObjectIfRequired(OfferFields.NO_HARD_COPIES, type, result, offer.getNumberOfHardCopies());
+        addStatusIfRequired(OfferFields.STATUS, type, result, offer.getStatus());
+        addDateIfRequired(OfferFields.PERIOD_2_FROM, type, result, offer.getFromDate2());
+        addDateIfRequired(OfferFields.PERIOD_2_TO, type, result, offer.getToDate2());
+        addDateIfRequired(OfferFields.HOLIDAYS_FROM, type, result, offer.getUnavailableFrom());
+        addDateIfRequired(OfferFields.HOLIDAYS_TO, type, result, offer.getUnavailableTo());
+        addTextIfRequired(OfferFields.ADDITIONAL_INFO, type, result, offer.getAdditionalInformation());
+    }
+
+    private static void addStudyCompletedIfRequired(final OfferFields field, final OfferFields.Type type, final List<Object> result, final String value) {
+        if (field.useField(type)) {
+            final Set<StudyLevel> set = CollectionTransformer.explodeEnumSet(StudyLevel.class, value);
+
+            addBooleanIfRequired(OfferFields.STUDY_COMPLETED_BEGINNING, type, result, set.contains(StudyLevel.B));
+            addBooleanIfRequired(OfferFields.STUDY_COMPLETED_MIDDLE, type, result, set.contains(StudyLevel.M));
+            addBooleanIfRequired(OfferFields.STUDY_COMPLETED_END, type, result, set.contains(StudyLevel.E));
+        }
+    }
+
+    private static void addWorkTypeIfRequired(final OfferFields field, final OfferFields.Type type, final List<Object> result, final TypeOfWork value) {
+        if (field.useField(type)) {
+            addBooleanIfRequired(OfferFields.WORK_TYPE_P, type, result, value == TypeOfWork.O);
+            addBooleanIfRequired(OfferFields.WORK_TYPE_R, type, result, value == TypeOfWork.R);
+            addBooleanIfRequired(OfferFields.WORK_TYPE_W, type, result, value == TypeOfWork.F);
+            addBooleanIfRequired(OfferFields.WORK_TYPE_N, type, result, false);
+        }
+    }
+
+    private static void addLanguageIfRequired(final OfferFields.Type type, final List<Object> result, final EmbeddedOffer offer) {
+        addObjectIfRequired(OfferFields.LANGUAGE_1, type, result, offer.getLanguage1());
+        addObjectIfRequired(OfferFields.LANGUAGE_1_LEVEL, type, result, offer.getLanguage1Level());
+        addObjectIfRequired(OfferFields.LANGUAGE_1_OR, type, result, offer.getLanguage1Operator());
+        addObjectIfRequired(OfferFields.LANGUAGE_2, type, result, offer.getLanguage2());
+        addObjectIfRequired(OfferFields.LANGUAGE_2_LEVEL, type, result, offer.getLanguage2Level());
+        addObjectIfRequired(OfferFields.LANGUAGE_2_OR, type, result, offer.getLanguage2Operator());
+        addObjectIfRequired(OfferFields.LANGUAGE_3, type, result, offer.getLanguage3());
+        addObjectIfRequired(OfferFields.LANGUAGE_3_LEVEL, type, result, offer.getLanguage3Level());
+    }
+
+    private static void addFinansIfRequired(final OfferFields.Type type, final List<Object> result, final EmbeddedOffer offer) {
+        addObjectIfRequired(OfferFields.CURRENCY, type, result, offer.getCurrency());
+        addObjectIfRequired(OfferFields.PAYMENT, type, result, offer.getPayment());
+        addObjectIfRequired(OfferFields.PAYMENT_FREQUENCY, type, result, offer.getPaymentFrequency());
+        addObjectIfRequired(OfferFields.DEDUCTION, type, result, offer.getDeduction());
+        addObjectIfRequired(OfferFields.LODGING, type, result, offer.getLodgingBy());
+        addObjectIfRequired(OfferFields.LODGING_COST, type, result, offer.getLodgingCost());
+        addObjectIfRequired(OfferFields.LODGING_COST_FREQUENCY, type, result, offer.getLodgingCostFrequency());
+        addObjectIfRequired(OfferFields.LIVING_COST, type, result, offer.getLivingCost());
+        addObjectIfRequired(OfferFields.LIVING_COST_FREQUENCY, type, result, offer.getLivingCostFrequency());
+    }
+
+    private static void addObjectIfRequired(final OfferFields field, final OfferFields.Type type, final List<Object> result, final Object obj) {
+        if (field.useField(type)) {
+            result.add(obj);
+        }
+    }
+
+    private static void addTextIfRequired(final OfferFields field, final OfferFields.Type type, final List<Object> result, final String value) {
+        if (field.useField(type)) {
+            result.add(StringUtils.removeLineBreaks(value));
+        }
+    }
+
+    private static void addAddressIfRequired(final OfferFields field, final OfferFields.Type type, final List<Object> result, final EmbeddedAddress address) {
+        if (field.useField(type)) {
+            result.add(address.getStreet1());
+            result.add(address.getStreet2());
+            result.add(address.getPobox());
+            result.add(address.getPostalCode());
+            result.add(address.getCity());
+            result.add(address.getState());
+        }
+    }
+
+    private static void addBooleanIfRequired(final OfferFields field, final OfferFields.Type type, final List<Object> result, final Boolean value) {
+        if (field.useField(type)) {
+            result.add(CommonTransformer.convertToYesNo(value));
+        }
+    }
+
+    private static void addDateIfRequired(final OfferFields field, final OfferFields.Type type, final List<Object> result, final java.util.Date value) {
+        if (field.useField(type)) {
+            result.add((value != null) ? new Date(value).toString() : "");
+        }
+    }
+
+    private static void addStringSetIfRequired(final OfferFields field, final OfferFields.Type type, final List<Object> result, final String value) {
+        if (field.useField(type)) {
+            result.add(CollectionTransformer.SPLIT_PATTERN.matcher(value).replaceAll(", "));
+        }
+    }
+
+    private static void addCountryIfRequired(final OfferFields field, final OfferFields.Type type, final List<Object> result, final EmbeddedCountry country) {
+        if (field.useField(type)) {
+            result.add(country.getCountryName());
+        }
+    }
+
+    private static void addStatusIfRequired(final OfferFields field, final OfferFields.Type type, final List<Object> result, final OfferState value) {
+        if (field.useField(type)) {
+            result.add((value != null) ? value.getDescription() : null);
+        }
     }
 }

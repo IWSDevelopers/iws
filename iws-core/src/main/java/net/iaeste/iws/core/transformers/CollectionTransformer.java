@@ -43,7 +43,7 @@ public final class CollectionTransformer {
     public static final Logger LOG = LoggerFactory.getLogger(CollectionTransformer.class);
 
     private static final String DELIMITER_REG_EXP = ",|\\" + IWSExchangeConstants.SET_DELIMITER;
-    private static final Pattern SPLIT_PATTERN = Pattern.compile(DELIMITER_REG_EXP);
+    public static final Pattern SPLIT_PATTERN = Pattern.compile(DELIMITER_REG_EXP);
 
     /**
      * Private Constructor, this is a utility class.

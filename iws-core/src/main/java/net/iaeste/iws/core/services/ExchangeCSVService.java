@@ -44,6 +44,7 @@ import net.iaeste.iws.persistence.ViewsDao;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.exchange.EmployerEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
+import net.iaeste.iws.persistence.views.AbstractView;
 import net.iaeste.iws.persistence.views.OfferView;
 import net.iaeste.iws.persistence.views.SharedOfferView;
 import org.apache.commons.csv.CSVFormat;
@@ -73,7 +74,7 @@ import java.util.Set;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.1
  */
-public class ExchangeCSVService extends CommonService<ExchangeDao> {
+public final class ExchangeCSVService extends CommonService<ExchangeDao> {
 
     private static final Logger LOG = LoggerFactory.getLogger(ExchangeCSVService.class);
 
@@ -81,11 +82,6 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
 
     private final AccessDao accessDao;
     private final ViewsDao viewsDao;
-
-    /** For handling of the CSV rows, we need to know what we expect to have. */
-    private enum OfferCSVType {
-        DOMESTIC, FOREIGN, UPLOAD
-    }
 
     public ExchangeCSVService(final Settings settings, final ExchangeDao dao, final AccessDao accessDao, final ViewsDao viewsDao) {
         super(settings, dao);
@@ -106,7 +102,7 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
              CSVParser parser = getDefaultCsvParser(reader, delimiter.getDescription())) {
             final Map<String, Integer> headersMap = parser.getHeaderMap();
             final Set<String> headers = headersMap.keySet();
-            final Set<String> expectedHeaders = new HashSet<>(createFirstRow(OfferCSVType.UPLOAD));
+            final Set<String> expectedHeaders = new HashSet<>(createFirstRow(OfferFields.Type.UPLOAD));
             if (headers.containsAll(expectedHeaders)) {
                 for (final CSVRecord record : parser.getRecords()) {
                     process(processingResult, errors, authentication, record);
@@ -158,7 +154,7 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
 
         byte[] result = null;
         if (!found.isEmpty()) {
-            result = domesticToCsv(found);
+            result = convertOffersToCsv(found, OfferFields.Type.DOMESTIC);
         }
 
         return result;
@@ -181,13 +177,13 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
 
         byte[] data = null;
         if (!found.isEmpty()) {
-            data = sharedToCsv(found);
+            data = convertOffersToCsv(found, OfferFields.Type.FOREIGN);
         }
 
         return data;
     }
 
-    private CSVParser getDefaultCsvParser(final Reader input, final char delimiter) {
+    private static CSVParser getDefaultCsvParser(final Reader input, final char delimiter) {
         try {
             return CSVFormat.RFC4180.withDelimiter(delimiter)
                     .withHeader()
@@ -197,7 +193,7 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
         }
     }
 
-    private CSVPrinter getDefaultCsvPrinter(final Appendable output) {
+    private static CSVPrinter getDefaultCsvPrinter(final Appendable output) {
         try {
             return CSVFormat.RFC4180.withDelimiter(DELIMITER.getDescription())
                                     .withNullString("")
@@ -207,35 +203,15 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
         }
     }
 
-    private byte[] sharedToCsv(final List<SharedOfferView> offers) {
+    private static <V extends AbstractView<?>> byte[] convertOffersToCsv(final List<V> offers, final OfferFields.Type type) {
         try (ByteArrayOutputStream stream = new ByteArrayOutputStream();
              OutputStreamWriter streamWriter = new OutputStreamWriter(stream, IWSConstants.DEFAULT_ENCODING);
              BufferedWriter writer = new BufferedWriter(streamWriter);
              CSVPrinter printer = getDefaultCsvPrinter(writer)) {
-            printer.printRecord(createFirstRow(OfferCSVType.FOREIGN));
+            printer.printRecord(createFirstRow(type));
 
-            for (final SharedOfferView offer : offers) {
-                printer.printRecord(ViewTransformer.transformToStringList(offer));
-            }
-
-            writer.flush();
-            streamWriter.flush();
-            stream.flush();
-            return stream.toByteArray();
-        } catch (IOException e) {
-            throw new IWSException(IWSErrors.PROCESSING_FAILURE, "Serialization to CSV failed", e);
-        }
-    }
-
-    private byte[] domesticToCsv(final List<OfferView> offers) {
-        try (ByteArrayOutputStream stream = new ByteArrayOutputStream();
-             OutputStreamWriter streamWriter = new OutputStreamWriter(stream, IWSConstants.DEFAULT_ENCODING);
-             BufferedWriter writer = new BufferedWriter(streamWriter);
-             CSVPrinter printer = getDefaultCsvPrinter(writer)) {
-            printer.printRecord(createFirstRow(OfferCSVType.DOMESTIC));
-
-            for (final OfferView offer : offers) {
-                printer.printRecord(ViewTransformer.transformToStringList(offer));
+            for (final V offer : offers) {
+                printer.printRecord(ViewTransformer.transformOfferToObjectList(offer, type));
             }
 
             writer.flush();
@@ -270,8 +246,8 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
     }
 
     private void process(final Map<String, OfferCSVUploadResponse.ProcessingResult> processingResult, final Map<String, CSVProcessingErrors> errors, final Authentication authentication, final CSVRecord record) {
-        String refNo = "";
         final Map<String, String> conversionErrors = new HashMap<>(0);
+        String refNo = "";
 
         try {
             refNo = record.get(OfferFields.REF_NO.getField());
@@ -280,47 +256,7 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
             final CSVProcessingErrors validationErrors = new CSVProcessingErrors(csvOffer.validate());
             validationErrors.putAll(conversionErrors);
             if (validationErrors.isEmpty()) {
-                final OfferEntity existingEntity = dao.findOfferByRefNo(authentication, refNo);
-                final OfferEntity newEntity = ExchangeTransformer.transform(csvOffer);
-
-                if (existingEntity != null) {
-                    permissionCheck(authentication, authentication.getGroup());
-
-                    //keep original offer state
-                    newEntity.setStatus(existingEntity.getStatus());
-
-                    csvOffer.getEmployer().setEmployerId(existingEntity.getEmployer().getExternalId());
-                    final EmployerEntity employerEntity = process(authentication, csvOffer.getEmployer());
-                    existingEntity.setEmployer(employerEntity);
-
-                    newEntity.setExternalId(existingEntity.getExternalId());
-                    dao.persist(authentication, existingEntity, newEntity);
-                    LOG.info(formatLogMessage(authentication, "CSV Update of Offer with RefNo '%s' completed.", newEntity.getRefNo()));
-                    processingResult.put(refNo, OfferCSVUploadResponse.ProcessingResult.UPDATED);
-                } else {
-                    // First, we need an Employer for our new Offer. The Process
-                    // method will either find an existing Employer or create a
-                    // new one.
-                    final EmployerEntity employer = process(authentication, csvOffer.getEmployer());
-
-                    // Add the Group to the Offer, otherwise our ref.no checks will fail
-                    employer.setGroup(authentication.getGroup());
-
-                    newEntity.setEmployer(employer);
-
-                    ExchangeService.verifyRefnoValidity(newEntity);
-
-                    newEntity.setExchangeYear(AbstractVerification.calculateExchangeYear());
-                    // Add the employer to the Offer
-                    newEntity.setEmployer(employer);
-                    // Set the Offer status to New
-                    newEntity.setStatus(OfferState.NEW);
-
-                    // Persist the Offer with history
-                    dao.persist(authentication, newEntity);
-                    LOG.info(formatLogMessage(authentication, "CSV Import of Offer with RefNo '%s' completed.", newEntity.getRefNo()));
-                    processingResult.put(refNo, OfferCSVUploadResponse.ProcessingResult.ADDED);
-                }
+                processingResult.put(refNo, processOffer(authentication, refNo, csvOffer));
             } else {
                 LOG.warn(formatLogMessage(authentication, "CSV Offer with RefNo " + refNo + " has some Problems: " + validationErrors));
                 processingResult.put(refNo, OfferCSVUploadResponse.ProcessingResult.ERROR);
@@ -340,6 +276,53 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
                 errors.put(refNo, generalError);
             }
         }
+    }
+
+    private OfferCSVUploadResponse.ProcessingResult processOffer (final Authentication authentication, final String refNo, final Offer csvOffer) {
+        final OfferEntity existingEntity = dao.findOfferByRefNo(authentication, refNo);
+        final OfferEntity newEntity = ExchangeTransformer.transform(csvOffer);
+        final OfferCSVUploadResponse.ProcessingResult result;
+
+        if (existingEntity != null) {
+            permissionCheck(authentication, authentication.getGroup());
+
+            //keep original offer state
+            newEntity.setStatus(existingEntity.getStatus());
+
+            csvOffer.getEmployer().setEmployerId(existingEntity.getEmployer().getExternalId());
+            final EmployerEntity employerEntity = process(authentication, csvOffer.getEmployer());
+            existingEntity.setEmployer(employerEntity);
+
+            newEntity.setExternalId(existingEntity.getExternalId());
+            dao.persist(authentication, existingEntity, newEntity);
+            LOG.info(formatLogMessage(authentication, "CSV Update of Offer with RefNo '%s' completed.", newEntity.getRefNo()));
+            result = OfferCSVUploadResponse.ProcessingResult.UPDATED;
+        } else {
+            // First, we need an Employer for our new Offer. The Process
+            // method will either find an existing Employer or create a
+            // new one.
+            final EmployerEntity employer = process(authentication, csvOffer.getEmployer());
+
+            // Add the Group to the Offer, otherwise our ref.no checks will fail
+            employer.setGroup(authentication.getGroup());
+
+            newEntity.setEmployer(employer);
+
+            ExchangeService.verifyRefnoValidity(newEntity);
+
+            newEntity.setExchangeYear(AbstractVerification.calculateExchangeYear());
+            // Add the employer to the Offer
+            newEntity.setEmployer(employer);
+            // Set the Offer status to New
+            newEntity.setStatus(OfferState.NEW);
+
+            // Persist the Offer with history
+            dao.persist(authentication, newEntity);
+            LOG.info(formatLogMessage(authentication, "CSV Import of Offer with RefNo '%s' completed.", newEntity.getRefNo()));
+            result = OfferCSVUploadResponse.ProcessingResult.ADDED;
+        }
+
+        return result;
     }
 
     /**
@@ -389,7 +372,7 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
         return entity;
     }
 
-    private static List<String> createFirstRow(final OfferCSVType type) {
+    private static List<String> createFirstRow(final OfferFields.Type type) {
         final List<String> result = new ArrayList<>();
 
         addField(result, OfferFields.REF_NO, type);
@@ -425,13 +408,9 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
         addField(result, OfferFields.WEEKS_MAX, type);
         addField(result, OfferFields.FROM, type);
         addField(result, OfferFields.TO, type);
-        // Following field is not used for domestic, foreign or upload
-        //addField(result, OfferFields.STUDY_COMPLETED, type);
         addField(result, OfferFields.STUDY_COMPLETED_BEGINNING, type);
         addField(result, OfferFields.STUDY_COMPLETED_MIDDLE, type);
         addField(result, OfferFields.STUDY_COMPLETED_END, type);
-        // Following field is not used for domestic, foreign or upload
-        //addField(result, OfferFields.WORK_TYPE, type);
         addField(result, OfferFields.WORK_TYPE_P, type);
         addField(result, OfferFields.WORK_TYPE_R, type);
         addField(result, OfferFields.WORK_TYPE_W, type);
@@ -468,22 +447,9 @@ public class ExchangeCSVService extends CommonService<ExchangeDao> {
         return result;
     }
 
-    private static void addField(final List<String> row, final OfferFields field, final OfferCSVType type) {
-        switch (type) {
-            case FOREIGN:
-                if (field.isForForeignCSVOffer()) {
-                    row.add(field.getField());
-                }
-                break;
-            case DOMESTIC:
-                if (field.isForDomesticCSVOffer()) {
-                    row.add(field.getField());
-                }
-                break;
-            case UPLOAD:
-                if (field.isForUploadingCSVOffer()) {
-                    row.add(field.getField());
-                }
+    private static void addField(final List<String> row, final OfferFields field, final OfferFields.Type type) {
+        if (field.useField(type)) {
+            row.add(field.getField());
         }
     }
 }

@@ -21,6 +21,7 @@ import net.iaeste.iws.api.util.DatePeriod;
 
 import javax.xml.bind.annotation.XmlType;
 import java.math.BigDecimal;
+import java.util.EnumSet;
 import java.util.Set;
 
 /**
@@ -36,94 +37,98 @@ import java.util.Set;
 @XmlType(name = "offerFields")
 public enum OfferFields {
 
-    REF_NO("Ref.No", "setRefNo", true, true, true, String.class),
-    OFFER_TYPE("OfferType", "setOfferType", true, false, true, OfferType.class),
-    EXCHANGE_TYPE("ExchangeType", "setExchangeType", true, false, false, ExchangeType.class), // Not supported to set this via CSV
-    DEADLINE("Deadline", "setNominationDeadline", true, true, true, Date.class),
-    COMMENT("Comment", "setPrivateComment", true, true, true, String.class),
-    EMPLOYER("Employer", "setName", true, true, true, String.class),
-    DEPARTMENT("Department", "setDepartment", true, true, true, String.class),
-    STREET1("Street1", "setStreet1", true, true, true, String.class),
-    STREET2("Street2", "setStreet2", true, true, true, String.class),
-    POSTBOX("PostBox", "setPobox", true, true, true, String.class),
-    POSTAL_CODE("PostalCode", "setPostalCode", true, true, true, String.class),
-    CITY("City", "setCity", true, true, true, String.class),
-    STATE("State", "setState", true, true, true, String.class),
-    COUNTRY("Country", null, true, true, true, String.class),
-    WEBSITE("Website", "setWebsite", true, true, true, String.class),
-    WORKPLACE("Workplace", "setWorkingPlace", true, true, true, String.class),
-    BUSINESS("Business", "setBusiness", true, true, true, String.class),
-    RESPONSIBLE("Responsible", null, true, true, true, String.class),
-    AIRPORT("Airport", "setNearestAirport", true, true, true, String.class),
-    TRANSPORT("Transport", "setNearestPublicTransport", true, true, true, String.class),
-    EMPLOYEES("Employees", "setEmployeesCount", true, true, true, String.class),
-    HOURS_WEEKLY("HoursWeekly", "setWeeklyHours", true, true, true, Float.class),
-    HOURS_DAILY("HoursDaily", "setDailyHours", true, true, true, Float.class),
-    CANTEEN("Canteen", "setCanteen", true, true, true, Boolean.class),
-    FACULTY("Faculty", "setFieldOfStudies", true, true, true, Set.class),
-    SPECIALIZATION("Specialization", "setSpecializations", true, true, true, Set.class),
-    TRAINING_REQUIRED("TrainingRequired", "setPreviousTrainingRequired", true, true, true, Boolean.class),
-    OTHER_REQUIREMENTS("OtherRequirements", "setOtherRequirements", true, true, true, String.class),
-    WORK_KIND("Workkind", "setWorkDescription", true, true, true, String.class), // Mapped to Work Description
-    WEEKS_MIN("WeeksMin", "setMinimumWeeks", true, true, true, Integer.class),
-    WEEKS_MAX("WeeksMax", "setMaximumWeeks", true, true, true, Integer.class),
-    FROM("From", "setPeriod1", true, true, true, DatePeriod.class),
-    TO("To", "setPeriod1", true, true, true, DatePeriod.class),
-    STUDY_COMPLETED("StudyCompleted", "setStudyLevels", true, true, true, Set.class),
-    STUDY_COMPLETED_BEGINNING("StudyCompleted_Beginning", "setStudyLevels", true, true, true, Set.class),
-    STUDY_COMPLETED_MIDDLE("StudyCompleted_Middle", "setStudyLevels", true, true, true, Set.class),
-    STUDY_COMPLETED_END("StudyCompleted_End", "setStudyLevels", true, true, true, Set.class),
-    WORK_TYPE("WorkType", "setTypeOfWork", true, true, true, TypeOfWork.class),
-    WORK_TYPE_P("WorkType_P", "setTypeOfWork", true, true, true, TypeOfWork.class),
-    WORK_TYPE_R("WorkType_R", "setTypeOfWork", true, true, true, TypeOfWork.class),
-    WORK_TYPE_W("WorkType_W", "setTypeOfWork", true, true, true, TypeOfWork.class),
-    WORK_TYPE_N("WorkType_N", "setTypeOfWork", true, true, true, TypeOfWork.class),
-    LANGUAGE_1("Language1", "setLanguage1", true, true, true, Language.class),
-    LANGUAGE_1_LEVEL("Language1Level", "setLanguage1Level", true, true, true, LanguageLevel.class),
-    LANGUAGE_1_OR("Language1Or", "setLanguage1Operator", true, true, true, LanguageOperator.class),
-    LANGUAGE_2("Language2", "setLanguage2", true, true, true, Language.class),
-    LANGUAGE_2_LEVEL("Language2Level", "setLanguage2Level", true, true, true, LanguageLevel.class),
-    LANGUAGE_2_OR("Language2Or", "setLanguage2Operator", true, true, true, LanguageOperator.class),
-    LANGUAGE_3("Language3", "setLanguage3", true, true, true, Language.class),
-    LANGUAGE_3_LEVEL("Language3Level", "setLanguage3Level", true, true, true, LanguageLevel.class),
-    CURRENCY("Currency", "setCurrency", true, true, true, Currency.class),
-    PAYMENT("Payment", "setPayment", true, true, true, BigDecimal.class),
-    PAYMENT_FREQUENCY("PaymentFrequency", "setPaymentFrequency", true, true, true, PaymentFrequency.class),
-    DEDUCTION("Deduction", "setDeduction", true, true, true, String.class),
-    LODGING("Lodging", "setLodgingBy", true, true, true, String.class),
-    LODGING_COST("LodgingCost", "setLodgingCost", true, true, true, BigDecimal.class),
-    LODGING_COST_FREQUENCY("LodgingCostFrequency", "setLodgingCostFrequency", true, true, true, PaymentFrequency.class),
-    LIVING_COST("LivingCost", "setLivingCost", true, true, true, BigDecimal.class),
-    LIVING_COST_FREQUENCY("LivingCostFrequency", "setLivingCostFrequency", true, true, true, PaymentFrequency.class),
-    NO_HARD_COPIES("NoHardCopies", "setNumberOfHardCopies", true, true, true, Integer.class),
-    STATUS("Status", null, true, true, false), // Not supported to set this via CSV
-    PERIOD_2_FROM("Period2_From", "setPeriod2", true, true, true, DatePeriod.class),
-    PERIOD_2_TO("Period2_To", "setPeriod2", true, true, true, DatePeriod.class),
-    HOLIDAYS_FROM("Holidays_From", "setUnavailable", true, true, true, DatePeriod.class),
-    HOLIDAYS_TO("Holidays_To", "setUnavailable", true, true, true, DatePeriod.class),
-    ADDITIONAL_INFO("Additional_Info", "setAdditionalInformation", true, true, true, String.class),
-    SHARED("Shared", null, true, true, false), // Not supported to set this via CSV
-    LAST_MODIFIED("Last modified", null, false, true, false), // Not supported to set this via CSV
-    NS_FIRST_NAME("NS First Name", null, false, true, false), // Not supported to set this via CSV
-    NS_LAST_NAME("NS Last Name", null, false, true, false); // Not supported to set this via CSV
+    // ToDo extend this enum with some information about the order, so we can correctly filly both header and body with it. Need to clarify if the currently used variants have any problems, i.e. if the order differs or will cause problem if they do
+    REF_NO("Ref.No", "setRefNo", EnumSet.allOf(Type.class), String.class),
+    OFFER_TYPE("OfferType", "setOfferType", EnumSet.of(Type.DOMESTIC, Type.UPLOAD), OfferType.class),
+    EXCHANGE_TYPE("ExchangeType", "setExchangeType", EnumSet.of(Type.DOMESTIC), ExchangeType.class), // Not supported to set this via CSV
+    DEADLINE("Deadline", "setNominationDeadline", EnumSet.allOf(Type.class), Date.class),
+    COMMENT("Comment", "setPrivateComment", EnumSet.allOf(Type.class), String.class),
+    EMPLOYER("Employer", "setName", EnumSet.allOf(Type.class), String.class),
+    DEPARTMENT("Department", "setDepartment", EnumSet.allOf(Type.class), String.class),
+    STREET1("Street1", "setStreet1", EnumSet.allOf(Type.class), String.class),
+    STREET2("Street2", "setStreet2", EnumSet.allOf(Type.class), String.class),
+    POSTBOX("PostBox", "setPobox", EnumSet.allOf(Type.class), String.class),
+    POSTAL_CODE("PostalCode", "setPostalCode", EnumSet.allOf(Type.class), String.class),
+    CITY("City", "setCity", EnumSet.allOf(Type.class), String.class),
+    STATE("State", "setState", EnumSet.allOf(Type.class), String.class),
+    COUNTRY("Country", null, EnumSet.allOf(Type.class), String.class),
+    WEBSITE("Website", "setWebsite", EnumSet.allOf(Type.class), String.class),
+    WORKPLACE("Workplace", "setWorkingPlace", EnumSet.allOf(Type.class), String.class),
+    BUSINESS("Business", "setBusiness", EnumSet.allOf(Type.class), String.class),
+    RESPONSIBLE("Responsible", null, EnumSet.allOf(Type.class), String.class),
+    AIRPORT("Airport", "setNearestAirport", EnumSet.allOf(Type.class), String.class),
+    TRANSPORT("Transport", "setNearestPublicTransport", EnumSet.allOf(Type.class), String.class),
+    EMPLOYEES("Employees", "setEmployeesCount", EnumSet.allOf(Type.class), String.class),
+    HOURS_WEEKLY("HoursWeekly", "setWeeklyHours", EnumSet.allOf(Type.class), Float.class),
+    HOURS_DAILY("HoursDaily", "setDailyHours", EnumSet.allOf(Type.class), Float.class),
+    CANTEEN("Canteen", "setCanteen", EnumSet.allOf(Type.class), Boolean.class),
+    FACULTY("Faculty", "setFieldOfStudies", EnumSet.allOf(Type.class), Set.class),
+    SPECIALIZATION("Specialization", "setSpecializations", EnumSet.allOf(Type.class), Set.class),
+    TRAINING_REQUIRED("TrainingRequired", "setPreviousTrainingRequired", EnumSet.allOf(Type.class), Boolean.class),
+    OTHER_REQUIREMENTS("OtherRequirements", "setOtherRequirements", EnumSet.allOf(Type.class), String.class),
+    WORK_KIND("Workkind", "setWorkDescription", EnumSet.allOf(Type.class), String.class), // Mapped to Work Description
+    WEEKS_MIN("WeeksMin", "setMinimumWeeks", EnumSet.allOf(Type.class), Integer.class),
+    WEEKS_MAX("WeeksMax", "setMaximumWeeks", EnumSet.allOf(Type.class), Integer.class),
+    FROM("From", "setPeriod1", EnumSet.allOf(Type.class), DatePeriod.class),
+    TO("To", "setPeriod1", EnumSet.allOf(Type.class), DatePeriod.class),
+    // Used internally for the 3 sub-values
+    STUDY_COMPLETED("StudyCompleted", "setStudyLevels", EnumSet.allOf(Type.class), Set.class),
+    STUDY_COMPLETED_BEGINNING("StudyCompleted_Beginning", "setStudyLevels", EnumSet.allOf(Type.class), Set.class),
+    STUDY_COMPLETED_MIDDLE("StudyCompleted_Middle", "setStudyLevels", EnumSet.allOf(Type.class), Set.class),
+    STUDY_COMPLETED_END("StudyCompleted_End", "setStudyLevels", EnumSet.allOf(Type.class), Set.class),
+    // Used internally for the 4 sub-values
+    WORK_TYPE("WorkType", "setTypeOfWork", EnumSet.allOf(Type.class), TypeOfWork.class),
+    WORK_TYPE_P("WorkType_P", "setTypeOfWork", EnumSet.allOf(Type.class), TypeOfWork.class),
+    WORK_TYPE_R("WorkType_R", "setTypeOfWork", EnumSet.allOf(Type.class), TypeOfWork.class),
+    WORK_TYPE_W("WorkType_W", "setTypeOfWork", EnumSet.allOf(Type.class), TypeOfWork.class),
+    WORK_TYPE_N("WorkType_N", "setTypeOfWork", EnumSet.allOf(Type.class), TypeOfWork.class),
+    LANGUAGE_1("Language1", "setLanguage1", EnumSet.allOf(Type.class), Language.class),
+    LANGUAGE_1_LEVEL("Language1Level", "setLanguage1Level", EnumSet.allOf(Type.class), LanguageLevel.class),
+    LANGUAGE_1_OR("Language1Or", "setLanguage1Operator", EnumSet.allOf(Type.class), LanguageOperator.class),
+    LANGUAGE_2("Language2", "setLanguage2", EnumSet.allOf(Type.class), Language.class),
+    LANGUAGE_2_LEVEL("Language2Level", "setLanguage2Level", EnumSet.allOf(Type.class), LanguageLevel.class),
+    LANGUAGE_2_OR("Language2Or", "setLanguage2Operator", EnumSet.allOf(Type.class), LanguageOperator.class),
+    LANGUAGE_3("Language3", "setLanguage3", EnumSet.allOf(Type.class), Language.class),
+    LANGUAGE_3_LEVEL("Language3Level", "setLanguage3Level", EnumSet.allOf(Type.class), LanguageLevel.class),
+    CURRENCY("Currency", "setCurrency", EnumSet.allOf(Type.class), Currency.class),
+    PAYMENT("Payment", "setPayment", EnumSet.allOf(Type.class), BigDecimal.class),
+    PAYMENT_FREQUENCY("PaymentFrequency", "setPaymentFrequency", EnumSet.allOf(Type.class), PaymentFrequency.class),
+    DEDUCTION("Deduction", "setDeduction", EnumSet.allOf(Type.class), String.class),
+    LODGING("Lodging", "setLodgingBy", EnumSet.allOf(Type.class), String.class),
+    LODGING_COST("LodgingCost", "setLodgingCost", EnumSet.allOf(Type.class), BigDecimal.class),
+    LODGING_COST_FREQUENCY("LodgingCostFrequency", "setLodgingCostFrequency", EnumSet.allOf(Type.class), PaymentFrequency.class),
+    LIVING_COST("LivingCost", "setLivingCost", EnumSet.allOf(Type.class), BigDecimal.class),
+    LIVING_COST_FREQUENCY("LivingCostFrequency", "setLivingCostFrequency", EnumSet.allOf(Type.class), PaymentFrequency.class),
+    NO_HARD_COPIES("NoHardCopies", "setNumberOfHardCopies", EnumSet.allOf(Type.class), Integer.class),
+    STATUS("Status", null, EnumSet.of(Type.DOMESTIC, Type.FOREIGN)), // Not supported to set this via CSV
+    PERIOD_2_FROM("Period2_From", "setPeriod2", EnumSet.allOf(Type.class), DatePeriod.class),
+    PERIOD_2_TO("Period2_To", "setPeriod2", EnumSet.allOf(Type.class), DatePeriod.class),
+    HOLIDAYS_FROM("Holidays_From", "setUnavailable", EnumSet.allOf(Type.class), DatePeriod.class),
+    HOLIDAYS_TO("Holidays_To", "setUnavailable", EnumSet.allOf(Type.class), DatePeriod.class),
+    ADDITIONAL_INFO("Additional_Info", "setAdditionalInformation", EnumSet.allOf(Type.class), String.class),
+    SHARED("Shared", null, EnumSet.of(Type.DOMESTIC, Type.FOREIGN)), // Not supported to set this via CSV
+    LAST_MODIFIED("Last modified", null, EnumSet.of(Type.FOREIGN, Type.DOMESTIC)), // Not supported to set this via CSV
+    NS_FIRST_NAME("NS First Name", null, EnumSet.of(Type.FOREIGN, Type.DOMESTIC)), // Not supported to set this via CSV
+    NS_LAST_NAME("NS Last Name", null, EnumSet.of(Type.FOREIGN, Type.DOMESTIC)); // Not supported to set this via CSV
 
     // =========================================================================
     // Private Constructor & functionality
     // =========================================================================
 
+    /** For handling of the CSV rows, we need to know what we expect to have. */
+    public enum Type {
+        DOMESTIC, FOREIGN, UPLOAD
+    }
+
     private final String field;
     private final String method;
-    private final boolean forDomesticCSVOffer;
-    private final boolean forForeignCSVOffer;
-    private final boolean forUploadingCSVOffer;
+    private final Set<Type> usage;
     private final Class<?>[] classes;
 
-    OfferFields(final String field, final String method, final boolean forDomesticCSVOffer, final boolean forForeignCSVOffer, final boolean forUploadingCSVOffer, final Class<?>... classes) {
+    OfferFields(final String field, final String method, final Set<Type> usage, final Class<?>... classes) {
         this.field = field;
         this.method = method;
-        this.forDomesticCSVOffer = forDomesticCSVOffer;
-        this.forForeignCSVOffer = forForeignCSVOffer;
-        this.forUploadingCSVOffer = forUploadingCSVOffer;
+        this.usage = usage;
         this.classes = classes;
     }
 
@@ -131,16 +136,8 @@ public enum OfferFields {
         return field;
     }
 
-    public boolean isForDomesticCSVOffer() {
-        return forDomesticCSVOffer;
-    }
-
-    public boolean isForForeignCSVOffer() {
-        return forForeignCSVOffer;
-    }
-
-    public boolean isForUploadingCSVOffer() {
-        return forUploadingCSVOffer;
+    public boolean useField(final Type type) {
+        return usage.contains(type);
     }
 
     public String getMethod() {
@@ -148,6 +145,13 @@ public enum OfferFields {
     }
 
     public Class<?>[] getArgumentClasses() {
-        return classes;
+        Class<?>[] result = null;
+
+        if (classes != null) {
+            result = new Class[1];
+            result[0] = classes[0];
+        }
+
+        return result;
     }
 }

@@ -147,7 +147,7 @@ public final class CsvTransformer {
         final String value = record.get(field.getField());
 
         try {
-            Set<E> set = CollectionTransformer.explodeEnumSet(enumType, value);
+            final Set<E> set = CollectionTransformer.explodeEnumSet(enumType, value);
             invokeMethodOnObject(errors, obj, field, set);
         } catch (IllegalArgumentException e) {
             errors.put(field.getField(), e.getMessage());
@@ -155,20 +155,20 @@ public final class CsvTransformer {
     }
 
     public static void transformStringSet(final Map<String, String> errors, final Verifiable obj, final OfferFields field, final CSVRecord record) {
-        Set<String> set = CollectionTransformer.explodeStringSet(record.get(field.getField()));
+        final Set<String> set = CollectionTransformer.explodeStringSet(record.get(field.getField()));
         invokeMethodOnObject(errors, obj, field, set);
     }
 
     public static void transformTypeOfWork(final Map<String, String> errors, final Verifiable obj, final OfferFields field, final CSVRecord record) {
-        Boolean typeR = convertBoolean(record.get(OfferFields.WORK_TYPE_P.getField()));
-        Boolean typeO = convertBoolean(record.get(OfferFields.WORK_TYPE_R.getField()));
-        Boolean typeF = convertBoolean(record.get(OfferFields.WORK_TYPE_W.getField()));
+        final Boolean typeR = convertBoolean(record.get(OfferFields.WORK_TYPE_P.getField()));
+        final Boolean typeO = convertBoolean(record.get(OfferFields.WORK_TYPE_R.getField()));
+        final Boolean typeF = convertBoolean(record.get(OfferFields.WORK_TYPE_W.getField()));
 
         if (convertBoolean(record.get(OfferFields.WORK_TYPE_N.getField()))) {
             LOG.info("Ignoring the TypeOfWork 'N'.");
         }
 
-        final int sum = ((typeR ? 1 : 0) + (typeO ? 1 : 0) + (typeF ? 1 : 0));
+        final int sum = (typeR ? 1 : 0) + (typeO ? 1 : 0) + (typeF ? 1 : 0);
         if (sum > 1) {
             errors.put(field.getField(), "Multiple TypeOfWork is set, only one is allowed.");
         } else if (sum == 0) {
@@ -188,7 +188,7 @@ public final class CsvTransformer {
     }
 
     public static void transformStudyLevels(final Map<String, String> errors, final Verifiable obj, final OfferFields field, final CSVRecord record) {
-        Set<StudyLevel> value = EnumSet.noneOf(StudyLevel.class);
+        final Set<StudyLevel> value = EnumSet.noneOf(StudyLevel.class);
         final Boolean beginning = convertBoolean(record.get(STUDY_COMPLETED_BEGINNING.getField()));
         final Boolean middle = convertBoolean(record.get(STUDY_COMPLETED_MIDDLE.getField()));
         final Boolean end = convertBoolean(record.get(STUDY_COMPLETED_END.getField()));
@@ -248,12 +248,12 @@ public final class CsvTransformer {
      * @throws IWSException If a Reflection Error occurred.
      */
     private static <O extends Verifiable> void invokeMethodOnObject(final Map<String, String> errors, final O obj, final OfferFields field, final Object... args) throws IWSException {
-        if ((field.getMethod() != null) && (field.isForDomesticCSVOffer())) {
+        if ((field.getMethod() != null) && field.useField(OfferFields.Type.DOMESTIC)) {
             try {
                 final Method implementation = obj.getClass().getMethod(field.getMethod(), field.getArgumentClasses());
                 implementation.invoke(obj, args);
             } catch (IllegalArgumentException e) {
-                LOG.debug("Setter " + field.getMethod() + " Invocation Error: " + e.getMessage());
+                LOG.debug("Setter {} Invocation Error: {}", field.getMethod(), e.getMessage());
                 errors.put(field.getField(), e.getMessage());
             } catch (SecurityException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
                 // The Reflection framework forces a check for the NoSuchMethod
@@ -263,7 +263,7 @@ public final class CsvTransformer {
                 throw new IWSException(IWSErrors.FATAL, e.getMessage(), e);
             }
         } else {
-            LOG.warn("Cannot set field " + field.getField() + ", as there is no method associated with it.");
+            LOG.warn("Cannot set field {}, as there is no method associated with it.", field.getField());
         }
     }
 }

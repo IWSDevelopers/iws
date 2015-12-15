@@ -21,7 +21,7 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * Contains all predefined Specializations. Note, these values are mapped into
  * the database entities, and thus stored there. If a value is changed. The
- * reverse mapping (valueof) will fail. It is therefore *not* allowed to change
+ * reverse mapping (valueOf) will fail. It is therefore *not* allowed to change
  * the spelling of an existing entry, without verification that it is not used
  * in the database.<br />
  *   If it is used in the database, then it can also be that it is used

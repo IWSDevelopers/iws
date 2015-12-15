@@ -49,14 +49,4 @@ public enum TypeOfWork implements Descriptable<TypeOfWork> {
     public String getDescription() {
         return description;
     }
-
-    /**
-     * Same as valueOf but for when an argument is null then null is returned.
-     *
-     * @param typeOfWork String which should be value of TypeOfWork
-     * @return null or enum value
-     */
-    public static TypeOfWork toValue(final String typeOfWork) {
-        return (typeOfWork == null) ? null : valueOf(typeOfWork);
-    }
 }

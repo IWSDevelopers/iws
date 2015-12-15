@@ -42,9 +42,13 @@ public interface IWSExchangeConstants {
 
     /**
      * Defines the maximum number of {@link net.iaeste.iws.api.enums.exchange.Specialization}
-     * for an {@link net.iaeste.iws.api.dtos.exchange.Offer}
+     * for an {@link net.iaeste.iws.api.dtos.exchange.Offer}. Note, that the
+     * original value was 3, although it should have been 7. But, it seems that
+     * we have Offers with up to 12 in the DB. So rather than enforcing a lower
+     * amount of records, we're raising the bar to make sure that existing
+     * Offers will work.
      */
-    int MAX_OFFER_SPECIALIZATIONS = 7;
+    int MAX_OFFER_SPECIALIZATIONS = 12;
 
     /**
      * Sets are converted into Strings internally, using this constant as

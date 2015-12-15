@@ -19,7 +19,7 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import java.util.regex.Pattern;
 
 /**
- * Wrapper for the Apache Commons Lang3 StringUtils.
+ * IWS String Utility
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -41,14 +41,49 @@ public final class StringUtils {
      * @see String#toLowerCase(java.util.Locale)
      */
     public static String toLower(final String str) {
-        return str != null ? str.toLowerCase(IWSConstants.DEFAULT_LOCALE) : null;
+        return (str != null) ? str.toLowerCase(IWSConstants.DEFAULT_LOCALE) : null;
     }
 
     /**
      * @see String#toUpperCase(java.util.Locale)
      */
     public static String toUpper(final String str) {
-        return str != null ? str.toUpperCase(IWSConstants.DEFAULT_LOCALE) : null;
+        return (str != null) ? str.toUpperCase(IWSConstants.DEFAULT_LOCALE) : null;
+    }
+
+    /**
+     * Converts a String with multiple words, separated by spaces to a new
+     * String, where each word starts with an uppercase character and is
+     * otherwise lowercase.
+     *
+     * @param str String to Capitalize
+     * @return Capitalized String
+     */
+    public static String capitalizeFully(final String str) {
+        // Before beginning, we must ensure that the String is completely
+        // lowercase, otherwise it may end up being strange to behold the
+        // result.
+        final char[] buffer = str.toLowerCase(IWSConstants.DEFAULT_LOCALE).toCharArray();
+        // As we wish to uppercase the first word, we'll start out positive.
+        boolean capitalizeNext = true;
+
+        for (int i = 0; i < buffer.length; ++i) {
+            final char ch = buffer[i];
+
+            if (Character.isWhitespace(ch)) {
+                // Found a whitespace character, so we will turn the next
+                // character to uppercase.
+                capitalizeNext = true;
+            } else if (capitalizeNext) {
+                // We're at the beginning of a word, so we will turn this
+                // character to upper case, and then let the remaining word
+                // be lowercase.
+                buffer[i] = Character.toTitleCase(ch);
+                capitalizeNext = false;
+            }
+        }
+
+        return new String(buffer);
     }
 
     /**
@@ -56,7 +91,7 @@ public final class StringUtils {
      * containing the provided elements.<br />
      *   If the given iterable element contains two or more Objects, then they
      * are joined with the separator. If no Objects exists, the Empty String is
-     * returned, if only a single Object exists, then the String represenation
+     * returned, if only a single Object exists, then the String representation
      * of this is returned.<br />
      *   Note, The code is a replacement of the formerly used Apache Commons
      * Join method, to avoid dragging unwanted dependencies along. From analysis
@@ -68,7 +103,6 @@ public final class StringUtils {
      * @return The joined String
      */
     public static String join(final Iterable<?> iterable, final String separator) {
-        //return org.apache.commons.lang3.StringUtils.join(iterable, separator);
         final String result;
 
         if (iterable != null) {
@@ -77,11 +111,11 @@ public final class StringUtils {
 
             for (final Object obj : iterable) {
                 if (theFirst) {
-                    builder.append(obj.toString());
+                    builder.append(obj);
                     theFirst = false;
                 } else {
                     builder.append(separator);
-                    builder.append(obj.toString());
+                    builder.append(obj);
                 }
             }
             result = builder.toString();
@@ -118,8 +152,7 @@ public final class StringUtils {
      * @return an array of parsed Strings, {@code null} if null String input
      */
     public static String[] split(final String str, final String separatorChars) {
-        //return org.apache.commons.lang3.StringUtils.split(str, separatorChars);
-        final String[] result;
+        String[] result = null;
 
         if (str != null) {
             if (!str.isEmpty()) {
@@ -132,8 +165,6 @@ public final class StringUtils {
             } else {
                 result = EMPTY_STRING_ARRAY;
             }
-        } else {
-            result = null;
         }
 
         return result;

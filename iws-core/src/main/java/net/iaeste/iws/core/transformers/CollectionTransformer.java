@@ -22,7 +22,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -134,10 +133,15 @@ public final class CollectionTransformer {
      * @return List of Strings values
      */
     public static List<String> explodeStringList(final String value) {
-        List<String> result = new ArrayList<>(10);
+        final List<String> result = new ArrayList<>(10);
 
         if (value != null) {
-            result = Arrays.asList(StringUtils.split(value, IWSExchangeConstants.SET_DELIMITER));
+            // It is amazing how often we have whitespace around the given
+            // values, so we're trimming them here.
+            final String[] rawList = SPLIT_PATTERN.split(value);
+            for (final String str : rawList) {
+                result.add(str.trim());
+            }
         }
 
         return result;

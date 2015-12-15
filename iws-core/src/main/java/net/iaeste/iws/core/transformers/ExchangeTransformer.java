@@ -130,7 +130,7 @@ public final class ExchangeTransformer {
             result = new Offer();
 
             transformString(offerErrors, result, REF_NO, record);
-            transformEnum(offerErrors, result, OFFER_TYPE, record, OfferType.class);
+            transformDescriptableEnum(offerErrors, result, OFFER_TYPE, record, OfferType.class);
 
             transformString(offerErrors, result, WORK_KIND, record);
             transformFloat(offerErrors, result, HOURS_WEEKLY, record);
@@ -138,7 +138,7 @@ public final class ExchangeTransformer {
 
             transformTypeOfWork(offerErrors, result, WORK_TYPE, record);
             transformStudyLevels(offerErrors, result, STUDY_COMPLETED, record);
-            transformEnumSet(offerErrors, result, FACULTY, record, FieldOfStudy.class);
+            transformDescriptableEnumSet(offerErrors, result, FACULTY, record, FieldOfStudy.class);
             transformStringSet(offerErrors, result, SPECIALIZATION, record);
             transformBoolean(offerErrors, result, TRAINING_REQUIRED, record);
             transformString(offerErrors, result, OTHER_REQUIREMENTS, record);
@@ -148,23 +148,23 @@ public final class ExchangeTransformer {
             transformDatePeriod(offerErrors, result, FROM, TO, record);
             transformDatePeriod(offerErrors, result, PERIOD_2_FROM, PERIOD_2_TO, record);
             transformDatePeriod(offerErrors, result, HOLIDAYS_FROM, HOLIDAYS_TO, record);
-            transformEnum(offerErrors, result, LANGUAGE_1, record, Language.class);
-            transformEnum(offerErrors, result, LANGUAGE_1_LEVEL, record, LanguageLevel.class);
-            transformEnum(offerErrors, result, LANGUAGE_1_OR, record, LanguageOperator.class);
-            transformEnum(offerErrors, result, LANGUAGE_2, record, Language.class);
-            transformEnum(offerErrors, result, LANGUAGE_2_LEVEL, record, LanguageLevel.class);
-            transformEnum(offerErrors, result, LANGUAGE_2_OR, record, LanguageOperator.class);
-            transformEnum(offerErrors, result, LANGUAGE_3, record, Language.class);
-            transformEnum(offerErrors, result, LANGUAGE_3_LEVEL, record, LanguageLevel.class);
+            transformDescriptableEnum(offerErrors, result, LANGUAGE_1, record, Language.class);
+            transformDescriptableEnum(offerErrors, result, LANGUAGE_1_LEVEL, record, LanguageLevel.class);
+            transformDescriptableEnum(offerErrors, result, LANGUAGE_1_OR, record, LanguageOperator.class);
+            transformDescriptableEnum(offerErrors, result, LANGUAGE_2, record, Language.class);
+            transformDescriptableEnum(offerErrors, result, LANGUAGE_2_LEVEL, record, LanguageLevel.class);
+            transformDescriptableEnum(offerErrors, result, LANGUAGE_2_OR, record, LanguageOperator.class);
+            transformDescriptableEnum(offerErrors, result, LANGUAGE_3, record, Language.class);
+            transformDescriptableEnum(offerErrors, result, LANGUAGE_3_LEVEL, record, LanguageLevel.class);
             transformBigDecimal(offerErrors, result, PAYMENT, record);
-            transformEnum(offerErrors, result, PAYMENT_FREQUENCY, record, PaymentFrequency.class);
+            transformDescriptableEnum(offerErrors, result, PAYMENT_FREQUENCY, record, PaymentFrequency.class);
             transformEnum(offerErrors, result, CURRENCY, record, Currency.class);
             transformString(offerErrors, result, DEDUCTION, record);
             transformBigDecimal(offerErrors, result, LIVING_COST, record);
-            transformEnum(offerErrors, result, LIVING_COST_FREQUENCY, record, PaymentFrequency.class);
+            transformDescriptableEnum(offerErrors, result, LIVING_COST_FREQUENCY, record, PaymentFrequency.class);
             transformString(offerErrors, result, LODGING, record);
             transformBigDecimal(offerErrors, result, LODGING_COST, record);
-            transformEnum(offerErrors, result, LODGING_COST_FREQUENCY, record, PaymentFrequency.class);
+            transformDescriptableEnum(offerErrors, result, LODGING_COST_FREQUENCY, record, PaymentFrequency.class);
             transformString(offerErrors, result, ADDITIONAL_INFO, record);
             transformString(offerErrors, result, COMMENT, record);
             transformInteger(offerErrors, result, NO_HARD_COPIES, record);

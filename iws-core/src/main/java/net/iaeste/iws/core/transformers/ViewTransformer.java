@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.core.transformers;
 
+import static net.iaeste.iws.common.utils.StringUtils.capitalizeFully;
 import static net.iaeste.iws.core.transformers.EmbeddedConverter.convert;
 
 import net.iaeste.iws.api.constants.IWSErrors;
@@ -26,6 +27,8 @@ import net.iaeste.iws.api.dtos.exchange.Employer;
 import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.dtos.exchange.Student;
 import net.iaeste.iws.api.dtos.exchange.StudentApplication;
+import net.iaeste.iws.api.enums.Descriptable;
+import net.iaeste.iws.api.enums.exchange.FieldOfStudy;
 import net.iaeste.iws.api.enums.exchange.OfferFields;
 import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.api.enums.exchange.StudyLevel;
@@ -50,6 +53,7 @@ import net.iaeste.iws.persistence.views.StudentView;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -57,6 +61,8 @@ import java.util.Set;
  * @since   IWS 1.0
  */
 public final class ViewTransformer {
+
+    private static final Pattern PATTERN_UNWANTED_CHARACTERS = Pattern.compile("[_\"\\t\\r\\n\\u00a0]");
 
     /**
      * Private Constructor, this is a utility class.
@@ -335,8 +341,8 @@ public final class ViewTransformer {
         addObjectIfRequired(OfferFields.HOURS_DAILY, type, result, offer.getDailyHours());
         addBooleanIfRequired(OfferFields.CANTEEN, type, result, employer.getCanteen());
 
-        addStringSetIfRequired(OfferFields.FACULTY, type, result, offer.getFieldOfStudies());
-        addStringSetIfRequired(OfferFields.SPECIALIZATION, type, result, offer.getSpecializations());
+        addFacultyIfRequired(OfferFields.FACULTY, type, result, offer.getFieldOfStudies());
+        addSpecializationIfRequired(OfferFields.SPECIALIZATION, type, result, offer.getSpecializations());
         addBooleanIfRequired(OfferFields.TRAINING_REQUIRED, type, result, offer.getPrevTrainingRequired());
         addTextIfRequired(OfferFields.OTHER_REQUIREMENTS, type, result, offer.getOtherRequirements());
         addTextIfRequired(OfferFields.WORK_KIND, type, result, offer.getWorkDescription());
@@ -377,26 +383,46 @@ public final class ViewTransformer {
     }
 
     private static void addLanguageIfRequired(final OfferFields.Type type, final List<Object> result, final EmbeddedOffer offer) {
-        addObjectIfRequired(OfferFields.LANGUAGE_1, type, result, offer.getLanguage1());
-        addObjectIfRequired(OfferFields.LANGUAGE_1_LEVEL, type, result, offer.getLanguage1Level());
-        addObjectIfRequired(OfferFields.LANGUAGE_1_OR, type, result, offer.getLanguage1Operator());
-        addObjectIfRequired(OfferFields.LANGUAGE_2, type, result, offer.getLanguage2());
-        addObjectIfRequired(OfferFields.LANGUAGE_2_LEVEL, type, result, offer.getLanguage2Level());
-        addObjectIfRequired(OfferFields.LANGUAGE_2_OR, type, result, offer.getLanguage2Operator());
-        addObjectIfRequired(OfferFields.LANGUAGE_3, type, result, offer.getLanguage3());
-        addObjectIfRequired(OfferFields.LANGUAGE_3_LEVEL, type, result, offer.getLanguage3Level());
+        addDescriptableIfRequired(OfferFields.LANGUAGE_1, type, result, offer.getLanguage1());
+        addDescriptableIfRequired(OfferFields.LANGUAGE_1_LEVEL, type, result, offer.getLanguage1Level());
+
+        // If the second language is not set, then let's just show empty fields,
+        // it looks so stupid with filled in values for the operator or level
+        // when the language is missing.
+        if (offer.getLanguage2() != null) {
+            addDescriptableIfRequired(OfferFields.LANGUAGE_1_OR, type, result, offer.getLanguage1Operator());
+            addDescriptableIfRequired(OfferFields.LANGUAGE_2, type, result, offer.getLanguage2());
+            addDescriptableIfRequired(OfferFields.LANGUAGE_2_LEVEL, type, result, offer.getLanguage2Level());
+        } else {
+            addDescriptableIfRequired(OfferFields.LANGUAGE_1_OR, type, result, null);
+            addDescriptableIfRequired(OfferFields.LANGUAGE_2, type, result, null);
+            addDescriptableIfRequired(OfferFields.LANGUAGE_2_LEVEL, type, result, null);
+        }
+
+        // If the third language is not set, then let's just show empty fields,
+        // it looks so stupid with filled in values for the operator or level
+        // when the language is missing.
+        if (offer.getLanguage3() != null) {
+            addDescriptableIfRequired(OfferFields.LANGUAGE_2_OR, type, result, offer.getLanguage2Operator());
+            addDescriptableIfRequired(OfferFields.LANGUAGE_3, type, result, offer.getLanguage3());
+            addDescriptableIfRequired(OfferFields.LANGUAGE_3_LEVEL, type, result, offer.getLanguage3Level());
+        } else {
+            addDescriptableIfRequired(OfferFields.LANGUAGE_2_OR, type, result, null);
+            addDescriptableIfRequired(OfferFields.LANGUAGE_3, type, result, null);
+            addDescriptableIfRequired(OfferFields.LANGUAGE_3_LEVEL, type, result, null);
+        }
     }
 
     private static void addFinansIfRequired(final OfferFields.Type type, final List<Object> result, final EmbeddedOffer offer) {
         addObjectIfRequired(OfferFields.CURRENCY, type, result, offer.getCurrency());
         addObjectIfRequired(OfferFields.PAYMENT, type, result, offer.getPayment());
-        addObjectIfRequired(OfferFields.PAYMENT_FREQUENCY, type, result, offer.getPaymentFrequency());
+        addDescriptableIfRequired(OfferFields.PAYMENT_FREQUENCY, type, result, offer.getPaymentFrequency());
         addObjectIfRequired(OfferFields.DEDUCTION, type, result, offer.getDeduction());
         addObjectIfRequired(OfferFields.LODGING, type, result, offer.getLodgingBy());
         addObjectIfRequired(OfferFields.LODGING_COST, type, result, offer.getLodgingCost());
-        addObjectIfRequired(OfferFields.LODGING_COST_FREQUENCY, type, result, offer.getLodgingCostFrequency());
+        addDescriptableIfRequired(OfferFields.LODGING_COST_FREQUENCY, type, result, offer.getLodgingCostFrequency());
         addObjectIfRequired(OfferFields.LIVING_COST, type, result, offer.getLivingCost());
-        addObjectIfRequired(OfferFields.LIVING_COST_FREQUENCY, type, result, offer.getLivingCostFrequency());
+        addDescriptableIfRequired(OfferFields.LIVING_COST_FREQUENCY, type, result, offer.getLivingCostFrequency());
     }
 
     private static void addObjectIfRequired(final OfferFields field, final OfferFields.Type type, final List<Object> result, final Object obj) {
@@ -434,9 +460,64 @@ public final class ViewTransformer {
         }
     }
 
-    private static void addStringSetIfRequired(final OfferFields field, final OfferFields.Type type, final List<Object> result, final String value) {
+    private static void addDescriptableIfRequired(final OfferFields field, final OfferFields.Type type, final List<Object> result, final Descriptable<?> obj) {
         if (field.useField(type)) {
-            result.add(CollectionTransformer.SPLIT_PATTERN.matcher(value).replaceAll(", "));
+            result.add((obj != null) ? obj.getDescription() : null);
+        }
+    }
+
+    private static void addFacultyIfRequired(final OfferFields field, final OfferFields.Type type, final List<Object> result, final String value) {
+        if (field.useField(type)) {
+            final StringBuilder builder = new StringBuilder(16);
+            boolean firstRow = true;
+
+            // Before we begin, we'll just clean up the value we've received
+            // to ensure that our logic is working.
+            final String parsedValue = PATTERN_UNWANTED_CHARACTERS.matcher(value).replaceAll(" ").trim();
+
+            for (final FieldOfStudy faculty : CollectionTransformer.explodeEnumSet(FieldOfStudy.class, parsedValue)) {
+                if (firstRow) {
+                    firstRow = false;
+                } else {
+                    builder.append(", ");
+                }
+                builder.append(faculty.getDescription());
+            }
+
+            result.add(builder.toString());
+        }
+    }
+
+    private static void addSpecializationIfRequired(final OfferFields field, final OfferFields.Type type, final List<Object> result, final String value) {
+        if (field.useField(type)) {
+            final StringBuilder builder = new StringBuilder(16);
+            boolean firstRow = true;
+
+            // Before we begin, we'll just clean up the value we've received
+            // to ensure that our logic is working.
+            final String parsedValue = PATTERN_UNWANTED_CHARACTERS.matcher(value).replaceAll(" ").trim();
+
+            for (final String specialization : CollectionTransformer.explodeStringSet(parsedValue)) {
+                if ((specialization != null) && !specialization.isEmpty()) {
+                    if (firstRow) {
+                        firstRow = false;
+                    } else {
+                        builder.append(", ");
+                    }
+
+                    // Now we have to add the data. Specializations are free
+                    // format so they can contain many things. But generally,
+                    // we're assuming that they don't contain any comma's.
+                    //   The first letter is Capitalized, and the rest is lower,
+                    // and any white space (including newlines) builder.append(is removed.
+                    //final String toAppend = toLower(specialization.trim());
+                    builder.append(capitalizeFully(specialization.trim()));
+                    //builder.append(Character.toTitleCase(toAppend.charAt(0)))));
+                    //builder.append(toAppend.substring(1));
+                }
+            }
+
+            result.add(builder.toString());
         }
     }
 

@@ -28,6 +28,7 @@ import net.iaeste.iws.api.enums.exchange.TypeOfWork;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.api.util.DatePeriod;
+import net.iaeste.iws.api.util.EnumUtil;
 import net.iaeste.iws.api.util.Verifiable;
 import org.apache.commons.csv.CSVRecord;
 import org.slf4j.Logger;
@@ -42,6 +43,7 @@ import java.text.SimpleDateFormat;
 import java.util.EnumSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 /**
  * CSV Transformer.
@@ -143,19 +145,38 @@ public final class CsvTransformer {
         }
     }
 
-    public static <E extends Enum<E> & Descriptable<E>> void transformEnumSet(final Map<String, String> errors, final Verifiable obj, final OfferFields field, final CSVRecord record, final Class<E> enumType) {
+    public static <E extends Enum<E> & Descriptable<E>> void transformDescriptableEnumSet(final Map<String, String> errors, final Verifiable obj, final OfferFields field, final CSVRecord record, final Class<E> enumType) {
         final String value = record.get(field.getField());
 
-        try {
-            final Set<E> set = CollectionTransformer.explodeEnumSet(enumType, value);
-            invokeMethodOnObject(errors, obj, field, set);
-        } catch (IllegalArgumentException e) {
-            errors.put(field.getField(), e.getMessage());
+        if ((value != null) && !value.isEmpty()) {
+            try {
+                final Set<E> set = CollectionTransformer.explodeEnumSet(enumType, value);
+                invokeMethodOnObject(errors, obj, field, set);
+            } catch (IllegalArgumentException e) {
+                errors.put(field.getField(), e.getMessage());
+            }
         }
     }
 
+    public static <E extends Enum<E> & Descriptable<E>> void transformDescriptableEnum(final Map<String, String> errors, final Verifiable obj, final OfferFields field, final CSVRecord record, final Class<E> enumType) {
+        final String value = record.get(field.getField());
+
+        if ((value != null) && !value.isEmpty()) {
+            try {
+                final E theEnum = EnumUtil.valueOf(enumType, value);
+                invokeMethodOnObject(errors, obj, field, theEnum);
+            } catch (IllegalArgumentException e) {
+                errors.put(field.getField(), e.getMessage());
+            }
+        }
+    }
+
+    private static final Pattern PATTERN_UNWANTED_CHARACTERS = Pattern.compile("[_\\t\\r\\n\\u00a0]");
     public static void transformStringSet(final Map<String, String> errors, final Verifiable obj, final OfferFields field, final CSVRecord record) {
-        final Set<String> set = CollectionTransformer.explodeStringSet(record.get(field.getField()));
+        final String value = record.get(field.getField());
+        final String parsedValue = PATTERN_UNWANTED_CHARACTERS.matcher(value).replaceAll(" ").trim();
+
+        final Set<String> set = CollectionTransformer.explodeStringSet(parsedValue);
         invokeMethodOnObject(errors, obj, field, set);
     }
 

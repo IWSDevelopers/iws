@@ -330,9 +330,10 @@ public final class Offer extends AbstractVerification {
      *
      * @param workDescription Offer Work Description
      * @throws IllegalArgumentException if the length is too long
+     * @see IWSExchangeConstants#MAX_OFFER_WORK_DESCRIPTION_SIZE
      */
     public void setWorkDescription(final String workDescription) throws IllegalArgumentException {
-        ensureNotTooLong("workDescription", workDescription, 3000);
+        ensureNotTooLong("workDescription", workDescription, IWSExchangeConstants.MAX_OFFER_WORK_DESCRIPTION_SIZE);
         this.workDescription = sanitize(workDescription);
     }
 
@@ -452,7 +453,7 @@ public final class Offer extends AbstractVerification {
     }
 
     public void setOtherRequirements(final String otherRequirements) throws IllegalArgumentException {
-        ensureNotTooLong("otherRequirements", otherRequirements, 4000);
+        ensureNotTooLong("otherRequirements", otherRequirements, IWSExchangeConstants.MAX_OFFER_OTHER_REQUIREMENTS_SIZE);
         this.otherRequirements = sanitize(otherRequirements);
     }
 

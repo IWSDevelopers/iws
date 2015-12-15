@@ -44,7 +44,7 @@ public interface IWSExchangeConstants {
      * Defines the maximum number of {@link net.iaeste.iws.api.enums.exchange.Specialization}
      * for an {@link net.iaeste.iws.api.dtos.exchange.Offer}
      */
-    int MAX_OFFER_SPECIALIZATIONS = 3;
+    int MAX_OFFER_SPECIALIZATIONS = 7;
 
     /**
      * Sets are converted into Strings internally, using this constant as
@@ -60,27 +60,16 @@ public interface IWSExchangeConstants {
     int MAX_OFFER_LANGUAGES = 3;
 
     /**
-     * Defines the minimum length of offer description
-     * for an {@link net.iaeste.iws.api.dtos.exchange.Offer}
-     */
-    int MIN_OFFER_WORK_DESCRIPTION_SIZE = 1;
-
-    /**
      * Defines the maximum length of offer description
      * for an {@link net.iaeste.iws.api.dtos.exchange.Offer}
      */
-    int MAX_OFFER_WORK_DESCRIPTION_SIZE = 1000;
+    int MAX_OFFER_WORK_DESCRIPTION_SIZE = 3000;
 
-    /**
-     * Defines the minimum length of other requirements
-     * for an {@link net.iaeste.iws.api.dtos.exchange.Offer}
-     */
-    int MIN_OFFER_OTHER_REQUIREMENTS_SIZE = 0;
     /**
      * Defines the maximum length of other requirements
      * for an {@link net.iaeste.iws.api.dtos.exchange.Offer}
      */
-    int MAX_OFFER_OTHER_REQUIREMENTS_SIZE = 500;
+    int MAX_OFFER_OTHER_REQUIREMENTS_SIZE = 4000;
 
     /**
      * Defines the minimum number of weeks required

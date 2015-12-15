@@ -105,11 +105,11 @@ public final class AccessService extends CommonService<AccessDao> {
         final SessionEntity activeSession = dao.findActiveSession(user);
 
         if ((activeSession == null) && !activeSessions.hasMaximumRegisteredSessions()) {
-            final String key = generateAndPersistSessionKey(user);
-            activeSessions.registerToken(key);
+            final SessionEntity session = generateAndPersistSessionKey(user);
+            activeSessions.registerToken(session.getSessionKey(), session.getCreated());
             loginRetries.removeAuthenticatedUser(request.getUsername());
 
-            final AuthenticationToken token = new AuthenticationToken(key);
+            final AuthenticationToken token = new AuthenticationToken(session.getSessionKey());
             LOG.info(formatLogMessage(token, "Created a new Session for the user " + user));
             return new AuthenticationResponse(token);
         } else {
@@ -163,7 +163,9 @@ public final class AccessService extends CommonService<AccessDao> {
         if (deadSession != null) {
             dao.deprecateSession(deadSession);
             activeSessions.removeToken(deadSession.getSessionKey());
-            return new AuthenticationToken(generateAndPersistSessionKey(user));
+            final SessionEntity session = generateAndPersistSessionKey(user);
+
+            return new AuthenticationToken(session.getSessionKey());
         } else {
             throw new SessionException("No Session exists to reset.");
         }
@@ -347,7 +349,7 @@ public final class AccessService extends CommonService<AccessDao> {
         }
     }
 
-    private String generateAndPersistSessionKey(final UserEntity user) {
+    private SessionEntity generateAndPersistSessionKey(final UserEntity user) {
         // Generate new Hashcode from the User Credentials, and some other entropy
         final String entropy = UUID.randomUUID() + user.getPassword();
         final String sessionKey = generateHash(entropy, UUID.randomUUID().toString());
@@ -357,7 +359,7 @@ public final class AccessService extends CommonService<AccessDao> {
         dao.persist(entity);
 
         // Now, let's return the newly generated SessionKey
-        return sessionKey;
+        return entity;
     }
 
     /**

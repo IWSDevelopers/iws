@@ -32,6 +32,13 @@ public interface InternalConstants {
     String RUN_CLEAN_TIME = "02:00";
 
     /**
+     * When starting the IWS, it is possible to tell the IWS to reset all
+     * currently open Sessions, so nothing is hanging. By default, it is set
+     * to false.
+     */
+    String STARTUP_RESET_SESSIONS = "false";
+
+    /**
      * Accounts, which have been created but not activated before this number of
      * days, is considered dead. If the user is unable to activate the account
      * before this time - it is very unlikely that it will ever be activated,

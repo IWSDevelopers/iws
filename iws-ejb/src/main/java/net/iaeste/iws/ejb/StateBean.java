@@ -133,17 +133,28 @@ public class StateBean {
         final String[] time = settings.getRunCleanTime().split(":", 2);
         expression.hour(time[0]).minute(time[1]);
         timerService.createCalendarTimer(expression, timerConfig);
-        LOG.info("First cleanup run scheduled to begin at {}", expression.toString());
+        LOG.info("First cleanup run scheduled to begin at {}", expression);
 
-        // Now, remove all deprecated Sessions from the Server. These Sessions
-        // may or may not work correctly, since IW4 with JSF is combining the
-        // Sessions with a Windows Id, and upon restart - the Windows Id is
-        // renewed. Even if it isn't renewed, JSF will not recognize it
-        final int deprecated = accessDao.deprecateAllActiveSessions();
-        LOG.info("Deprecated {} Stale Sessions.", deprecated);
+        if (settings.resetSessionsAtStartup()) {
+            // Now, remove all deprecated Sessions from the Server. These Sessions
+            // may or may not work correctly, since IW4 with JSF is combining the
+            // Sessions with a Windows Id, and upon restart - the Windows Id is
+            // renewed. Even if it isn't renewed, JSF will not recognize it
+            final int deprecated = accessDao.deprecateAllActiveSessions();
+            LOG.info("Deprecated {} Stale Sessions.", deprecated);
+        } else {
+            loadActiveTokens();
+        }
 
         // That's it - we're done :-)
         LOG.info("IWS Initialization Completed.");
+    }
+
+    private void loadActiveTokens() {
+        final List<SessionEntity> sessions = accessDao.findActiveSessions();
+        for (final SessionEntity entity : sessions) {
+            activeSessions.registerToken(entity.getSessionKey(), entity.getCreated());
+        }
     }
 
     // =========================================================================

@@ -111,30 +111,20 @@ public final class ActiveSessions {
     }
 
     /**
-     * Reads out how many tokens currently are active in the System.
-     *
-     * @return Number of Active Tokens (Sessions) now
-     */
-    public int getNumberOfActiveTokens() {
-        synchronized (lock) {
-            return tokens.size();
-        }
-    }
-
-    /**
      * Registers a token on the Token Stack. If the token already exists, then
      * the currently date of registration (last Access), will be updated,
      * otherwise a check is made to see if we have exceeded the currently max
      * allowed tokens and if not, the new token is added. If we have exceeded
      * the currently maximum allowed tokens, an Exception is thrown.
      *
-     * @param token Session Token
+     * @param token     Session Token
+     * @param timestamp The Token creation timestamp
      */
-    public void registerToken(final String token) {
-        LOG.debug("{}Registering Token in the Active Session Monitor.", readTrace(token));
+    public void registerToken(final String token, final Date timestamp) {
+        LOG.debug("{} Registering Token in the Active Session Monitor.", readTrace(token));
         synchronized (lock) {
             if (tokens.containsKey(token)) {
-                tokens.put(token, new Date());
+                tokens.put(token, timestamp);
             } else {
                 if (tokens.size() < maxActiveTokens) {
                     tokens.put(token, new Date());
@@ -153,17 +143,15 @@ public final class ActiveSessions {
      * @return Last Access or null if no active session exists
      */
     public Date getLastAccess(final String token) {
-        final Date lastAccess;
+        Date lastAccess = null;
 
         synchronized (lock) {
             if (tokens.containsKey(token)) {
                 lastAccess = tokens.get(token);
-            } else {
-                lastAccess = null;
             }
         }
 
-        LOG.trace("{}The token was last used {}.", readTrace(token), lastAccess);
+        LOG.trace("{} The token was last used {}.", readTrace(token), lastAccess);
         return lastAccess;
     }
 
@@ -173,7 +161,7 @@ public final class ActiveSessions {
      * @param token Session Token
      */
     public void removeToken(final String token) {
-        LOG.debug("{}Removing token from the Active Session Monitor.", readTrace(token));
+        LOG.debug("{} Removing token from the Active Session Monitor.", readTrace(token));
         synchronized (lock) {
             tokens.remove(token);
         }
@@ -194,7 +182,7 @@ public final class ActiveSessions {
         if (lastAccess != null) {
             result = lastAccess.after(mustBeAfter);
         } else {
-            LOG.info("{}Token has expired, it is {} ms since last access.", readTrace(token), maxMillisToLive);
+            LOG.info("{} Token has expired, it is {} ms since last access.", readTrace(token), maxMillisToLive);
             result = false;
         }
 
@@ -208,7 +196,7 @@ public final class ActiveSessions {
      * @param token Token to update
      */
     public void updateToken(final String token) {
-        LOG.trace("{}Updating the last access for the token to now.", readTrace(token));
+        LOG.trace("{} Updating the last access for the token to now.", readTrace(token));
         synchronized (lock) {
             if (tokens.containsKey(token)) {
                 tokens.put(token, new Date());
@@ -222,7 +210,7 @@ public final class ActiveSessions {
      * access was more than the maximum allowed millis.<br />
      *   The list is returned, and it is then left to the invoking logic to
      * handle closing of them.<br />
-     *   All currently active Tokens, which is being found, will also be reomved
+     *   All currently active Tokens, which is being found, will also be removed
      * from the list.
      *
      * @return List of Sessions that have expired
@@ -264,7 +252,7 @@ public final class ActiveSessions {
         final String trace;
 
         if (token != null) {
-            return String.format("[traceId = %s] ", new AuthenticationToken(token).getTraceId());
+            trace = String.format("[traceId = %s]", new AuthenticationToken(token).getTraceId());
         } else {
             trace = "";
         }

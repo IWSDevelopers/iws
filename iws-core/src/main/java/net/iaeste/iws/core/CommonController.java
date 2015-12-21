@@ -67,7 +67,7 @@ class CommonController {
      * @return Authentication Object
      * @throws VerificationException if neither authenticated nor authorized
      */
-    Authentication verifyAccess(final AuthenticationToken token, final Permission permission) {
+    final Authentication verifyAccess(final AuthenticationToken token, final Permission permission) {
         verify(token, "Invalid Authentication Token provided.");
 
         return verifyAccess(token, permission, token.getGroupId());
@@ -124,21 +124,26 @@ class CommonController {
      * @return Authentication Object
      * @throws VerificationException if neither authenticated nor authorized
      */
-    Authentication verifyPrivateAccess(final AuthenticationToken token) {
+    final Authentication verifyPrivateAccess(final AuthenticationToken token) {
         verify(token, "Invalid Authentication Token provided.");
+        final ActiveSessions sessions = factory.getActiveSessions();
 
-        try {
-            // Authentication Check; Expect Exception if unable to find a User
-            final UserEntity user = dao.findActiveSession(token).getUser();
+        if (sessions.isActive(token.getToken())) {
+            try {
+                // Authentication Check; Expect Exception if unable to find a User
+                final UserEntity user = dao.findActiveSession(token).getUser();
 
-            // For most requests, we are not using the Group, so for our Private
-            // usage, we're ignoring this. If data has to be added, and thus
-            // requires the Private Group, then this must be fetched. The
-            // decision to do it so, was made to avoid loosing too much
-            // performance on operations that are rarely required
-            return new Authentication(token, user);
-        } catch (PersistenceException e) {
-            throw new VerificationException(e);
+                // For most requests, we are not using the Group, so for our Private
+                // usage, we're ignoring this. If data has to be added, and thus
+                // requires the Private Group, then this must be fetched. The
+                // decision to do it so, was made to avoid loosing too much
+                // performance on operations that are rarely required
+                return new Authentication(token, user);
+            } catch (PersistenceException e) {
+                throw new VerificationException(e);
+            }
+        } else {
+            throw new SessionException(IWSErrors.SESSION_EXPIRED, "The token has expired.");
         }
     }
 
@@ -152,7 +157,7 @@ class CommonController {
      * @throws VerificationException if the verification failed
      * @see Verifiable#verify()
      */
-    void verify(final Verifiable verifiable, final String... message) {
+    final void verify(final Verifiable verifiable, final String... message) {
         if (LOG.isTraceEnabled() && (verifiable != null)) {
             LOG.trace("Verifying Object {}", verifiable.getClass().getName());
         }
@@ -174,7 +179,7 @@ class CommonController {
      * @param value Value to verify if is a proper e-mail address
      * @throws VerificationException if not a valid e-mail address
      */
-    void verifyEmail(final String value) {
+    final void verifyEmail(final String value) {
         if ((value != null) && !IWSConstants.EMAIL_PATTERN.matcher(value).matches()) {
             throw new VerificationException(prepareErrorText("Invalid e-mail address provided."));
         }
@@ -189,7 +194,7 @@ class CommonController {
      * @param message Optional error messsage
      * @throws VerificationException if not a valid IWS HashCode
      */
-    void verifyCode(final String code, final String... message) {
+    final void verifyCode(final String code, final String... message) {
         if ((code == null) || (code.length() != HashcodeGenerator.HASHCODE_LENGTH)) {
             throw new VerificationException(prepareErrorText("Invalid Code Object", message));
         }

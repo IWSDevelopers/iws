@@ -164,6 +164,7 @@ public final class AccessService extends CommonService<AccessDao> {
             dao.deprecateSession(deadSession);
             activeSessions.removeToken(deadSession.getSessionKey());
             final SessionEntity session = generateAndPersistSessionKey(user);
+            activeSessions.registerToken(session.getSessionKey(), session.getCreated());
 
             return new AuthenticationToken(session.getSessionKey());
         } else {

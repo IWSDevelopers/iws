@@ -145,8 +145,8 @@ public final class AccessClientTest extends AbstractTest {
         // Verify that our current token is invalid
         final FallibleResponse inactiveResponse = client.verifySession(myToken);
         assertThat(inactiveResponse.isOk(), is(false));
-        assertThat(inactiveResponse.getError(), is(IWSErrors.AUTHENTICATION_ERROR));
-        assertThat(inactiveResponse.getMessage(), is("No AuthenticationToken was found."));
+        assertThat(inactiveResponse.getError(), is(IWSErrors.SESSION_EXPIRED));
+        assertThat(inactiveResponse.getMessage(), is("The token has expired."));
     }
 
     @Test
@@ -183,12 +183,12 @@ public final class AccessClientTest extends AbstractTest {
         final AuthenticationResponse newResponse = access.resetSession(resetCode);
 
         // Now verify that control was handed over to the new Session
-        final FetchPermissionResponse fetchPermissionResponse2 = access.fetchPermissions(newResponse.getToken());
-        final FetchPermissionResponse fetchPermissionResponse3 = access.fetchPermissions(response.getToken());
+        final FallibleResponse fetchPermissionResponse2 = access.verifySession(newResponse.getToken());
+        final FallibleResponse fetchPermissionResponse3 = access.verifySession(response.getToken());
         assertThat(fetchPermissionResponse2.isOk(), is(true));
         assertThat(fetchPermissionResponse3.isOk(), is(false));
-        assertThat(fetchPermissionResponse3.getError(), is(IWSErrors.AUTHENTICATION_ERROR));
-        assertThat(fetchPermissionResponse3.getMessage(), is("No AuthenticationToken was found."));
+        assertThat(fetchPermissionResponse3.getError(), is(IWSErrors.SESSION_EXPIRED));
+        assertThat(fetchPermissionResponse3.getMessage(), is("The token has expired."));
 
         // And clean-up, so no sessions are lurking around
         assertThat(access.deprecateSession(newResponse.getToken()).isOk(), is(true));
@@ -198,14 +198,20 @@ public final class AccessClientTest extends AbstractTest {
     public void testCallWithInvalidToken() {
         final AuthenticationToken invalidToken = new AuthenticationToken("5a15481fe88d39be1c83c2f72796cc8a70e84272640d5c7209ad9aefa642db11ae8fa1945bc308c15c36d591ea1d047692530c95b68fcc309bbe63889dba363e");
 
-        final FetchPermissionResponse response = access.fetchPermissions(invalidToken);
+        final FallibleResponse response = access.verifySession(invalidToken);
         //final List<Authorization> permissions = response.getAuthorizations();
 
         // Verify that the call went through - however, as we just invented a
         // "token", we should get an error back
         assertThat(response.isOk(), is(false));
-        assertThat(response.getError(), is(IWSErrors.AUTHENTICATION_ERROR));
-        assertThat(response.getMessage(), is("No AuthenticationToken was found."));
+        // Now, we have the problem internally - that the Session was never
+        // created, yet if we have to add DB checks against an unused or not
+        // existing token, it would be extra overhead. so although the error
+        // is not the correct one, we'll live with it as it would otherwise
+        // require a rewrite of the internal handling, which in the end would
+        // still only return an error.
+        assertThat(response.getError(), is(IWSErrors.SESSION_EXPIRED));
+        assertThat(response.getMessage(), is("The token has expired."));
     }
 
     @Test

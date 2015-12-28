@@ -263,6 +263,7 @@ public final class ExchangeCSVService extends CommonService<ExchangeDao> {
                 errors.put(refNo, validationErrors);
             }
         } catch (IllegalArgumentException | IWSException e) {
+            LOG.debug(e.getMessage(), e);
             LOG.warn(formatLogMessage(authentication, "CSV Offer with RefNo " + refNo + " has a Problem: " + e.getMessage()));
             processingResult.put(refNo, OfferCSVUploadResponse.ProcessingResult.ERROR);
             if (errors.containsKey(refNo)) {

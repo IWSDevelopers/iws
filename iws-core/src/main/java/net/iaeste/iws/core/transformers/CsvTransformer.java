@@ -56,6 +56,8 @@ public final class CsvTransformer {
 
     private static final Logger LOG = LoggerFactory.getLogger(CsvTransformer.class);
 
+    private static final Pattern PATTERN_UNWANTED_CHARACTERS = Pattern.compile("[_\\t\\r\\n\\u00a0]");
+
     /**
      * Private Constructor, this is a utility class.
      */
@@ -82,6 +84,7 @@ public final class CsvTransformer {
                 final Integer number = Integer.parseInt(value);
                 invokeMethodOnObject(errors, obj, field, number);
             } catch (NumberFormatException e) {
+                LOG.debug(e.getMessage(), e);
                 errors.put(field.getField(), e.getMessage());
             }
         }
@@ -95,6 +98,7 @@ public final class CsvTransformer {
                 final BigDecimal number = new BigDecimal(value);
                 invokeMethodOnObject(errors, obj, field, number);
             } catch (NumberFormatException e) {
+                LOG.debug(e.getMessage(), e);
                 errors.put(field.getField(), e.getMessage());
             }
         }
@@ -108,6 +112,7 @@ public final class CsvTransformer {
                 final Float number = Float.parseFloat(value);
                 invokeMethodOnObject(errors, obj, field, number);
             } catch (NumberFormatException e) {
+                LOG.debug(e.getMessage(), e);
                 errors.put(field.getField(), e.getMessage());
             }
         }
@@ -127,6 +132,7 @@ public final class CsvTransformer {
                 final DatePeriod period = new DatePeriod(from, to);
                 invokeMethodOnObject(errors, obj, startField, period);
             } catch (IllegalArgumentException e) {
+                LOG.debug(e.getMessage(), e);
                 errors.put(startField.getField(), e.getMessage());
             }
         }
@@ -140,6 +146,7 @@ public final class CsvTransformer {
                 final T theEnum = Enum.valueOf(enumType, value.toUpperCase(IWSConstants.DEFAULT_LOCALE));
                 invokeMethodOnObject(errors, obj, field, theEnum);
             } catch (IllegalArgumentException e) {
+                LOG.debug(e.getMessage(), e);
                 errors.put(field.getField(), e.getMessage());
             }
         }
@@ -153,6 +160,7 @@ public final class CsvTransformer {
                 final Set<E> set = CollectionTransformer.explodeEnumSet(enumType, value);
                 invokeMethodOnObject(errors, obj, field, set);
             } catch (IllegalArgumentException e) {
+                LOG.debug(e.getMessage(), e);
                 errors.put(field.getField(), e.getMessage());
             }
         }
@@ -166,12 +174,12 @@ public final class CsvTransformer {
                 final E theEnum = EnumUtil.valueOf(enumType, value);
                 invokeMethodOnObject(errors, obj, field, theEnum);
             } catch (IllegalArgumentException e) {
+                LOG.debug(e.getMessage(), e);
                 errors.put(field.getField(), e.getMessage());
             }
         }
     }
 
-    private static final Pattern PATTERN_UNWANTED_CHARACTERS = Pattern.compile("[_\\t\\r\\n\\u00a0]");
     public static void transformStringSet(final Map<String, String> errors, final Verifiable obj, final OfferFields field, final CSVRecord record) {
         final String value = record.get(field.getField());
         final String parsedValue = PATTERN_UNWANTED_CHARACTERS.matcher(value).replaceAll(" ").trim();
@@ -248,6 +256,7 @@ public final class CsvTransformer {
             try {
                 result = new Date(formatter.parse(value));
             } catch (ParseException e) {
+                LOG.debug(e.getMessage(), e);
                 errors.put(field.getField(), e.getMessage());
             }
         }

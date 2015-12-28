@@ -1,0 +1,18 @@
+The IWS or IntraWeb Services contain contribution from the following people,
+note that only people who have contributed with at least 2 commits and added
+10+ lines of production code, is counted as an author:
+
+Architect & Lead Developer:
+ Kim Jensen <kim@dawn.dk>
+
+Developers:
+ Pavel Fiala <pavel.fiala@iaeste.cz>
+ Michal Knapik <mknapik@student.agh.edu.pl>
+ Michael Pickelbauer <michael.pickelbauer@iaeste.at>
+ Matej Kosco <matej.kosco@iaeste.at>
+ Martin Eisfeld <Martin.Eisfeld@gmx.net>
+ Marko Cilimkovic <os.chilim@gmail.com>
+ Arthur Sussmilch <arthur.sussmilch@gmail.com>
+ Teis Lindemark <teis.lindemark@me.com>
+ Seifeddine Bouallegue <saief.bouallegue@gmail.com>
+ Khaled Sharif <kldsrf@gmail.com>

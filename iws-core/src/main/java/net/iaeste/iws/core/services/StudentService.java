@@ -54,8 +54,6 @@ import net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity;
 import net.iaeste.iws.persistence.entities.exchange.StudentEntity;
 import net.iaeste.iws.persistence.views.ApplicationView;
 import net.iaeste.iws.persistence.views.StudentView;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -68,7 +66,6 @@ import java.util.List;
  */
 public final class StudentService extends CommonService<StudentDao> {
 
-    private static final Logger LOG = LoggerFactory.getLogger(StudentService.class);
     private final AccessDao accessDao;
     private final ExchangeDao exchangeDao;
     private final ViewsDao viewsDao;

@@ -58,7 +58,7 @@ public class HeavyCSVLoadTest {
 
     private static final Logger LOG = LoggerFactory.getLogger(HeavyCSVLoadTest.class);
 
-    /** The URL to connection to, for retreiving the Offers. */
+    /** The URL to connection to, for retrieving the Offers. */
     private static final String URL = "http://localhost:8080/intraweb/exchange/inbox.csv";
 
     private static final int LOOPS = 100;

@@ -93,9 +93,12 @@ public abstract class AbstractVerification implements Verifiable {
         String sanitized = source;
 
         if ((source != null) && !source.isEmpty()) {
-            final String correctedNewline = IWSConstants.PATTERN_INVALID_NEWLINES.matcher(source).replaceAll("\n");
-            final String correctedSpaces = IWSConstants.PATTERN_INVALID_SPACES.matcher(correctedNewline).replaceAll(" ");
-            sanitized = IWSConstants.PATTERN_INVALID_CHARS.matcher(correctedSpaces).replaceAll("");
+            sanitized = IWSConstants.PATTERN_INVALID_CHARS.matcher(
+                          IWSConstants.PATTERN_INVALID_SPACES.matcher(
+                            IWSConstants.PATTERN_INVALID_NEWLINES.matcher(source).
+                            replaceAll("\n")).
+                          replaceAll(" ")).
+                        replaceAll("");
         }
 
         return sanitized;
@@ -107,16 +110,14 @@ public abstract class AbstractVerification implements Verifiable {
      * @param source Collection to Sanitize
      * @return Set of sanitized String
      */
-    public Set<String> sanitize(final Collection<String> source) {
-        final Set<String> sanitized;
+    public static Set<String> sanitize(final Collection<String> source) {
+        Set<String> sanitized = null;
 
         if (source != null) {
             sanitized = new HashSet<>(source.size());
             for (final String str : source) {
                 sanitized.add(sanitize(str));
             }
-        } else {
-            sanitized = null;
         }
 
         return sanitized;
@@ -133,7 +134,7 @@ public abstract class AbstractVerification implements Verifiable {
      * @param value The value for the field
      * @throws IllegalArgumentException if the value is null
      */
-    protected static void ensureNotNull(final String field, final Object value) throws IllegalArgumentException {
+    protected static void ensureNotNull(final String field, final Object value) {
         if (value == null) {
             throw new IllegalArgumentException(format(ERROR_NOT_NULL, field));
         }
@@ -146,7 +147,7 @@ public abstract class AbstractVerification implements Verifiable {
      * @param value The value for the field
      * @throws IllegalArgumentException if the value is empty
      */
-    protected static void ensureNotEmpty(final String field, final String value) throws IllegalArgumentException {
+    protected static void ensureNotEmpty(final String field, final String value) {
         if ((value != null) && value.isEmpty()) {
             throw new IllegalArgumentException(format(ERROR_NOT_EMPTY, field));
         }
@@ -159,7 +160,7 @@ public abstract class AbstractVerification implements Verifiable {
      * @param value The value for the field
      * @throws IllegalArgumentException if the value is empty
      */
-    protected static void ensureNotEmpty(final String field, final Collection<?> value) throws IllegalArgumentException {
+    protected static void ensureNotEmpty(final String field, final Collection<?> value) {
         if ((value != null) && value.isEmpty()) {
             throw new IllegalArgumentException(format(ERROR_NOT_EMPTY, field));
         }
@@ -173,7 +174,7 @@ public abstract class AbstractVerification implements Verifiable {
      * @param value The value of the field
      * @throws IllegalArgumentException if the value is null or empty
      */
-    protected static void ensureNotNullOrEmpty(final String field, final String value) throws IllegalArgumentException {
+    protected static void ensureNotNullOrEmpty(final String field, final String value) {
         ensureNotNull(field, value);
         ensureNotEmpty(field, value);
     }
@@ -186,7 +187,7 @@ public abstract class AbstractVerification implements Verifiable {
     * @param value The value of the field
     * @throws IllegalArgumentException if the value is null or empty
     */
-    protected static void ensureNotNullOrEmpty(final String field, final Collection<?> value) throws IllegalArgumentException {
+    protected static void ensureNotNullOrEmpty(final String field, final Collection<?> value) {
         ensureNotNull(field, value);
         ensureNotEmpty(field, value);
     }
@@ -200,7 +201,7 @@ public abstract class AbstractVerification implements Verifiable {
      * @param length The minimal length for the field
      * @throws IllegalArgumentException if the value is empty or too long
      */
-    protected static void ensureNotNullOrTooShort(final String field, final String value, final int length) throws IllegalArgumentException {
+    protected static void ensureNotNullOrTooShort(final String field, final String value, final int length) {
         ensureNotNull(field, value);
 
         if (value.length() < length) {
@@ -216,7 +217,7 @@ public abstract class AbstractVerification implements Verifiable {
      * @param value The value of the field
      * @throws IllegalArgumentException if thte value is null, empty or invalid
      */
-    protected static void ensureNotNullOrEmptyAndValidIds(final String field, final Collection<String> value) throws IllegalArgumentException {
+    protected static void ensureNotNullOrEmptyAndValidIds(final String field, final Collection<String> value) {
         ensureNotNull(field, value);
         ensureNotEmpty(field, value);
         ensureValidIds(field, value);
@@ -231,7 +232,7 @@ public abstract class AbstractVerification implements Verifiable {
      * @param length The maximum length for the field
      * @throws IllegalArgumentException if the value is too long
      */
-    protected static void ensureNotTooLong(final String field, final Collection<?> value, final int length) throws IllegalArgumentException {
+    protected static void ensureNotTooLong(final String field, final Collection<?> value, final int length) {
         if ((value != null) && (value.size() > length)) {
             throw new IllegalArgumentException(format(ERROR_COLLECTION_LONGER, field, length));
         }
@@ -246,7 +247,7 @@ public abstract class AbstractVerification implements Verifiable {
      * @param length The maximum length for the field
      * @throws IllegalArgumentException if the value is too long
      */
-    protected static void ensureNotTooLong(final String field, final String value, final int length) throws IllegalArgumentException {
+    protected static void ensureNotTooLong(final String field, final String value, final int length) {
         if ((value != null) && (value.length() > length)) {
             throw new IllegalArgumentException(format(ERROR_NOT_LONGER, field, length));
         }
@@ -261,7 +262,7 @@ public abstract class AbstractVerification implements Verifiable {
      * @param length The maximum length for the field
      * @throws IllegalArgumentException if the value is too long
      */
-    protected static void ensureNotTooLong(final String field, final byte[] value, final int length) throws IllegalArgumentException {
+    protected static void ensureNotTooLong(final String field, final byte[] value, final int length) {
         if ((value != null) && (value.length > length)) {
             throw new IllegalArgumentException(format(ERROR_ARRAY_LONGER, field, length));
         }
@@ -276,7 +277,7 @@ public abstract class AbstractVerification implements Verifiable {
      * @param length The maximum length for the field
      * @throws IllegalArgumentException if the value is null or too long
      */
-    protected static void ensureNotNullOrTooLong(final String field, final Collection<?> value, final int length) throws IllegalArgumentException {
+    protected static void ensureNotNullOrTooLong(final String field, final Collection<?> value, final int length) {
         ensureNotNull(field, value);
         ensureNotTooLong(field, value, length);
     }
@@ -290,7 +291,7 @@ public abstract class AbstractVerification implements Verifiable {
      * @param length The maximum length for the field
      * @throws IllegalArgumentException if the value is null or too long
      */
-    protected static void ensureNotNullOrTooLong(final String field, final String value, final int length) throws IllegalArgumentException {
+    protected static void ensureNotNullOrTooLong(final String field, final String value, final int length) {
         ensureNotNull(field, value);
         ensureNotTooLong(field, value, length);
     }
@@ -304,7 +305,7 @@ public abstract class AbstractVerification implements Verifiable {
      * @param length The maximum length for the field
      * @throws IllegalArgumentException if the value is null or empty or too long
      */
-    protected static void ensureNotNullOrEmptyOrTooLong(final String field, final String value, final int length) throws IllegalArgumentException {
+    protected static void ensureNotNullOrEmptyOrTooLong(final String field, final String value, final int length) {
         ensureNotNullOrEmpty(field, value);
         ensureNotTooLong(field, value, length);
     }
@@ -318,7 +319,7 @@ public abstract class AbstractVerification implements Verifiable {
      * @param length The exact length of the field
      * @throws IllegalArgumentException if the value is null not of exact length
      */
-    protected static void ensureNotNullAndExactLength(final String field, final String value, final int length) throws IllegalArgumentException {
+    protected static void ensureNotNullAndExactLength(final String field, final String value, final int length) {
         ensureNotNull(field, value);
         ensureExactLength(field, value, length);
     }
@@ -332,7 +333,7 @@ public abstract class AbstractVerification implements Verifiable {
      * @param minimum The minimally allowed value for the field
      * @throws IllegalArgumentException if the value is null or too small
      */
-    protected <T extends Number> void ensureNotNullAndMinimum(final String field, final T value, final T minimum) throws IllegalArgumentException {
+    protected static <T extends Number> void ensureNotNullAndMinimum(final String field, final T value, final T minimum) {
         ensureNotNull(field, value);
         ensureMinimum(field, value, minimum);
     }
@@ -345,7 +346,7 @@ public abstract class AbstractVerification implements Verifiable {
      * @param value      the Collection to verify
      * @param acceptable Collection of allowed values
      */
-    protected <E extends Enum<?>> void ensureNotNullAndContains(final String field, final Collection<E> value, final Collection<E> acceptable) {
+    protected static <E extends Enum<?>> void ensureNotNullAndContains(final String field, final Collection<E> value, final Collection<E> acceptable) {
         ensureNotNull(field, value);
 
         for (final E found : value) {
@@ -363,7 +364,7 @@ public abstract class AbstractVerification implements Verifiable {
      * @param value      the Enum to verify
      * @param acceptable Collection of allowed values
      */
-    protected <E extends Enum<?>> void ensureNotNullAndContains(final String field, final E value, final Collection<E> acceptable) {
+    protected static <E extends Enum<?>> void ensureNotNullAndContains(final String field, final E value, final Collection<E> acceptable) {
         ensureNotNull(field, value);
 
         if (!acceptable.contains(value)) {
@@ -371,7 +372,7 @@ public abstract class AbstractVerification implements Verifiable {
         }
     }
 
-    protected <E> void ensureNotContaining(final String field, final Collection<E> value, String... forbidden) throws IllegalArgumentException {
+    protected static <E> void ensureNotContaining(final String field, final Collection<E> value, final String... forbidden) {
         if ((value != null) && !value.isEmpty() && (forbidden != null) && (forbidden.length > 0)) {
             for (final E collectionField : value) {
                 for (final String forbiddenValue : forbidden) {
@@ -394,7 +395,7 @@ public abstract class AbstractVerification implements Verifiable {
      * @param length The exact length of the field
      * @throws IllegalArgumentException if the value is not the exact length
      */
-    protected static void ensureExactLength(final String field, final String value, final int length) throws IllegalArgumentException {
+    protected static void ensureExactLength(final String field, final String value, final int length) {
         if ((value != null) && (value.length() != length)) {
             throw new IllegalArgumentException(format(ERROR_NOT_EXACT_LENGTH, field, length));
         }
@@ -409,7 +410,7 @@ public abstract class AbstractVerification implements Verifiable {
      * @param minimum The minimally allowed value for the field
      * @throws IllegalArgumentException if the value is too small
      */
-    protected <T extends Number> void ensureMinimum(final String field, final T value, final T minimum) throws IllegalArgumentException {
+    protected static <T extends Number> void ensureMinimum(final String field, final T value, final T minimum) {
         if (value != null) {
             if (value.doubleValue() < minimum.doubleValue()) {
                 throw new IllegalArgumentException(format(ERROR_MINIMUM_VALUE, field, minimum));
@@ -427,7 +428,7 @@ public abstract class AbstractVerification implements Verifiable {
      * @param maximum The maximally allowed value for the field
      * @throws IllegalArgumentException if the value is null not of exact length
      */
-    protected <T extends Number> void ensureWithinLimits(final String field, final T value, final T minimum, final T maximum) throws IllegalArgumentException {
+    protected static <T extends Number> void ensureWithinLimits(final String field, final T value, final T minimum, final T maximum) {
         if (value != null) {
             if ((value.doubleValue() < minimum.doubleValue()) || (value.doubleValue() > maximum.doubleValue())) {
                 throw new IllegalArgumentException(format(ERROR_NOT_WITHIN_LIMITS, field, minimum, maximum));
@@ -445,7 +446,7 @@ public abstract class AbstractVerification implements Verifiable {
      * @param maximum The maximally allowed value for the field
      * @throws IllegalArgumentException if the value is null not of exact length
      */
-    protected <T extends Number> void ensureNotNullAndWithinLimits(final String field, final T value, final T minimum, final T maximum) throws IllegalArgumentException {
+    protected static <T extends Number> void ensureNotNullAndWithinLimits(final String field, final T value, final T minimum, final T maximum) {
         ensureNotNull(field, value);
         ensureWithinLimits(field, value, minimum, maximum);
     }
@@ -475,7 +476,7 @@ public abstract class AbstractVerification implements Verifiable {
      * @param value  The value of the field
      * @throws IllegalArgumentException if the value is either null or not verifiable
      */
-    protected static void ensureVerifiable(final String field, final Verifiable value) throws IllegalArgumentException {
+    protected static void ensureVerifiable(final String field, final Verifiable value) {
         if ((value != null) && !value.validate().isEmpty()) {
             throw new IllegalArgumentException(format(ERROR_NOT_VERIFABLE, field));
         }
@@ -489,7 +490,7 @@ public abstract class AbstractVerification implements Verifiable {
      * @param value  The value of the field
      * @throws IllegalArgumentException if the value is either null or not verifiable
      */
-    protected static void ensureNotNullAndVerifiable(final String field, final Verifiable value) throws IllegalArgumentException {
+    protected static void ensureNotNullAndVerifiable(final String field, final Verifiable value) {
         ensureNotNull(field, value);
         ensureVerifiable(field, value);
     }
@@ -502,7 +503,7 @@ public abstract class AbstractVerification implements Verifiable {
      * @param value The value for the Id
      * @throws IllegalArgumentException if the Id doesn't follow the correct format
      */
-    public static void ensureValidId(final String field, final String value) throws IllegalArgumentException {
+    public static void ensureValidId(final String field, final String value) {
         if ((value != null) && !UUID_PATTERN.matcher(value).matches()) {
             // The error message is deliberately not showing the format of our Id
             // type - no need to grant hackers too much information, since all
@@ -519,7 +520,7 @@ public abstract class AbstractVerification implements Verifiable {
      * @param value The value of the Identifier
      * @throws IllegalArgumentException
      */
-    protected static void ensureValidIdentifier(final String field, final String value) throws IllegalArgumentException {
+    protected static void ensureValidIdentifier(final String field, final String value) {
         if ((value != null) && !(UUID_PATTERN.matcher(value).matches() || REFNO_PATTERN.matcher(value).matches())) {
             throw new IllegalArgumentException(format(ERROR_INVALID_IDENTIFIER, field));
         }
@@ -533,7 +534,7 @@ public abstract class AbstractVerification implements Verifiable {
      * @param values The value for the Id
      * @throws IllegalArgumentException if the Id doesn't follow the correct format
      */
-    protected static void ensureValidIds(final String field, final Collection<String> values) throws IllegalArgumentException {
+    protected static void ensureValidIds(final String field, final Collection<String> values) {
         if (values != null) {
             for (final String id : values) {
                 ensureValidId(field, id);
@@ -549,7 +550,7 @@ public abstract class AbstractVerification implements Verifiable {
      * @param values List of Identifiers to check for validity
      * @throws IllegalArgumentException if the list contain invalid identifiers
      */
-    protected static void ensureValidIdentifiers(final String field, final List<String> values) throws IllegalArgumentException {
+    protected static void ensureValidIdentifiers(final String field, final List<String> values) {
         if (values != null) {
             for (final String id : values) {
                 ensureValidIdentifier(field, id);
@@ -565,7 +566,7 @@ public abstract class AbstractVerification implements Verifiable {
      * @param value The value for the Id
      * @throws IllegalArgumentException if the Id is invalid
      */
-    protected static void ensureNotNullAndValidId(final String field, final String value) throws IllegalArgumentException {
+    protected static void ensureNotNullAndValidId(final String field, final String value) {
         ensureNotNull(field, value);
         ensureValidId(field, value);
     }
@@ -592,7 +593,7 @@ public abstract class AbstractVerification implements Verifiable {
      * @param value The value to verify
      * @throws IllegalArgumentException if the e-mail address is invalid
      */
-    protected static void ensureValidEmail(final String field, final String value) throws IllegalArgumentException {
+    protected static void ensureValidEmail(final String field, final String value) {
         if ((value != null) && !IWSConstants.EMAIL_PATTERN.matcher(value).matches()) {
             throw new IllegalArgumentException(format(ERROR_INVALID_EMAIL, value, field));
         }
@@ -607,7 +608,7 @@ public abstract class AbstractVerification implements Verifiable {
      * @param value The value to verify
      * @throws IllegalArgumentException if the e-mail address is invalid
      */
-    protected static void ensureNotNullAndValidEmail(final String field, final String value) throws IllegalArgumentException {
+    protected static void ensureNotNullAndValidEmail(final String field, final String value) {
         ensureNotNullOrTooLong(field, value, 100);
         ensureValidEmail(field, value);
     }
@@ -632,7 +633,7 @@ public abstract class AbstractVerification implements Verifiable {
      * Offers, and for creating Offers. According to the specifications, the
      * Exchange year changes on September first to the next year, meaning that
      * the "Current Exchange Year" is the same as the "Current Year" until
-     * September 1st, and the following year afterworth.<br />
+     * September 1st, and the following year afterword.<br />
      * <ul>
      *   <li>Example 1: April 1st, 2014 => Current Exchange Year is 2014</li>
      *   <li>Example 2: August 31st, 2014 => Current Exchange Year is 2014</li>
@@ -655,7 +656,7 @@ public abstract class AbstractVerification implements Verifiable {
      * @param field Name of the field
      * @throws IllegalArgumentException as the field is invalid
      */
-    protected static void throwIllegalArgumentException(final String field) throws IllegalArgumentException {
+    protected static void throwIllegalArgumentException(final String field) {
         throw new IllegalArgumentException(format(ERROR_INVALID, field));
     }
 
@@ -668,7 +669,7 @@ public abstract class AbstractVerification implements Verifiable {
      * @param field      The name of the field (value) to be verified
      * @param value      The value to verify
      */
-    protected void isNotNull(final Map<String, String> validation, final String field, final Object value) {
+    protected static void isNotNull(final Map<String, String> validation, final String field, final Object value) {
         if (value == null) {
             addError(validation, field, "The field may not be null.");
         }
@@ -683,7 +684,7 @@ public abstract class AbstractVerification implements Verifiable {
      * @param value      the Collection to verify
      * @param acceptable Collection of allowed values
      */
-    protected <E extends Enum<?>> void isNotNullAndContains(final Map<String, String> validation, final String field, final Collection<E> value, final Collection<E> acceptable) {
+    protected static <E extends Enum<?>> void isNotNullAndContains(final Map<String, String> validation, final String field, final Collection<E> value, final Collection<E> acceptable) {
         isNotNull(validation, field, value);
 
         if (value != null) {
@@ -708,7 +709,7 @@ public abstract class AbstractVerification implements Verifiable {
      * @param value      the Enum to verify
      * @param acceptable Collection of allowed values
      */
-    protected <E extends Enum<?>> void isNotNullAndContains(final Map<String, String> validation, final String field, final E value, final Collection<E> acceptable) {
+    protected static <E extends Enum<?>> void isNotNullAndContains(final Map<String, String> validation, final String field, final E value, final Collection<E> acceptable) {
         isNotNull(validation, field, value);
 
         if (value != null) {
@@ -727,7 +728,7 @@ public abstract class AbstractVerification implements Verifiable {
      * @param field      The name of the field (value) to be verified
      * @param value      The value to verify
      */
-    protected void isVerifiable(final Map<String, String> validation, final String field, final Verifiable value) {
+    protected static void isVerifiable(final Map<String, String> validation, final String field, final Verifiable value) {
         if (value != null) {
             for (final Map.Entry<String, String> entry : value.validate().entrySet()) {
                 addError(validation, "Object[" + field + "] field:" + entry.getKey(), entry.getValue());
@@ -737,14 +738,14 @@ public abstract class AbstractVerification implements Verifiable {
 
     /**
      * The method takes a value, and verifies that this value is neither null
-     * nor not verifable. If an error is found, then the information is added to
-     * the validation Map.
+     * nor not verifiable. If an error is found, then the information is added
+     * to the validation Map.
      *
      * @param validation Map with Error information
      * @param field      The name of the field (value) to be verified
      * @param value      The value to verify
      */
-    protected void isNotNullAndVerifiable(final Map<String, String> validation, final String field, final Verifiable value) {
+    protected static void isNotNullAndVerifiable(final Map<String, String> validation, final String field, final Verifiable value) {
         isNotNull(validation, field, value);
         isVerifiable(validation, field, value);
     }
@@ -759,7 +760,7 @@ public abstract class AbstractVerification implements Verifiable {
      * @param field        The name of the field to add error
      * @param errorMessage The error message for the field
      */
-    protected void addError(final Map<String, String> validation, final String field, final String errorMessage) {
+    protected static void addError(final Map<String, String> validation, final String field, final String errorMessage) {
         final String message;
 
         if (validation.containsKey(field)) {
@@ -770,24 +771,6 @@ public abstract class AbstractVerification implements Verifiable {
 
         validation.put(field, message);
     }
-
-    ///**
-    // * The method add error messages from {@code errors} to validation
-    // * Map.<br />
-    // *   If the field in validation Map already had an error, then the error
-    // * messages are concatenated.
-    // *
-    // * @param validation Map with Error information to which errors will be added
-    // * @param errors     Map with Error information to be added
-    // * @param field      The field of the first field, as a prefix
-    // * @see #addError(java.util.Map, String, String)
-    // */
-    //protected void addAllErrors(final Map<String, String> validation, final Map<String, String> errors, final String field) {
-    //    for (final Map.Entry<String, String> stringStringEntry : errors.entrySet()) {
-    //        final String fieldName = field + '.' + stringStringEntry.getKey();
-    //        addError(validation, fieldName, stringStringEntry.getValue());
-    //    }
-    //}
 
     /**
      * Formats a given String, using the built-in String format method. If there

@@ -102,6 +102,7 @@
                 <configuration>
                     <showDeprecation>true</showDeprecation>
                     <showWarnings>true</showWarnings>
+                    <debug>false</debug>
                     <encoding>UTF-8</encoding>
                     <source>1.7</source>
                     <target>1.7</target>

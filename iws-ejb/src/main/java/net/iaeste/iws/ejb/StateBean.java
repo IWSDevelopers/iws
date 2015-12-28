@@ -369,6 +369,7 @@ public class StateBean {
                     service.deletePrivateData(authentication, user);
                     accounts++;
                 } catch (IWSException e) {
+                    LOG.debug(e.getMessage(), e);
                     LOG.warn("Unable to delete the Account for {} {} <{}>, reason: {}", user.getFirstname(), user.getLastname(), user.getUsername(), e.getMessage());
                 }
             }

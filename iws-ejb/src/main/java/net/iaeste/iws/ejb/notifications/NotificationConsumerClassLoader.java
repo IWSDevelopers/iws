@@ -32,8 +32,6 @@ public final class NotificationConsumerClassLoader {
 
     public Observer findConsumerClass(final String name, final EntityManager iwsEntityManager, final EntityManager mailingEntityManager, final Settings settings) {
         try {
-//            this doesn't work in glassfish
-//            final Class<?> consumerClass = loadClass(name);
             final Class<?> consumerClass = Class.forName(name);
             final Constructor<?> constructor = consumerClass.getDeclaredConstructor();
             final Object consumer = constructor.newInstance();
@@ -44,8 +42,8 @@ public final class NotificationConsumerClassLoader {
             }
 
             throw new IWSException(IWSErrors.ERROR, "Class " + name + " is not valid notification consumer");
-        } catch (ClassNotFoundException ignored) {
-            throw new IWSException(IWSErrors.ERROR, "Consumer " + name + " cannot be loaded");
+        } catch (ClassNotFoundException e) {
+            throw new IWSException(IWSErrors.ERROR, "Consumer " + name + " cannot be loaded", e);
         } catch (InvocationTargetException | NoSuchMethodException | InstantiationException | IllegalAccessException e) {
             throw new IWSException(IWSErrors.ERROR, "Error during loading " + name + " consumer", e);
         }

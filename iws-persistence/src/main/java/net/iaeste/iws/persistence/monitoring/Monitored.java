@@ -29,7 +29,7 @@ import java.lang.annotation.Target;
  * adding this annotation to first of all, the Entity itself to enable
  * Monitoring, and secondly to the fields as well.<br />
  *   The enum {@code MonitoringLevel} contains details about how the monitoring
- * is applied and interpretated by the {@code MonitoringProcessor}. However, the
+ * is applied and interpreted by the {@code MonitoringProcessor}. However, the
  * processor will only look at Types (Classes) and Fields which have this
  * annotation added - everything else is skipped.
  *

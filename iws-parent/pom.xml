@@ -18,7 +18,13 @@
         <module>../iws-ear</module>
         <module>../iws-ws-client</module>
         <module>../iws-client</module>
-        <module>../iws-fitnesse</module>
+        <!-- As we have not had time to write any tests, this module is
+             currently pending a decision if it should be discontinued or not.
+             It would be good to complete it so there exists tests and
+             documentation written which will display how to work with the IWS.
+             Further. it will serve as a module, which can be given to others
+             so they can help document and test the IWS. -->
+        <!--<module>../iws-fitnesse</module>-->
     </modules>
 
     <organization>

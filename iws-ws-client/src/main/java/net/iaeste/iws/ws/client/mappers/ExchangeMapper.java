@@ -1,8 +1,8 @@
 /*
  * =============================================================================
- * Copyright 1998-2015, IAESTE Internet Development Team. All rights reserved.
+ * Copyright 1998-2016, IAESTE Internet Development Team. All rights reserved.
  * ----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-client) - net.iaeste.iws.client.ws.mappers.ExchangeMapper
+ * Project: IntraWeb Services (iws-ws-client) - net.iaeste.iws.ws.client.mappers.ExchangeMapper
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be

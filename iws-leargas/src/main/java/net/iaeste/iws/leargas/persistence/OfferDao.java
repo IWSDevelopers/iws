@@ -1,6 +1,6 @@
 /*
  * =============================================================================
- * Copyright 1998-2015, IAESTE Internet Development Team. All rights reserved.
+ * Copyright 1998-2016, IAESTE Internet Development Team. All rights reserved.
  * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-leargas) - net.iaeste.iws.leargas.persistence.OfferDao
  * -----------------------------------------------------------------------------

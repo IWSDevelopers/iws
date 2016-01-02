@@ -1,8 +1,8 @@
 /*
  * =============================================================================
- * Copyright 1998-2015, IAESTE Internet Development Team. All rights reserved.
+ * Copyright 1998-2016, IAESTE Internet Development Team. All rights reserved.
  * ----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-leargas) - net.iaeste.iws.leargas.persistence.Offer
+ * Project: IntraWeb Services (iws-leargas) - net.iaeste.iws.leargas.persistence.OfferEntity
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be

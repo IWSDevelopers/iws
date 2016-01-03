@@ -86,47 +86,4 @@ public final class FetchStudentApplicationsResponse extends FallibleResponse {
     public List<StudentApplication> getStudentApplications() {
         return studentApplications;
     }
-
-    // =========================================================================
-    // Standard Response Methods
-    // =========================================================================
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
-            return true;
-        }
-
-        if (!(obj instanceof FetchStudentApplicationsResponse)) {
-            return false;
-        }
-
-        final FetchStudentApplicationsResponse that = (FetchStudentApplicationsResponse) obj;
-        return !((studentApplications != null) ? !studentApplications.equals(that.studentApplications) : (that.studentApplications != null));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((studentApplications != null) ? studentApplications.hashCode() : 0);
-
-        return result;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        return "FetchStudentApplicationsResponse{" +
-                "studentApplications=" + studentApplications +
-                '}';
-    }
 }

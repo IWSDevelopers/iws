@@ -77,49 +77,4 @@ public final class FetchCommitteeResponse extends FallibleResponse {
     public List<UserGroup> getCommittees() {
         return committees;
     }
-
-    // =========================================================================
-    // Standard Response Methods
-    // =========================================================================
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof FetchCommitteeResponse)) {
-            return false;
-        }
-        if (!super.equals(obj)) {
-            return false;
-        }
-
-        final FetchCommitteeResponse that = (FetchCommitteeResponse) obj;
-        return !((committees != null) ? !committees.equals(that.committees) : (that.committees != null));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((committees != null) ? committees.hashCode() : 0);
-
-        return result;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        return "FetchCommitteeResponse{" +
-                "committees=" + committees +
-                '}';
-    }
 }

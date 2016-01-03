@@ -16,6 +16,7 @@ package net.iaeste.iws.api.dtos;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.util.AbstractVerification;
+import net.iaeste.iws.api.util.StandardMethods;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -23,7 +24,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * This Object is used for the requests, where a user needs to change the
@@ -46,18 +46,21 @@ public final class Password extends AbstractVerification {
      * update Password and reset Password requests.
      */
     @XmlElement(required = true, nillable = false)
+    @StandardMethods(StandardMethods.For.NONE)
     private String newPassword = null;
 
     /**
-     * Both a resetPassword & updatePassword request requires additional
+     * <p>Both a resetPassword &amp; updatePassword request requires additional
      * information to properly identify the User who is performing the
-     * Request.<br />
-     *   For the Reset Request, this is the given Password Token. For the Update
-     * Request, it is the existing Password. As it is not possible within this
-     * Object to determine which variant is required, the identification field
-     * will contain either the one or other.
+     * Request.</p>
+     *
+     * <p>For the Reset Request, this is the given Password Token. For the
+     * Update Request, it is the existing Password. As it is not possible within
+     * this Object to determine which variant is required, the identification
+     * field will contain either the one or other.</p>
      */
     @XmlElement(required = true, nillable = false)
+    @StandardMethods(StandardMethods.For.NONE)
     private String identification = null;
 
     // =========================================================================
@@ -100,15 +103,17 @@ public final class Password extends AbstractVerification {
     // =========================================================================
 
     /**
-     * Ensures that the given New Password is valid, and sets it. This value is
-     * required for both the update Password and the reset Password
-     * requests.<br />
-     *   The IWS will only store a salted and hashed version of the Password
+     * <p>Ensures that the given New Password is valid, and sets it. This value
+     * is required for both the update Password and the reset Password
+     * requests.</p>
+     *
+     * <p>The IWS will only store a salted and hashed version of the Password
      * internally. Hence, the password will never be retrievable in clear-text
-     * from the IWS.<br />
-     *   The method will throw an {@code IllegalArgumentException} if the value
+     * from the IWS.</p>
+     *
+     * <p>The method will throw an {@code IllegalArgumentException} if the value
      * is either null, or too short. Since the value is never stored nor logged,
-     * there are no other restrictions on it.<br />
+     * there are no other restrictions on it.</p>
      *
      * @param newPassword New Password for a user
      * @throws IllegalArgumentException if the given value is invalid
@@ -129,12 +134,13 @@ public final class Password extends AbstractVerification {
     }
 
     /**
-     * Sets (parts of the) Identification information for the Request, which is
-     * either the old User Password (Update Password Request) or Password Token
-     * (Reset Password Request). The value must be set otherwise the request
-     * will fail.<br />
-     *   If the value is invalid, i.e. null or empty - then the method will
-     * throw an {@code IllegalArgumentException}.
+     * <p>Sets (parts of the) Identification information for the Request, which
+     * is either the old User Password (Update Password Request) or Password
+     * Token (Reset Password Request). The value must be set otherwise the
+     * request will fail.</p>
+     *
+     * <p>If the value is invalid, i.e. null or empty - then the method will
+     * throw an {@code IllegalArgumentException}.</p>
      *
      * @param identification Old User Password or given Password Token
      * @throws IllegalArgumentException if the given value is invalid
@@ -165,43 +171,5 @@ public final class Password extends AbstractVerification {
         isNotNull(validation, "identification", identification);
 
         return validation;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(final Object obj) {
-        // Passwords are very sensitive information, if someone were to log or
-        // compare this Object with something else, we wish to convey that it is
-        // a sensitive Object, hence standards methods are returning negative
-        // information only
-        return false;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        // Passwords are very sensitive information, if someone were to log or
-        // compare this Object with something else, we wish to convey that it is
-        // a sensitive Object, hence standards methods are returning negative
-        // information only
-        //   However, to avoid that multiple Password Objects is given the same
-        // hashCode value, we're generating and returning a UUID.
-        return UUID.randomUUID().hashCode();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        // Passwords are very sensitive information, if someone were to log or
-        // compare this Object with something else, we wish to convey that it is
-        // a sensitive Object, hence standards methods are returning negative
-        // information only
-        return "Password{...}";
     }
 }

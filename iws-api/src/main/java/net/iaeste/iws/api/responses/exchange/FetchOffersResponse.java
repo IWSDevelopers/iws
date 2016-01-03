@@ -82,47 +82,4 @@ public final class FetchOffersResponse extends FallibleResponse {
     public List<Offer> getOffers() {
         return offers;
     }
-
-    // =========================================================================
-    // Standard Response Methods
-    // =========================================================================
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
-            return true;
-        }
-
-        if (!(obj instanceof FetchOffersResponse)) {
-            return false;
-        }
-
-        final FetchOffersResponse that = (FetchOffersResponse) obj;
-        return !((offers != null) ? !offers.equals(that.offers) : (that.offers != null));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((offers != null) ? offers.hashCode() : 0);
-
-        return result;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        return "FetchOffersResponse{" +
-                "offers=" + offers +
-                '}';
-    }
 }

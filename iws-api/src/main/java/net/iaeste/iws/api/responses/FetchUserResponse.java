@@ -85,46 +85,4 @@ public final class FetchUserResponse extends FallibleResponse {
     public User getUser() {
         return user;
     }
-
-    // =========================================================================
-    // Standard Response Methods
-    // =========================================================================
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof FetchUserResponse)) {
-            return false;
-        }
-
-        final FetchUserResponse that = (FetchUserResponse) obj;
-        return !((user != null) ? !user.equals(that.user) : (that.user != null));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((user != null) ? user.hashCode() : 0);
-
-        return result;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        return "FetchUserResponse{" +
-                "user=" + user +
-                '}';
-    }
 }

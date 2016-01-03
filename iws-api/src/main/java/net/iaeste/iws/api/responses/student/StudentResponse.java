@@ -60,7 +60,7 @@ public final class StudentResponse extends FallibleResponse {
      * @param student Student
      */
     public StudentResponse(final Student student) {
-        setStudent(student);
+        this.student = student;
     }
 
     /**
@@ -83,15 +83,5 @@ public final class StudentResponse extends FallibleResponse {
 
     public Student getFile() {
         return student;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        return "StudentResponse{" +
-                "student=" + student +
-                '}';
     }
 }

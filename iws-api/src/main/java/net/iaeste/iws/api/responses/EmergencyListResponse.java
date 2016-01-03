@@ -72,49 +72,4 @@ public final class EmergencyListResponse extends FallibleResponse {
     public List<UserGroup> getEmergencyContacts() {
         return emergencyContacts;
     }
-
-    // =========================================================================
-    // Standard Response Methods
-    // =========================================================================
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof EmergencyListResponse)) {
-            return false;
-        }
-        if (!super.equals(obj)) {
-            return false;
-        }
-
-        final EmergencyListResponse that = (EmergencyListResponse) obj;
-        return !(emergencyContacts != null ? !emergencyContacts.equals(that.emergencyContacts) : that.emergencyContacts != null);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (emergencyContacts != null ? emergencyContacts.hashCode() : 0);
-
-        return result;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        return "EmergencyListResponse{" +
-                "emergencyContacts=" + emergencyContacts +
-                '}';
-    }
 }

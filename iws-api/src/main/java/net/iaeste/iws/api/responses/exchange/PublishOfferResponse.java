@@ -55,36 +55,4 @@ public final class PublishOfferResponse extends FallibleResponse {
     public PublishOfferResponse(final IWSError error, final String message) {
         super(error, message);
     }
-
-    // =========================================================================
-    // Standard Setters & Getters
-    // =========================================================================
-
-    // =========================================================================
-    // Standard Response Methods
-    // =========================================================================
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(final Object obj) {
-        return super.equals(obj);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        return super.hashCode();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        return "";
-    }
 }

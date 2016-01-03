@@ -81,40 +81,4 @@ public final class ProcessGroupResponse extends FallibleResponse {
     public Group getGroup() {
         return new Group(group);
     }
-
-    // =========================================================================
-    // Standard Response Methods
-    // =========================================================================
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
-            return true;
-        }
-
-        if (!(obj instanceof FallibleResponse)) {
-            return false;
-        }
-
-        return super.equals(obj);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        return super.hashCode();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        return "";
-    }
 }

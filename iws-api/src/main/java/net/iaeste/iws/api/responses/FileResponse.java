@@ -84,49 +84,4 @@ public final class FileResponse extends FallibleResponse {
     public File getFile() {
         return new File(file);
     }
-
-    // =========================================================================
-    // Standard Response Methods
-    // =========================================================================
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof FileResponse)) {
-            return false;
-        }
-        if (!super.equals(obj)) {
-            return false;
-        }
-
-        final FileResponse that = (FileResponse) obj;
-        return !((file != null) ? !file.equals(that.file) : (that.file != null));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((file != null) ? file.hashCode() : 0);
-
-        return result;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        return "FileResponse{" +
-                "file=" + file +
-                '}';
-    }
 }

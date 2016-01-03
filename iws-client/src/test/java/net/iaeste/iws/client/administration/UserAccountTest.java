@@ -598,7 +598,7 @@ public final class UserAccountTest extends AbstractAdministration {
         // of accounts in Members is done together with handling of National
         // Members. The main reason for this, is to avoid that someone may
         // perform actions on the National Group, but invoking their Membership
-        // privileges without having a National Group membersip.
+        // privileges without having a National Group membership.
         final FetchRoleRequest request = new FetchRoleRequest(findNationalGroup(token).getGroupId());
         final FetchRoleResponse response = administration.fetchRoles(token, request);
         assertThat(response, is(not(nullValue())));

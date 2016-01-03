@@ -80,7 +80,7 @@ public final class AuthenticationToken extends AbstractVerification implements T
      * Full Constructor, for operations where it is not possible to uniquely
      * identify the Group for the request.
      *
-     * @param  token  The Token, i.e. currently active Cryptographical Checksum
+     * @param  token  The Token, i.e. currently active Cryptographic Checksum
      * @param groupId GroupId for the Authorization check
      * @throws IllegalArgumentException if the token is invalid
      */
@@ -115,7 +115,7 @@ public final class AuthenticationToken extends AbstractVerification implements T
      * Sets the users Cryptographic Authentication Token, the token must be
      * valid, i.e. not null and matching one of the supported cryptographic
      * algorithms. If the token is invalid, then the setter will throw an
-     * {@code IllegalArgumentException.
+     * {@code IllegalArgumentException}.
      *
      * @param  token  Cryptographic Authentication Token
      * @throws IllegalArgumentException if the token is invalid
@@ -146,11 +146,12 @@ public final class AuthenticationToken extends AbstractVerification implements T
     }
 
     /**
-     * Sets the GroupId, for which the user wishes invoke a functionality. This
-     * is required, if the functionality cannot be uniquely identified for the
-     * user based on the implicit UserId & PermissionId.<br />
-     *   If the provided GroupId is not valid, then method will throw an
-     * {@code IllegalArgumentException}.
+     * <p>Sets the GroupId, for which the user wishes invoke a functionality.
+     * This is required, if the functionality cannot be uniquely identified for
+     * the user based on the implicit UserId &amp; PermissionId.</p>
+     *
+     * <p>If the provided GroupId is not valid, then method will throw an
+     * {@code IllegalArgumentException}.</p>
      *
      * @param groupId  GroupId for the Authorization check
      * @throws IllegalArgumentException if the GroupId is invalid
@@ -195,50 +196,5 @@ public final class AuthenticationToken extends AbstractVerification implements T
         isNotNull(validation, "token", token);
 
         return validation;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof AuthenticationToken)) {
-            return false;
-        }
-
-        final AuthenticationToken that = (AuthenticationToken) obj;
-
-        if ((groupId != null) ? !groupId.equals(that.groupId) : (that.groupId != null)) {
-            return false;
-        }
-
-        return (token != null) ? token.equals(that.token) : (that.token == null);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        int hash = IWSConstants.HASHCODE_INITIAL_VALUE;
-
-        hash = (IWSConstants.HASHCODE_MULTIPLIER * hash) + ((token != null) ? token.hashCode() : 0);
-        hash = (IWSConstants.HASHCODE_MULTIPLIER * hash) + ((groupId != null) ? groupId.hashCode() : 0);
-
-        return hash;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        return "AuthenticationToken{" +
-                "token='" + token + '\'' +
-                ", groupId='" + groupId + '\'' +
-                '}';
     }
 }

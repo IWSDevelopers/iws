@@ -58,8 +58,8 @@ public final class AuthenticationResponseTest {
         assertThat(result.getToken(), is(token));
         assertThat(result.getError(), is(IWSErrors.SUCCESS));
         assertThat(result.getMessage(), is(IWSConstants.SUCCESS));
-        assertThat(result.toString(), is("AuthenticationResponse[token=AuthenticationToken{token='" + TOKEN_KEY + "', groupId='null'}]"));
-        assertThat(result.hashCode(), is(308071176));
+        assertThat(result.toString(), is("AuthenticationResponse{token=AuthenticationToken{token='" + TOKEN_KEY + "', groupId=null}, error=IWSError{error=0, description='Success.'}, message='OK'}"));
+        assertThat(result.hashCode(), is(1278121686));
         assertThat(result.hashCode(), is(same.hashCode()));
         assertThat(result.hashCode(), is(not(diff.hashCode())));
         assertThat(diff.getError(), is(error));

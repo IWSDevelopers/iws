@@ -61,14 +61,14 @@ public final class FallibleResponseTest {
         assertThat(obj, is(same));
         assertThat(obj, is(not(diff)));
 
-        // Test Hashcodes
-        assertThat(obj.hashCode(), is(-1592032781));
-        assertThat(same.hashCode(), is(-1592032781));
-        assertThat(diff.hashCode(), is(-1344310095));
+        // Test HashCodes
+        assertThat(obj.hashCode(), is(-1585682235));
+        assertThat(same.hashCode(), is(-1585682235));
+        assertThat(diff.hashCode(), is(-100086673));
 
         // Test ToString
-        assertThat(obj.toString(), is("FallibleResponse{error=IWSError[error=300,description=A fatal error occurred, which will prevent the IWS from working properly.], message='fatal'}"));
-        assertThat(same.toString(), is("FallibleResponse{error=IWSError[error=300,description=A fatal error occurred, which will prevent the IWS from working properly.], message='fatal'}"));
-        assertThat(diff.toString(), is("FallibleResponse{error=IWSError[error=0,description=Success.], message='OK'}"));
+        assertThat(obj.toString(), is("FallibleResponse{error=IWSError{error=300, description='A fatal error occurred, which will prevent the IWS from working properly.'}, message='fatal'}"));
+        assertThat(same.toString(), is("FallibleResponse{error=IWSError{error=300, description='A fatal error occurred, which will prevent the IWS from working properly.'}, message='fatal'}"));
+        assertThat(diff.toString(), is("FallibleResponse{error=IWSError{error=0, description='Success.'}, message='OK'}"));
     }
 }

@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.api.constants;
 
+import net.iaeste.iws.api.util.ReflectiveStandardMethods;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 import java.io.Serializable;
@@ -77,15 +79,7 @@ public final class IWSError implements Serializable {
      */
     @Override
     public boolean equals(final Object obj) {
-        boolean result = false;
-
-        if (this == obj) {
-            result = true;
-        } else if ((obj != null) && (getClass() == obj.getClass())) {
-            result = error == ((IWSError) obj).error;
-        }
-
-        return result;
+        return ReflectiveStandardMethods.reflectiveEquals(this, obj);
     }
 
     /**
@@ -93,12 +87,7 @@ public final class IWSError implements Serializable {
      */
     @Override
     public int hashCode() {
-        int hash = IWSConstants.HASHCODE_INITIAL_VALUE;
-
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + error;
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((description != null) ? description.hashCode() : 0);
-
-        return hash;
+        return ReflectiveStandardMethods.reflectiveHashCode(this);
     }
 
     /**
@@ -106,6 +95,6 @@ public final class IWSError implements Serializable {
      */
     @Override
     public String toString() {
-        return "IWSError[error=" + error + ",description=" + description + ']';
+        return ReflectiveStandardMethods.reflectiveToString(this);
     }
 }

@@ -73,7 +73,7 @@ public final class OfferStatisticsResponse extends FallibleResponse {
     public OfferStatistics getDomesticStatistics() {
         // If the response is null - then we're just returning an empty
         // Statistics Object, to avoid NullPointerExceptions.
-        return domesticStatistics != null ? domesticStatistics : new OfferStatistics();
+        return (domesticStatistics != null) ? domesticStatistics : new OfferStatistics();
     }
 
     public void setForeignStatistics(final OfferStatistics foreignStatistics) {
@@ -83,58 +83,6 @@ public final class OfferStatisticsResponse extends FallibleResponse {
     public OfferStatistics getForeignStatistics() {
         // If the response is null - then we're just returning an empty
         // Statistics Object, to avoid NullPointerExceptions.
-        return foreignStatistics != null ? foreignStatistics : new OfferStatistics();
-    }
-
-    // =========================================================================
-    // Standard Response Methods
-    // =========================================================================
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof OfferStatisticsResponse)) {
-            return false;
-        }
-        if (!super.equals(obj)) {
-            return false;
-        }
-
-        final OfferStatisticsResponse that = (OfferStatisticsResponse) obj;
-
-        if ((domesticStatistics != null) ? !domesticStatistics.equals(that.domesticStatistics) : (that.domesticStatistics != null)) {
-            return false;
-        }
-
-        return !((foreignStatistics != null) ? !foreignStatistics.equals(that.foreignStatistics) : (that.foreignStatistics != null));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((domesticStatistics != null) ? domesticStatistics.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((foreignStatistics != null) ? foreignStatistics.hashCode() : 0);
-
-        return result;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        return "OfferStatisticsResponse{" +
-                "domesticStatistics=" + domesticStatistics +
-                ", foreignStatistics=" + foreignStatistics +
-                '}';
+        return (foreignStatistics != null) ? foreignStatistics : new OfferStatistics();
     }
 }

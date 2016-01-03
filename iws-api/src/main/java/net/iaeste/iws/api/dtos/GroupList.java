@@ -35,7 +35,7 @@ import java.util.List;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "groupList", propOrder = { "groups" })
-public class GroupList implements Serializable {
+public final class GroupList implements Serializable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -86,48 +86,5 @@ public class GroupList implements Serializable {
 
     public int size() {
         return groups.size();
-    }
-
-    // =========================================================================
-    // Standard Response Methods
-    // =========================================================================
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof GroupList)) {
-            return false;
-        }
-
-        final GroupList groupList = (GroupList) obj;
-
-        if (groups != null ? !groups.equals(groupList.groups) : groupList.groups != null) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        return groups != null ? groups.hashCode() : 0;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        return "GroupList{" +
-                "groups=" + groups +
-                '}';
     }
 }

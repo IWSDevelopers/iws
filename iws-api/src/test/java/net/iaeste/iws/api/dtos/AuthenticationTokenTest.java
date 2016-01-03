@@ -65,11 +65,11 @@ public final class AuthenticationTokenTest {
         assertThat(result, is(same));
         assertThat(result, is(not(diff1)));
         assertThat(result.getToken(), is(mainValue));
-        assertThat(result.hashCode(), is(-967988839));
-        assertThat(diff1.hashCode(), is(-1164423489));
-        assertThat(diff2.hashCode(), is(-1854131232));
-        assertThat(result.toString(), is("AuthenticationToken{token='" + mainValue + "', groupId='null'}"));
-        assertThat(diff1.toString(), is("AuthenticationToken{token='" + diffValue + "', groupId='null'}"));
+        assertThat(result.hashCode(), is(-1978452439));
+        assertThat(diff1.hashCode(), is(522008003));
+        assertThat(diff2.hashCode(), is(-129248990));
+        assertThat(result.toString(), is("AuthenticationToken{token='" + mainValue + "', groupId=null}"));
+        assertThat(diff1.toString(), is("AuthenticationToken{token='" + diffValue + "', groupId=null}"));
         assertThat(diff2.toString(), is("AuthenticationToken{token='" + diffValue + "', groupId='" + groupId + "'}"));
 
         new EqualsTester(result, same, diff1, null);

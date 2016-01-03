@@ -86,13 +86,14 @@ public final class StudentAcceptance extends AbstractVerification {
     // =========================================================================
 
     /**
-     * Sets the Application Id, which is the key for this Object. If the Id is
-     * undefined, i.e. null, then the system will process it as a new
+     * <p>Sets the Application Id, which is the key for this Object. If the Id
+     * is undefined, i.e. null, then the system will process it as a new
      * Application, causing errors if it already exists. Otherwise, if it is
      * set, the system will process it as if it is an existing Object, causing
-     * problems if it doesn't exist.<br />
-     *   The value must be a valid Id, otherwise the method will throw an
-     * {@code IllegalArgumentException}.
+     * problems if it doesn't exist.</p>
+     *
+     * <p>The value must be a valid Id, otherwise the method will throw an
+     * {@code IllegalArgumentException}.</p>
      *
      * @param applicationId Application Id
      */
@@ -173,78 +174,5 @@ public final class StudentAcceptance extends AbstractVerification {
         final Map<String, String> validation = new HashMap<>(0);
 
         return validation;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
-            return true;
-        }
-
-        if (!(obj instanceof StudentAcceptance)) {
-            return false;
-        }
-
-        final StudentAcceptance that = (StudentAcceptance) obj;
-
-        if ((additionalInformation != null) ? !additionalInformation.equals(that.additionalInformation) : (that.additionalInformation != null)) {
-            return false;
-        }
-        if ((applicationId != null) ? !applicationId.equals(that.applicationId) : (that.applicationId != null)) {
-            return false;
-        }
-        if ((contactPerson != null) ? !contactPerson.equals(that.contactPerson) : (that.contactPerson != null)) {
-            return false;
-        }
-        if ((contactPersonEmail != null) ? !contactPersonEmail.equals(that.contactPersonEmail) : (that.contactPersonEmail != null)) {
-            return false;
-        }
-        if ((contactPersonPhone != null) ? !contactPersonPhone.equals(that.contactPersonPhone) : (that.contactPersonPhone != null)) {
-            return false;
-        }
-        if ((confirmedPeriod != null) ? !confirmedPeriod.equals(that.confirmedPeriod) : (that.confirmedPeriod != null)) {
-            return false;
-        }
-        if ((firstWorkingDay != null) ? !firstWorkingDay.equals(that.firstWorkingDay) : (that.firstWorkingDay != null)) {
-            return false;
-        }
-
-        return !((workingPlace != null) ? !workingPlace.equals(that.workingPlace) : (that.workingPlace != null));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        int hash = IWSConstants.HASHCODE_INITIAL_VALUE;
-
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((applicationId != null) ? applicationId.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((firstWorkingDay != null) ? firstWorkingDay.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((workingPlace != null) ? workingPlace.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((contactPerson != null) ? contactPerson.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((contactPersonEmail != null) ? contactPersonEmail.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((contactPersonPhone != null) ? contactPersonPhone.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((confirmedPeriod != null) ? confirmedPeriod.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((additionalInformation != null) ? additionalInformation.hashCode() : 0);
-
-        return hash;
-    }
-
-    @Override
-    public String toString() {
-        return "StudentAcceptance{" +
-                "applicationId='" + applicationId + '\'' +
-                ", firstWorkingDay=" + firstWorkingDay +
-                ", workingPlace='" + workingPlace + '\'' +
-                ", contactPerson='" + contactPerson + '\'' +
-                ", contactPersonEmail='" + contactPersonEmail + '\'' +
-                ", contactPersonPhone='" + contactPersonPhone + '\'' +
-                ", confirmedPeriod='" + confirmedPeriod + '\'' +
-                ", additionalInformation='" + additionalInformation + '\'' +
-                '}';
     }
 }

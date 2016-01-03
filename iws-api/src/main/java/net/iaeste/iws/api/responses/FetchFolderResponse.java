@@ -81,49 +81,4 @@ public final class FetchFolderResponse extends FallibleResponse {
     public Folder getFolder() {
         return new Folder(folder);
     }
-
-    // =========================================================================
-    // Standard Response Methods
-    // =========================================================================
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof FetchFolderResponse)) {
-            return false;
-        }
-        if (!super.equals(obj)) {
-            return false;
-        }
-
-        final FetchFolderResponse that = (FetchFolderResponse) obj;
-        return !((folder != null) ? !folder.equals(that.folder) : (that.folder != null));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((folder != null) ? folder.hashCode() : 0);
-
-        return result;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        return "FetchFolderResponse{" +
-                "folder=" + folder +
-                '}';
-    }
 }

@@ -82,48 +82,4 @@ public final class OfferResponse extends FallibleResponse {
     public Offer getOffer() {
         return new Offer(offer);
     }
-
-    // =========================================================================
-    // Standard Response Methods
-    // =========================================================================
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
-            return true;
-        }
-
-        if ((obj == null) || (getClass() != obj.getClass())) {
-            return false;
-        }
-
-        final OfferResponse that = (OfferResponse) obj;
-
-        return !((offer != null) ? !offer.equals(that.offer) : (that.offer != null));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((offer != null) ? offer.hashCode() : 0);
-
-        return result;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        return "OfferResponse{" +
-                "offer=" + offer +
-                '}';
-    }
 }

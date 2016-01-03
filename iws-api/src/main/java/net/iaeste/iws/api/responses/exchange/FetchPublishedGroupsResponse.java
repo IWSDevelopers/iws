@@ -86,47 +86,4 @@ public final class FetchPublishedGroupsResponse extends FallibleResponse {
     public Map<String, GroupList> getOffersGroups() {
         return offersGroups;
     }
-
-    // =========================================================================
-    // Standard Response Methods
-    // =========================================================================
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
-            return true;
-        }
-
-        if (!(obj instanceof FetchPublishedGroupsResponse)) {
-            return false;
-        }
-
-        final FetchPublishedGroupsResponse that = (FetchPublishedGroupsResponse) obj;
-        return !((offersGroups != null) ? !offersGroups.equals(that.offersGroups) : (that.offersGroups != null));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((offersGroups != null) ? offersGroups.hashCode() : 0);
-
-        return result;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        return "FetchOffersResponse{" +
-                "offers=" + offersGroups +
-                '}';
-    }
 }

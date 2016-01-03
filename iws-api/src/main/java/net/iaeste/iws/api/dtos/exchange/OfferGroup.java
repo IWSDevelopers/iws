@@ -46,16 +46,15 @@ public final class OfferGroup extends AbstractVerification {
     // =========================================================================
 
     /**
-     * Empty Constructor, to use if the setters are invoked. This is required
-     * for WebServices to work properly.
+     * <p>Empty Constructor, to use if the setters are invoked. This is required
+     * for WebServices to work properly.</p>
      */
     public OfferGroup() {
         // Required for WebServices to work. Comment added to please Sonar.
     }
 
     /**
-     * Copy constructor.
-     * <p/>
+     * <p>Copy constructor.</p>
      *
      * @param offerGroup OfferGroup to copy
      */
@@ -73,10 +72,11 @@ public final class OfferGroup extends AbstractVerification {
     // =========================================================================
 
     /**
-     * Sets the Offer Reference Number, for the Offer which the Group is granted
-     * access to.<br />
-     *   If the value is illegal, i.e. null or not a valid Reference Number,
-     * then the method will thrown an {@code IllegalArgumentException}.
+     * <p>Sets the Offer Reference Number, for the Offer which the Group is
+     * granted access to.</p>
+     *
+     * <p>If the value is illegal, i.e. null or not a valid Reference Number,
+     * then the method will thrown an {@code IllegalArgumentException}.</p>
      *
      * @param offerRefNo Offer Reference Number.
      * @throws IllegalArgumentException if value is either null or invalid
@@ -108,13 +108,14 @@ public final class OfferGroup extends AbstractVerification {
     }
 
     /**
-     * Sets the Status for this Offer Group relation. The status must be set,
-     * and will by default be set to New.<br />
-     *   The method will thrown an {@code IllegalArgumentException} if the
-     * Offer State is set to null.
+     * <p>Sets the Status for this Offer Group relation. The status must be set,
+     * and will by default be set to New.</p>
+     *
+     * <p>The method will thrown an {@code IllegalArgumentException} if the
+     * Offer State is set to null.</p>
      *
      * @param status Offer Status
-     * @throws java.lang.IllegalArgumentException if the valus is null
+     * @throws IllegalArgumentException if the value is null
      */
     public void setStatus(final OfferState status) throws IllegalArgumentException {
         ensureNotNull("status", status);
@@ -175,61 +176,5 @@ public final class OfferGroup extends AbstractVerification {
         isNotNull(validation, "groupId", groupId);
 
         return validation;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof OfferGroup)) {
-            return false;
-        }
-
-        final OfferGroup offerGroup = (OfferGroup) obj;
-
-        if ((offerRefNo != null) ? !offerRefNo.equalsIgnoreCase(offerGroup.offerRefNo) : (offerGroup.offerRefNo != null)) {
-            return false;
-        }
-        if ((groupId != null) ? !groupId.equals(offerGroup.groupId) : (offerGroup.groupId != null)) {
-            return false;
-        }
-        if (status != offerGroup.status) {
-            return false;
-        }
-
-        // #modified and #created are not relevant for the equality of the offers.
-        return true;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        int hash = IWSConstants.HASHCODE_INITIAL_VALUE;
-
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((offerRefNo != null) ? offerRefNo.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((groupId != null) ? groupId.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((status != null) ? status.hashCode() : 0);
-
-        return hash;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        return "OfferGroup{" +
-                "offerRefNo=" + offerRefNo +
-                ", groupId=" + groupId +
-                ", status=" + status +
-                ", modified=" + modified +
-                ", created=" + created +
-                '}';
     }
 }

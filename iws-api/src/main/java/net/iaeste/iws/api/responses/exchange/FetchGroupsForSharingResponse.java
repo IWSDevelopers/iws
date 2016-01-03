@@ -79,46 +79,4 @@ public final class FetchGroupsForSharingResponse extends FallibleResponse {
     public List<Group> getGroups() {
         return groups;
     }
-
-    // =========================================================================
-    // Standard Response Methods
-    // =========================================================================
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof FetchGroupsForSharingResponse)) {
-            return false;
-        }
-        if (!super.equals(obj)) {
-            return false;
-        }
-
-        final FetchGroupsForSharingResponse that = (FetchGroupsForSharingResponse) obj;
-        return !((groups != null) ? !groups.equals(that.groups) : (that.groups != null));
-    }
-
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((groups != null) ? groups.hashCode() : 0);
-
-        return result;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        return "FetchGroupResponse{" +
-                "groups=" + groups +
-                '}';
-    }
 }

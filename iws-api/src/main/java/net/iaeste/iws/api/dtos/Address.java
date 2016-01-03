@@ -94,10 +94,11 @@ public final class Address extends AbstractVerification {
     // =========================================================================
 
     /**
-     * Sets the Primary Street information for this Address. The value may be
-     * null, but cannot exceed the maximum length.<br />
-     *   The method will thrown an {@code IllegalArgumentException} if the given
-     * value exceeds the maximum length.
+     * <p>Sets the Primary Street information for this Address. The value may be
+     * null, but cannot exceed the maximum length.</p>
+     *
+     * <p>The method will thrown an {@code IllegalArgumentException} if the given
+     * value exceeds the maximum length.</p>
      *
      * @param street1 Primary Street information
      * @throws IllegalArgumentException if the value exceeds the maximum length
@@ -113,10 +114,11 @@ public final class Address extends AbstractVerification {
     }
 
     /**
-     * Sets the Secondaty Street information for this Address. The value may be
-     * null, but cannot exceed the maximum length.<br />
-     *   The method will thrown an {@code IllegalArgumentException} if the given
-     * value exceeds the maximum length.
+     * <p>Sets the Secondary Street information for this Address. The value may
+     * be null, but cannot exceed the maximum length.</p>
+     *
+     * <p>The method will thrown an {@code IllegalArgumentException} if the
+     * given value exceeds the maximum length.</p>
      *
      * @param street2 Secondary Street information
      * @throws IllegalArgumentException if the value exceeds the maximum length
@@ -132,10 +134,11 @@ public final class Address extends AbstractVerification {
     }
 
     /**
-     * Sets the Postal Code information for this Address. The value may be null,
-     * but cannot exceed the maximum length.<br />
-     *   The method will thrown an {@code IllegalArgumentException} if the given
-     * value exceeds the maximum length.
+     * <p>Sets the Postal Code information for this Address. The value may be
+     * null, but cannot exceed the maximum length.</p>
+     *
+     * <p>The method will thrown an {@code IllegalArgumentException} if the
+     * given value exceeds the maximum length.</p>
      *
      * @param postalCode Postal Code
      * @throws IllegalArgumentException if the value exceeds the maximum length
@@ -151,10 +154,11 @@ public final class Address extends AbstractVerification {
     }
 
     /**
-     * Sets the City name for this Address. The value may be null, but cannot
-     * exceed the maximum length.<br />
-     *   The method will thrown an {@code IllegalArgumentException} if the given
-     * value exceeds the maximum length.
+     * <p>Sets the City name for this Address. The value may be null, but cannot
+     * exceed the maximum length.</p>
+     *
+     * <p>The method will thrown an {@code IllegalArgumentException} if the given
+     * value exceeds the maximum length.</p>
      *
      * @param city City Name
      * @throws IllegalArgumentException if the value exceeds the maximum length
@@ -170,10 +174,11 @@ public final class Address extends AbstractVerification {
     }
 
     /**
-     * Sets the State Name for this Address. The value may be null, but cannot
-     * exceed the maximum length.<br />
-     *   The method will thrown an {@code IllegalArgumentException} if the given
-     * value exceeds the maximum length.
+     * <p>Sets the State Name for this Address. The value may be null, but
+     * cannot exceed the maximum length.</p>
+     *
+     * <p>The method will thrown an {@code IllegalArgumentException} if the given
+     * value exceeds the maximum length.</p>
      *
      * @param state State Name
      * @throws IllegalArgumentException if the value exceeds the maximum length
@@ -189,10 +194,11 @@ public final class Address extends AbstractVerification {
     }
 
     /**
-     * Sets the Post Office Box Number for this Address. The value may be null,
-     * but cannot exceed the maximum length.<br />
-     *   The method will thrown an {@code IllegalArgumentException} if the given
-     * value exceeds the maximum length.
+     * <p>Sets the Post Office Box Number for this Address. The value may be
+     * null, but cannot exceed the maximum length.</p>
+     *
+     * <p>The method will thrown an {@code IllegalArgumentException} if the
+     * given value exceeds the maximum length.</p>
      *
      * @param pobox Post Office Box number
      * @throws IllegalArgumentException if the value exceeds the maximum length
@@ -208,10 +214,11 @@ public final class Address extends AbstractVerification {
     }
 
     /**
-     * Sets the Country for this Address. The value may be null, but must be
-     * a valid Country Object.<br />
-     *   The method will thrown an {@code IllegalArgumentException} if the given
-     * value is not a valid Country Object.
+     * <p>Sets the Country for this Address. The value may be null, but must be
+     * a valid Country Object.</p>
+     *
+     * <p>The method will thrown an {@code IllegalArgumentException} if the
+     * given value is not a valid Country Object.</p>
      *
      * @param country Country Object
      * @throws IllegalArgumentException if the value is invalid
@@ -237,70 +244,5 @@ public final class Address extends AbstractVerification {
         // Since an Address is an optional Object, we're not going to make any
         // validity checks here
         return new HashMap<>(0);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof Address)) {
-            return false;
-        }
-
-        final Address address = (Address) obj;
-
-        if ((street1 != null) ? !street1.equals(address.street1) : (address.street1 != null)) {
-            return false;
-        }
-        if ((street2 != null) ? !street2.equals(address.street2) : (address.street2 != null)) {
-            return false;
-        }
-        if ((postalCode != null) ? !postalCode.equals(address.postalCode) : (address.postalCode != null)) {
-            return false;
-        }
-        if ((city != null) ? !city.equals(address.city) : (address.city != null)) {
-            return false;
-        }
-        if ((state != null) ? !state.equals(address.state) : (address.state != null)) {
-            return false;
-        }
-
-        return !((country != null) ? !country.equals(address.country) : (address.country != null));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        int result = IWSConstants.HASHCODE_INITIAL_VALUE;
-
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((street1 != null) ? street1.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((street2 != null) ? street2.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((postalCode != null) ? postalCode.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((city != null) ? city.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((state != null) ? state.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((country != null) ? country.hashCode() : 0);
-
-        return result;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        return "Address{" +
-                ", street1='" + street1 + '\'' +
-                ", street2='" + street2 + '\'' +
-                ", postalCode='" + postalCode + '\'' +
-                ", city='" + city + '\'' +
-                ", state='" + state + '\'' +
-                ", country=" + country +
-                '}';
     }
 }

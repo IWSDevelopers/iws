@@ -76,49 +76,4 @@ public final class FetchInternationalGroupResponse extends FallibleResponse {
     public List<UserGroup> getGroups() {
         return groups;
     }
-
-    // =========================================================================
-    // Standard Response Methods
-    // =========================================================================
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof FetchInternationalGroupResponse)) {
-            return false;
-        }
-        if (!super.equals(obj)) {
-            return false;
-        }
-
-        final FetchInternationalGroupResponse that = (FetchInternationalGroupResponse) obj;
-        return !((groups != null) ? !groups.equals(that.groups) : (that.groups != null));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((groups != null) ? groups.hashCode() : 0);
-
-        return result;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        return "FetchInternationalGroupResponse{" +
-                "groups=" + groups +
-                '}';
-    }
 }

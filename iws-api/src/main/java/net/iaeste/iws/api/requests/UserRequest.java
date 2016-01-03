@@ -27,10 +27,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Request Object for altering a User Account in the system. With this Object,
- * it is possible to block an active Account or re-activate a blocked Account,
- * and even delete an Account.<br />
- *   Note; deletion is a non-reversible action.
+ * <p>Request Object for altering a User Account in the system. With this
+ * Object, it is possible to block an active Account or re-activate a blocked
+ * Account, and even delete an Account.</p>
+ *
+ * <p><i>Note;</i> deletion is a non-reversible action.</p>
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -54,15 +55,15 @@ public final class UserRequest extends AbstractVerification {
     // =========================================================================
 
     /**
-     * Empty Constructor, to use if the setters are invoked. This is required
-     * for WebServices to work properly.
+     * <p>Empty Constructor, to use if the setters are invoked. This is required
+     * for WebServices to work properly.</p>
      */
     public UserRequest() {
         // Required for WebServices to work. Comment added to please Sonar.
     }
 
     /**
-     * Default Constructor.
+     * <p>Default Constructor.</p>
      *
      * @param user User Object to process
      */
@@ -84,12 +85,13 @@ public final class UserRequest extends AbstractVerification {
     }
 
     /**
-     * If the user is should change status, then the new status must be defined
-     * here. It is possible for someone with the rights to control a user
-     * account, to activate, deactivate & delete accounts. However, a users may
-     * not perform the status change operations on themselves.<br />
-     *   The only exception for users, regarding the status change rule, is that
-     * a user must activate an account.
+     * <p>If the user is should change status, then the new status must be
+     * defined here. It is possible for someone with the rights to control a
+     * user account, to activate, deactivate &amp; delete accounts. However, a
+     * user may not perform the status change operations on themselves.</p>
+     *
+     * <p>The only exception for users, regarding the status change rule, is
+     * that a user must activate an account.</p>
      *
      * @param newStatus New Status value for a user
      */
@@ -103,14 +105,15 @@ public final class UserRequest extends AbstractVerification {
     }
 
     /**
-     * If a user must change their username, i.e. the registered e-mail address,
-     * then this value must be set here. This change can be invoked both by
-     * users and administrators. The change will not be directly updated, but
-     * only marked, until the user has approved the change with a code that is
-     * being sent.<br />
-     *   Note, that if a user wishes to update his or her username, then they
+     * <p>If a user must change their username, i.e. the registered e-mail
+     * address, then this value must be set here. This change can be invoked
+     * both by users and administrators. The change will not be directly
+     * updated, but only marked, until the user has approved the change with a
+     * code that is being sent.</p>
+     *
+     * <p>Note, that if a user wishes to update his or her username, then they
      * must also provide their password. Otherwise, they will get an error from
-     * the system.
+     * the system.</p>
      *
      * @param newUsername New username (e-mail address) for the user
      */
@@ -124,14 +127,16 @@ public final class UserRequest extends AbstractVerification {
     }
 
     /**
-     * If a user wishes to update the current passwordm then the new password
-     * must be provided, together with the existing for verification.<br />
-     *   The new Password must follow the internal regular expression for
+     * <p>If a user wishes to update the current password, then the new password
+     * must be provided, together with the existing for verification.</p>
+     *
+     * <p>The new Password must follow the internal regular expression for
      * Passwords, otherwise an {@code java.lang.IllegalArgumentException} is
-     * thrown.<br />
-     *   Note, the error message from the Exception will not display the new
+     * thrown.</p>
+     *
+     * <p>Note, the error message from the Exception will not display the new
      * Password, as this will potentially be logged somewhere, which could be a
-     * serious problem for the user.
+     * serious problem for the user.</p>
      *
      * @param newPassword New Password for the user
      * @see IWSConstants#PASSWORD_REGEX
@@ -146,10 +151,12 @@ public final class UserRequest extends AbstractVerification {
     }
 
     /**
-     * If a user wishes to update the current username, then the password must
-     * also be provided, to have an authentication mechanism - this will prevent
-     * that someone abuses a currently active session.<br />
-     *   The password is not needed, if an administrator initiates the update.
+     * <p>If a user wishes to update the current username, then the password
+     * must also be provided, to have an authentication mechanism - this will
+     * prevent that someone abuses a currently active session.</p>
+     *
+     * <p>The password is not needed, if an administrator initiates the
+     * update.</p>
      *
      * @param password Current Password, to authenticate user
      */

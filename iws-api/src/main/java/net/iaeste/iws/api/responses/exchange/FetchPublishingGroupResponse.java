@@ -77,32 +77,4 @@ public final class FetchPublishingGroupResponse extends FallibleResponse {
     public List<PublishingGroup> getPublishingGroups() {
         return publishingGroups;
     }
-
-    // =========================================================================
-    // Standard Response Methods
-    // =========================================================================
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(final Object obj) {
-        return super.equals(obj);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        return super.hashCode();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        return "";
-    }
 }

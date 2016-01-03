@@ -15,23 +15,26 @@
 package net.iaeste.iws.api.dtos;
 
 import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.api.util.ReflectiveStandardMethods;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 /**
- * If requested, all changes can be monitored internally. The monitoring means
- * that the changes are stored, either complete or just the individual fields,
- * in a history.<br />
- *   This Object contain the list of differences for a single update. Complete
+ * <p>If requested, all changes can be monitored internally. The monitoring
+ * means that the changes are stored, either complete or just the individual
+ * fields, in a history.</p>
+ *
+ * <p>This Object contain the list of differences for a single update. Complete
  * with who and when. Note, that the control what is to be stored, is set by the
  * Group. By default. the IWS will try to uphold the strictest privacy
  * guidelines, meaning that the initial settings is to not store any such
- * information.<br />
- *   It is important to note, that this Object is reading out information that
+ * information.</p>
+ *
+ * <p>It is important to note, that this Object is reading out information that
  * is stored as part of a previous change, meaning that it is not possible to
- * make any changes using this Object.
+ * make any changes using this Object.</p>
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -153,28 +156,7 @@ public final class Change implements Serializable {
      */
     @Override
     public boolean equals(final Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof Change)) {
-            return false;
-        }
-
-        final Change change = (Change) obj;
-
-        if ((changed != null) ? !changed.equals(change.changed) : (change.changed != null)) {
-            return false;
-        }
-
-        if ((fields != null) ? !fields.equals(change.fields) : (change.fields != null)) {
-            return false;
-        }
-
-        if ((group != null) ? !group.equals(change.group) : (change.group != null)) {
-            return false;
-        }
-
-        return !((user != null) ? !user.equals(change.user) : (change.user != null));
+        return ReflectiveStandardMethods.reflectiveEquals(this, obj);
     }
 
     /**
@@ -182,14 +164,7 @@ public final class Change implements Serializable {
      */
     @Override
     public int hashCode() {
-        int result = IWSConstants.HASHCODE_INITIAL_VALUE;
-
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((user != null) ? user.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((group != null) ? group.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((fields != null) ? fields.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((changed != null) ? changed.hashCode() : 0);
-
-        return result;
+        return ReflectiveStandardMethods.reflectiveHashCode(this);
     }
 
     /**
@@ -197,11 +172,6 @@ public final class Change implements Serializable {
      */
     @Override
     public String toString() {
-        return "Change{" +
-                "user=" + user +
-                ", group=" + group +
-                ", fields=" + fields +
-                ", changed=" + changed +
-                '}';
+        return ReflectiveStandardMethods.reflectiveToString(this);
     }
 }

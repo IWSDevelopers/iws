@@ -26,11 +26,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * This Object contains the information about a User in a Group relation. It is
- * used for fetching user information. If a user has chosen to allow private
- * information to be displayed, then it is also set - otherwise it isn't.<br />
- *   Note, this Object is purely for reading information about a User, it does
- * not provide details about Permissions, or anything else.
+ * <p>This Object contains the information about a User in a Group relation. It
+ * is used for fetching user information. If a user has chosen to allow private
+ * information to be displayed, then it is also set - otherwise it isn't.</p>
+ *
+ * <p>Note, this Object is purely for reading information about a User, it does
+ * not provide details about Permissions, or anything else.</p>
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -89,14 +90,15 @@ public final class UserGroup extends AbstractVerification {
     // =========================================================================
 
     /**
-     * Sets the UserGroup Id, which is the internally generated key for this
+     * <p>Sets the UserGroup Id, which is the internally generated key for this
      * Object. Note, that the presence of the value will determine if the IWS
      * should process this record as if it exist or not. If the Id is set, but
      * no record exists, then the system will reply with an error. Likewise, if
      * no Id is provided, but the record exists, the system will reply with an
-     * error.<br />
-     *   The value must be a valid Id, otherwise the method will throw an
-     * {@code IllegalArgumentException}.
+     * error.</p>
+     *
+     * <p>The value must be a valid Id, otherwise the method will throw an
+     * {@code IllegalArgumentException}.</p>
      *
      * @param userGroupId UserGroup Id
      * @throws IllegalArgumentException if the Id is set but invalid
@@ -146,12 +148,14 @@ public final class UserGroup extends AbstractVerification {
     }
 
     /**
-     * Sets the Users Role within a Group. The user must have a role, to what
-     * and how the user may interact with the data belonging to the Group.<br />
-     *   The User may have any valid Role, however there can be only one User
-     * who have the role "Owner" within a Group.<br />
-     *   The value is mandatory, and if not set, then the method will thrown
-     * an {@code IllegalArgumentException}.
+     * <p>Sets the Users Role within a Group. The user must have a role, to what
+     * and how the user may interact with the data belonging to the Group.</p>
+     *
+     * <p>The User may have any valid Role, however there can be only one User
+     * who have the role "Owner" within a Group.</p>
+     *
+     * <p>The value is mandatory, and if not set, then the method will thrown
+     * an {@code IllegalArgumentException}.</p>
      *
      * @param role User Role within the Group
      * @throws IllegalArgumentException if the Role is invalid.
@@ -171,7 +175,7 @@ public final class UserGroup extends AbstractVerification {
      * method will throw an {@code IllegalArgumentException}.
      *
      * @param title Custom title for the user
-     * @throws IllegalArgumentException if the value exceeds 50 chacters
+     * @throws IllegalArgumentException if the value exceeds 50 characters
      */
     public void setTitle(final String title) throws IllegalArgumentException {
         ensureNotTooLong("title", title, 50);
@@ -184,7 +188,7 @@ public final class UserGroup extends AbstractVerification {
 
     /**
      * If the User should be on the public mailinglist, i.e. the @iaeste.org
-     * mailinglist. Note, that only if the Group allows public mailinglists will
+     * mailinglist. Note, that only if the Group allows public mailingLists will
      * this have an affect for the user.
      *
      * @param onPublicList True if the user should be on, otherwise false
@@ -199,7 +203,7 @@ public final class UserGroup extends AbstractVerification {
 
     /**
      * If the User should be on the private mailinglist, i.e. the @iaeste.net
-     * mailinglist. Note, that only if the Group allows private mailinglists
+     * mailinglist. Note, that only if the Group allows private mailingLists
      * will this have an effect for the user.
      *
      * @param onPrivateList True if the user should be on, otherwise false
@@ -258,88 +262,5 @@ public final class UserGroup extends AbstractVerification {
         isNotNull(validation, "role", role);
 
         return validation;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof UserGroup)) {
-            return false;
-        }
-        if (!super.equals(obj)) {
-            return false;
-        }
-
-        final UserGroup userGroup = (UserGroup) obj;
-
-        if ((userGroupId != null) ? !userGroupId.equals(userGroup.userGroupId) : (userGroup.userGroupId != null)) {
-            return false;
-        }
-        if ((user != null) ? !user.equals(userGroup.user) : (userGroup.user != null)) {
-            return false;
-        }
-        if ((group != null) ? !group.equals(userGroup.group) : (userGroup.group != null)) {
-            return false;
-        }
-        if ((role != null) ? !role.equals(userGroup.role) : (userGroup.role != null)) {
-            return false;
-        }
-        if ((title != null) ? !title.equals(userGroup.title) : (userGroup.title != null)) {
-            return false;
-        }
-        if (onPublicList != userGroup.onPublicList) {
-            return false;
-        }
-        if (onPrivateList != userGroup.onPrivateList) {
-            return false;
-        }
-        if (writeToPrivateList != userGroup.writeToPrivateList) {
-            return false;
-        }
-
-        return !((memberSince != null) ? !memberSince.equals(userGroup.memberSince) : (userGroup.memberSince != null));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((userGroupId != null) ? userGroupId.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((user != null) ? user.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((group != null) ? group.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((role != null) ? role.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((title != null) ? title.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (onPublicList ? 1 : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (onPrivateList ? 1 : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (writeToPrivateList ? 1 : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((memberSince != null) ? memberSince.hashCode() : 0);
-
-        return result;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        return "UserGroup{" +
-                "userGroupId='" + userGroupId + '\'' +
-                ", user=" + user +
-                ", group=" + group +
-                ", role=" + role +
-                ", title='" + title + '\'' +
-                ", onPublicList=" + onPublicList +
-                ", onPrivateList=" + onPrivateList +
-                ", writeToPrivateList=" + writeToPrivateList +
-                ", memberSince=" + memberSince +
-                '}';
     }
 }

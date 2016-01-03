@@ -96,47 +96,4 @@ public final class CSVProcessingErrors implements Serializable {
     public String get(final String key) {
         return csvErrors.get(key);
     }
-
-    // =========================================================================
-    // Standard Response Methods
-    // =========================================================================
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof CSVProcessingErrors)) {
-            return false;
-        }
-
-        final CSVProcessingErrors that = (CSVProcessingErrors) obj;
-
-        if (csvErrors != null ? !csvErrors.equals(that.csvErrors) : that.csvErrors != null) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        return csvErrors != null ? csvErrors.hashCode() : 0;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        return "CSVProcessingErrors{" +
-                "csvErrors=" + csvErrors +
-                '}';
-    }
 }

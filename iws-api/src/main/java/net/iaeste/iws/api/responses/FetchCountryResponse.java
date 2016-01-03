@@ -76,49 +76,4 @@ public final class FetchCountryResponse extends FallibleResponse {
     public List<Country> getCountries() {
         return countries;
     }
-
-    // =========================================================================
-    // Standard Response Methods
-    // =========================================================================
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof FetchCountryResponse)) {
-            return false;
-        }
-        if (!super.equals(obj)) {
-            return false;
-        }
-
-        final FetchCountryResponse that = (FetchCountryResponse) obj;
-        return !((countries != null) ? !countries.equals(that.countries) : (that.countries != null));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((countries != null) ? countries.hashCode() : 0);
-
-        return result;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        return "FetchCountryResponse{" +
-                "countries=" + countries +
-                '}';
-    }
 }

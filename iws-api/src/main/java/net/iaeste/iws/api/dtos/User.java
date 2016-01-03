@@ -19,7 +19,8 @@ import net.iaeste.iws.api.enums.NotificationFrequency;
 import net.iaeste.iws.api.enums.Privacy;
 import net.iaeste.iws.api.enums.UserStatus;
 import net.iaeste.iws.api.enums.UserType;
-import net.iaeste.iws.api.util.AbstractDto;
+import net.iaeste.iws.api.util.AbstractVerification;
+import net.iaeste.iws.api.util.StandardMethods;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -29,18 +30,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * User Object, contain the system specific information related to a user, and
- * the personal details in the Person Object. Please note, that a user is
+ * <p>User Object, contain the system specific information related to a user,
+ * and the personal details in the Person Object. Please note, that a user is
  * considered a vital Object in the system and cannot be deleted. The personal
- * details can be deleted.<br />
- *   Since the username is the e-mail of a user which is subject to changes, it
+ * details can be deleted.</p>
+ *
+ * <p>Since the username is the e-mail of a user which is subject to changes, it
  * is, of course, possible to change it - just as it is possible to change the
  * password. However, the name of a user cannot be altered. The system is
  * designed as a multi-user system, where it is possible to assign rights to
  * others. However, giving an account to another user by altering the name of
- * the user, can be very confusing, since older records are now suddently owned
+ * the user, can be very confusing, since older records are now suddenly owned
  * by a different person, who may not have had anything to do with the original
- * user.
+ * user.</p>
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -48,37 +50,37 @@ import java.util.Map;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "user", propOrder = { "userId", "username", "alias", "firstname", "lastname", "person", "status", "type", "privacy", "notifications" })
-public final class User extends AbstractDto {
+public final class User extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    @XmlElement(required = true, nillable = true)  private String userId = null;
-    @XmlElement(required = true, nillable = true)  private String username = null;
-    @XmlElement(required = true, nillable = true)  private String alias = null;
-    @XmlElement(required = true, nillable = true)  private String firstname = null;
-    @XmlElement(required = true, nillable = true)  private String lastname = null;
-    @XmlElement(required = true, nillable = true)  private Person person = null;
-    @XmlElement(required = true, nillable = true)  private UserStatus status = null;
-    @XmlElement(required = true, nillable = false) private UserType type = UserType.VOLUNTEER;
-    @XmlElement(required = true, nillable = false) private Privacy privacy = Privacy.PRIVATE;
-    @XmlElement(required = true, nillable = false) private NotificationFrequency notifications = NotificationFrequency.IMMEDIATELY;
+    @XmlElement(required = true, nillable = true)  @StandardMethods(StandardMethods.For.ALL)  private String userId = null;
+    @XmlElement(required = true, nillable = true)  @StandardMethods(StandardMethods.For.ALL)  private String username = null;
+    @XmlElement(required = true, nillable = true)  @StandardMethods(StandardMethods.For.ALL)  private String alias = null;
+    @XmlElement(required = true, nillable = true)  @StandardMethods(StandardMethods.For.ALL)  private String firstname = null;
+    @XmlElement(required = true, nillable = true)  @StandardMethods(StandardMethods.For.ALL)  private String lastname = null;
+    @XmlElement(required = true, nillable = true)  @StandardMethods(StandardMethods.For.NONE) private Person person = null;
+    @XmlElement(required = true, nillable = true)  @StandardMethods(StandardMethods.For.ALL)  private UserStatus status = null;
+    @XmlElement(required = true, nillable = false) @StandardMethods(StandardMethods.For.ALL)  private UserType type = UserType.VOLUNTEER;
+    @XmlElement(required = true, nillable = false) @StandardMethods(StandardMethods.For.NONE) private Privacy privacy = Privacy.PRIVATE;
+    @XmlElement(required = true, nillable = false) @StandardMethods(StandardMethods.For.NONE) private NotificationFrequency notifications = NotificationFrequency.IMMEDIATELY;
 
     // =========================================================================
     // Object Constructors
     // =========================================================================
 
     /**
-     * Empty Constructor, to use if the setters are invoked. This is required
-     * for WebServices to work properly.
+     * <p>Empty Constructor, to use if the setters are invoked. This is required
+     * for WebServices to work properly.</p>
      */
     public User() {
         // Required for WebServices to work. Comment added to please Sonar.
     }
 
     /**
-     * Constructor for an existing user, where the personal details should be
-     * updated.
+     * <p>Constructor for an existing user, where the personal details should be
+     * updated.</p>
      *
      * @param userId The internal Id of the user
      * @param person The personal details
@@ -89,22 +91,23 @@ public final class User extends AbstractDto {
     }
 
     /**
-     * Constructor for an existing user, where the personal details should be
+     * <p>Constructor for an existing user, where the personal details should be
      * updated. Please note, that there is a state machine checking the current
-     * status against the new.<br />
-     *   Below is the State machine presented. A User always starts with Status
+     * status against the new.</p>
+     *
+     * <p>Below is the State machine presented. A User always starts with Status
      * "New", and can from there either get the status "Active" or "Blocked".
      * If the user is removed, the status is then set to "Deleted" - meaning
      * that all private data is removed from the system, and the user account
      * is deactivated. However, it is important to note that the User Object in
      * the system will remain there - the reason for this, is that the User may
      * also have worked with Group data, and thus the information about the
-     * person must be preserved in the history.
+     * person must be preserved in the history.</p>
      * <pre>
      *              NEW
      *             /   \
      *            /     \
-     *       ACTIVE <-> SUSPENDED
+     *       ACTIVE &lt;-&gt; SUSPENDED
      *           \      /
      *            \    /
      *            DELETED
@@ -119,7 +122,7 @@ public final class User extends AbstractDto {
     }
 
     /**
-     * Copy Constructor.
+     * <p>Copy Constructor.</p>
      *
      * @param user User Object to copy
      */
@@ -143,14 +146,14 @@ public final class User extends AbstractDto {
     // =========================================================================
 
     /**
-     * Sets the User Id. Users cannot be created with this Object, rather they
-     * are created with a createUser request. Hence, this field is mandatory,
-     * and must be set to a valid UserId. If the value is not then the method
-     * will throw an {@code IllegalArgumentException}.
+     * <p>Sets the User Id. Users cannot be created with this Object, rather
+     * they are created with a createUser request. Hence, this field is
+     * mandatory, and must be set to a valid UserId. If the value is not then
+     * the method will throw an {@code IllegalArgumentException}.</p>
      *
      * @param userId User Id
      * @throws IllegalArgumentException if the Id is invalid
-     * @see AbstractDto#UUID_FORMAT
+     * @see AbstractVerification#UUID_FORMAT
      */
     public void setUserId(final String userId) throws IllegalArgumentException {
         ensureValidId("userId", userId);
@@ -162,10 +165,10 @@ public final class User extends AbstractDto {
     }
 
     /**
-     * Sets the Username for the user, i.e. the users e-mail address which is
+     * <p>Sets the Username for the user, i.e. the users e-mail address which is
      * used as identification in the IWS. The value is set from the IWS, but
      * cannot be updated via this Object. Instead it has to be provided with the
-     * controlUserAccount request.
+     * controlUserAccount request.</p>
      *
      * @param username User's e-mail address used as Identification
      */
@@ -178,10 +181,10 @@ public final class User extends AbstractDto {
     }
 
     /**
-     * The Alias, is the e-mail address, which is generated for the User by the
-     * IWS, as part of the IAESTE Corporate Identity. The alias is only
+     * <p>The Alias, is the e-mail address, which is generated for the User by
+     * the IWS, as part of the IAESTE Corporate Identity. The alias is only
      * generated for IAESTE Members, not for Students. The alias cannot be
-     * updated by normal means.
+     * updated by normal means.</p>
      *
      * @param alias IWS Generated IAESTE Alias (Corporate Identity e-mail)
      */
@@ -194,9 +197,9 @@ public final class User extends AbstractDto {
     }
 
     /**
-     * Reads the users firstname from the IWS, the value is set as part of
+     * <p>Reads the users firstname from the IWS, the value is set as part of
      * creating an account, and the value is only read out from the IWS with
-     * this Object.
+     * this Object.</p>
      *
      * @param firstname User's firstname
      */
@@ -209,9 +212,9 @@ public final class User extends AbstractDto {
     }
 
     /**
-     * Reads the users lastname from the IWS, the value is set as part of
+     * <p>Reads the users lastname from the IWS, the value is set as part of
      * creating an account, and the value is only read out from the IWS with
-     * this Object.
+     * this Object.</p>
      *
      * @param lastname User's lastname
      */
@@ -224,13 +227,14 @@ public final class User extends AbstractDto {
     }
 
     /**
-     * Sets the User's Personal details. These details are important for certain
-     * things, but is generally falling under the privacy category, meaning that
-     * only of the user is lowering the privacy settings, then it will be
-     * displayed to others.<br />
-     *   The value is optional, and only requires that the Object is valid if it
-     * is set. If not, then the method will throw an
-     * {@code IllegalArgumentException}.
+     * <p>Sets the User's Personal details. These details are important for
+     * certain things, but is generally falling under the privacy category,
+     * meaning that only of the user is lowering the privacy settings, then it
+     * will be displayed to others.</p>
+     *
+     * <p>The value is optional, and only requires that the Object is valid if
+     * it is set. If not, then the method will throw an
+     * {@code IllegalArgumentException}.</p>
      *
      * @param person User's personal details
      * @throws IllegalArgumentException if invalid
@@ -245,8 +249,8 @@ public final class User extends AbstractDto {
     }
 
     /**
-     * Reads the User's status from the IWS, the status cannot be altered via
-     * this Object.
+     * <p>Reads the User's status from the IWS, the status cannot be altered via
+     * this Object.</p>
      *
      * @param status User's Status
      */
@@ -268,10 +272,12 @@ public final class User extends AbstractDto {
     }
 
     /**
-     * Sets the User's privacy setting. By default, the privacy is set to max,
-     * meaning that no information whatsoever will be shared with others.<br />
-     *   The value is mandatory, and setting it to null will cause the method to
-     * throw an {@code IllegalArgumentException}.
+     * <p>Sets the User's privacy setting. By default, the privacy is set to
+     * max, meaning that no information whatsoever will be shared with
+     * others.</p>
+     *
+     * <p>The value is mandatory, and setting it to null will cause the method
+     * to throw an {@code IllegalArgumentException}.</p>
      *
      * @param privacy User's privacy setting
      * @throws IllegalArgumentException if set to null
@@ -286,12 +292,13 @@ public final class User extends AbstractDto {
     }
 
     /**
-     * Sets the Notification frequency for a User. By default, the frequency is
-     * set to immediately, but it may also be possible to set it to a different
-     * value. Note, this value is mandatory, since it is a vital part of the
-     * inner workings of the IWS.<br />
-     *   The value is mandatory, and setting it to null will cause the method to
-     * throw an {@code IllegalArgumentException}.
+     * <p>Sets the Notification frequency for a User. By default, the frequency
+     * is set to immediately, but it may also be possible to set it to a
+     * different value. Note, this value is mandatory, since it is a vital part
+     * of the inner workings of the IWS.</p>
+     *
+     * <p>The value is mandatory, and setting it to null will cause the method
+     * to throw an {@code IllegalArgumentException}.</p>
      *
      * @param notifications User Notification Frequency
      * @throws IllegalArgumentException if set to null
@@ -319,92 +326,5 @@ public final class User extends AbstractDto {
         isVerifiable(validation, "person", person);
 
         return validation;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof User)) {
-            return false;
-        }
-        if (!super.equals(obj)) {
-            return false;
-        }
-
-        final User user = (User) obj;
-
-        // Note, the Notifications & Person Objects are omitted, since they are
-        // not set for all views of this Object, and we need to verify that two
-        // instances are identical, regardless of who is viewing them
-        if ((userId != null) ? !userId.equals(user.userId) : (user.userId != null)) {
-            return false;
-        }
-        if ((username != null) ? !username.equals(user.username) : (user.username != null)) {
-            return false;
-        }
-        if ((alias != null) ? !alias.equals(user.alias) : (user.alias != null)) {
-            return false;
-        }
-        if ((firstname != null) ? !firstname.equals(user.firstname) : (user.firstname != null)) {
-            return false;
-        }
-        if ((lastname != null) ? !lastname.equals(user.lastname) : (user.lastname != null)) {
-            return false;
-        }
-        if (status != user.status) {
-            return false;
-        }
-        if (type != user.type) {
-            return false;
-        }
-
-        return privacy == user.privacy;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-
-        // Note, the Notifications & Person Objects are omitted, since they are
-        // not set for all views of this Object, and we need to verify that two
-        // instances are identical, regardless of who is viewing them
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((userId != null) ? userId.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((username != null) ? username.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((alias != null) ? alias.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((firstname != null) ? firstname.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((lastname != null) ? lastname.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((status != null) ? status.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((type != null) ? type.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((privacy != null) ? privacy.hashCode() : 0);
-
-        return result;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        // Note, the Notifications & Person Objects are omitted, since they are
-        // not set for all views of this Object, and we need to verify that two
-        // instances are identical, regardless of who is viewing them
-        return "User{" +
-                "userId='" + userId + '\'' +
-                ", username='" + username + '\'' +
-                ", alias='" + alias + '\'' +
-                ", firstname='" + firstname + '\'' +
-                ", lastname='" + lastname + '\'' +
-                ", status=" + status +
-                ", type=" + type +
-                ", privacy=" + privacy +
-                '}';
     }
 }

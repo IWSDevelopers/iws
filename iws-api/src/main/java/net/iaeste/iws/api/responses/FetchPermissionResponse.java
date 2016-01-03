@@ -74,6 +74,7 @@ public final class FetchPermissionResponse extends FallibleResponse {
     /**
      * Default Constructor.
      *
+     * @param userId         UserId for the User who's permissions is retrieved
      * @param authorizations List of allowed Permission for a given user
      */
     public FetchPermissionResponse(final String userId, final List<Authorization> authorizations) {
@@ -135,7 +136,7 @@ public final class FetchPermissionResponse extends FallibleResponse {
      *
      * @param permission Permission to match the Groups for
      * @param groupId    The Id of the Group to match
-     * @return Group with the given Criterias or null
+     * @return Group with the given Criteria's or null
      */
     public Group getGroup(final Permission permission, final String groupId) {
         Group found = null;
@@ -151,15 +152,16 @@ public final class FetchPermissionResponse extends FallibleResponse {
     }
 
     /**
-     * Returns a List of all Groups, which have the given GroupType. For some
+     * <p>Returns a List of all Groups, which have the given GroupType. For some
      * GroupTypes, such as Members or National the user may only belong to one,
      * but for others like Local Committee, International or WorkGroup, the User
-     * may belong to more.<br />
-     *   If no Groups match the Criterias, then an empty list is returned.
+     * may belong to more.</p>
+     *
+     * <p>If no Groups match the Criteria's, then an empty list is returned.</p>
      *
      * @param permission Permission to match the Groups for
      * @param type       GroupType to match the Groups for
-     * @return List of all Groups matching the given Type & Permission
+     * @return List of all Groups matching the given Type &amp; Permission
      */
     public List<Group> getGroups(final Permission permission, final GroupType type) {
         final List<Group> found = new ArrayList<>();
@@ -194,20 +196,22 @@ public final class FetchPermissionResponse extends FallibleResponse {
     }
 
     /**
-     * This method converts the Authorizations Object into a more usable mapping
-     * of the Users permissions, by returning a Map using the individual
+     * <p>This method converts the Authorizations Object into a more usable
+     * mapping of the Users permissions, by returning a Map using the individual
      * Permissions as keys and having a list of Groups, which the user belongs
-     * to.<br />
-     *   By having this list, it is possible to quickly extract the actually
+     * to.</p>
+     *
+     * <p>By having this list, it is possible to quickly extract the actually
      * required information such as if a person is allowed to perform a given
      * action. The Actions are listed in the description of each Permission in
-     * the Permission enum.<br />
-     *   Note, this method will re-generate the map each time it is invoked, and
+     * the Permission enum.</p>
+     *
+     * <p>Note, this method will re-generate the map each time it is invoked, and
      * other methods in this class, such as #hasPermission, #getGroup &amp;
      * #getGroups will all invoke it as well. Meaning that a careless usage of
      * this method can be costly. It was decided to leave it as such, since the
      * IWS is exposing these Objects purely as an example, and not as Maps
-     * aren't Serializable, it will remain so.
+     * aren't Serializable, it will remain so.</p>
      *
      * @return Map with Permissions and Groups
      */
@@ -227,50 +231,5 @@ public final class FetchPermissionResponse extends FallibleResponse {
         }
 
         return permissionMap;
-    }
-
-    // =========================================================================
-    // Standard Response Methods
-    // =========================================================================
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
-            return true;
-        }
-
-        if (!(obj instanceof FetchPermissionResponse)) {
-            return false;
-        }
-
-        final FetchPermissionResponse that = (FetchPermissionResponse) obj;
-        return !((authorizations != null) ? !authorizations.equals(that.authorizations) : (that.authorizations != null));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        int hash = super.hashCode();
-
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((userId != null) ? userId.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((authorizations != null) ? authorizations.hashCode() : 0);
-
-        return hash;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        return "FetchPermissionResponse{" +
-                "userId=" + userId +
-                "authorizations=" + authorizations +
-                '}';
     }
 }

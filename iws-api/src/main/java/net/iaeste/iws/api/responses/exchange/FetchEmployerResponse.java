@@ -83,49 +83,4 @@ public final class FetchEmployerResponse extends FallibleResponse {
     public List<Employer> getEmployers() {
         return employers;
     }
-
-    // =========================================================================
-    // Standard Response Methods
-    // =========================================================================
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof FetchEmployerResponse)) {
-            return false;
-        }
-        if (!super.equals(obj)) {
-            return false;
-        }
-
-        final FetchEmployerResponse that = (FetchEmployerResponse) obj;
-        return !((employers != null) ? !employers.equals(that.employers) : (that.employers != null));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((employers != null) ? employers.hashCode() : 0);
-
-        return result;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        return "FetchEmployerRequest{" +
-                "employers=" + employers +
-                '}';
-    }
 }

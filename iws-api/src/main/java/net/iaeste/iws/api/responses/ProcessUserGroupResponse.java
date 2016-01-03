@@ -81,49 +81,4 @@ public final class ProcessUserGroupResponse extends FallibleResponse {
     public UserGroup getUserGroup() {
         return new UserGroup(userGroup);
     }
-
-    // =========================================================================
-    // Standard Response Methods
-    // =========================================================================
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof ProcessUserGroupResponse)) {
-            return false;
-        }
-        if (!super.equals(obj)) {
-            return false;
-        }
-
-        final ProcessUserGroupResponse that = (ProcessUserGroupResponse) obj;
-        return !(userGroup != null ? !userGroup.equals(that.userGroup) : that.userGroup != null);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (userGroup != null ? userGroup.hashCode() : 0);
-
-        return result;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        return "ProcessUserGroupResponse{" +
-                "userGroup=" + userGroup +
-                '}';
-    }
 }

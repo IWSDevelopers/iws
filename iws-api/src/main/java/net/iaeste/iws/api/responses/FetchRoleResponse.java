@@ -82,46 +82,4 @@ public final class FetchRoleResponse extends FallibleResponse {
     public List<Role> getRoles() {
         return roles;
     }
-
-    // =========================================================================
-    // Standard Response Methods
-    // =========================================================================
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof FetchRoleResponse)) {
-            return false;
-        }
-
-        final FetchRoleResponse that = (FetchRoleResponse) obj;
-        return !((roles != null) ? !roles.equals(that.roles) : (that.roles != null));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((roles != null) ? roles.hashCode() : 0);
-
-        return result;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        return "FetchRoleResponse{" +
-                "roles=" + roles +
-                '}';
-    }
 }

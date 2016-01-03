@@ -80,14 +80,15 @@ public class NotificationManager implements Notifications {
     }
 
     /**
-     * Startup notification manager - load from DB registered notification consumers and subcribe them to the manager
+     * Startup notification manager - load from DB registered notification
+     * consumers and subscribe them to the manager.
      */
     public final void startupConsumers() {
         final List<NotificationConsumerEntity> consumers = dao.findActiveNotificationConsumers();
         final NotificationConsumerClassLoader classLoader = new NotificationConsumerClassLoader();
 
         for (final NotificationConsumerEntity consumer : consumers) {
-            final Observer observer = classLoader.findConsumerClass(consumer.getClassName(), entityManager, mailingEntityManager, settings);
+            final Observer observer = classLoader.findConsumerClass(consumer.getClassName(), entityManager, settings);
             observer.setId(consumer.getId());
             addObserver(observer);
         }

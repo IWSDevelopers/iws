@@ -40,6 +40,7 @@ public final class AuthenticationResponse extends FallibleResponse {
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     @XmlElement(required = true, nillable = false)
+    //@StandardMethods(StandardMethods.For.NONE)
     private AuthenticationToken token;
 
     // =========================================================================
@@ -95,46 +96,5 @@ public final class AuthenticationResponse extends FallibleResponse {
      */
     public AuthenticationToken getToken() {
         return token;
-    }
-
-    // =========================================================================
-    // Standard Response Methods
-    // =========================================================================
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
-            return true;
-        }
-
-        if (!(obj instanceof AuthenticationResponse)) {
-            return false;
-        }
-
-        final AuthenticationResponse that = (AuthenticationResponse) obj;
-        return !((token != null) ? !token.equals(that.token) : (that.token != null));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        int hash = super.hashCode();
-
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((token != null) ? token.hashCode() : 0);
-
-        return hash;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        return "AuthenticationResponse[token=" + token + ']';
     }
 }

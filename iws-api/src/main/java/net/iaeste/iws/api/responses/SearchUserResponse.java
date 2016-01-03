@@ -81,49 +81,4 @@ public final class SearchUserResponse extends FallibleResponse {
     public void setUsers(final List<UserGroup> users) {
         this.users = users;
     }
-
-    // =========================================================================
-    // Standard Response Methods
-    // =========================================================================
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof SearchUserResponse)) {
-            return false;
-        }
-        if (!super.equals(obj)) {
-            return false;
-        }
-
-        final SearchUserResponse that = (SearchUserResponse) obj;
-        return !((users != null) ? !users.equals(that.users) : (that.users != null));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((users != null) ? users.hashCode() : 0);
-
-        return result;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        return "SearchUserResponse{" +
-                "users=" + users +
-                '}';
-    }
 }

@@ -90,10 +90,11 @@ public final class Person extends AbstractVerification {
     // =========================================================================
 
     /**
-     * Sets the Nationality of the user, the Nationality is an optional field,
-     * though for certain internal processes, it is a required field.<br />
-     *   The method will throw an {@code IllegalArgumentException} if the value
-     * is not a verifiable Object.
+     * <p>Sets the Nationality of the user, the Nationality is an optional
+     * field, though for certain internal processes, it is a required field.</p>
+     *
+     * <p>The method will throw an {@code IllegalArgumentException} if the value
+     * is not a verifiable Object.</p>
      *
      * @param nationality User Nationality
      * @throws IllegalArgumentException if not verifiable
@@ -113,7 +114,7 @@ public final class Person extends AbstractVerification {
      * {@code IllegalArgumentException}.
      *
      * @param address Address for the Person
-     * @throws IllegalArgumentException
+     * @throws IllegalArgumentException of not verifiable
      */
     public void setAddress(final Address address) throws IllegalArgumentException {
         ensureVerifiable("address", address);
@@ -145,13 +146,13 @@ public final class Person extends AbstractVerification {
     }
 
     /**
-     * Sets the Person's landline phone number. The number is optional, but if
+     * Sets the Person's land line PhoneNumber. The number is optional, but if
      * set, then the length cannot exceed 25 characters. If the phone number
      * exceeds the maximum allowed number of characters, then the method will
      * throw an {@code IllegalArgumentException}.
      *
-     * @param phone Person's Landline Phonenumber
-     * @throws IllegalArgumentException if the phonenumber exceeds 25 characters
+     * @param phone Person's Land line PhoneNumber
+     * @throws IllegalArgumentException if the PhoneNumber exceeds 25 characters
      */
     public void setPhone(final String phone) throws IllegalArgumentException {
         ensureNotTooLong("phone", phone, 25);
@@ -168,7 +169,7 @@ public final class Person extends AbstractVerification {
      * exceeds the maximum allowed number of characters, then the method will
      * throw an {@code IllegalArgumentException}.
      *
-     * @param mobile Person's Mobile Phonenumber
+     * @param mobile Person's Mobile PhoneNumber
      * @throws IllegalArgumentException if the mobile number exceeds 25 characters
      */
     public void setMobile(final String mobile) throws IllegalArgumentException {
@@ -226,13 +227,14 @@ public final class Person extends AbstractVerification {
     }
 
     /**
-     * Changing the Privacy settings for Files or Folders has the consequence
+     * <p>Changing the Privacy settings for Files or Folders has the consequence
      * that these Object is generally accessible or viewable. This consequence
      * must be known and understood by the User, if not - then a pop-up should
      * appear explaining the consequences, and only by accepting this - will
-     * the flag be set.<br />
-     *   The value must be set to either True or False, if it is set to Null,
-     * then an {@code IllegalArgumentException} will be thrown.
+     * the flag be set.</p>
+     *
+     * <p>The value must be set to either True or False, if it is set to Null,
+     * then an {@code IllegalArgumentException} will be thrown.</p>
      *
      * @param understoodPrivacySettings Has the User understood the Privacy Settings
      * @throws IllegalArgumentException if set to null
@@ -247,14 +249,15 @@ public final class Person extends AbstractVerification {
     }
 
     /**
-     * The Announce mailing list will go to all Active Members of the IAESTE,
+     * <p>The Announce mailing list will go to all Active Members of the IAESTE,
      * except Students. The Announce list consists of announcements from the
      * Board or the IDT Administrators - but can also be a general newsletter
      * from the Staff. The announcements is not optional, but people may not
      * wish to receive newsletters, and by setting this flag, they won't. By
-     * default, this flag is set to true, making this an opt-out.<br />
-     *   The value must be set to either True or False, if it is set to Null,
-     * then an {@code IllegalArgumentException} will be thrown.
+     * default, this flag is set to true, making this an opt-out.</p>
+     *
+     * <p>The value must be set to either True or False, if it is set to Null,
+     * then an {@code IllegalArgumentException} will be thrown.</p>
      *
      * @param acceptNewsletters If the User accepts to receive Newsletters
      */
@@ -279,85 +282,5 @@ public final class Person extends AbstractVerification {
         // Since an Address is an optional Object, we're not going to make any
         // validity checks here
         return new HashMap<>(0);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof Person)) {
-            return false;
-        }
-
-        final Person person = (Person) obj;
-
-        if ((address != null) ? !address.equals(person.address) : (person.address != null)) {
-            return false;
-        }
-        if ((alternateEmail != null) ? !alternateEmail.equals(person.alternateEmail) : (person.alternateEmail != null)) {
-            return false;
-        }
-        if ((fax != null) ? !fax.equals(person.fax) : (person.fax != null)) {
-            return false;
-        }
-        if ((mobile != null) ? !mobile.equals(person.mobile) : (person.mobile != null)) {
-            return false;
-        }
-        if ((phone != null) ? !phone.equals(person.phone) : (person.phone != null)) {
-            return false;
-        }
-        if ((birthday != null) ? !birthday.equals(person.birthday) : (person.birthday != null)) {
-            return false;
-        }
-        if ((understoodPrivacySettings != null) ? !understoodPrivacySettings.equals(person.understoodPrivacySettings) : (person.understoodPrivacySettings != null)) {
-            return false;
-        }
-        if ((acceptNewsletters != null) ? !acceptNewsletters.equals(person.acceptNewsletters) : (person.acceptNewsletters != null)) {
-            return false;
-        }
-
-        return gender == person.gender;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        int result = IWSConstants.HASHCODE_INITIAL_VALUE;
-
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((address != null) ? address.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((alternateEmail != null) ? alternateEmail.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((phone != null) ? phone.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((mobile != null) ? mobile.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((fax != null) ? fax.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((birthday != null) ? birthday.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((gender != null) ? gender.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((understoodPrivacySettings != null) ? understoodPrivacySettings.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((acceptNewsletters != null) ? acceptNewsletters.hashCode() : 0);
-
-        return result;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        return "Person{" +
-                "address=" + address +
-                ", alternateEmail='" + alternateEmail + '\'' +
-                ", phone='" + phone + '\'' +
-                ", mobile='" + mobile + '\'' +
-                ", fax='" + fax + '\'' +
-                ", birthday=" + birthday +
-                ", gender=" + gender +
-                ", understoodPrivacySettings=" + understoodPrivacySettings +
-                ", acceptNewsletters=" + acceptNewsletters +
-                '}';
     }
 }

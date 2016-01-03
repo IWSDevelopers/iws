@@ -15,12 +15,13 @@
 package net.iaeste.iws.api.dtos;
 
 import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.api.util.ReflectiveStandardMethods;
 
 import java.io.Serializable;
 
 /**
  * When monitoring detailed changes, the Object is used to store the information
- * about which Field, together with the old -> new information change.
+ * about which Field, together with the old -&gt; new information change.
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -49,7 +50,7 @@ public final class Field implements Serializable {
     }
 
     /**
-     * Marking Constructor for Fields, where the actual change (old & new)
+     * Marking Constructor for Fields, where the actual change (old &amp; new)
      * values should not be stored.
      *
      * @param field  Name of the Field, which was updated
@@ -154,25 +155,7 @@ public final class Field implements Serializable {
      */
     @Override
     public boolean equals(final Object obj) {
-        if (this == obj) {
-            return true;
-        }
-
-        if (!(obj instanceof Field)) {
-            return false;
-        }
-
-        final Field other = (Field) obj;
-
-        if ((field != null) ? !field.equals(other.field) : (other.field != null)) {
-            return false;
-        }
-
-        if ((newValue != null) ? !newValue.equals(other.newValue) : (other.newValue != null)) {
-            return false;
-        }
-
-        return !((oldValue != null) ? !oldValue.equals(other.oldValue) : (other.oldValue != null));
+        return ReflectiveStandardMethods.reflectiveEquals(this, obj);
     }
 
     /**
@@ -180,13 +163,7 @@ public final class Field implements Serializable {
      */
     @Override
     public int hashCode() {
-        int result = IWSConstants.HASHCODE_INITIAL_VALUE;
-
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((field != null) ? field.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((oldValue != null) ? oldValue.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((newValue != null) ? newValue.hashCode() : 0);
-
-        return result;
+        return ReflectiveStandardMethods.reflectiveHashCode(this);
     }
 
     /**
@@ -194,13 +171,6 @@ public final class Field implements Serializable {
      */
     @Override
     public String toString() {
-        final String details;
-        if ((oldValue != null) || (newValue != null)) {
-            details = "', oldValue='" + oldValue + '\'' + ", newValue='" + newValue + "'}";
-        } else {
-            details = "'}";
-        }
-
-        return "Field{field='" + field + details;
+        return ReflectiveStandardMethods.reflectiveToString(this);
     }
 }

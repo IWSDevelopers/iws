@@ -28,12 +28,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * The Country Object contains the information about a Country, i.e. the name,
- * two letter ISO code, IAESTE membership, etc.<br />
- *   The Object is used for both fetching and updating/creating new Countries.
- * However, not all fields are updateable, the NS & Listnames are controlled by
- * other mechanisms, but is listed here when fetching the information. For
- * Existing countries, only part of the information is allowed to be updated.
+ * <p>The Country Object contains the information about a Country, i.e. the
+ * name, two letter ISO code, IAESTE membership, etc.</p>
+ *
+ * <p>The Object is used for both fetching and updating/creating new Countries.
+ * However, not all fields are updateable, the NS &amp; ListNames are controlled
+ * by other mechanisms, but is listed here when fetching the information. For
+ * Existing countries, only part of the information is allowed to be
+ * updated.</p>
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -96,12 +98,13 @@ public final class Country extends AbstractVerification {
     // =========================================================================
 
     /**
-     * Sets the Country Code, i.e. the two letter "commonly used" code, which
+     * <p>Sets the Country Code, i.e. the two letter "commonly used" code, which
      * follows the ISO-3166-1 alpha 2, with an Exception for the United Kingdom
-     * or Great Britain, where the code used is UK.<br />
-     *   This method throws an {@code IllegalArgumentException} if the given
+     * or Great Britain, where the code used is UK.</p>
+     *
+     * <p>This method throws an {@code IllegalArgumentException} if the given
      * value is not a valid Country Code, i.e. it must not be null and the value
-     * has to be two characters.
+     * has to be two characters.</p>
      *
      * @param countryCode Country Code
      * @throws IllegalArgumentException If either null or not two characters long
@@ -117,11 +120,12 @@ public final class Country extends AbstractVerification {
     }
 
     /**
-     * Sets the Country Name. This is the English variant of the Country Name,
-     * and it cannot neither be null nor too long. The max length is set to 100
-     * characters.<br />
-     *   The method will throw an {@code IllegalArgumentException} if the name
-     * is invalid, i.e. null or too long.
+     * <p>Sets the Country Name. This is the English variant of the Country
+     * Name, and it cannot neither be null nor too long. The max length is set
+     * to 100 characters.</p>
+     *
+     * <p>The method will throw an {@code IllegalArgumentException} if the name
+     * is invalid, i.e. null or too long.</p>
      *
      * @param countryName English name of the Country
      * @throws IllegalArgumentException if either null or too long
@@ -136,11 +140,12 @@ public final class Country extends AbstractVerification {
     }
 
     /**
-     * Sets the Full Country Name. This is the complete name of the Country, and
-     * it cannot neither be null nor too long. The max length is set to 100
-     * characters.<br />
-     *   The method will throw an {@code IllegalArgumentException} if the name
-     * is invalid, i.e. null or too long.
+     * <p>Sets the Full Country Name. This is the complete name of the Country,
+     * and it cannot neither be null nor too long. The max length is set to 100
+     * characters.</p>
+     *
+     * <p>The method will throw an {@code IllegalArgumentException} if the name
+     * is invalid, i.e. null or too long.</p>
      *
      * @param countryNameFull Full Country Name
      * @throws IllegalArgumentException if either null or too long
@@ -155,11 +160,12 @@ public final class Country extends AbstractVerification {
     }
 
     /**
-     * Sets the Native Country Name. This is the name that the Country uses for
-     * itself. It may be null, but if set, it cannot be longer than 100
-     * characters.<br />
-     *   The method will throw an {@code IllegalArgumentException} if the name
-     * is too long.
+     * <p>Sets the Native Country Name. This is the name that the Country uses
+     * for itself. It may be null, but if set, it cannot be longer than 100
+     * characters.</p>
+     *
+     * <p>The method will throw an {@code IllegalArgumentException} if the name
+     * is too long.</p>
      *
      * @param countryNameNative Native Country Name
      * @throws IllegalArgumentException if the native name is too long
@@ -174,11 +180,12 @@ public final class Country extends AbstractVerification {
     }
 
     /**
-     * Sets the Nationality of the citizens of the Country. The given value may
-     * maximum be 100 characters long. For example, the Nationality of Germany
-     * is 'German'.<br />
-     *   The method will throw an {@code IllegalArgumentException} if the given
-     * value is null.
+     * <p>Sets the Nationality of the citizens of the Country. The given value
+     * may maximum be 100 characters long. For example, the Nationality of
+     * Germany is 'German'.</p>
+     *
+     * <p>The method will throw an {@code IllegalArgumentException} if the given
+     * value is null.</p>
      *
      * @param nationality The Nationality of the Citizens
      * @throws IllegalArgumentException if the given value is too long
@@ -193,11 +200,12 @@ public final class Country extends AbstractVerification {
     }
 
     /**
-     * Sets the name of the Citizens of the Country. The given value may
+     * <p>Sets the name of the Citizens of the Country. The given value may
      * maximum be 100 characters long. For example, the Citizens of Germany are
-     * 'Germans'.<br />
-     *   The method will throw an {@code IllegalArgumentException} if the given
-     * value is null.
+     * 'Germans'.</p>
+     *
+     * <p>The method will throw an {@code IllegalArgumentException} if the given
+     * value is null.</p>
      *
      * @param citizens The name of the Citizens of the Country
      * @throws IllegalArgumentException if the given value is too long
@@ -212,10 +220,11 @@ public final class Country extends AbstractVerification {
     }
 
     /**
-     * Sets the Phonecode of the Country. The value may be not be longer than
-     * five (5) characters long.<br />
-     *   The method will throw an {@code IllegalArgumentException} if the given
-     * value is too long.
+     * <p>Sets the PhoneCode of the Country. The value may be not be longer than
+     * five (5) characters long.</p>
+     *
+     * <p>The method will throw an {@code IllegalArgumentException} if the given
+     * value is too long.</p>
      *
      * @param phonecode The official phone code of the country (+xxx)
      * @throws IllegalArgumentException if the given value is null
@@ -230,10 +239,11 @@ public final class Country extends AbstractVerification {
     }
 
     /**
-     * Sets the Currency of the Country. The value may not be null, as it is
-     * used internally.<br />
-     *   The method will throw an {@code IllegalArgumentException} if the given
-     * value is null.
+     * <p>Sets the Currency of the Country. The value may not be null, as it is
+     * used internally.</p>
+     *
+     * <p>The method will throw an {@code IllegalArgumentException} if the given
+     * value is null.</p>
      *
      * @param currency Official Currency of the Country
      * @throws IllegalArgumentException if the value is null
@@ -248,11 +258,12 @@ public final class Country extends AbstractVerification {
     }
 
     /**
-     * Sets the official language(s) of the Country. The given value may contain
-     * several Languages, but the maximum length may only be 100
-     * characters.<br />
-     *   The method will throw an {@code IllegalArgumentException} if the given
-     * value is null.
+     * <p>Sets the official language(s) of the Country. The given value may
+     * contain several Languages, but the maximum length may only be 100
+     * characters.</p>
+     *
+     * <p>The method will throw an {@code IllegalArgumentException} if the given
+     * value is null.</p>
      *
      * @param languages Officially spoken language(s) of the Country
      * @throws IllegalArgumentException if the given value is null
@@ -267,12 +278,13 @@ public final class Country extends AbstractVerification {
     }
 
     /**
-     * Sets the type of Membership of the Country, if it is an IAESTE Member,
+     * <p>Sets the type of Membership of the Country, if it is an IAESTE Member,
      * then the value can be either full member, associate member, Co-operating
      * Institution or former member. If neither of these values are applicable,
-     * the default value will be a non-member.<br />
-     *   The method will throw an {@code IllegalArgumentException} if the given
-     * value is null.
+     * the default value will be a non-member.</p>
+     *
+     * <p>The method will throw an {@code IllegalArgumentException} if the given
+     * value is null.</p>
      *
      * @param membership Type of IAESTE Membership
      * @throws IllegalArgumentException if the given value is null
@@ -287,12 +299,13 @@ public final class Country extends AbstractVerification {
     }
 
     /**
-     * Sets the Country's IAESTE Membership date, i.e. the year when the country
-     * joined IAESTE. The year must be a valid IAESTE year, meaning that it must
-     * be set to something between the founding year of IAESTE (1948), and the
-     * present year.<br />
-     *   The method will throw an {@code IllegalArgumentException} if the given
-     * year is invalid, i.e. not within the limits (1948 - now).
+     * <p>Sets the Country's IAESTE Membership date, i.e. the year when the
+     * country joined IAESTE. The year must be a valid IAESTE year, meaning
+     * that it must be set to something between the founding year of IAESTE
+     * (1948), and the present year.</p>
+     *
+     * <p>The method will throw an {@code IllegalArgumentException} if the given
+     * year is invalid, i.e. not within the limits (1948 - now).</p>
      *
      * @param memberSince IAESTE Membership Year
      * @throws IllegalArgumentException if the value is invalid
@@ -324,94 +337,5 @@ public final class Country extends AbstractVerification {
         isNotNull(validation, "currency", currency);
 
         return validation;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof Country)) {
-            return false;
-        }
-
-        final Country country = (Country) obj;
-
-        if ((countryCode != null) ? !countryCode.equals(country.countryCode) : (country.countryCode != null)) {
-            return false;
-        }
-        if ((countryName != null) ? !countryName.equals(country.countryName) : (country.countryName != null)) {
-            return false;
-        }
-        if ((countryNameFull != null) ? !countryNameFull.equals(country.countryNameFull) : (country.countryNameFull != null)) {
-            return false;
-        }
-        if ((countryNameNative != null) ? !countryNameNative.equals(country.countryNameNative) : (country.countryNameNative != null)) {
-            return false;
-        }
-        if ((nationality != null) ? !nationality.equals(country.nationality) : (country.nationality != null)) {
-            return false;
-        }
-        if ((citizens != null) ? !citizens.equals(country.citizens) : (country.citizens != null)) {
-            return false;
-        }
-        if ((phonecode != null) ? !phonecode.equals(country.phonecode) : (country.phonecode != null)) {
-            return false;
-        }
-        if ((currency != null) ? (currency != country.currency) : (country.currency != null)) {
-            return false;
-        }
-        if ((languages != null) ? !languages.equals(country.languages) : (country.languages != null)) {
-            return false;
-        }
-        if (membership != country.membership) {
-            return false;
-        }
-        return !((memberSince != null) ? !memberSince.equals(country.memberSince) : (country.memberSince != null));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        int result = IWSConstants.HASHCODE_INITIAL_VALUE;
-
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((countryCode != null) ? countryCode.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((countryName != null) ? countryName.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((countryNameFull != null) ? countryNameFull.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((countryNameNative != null) ? countryNameNative.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((nationality != null) ? nationality.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((citizens != null) ? citizens.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((phonecode != null) ? phonecode.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((currency != null) ? currency.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((languages != null) ? languages.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((membership != null) ? membership.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((memberSince != null) ? memberSince.hashCode() : 0);
-
-        return result;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        return "Country{" +
-                "countryCode='" + countryCode + '\'' +
-                ", countryName='" + countryName + '\'' +
-                ", countryNameFull='" + countryNameFull + '\'' +
-                ", countryNameNative='" + countryNameNative + '\'' +
-                ", nationality='" + nationality + '\'' +
-                ", citizens='" + citizens + '\'' +
-                ", phonecode='" + phonecode + '\'' +
-                ", currency='" + currency + '\'' +
-                ", languages='" + languages + '\'' +
-                ", membership=" + membership +
-                ", memberSince=" + memberSince +
-                '}';
     }
 }

@@ -87,11 +87,11 @@ public final class Employer extends AbstractVerification {
     public Employer(final Employer employer) {
         if (employer != null) {
             employerId = employer.employerId;
-            group = employer.group != null ? new Group(employer.group) : null;
+            group = (employer.group != null) ? new Group(employer.group) : null;
             name = employer.name;
             department = employer.department;
             business = employer.business;
-            address = employer.address != null ? new Address(employer.address) : null;
+            address = (employer.address != null) ? new Address(employer.address) : null;
             employeesCount = employer.employeesCount;
             website = employer.website;
             workingPlace = employer.workingPlace;
@@ -109,14 +109,15 @@ public final class Employer extends AbstractVerification {
     // =========================================================================
 
     /**
-     * Sets the Employer Id, which is the internally generated key for this
+     * <p>Sets the Employer Id, which is the internally generated key for this
      * Object. Note, that the presence of the value will determine if the IWS
      * should process this record as if it exist or not. If the Id is set, but
      * no record exists, then the system will reply with an error. Likewise, if
      * no Id is provided, but the record exists, the system will reply with an
-     * error.<br />
-     *   The value must be a valid Id, otherwise the method will throw an
-     * {@code IllegalArgumentException}.
+     * error.</p>
+     *
+     * <p>The value must be a valid Id, otherwise the method will throw an
+     * {@code IllegalArgumentException}.</p>
      *
      * @param employerId Employer Id
      * @throws IllegalArgumentException if the Id is set but invalid
@@ -132,10 +133,11 @@ public final class Employer extends AbstractVerification {
     }
 
     /**
-     * Sets the Employer Group. The Group is automatically set by the IWS upon
-     * initial persisting of the Employer.<br />
-     *   The method will throw an {@code IllegalArgumentException} if the Group
-     * is not valid, i.e. if the Group is either null or not verifiable.
+     * <p>Sets the Employer Group. The Group is automatically set by the IWS
+     * upon initial persisting of the Employer.</p>
+     *
+     * <p>The method will throw an {@code IllegalArgumentException} if the Group
+     * is not valid, i.e. if the Group is either null or not verifiable.</p>
      *
      * @param group National Group, which this Employer belongs to
      * @throws IllegalArgumentException if null or not valid
@@ -150,11 +152,12 @@ public final class Employer extends AbstractVerification {
     }
 
     /**
-     * Sets the Employer Name. The name should be unique for the Employer, as
+     * <p>Sets the Employer Name. The name should be unique for the Employer, as
      * it is used in the IW4 for listing existing employers to avoid having to
-     * tip in all details again.<br />
-     *   The method will throw an {@code IllegalArgumentException} if the Name
-     * is not valid.
+     * tip in all details again.</p>
+     *
+     * <p>The method will throw an {@code IllegalArgumentException} if the Name
+     * is not valid.</p>
      *
      * @param name Employer Name
      * @throws IllegalArgumentException if not valid, i.e. either null or too long
@@ -170,11 +173,12 @@ public final class Employer extends AbstractVerification {
     }
 
     /**
-     * Sets the Employer Business. There are no rules applies to the Employer
+     * <p>Sets the Employer Business. There are no rules applies to the Employer
      * Business, meaning that it any value, as long as it doesn't exceed the
-     * maximum length.<br />
-     *   The method will throw an {@code IllegalArgumentException} if the
-     * Business is not valid.
+     * maximum length.</p>
+     *
+     * <p>The method will throw an {@code IllegalArgumentException} if the
+     * Business is not valid.</p>
      *
      * @param business Employer Business
      * @throws IllegalArgumentException if not valid, i.e. too long
@@ -190,11 +194,12 @@ public final class Employer extends AbstractVerification {
     }
 
     /**
-     * Sets the Employer Department. The Department is part of the uniqueness
+     * <p>Sets the Employer Department. The Department is part of the uniqueness
      * criteria for the Employer, it may be empty but cannot be null or too
-     * long.<br />
-     *   The method will throw an {@code IllegalArgumentException} if the
-     * Department is not valid, i.e. null or too long.
+     * long.</p>
+     *
+     * <p>The method will throw an {@code IllegalArgumentException} if the
+     * Department is not valid, i.e. null or too long.</p>
      *
      * @param department Employer Department
      * @throws IllegalArgumentException if not valid, i.e. null or too long
@@ -210,10 +215,11 @@ public final class Employer extends AbstractVerification {
     }
 
     /**
-     * Sets the Employer Address. The Address is an optional information related
-     * to the Employer.<br />
-     *   The method will throw an {@code IllegalArgumentException} if the
-     * Address is not valid.
+     * <p>Sets the Employer Address. The Address is an optional information
+     * related to the Employer.</p>
+     *
+     * <p>The method will throw an {@code IllegalArgumentException} if the
+     * Address is not valid.</p>
      *
      * @param address Employer Address
      * @throws IllegalArgumentException if not valid
@@ -228,10 +234,11 @@ public final class Employer extends AbstractVerification {
     }
 
     /**
-     * Sets the Employer Employees Count. Ther eare not rules applied to the
-     * values of this field, as long as it does not exceed 25 characters.<br />
-     *   The method will thrown an {@code IllegalArgumentException} if the
-     * employees Count value is too long.
+     * <p>Sets the Employer Employees Count. There are not rules applied to the
+     * values of this field, as long as it does not exceed 25 characters.</p>
+     *
+     * <p>The method will thrown an {@code IllegalArgumentException} if the
+     * employees Count value is too long.</p>
      *
      * @param employeesCount Employer Employees Count
      * @throws IllegalArgumentException if the field is longer than 25 characters
@@ -246,11 +253,12 @@ public final class Employer extends AbstractVerification {
     }
 
     /**
-     * Sets the Employer Website. There are no rules applies to the Employer
+     * <p>Sets the Employer Website. There are no rules applies to the Employer
      * Website, meaning that it any value, as long as it doesn't exceed the
-     * maximum length.<br />
-     *   The method will throw an {@code IllegalArgumentException} if the
-     * Website is not valid.
+     * maximum length.</p>
+     *
+     * <p>The method will throw an {@code IllegalArgumentException} if the
+     * Website is not valid.</p>
      *
      * @param website Employer Website
      * @throws IllegalArgumentException if not valid, i.e. too long
@@ -266,11 +274,12 @@ public final class Employer extends AbstractVerification {
     }
 
     /**
-     * Sets the Employer Working Place. The Working Place is part of the
+     * <p>Sets the Employer Working Place. The Working Place is part of the
      * uniqueness criteria for the Employer, it may be empty but cannot be null
-     * or too long.<br />
-     *   The method will throw an {@code IllegalArgumentException} if the
-     * Working Place is not valid, i.e. null or too long.
+     * or too long.</p>
+     *
+     * <p>The method will throw an {@code IllegalArgumentException} if the
+     * Working Place is not valid, i.e. null or too long.</p>
      *
      * @param workingPlace Employer Working Place
      * @throws IllegalArgumentException if not valid, i.e. null or too long
@@ -300,11 +309,12 @@ public final class Employer extends AbstractVerification {
     }
 
     /**
-     * Sets the Employer Nearest Airport. There are no rules applies to the
+     * <p>Sets the Employer Nearest Airport. There are no rules applies to the
      * Employer Nearest Airport, meaning that it any value, as long as it
-     * doesn't exceed the maximum length.<br />
-     *   The method will throw an {@code IllegalArgumentException} if the
-     * Nearest Airport is not valid.
+     * doesn't exceed the maximum length.</p>
+     *
+     * <p>The method will throw an {@code IllegalArgumentException} if the
+     * Nearest Airport is not valid.</p>
      *
      * @param nearestAirport Employer Nearest Airport
      * @throws IllegalArgumentException if not valid, i.e. too long
@@ -320,11 +330,12 @@ public final class Employer extends AbstractVerification {
     }
 
     /**
-     * Sets the Employer Nearest Public Transport. There are no rules applies to
-     * the Employer Nearest Public Transport, meaning that it any value, as long
-     * as it doesn't exceed the maximum length.<br />
-     *   The method will throw an {@code IllegalArgumentException} if the
-     * Nearest Public Transport is not valid.
+     * <p>Sets the Employer Nearest Public Transport. There are no rules applies
+     * to the Employer Nearest Public Transport, meaning that it any value, as
+     * long as it doesn't exceed the maximum length.</p>
+     *
+     * <p>The method will throw an {@code IllegalArgumentException} if the
+     * Nearest Public Transport is not valid.</p>
      *
      * @param nearestPublicTransport Employer Nearest Public Transport
      * @throws IllegalArgumentException if not valid, i.e. too long
@@ -340,14 +351,16 @@ public final class Employer extends AbstractVerification {
     }
 
     /**
-     * If requested, then this will be a list of all the Offer's listed by their
-     * Reference number's, which is registered with Employer in the IWS.<br />
-     *   Note; this is a reporting field, which means that it is ignored by the
-     * IWS.
+     * <p>If requested, then this will be a list of all the Offer's listed by
+     * their Reference number's, which is registered with Employer in the
+     * IWS.</p>
+     *
+     * <p>Note; this is a reporting field, which means that it is ignored by the
+     * IWS.</p>
      *
      * @param offerReferenceNumbers List of Offer Reference Numbers
      */
-    public void setOfferReferenceNumbers(List<String> offerReferenceNumbers) {
+    public void setOfferReferenceNumbers(final List<String> offerReferenceNumbers) {
         this.offerReferenceNumbers = offerReferenceNumbers;
     }
 
@@ -361,7 +374,7 @@ public final class Employer extends AbstractVerification {
      *
      * @param modified DateTime of latest modification
      */
-    public void setModified(DateTime modified) {
+    public void setModified(final DateTime modified) {
         this.modified = modified;
     }
 
@@ -375,7 +388,7 @@ public final class Employer extends AbstractVerification {
      *
      * @param created Employer Creation DateTime
      */
-    public void setCreated(DateTime created) {
+    public void setCreated(final DateTime created) {
         this.created = created;
     }
 
@@ -401,100 +414,5 @@ public final class Employer extends AbstractVerification {
         isNotNull(validation, "workingPlace", workingPlace);
 
         return validation;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof Employer)) {
-            return false;
-        }
-
-        final Employer employer = (Employer) obj;
-
-        if ((employerId != null) ? !employerId.equals(employer.employerId) : (employer.employerId != null)) {
-            return false;
-        }
-        if ((group != null) ? !group.equals(employer.group) : (employer.group != null)) {
-            return false;
-        }
-        if ((name != null) ? !name.equals(employer.name) : (employer.name != null)) {
-            return false;
-        }
-        if ((department != null) ? !department.equals(employer.department) : (employer.department != null)) {
-            return false;
-        }
-        if ((business != null) ? !business.equals(employer.business) : (employer.business != null)) {
-            return false;
-        }
-        if ((address != null) ? !address.equals(employer.address) : (employer.address != null)) {
-            return false;
-        }
-        if ((employeesCount != null) ? !employeesCount.equals(employer.employeesCount) : (employer.employeesCount != null)) {
-            return false;
-        }
-        if ((website != null) ? !website.equals(employer.website) : (employer.website != null)) {
-            return false;
-        }
-        if ((workingPlace != null) ? !workingPlace.equals(employer.workingPlace) : (employer.workingPlace != null)) {
-            return false;
-        }
-        if ((canteen != null) ? !canteen.equals(employer.canteen) : (employer.canteen != null)) {
-            return false;
-        }
-        if ((nearestAirport != null) ? !nearestAirport.equals(employer.nearestAirport) : (employer.nearestAirport != null)) {
-            return false;
-        }
-
-        return !((nearestPublicTransport != null) ? !nearestPublicTransport.equals(employer.nearestPublicTransport) : (employer.nearestPublicTransport != null));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        int result = IWSConstants.HASHCODE_INITIAL_VALUE;
-
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((employerId != null) ? employerId.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((group != null) ? group.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((name != null) ? name.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((department != null) ? department.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((business != null) ? business.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((address != null) ? address.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((employeesCount != null) ? employeesCount.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((website != null) ? website.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((workingPlace != null) ? workingPlace.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((canteen != null) ? canteen.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((nearestAirport != null) ? nearestAirport.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((nearestPublicTransport != null) ? nearestPublicTransport.hashCode() : 0);
-
-        return result;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        return "Employer{" +
-                "employerId='" + employerId + '\'' +
-                ", group='" + group + '\'' +
-                ", name='" + name + '\'' +
-                ", department='" + department + '\'' +
-                ", business='" + business + '\'' +
-                ", address=" + address +
-                ", employeesCount=" + employeesCount +
-                ", website='" + website + '\'' +
-                ", workingPlace='" + workingPlace + '\'' +
-                ", canteen=" + canteen +
-                ", nearestAirport='" + nearestAirport + '\'' +
-                ", nearestPublicTransport='" + nearestPublicTransport + '\'' +
-                '}';
     }
 }

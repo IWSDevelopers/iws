@@ -69,14 +69,4 @@ public final class CountrySurvey extends AbstractVerification {
 
         return validation;
     }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        return "SurveyOfCountry{" +
-                '}';
-    }
 }

@@ -81,47 +81,4 @@ public final class EmployerResponse extends FallibleResponse {
     public Employer getEmployer() {
         return new Employer(employer);
     }
-
-    // =========================================================================
-    // Standard Response Methods
-    // =========================================================================
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
-            return true;
-        }
-
-        if ((obj == null) || (getClass() != obj.getClass())) {
-            return false;
-        }
-
-        final EmployerResponse that = (EmployerResponse) obj;
-        return !((employer != null) ? !employer.equals(that.employer) : (that.employer != null));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((employer != null) ? employer.hashCode() : 0);
-
-        return result;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-     @Override
-    public String toString() {
-        return "EmployerResponse{" +
-                "employer=" + employer +
-                '}';
-    }
 }

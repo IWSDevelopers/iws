@@ -104,43 +104,4 @@ public final class Authorization implements Serializable {
     public Role getRole() {
         return new Role(userGroup.getRole());
     }
-
-    // =========================================================================
-    // Standard DTO Methods
-    // =========================================================================
-
-    @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof Authorization)) {
-            return false;
-        }
-
-        final Authorization that = (Authorization) obj;
-        return !((userGroup != null) ? !userGroup.equals(that.userGroup) : (that.userGroup != null));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        int hash = IWSConstants.HASHCODE_INITIAL_VALUE;
-
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((userGroup != null) ? userGroup.hashCode() : 0);
-
-        return hash;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        return "Authorization{" +
-                "userGroup='" + userGroup + '\'' +
-                '}';
-    }
 }

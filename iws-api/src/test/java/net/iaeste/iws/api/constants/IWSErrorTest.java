@@ -45,10 +45,10 @@ public class IWSErrorTest {
         assertThat(result, is(not(diff)));
         assertThat(result.getError(), is(code));
         assertThat(result.getDescription(), is(description));
-        assertThat(result.toString(), is("IWSError[error=1,description=Description]"));
+        assertThat(result.toString(), is("IWSError{error=1, description='Description'}"));
         assertThat(result.toString(), is(same.toString()));
         assertThat(result.toString(), is(not(diff.toString())));
-        assertThat(result.hashCode(), is(-56661044));
+        assertThat(result.hashCode(), is(-314798750));
         assertThat(result.hashCode(), is(same.hashCode()));
         assertThat(result.hashCode(), is(not(diff.hashCode())));
         new EqualsTester(result, same, diff, null);

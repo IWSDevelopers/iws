@@ -95,14 +95,15 @@ public final class Group extends AbstractVerification {
     // =========================================================================
 
     /**
-     * Sets the Group Id, which is the internally generated key for this Object.
-     * Note, that the presence of the value will determine if the IWS should
-     * process this record as if it exist or not. If the Id is set, but no
-     * record exists, then the system will reply with an error. Likewise, if no
-     * Id is provided, but the record exists, the system will reply with an
-     * error.<br />
-     *   The value must be a valid Id, otherwise the method will throw an
-     * {@code IllegalArgumentException}.
+     * <p>Sets the Group Id, which is the internally generated key for this
+     * Object. Note, that the presence of the value will determine if the IWS
+     * should process this record as if it exist or not. If the Id is set, but
+     * no record exists, then the system will reply with an error. Likewise, if
+     * no Id is provided, but the record exists, the system will reply with an
+     * error.</p>
+     *
+     * <p>The value must be a valid Id, otherwise the method will throw an
+     * {@code IllegalArgumentException}.</p>
      *
      * @param groupId Group Id
      * @throws IllegalArgumentException if the Id is set but invalid
@@ -132,12 +133,13 @@ public final class Group extends AbstractVerification {
     }
 
     /**
-     * Sets the name of the Group. The name may neither be null nor empty or too
-     * long, the maximum allowed length is 50 characters. Further, the name of
-     * the Group must be unique in the context, i.e. among other groups with the
-     * same parent.<br />
-     *   The method will throw an {@code IllegalArgumentException} if the given
-     * value is invalid, i.e. null, empty or too long.
+     * <p>Sets the name of the Group. The name may neither be null nor empty or
+     * too long, the maximum allowed length is 50 characters. Further, the name
+     * of the Group must be unique in the context, i.e. among other groups with
+     * the same parent.</p>
+     *
+     * <p>The method will throw an {@code IllegalArgumentException} if the given
+     * value is invalid, i.e. null, empty or too long.</p>
      *
      * @param groupName The name of the Group
      * @throws IllegalArgumentException if the given value is invalid
@@ -189,12 +191,13 @@ public final class Group extends AbstractVerification {
     }
 
     /**
-     * Sets the Private Mailinglist flag. Meaning, that if the underlying
+     * <p>Sets the Private Mailinglist flag. Meaning, that if the underlying
      * GroupType allows a private mailing list, then the Group can be updated to
-     * also have one.<br />
-     *   Note, the value must be set to either true or false. Changing the flag
+     * also have one.</p>
+     *
+     * <p>Note, the value must be set to either true or false. Changing the flag
      * for a group where it is not allowed, will be ignored. Attempting to set
-     * the value to null will result in an IllegalArgument Exception.
+     * the value to null will result in an IllegalArgument Exception.</p>
      *
      * @param privateList True or False, depending on the GroupType
      * @throws IllegalArgumentException if set to null
@@ -213,10 +216,11 @@ public final class Group extends AbstractVerification {
     }
 
     /**
-     * Sets the reply to flag for private mailing lists for this Group. The Flag
-     * will control how the mailing list is created.<br />
-     *   Note, the method will throw an {@code IllegalArgumentException} if the
-     * value is set to null.
+     * <p>Sets the reply to flag for private mailing lists for this Group. The
+     * Flag will control how the mailing list is created.</p>
+     *
+     * <p>Note, the method will throw an {@code IllegalArgumentException} if the
+     * value is set to null.</p>
      *
      * @param privateListReplyTo Who is receiving mail when replying
      * @throws IllegalArgumentException if set to null
@@ -231,12 +235,13 @@ public final class Group extends AbstractVerification {
     }
 
     /**
-     * Sets the Public Mailinglist flag. Meaning, that if the underlying
+     * <p>Sets the Public Mailinglist flag. Meaning, that if the underlying
      * GroupType allows a private mailing list, then the Group can be updated to
-     * also have one.<br />
-     *   Note, the value must be set to either true or false. Changing the flag
+     * also have one.</p>
+     *
+     * <p>Note, the value must be set to either true or false. Changing the flag
      * for a group where it is not allowed, will be ignored. Attempting to set
-     * the value to null will result in an IllegalArgument Exception.
+     * the value to null will result in an IllegalArgument Exception.</p>
      *
      * @param publicList True or False, depending on the GroupType
      * @throws IllegalArgumentException if set to null
@@ -255,10 +260,11 @@ public final class Group extends AbstractVerification {
     }
 
     /**
-     * Sets the reply to flag for public mailing lists for this Group. The Flag
-     * will control how the mailing list is created.<br />
-     *   Note, the method will throw an {@code IllegalArgumentException} if the
-     * value is set to null.
+     * <p>Sets the reply to flag for public mailing lists for this Group. The
+     * Flag will control how the mailing list is created.</p>
+     *
+     * <p>Note, the method will throw an {@code IllegalArgumentException} if the
+     * value is set to null.</p>
      *
      * @param publicListReplyTo Who is receiving mail when replying
      * @throws IllegalArgumentException if set to null
@@ -295,10 +301,11 @@ public final class Group extends AbstractVerification {
     }
 
     /**
-     * Sets the type of Group. The type is used to determine its internal set
-     * of permissions. Hence, the type may not be null.<br />
-     *   The method will throw an {@code IllegalArgumentException} if the given
-     * value is invalid, i.e. null.
+     * <p>Sets the type of Group. The type is used to determine its internal set
+     * of permissions. Hence, the type may not be null.</p>
+     *
+     * <p>The method will throw an {@code IllegalArgumentException} if the given
+     * value is invalid, i.e. null.</p>
      *
      * @param groupType The Type of Group
      * @throws IllegalArgumentException if the given value is invalid
@@ -313,10 +320,11 @@ public final class Group extends AbstractVerification {
     }
 
     /**
-     * Sets the Group Description. This is a way to describe the purpose of the
-     * Group for others. The given value may be max 250 characters long.<br />
-     *   The method will throw an {@code IllegalArgumentException} if the given
-     * value is invalid, i.e. too long.
+     * <p>Sets the Group Description. This is a way to describe the purpose of
+     * the Group for others. The given value may be max 250 characters long.</p>
+     *
+     * <p>The method will throw an {@code IllegalArgumentException} if the given
+     * value is invalid, i.e. too long.</p>
      *
      * @param description The Description of the Group
      * @throws IllegalArgumentException if the given value is invalid
@@ -331,13 +339,15 @@ public final class Group extends AbstractVerification {
     }
 
     /**
-     * Sets the Group Monitoring Level. This will tell IWS if and how any
-     * changes should be monitored.<br />
-     *   By default, the policy of the IWS is to provide maximum privacy, so no
+     * <p>Sets the Group Monitoring Level. This will tell IWS if and how any
+     * changes should be monitored.</p>
+     *
+     * <p>By default, the policy of the IWS is to provide maximum privacy, so no
      * data is monitored. If monitoring is desired, then this value must
-     * explicitly be changed.<br />
-     *   The method will throw an {@code IllegalArgumentException} if the given
-     * value is invalid, i.e. null.
+     * explicitly be changed.</p>
+     *
+     * <p>The method will throw an {@code IllegalArgumentException} if the given
+     * value is invalid, i.e. null.</p>
      *
      * @param monitoringLevel Monitoring Level
      */
@@ -382,94 +392,5 @@ public final class Group extends AbstractVerification {
         isNotNull(validation, "publicListReplyTo", publicListReplyTo);
 
         return validation;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof Group)) {
-            return false;
-        }
-
-        final Group group = (Group) obj;
-
-        if ((groupId != null) ? !groupId.equals(group.groupId) : (group.groupId != null)) {
-            return false;
-        }
-        if ((parentId != null) ? !parentId.equals(group.parentId) : (group.parentId != null)) {
-            return false;
-        }
-        if ((groupName != null) ? !groupName.equals(group.groupName) : (group.groupName != null)) {
-            return false;
-        }
-        if ((fullName != null) ? !fullName.equals(group.fullName) : (group.fullName != null)) {
-            return false;
-        }
-        if ((listName != null) ? !listName.equals(group.listName) : (group.listName != null)) {
-            return false;
-        }
-        if ((privateList != null) ? !privateList.equals(group.privateList) : (group.privateList != null)) {
-            return false;
-        }
-        if ((publicList != null) ? !publicList.equals(group.publicList) : (group.publicList != null)) {
-            return false;
-        }
-        if (groupType != group.groupType) {
-            return false;
-        }
-        if ((description != null) ? !description.equals(group.description) : (group.description != null)) {
-            return false;
-        }
-        if ((monitoringLevel != null) ? (monitoringLevel != group.monitoringLevel) : (group.monitoringLevel != null)) {
-            return false;
-        }
-        return !((country != null) ? !country.equals(group.country) : (group.country != null));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        int result = IWSConstants.HASHCODE_INITIAL_VALUE;
-
-        result = (IWSConstants.HASHCODE_MULTIPLIER * result) + ((groupId != null) ? groupId.hashCode() : 0);
-        result = (IWSConstants.HASHCODE_MULTIPLIER * result) + ((parentId != null) ? parentId.hashCode() : 0);
-        result = (IWSConstants.HASHCODE_MULTIPLIER * result) + ((groupName != null) ? groupName.hashCode() : 0);
-        result = (IWSConstants.HASHCODE_MULTIPLIER * result) + ((fullName != null) ? fullName.hashCode() : 0);
-        result = (IWSConstants.HASHCODE_MULTIPLIER * result) + ((listName != null) ? listName.hashCode() : 0);
-        result = (IWSConstants.HASHCODE_MULTIPLIER * result) + ((privateList != null) ? privateList.hashCode() : 0);
-        result = (IWSConstants.HASHCODE_MULTIPLIER * result) + ((publicList != null) ? publicList.hashCode() : 0);
-        result = (IWSConstants.HASHCODE_MULTIPLIER * result) + ((groupType != null) ? groupType.hashCode() : 0);
-        result = (IWSConstants.HASHCODE_MULTIPLIER * result) + ((description != null) ? description.hashCode() : 0);
-        result = (IWSConstants.HASHCODE_MULTIPLIER * result) + ((monitoringLevel != null) ? monitoringLevel.hashCode() : 0);
-        result = (IWSConstants.HASHCODE_MULTIPLIER * result) + ((country != null) ? country.hashCode() : 0);
-
-        return result;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        return "Group{" +
-                "groupId='" + groupId + '\'' +
-                ", parentId='" + parentId + '\'' +
-                ", groupName='" + groupName + '\'' +
-                ", fullName='" + fullName + '\'' +
-                ", listName='" + getListName() + '\'' +
-                ", privateList=" + privateList +
-                ", publicList=" + publicList +
-                ", groupType=" + groupType +
-                ", description='" + description + '\'' +
-                ", monitoringLevel='" + monitoringLevel + '\'' +
-                ", country=" + country +
-                '}';
     }
 }

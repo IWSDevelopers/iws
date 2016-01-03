@@ -75,18 +75,4 @@ public final class OfferCSVDownloadResponse extends FallibleResponse {
     public byte[] getData() {
         return data;
     }
-
-
-    // =========================================================================
-    // Standard Response Methods
-    // =========================================================================
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        // Just showing the Object.
-        return "OfferCSVDownloadResponse{data=...}";
-    }
 }

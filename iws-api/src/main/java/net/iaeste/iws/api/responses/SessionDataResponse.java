@@ -24,15 +24,15 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 import java.io.Serializable;
-import java.util.Arrays;
 
 /**
- * The Session Response Object contains the Session Data belonging to the users
- * current active Session. The Data is stored internally as a Blob, i.e. a
- * Byte Array (Compressed). And is deserialized to an Object of the type
- * specified by the Client.<br />
- *   Note, that the IWS only allows a single active Session for any user at the
- * time, this is a limitation to avoid data corruption.
+ * <p>The Session Response Object contains the Session Data belonging to the
+ * user's current active Session. The Data is stored internally as a Blob, i.e.
+ * a Byte Array (Compressed). And is de-serialized to an Object of the type
+ * specified by the Client.</p>
+ *
+ * <p>Note, that the IWS only allows a single active Session for any user at the
+ * time, this is a limitation to avoid data corruption.</p>
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -97,61 +97,5 @@ public final class SessionDataResponse<T extends Serializable> extends FallibleR
 
     public DateTime getCreated() {
         return created;
-    }
-
-    // =========================================================================
-    // Standard Response Methods
-    // =========================================================================
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof SessionDataResponse)) {
-            return false;
-        }
-        if (!super.equals(obj)) {
-            return false;
-        }
-
-        final SessionDataResponse<?> that = (SessionDataResponse<?>) obj;
-
-        if (!Arrays.equals(sessionData, that.sessionData)) {
-            return false;
-        }
-        if (modified != null ? !modified.equals(that.modified) : that.modified != null) {
-            return false;
-        }
-
-        return !(created != null ? !created.equals(that.created) : that.created != null);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((sessionData != null) ? Arrays.hashCode(sessionData) : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((modified != null) ? modified.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((created != null) ? created.hashCode() : 0);
-
-        return result;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        return "SessionDataResponse{" +
-                "modified=" + modified +
-                ", created=" + created +
-                '}';
     }
 }

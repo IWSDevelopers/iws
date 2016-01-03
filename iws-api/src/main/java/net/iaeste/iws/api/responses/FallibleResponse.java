@@ -18,6 +18,7 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.util.Fallible;
+import net.iaeste.iws.api.util.ReflectiveStandardMethods;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -94,44 +95,23 @@ public class FallibleResponse implements Fallible {
      * {@inheritDoc}
      */
     @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof FallibleResponse)) {
-            return false;
-        }
-
-        final FallibleResponse that = (FallibleResponse) obj;
-
-        if ((error != null) ? !error.equals(that.error) : (that.error != null)) {
-            return false;
-        }
-
-        return !((message != null) ? !message.equals(that.message) : (that.message != null));
+    public final boolean equals(final Object obj) {
+        return ReflectiveStandardMethods.reflectiveEquals(this, obj);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public int hashCode() {
-        int hash = IWSConstants.HASHCODE_INITIAL_VALUE;
-
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((error != null) ? error.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((message != null) ? message.hashCode() : 0);
-
-        return hash;
+    public final int hashCode() {
+        return ReflectiveStandardMethods.reflectiveHashCode(this);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public String toString() {
-        return "FallibleResponse{" +
-                "error=" + error +
-                ", message='" + message + '\'' +
-                '}';
+    public final String toString() {
+        return ReflectiveStandardMethods.reflectiveToString(this);
     }
 }

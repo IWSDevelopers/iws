@@ -209,7 +209,7 @@ public final class ReflectiveStandardMethods {
             for (final Annotation annotation : field.getDeclaredAnnotations()) {
                 if (annotation instanceof StandardMethods) {
                     final StandardMethods.For forField = ((StandardMethods) annotation).value();
-                    if ((forField == StandardMethods.For.NONE) || (forField != use)) {
+                    if ((forField == StandardMethods.For.NONE) || ((forField != use) && (forField != StandardMethods.For.ALL))) {
                         useField = false;
                     }
                 }

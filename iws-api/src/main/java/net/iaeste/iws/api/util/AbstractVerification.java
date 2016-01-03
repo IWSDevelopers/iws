@@ -132,11 +132,7 @@ public abstract class AbstractVerification implements Verifiable {
      * {@inheritDoc}
      */
     @Override
-    public boolean equals(final Object obj) {
-        // There seems to be an issue with the Role DTO, so we cannot declare
-        // this method for final yet. Problem occurs in the AccountService,
-        // where the fetchRoles request returns more than the expected number
-        // of Objects.
+    public final boolean equals(final Object obj) {
         return ReflectiveStandardMethods.reflectiveEquals(this, obj);
     }
 

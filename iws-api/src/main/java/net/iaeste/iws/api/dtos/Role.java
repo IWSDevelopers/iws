@@ -17,6 +17,7 @@ package net.iaeste.iws.api.dtos;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.util.AbstractVerification;
+import net.iaeste.iws.api.util.StandardMethods;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -28,9 +29,9 @@ import java.util.Set;
 
 /**
  * Roles are simple collections of Permissions, with a name to associate them
- * with. The lis of Permissions is the all the Permissions that the Role may
+ * with. The list of Permissions is all those Permissions that the Role may
  * undertake, this is held together with the Permissions or Actions that a Group
- * may perform, and the joined result of these two sets is then the actual set
+ * may perform, and the intersect of these two sets is then the actual set
  * of Permissions that a user with this Role, may undertake in the Context of
  * the Group.
  *
@@ -45,9 +46,11 @@ public final class Role extends AbstractVerification {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    @XmlElement(required = true, nillable = true)  private String roleId = null;
-    @XmlElement(required = true, nillable = false) private String roleName = null;
-    @XmlElement(required = true, nillable = false) private Set<Permission> permissions = null;
+    @XmlElement(required = true, nillable = true)  @StandardMethods(StandardMethods.For.ALL)      private String roleId = null;
+    @XmlElement(required = true, nillable = false) @StandardMethods(StandardMethods.For.ALL)      private String roleName = null;
+    // For the HashCode & Equals, the name and Id should be enough as they
+    // combined should be unique. The Permissions are only used by toString
+    @XmlElement(required = true, nillable = false) @StandardMethods(StandardMethods.For.TOSTRING) private Set<Permission> permissions = null;
 
     // =========================================================================
     // Object Constructors
@@ -94,14 +97,15 @@ public final class Role extends AbstractVerification {
     // =========================================================================
 
     /**
-     * Sets the Role Id, which is the internally generated key for this Object.
-     * Note, that the presence of the value will determine if the IWS should
-     * process this record as if it exist or not. If the Id is set, but no
-     * record exists, then the system will reply with an error. Likewise, if no
-     * Id is provided, but the record exists, the system will reply with an
-     * error.<br />
-     *   The value must be a valid Id, otherwise the method will throw an
-     * {@code IllegalArgumentException}.
+     * <p>Sets the Role Id, which is the internally generated key for this
+     * Object. Note, that the presence of the value will determine if the IWS
+     * should process this record as if it exist or not. If the Id is set, but
+     * no record exists, then the system will reply with an error. Likewise, if
+     * no Id is provided, but the record exists, the system will reply with an
+     * error.</p>
+     *
+     * <p>The value must be a valid Id, otherwise the method will throw an
+     * {@code IllegalArgumentException}.</p>
      *
      * @param roleId Role Id
      * @throws IllegalArgumentException if the Id is set but invalid
@@ -135,22 +139,24 @@ public final class Role extends AbstractVerification {
     }
 
     /**
-     * The Role contains a set of Permissions. This set may not be null. It is
-     * allowed to contain any internally defined Permission. Please note, that a
-     * Role is general, and although some permissions may be added, the
+     * <p>The Role contains a set of Permissions. This set may not be null. It
+     * is allowed to contain any internally defined Permission. Please note,
+     * that a Role is general, and although some permissions may be added, the
      * functionality is linked together with the Groups, so the system will
      * determine if a User is allowed to perform the action based on the
      * combined information of both Permission and Group, not just the
-     * one.<br />
-     *   The IWS uses the mathematical "Set" to verify if a Permission is
+     * one.</p>
+     *
+     * <p>The IWS uses the mathematical "Set" to verify if a Permission is
      * allowed for a User in the given context or not. If both the Role and the
      * Group have the Permission assigned, then the user may perform the action,
-     * otherwise not.<br />
-     *   If the permission is null, then the method will thrown an
-     * {@code IllegalArgumentException}.
+     * otherwise not.</p>
+     *
+     * <p>If the permission is null, then the method will thrown an
+     * {@code IllegalArgumentException}.</p>
      *
      * @param permissions Set of Permissions for this Role
-     * @throws IllegalArgumentException
+     * @throws IllegalArgumentException if the value is null
      */
     public void setPermissions(final Set<Permission> permissions) throws IllegalArgumentException {
         ensureNotNull("permissions", permissions);
@@ -175,55 +181,5 @@ public final class Role extends AbstractVerification {
         isNotNull(validation, "roleName", roleName);
 
         return validation;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
-            return true;
-        }
-
-        if (!(obj instanceof Role)) {
-            return false;
-        }
-
-        final Role role = (Role) obj;
-
-        // Permissions are ignored, since the Id & Name are suppose to be unique
-
-        if ((roleId != null) ? !roleId.equals(role.roleId) : (role.roleId != null)) {
-            return false;
-        }
-
-        return !((roleName != null) ? !roleName.equals(role.roleName) : (role.roleName != null));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-
-        // Permissions are ignored, since the Id & Name are suppose to be unique
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((roleId != null) ? roleId.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((roleName != null) ? roleName.hashCode() : 0);
-
-        return result;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        return "Role{" +
-                "roleId=" + roleId +
-                ", roleName='" + roleName + '\'' +
-                ", permissions=" + permissions +
-                '}';
     }
 }

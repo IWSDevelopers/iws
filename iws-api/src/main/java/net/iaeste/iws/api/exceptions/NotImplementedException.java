@@ -18,12 +18,13 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
 
 /**
- * Exception to be thrown, in case the implementation is missing. The usage of
- * this exception should not become the norm, rather the exception for features
- * which have been added to the external API, but haven't been implemented
- * yet.<br />
- *   Class is made deprecated by default, since it helps to outline the areas
- * where we have not completed work.
+ * <p>Exception to be thrown, in case the implementation is missing. The usage
+ * of this exception should not become the norm, rather the exception for
+ * features which have been added to the external API, but haven't been
+ * implemented yet.</p>
+ *
+ * <p>Class is made deprecated by default, since it helps to outline the areas
+ * where we have not completed work.</p>
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$

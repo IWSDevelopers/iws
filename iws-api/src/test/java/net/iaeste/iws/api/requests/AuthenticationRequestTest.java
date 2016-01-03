@@ -50,10 +50,10 @@ public final class AuthenticationRequestTest {
         assertThat(result, is(not(diff)));
         assertThat(result.getUsername(), is(username));
         assertThat(result.getPassword(), is(password));
-        assertThat(result.toString(), is("AuthenticationRequest{ username='username' }"));
+        assertThat(result.toString(), is("AuthenticationRequest{username='username'}"));
         assertThat(result.toString(), is(same.toString()));
         assertThat(result.toString(), is(not(diff.toString())));
-        assertThat(result.hashCode(), is(1569819734));
+        assertThat(result.hashCode(), is(1278726105));
         assertThat(result.hashCode(), is(same.hashCode()));
         assertThat(result.hashCode(), is(not(diff.hashCode())));
 

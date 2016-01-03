@@ -42,6 +42,7 @@ public final class EnumUtil {
      *
      * @param type The Enumerated Type to check for values of
      * @param str  String to convert to an Enumerated value
+     * @param <E>  The {@code Descriptable} Enum type
      * @return The result of the check
      * @throws IllegalArgumentException if no match was found
      */

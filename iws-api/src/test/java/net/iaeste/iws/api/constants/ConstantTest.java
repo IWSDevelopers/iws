@@ -29,7 +29,7 @@ public final class ConstantTest {
 
     @Test
     public void testDateFormat() {
-        // According to trac bug report #412, the date format used in IW4, is
+        // According to Trac bug report #412, the date format used in IW4, is
         // the same as in IWS. The requested format is on the ISO Format
         // yyyy-MM-dd, but dd-MMM-yyyy. This test just verifies that.
         final String oct14 = "14-OCT-2010";
@@ -38,14 +38,16 @@ public final class ConstantTest {
     }
 
     /**
-     * This test verifies the e-mail pattern we're using. The Wikipedia page
+     * <p>This test verifies the e-mail pattern we're using. The Wikipedia page
      * for e-mail addresses contains a list of known valid and invalid addresses
-     * which is used as a base for this test.
-     *   <a href="http://en.wikipedia.org/wiki/Email_address">See</a> for more
-     * information.<br />
-     *   Note; the goal with this test is not to verify that the IWS is 100%
+     * which is used as a base for this test.</p>
+     *
+     * <p><a href="http://en.wikipedia.org/wiki/Email_address">See</a> for more
+     * information.</p>
+     *
+     * <p>Note; the goal with this test is not to verify that the IWS is 100%
      * compliant, but that it supports the most common cases and that none of
-     * the noncompliant addresses is falling through.
+     * the noncomplying addresses is falling through.</p>
      */
     @Test
     public void testCompliantEmailAddresses() {
@@ -58,7 +60,7 @@ public final class ConstantTest {
         //assertThat(IWSConstants.EMAIL_PATTERN.matcher("\"much.more unusual\"@example.com").matches(), is(true));
         //assertThat(IWSConstants.EMAIL_PATTERN.matcher("\"very.unusual.@.unusual.com\"@example.com").matches(), is(true));
         //assertThat(IWSConstants.EMAIL_PATTERN.matcher("\"very.(),:;<>[]\".VERY.\"very@\\ \"very\".unusual\"@strange.example.com").matches(), is(true));
-        // (top-level domains are valid hostnames)
+        // (top-level domains are valid hostname's)
         assertThat(IWSConstants.EMAIL_PATTERN.matcher("postbox@com").matches(), is(true));
         // (local domain name with no TLD)
         assertThat(IWSConstants.EMAIL_PATTERN.matcher("admin@mailserver1").matches(), is(true));
@@ -83,8 +85,8 @@ public final class ConstantTest {
      * This is the negative test for the e-mail address Pattern being used. The
      * example have all been taken from the Wikipedia page about e-mail
      * <a href="http://en.wikipedia.org/wiki/Email_address">addresses</a>, and
-     * is just here to verify that nomatter what, our regex may not allow any of
-     * these.
+     * is just here to verify that no matter what, our regex may not allow any
+     * of these.
      */
     @Test
     public void testNonCompliantEmailAddresses() {

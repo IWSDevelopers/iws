@@ -1,6 +1,6 @@
 /*
  * =============================================================================
- * Copyright 1998-2015, IAESTE Internet Development Team. All rights reserved.
+ * Copyright 1998-2016, IAESTE Internet Development Team. All rights reserved.
  * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.enums.exchange.Specialization
  * -----------------------------------------------------------------------------
@@ -19,23 +19,27 @@ import net.iaeste.iws.api.enums.Descriptable;
 import javax.xml.bind.annotation.XmlType;
 
 /**
- * Contains all predefined Specializations. Note, these values are mapped into
- * the database entities, and thus stored there. If a value is changed. The
+ * <p>Contains all predefined Specializations. Note, these values are mapped
+ * into the database entities, and thus stored there. If a value is changed. The
  * reverse mapping (valueOf) will fail. It is therefore *not* allowed to change
  * the spelling of an existing entry, without verification that it is not used
- * in the database.<br />
- *   If it is used in the database, then it can also be that it is used
+ * in the database.</p>
+ *
+ * <p>If it is used in the database, then it can also be that it is used
  * elsewhere, i.e. by third-party systems - and if so, then the entry may no
- * longer be touched.<br />
- *   As third-party systems may also use the enum, changes to the list may only
+ * longer be touched.</p>
+ *
+ * <p>As third-party systems may also use the enum, changes to the list may only
  * be added to the end, since the ordinal values of records may otherwise
  * change, again causing various problems. It is *not* allowed to delete any
- * records from this list.<br />
- *   Dealing with deprecation of the records is still a pending topic, but as
+ * records from this list.</p>
+ *
+ * <p>Dealing with deprecation of the records is still a pending topic, but as
  * it very rarely happens, this is more an academic topic than a practical
- * matter.<br />
- *   The initial listing is generated from the SID provided Excel Sheet, see
- * Trac ticket #416.
+ * matter.</p>
+ *
+ * <p>The initial listing is generated from the SID provided Excel Sheet, see
+ * Trac ticket #416.</p>
  *
  * @author  Matej Kosco / last $Author:$
  * @version $Revision:$ / $Date:$

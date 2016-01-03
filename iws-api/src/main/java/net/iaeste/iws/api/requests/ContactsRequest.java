@@ -50,12 +50,13 @@ public final class ContactsRequest extends AbstractVerification {
     // =========================================================================
 
     /**
-     * Sets the UserId, so the User with a list of all Group associations can be
-     * retrieved. This will also set the ContactType to User.<br />
-     *   The method will throw an {@code IllegalArgumentException} if the given
-     * UserID is invalid.
+     * <p>Sets the UserId, so the User with a list of all Group associations can
+     * be retrieved. This will also set the ContactType to User.</p>
      *
-     * @param groupId Id of the User to fetch details for
+     * <p>The method will throw an {@code IllegalArgumentException} if the given
+     * UserID is invalid.</p>
+     *
+     * @param userId Id of the User to fetch details for
      * @throws IllegalArgumentException if the UserId is invalid
      */
     public void setUserId(final String userId) throws IllegalArgumentException {
@@ -69,10 +70,11 @@ public final class ContactsRequest extends AbstractVerification {
     }
 
     /**
-     * Sets the GroupId, so the Group with a list of the associated Users can be
-     * retrieved. This will also set the ContactType to Group.<br />
-     *   The method will throw an {@code IllegalArgumentException} if the given
-     * GroupId is invalid.
+     * <p>Sets the GroupId, so the Group with a list of the associated Users can
+     * be retrieved. This will also set the ContactType to Group.</p>
+     *
+     * <p>The method will throw an {@code IllegalArgumentException} if the given
+     * GroupId is invalid.</p>
      *
      * @param groupId Id of the Group to fetch details for
      * @throws IllegalArgumentException if the GroupId is invalid

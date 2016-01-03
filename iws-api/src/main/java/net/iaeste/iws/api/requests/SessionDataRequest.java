@@ -27,16 +27,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * IWS Clients can work with Sessions in many different ways. The Data they may
- * wish to store as part of a Session can also take on many types and shapes.
- * Hence, it is possible to set the data to the desired data type. It will, upon
- * being set, be converted to a Compressed Byte Array, that can be stored as a
- * Blob. The converting takes place upon setting the data.<br />
- *   Please note, that the SessionData is being Compressed upon converting to a
+ * <p>IWS Clients can work with Sessions in many different ways. The Data they
+ * may wish to store as part of a Session can also take on many types and
+ * shapes. Hence, it is possible to set the data to the desired data type. It
+ * will, upon being set, be converted to a Compressed Byte Array, that can be
+ * stored as a Blob. The converting takes place upon setting the data.</p>
+ *
+ * <p>Please note, that the SessionData is being Compressed upon converting to a
  * Serialized Byte array. This means, that the actual size of data allowed may
  * differ from the size provided, depending on how much the data can be
  * compressed. It is the size of the Compressed Data, which is being verified
- * against the allowed max size.
+ * against the allowed max size.</p>
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -50,16 +51,16 @@ public final class SessionDataRequest<T extends Serializable> extends AbstractVe
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     /**
-     * The maximum allowed size to be stored for the current Session. The value
-     * is used against the Compressed Data Array, so even if the original Object
-     * is bigger, it may still be allowed.
+     * <p>The maximum allowed size to be stored for the current Session. The
+     * value is used against the Compressed Data Array, so even if the original
+     * Object is bigger, it may still be allowed.</p>
      */
     public static final int MAX_SIZE = 16384;
 
     /**
-     * The Session Data, to be stored for the current Session. The data is
+     * <p>The Session Data, to be stored for the current Session. The data is
      * internally converted to a Compressed Byte Array, which may not exceed
-     * 16 KB.
+     * 16 KB.</p>
      */
     @XmlElement(required = true, nillable = true)
     private byte[] sessionData = null;
@@ -69,16 +70,16 @@ public final class SessionDataRequest<T extends Serializable> extends AbstractVe
     // =========================================================================
 
     /**
-     * Empty Constructor, to use if the setters are invoked. This is required
-     * for WebServices to work properly.
+     * <p>Empty Constructor, to use if the setters are invoked. This is required
+     * for WebServices to work properly.</p>
      */
     public SessionDataRequest() {
         // Required for WebServices to work. Comment added to please Sonar.
     }
 
     /**
-     * Default Constructor, takes an arbitrary datatype as session data, and
-     * stores it internally as a Byte Array.
+     * <p>Default Constructor, takes an arbitrary data type as session data, and
+     * stores it internally as a Byte Array.</p>
      *
      * @param sessionData Client specific Session Data
      */
@@ -91,11 +92,11 @@ public final class SessionDataRequest<T extends Serializable> extends AbstractVe
     // =========================================================================
 
     /**
-     * Sets the Session Data, the Data can be null - which will remove any data
-     * currently stored for this Session or defined. Only condition is that the
-     * compressed data does not exceed the maximum allowed size, defined by
+     * <p>Sets the Session Data, the Data can be null - which will remove any
+     * data currently stored for this Session or defined. Only condition is that
+     * the compressed data does not exceed the maximum allowed size, defined by
      * #MAX_SIZE. If it does exceeds this after compression, then the method
-     * will throw an IllegalArgument Exception.
+     * will throw an IllegalArgument Exception.</p>
      *
      * @param sessionData Session Data or null to remove
      * @throws IllegalArgumentException if the Compressed Session Data exceeds 16 KB

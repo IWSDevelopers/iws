@@ -44,22 +44,20 @@ public final class FileRequest extends AbstractVerification implements Actionabl
     /** Default allowed Actions for the Folder Request. */
     private static final Set<Action> allowed = EnumSet.of(Action.PROCESS, Action.DELETE);
 
-    /** Action to perform against the given Folder. */
+    /** <p>Action to perform against the given Folder.</p> */
     @XmlElement(required = true, nillable = false)
     private Action action = Action.PROCESS;
 
-    /**
-     * The File Object to process.
-     */
+    /** <p>The File Object to process.</p> */
     @XmlElement(required = true, nillable = false)
     private File file = null;
 
     /**
-     * The IWS supports different ways of working with Files. By default, all
+     * <p>he IWS supports different ways of working with Files. By default, all
      * files are stored as private files, where the type is explicitly set to
      * "Owner". To read files in different ways, i.e. if the file is an
      * attachment, other internal criteria's is used to determine if the user is
-     * allowed, hence - it is important that the type is set accordingly.
+     * allowed, hence - it is important that the type is set accordingly.</p>
      */
     @XmlElement(required = true, nillable = false)
     private StorageType type = StorageType.OWNER;
@@ -69,15 +67,15 @@ public final class FileRequest extends AbstractVerification implements Actionabl
     // =========================================================================
 
     /**
-     * Empty Constructor, to use if the setters are invoked. This is required
-     * for WebServices to work properly.
+     * <p>Empty Constructor, to use if the setters are invoked. This is required
+     * for WebServices to work properly.</p>
      */
     public FileRequest() {
         // Required for WebServices to work. Comment added to please Sonar.
     }
 
     /**
-     * Default Constructor.
+     * <p>Default Constructor.</p>
      *
      * @param file Meta data for the newly created file.
      */
@@ -119,8 +117,8 @@ public final class FileRequest extends AbstractVerification implements Actionabl
     // =========================================================================
 
     /**
-     * Sets the File to be processed. The method will thrown an
-     * {@code IllegalArgumentException} if the Object is not verifiable.
+     * <p>Sets the File to be processed. The method will thrown an
+     * {@code IllegalArgumentException} if the Object is not verifiable.</p>
      *
      * @param file File Object to be processed
      * @throws IllegalArgumentException if the File Object is not verifiable
@@ -135,13 +133,14 @@ public final class FileRequest extends AbstractVerification implements Actionabl
     }
 
     /**
-     * Sets the type of Storage that is requested. Most commonly, files are
+     * <p>Sets the type of Storage that is requested. Most commonly, files are
      * retrieved by their owners (default), but a file can also be attached to
      * other Objects, which means that the system needs to be informed, if the
-     * fetching should be for an attached offer.<br />
-     *   The field is mandatory, since it is used to determine which mechanism
+     * fetching should be for an attached offer.</p>
+     *
+     * <p>The field is mandatory, since it is used to determine which mechanism
      * is needed for the lookup, hence it must be defined. If set to null, the
-     * method will throw an {@code IllegalArgumentException}.
+     * method will throw an {@code IllegalArgumentException}.</p>
      *
      * @param type Storage Type
      */

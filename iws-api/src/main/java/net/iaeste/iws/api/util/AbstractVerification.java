@@ -27,11 +27,12 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 /**
- * All Input validation is handled via this class. It contains a number of
+ * <p>All Input validation is handled via this class. It contains a number of
  * "ensure..." Methods, which all throw {@code IllegalArgumentException} if the
- * input is not allowed.<br />
- *   The main purpose of these checks, is to ensure that the IWS Objects fails
- * as early as possible, so no unneeded requests are made to the IWS.
+ * input is not allowed.</p>
+ *
+ * <p>The main purpose of these checks, is to ensure that the IWS Objects fails
+ * as early as possible, so no unneeded requests are made to the IWS.</p>
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -124,6 +125,38 @@ public abstract class AbstractVerification implements Verifiable {
     }
 
     // =========================================================================
+    // Standard Methods
+    // =========================================================================
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(final Object obj) {
+        // There seems to be an issue with the Role DTO, so we cannot declare
+        // this method for final yet. Problem occurs in the AccountService,
+        // where the fetchRoles request returns more than the expected number
+        // of Objects.
+        return ReflectiveStandardMethods.reflectiveEquals(this, obj);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final int hashCode() {
+        return ReflectiveStandardMethods.reflectiveHashCode(this);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final String toString() {
+        return ReflectiveStandardMethods.reflectiveToString(this);
+    }
+
+    // =========================================================================
     // Ensuring methods for setters, that throws IllegalArgumentExceptions
     // =========================================================================
 
@@ -207,20 +240,6 @@ public abstract class AbstractVerification implements Verifiable {
         if (value.length() < length) {
             throw new IllegalArgumentException(format(ERROR_TOO_SHORT, field, length));
         }
-    }
-
-    /**
-     * Throws an {@code IllegalArgumentException} if he given values are either
-     * null or invalid Ids.
-     *
-     * @param field Name of field
-     * @param value The value of the field
-     * @throws IllegalArgumentException if thte value is null, empty or invalid
-     */
-    protected static void ensureNotNullOrEmptyAndValidIds(final String field, final Collection<String> value) {
-        ensureNotNull(field, value);
-        ensureNotEmpty(field, value);
-        ensureValidIds(field, value);
     }
 
     /**
@@ -331,6 +350,7 @@ public abstract class AbstractVerification implements Verifiable {
      * @param field   Name of the field
      * @param value   The value of the field
      * @param minimum The minimally allowed value for the field
+     * @param <T>     The Number type
      * @throws IllegalArgumentException if the value is null or too small
      */
     protected static <T extends Number> void ensureNotNullAndMinimum(final String field, final T value, final T minimum) {
@@ -345,6 +365,7 @@ public abstract class AbstractVerification implements Verifiable {
      * @param field      The name of the field (value) to be verified
      * @param value      the Collection to verify
      * @param acceptable Collection of allowed values
+     * @param <E>        The Enum Type
      */
     protected static <E extends Enum<?>> void ensureNotNullAndContains(final String field, final Collection<E> value, final Collection<E> acceptable) {
         ensureNotNull(field, value);
@@ -363,6 +384,7 @@ public abstract class AbstractVerification implements Verifiable {
      * @param field      The name of the field (value) to be verified
      * @param value      the Enum to verify
      * @param acceptable Collection of allowed values
+     * @param <E>        The Enum type
      */
     protected static <E extends Enum<?>> void ensureNotNullAndContains(final String field, final E value, final Collection<E> acceptable) {
         ensureNotNull(field, value);
@@ -408,6 +430,7 @@ public abstract class AbstractVerification implements Verifiable {
      * @param field   Name of the field
      * @param value   The value of the field
      * @param minimum The minimally allowed value for the field
+     * @param <T>     The Number type
      * @throws IllegalArgumentException if the value is too small
      */
     protected static <T extends Number> void ensureMinimum(final String field, final T value, final T minimum) {
@@ -426,6 +449,7 @@ public abstract class AbstractVerification implements Verifiable {
      * @param value   The value of the field
      * @param minimum The minimally allowed value for the field
      * @param maximum The maximally allowed value for the field
+     * @param <T>     The Number type
      * @throws IllegalArgumentException if the value is null not of exact length
      */
     protected static <T extends Number> void ensureWithinLimits(final String field, final T value, final T minimum, final T maximum) {
@@ -444,6 +468,7 @@ public abstract class AbstractVerification implements Verifiable {
      * @param value   The value of the field
      * @param minimum The minimally allowed value for the field
      * @param maximum The maximally allowed value for the field
+     * @param <T>     The Number type
      * @throws IllegalArgumentException if the value is null not of exact length
      */
     protected static <T extends Number> void ensureNotNullAndWithinLimits(final String field, final T value, final T minimum, final T maximum) {
@@ -518,27 +543,11 @@ public abstract class AbstractVerification implements Verifiable {
      *
      * @param field Name of the Identifier
      * @param value The value of the Identifier
-     * @throws IllegalArgumentException
+     * @throws IllegalArgumentException if the value is not a valid identifier
      */
     protected static void ensureValidIdentifier(final String field, final String value) {
         if ((value != null) && !(UUID_PATTERN.matcher(value).matches() || REFNO_PATTERN.matcher(value).matches())) {
             throw new IllegalArgumentException(format(ERROR_INVALID_IDENTIFIER, field));
-        }
-    }
-
-    /**
-     * Throws an {@code IllegalArgumentException} if the given Id is invalid,
-     * i.e. if it not null and the format doesn't match the required format.
-     *
-     * @param field  Name of the Id
-     * @param values The value for the Id
-     * @throws IllegalArgumentException if the Id doesn't follow the correct format
-     */
-    protected static void ensureValidIds(final String field, final Collection<String> values) {
-        if (values != null) {
-            for (final String id : values) {
-                ensureValidId(field, id);
-            }
         }
     }
 
@@ -629,16 +638,16 @@ public abstract class AbstractVerification implements Verifiable {
     // =========================================================================
 
     /**
-     * Calculates the Exchange Year for Offers. Used for both searching for
+     * <p>Calculates the Exchange Year for Offers. Used for both searching for
      * Offers, and for creating Offers. According to the specifications, the
      * Exchange year changes on September first to the next year, meaning that
      * the "Current Exchange Year" is the same as the "Current Year" until
-     * September 1st, and the following year afterword.<br />
+     * September 1st, and the following year afterword.</p>
      * <ul>
-     *   <li>Example 1: April 1st, 2014 => Current Exchange Year is 2014</li>
-     *   <li>Example 2: August 31st, 2014 => Current Exchange Year is 2014</li>
-     *   <li>Example 3: September 1st, 2014 => Current Exchange Year is 2015</li>
-     *   <li>Example 4: October 1st, 2014 => Current Exchange Year is 2015</li>
+     *   <li>Example 1: April 1st, 2014 =&gt; Current Exchange Year is 2014</li>
+     *   <li>Example 2: August 31st, 2014 =&gt; Current Exchange Year is 2014</li>
+     *   <li>Example 3: September 1st, 2014 =&gt; Current Exchange Year is 2015</li>
+     *   <li>Example 4: October 1st, 2014 =&gt; Current Exchange Year is 2015</li>
      * </ul>
      *
      * @return Current Exchange Year
@@ -683,6 +692,7 @@ public abstract class AbstractVerification implements Verifiable {
      * @param field      The name of the field (value) to be verified
      * @param value      the Collection to verify
      * @param acceptable Collection of allowed values
+     * @param <E>        The Enum type
      */
     protected static <E extends Enum<?>> void isNotNullAndContains(final Map<String, String> validation, final String field, final Collection<E> value, final Collection<E> acceptable) {
         isNotNull(validation, field, value);
@@ -708,6 +718,7 @@ public abstract class AbstractVerification implements Verifiable {
      * @param field      The name of the field (value) to be verified
      * @param value      the Enum to verify
      * @param acceptable Collection of allowed values
+     * @param <E>        The Enum type
      */
     protected static <E extends Enum<?>> void isNotNullAndContains(final Map<String, String> validation, final String field, final E value, final Collection<E> acceptable) {
         isNotNull(validation, field, value);
@@ -751,10 +762,11 @@ public abstract class AbstractVerification implements Verifiable {
     }
 
     /**
-     * The method adds error messages for fields with checks for existing
-     * messages.<br />
-     *   If the field in validation Map already had an error, then the error
-     * messages are concatenated.
+     * <p>The method adds error messages for fields with checks for existing
+     * messages.</p>
+     *
+     * <p>If the field in validation Map already had an error, then the error
+     * messages are concatenated.</p>
      *
      * @param validation   Map with Error information
      * @param field        The name of the field to add error
@@ -777,6 +789,10 @@ public abstract class AbstractVerification implements Verifiable {
      * is a problem with formatting the String, then the method will throw an
      * IllegalFormatException. Otherwise, the method will return the result of
      * formatting the String.
+     *
+     * @param message The String to be formatted
+     * @param args    The Arguments for the formatted String
+     * @return Formatted String
      */
     protected static String format(final String message, final Object... args) {
         return String.format(message, args);

@@ -25,7 +25,7 @@ import net.iaeste.iws.api.responses.FileResponse;
 import net.iaeste.iws.api.responses.FolderResponse;
 
 /**
- * Storage Functionality.
+ * <p>Storage Functionality.</p>
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -34,7 +34,7 @@ import net.iaeste.iws.api.responses.FolderResponse;
 public interface Storage {
 
     /**
-     * Processes a folder, meaning either creating, renaming or deleting.
+     * <p>Processes a folder, meaning either creating, renaming or deleting.</p>
      *
      * @param token   User Authentication Token
      * @param request Folder Request Object
@@ -43,14 +43,15 @@ public interface Storage {
     FolderResponse processFolder(AuthenticationToken token, FolderRequest request);
 
     /**
-     * Fetches a Folder with sub Folders and Files meta data (no content). The
-     * data being retrieved is both data belonging to Groups, which the current
-     * User is a member of, but also data from Folders and Files, which has been
-     * published by the Owning Group, provided that the Groups is allowed to
-     * publish such information.<br />
-     *   The lookup of shared Folders and Files, is done with thorough sets of
+     * <p>Fetches a Folder with sub Folders and Files meta data (no content).
+     * The data being retrieved is both data belonging to Groups, which the
+     * current User is a member of, but also data from Folders and Files, which
+     * has been published by the Owning Group, provided that the Groups is
+     * allowed to publish such information.</p>
+     *
+     * <p>The lookup of shared Folders and Files, is done with thorough sets of
      * checks, to ensure that data cannot be viewed if there is any element in
-     * the tree not permitting it.
+     * the tree not permitting it.</p>
      *
      * @param token   User Authentication Token
      * @param request FetchFolder Request Object
@@ -59,7 +60,7 @@ public interface Storage {
     FetchFolderResponse fetchFolder(AuthenticationToken token, FetchFolderRequest request);
 
     /**
-     * Processes a File.
+     * <p>Processes a File.</p>
      *
      * @param token   User Authentication Token
      * @param request File Request Object
@@ -68,7 +69,7 @@ public interface Storage {
     FileResponse processFile(AuthenticationToken token, FileRequest request);
 
     /**
-     * Fetches a File
+     * <p>Fetches a File.</p>
      *
      * @param token   User Authentication Token
      * @param request Fetch File Request

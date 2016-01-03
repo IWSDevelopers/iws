@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * For listing of countries, this request Object is used. It can be generated
+ * <p>For listing of countries, this request Object is used. It can be generated
  * with a number of variants. If the specific countryId is known, it can be
  * given, otherwise a list of CountryIds can be given or a Membership type. It
  * is not possible to mix the list of CountryIds with Membership type, since
@@ -37,9 +37,10 @@ import java.util.Map;
  * CountryId where the country in question has one type of Membership, and the
  * given Membership is of a different type, meaning that the result would be
  * rather strange in nature, since it would be "yes, we know the country, but
- * you asked for it in a different context".<br />
- *   The provided constructors and setters, is written, so it is not possible
- * to set both values.
+ * you asked for it in a different context".</p>
+ *
+ * <p>The provided constructors and setters, is written, so it is not possible
+ * to set both values.</p>
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -61,8 +62,8 @@ public final class FetchCountryRequest extends AbstractPaginatable {
     // =========================================================================
 
     /**
-     * Empty Constructor, to use if the setters are invoked. This is required
-     * for WebServices to work properly.
+     * <p>Empty Constructor, to use if the setters are invoked. This is required
+     * for WebServices to work properly.</p>
      */
     public FetchCountryRequest() {
         countryIds = null;
@@ -70,8 +71,8 @@ public final class FetchCountryRequest extends AbstractPaginatable {
     }
 
     /**
-     * Default Constructor, for the case where a list of countries, matching the
-     * given Ids, should be fetched.
+     * <p>Default Constructor, for the case where a list of countries, matching
+     * the given Ids, should be fetched.</p>
      *
      * @param countryIds List of Countries to fetch
      */
@@ -83,8 +84,8 @@ public final class FetchCountryRequest extends AbstractPaginatable {
     }
 
     /**
-     * Default Constructor, for the case where a list of countries, with a
-     * specific membership type, should be fetched.
+     * <p>Default Constructor, for the case where a list of countries, with a
+     * specific membership type, should be fetched.</p>
      *
      * @param membership Membership Type
      */
@@ -100,9 +101,10 @@ public final class FetchCountryRequest extends AbstractPaginatable {
     // =========================================================================
 
     /**
-     * Sets the list of CountryIds to fetch, it will also erase the Membership
-     * type, if it is defined. The setter will throw an IllegalArgument
-     * Exception, if the given list of CountryIds is null or empty.
+     * <p>Sets the list of CountryIds to fetch, it will also erase the
+     * Membership type, if it is defined. The setter will throw an
+     * {@code IllegalArgumentException}, if the given list of CountryIds is
+     * null or empty.</p>
      *
      * @param countryIds List of Countries to fetch
      * @throws IllegalArgumentException if the CountryIds is null or empty
@@ -115,7 +117,7 @@ public final class FetchCountryRequest extends AbstractPaginatable {
     }
 
     /**
-     * Retrieves the list of CountryIds or null.
+     * <p>Retrieves the list of CountryIds or null.</p>
      *
      * @return List of CountryIds to fetch
      */
@@ -124,9 +126,10 @@ public final class FetchCountryRequest extends AbstractPaginatable {
     }
 
     /**
-     * Sets the Membership type to fetch Countries for, it will also erase the
-     * CountryIds, if they are defined. The setter will throw an IllegalArgument
-     * Exception, if the given membership value is null.
+     * <p>Sets the Membership type to fetch Countries for, it will also erase
+     * the CountryIds, if they are defined. The setter will throw an
+     * {@code IllegalArgumentException}, if the given membership value is
+     * null.</p>
      *
      * @param membership Membership Type
      * @throws IllegalArgumentException if the membership value is null
@@ -139,7 +142,7 @@ public final class FetchCountryRequest extends AbstractPaginatable {
     }
 
     /**
-     * Retrieves the Membership type or null.
+     * <p>Retrieves the Membership type or null.</p>
      *
      * @return Membership type or null
      */
@@ -148,18 +151,20 @@ public final class FetchCountryRequest extends AbstractPaginatable {
     }
 
     /**
-     * Sets the Type of Countries to retrieve. Type is here defined as a list
+     * <p>Sets the Type of Countries to retrieve. Type is here defined as a list
      * of countries which may either be IAESTE specific (CountryType#COMMITTEES)
-     * or of a more general type (CountryType#COUNTRIES).<br />
-     *   By default, all Country based requests are made with the Committe type,
-     * this means that the lookup will also try to fill in information about the
-     * current National Secretaries and mailing lists. If a different type is
-     * chosen, then the result will purely focus on retrieving country
+     * or of a more general type (CountryType#COUNTRIES).</p>
+     *
+     * <p>By default, all Country based requests are made with the Committee
+     * type, this means that the lookup will also try to fill in information
+     * about the current National Secretaries and mailing lists. If a different
+     * type is chosen, then the result will purely focus on retrieving country
      * information and nothing else. This type is optimal for country
      * administration, i.e. adding new members to the organization, and when a
-     * list of nationalities or country of residence is needed.<br />
-     *   The method will thrown an {@code IllegalArgumentException} if the value
-     * is set to null.
+     * list of nationalities or country of residence is needed.</p>
+     *
+     * <p>The method will thrown an {@code IllegalArgumentException} if the value
+     * is set to null.</p>
      *
      * @param countryType The current type of listing to retrieve
      * @throws IllegalArgumentException if the countryType is null

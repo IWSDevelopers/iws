@@ -40,11 +40,12 @@ public interface Verifiable extends Serializable {
     void verify() throws VerificationException;
 
     /**
-     * Validates that the required information is there for the processing to be
-     * able to successfully run.<br />
-     *   The method collects all errors, and returns a map with them, where the
+     * <p>Validates that the required information is there for the processing to
+     * be able to successfully run.</p>
+     *
+     * <p>The method collects all errors, and returns a map with them, where the
      * key is the name of the field in the Object, and the value is the error
-     * information.
+     * information.</p>
      *
      * @return Map with all errors, if successful then the map is empty
      */

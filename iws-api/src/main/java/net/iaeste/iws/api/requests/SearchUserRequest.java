@@ -45,17 +45,18 @@ public final class SearchUserRequest extends AbstractVerification {
     // =========================================================================
 
     /**
-     * Empty Constructor, to use if the setters are invoked. This is required
-     * for WebServices to work properly.
+     * <p>Empty Constructor, to use if the setters are invoked. This is required
+     * for WebServices to work properly.</p>
      */
     public SearchUserRequest() {
         // Required for WebServices to work. Comment added to please Sonar.
     }
 
     /**
-     * Default Constructor,
+     * <p>Default Constructor.</p>
      *
-     * @param name The Partial name of the user to search for
+     * @param group The Group to search within
+     * @param name  The Partial name of the user to search for
      */
     public SearchUserRequest(final Group group, final String name) {
         setGroup(group);
@@ -67,9 +68,9 @@ public final class SearchUserRequest extends AbstractVerification {
     // =========================================================================
 
     /**
-     * Sets the Member Group to search for members of. If the Group is not a
+     * <p>Sets the Member Group to search for members of. If the Group is not a
      * Members Group, then the result will be empty. If no Group is defined,
-     * then the search is made among all Users.
+     * then the search is made among all Users.</p>
      *
      * @param group Member Group to search in
      * @throws IllegalArgumentException if not a valid Group
@@ -84,14 +85,16 @@ public final class SearchUserRequest extends AbstractVerification {
     }
 
     /**
-     * Sets the (partial) name of the user to search for. If the name only
+     * <p>Sets the (partial) name of the user to search for. If the name only
      * consists of one part (no spaces), then the search will look for matching
-     * first and lastnames. If the name is two part (separated by space), then
+     * first and last names. If the name is two part (separated by space), then
      * the search will use the first part as the potential firstname and second
      * part as potential lastname. If the name consists of more blocks, then
-     * these will be ignored.<br />
-     *   If nothing is provided, i.e. if the field is set to null or an empty
-     * String, then the method will throw an {@code IllegalArgumentException}.
+     * these will be ignored.</p>
+     *
+     * <p>If nothing is provided, i.e. if the field is set to null or an empty
+     * String, then the method will throw an
+     * {@code IllegalArgumentException}.</p>
      *
      * @param name Partial name to search for
      * @throws IllegalArgumentException if the name is null or empty

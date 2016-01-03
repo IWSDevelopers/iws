@@ -25,22 +25,24 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * This is the Request Object for creating new User Accounts in IWS. The account
- * requires some data, which is included here. By default, the user must provide
- * a valid e-mail address - as the IWS Account ActivationCode is sent to this
- * e-mail address. The user account cannot be used until it has been activated.
- * Accounts that has not been activated within 14 days will be considered dead
- * and be wiped from the system.<br />
- *   Additionally to the username (e-mail address), a password must be chosen.
+ * <p>This is the Request Object for creating new User Accounts in IWS. The
+ * account requires some data, which is included here. By default, the user must
+ * provide a valid e-mail address - as the IWS Account ActivationCode is sent to
+ * this e-mail address. The user account cannot be used until it has been
+ * activated. Accounts that has not been activated within 14 days will be
+ * considered dead and be wiped from the system.</p>
+ *
+ * <p>Additionally to the username (e-mail address), a password must be chosen.
  * The system makes no checks against the strength of the password, nor will the
  * system enforce regular changes. However, the user should pick a strong
  * password. Besides this, the users first and last names must also be
- * provided.<br />
- *   It is important to note, that the users names (first, last) cannot be
+ * provided.</p>
+ *
+ * <p>It is important to note, that the users names (first, last) cannot be
  * altered, unless a DBA (Database Administrator) directly intervenes and makes
- * this change. It is done so, since the IWS is a multi-user & multi-group
+ * this change. It is done so, since the IWS is a multi-user &amp; multi-group
  * system, and the user should not give accounts to others, but rather create
- * and delete accounts.
+ * and delete accounts.</p>
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -71,18 +73,18 @@ public final class CreateUserRequest extends AbstractVerification {
     // =========================================================================
 
     /**
-     * Empty Constructor, to use if the setters are invoked. This is required
-     * for WebServices to work properly.
+     * <p>Empty Constructor, to use if the setters are invoked. This is required
+     * for WebServices to work properly.</p>
      */
     public CreateUserRequest() {
         // Required for WebServices to work. Comment added to please Sonar.
     }
 
     /**
-     * Default Constructor for creating users without a pre-defined Password.
+     * <p>Default Constructor for creating users without a pre-defined Password.
      * However, the username and the first/last names must be set. The System
      * will automatically generate a password, and set it in the e-mail
-     * delivered.
+     * delivered.</p>
      *
      * @param username  The users e-mail address, is used as username in IWS
      * @param firstname The users given name, can only be altered by the DBA's
@@ -95,7 +97,8 @@ public final class CreateUserRequest extends AbstractVerification {
     }
 
     /**
-     * Default Constructor. All users generated must have this information set.
+     * <p>Default Constructor. All users generated must have this information
+     * set.</p>
      *
      * @param username  The users e-mail address, is used as username in IWS
      * @param password  Chosen Password in clear-text
@@ -114,9 +117,9 @@ public final class CreateUserRequest extends AbstractVerification {
     // =========================================================================
 
     /**
-     * Sets the Users Username (e-mail address), the Username may not be null,
-     * empty or longer than 100 chars long, if so an
-     * {@code IllegalArgumentException} is thrown.
+     * <p>Sets the Users Username (e-mail address), the Username may not be
+     * null, empty or longer than 100 chars long, if so an
+     * {@code IllegalArgumentException} is thrown.</p>
      *
      * @param username The Users Username (e-mail address)
      * @throws IllegalArgumentException if the Username is invalid
@@ -134,7 +137,7 @@ public final class CreateUserRequest extends AbstractVerification {
     }
 
     /**
-     * Retrieves the Users Username (private e-mail address).
+     * <p>Retrieves the Users Username (private e-mail address).</p>
      *
      * @return The Users Username
      */
@@ -143,13 +146,14 @@ public final class CreateUserRequest extends AbstractVerification {
     }
 
     /**
-     * Sets the Users Password, the Password may not be empty, if so then an
+     * <p>Sets the Users Password, the Password may not be empty, if so then an
      * {@code IllegalArgumentException} is thrown. As for the length, then
-     * there are no limits, as the system only stores the cryptographical
-     * hash value of the Password.<br />
-     *   Note, that if no password is provided, i.e. if the value is null. Then
+     * there are no limits, as the system only stores the cryptographic
+     * hash value of the Password.</p>
+     *
+     * <p>Note, that if no password is provided, i.e. if the value is null. Then
      * the system will generate a standard password for the user, which will
-     * then be send to the user via e-mail.
+     * then be send to the user via e-mail.</p>
      *
      * @param password The Users Password or null
      * @throws IllegalArgumentException if the Password is invalid
@@ -169,8 +173,9 @@ public final class CreateUserRequest extends AbstractVerification {
     }
 
     /**
-     * Sets the Users Firstname, the Firstname may not be null, empty or longer
-     * than 50 chars long, if so an {@code IllegalArgumentException} is thrown.
+     * <p>Sets the Users Firstname, the Firstname may not be null, empty or
+     * longer than 50 chars long, if so an {@code IllegalArgumentException} is
+     * thrown.</p>
      *
      * @param firstname The Users Firstname
      * @throws IllegalArgumentException if the Firstname is invalid
@@ -182,7 +187,7 @@ public final class CreateUserRequest extends AbstractVerification {
     }
 
     /**
-     * Retrieves the Users Firstname.
+     * <p>Retrieves the Users Firstname.</p>
      *
      * @return The Users Firstname
      */
@@ -191,8 +196,9 @@ public final class CreateUserRequest extends AbstractVerification {
     }
 
     /**
-     * Sets the Users Lastname, the Lastname may not be null, empty or longer
-     * than 50 chars long, if so an {@code IllegalArgumentException} is thrown.
+     * <p>Sets the Users Lastname, the Lastname may not be null, empty or longer
+     * than 50 chars long, if so an {@code IllegalArgumentException} is
+     * thrown.</p>
      *
      * @param lastname The Users Lastname
      * @throws IllegalArgumentException if the Lastname is invalid
@@ -204,7 +210,7 @@ public final class CreateUserRequest extends AbstractVerification {
     }
 
     /**
-     * Retrieves the Users Lastname.
+     * <p>Retrieves the Users Lastname.</p>
      *
      * @return The Users Lastname
      */
@@ -213,10 +219,11 @@ public final class CreateUserRequest extends AbstractVerification {
     }
 
     /**
-     * Changes the type of an Account from being a normal User to a Student
+     * <p>Changes the type of an Account from being a normal User to a Student
      * Account. A Student Account will act as a normal Account, but the User is
      * given the role as a "Student" in the National Members group, and instead
-     * of a Private Group, the user is assigned to the National Student group.
+     * of a Private Group, the user is assigned to the National Student
+     * group.</p>
      *
      * @param studentAccount  True if a student, otherwise false (default)
      */
@@ -225,7 +232,8 @@ public final class CreateUserRequest extends AbstractVerification {
     }
 
     /**
-     * Returns true if this is suppose to be a Student Account, otherwise false.
+     * <p>Returns true if this is suppose to be a Student Account, otherwise
+     * false.</p>
      *
      * @return True if Student Account, otherwise false
      */

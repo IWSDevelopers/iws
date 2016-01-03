@@ -49,7 +49,7 @@ public final class CommitteeRequest extends AbstractVerification implements Acti
     @XmlElement(required = true, nillable = true) private String countryCode = null;
     /** The name of the Institution to use when creating a new Cooperating Institution. */
     @XmlElement(required = true, nillable = true) private String institutionName = null;
-    /** The official Abbreviation for the Institution, for creating & updating. */
+    /** The official Abbreviation for the Institution, for creating &amp; updating. */
     @XmlElement(required = true, nillable = true) private String institutionAbbreviation = null;
     /** Firstname of the new National Secretary for a new Cooperating Institution. */
     @XmlElement(required = true, nillable = true) private String firstname = null;
@@ -63,8 +63,8 @@ public final class CommitteeRequest extends AbstractVerification implements Acti
     @XmlElement(required = true, nillable = true) private User nationalSecretary = null;
 
     /**
-     * Action to perform on a Committee, by default we're assuming that it must
-     * be updated, i.e. that the National Secretary must be set.
+     * <p>Action to perform on a Committee, by default we're assuming that it
+     * must be updated, i.e. that the National Secretary must be set.</p>
      */
     @XmlElement(required = true, nillable = false) private Action action = Action.CHANGE_NS;
 
@@ -73,16 +73,16 @@ public final class CommitteeRequest extends AbstractVerification implements Acti
     // =========================================================================
 
     /**
-     * Empty Constructor, to use if the setters are invoked. This is required
-     * for WebServices to work properly.
+     * <p>Empty Constructor, to use if the setters are invoked. This is required
+     * for WebServices to work properly.</p>
      */
     public CommitteeRequest() {
         // Required for WebServices to work. Comment added to please Sonar.
     }
 
     /**
-     * Default Constructor, sets the type of Action to perform for the given
-     * Committee.
+     * <p>Default Constructor, sets the type of Action to perform for the given
+     * Committee.</p>
      *
      * @param action Action to perform
      * @throws IllegalArgumentException if the action is null or not allowed
@@ -121,11 +121,12 @@ public final class CommitteeRequest extends AbstractVerification implements Acti
     }
 
     /**
-     * Sets the CountryId, or CountryCode, which is the standard two-letter code
-     * for all Countries, defined by the UN. The Code is used by several of the
-     * request variations, and if needed, it must be set.<br />
-     *   The method will throw an IllegalArgument Exception, if the CountryId
-     * is set to null or is not exactly 2 characters long.
+     * <p>Sets the CountryId, or CountryCode, which is the standard two-letter
+     * code for all Countries, defined by the UN. The Code is used by several
+     * of the request variations, and if needed, it must be set.</p>
+     *
+     * <p>The method will throw an IllegalArgument Exception, if the CountryId
+     * is set to null or is not exactly 2 characters long.</p>
      *
      * @param countryCode Two-letter Country Code
      * @throws IllegalArgumentException if null or not exactly 2 characters long
@@ -140,12 +141,13 @@ public final class CommitteeRequest extends AbstractVerification implements Acti
     }
 
     /**
-     * Sets the Institution Name, which is the name of the Cooperating
+     * <p>Sets the Institution Name, which is the name of the Cooperating
      * Institution, to either create or update. The name is most often the name
      * of the University or Department, for which a Cooperating Institution is
-     * to be added.<br />
-     *   The method will throw an IllegalArgument Exception, if the name is set
-     * to null, empty or too long. The max length is 50 characters.
+     * to be added.</p>
+     *
+     * <p>The method will throw an IllegalArgument Exception, if the name is set
+     * to null, empty or too long. The max length is 50 characters.</p>
      *
      * @param institutionName The Institution Name
      * @throws IllegalArgumentException if not valid, i.e. null, empty or longer than 50 characters
@@ -160,10 +162,10 @@ public final class CommitteeRequest extends AbstractVerification implements Acti
     }
 
     /**
-     * Sets the Abbreviation for the Cooperating Institution, which is used for
-     * the official IAESTE Committee Name and also official mailing list. The
-     * abbreviation is allowed to be max 5 characters long. If longer, then the
-     * method will throw an IllegalArgument Exception.
+     * <p>Sets the Abbreviation for the Cooperating Institution, which is used
+     * for the official IAESTE Committee Name and also official mailing list.
+     * The abbreviation is allowed to be max 5 characters long. If longer, then
+     * the method will throw an IllegalArgument Exception.</p>
      *
      * @param institutionAbbreviation Institution Abbreviation
      * @throws IllegalArgumentException if null, empty or longer than 5 characters
@@ -189,7 +191,7 @@ public final class CommitteeRequest extends AbstractVerification implements Acti
     /**
      *
      * @param lastname Lastname or Family name of the new National Secretary
-     * @throws IllegalArgumentException
+     * @throws IllegalArgumentException in value is invalid
      */
     public void setLastname(final String lastname) throws IllegalArgumentException {
         ensureNotNullOrEmptyOrTooLong("lastname", lastname, CreateUserRequest.USER_MAXIMUM_LASTNAME);
@@ -201,11 +203,12 @@ public final class CommitteeRequest extends AbstractVerification implements Acti
     }
 
     /**
-     * Sets the Username for creating a new National Secretary, which is done
+     * <p>Sets the Username for creating a new National Secretary, which is done
      * when creating a new Committee or can optionally be used when setting a
-     * new National Secretary for an existing Committee.<br />
-     *   The username must be a valid e-mail address, otherwise the method will
-     * throw an IllegalArgument Exception.
+     * new National Secretary for an existing Committee.</p>
+     *
+     * <p>The username must be a valid e-mail address, otherwise the method will
+     * throw an IllegalArgument Exception.</p>
      *
      * @param username National Secretary Username
      * @throws IllegalArgumentException if not a valid e-mail address

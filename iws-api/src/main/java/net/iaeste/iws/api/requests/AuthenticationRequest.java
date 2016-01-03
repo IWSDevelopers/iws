@@ -16,6 +16,7 @@ package net.iaeste.iws.api.requests;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.util.AbstractVerification;
+import net.iaeste.iws.api.util.StandardMethods;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -47,6 +48,7 @@ public final class AuthenticationRequest extends AbstractVerification {
      * Constants.
      */
     @XmlElement(required = true, nillable = false)
+    @StandardMethods(StandardMethods.For.NONE)
     private String password;
 
     // =========================================================================
@@ -118,47 +120,5 @@ public final class AuthenticationRequest extends AbstractVerification {
         }
 
         return validation;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
-            return true;
-        }
-
-        if ((obj == null) || (getClass() != obj.getClass())) {
-            return false;
-        }
-
-        final AuthenticationRequest that = (AuthenticationRequest) obj;
-        if ((password != null) ? !password.equals(that.password) : (that.password != null)) {
-            return false;
-        }
-
-        return (username != null) ? username.equals(that.username) : (that.username == null);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        int hash = IWSConstants.HASHCODE_INITIAL_VALUE;
-
-        hash = (IWSConstants.HASHCODE_MULTIPLIER * hash) + ((username != null) ? username.hashCode() : 0);
-        hash = (IWSConstants.HASHCODE_MULTIPLIER * hash) + ((password != null) ? password.hashCode() : 0);
-
-        return hash;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        return "AuthenticationRequest{ username='" + username + "' }";
     }
 }

@@ -30,12 +30,14 @@ import javax.xml.bind.annotation.XmlType;
  *     END;
  *   ALTER TABLE users DROP COLUMN volunteer;
  * </pre>
- * Based on the above SQL changes, it is assumed that we have three types.
+ * <p>Based on the above SQL changes, it is assumed that we have three types.
  * During the migration, it was discovered that 30 accounts were having type
- * 'x', interpreted as Unknown.<br />
- *   In IWS, we've added two more types, student & functional. which complements
- * the previous ones to provide a more suitable range of Accounts, where rules
- * can later be added to these, to improve internal data management.
+ * 'x', interpreted as Unknown.</p>
+ *
+ * <p>In IWS, we've added two more types, student &amp; functional. which
+ * complements the previous ones to provide a more suitable range of Accounts,
+ * where rules can later be added to these, to improve internal data
+ * management.</p>
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$

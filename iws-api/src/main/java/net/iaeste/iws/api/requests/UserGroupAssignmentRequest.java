@@ -68,6 +68,7 @@ public final class UserGroupAssignmentRequest extends AbstractVerification imple
     /**
      * Default Constructor.
      *
+     * @param userGroup User Group relation
      */
     public UserGroupAssignmentRequest(final UserGroup userGroup) {
         setUserGroup(userGroup);

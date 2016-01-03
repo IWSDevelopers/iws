@@ -87,39 +87,4 @@ public final class DeleteOfferRequest extends AbstractVerification {
 
         return validation;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
-            return true;
-        }
-
-        if (!(obj instanceof DeleteOfferRequest)) {
-            return false;
-        }
-
-        final DeleteOfferRequest that = (DeleteOfferRequest) obj;
-        return !((offerId != null) ? !offerId.equals(that.offerId) : (that.offerId != null));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        return (offerId != null) ? offerId.hashCode() : 0;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        return "DeleteOfferRequest{" +
-                "offerId=" + offerId +
-                '}';
-    }
 }

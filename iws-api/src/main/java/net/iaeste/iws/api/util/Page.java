@@ -29,7 +29,7 @@ import java.io.Serializable;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "page", propOrder = { "pageNumber", "pageSize", "sortAscending", "sortBy" })
-public class Page implements Paginatable, Serializable {
+public final class Page implements Paginatable, Serializable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;

@@ -20,8 +20,8 @@ import net.iaeste.iws.api.util.Verifiable;
 import java.util.Set;
 
 /**
- * To ensure that the Processing methods all share a common ground, they must
- * implement this interface, which will control the Actions that is allowed.
+ * <p>To ensure that the Processing methods all share a common ground, they must
+ * implement this interface, which will control the Actions that is allowed.</p>
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -30,19 +30,20 @@ import java.util.Set;
 public interface Actionable extends Verifiable {
 
     /**
-     * Retrieves a set of allowed Actions for a given Request.
+     * <p>Retrieves a set of allowed Actions for a given Request.</p>
      *
      * @return Set of allowed Actions for a specific Request.
      */
     Set<Action> allowedActions();
 
     /**
-     * Sets the Action for the Processing Request. By default, it is set to
+     * <p>Sets the Action for the Processing Request. By default, it is set to
      * Process, meaning that the IWS will attempt to either create or update
      * the Object in question. However, more options exists, based on the actual
-     * context.<br />
-     *   The method will throw an {@code IllegalArgumentException} if the value
-     * is set to null, or a non allows value.
+     * context.</p>
+     *
+     * <p>The method will throw an {@code IllegalArgumentException} if the value
+     * is set to null, or a non allows value.</p>
      *
      * @param action Current Action
      * @throws IllegalArgumentException if the value is null or not allowed
@@ -50,7 +51,8 @@ public interface Actionable extends Verifiable {
     void setAction(Action action);
 
     /**
-     * Retrieves the current Action, by default it is always set to Process.
+     * <p>Retrieves the current Action, by default it is always set to
+     * Process.</p>
      *
      * @return Current Action
      */

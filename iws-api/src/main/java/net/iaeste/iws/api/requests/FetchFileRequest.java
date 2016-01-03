@@ -47,15 +47,15 @@ public final class FetchFileRequest extends AbstractVerification {
     // =========================================================================
 
     /**
-     * Empty Constructor, to use if the setters are invoked. This is required
-     * for WebServices to work properly.
+     * <p>Empty Constructor, to use if the setters are invoked. This is required
+     * for WebServices to work properly.</p>
      */
     public FetchFileRequest() {
         // Required for WebServices to work. Comment added to please Sonar.
     }
 
     /**
-     * Default Constructor.
+     * <p>Default Constructor.</p>
      *
      * @param fileId the Id of the file to read
      * @throws IllegalArgumentException if the fileId is invalid
@@ -69,8 +69,8 @@ public final class FetchFileRequest extends AbstractVerification {
     // =========================================================================
 
     /**
-     * The FileId is a mandatory field, and must be a proper Id, otherwise the
-     * method will throw an {@code IllegalArgumentException}.
+     * <p>The FileId is a mandatory field, and must be a proper Id, otherwise
+     * the method will throw an {@code IllegalArgumentException}.</p>
      *
      * @param fileId Id of the file to fetch
      * @throws IllegalArgumentException if null or an invalid Id
@@ -85,11 +85,12 @@ public final class FetchFileRequest extends AbstractVerification {
     }
 
     /**
-     * If the file to be fetched is not owned by the user, but is rather an
+     * <p>If the file to be fetched is not owned by the user, but is rather an
      * attachment to a different Object, then it is required that the GroupId
-     * is set, otherwise the system will reject the request.<br />
-     *   The method will throw an {@code IllegalArgumentException} if the given
-     * GroupId is invalid.
+     * is set, otherwise the system will reject the request.</p>
+     *
+     * <p>The method will throw an {@code IllegalArgumentException} if the given
+     * GroupId is invalid.</p>
      *
      * @param groupId GroupId
      * @throws IllegalArgumentException if the given GroupId is invalid
@@ -104,13 +105,14 @@ public final class FetchFileRequest extends AbstractVerification {
     }
 
     /**
-     * Sets the type of Storage that is requested. Most commonly, files are
+     * <p>Sets the type of Storage that is requested. Most commonly, files are
      * retrieved by their owners (default), but a file can also be attached to
      * other Objects, which means that the system needs to be informed, if the
-     * fetching should be for an attached offer.<br />
-     *   The field is mandatory, since it is used to determine which mechanism
+     * fetching should be for an attached offer.</p>
+     *
+     * <p>The field is mandatory, since it is used to determine which mechanism
      * is needed for the lookup, hence it must be defined. If set to null, the
-     * method will throw an {@code IllegalArgumentException}.
+     * method will throw an {@code IllegalArgumentException}.</p>
      *
      * @param type Storage Type
      */
@@ -124,10 +126,11 @@ public final class FetchFileRequest extends AbstractVerification {
     }
 
     /**
-     * Determines if the data of the file should also be read out. If not set,
-     * then the data is not returned, only the file information.<br />
-     *   The method requires that this value is defined. If undefined, i.e.
-     * null, then the method will throw an {@code IllegalArgumentException}.
+     * <p>Determines if the data of the file should also be read out. If not
+     * set then the data is not returned, only the file information.</p>
+     *
+     * <p>The method requires that this value is defined. If undefined, i.e.
+     * null, then the method will throw an {@code IllegalArgumentException}.</p>
      *
      * @param readFileData Boolean flag to read file data or not
      * @throws IllegalArgumentException if set to null

@@ -27,9 +27,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Request Object for fetching sharing info for posted list of offer Id's.
+ * <p>Request Object for fetching sharing info for posted list of offer Id's.
  * The offers have to be owned by the group to which the user is
- * currently logged in otherwise the exception is thrown.
+ * currently logged in otherwise the exception is thrown.</p>
  *
  * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -50,15 +50,15 @@ public final class FetchPublishedGroupsRequest extends AbstractPaginatable {
     // =========================================================================
 
     /**
-     * Empty Constructor, to use if the setters are invoked. This is required
-     * for WebServices to work properly.
+     * <p>Empty Constructor, to use if the setters are invoked. This is required
+     * for WebServices to work properly.</p>
      */
     public FetchPublishedGroupsRequest() {
         this.exchangeYear = calculateExchangeYear();
     }
 
     /**
-     * Default Constructor.
+     * <p>Default Constructor.</p>
      *
      * @param identifiers identifiers of the offer for which the sharing info is to be fetched
      */
@@ -72,11 +72,12 @@ public final class FetchPublishedGroupsRequest extends AbstractPaginatable {
     // =========================================================================
 
     /**
-     * Sets a list of Identifiers, meaning either the Id of the Offers or their
-     * Reference Number, which both can be used to uniquely identify an
-     * Offer.<br />
-     *   The method will thrown an {@code IllegalArgumentException} if the given
-     * value is null.
+     * <p>Sets a list of Identifiers, meaning either the Id of the Offers or
+     * their Reference Number, which both can be used to uniquely identify an
+     * Offer.</p>
+     *
+     * <p>The method will thrown an {@code IllegalArgumentException} if the given
+     * value is null.</p>
      *
      * @param identifiers List of OfferId's or Reference Numbers to be fetched, may be empty
      * @throws IllegalArgumentException if the parameter is null
@@ -91,12 +92,13 @@ public final class FetchPublishedGroupsRequest extends AbstractPaginatable {
     }
 
     /**
-     * Sets the ExchangeYear to read which Groups the provided Offers were
+     * <p>Sets the ExchangeYear to read which Groups the provided Offers were
      * shared with, by default, it is the current Exchange Year. The value must
      * be defined, i.e. no null and also within the IAESTE Years, i.e. founding
-     * year to the current Exchange Year.<br />
-     *   If attempted to set to an invalid year, then the method will throw an
-     * {@code IllegalArgumentException}.
+     * year to the current Exchange Year.</p>
+     *
+     * <p>If attempted to set to an invalid year, then the method will throw an
+     * {@code IllegalArgumentException}.</p>
      *
      * @param exchangeYear Exchange YeAr
      * @throws IllegalArgumentException if the given argument is invalid

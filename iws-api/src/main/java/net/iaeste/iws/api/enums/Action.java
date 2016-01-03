@@ -1,8 +1,8 @@
 /*
  * =============================================================================
- * Copyright 1998-2015, IAESTE Internet Development Team. All rights reserved.
+ * Copyright 1998-2016, IAESTE Internet Development Team. All rights reserved.
  * ----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.enums.Actions
+ * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.enums.Action
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -17,14 +17,15 @@ package net.iaeste.iws.api.enums;
 import javax.xml.bind.annotation.XmlType;
 
 /**
- * When a IWS Processing Request is made, then it can sometimes be hard from the
- * context to guess what needs to be done. And to avoid that we split up the
+ * <p>When a IWS Processing Request is made, then it can sometimes be hard from
+ * the context to guess what needs to be done. And to avoid that we split up the
  * Processing requests in more special parts, an Action is instead assigned, so
- * it is possible to tell what should be done.<br />
- *   The Actions described in this Enum is of a more general nature, not all
+ * it is possible to tell what should be done.</p>
+ *
+ * <p>The Actions described in this Enum is of a more general nature, not all
  * Actions apply to the same Request, which is why all Processing Requests is
  * also having a list of allowed Actions, which the requested Action is checked
- * against.
+ * against.</p>
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -40,7 +41,7 @@ public enum Action {
     CREATE,
 
     /**
-     * Updating a Committee, i.e. change Institution Name & Abbreviation.
+     * Updating a Committee, i.e. change Institution Name &amp; Abbreviation.
      */
     UPDATE,
 
@@ -89,7 +90,7 @@ public enum Action {
      * Users can be deleted, otherwise the rule apply that only suspended Users,
      * Groups or Committees can be deleted.</p>
      *
-     * <p></p>Deletion may also be done against other data, where the process
+     * <p>Deletion may also be done against other data, where the process
      * of deleting it will determine how much is erased.</p>
      */
     DELETE

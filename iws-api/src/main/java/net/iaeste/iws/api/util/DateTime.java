@@ -26,15 +26,16 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * The IWS representation of Date and Time is handled with this Class, which
+ * <p>The IWS representation of Date and Time is handled with this Class, which
  * serves as a wrapper using both the standard Java Date Class and the JodaTime
  * DateTime class. It was initially written with JodaTime as internal DateTime
- * representation in anticipation of the Java8 rework of the Calendar API.<br />
- *   However, the expose of WebServices was causing problems, as the DateTime
+ * representation in anticipation of the Java8 rework of the Calendar API.</p>
+ *
+ * <p>However, the expose of WebServices was causing problems, as the DateTime
  * Object from JodaTime wasn't properly displayed. So instead the internal
  * representation is made with the standard Java Date class, using JodaTime's
  * DateTime Object to wrap certain features that otherwise would cause test
- * problems.
+ * problems.</p>
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -72,7 +73,7 @@ public final class DateTime implements Serializable, Comparable<DateTime> {
      * @param dateTime {@code java.util.Date} instance, to base this instance on
      */
     public DateTime(final Date dateTime) {
-        timestamp = dateTime != null ? new Date(dateTime.getTime()) : new Date();
+        timestamp = (dateTime != null) ? new Date(dateTime.getTime()) : new Date();
     }
 
     /**
@@ -121,7 +122,7 @@ public final class DateTime implements Serializable, Comparable<DateTime> {
         }
 
         final DateTime other = (DateTime) obj;
-        return !((timestamp != null) ? !timestamp.equals(other.timestamp) : (other.timestamp != null));
+        return (timestamp != null) ? timestamp.equals(other.timestamp) : (other.timestamp == null);
     }
 
     /**
@@ -146,12 +147,16 @@ public final class DateTime implements Serializable, Comparable<DateTime> {
      */
     @Override
     public int compareTo(final DateTime o) {
+        final int result;
+
         if (equals(o)) {
-            return 0;
+            result = 0;
         } else if (isBefore(o)) {
-            return -1;
+            result = -1;
         } else {
-            return 1;
+            result = 1;
         }
+
+        return result;
     }
 }

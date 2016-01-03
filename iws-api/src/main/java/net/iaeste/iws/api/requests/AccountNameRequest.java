@@ -69,10 +69,11 @@ public final class AccountNameRequest extends AbstractVerification {
     // =========================================================================
 
     /**
-     * Sets the User Account to change the name of, i.e. to change either the
-     * firstname or lastname of.<br />
-     *   The method will throw an {@code IllegalArgumentException} if the given
-     * value is not a valid User Object.
+     * <p>Sets the User Account to change the name of, i.e. to change either the
+     * firstname or lastname of.</p>
+     *
+     * <p>The method will throw an {@code IllegalArgumentException} if the given
+     * value is not a valid User Object.</p>
      *
      * @param user User Object
      * @throws IllegalArgumentException if the given value is invalid

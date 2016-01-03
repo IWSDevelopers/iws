@@ -1,6 +1,6 @@
 /*
  * =============================================================================
- * Copyright 1998-2015, IAESTE Internet Development Team. All rights reserved.
+ * Copyright 1998-2016, IAESTE Internet Development Team. All rights reserved.
  * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.enums.CountryType
  * -----------------------------------------------------------------------------
@@ -22,23 +22,25 @@ package net.iaeste.iws.api.enums;
 public enum CountryType implements Descriptable<CountryType> {
 
     /**
-     * Default Type for requesting a list of Countries. The Listing is based on
-     * the current list of members. Members are here defined as Full, Associate,
-     * Co-operating Institutions and former members where information still
-     * exists in the system.<br />
-     *   When this type is invoked, the list of National Secretaries and the
-     * mailing list for Committees are also added.
+     * <p>Default Type for requesting a list of Countries. The Listing is based
+     * on the current list of members. Members are here defined as Full,
+     * Associate, Co-operating Institutions and former members where information
+     * still exists in the system.</p>
+     *
+     * <p>When this type is invoked, the list of National Secretaries and the
+     * mailing list for Committees are also added.</p>
      */
     COMMITTEES("IAESTE Committees"),
 
     /**
-     * This listing means that the retrieval will not focus on the IAESTE
+     * <p>This listing means that the retrieval will not focus on the IAESTE
      * Members, but rather on all countries. The listing should follow the UN
      * list of countries, but it may differ since it is not automatically
-     * updated whenever changes occur to the UN listing.<br />
-     *   When this type is invoked, then the result will deliberately not
+     * updated whenever changes occur to the UN listing.</p>
+     *
+     * <p>When this type is invoked, then the result will deliberately not
      * contain any information that is IAESTE related, other than the current
-     * membership type.
+     * membership type.</p>
      */
     COUNTRIES("Country List");
 

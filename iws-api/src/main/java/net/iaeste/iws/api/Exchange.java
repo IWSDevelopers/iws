@@ -44,8 +44,9 @@ import net.iaeste.iws.api.responses.exchange.OfferStatisticsResponse;
 import net.iaeste.iws.api.responses.exchange.PublishOfferResponse;
 
 /**
- * Exchange related functionality is covered with this interface. Only exception
- * here, the handling of students is done vai the {@link Students} interface.
+ * <p>Exchange related functionality is covered with this interface. Only
+ * exception here, the handling of students is done vai the {@link Students}
+ * interface.</p>
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -54,7 +55,7 @@ import net.iaeste.iws.api.responses.exchange.PublishOfferResponse;
 public interface Exchange {
 
     /**
-     * Retrieves the Offer Statistics information.
+     * <p>Retrieves the Offer Statistics information.</p>
      *
      * @param token   User Authentication Token
      * @param request Offer Statistics Request Object
@@ -63,8 +64,8 @@ public interface Exchange {
     OfferStatisticsResponse fetchOfferStatistics(AuthenticationToken token, OfferStatisticsRequest request);
 
     /**
-     * Processes a given Employer, meaning that if it exists, then it us
-     * updated, otherwise it is being created.
+     * <p>Processes a given Employer, meaning that if it exists, then it us
+     * updated, otherwise it is being created.</p>
      *
      * @param token   User Authentication Token
      * @param request Request Object, with the Employer
@@ -73,10 +74,10 @@ public interface Exchange {
     EmployerResponse processEmployer(AuthenticationToken token, ProcessEmployerRequest request);
 
     /**
-     * Fetches a list of Employers, belonging to the requesting User, i.e. which
-     * is associated with the Users National Group. The request can be made
-     * either for a single Object (by providing the Id), for a partial list (by
-     * providing a partial name) or for all Employers.
+     * <p>Fetches a list of Employers, belonging to the requesting User, i.e.
+     * which is associated with the Users National Group. The request can be
+     * made either for a single Object (by providing the Id), for a partial
+     * list (by providing a partial name) or for all Employers.</p>
      *
      * @param token   User Authentication Token
      * @param request Employer Request Object
@@ -85,10 +86,11 @@ public interface Exchange {
     FetchEmployerResponse fetchEmployers(AuthenticationToken token, FetchEmployerRequest request);
 
     /**
-     * Creates or updates an Offer, dependent on the {@code id}. If the id is set, an update is assumed, otherwise
-     * a create will be performed.
+     * <p>Creates or updates an Offer, dependent on the {@code id}. If the id
+     * is set, an update is assumed, otherwise a create will be performed.</p>
      *
-     * On error the {@link OfferResponse} object contains only error information. No information about the Offer is returned.
+     * <p>On error the {@link OfferResponse} object contains only error
+     * information. No information about the Offer is returned.</p>
      *
      * @param token The valid authentication token provided by {@link Access#generateSession(net.iaeste.iws.api.requests.AuthenticationRequest)}
      * @param request contains a {@link net.iaeste.iws.api.dtos.exchange.Offer}
@@ -97,10 +99,11 @@ public interface Exchange {
     OfferResponse processOffer(AuthenticationToken token, ProcessOfferRequest request);
 
     /**
-     * Performs a deletion of the offer.<br />
-     *   Note; This should only be under certain circumstances: only if the
+     * <p>Performs a deletion of the offer.</p>
+     *
+     * <p>Note; This should only be under certain circumstances: only if the
      * offer is in state new. Doesn't matter if it was once shared. But it
-     * should never be able to be deleted once a student was nominated.
+     * should never be able to be deleted once a student was nominated.</p>
      *
      * @param token The valid authentication token provided by {@link Access#generateSession(net.iaeste.iws.api.requests.AuthenticationRequest)}
      * @param request contains a field with the RefNo (will be changed to id #359)
@@ -109,12 +112,12 @@ public interface Exchange {
     OfferResponse deleteOffer(AuthenticationToken token, DeleteOfferRequest request);
 
     /**
-     * IW3, IAESTE IntraWeb version 3, allowed users to upload their Offers
+     * <p>IW3, IAESTE IntraWeb version 3, allowed users to upload their Offers
      * directly as a CSV file, to avoid typing it all again. Although IWS
      * provides better mechanisms in the form of a published API which will
      * allow a much greater control - it is still requested by Users, that they
      * can perform this action, as some countries do not have the capacity to
-     * implement an IWS API Client otherwise.
+     * implement an IWS API Client otherwise.</p>
      *
      * @param token   The valid authentication token provided by {@link Access#generateSession(net.iaeste.iws.api.requests.AuthenticationRequest)}
      * @param request Offer CSV Upload Request
@@ -123,17 +126,17 @@ public interface Exchange {
     OfferCSVUploadResponse uploadOffers(AuthenticationToken token, OfferCSVUploadRequest request);
 
     /**
-     * Retrieves a list of offers. This can be either the list of owned offers or offers which are shared with your
-     * country.
+     * <p>Retrieves a list of offers. This can be either the list of owned
+     * offers or offers which are shared with your country.</p>
      *
-     * <dl>
+g     * <dl>
      *   <dt>{@link net.iaeste.iws.api.enums.FetchType#DOMESTIC}</dt>
      *     <dd>Requests all own/domestic offers.</dd>
      *   <dt>{@link net.iaeste.iws.api.enums.FetchType#SHARED}</dt>
      *     <dd>Means that all shared offers are requested.</dd>
      * </dl>
      *
-     * @param token The valid authentication token provided by {@link Access#generateSession(net.iaeste.iws.api.requests.AuthenticationRequest)}
+     * @param token   The valid authentication token provided by {@link Access#generateSession(net.iaeste.iws.api.requests.AuthenticationRequest)}
      * @param request contains a {@link net.iaeste.iws.api.enums.FetchType} which indicates which type of offers
      *                should be returned
      * @return contains a list of {@link net.iaeste.iws.api.dtos.exchange.Offer}
@@ -141,11 +144,11 @@ public interface Exchange {
     FetchOffersResponse fetchOffers(AuthenticationToken token, FetchOffersRequest request);
 
     /**
-     * The IAESTE IntraWeb version 3, IW3, provided a simple way whereby Offers
-     * could be downloaded. The download was primarily of the countries incoming
-     * or foreign Offers. This functionality mimics this service in IWS, so the
-     * request, will fetch Offers, though with a few more options as described
-     * in the Request Object.
+     * <p>The IAESTE IntraWeb version 3, IW3, provided a simple way whereby
+     * Offers could be downloaded. The download was primarily of the countries
+     * incoming or foreign Offers. This functionality mimics this service in
+     * IWS, so the request, will fetch Offers, though with a few more options
+     * as described in the Request Object.</p>
      *
      * @param token   The valid authentication token provided by {@link Access#generateSession(net.iaeste.iws.api.requests.AuthenticationRequest)}
      * @param request Offer CSV Download Request
@@ -154,12 +157,14 @@ public interface Exchange {
     OfferCSVDownloadResponse downloadOffers(AuthenticationToken token, OfferCSVDownloadRequest request);
 
     /**
-     * Retrieves a list of all groups to which an offer can be shared to. The group types of the groups are:
+     * <p>Retrieves a list of all groups to which an offer can be shared to.
+     * The group types of the groups are:</p>
      * <ul>
      *     <li>{@link net.iaeste.iws.api.enums.GroupType#NATIONAL}</li>
      * </ul>
      *
-     * This is mainly needed in the front-end to display a list of groups (members) to which a offer can be shared to.
+     * <p>This is mainly needed in the front-end to display a list of groups
+     * (members) to which a offer can be shared to.</p>
      *
      * @param token The valid authentication token provided by {@link Access#generateSession(net.iaeste.iws.api.requests.AuthenticationRequest)}
      * @return Response Object with the current national groups ordered by name
@@ -195,8 +200,9 @@ public interface Exchange {
     FallibleResponse deletePublishingGroup(AuthenticationToken token, DeletePublishingGroupRequest request);
 
     /**
-     * Retrieves the list of groups to which offers are shared to. A list of offers is
-     * submitted and for each offer the groups are returned, to which the offer is shared to.
+     * <p>Retrieves the list of groups to which offers are shared to. A list of
+     * offers is submitted and for each offer the groups are returned, to which
+     * the offer is shared to.</p>
      *
      * @param token The valid authentication token provided by {@link Access#generateSession(net.iaeste.iws.api.requests.AuthenticationRequest)}
      * @param request contains a list of {@link net.iaeste.iws.api.dtos.exchange.Offer#offerId}s
@@ -206,14 +212,18 @@ public interface Exchange {
     FetchPublishedGroupsResponse fetchPublishedGroups(AuthenticationToken token, FetchPublishedGroupsRequest request);
 
     /**
-     * Shares a list of offers to a list of members and defines the nomination deadline for
-     * the specified offers. From this very moment he offers are visible to the list of
-     * members until the {@code PublishOfferRequest#nominationDeadline} is reached. The
-     * {@link net.iaeste.iws.api.dtos.exchange.Offer#nominationDeadline} of each specified offer
-     * is updated to the specified {@code PublishOfferRequest#nominationDeadline}
+     * <p>Shares a list of offers to a list of members and defines the
+     * nomination deadline for the specified offers. From this very moment he
+     * offers are visible to the list of members until the
+     * {@code PublishOfferRequest#nominationDeadline} is reached. The
+     * {@link net.iaeste.iws.api.dtos.exchange.Offer#nominationDeadline} of
+     * each specified offer is updated to the specified
+     * {@code PublishOfferRequest#nominationDeadline}.</p>
      *
-     * The list of offers is identified by the {@link net.iaeste.iws.api.dtos.exchange.Offer#offerId}.
-     * The list of members are identified by the {@link net.iaeste.iws.api.dtos.Group#groupId}
+     * <p>The list of offers is identified by the
+     * {@link net.iaeste.iws.api.dtos.exchange.Offer#offerId}. The list of
+     * members are identified by the
+     * {@link net.iaeste.iws.api.dtos.Group#groupId}.</p>
      *
      * @param token The valid authentication token provided by {@link Access#generateSession(net.iaeste.iws.api.requests.AuthenticationRequest)}
      * @param request contains a list of offer, a list of members and a nomination deadline
@@ -222,7 +232,7 @@ public interface Exchange {
     PublishOfferResponse processPublishOffer(AuthenticationToken token, PublishOfferRequest request);
 
     /**
-     * Hides specified foreign offer for given group
+     * <p>Hides specified foreign offer for given group.</p>
      *
      * @param token   User Authentication Token
      * @param request contains a list of offer
@@ -231,7 +241,7 @@ public interface Exchange {
     FallibleResponse processHideForeignOffers(AuthenticationToken token, HideForeignOffersRequest request);
 
     /**
-     * Performs a rejection of the shared offer.
+     * <p>Performs a rejection of the shared offer.</p>
      *
      * @param token The valid authentication token provided by {@link Access#generateSession(net.iaeste.iws.api.requests.AuthenticationRequest)}
      * @param request contains a field with the offer id

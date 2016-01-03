@@ -62,8 +62,8 @@ public final class OfferCSVDownloadRequest extends AbstractPaginatable {
     // =========================================================================
 
     /**
-     * Empty Constructor, to use if the setters are invoked. This is required
-     * for WebServices to work properly.
+     * <p>Empty Constructor, to use if the setters are invoked. This is required
+     * for WebServices to work properly.</p>
      */
     public OfferCSVDownloadRequest() {
         this.identifiers = new ArrayList<>(0);
@@ -81,11 +81,12 @@ public final class OfferCSVDownloadRequest extends AbstractPaginatable {
     // =========================================================================
 
     /**
-     * Sets the mandatory FetchType for the CSV Downloading of Offers, the type
-     * can be either Domestic (a Committee's own Offers) or Shared (Offers from
-     * other Committee's). However, the value cannot be null.<br />
-     *   The method will thrown an {@code IllegalArgumentException} if the given
-     * value is null.
+     * <p>Sets the mandatory FetchType for the CSV Downloading of Offers, the
+     * type can be either Domestic (a Committee's own Offers) or Shared (Offers
+     * from other Committee's). However, the value cannot be null.</p>
+     *
+     * <p>The method will thrown an {@code IllegalArgumentException} if the given
+     * value is null.</p>
      *
      * @param fetchType Type of Offers to be fetched
      * @throws IllegalArgumentException if the parameter is null
@@ -100,15 +101,17 @@ public final class OfferCSVDownloadRequest extends AbstractPaginatable {
     }
 
     /**
-     * Sets a list of Identifiers, meaning either the Id of the Offers or their
-     * Reference Number, which both can be used to uniquely identify an
-     * Offer.<br />
-     *   The Identifiers must either belong to the Country (if the FetchType is
+     * <p>Sets a list of Identifiers, meaning either the Id of the Offers or
+     * their Reference Number, which both can be used to uniquely identify an
+     * Offer.</p>
+     *
+     * <p>The Identifiers must either belong to the Country (if the FetchType is
      * domestic) or the Identifiers must belong to Offers shared (if the
      * FetchType is shared). If the list of Identifiers is empty, then all
-     * Offers matching the FetchType and Exchange Year will be retrieved.<br />
-     *   The method will thrown an {@code IllegalArgumentException} if the given
-     * value is null.
+     * Offers matching the FetchType and Exchange Year will be retrieved.</p>
+     *
+     * <p>The method will thrown an {@code IllegalArgumentException} if the given
+     * value is null.</p>
      *
      * @param identifiers List of OfferId's or Reference Numbers to be fetched, may be empty
      * @throws IllegalArgumentException if the parameter is null
@@ -123,13 +126,14 @@ public final class OfferCSVDownloadRequest extends AbstractPaginatable {
     }
 
     /**
-     * Sets the mandatory Exchange Year for the CSV Downloading of Offers. The
-     * year must be within the known Exchange years for IAESTE, which
+     * <p>Sets the mandatory Exchange Year for the CSV Downloading of Offers.
+     * The year must be within the known Exchange years for IAESTE, which
      * theoretically is from the founding year until the current. However, the
      * IWS is only having data from 2004 and onward. The latest year to read
-     * from will be the current Exchange Year.<br />
-     *   The method will thrown an {@code IllegalArgumentException} if the given
-     * value is null.
+     * from will be the current Exchange Year.</p>
+     *
+     * <p>The method will thrown an {@code IllegalArgumentException} if the given
+     * value is null.</p>
      *
      * @param exchangeYear Exchange Year to retrieve offers from
      * @throws IllegalArgumentException if the parameter is null or not within limits
@@ -146,12 +150,12 @@ public final class OfferCSVDownloadRequest extends AbstractPaginatable {
     }
 
     /**
-     * Sets the different States, that an Offer can have. By default all States
-     * are allowed.
+     * <p>Sets the different States, that an Offer can have. By default all
+     * States are allowed.</p>
      *
      * @param states The States to use in the filter
      */
-    public void setStates(Set<OfferState> states) {
+    public void setStates(final Set<OfferState> states) {
         ensureNotNullAndContains("states", states, ALLOWED);
         this.states = states;
     }
@@ -161,13 +165,14 @@ public final class OfferCSVDownloadRequest extends AbstractPaginatable {
     }
 
     /**
-     * Sets the flag to determine if Offers from both the current Exchange Year
-     * and the new Exchange Year shall be fetched. This option will allow Users
-     * to see Offers from both years following September 1st, when the new
+     * <p>Sets the flag to determine if Offers from both the current Exchange
+     * Year and the new Exchange Year shall be fetched. This option will allow
+     * Users to see Offers from both years following September 1st, when the new
      * Exchange Year starts. By default, this is set to false, so only the
-     * Exchange year counts.<br />
-     *   This value is mandatory. If set to null, then a
-     * {$code VerificationException} is thrown.
+     * Exchange year counts.</p>
+     *
+     * <p>This value is mandatory. If set to null, then a
+     * {$code VerificationException} is thrown.</p>
      *
      * @param retrieveCurrentAndNextExchangeYear True if both shall be retrieved
      */

@@ -31,18 +31,20 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 /**
- * Java has a Date Object, which is terrible, and the fixes are suppose to be
+ * <p>Java has a Date Object, which is terrible, and the fixes are suppose to be
  * coming with <a href="http://jcp.org/en/jsr/detail?id=310">JSR-310</a>.
  * However, this is not available before Java 8, and as IW4 is bound to Java7,
- * we need to resolve this in a different way.<br />
- *   Initially, JodaTime was uses for this, but it is a big dependency, which
+ * we need to resolve this in a different way.</p>
+ *
+ * <p>Initially, JodaTime was uses for this, but it is a big dependency, which
  * has seen many changes over time, and rather than continuously update this
  * Class to reflect the latest version - it has been updated to use standard
- * Java functionality to provide the same features.<br />
- *   The Date class is written, so it is compliant with the
+ * Java functionality to provide the same features.</p>
+
+ * <p>The Date class is written, so it is compliant with the
  * <a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> standard, which
  * means that it is only containing a date (set to midnight), and no time
- * information at all.
+ * information at all.</p>
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$

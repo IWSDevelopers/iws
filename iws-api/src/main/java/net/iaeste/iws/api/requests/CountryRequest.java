@@ -66,11 +66,12 @@ public final class CountryRequest extends AbstractVerification {
     // =========================================================================
 
     /**
-     * Sets the internal Country Object, provided that the given Object is
+     * <p>Sets the internal Country Object, provided that the given Object is
      * valid, i.e. that it is not null and that it passes the verification
-     * test.<br />
-     *   Upon successfull verification, a copy of the given Object is stored
-     * internally.
+     * test.</p>
+     *
+     * <p>Upon successful verification, a copy of the given Object is stored
+     * internally.</p>
      *
      * @param country Country
      */

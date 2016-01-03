@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
 /**
- * All Requests that allowe sorting and pagination, must extend this class.
+ * All Requests that allows sorting and pagination, must extend this class.
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -48,7 +48,7 @@ public abstract class AbstractPaginatable extends AbstractVerification {
      * @param pageNumber Current Page Number
      * @see Paginatable#FIRST_PAGE
      */
-    public void setPageNumber(final int pageNumber) {
+    public final void setPageNumber(final int pageNumber) {
         if (pageNumber < Paginatable.FIRST_PAGE) {
             throw new VerificationException("Invalid Page number.");
         }
@@ -64,7 +64,7 @@ public abstract class AbstractPaginatable extends AbstractVerification {
      * @param pageSize Current Page Size
      * @see Paginatable#MAX_PAGE_SIZE
      */
-    public void setPageSize(final int pageSize) {
+    public final void setPageSize(final int pageSize) {
         if ((pageSize <= 0) || (pageSize > Paginatable.MAX_PAGE_SIZE)) {
             throw new VerificationException("Invalid Page Size.");
         }
@@ -80,16 +80,16 @@ public abstract class AbstractPaginatable extends AbstractVerification {
      *                           false
      * @see Paginatable#ASCENDING_SORT_ORDER
      */
-    public void setAscendingSortOrder(final boolean ascendingSortOrder) {
+    public final void setAscendingSortOrder(final boolean ascendingSortOrder) {
         page.setSortAscending(ascendingSortOrder);
     }
 
     /**
      * Retrieves all the Paging information required for the request.
      *
-     * @return Paginatiable Object for this request
+     * @return Paginatable Object for this request
      */
-    public Page getPagingInformation() {
+    public final Page getPagingInformation() {
         return page;
     }
 

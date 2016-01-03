@@ -44,20 +44,20 @@ public final class OfferStatisticsRequest extends AbstractVerification {
     // =========================================================================
 
     /**
-     * Empty Constructor, to use if the setters are invoked. This is required
-     * for WebServices to work properly.
+     * <p>Empty Constructor, to use if the setters are invoked. This is required
+     * for WebServices to work properly.</p>
      */
     public OfferStatisticsRequest() {
         // Required for WebServices to work. Comment added to please Sonar.
     }
 
     /**
-     * Default Constructor, for setting the ExchangeYear where statistics should
-     * be fetched. Note, that the Exchange year starts in September and ends in
-     * August, meaning that all offers created from September will belong to the
-     * following year.
+     * <p>Default Constructor, for setting the ExchangeYear where statistics
+     * should be fetched. Note, that the Exchange year starts in September and
+     * ends in August, meaning that all offers created from September will
+     * belong to the following year.</p>
      *
-     * @param exchangeYear IAESTE Exchange Year (September -> August)
+     * @param exchangeYear IAESTE Exchange Year (September -&gt; August)
      */
     public OfferStatisticsRequest(final Integer exchangeYear) {
         setExchangeYear(exchangeYear);
@@ -68,12 +68,13 @@ public final class OfferStatisticsRequest extends AbstractVerification {
     // =========================================================================
 
     /**
-     * Sets the Exchange Year for which the statistics should be gathered for
+     * <p>Sets the Exchange Year for which the statistics should be gathered for
      * the country. The value may not be null, and is by default set to the
      * current Exchange Year, which changes on September 1st, to the following
-     * year, i.e. the IAESTE Exchange Year goes from September to August.<br />
-     *   The method will throw an {@code IllegalArgumentException} if the value
-     * is illegal, i.e. null.
+     * year, i.e. the IAESTE Exchange Year goes from September to August.</p>
+     *
+     * <p>The method will throw an {@code IllegalArgumentException} if the value
+     * is illegal, i.e. null.</p>
      *
      * @param exchangeYear IAESTE Exchange Year
      * @throws IllegalArgumentException if null or not a valid IAESTE Year

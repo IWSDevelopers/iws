@@ -38,18 +38,21 @@ public final class Serializer {
     private Serializer() {}
 
     /**
-     * The method returns the compressed serialized data for the given data. The
-     * serialization and compression is achieved by using 3 streams, the first
-     * (top most, {@code ObjectOutputStream}) will handle the serialization of
-     * the data. The second stream {@code GZIPOutputStream} will handle the
-     * compression, and the final Stream {@code ByteArrayOutputStream} will
-     * convert the compressed data into something we can read into memory and
-     * thus sent to the database.<br />
-     *   If a problem occurs, then a {@code SerializationException} will be
-     * thrown, otherwise the serialized and compressed data is returned.<br />
-     *   If the given data is null or empty, then an null is returned.
+     * <p>The method returns the compressed serialized data for the given data.
+     * The serialization and compression is achieved by using 3 streams, the
+     * first (top most, {@code ObjectOutputStream}) will handle the
+     * serialization of the data. The second stream {@code GZIPOutputStream}
+     * will handle the compression, and the final Stream
+     * {@code ByteArrayOutputStream} will convert the compressed data into
+     * something we can read into memory and thus sent to the database.</p>
      *
-     * @param  data  The data that to be serialized
+     * <p>If a problem occurs, then a {@code SerializationException} will be
+     * thrown, otherwise the serialized and compressed data is returned.</p>
+     *
+     * <p>If the given data is null or empty, then an null is returned.</p>
+     *
+     * @param data The data that to be serialized
+     * @param <T>  The Serializable Object Type
      * @return Serialized and Compressed Byte Array
      * @throws SerializationException if unable to write the data
      */
@@ -76,20 +79,23 @@ public final class Serializer {
     }
 
     /**
-     * The method returns the decompressed deserialized Object from the given
-     * byte array. The deserialization and decompression is achieved by using 3
-     * streams, the first (top most, {@code ByteArrayInputStream}) is used to
-     * convert the data from a byte array to a data stream, that can then be
-     * used as input for the second stream ({@code GZIPInputStream}) to
-     * uncompress the data and finally give it to the third stream
+     * <p>The method returns the decompressed de-serialized Object from the
+     * given byte array. The deserialization and decompression is achieved by
+     * using 3 streams, the first (top most, {@code ByteArrayInputStream}) is
+     * used to convert the data from a byte array to a data stream, that can
+     * then be used as input for the second stream ({@code GZIPInputStream}) to
+     * decompress the data and finally give it to the third stream
      * ({@code ObjectInputStream}) to retrieve the Object that was originally
-     * stored.<br />
-     *   If a problem occurs, then a {@code SerializationException} will be
-     * thrown, otherwise the deserialized and decompressed data is
-     * returned.<br />
-     *   If the given data is null, then an empty array is returned.
+     * stored.</p>
      *
-     * @param  bytes  Serialized and Compressed IWSEntity
+     * <p>If a problem occurs, then a {@code SerializationException} will be
+     * thrown, otherwise the de-serialized and decompressed data is
+     * returned.</p>
+     *
+     * <p>If the given data is null, then an empty array is returned.</p>
+     *
+     * @param bytes Serialized and Compressed IWSEntity
+     * @param <T>   The Serializable Object Type
      * @return Deserialized and Decompressed IWSEntity
      * @throws SerializationException if unable to read the data
      */

@@ -24,9 +24,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * This class is used when a period of time is required, f.x. when a Calendar
+ * <p>This class is used when a period of time is required, f.x. when a Calendar
  * entry is created, then it will take place between two times, same goes for
- * Offers which also needs multipe periods.
+ * Offers which also needs multiple periods.</p>
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -81,27 +81,27 @@ public final class DatePeriod extends AbstractVerification {
     // Other Operations
     // =========================================================================
 
-    /**
-     * Checks if the given Date is after the current. If so, then a true is
-     * returned, otherwise a false.
-     *
-     * @param period  DatePeriod to check if it comes after this
-     * @return True if the given Date is after the current, otherwise false
-     */
-    public Boolean isAfter(final DatePeriod period) {
-        return toDate.isAfter(period.fromDate);
-    }
+    ///**
+    // * Checks if the given Date is after the current. If so, then a true is
+    // * returned, otherwise a false.
+    // *
+    // * @param period  DatePeriod to check if it comes after this
+    // * @return True if the given Date is after the current, otherwise false
+    // */
+    //public Boolean isAfter(final DatePeriod period) {
+    //    return toDate.isAfter(period.fromDate);
+    //}
 
-    /**
-     * Checks if the given Period is before the current. If so, then a true is
-     * returned, otherwise a false.
-     *
-     * @param period  DatePeriod to check if it comes before this
-     * @return True if the given Date is after the current, otherwise false
-     */
-    public Boolean isBefore(final DatePeriod period) {
-        return fromDate.isBefore(period.toDate);
-    }
+    ///**
+    // * Checks if the given Period is before the current. If so, then a true is
+    // * returned, otherwise a false.
+    // *
+    // * @param period  DatePeriod to check if it comes before this
+    // * @return True if the given Date is after the current, otherwise false
+    // */
+    //public Boolean isBefore(final DatePeriod period) {
+    //    return fromDate.isBefore(period.toDate);
+    //}
 
     // =========================================================================
     // Standard Setters & Getters
@@ -161,50 +161,6 @@ public final class DatePeriod extends AbstractVerification {
 
         return validation;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof DatePeriod)) {
-            return false;
-        }
-
-        final DatePeriod datePeriod = (DatePeriod) obj;
-        if ((fromDate != null) ? !fromDate.equals(datePeriod.fromDate) : (datePeriod.fromDate != null)) {
-            return false;
-        }
-        return !((toDate != null) ? !toDate.equals(datePeriod.toDate) : (datePeriod.toDate != null));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        int result = IWSConstants.HASHCODE_INITIAL_VALUE;
-
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((fromDate != null) ? fromDate.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((toDate != null) ? toDate.hashCode() : 0);
-
-        return result;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        return "DatePeriod{" +
-                "fromDate=" + fromDate +
-                ", toDate=" + toDate +
-                '}';
-    }
-
     // =========================================================================
     // Internal Methods
     // =========================================================================

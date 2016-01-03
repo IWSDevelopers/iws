@@ -53,7 +53,9 @@ public final class FetchStudentApplicationsRequest extends AbstractPaginatable {
     }
 
     /**
-     * Default Constructor.
+     * <p>Default Constructor.</p>
+     *
+     * @param offerId Offer Id
      */
     public FetchStudentApplicationsRequest(final String offerId) {
         this.offerId = offerId;

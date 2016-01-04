@@ -17,6 +17,7 @@ package net.iaeste.iws.persistence.entities.exchange;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.Currency;
 import net.iaeste.iws.api.enums.Language;
+import net.iaeste.iws.api.enums.MonitoringLevel;
 import net.iaeste.iws.api.enums.exchange.ExchangeType;
 import net.iaeste.iws.api.enums.exchange.LanguageLevel;
 import net.iaeste.iws.api.enums.exchange.LanguageOperator;
@@ -24,13 +25,12 @@ import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.api.enums.exchange.OfferType;
 import net.iaeste.iws.api.enums.exchange.PaymentFrequency;
 import net.iaeste.iws.api.enums.exchange.TypeOfWork;
-import net.iaeste.iws.persistence.entities.AbstractUpdateable;
-import net.iaeste.iws.persistence.monitoring.Monitored;
-import net.iaeste.iws.api.enums.MonitoringLevel;
 import net.iaeste.iws.common.notification.Notifiable;
 import net.iaeste.iws.common.notification.NotificationField;
 import net.iaeste.iws.common.notification.NotificationType;
 import net.iaeste.iws.persistence.Externable;
+import net.iaeste.iws.persistence.entities.AbstractUpdateable;
+import net.iaeste.iws.persistence.monitoring.Monitored;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -50,7 +50,6 @@ import javax.persistence.TemporalType;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.EnumMap;
-import java.util.Map;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -871,7 +870,7 @@ public class OfferEntity extends AbstractUpdateable<OfferEntity> implements Exte
      * {@inheritDoc}
      */
     @Override
-    public Map<NotificationField, String> prepareNotifiableFields(final NotificationType type) {
+    public final EnumMap<NotificationField, String> prepareNotifiableFields(final NotificationType type) {
         return new EnumMap<>(NotificationField.class);
     }
 }

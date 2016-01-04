@@ -115,7 +115,7 @@ public class NotificationManagerBean implements NotificationManagerLocal {
         dao = new NotificationJpaDao(entityManager);
         accessDao = new AccessJpaDao(entityManager);
 
-        final NotificationManager notificationManager = new NotificationManager(entityManager, mailEntityManager, settings, true);
+        final NotificationManager notificationManager = new NotificationManager(entityManager, settings, true);
         notificationManager.startupConsumers();
         notifications = notificationManager;
     }

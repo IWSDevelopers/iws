@@ -283,7 +283,7 @@ public final class CsvTransformer {
                 final Method implementation = obj.getClass().getMethod(field.getMethod(), field.getArgumentClasses());
                 implementation.invoke(obj, args);
             } catch (IllegalArgumentException e) {
-                LOG.debug("Setter {} Invocation Error: {}", field.getMethod(), e.getMessage());
+                LOG.debug("Setter {} Invocation Error: {}", field.getMethod(), e.getMessage(), e);
                 errors.put(field.getField(), e.getMessage());
             } catch (SecurityException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
                 // The Reflection framework forces a check for the NoSuchMethod

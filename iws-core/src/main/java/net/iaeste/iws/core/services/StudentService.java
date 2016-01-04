@@ -537,6 +537,7 @@ public final class StudentService extends CommonService<StudentDao> {
                     default:
                         throw new VerificationException("Unsupported transition from '" + oldStatus + "' to " + newStatus);
                 }
+                break;
             case APPLIED:
                 switch (newStatus) {
                     case CANCELLED:
@@ -584,6 +585,8 @@ public final class StudentService extends CommonService<StudentDao> {
                         throw new VerificationException("Unsupported transition from '" + oldStatus + "' to " + newStatus);
                 }
                 break;
+            default:
+                throw new VerificationException("Unsupported Status '" + oldStatus + "'.");
         }
     }
 }

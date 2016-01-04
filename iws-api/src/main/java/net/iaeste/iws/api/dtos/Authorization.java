@@ -89,6 +89,7 @@ public final class Authorization implements Serializable {
      * Please use the #getUserGroup method.
      *
      * @return Group from the UserGroup Object
+     * @deprecated please use the userGroup Object instead
      */
     @Deprecated
     public Group getGroup() {
@@ -99,6 +100,7 @@ public final class Authorization implements Serializable {
      * Please use the #getUserGroup method.
      *
      * @return Role from the UserGroup Object
+     * @deprecated please use the userGroup Object instead
      */
     @Deprecated
     public Role getRole() {

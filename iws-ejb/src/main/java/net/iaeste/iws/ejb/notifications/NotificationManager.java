@@ -17,7 +17,6 @@ package net.iaeste.iws.ejb.notifications;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.common.notification.Notifiable;
-import net.iaeste.iws.common.notification.NotificationField;
 import net.iaeste.iws.common.notification.NotificationType;
 import net.iaeste.iws.common.utils.Observer;
 import net.iaeste.iws.core.notifications.Notifications;
@@ -42,7 +41,6 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Notes; It is good to see the notification system evolving. There is just a
@@ -52,9 +50,9 @@ import java.util.Map;
  * handling should be done via a "cron" job. That is a Timer job in EJB, or
  * perhaps via an external queuing system like Quartz.
  *
- * @author Pavel Fiala / last $Author:$
+ * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since IWS 1.0
+ * @since   IWS 1.0
  */
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 @TransactionManagement(TransactionManagementType.CONTAINER)
@@ -65,14 +63,12 @@ public class NotificationManager implements Notifications {
     private final List<Observer> observers = new ArrayList<>(10);
 
     private final EntityManager entityManager;
-    private final EntityManager mailingEntityManager;
     private final Settings settings;
     private final NotificationDao dao;
     private final boolean hostedInBean;
 
-    public NotificationManager(final EntityManager entityManager, final EntityManager mailingEntityManager, final Settings settings, final boolean hostedInBean) {
+    public NotificationManager(final EntityManager entityManager, final Settings settings, final boolean hostedInBean) {
         this.entityManager = entityManager;
-        this.mailingEntityManager = mailingEntityManager;
         this.settings = settings;
         this.hostedInBean = hostedInBean;
 
@@ -112,7 +108,6 @@ public class NotificationManager implements Notifications {
             }
         }
 
-        //TODO call observers even there is no new job. however, there is probably some tasks in the db... can be removed once the db (transaction?) issue is solved
         notifyObservers();
     }
 
@@ -134,8 +129,7 @@ public class NotificationManager implements Notifications {
         if (obj != null) {
             try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
                  ObjectOutputStream objectStream = new ObjectOutputStream(outputStream)) {
-                final Map<NotificationField, String> fields = obj.prepareNotifiableFields(type);
-                objectStream.writeObject(fields);
+                objectStream.writeObject(obj.prepareNotifiableFields(type));
                 final byte[] bytes = outputStream.toByteArray();
                 final NotificationJobEntity job = new NotificationJobEntity(type, bytes);
                 dao.persist(job);
@@ -161,8 +155,7 @@ public class NotificationManager implements Notifications {
         if (user != null) {
             try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
                  ObjectOutputStream objectStream = new ObjectOutputStream(outputStream)) {
-                final Map<NotificationField, String> fields = user.prepareNotifiableFields(NotificationType.RESET_PASSWORD);
-                objectStream.writeObject(fields);
+                objectStream.writeObject(user.prepareNotifiableFields(NotificationType.RESET_PASSWORD));
                 final byte[] bytes = outputStream.toByteArray();
                 final NotificationJobEntity job = new NotificationJobEntity(NotificationType.RESET_PASSWORD, bytes);
                 dao.persist(job);

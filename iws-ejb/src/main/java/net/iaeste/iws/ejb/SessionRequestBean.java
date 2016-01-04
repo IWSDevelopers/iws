@@ -272,6 +272,7 @@ public class SessionRequestBean {
                 entity.setModified(new Date());
                 dao.persist(entity);
             } catch (AuthenticationException | IdentificationException e) {
+                LOG.debug(e.getMessage(), e);
                 LOG.info(e.getMessage());
                 entity = null;
             }

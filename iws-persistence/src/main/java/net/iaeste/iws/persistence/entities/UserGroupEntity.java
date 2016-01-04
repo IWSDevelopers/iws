@@ -15,13 +15,13 @@
 package net.iaeste.iws.persistence.entities;
 
 import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.common.exceptions.NotificationException;
-import net.iaeste.iws.persistence.monitoring.Monitored;
 import net.iaeste.iws.api.enums.MonitoringLevel;
+import net.iaeste.iws.common.exceptions.NotificationException;
 import net.iaeste.iws.common.notification.Notifiable;
 import net.iaeste.iws.common.notification.NotificationField;
 import net.iaeste.iws.common.notification.NotificationType;
 import net.iaeste.iws.persistence.Externable;
+import net.iaeste.iws.persistence.monitoring.Monitored;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -38,7 +38,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.util.Date;
 import java.util.EnumMap;
-import java.util.Map;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -454,8 +453,8 @@ public class UserGroupEntity extends AbstractUpdateable<UserGroupEntity> impleme
      * {@inheritDoc}
      */
     @Override
-    public final Map<NotificationField, String> prepareNotifiableFields(final NotificationType type) {
-        final Map<NotificationField, String> fields = new EnumMap<>(NotificationField.class);
+    public final EnumMap<NotificationField, String> prepareNotifiableFields(final NotificationType type) {
+        final EnumMap<NotificationField, String> fields = new EnumMap<>(NotificationField.class);
 
         switch (type) {
             case CHANGE_IN_GROUP_MEMBERS:

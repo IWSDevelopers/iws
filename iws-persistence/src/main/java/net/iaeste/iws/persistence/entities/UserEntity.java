@@ -15,17 +15,17 @@
 package net.iaeste.iws.persistence.entities;
 
 import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.api.enums.MonitoringLevel;
 import net.iaeste.iws.api.enums.NotificationFrequency;
 import net.iaeste.iws.api.enums.Privacy;
 import net.iaeste.iws.api.enums.UserStatus;
 import net.iaeste.iws.api.enums.UserType;
 import net.iaeste.iws.common.exceptions.NotificationException;
-import net.iaeste.iws.persistence.monitoring.Monitored;
-import net.iaeste.iws.api.enums.MonitoringLevel;
 import net.iaeste.iws.common.notification.Notifiable;
 import net.iaeste.iws.common.notification.NotificationField;
 import net.iaeste.iws.common.notification.NotificationType;
 import net.iaeste.iws.persistence.Externable;
+import net.iaeste.iws.persistence.monitoring.Monitored;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -46,7 +46,6 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import java.util.Date;
 import java.util.EnumMap;
-import java.util.Map;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -539,8 +538,8 @@ public class UserEntity extends AbstractUpdateable<UserEntity> implements Extern
      * {@inheritDoc}
      */
     @Override
-    public Map<NotificationField, String> prepareNotifiableFields(final NotificationType type) {
-        final Map<NotificationField, String> fields = new EnumMap<>(NotificationField.class);
+    public EnumMap<NotificationField, String> prepareNotifiableFields(final NotificationType type) {
+        final EnumMap<NotificationField, String> fields = new EnumMap<>(NotificationField.class);
 
         // By default, all notifications need the name of the person to receive
         // it. Further, all User based notifications (Activate User, Reset
@@ -558,6 +557,8 @@ public class UserEntity extends AbstractUpdateable<UserEntity> implements Extern
             case ACTIVATE_NEW_USER:
                 // Activating a user requires that the password is returned
                 fields.put(NotificationField.CLEARTEXT_PASSWORD, temporary);
+                fields.put(NotificationField.EMAIL, username);
+                break;
             case RESET_PASSWORD:
             case RESET_SESSION:
                 // These three types all require that we send the information

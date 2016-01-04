@@ -240,13 +240,13 @@ public final class HeavyLoadTest {
                 request.setUsersToFetch(FetchGroupRequest.UserFetchType.ACTIVE);
 
                 final long tmp1 = System.nanoTime();
-                assertThat(administration.fetchGroup(token, request).isOk(), is(true));
+                administration.fetchGroup(token, request);
                 final long tmp2 = System.nanoTime();
-                assertThat(exchange.fetchOfferStatistics(token, new OfferStatisticsRequest()).isOk(), is(true));
+                exchange.fetchOfferStatistics(token, new OfferStatisticsRequest());
                 final long tmp3 = System.nanoTime();
-                assertThat(exchange.fetchOffers(token, new FetchOffersRequest(FetchType.DOMESTIC)).isOk(), is(true));
+                exchange.fetchOffers(token, new FetchOffersRequest(FetchType.DOMESTIC));
                 final long tmp4 = System.nanoTime();
-                assertThat(exchange.fetchOffers(token, new FetchOffersRequest(FetchType.SHARED)).isOk(), is(true));
+                exchange.fetchOffers(token, new FetchOffersRequest(FetchType.SHARED));
                 final long tmp5 = System.nanoTime();
                 userNanos += tmp2 - tmp1;
                 statNanos += tmp3 - tmp2;

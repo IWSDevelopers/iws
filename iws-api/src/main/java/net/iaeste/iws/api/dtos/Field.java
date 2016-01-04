@@ -33,7 +33,7 @@ public final class Field implements Serializable {
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     // The field information; Name of the field with the old and new values
-    private String field = null;
+    private String theField = null;
     private String oldValue = null;
     private String newValue = null;
 
@@ -56,9 +56,9 @@ public final class Field implements Serializable {
      * @param field  Name of the Field, which was updated
      */
     public Field(final String field) {
-        this.field = field;
-        oldValue = null;
-        newValue = null;
+        this.theField = field;
+        this.oldValue = null;
+        this.newValue = null;
     }
 
     /**
@@ -70,7 +70,7 @@ public final class Field implements Serializable {
      * @param newValue The new value of the Field
      */
     public Field(final String field, final String oldValue, final String newValue) {
-        this.field = field;
+        this.theField = field;
         this.oldValue = oldValue;
         this.newValue = newValue;
     }
@@ -82,9 +82,9 @@ public final class Field implements Serializable {
      */
     public Field(final Field field) {
         if (field != null) {
-            this.field = field.field;
-            this.oldValue = field.oldValue;
-            this.newValue = field.newValue;
+            theField = field.theField;
+            oldValue = field.oldValue;
+            newValue = field.newValue;
         }
     }
 
@@ -98,7 +98,7 @@ public final class Field implements Serializable {
      * @param field Field name
      */
     public void setField(final String field) {
-        this.field = field;
+        theField = field;
     }
 
     /**
@@ -107,7 +107,7 @@ public final class Field implements Serializable {
      * @return Field name
      */
     public String getField() {
-        return field;
+        return theField;
     }
 
     /**

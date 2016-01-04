@@ -14,11 +14,11 @@
  */
 package net.iaeste.iws.common.notification;
 
-import java.util.Map;
+import java.util.EnumMap;
 
 /**
  * Please note, that the current information here is very much incomplete. A
- * possible solution would be to use a standard Templating Engine for the
+ * possible solution would be to use a standard Template Engine for the
  * information, to be send. This way, the method themselves just have to refer
  * to the name of the Template that holds the required information, and by
  * combining the Object with the Template, it should be possible to generate it
@@ -40,5 +40,5 @@ public interface Notifiable {
      * @param type Notification Type
      * @return Map with required fields for the given Notification Type
      */
-    Map<NotificationField, String> prepareNotifiableFields(NotificationType type);
+    EnumMap<NotificationField, String> prepareNotifiableFields(NotificationType type);
 }

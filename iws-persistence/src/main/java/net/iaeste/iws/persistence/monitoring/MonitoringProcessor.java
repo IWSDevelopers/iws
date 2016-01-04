@@ -17,6 +17,8 @@ package net.iaeste.iws.persistence.monitoring;
 import net.iaeste.iws.api.dtos.Field;
 import net.iaeste.iws.api.enums.MonitoringLevel;
 import net.iaeste.iws.persistence.entities.IWSEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
@@ -34,6 +36,7 @@ import java.util.ArrayList;
  */
 public final class MonitoringProcessor {
 
+    private static final Logger LOG = LoggerFactory.getLogger(MonitoringProcessor.class);
     private static final Integer DEFAULT_ARRAY_SIZE = 10;
 
     /**
@@ -92,7 +95,11 @@ public final class MonitoringProcessor {
      * @see MonitoringLevel
      */
     public ArrayList<Field> findChanges(final MonitoringLevel classLevel, final IWSEntity entity) {
-        final ArrayList<Field> found;
+        // It is customary to return an empty list, however - an empty list
+        // may indicate that we checked for details, but didn't find any -
+        // in our case, we wish to return a true null, so it is clear that
+        // nothing was checked
+        ArrayList<Field> found = null;
 
         if ((classLevel == MonitoringLevel.DETAILED) && (entity != null)) {
             found = new ArrayList<>(DEFAULT_ARRAY_SIZE);
@@ -114,12 +121,6 @@ public final class MonitoringProcessor {
                     }
                 }
             }
-        } else {
-            // It is customary to return an empty list, however - an empty list
-            // may indicate that we checked for details, but didn't find any -
-            // in our case, we wish to return a true null, so it is clear that
-            // nothing was checked
-            found = null;
         }
 
         return found;
@@ -138,7 +139,11 @@ public final class MonitoringProcessor {
      * @see MonitoringLevel
      */
     public ArrayList<Field> findChanges(final MonitoringLevel classLevel, final IWSEntity oldEntity, final IWSEntity newEntity) {
-        final ArrayList<Field> found;
+        // It is customary to return an empty list, however - an empty list
+        // may indicate that we checked for details, but didn't find any -
+        // in our case, we wish to return a true null, so it is clear that
+        // nothing was checked
+        ArrayList<Field> found = null;
 
         if ((classLevel == MonitoringLevel.DETAILED) && isValidIdenticalObjects(oldEntity, newEntity)) {
             found = new ArrayList<>(DEFAULT_ARRAY_SIZE);
@@ -151,7 +156,7 @@ public final class MonitoringProcessor {
                     final String newValue = readObjectValue(field, newEntity);
                     final String oldValue = readObjectValue(field, oldEntity);
 
-                    if (newValue != null && !newValue.equals(oldValue)) {
+                    if ((newValue != null) && !newValue.equals(oldValue)) {
                         final String name = ((Monitored) annotation).name();
 
                         if (fieldLevel == MonitoringLevel.MARKED) {
@@ -162,12 +167,6 @@ public final class MonitoringProcessor {
                     }
                 }
             }
-        } else {
-            // It is customary to return an empty list, however - an empty list
-            // may indicate that we checked for details, but didn't find any -
-            // in our case, we wish to return a true null, so it is clear that
-            // nothing was checked
-            found = null;
         }
 
         return found;
@@ -191,26 +190,26 @@ public final class MonitoringProcessor {
 
         // Read the content, if we receive an Exception, then lets just assume
         // that the value is null
-        Object rawObject;
+        Object rawObject = null;
         try {
             rawObject = field.get(obj);
-        } catch (IllegalAccessException ignore) {
-            rawObject = null;
+        } catch (IllegalAccessException e) {
+            LOG.debug(e.getMessage(), e);
         }
 
         // Restore the accessibility
         field.setAccessible(accessible);
 
         // Return the String value or null
-        return rawObject != null ? rawObject.toString() : null;
+        return (rawObject != null) ? rawObject.toString() : null;
     }
 
     /**
-     * Returns true of both the given Objects are valud (not null), and they are
+     * Returns true of both the given Objects are value (not null), and they are
      * identical. Otherwise it returns false.
      *
      * @param obj1 The First IWSEntity
-     * @param obj2 The Second OBject
+     * @param obj2 The Second Object
      * @return True if both Objects are identical, otherwise False
      */
     private static Boolean isValidIdenticalObjects(final IWSEntity obj1, final IWSEntity obj2) {

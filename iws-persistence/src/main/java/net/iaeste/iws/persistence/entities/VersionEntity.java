@@ -75,27 +75,6 @@ public class VersionEntity implements IWSEntity {
     private Date created = new Date();
 
     // =========================================================================
-    // Entity Constructors
-    // =========================================================================
-
-    /**
-     * Empty Constructor, JPA requirement.
-     */
-    public VersionEntity() {
-    }
-
-    /**
-     * Default Constructor.
-     *
-     * @param dbVersion   Database Version
-     * @param iwsVersion  IWS Version
-     */
-    public VersionEntity(final Integer dbVersion, final String iwsVersion) {
-        this.dbVersion = dbVersion;
-        this.iwsVersion = iwsVersion;
-    }
-
-    // =========================================================================
     // Entity Setters & Getters
     // =========================================================================
 
@@ -103,7 +82,7 @@ public class VersionEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public void setId(final Long id) {
+    public final void setId(final Long id) {
         this.id = id;
     }
 
@@ -111,23 +90,23 @@ public class VersionEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public Long getId() {
+    public final Long getId() {
         return id;
     }
 
-    public void setDbVersion(final Integer dbVersion) {
+    public final void setDbVersion(final Integer dbVersion) {
         this.dbVersion = dbVersion;
     }
 
-    public Integer getDbVersion() {
+    public final Integer getDbVersion() {
         return dbVersion;
     }
 
-    public void setIwsVersion(final String iwsVersion) {
+    public final void setIwsVersion(final String iwsVersion) {
         this.iwsVersion = iwsVersion;
     }
 
-    public String getIwsVersion() {
+    public final String getIwsVersion() {
         return iwsVersion;
     }
 
@@ -135,7 +114,7 @@ public class VersionEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public void setCreated(final Date created) {
+    public final void setCreated(final Date created) {
         this.created = created;
     }
 
@@ -143,7 +122,7 @@ public class VersionEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public Date getCreated() {
+    public final Date getCreated() {
         return created;
     }
 }

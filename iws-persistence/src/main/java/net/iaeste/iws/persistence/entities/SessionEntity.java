@@ -141,7 +141,7 @@ public class SessionEntity extends AbstractUpdateable<SessionEntity> implements 
      * {@inheritDoc}
      */
     @Override
-    public void setId(final Long id) {
+    public final void setId(final Long id) {
         this.id = id;
     }
 
@@ -149,7 +149,7 @@ public class SessionEntity extends AbstractUpdateable<SessionEntity> implements 
      * {@inheritDoc}
      */
     @Override
-    public Long getId() {
+    public final Long getId() {
         return id;
     }
 
@@ -157,7 +157,7 @@ public class SessionEntity extends AbstractUpdateable<SessionEntity> implements 
      * {@inheritDoc}
      */
     @Override
-    public void setExternalId(final String externalId) {
+    public final void setExternalId(final String externalId) {
         this.sessionKey = externalId;
     }
 
@@ -165,39 +165,39 @@ public class SessionEntity extends AbstractUpdateable<SessionEntity> implements 
      * {@inheritDoc}
      */
     @Override
-    public String getExternalId() {
+    public final String getExternalId() {
         return sessionKey;
     }
 
-    public void setSessionKey(final String sessionKey) {
+    public final void setSessionKey(final String sessionKey) {
         this.sessionKey = sessionKey;
     }
 
-    public String getSessionKey() {
+    public final String getSessionKey() {
         return sessionKey;
     }
 
-    public void setUser(final UserEntity user) {
+    public final void setUser(final UserEntity user) {
         this.user = user;
     }
 
-    public UserEntity getUser() {
+    public final UserEntity getUser() {
         return user;
     }
 
-    public void setDeprecated(final String deprecated) {
+    public final void setDeprecated(final String deprecated) {
         this.deprecated = deprecated;
     }
 
-    public String getDeprecated() {
+    public final String getDeprecated() {
         return deprecated;
     }
 
-    public void setSessionData(final byte[] sessionData) {
+    public final void setSessionData(final byte[] sessionData) {
         this.sessionData = sessionData;
     }
 
-    public byte[] getSessionData() {
+    public final byte[] getSessionData() {
         return sessionData;
     }
 
@@ -205,7 +205,7 @@ public class SessionEntity extends AbstractUpdateable<SessionEntity> implements 
      * {@inheritDoc}
      */
     @Override
-    public void setModified(final Date modified) {
+    public final void setModified(final Date modified) {
         this.modified = modified;
     }
 
@@ -213,7 +213,7 @@ public class SessionEntity extends AbstractUpdateable<SessionEntity> implements 
      * {@inheritDoc}
      */
     @Override
-    public Date getModified() {
+    public final Date getModified() {
         return modified;
     }
 
@@ -221,7 +221,7 @@ public class SessionEntity extends AbstractUpdateable<SessionEntity> implements 
      * {@inheritDoc}
      */
     @Override
-    public void setCreated(final Date created) {
+    public final void setCreated(final Date created) {
         this.created = created;
     }
 
@@ -229,7 +229,7 @@ public class SessionEntity extends AbstractUpdateable<SessionEntity> implements 
      * {@inheritDoc}
      */
     @Override
-    public Date getCreated() {
+    public final Date getCreated() {
         return created;
     }
 
@@ -241,7 +241,7 @@ public class SessionEntity extends AbstractUpdateable<SessionEntity> implements 
      * {@inheritDoc}
      */
     @Override
-    public boolean diff(final SessionEntity obj) {
+    public final boolean diff(final SessionEntity obj) {
         // Until properly implemented, better return true to avoid that we're
         // missing updates!
         return true;
@@ -251,7 +251,7 @@ public class SessionEntity extends AbstractUpdateable<SessionEntity> implements 
      * {@inheritDoc}
      */
     @Override
-    public void merge(final SessionEntity obj) {
+    public final void merge(final SessionEntity obj) {
         if (canMerge(obj)) {
             deprecated = which(deprecated, obj.deprecated);
             sessionData = which(sessionData, obj.sessionData);

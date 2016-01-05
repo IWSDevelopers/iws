@@ -77,35 +77,35 @@ public class PermissionEntity implements Serializable {
     // Entity Setters & Getters
     // =========================================================================
 
-    public void setId(final Long id) {
+    public final void setId(final Long id) {
         this.id = id;
     }
 
-    public Long getId() {
+    public final Long getId() {
         return id;
     }
 
-    public void setPermission(final Permission permission) {
+    public final void setPermission(final Permission permission) {
         this.permission = permission;
     }
 
-    public Permission getPermission() {
+    public final Permission getPermission() {
         return permission;
     }
 
-    public void setRestricted(final Boolean restricted) {
+    public final void setRestricted(final Boolean restricted) {
         this.restricted = restricted;
     }
 
-    public Boolean getRestricted() {
+    public final Boolean getRestricted() {
         return restricted;
     }
 
-    public void setDescription(final String description) {
+    public final void setDescription(final String description) {
         this.description = description;
     }
 
-    public String getDescription() {
+    public final String getDescription() {
         return description;
     }
 }

@@ -139,12 +139,12 @@ public class OfferEntity extends AbstractUpdateable<OfferEntity> implements Exte
     @Monitored(name="Offer type", level = MonitoringLevel.DETAILED)
     @Enumerated(EnumType.STRING)
     @Column(name = "offer_type", length = 10, nullable = false)
-    private OfferType offerType;
+    private OfferType offerType = null;
 
     @Monitored(name="Exchange type", level = MonitoringLevel.DETAILED)
     @Enumerated(EnumType.STRING)
     @Column(name = "exchange_type", length = 10, nullable = false)
-    private ExchangeType exchangeType;
+    private ExchangeType exchangeType = null;
 
     /**
      * The IW3 database contained two reference numbers, System & Local RefNo.
@@ -361,7 +361,7 @@ public class OfferEntity extends AbstractUpdateable<OfferEntity> implements Exte
      * {@inheritDoc}
      */
     @Override
-    public void setId(final Long id) {
+    public final void setId(final Long id) {
         this.id = id;
     }
 
@@ -369,7 +369,7 @@ public class OfferEntity extends AbstractUpdateable<OfferEntity> implements Exte
      * {@inheritDoc}
      */
     @Override
-    public Long getId() {
+    public final Long getId() {
         return id;
     }
 
@@ -377,7 +377,7 @@ public class OfferEntity extends AbstractUpdateable<OfferEntity> implements Exte
      * {@inheritDoc}
      */
     @Override
-    public void setExternalId(final String externalId) {
+    public final void setExternalId(final String externalId) {
         this.externalId = externalId;
     }
 
@@ -385,375 +385,375 @@ public class OfferEntity extends AbstractUpdateable<OfferEntity> implements Exte
      * {@inheritDoc}
      */
     @Override
-    public String getExternalId() {
+    public final String getExternalId() {
         return externalId;
     }
 
-    public void setRefNo(final String refNo) {
+    public final void setRefNo(final String refNo) {
         this.refNo = refNo;
     }
 
-    public String getRefNo() {
+    public final String getRefNo() {
         return refNo;
     }
 
-    public void setOfferType(final OfferType offerType) {
+    public final void setOfferType(final OfferType offerType) {
         this.offerType = offerType;
     }
 
-    public OfferType getOfferType() {
+    public final OfferType getOfferType() {
         return offerType;
     }
 
-    public void setExchangeType(final ExchangeType exchangeType) {
+    public final void setExchangeType(final ExchangeType exchangeType) {
         this.exchangeType = exchangeType;
     }
 
-    public ExchangeType getExchangeType() {
+    public final ExchangeType getExchangeType() {
         return exchangeType;
     }
 
-    public void setOldRefno(final String oldRefno) {
+    public final void setOldRefno(final String oldRefno) {
         this.oldRefno = oldRefno;
     }
 
-    public String getOldRefno() {
+    public final String getOldRefno() {
         return oldRefno;
     }
 
-    public void setExchangeYear(final Integer exchangeYear) {
+    public final void setExchangeYear(final Integer exchangeYear) {
         this.exchangeYear = exchangeYear;
     }
 
-    public Integer getExchangeYear() {
+    public final Integer getExchangeYear() {
         return exchangeYear;
     }
 
-    public void setEmployer(final EmployerEntity employer) {
+    public final void setEmployer(final EmployerEntity employer) {
         this.employer = employer;
     }
 
-    public EmployerEntity getEmployer() {
+    public final EmployerEntity getEmployer() {
         return employer;
     }
 
-    public void setWorkDescription(final String workDescription) {
+    public final void setWorkDescription(final String workDescription) {
         this.workDescription = workDescription;
     }
 
-    public String getWorkDescription() {
+    public final String getWorkDescription() {
         return workDescription;
     }
 
-    public void setTypeOfWork(final TypeOfWork typeOfWork) {
+    public final void setTypeOfWork(final TypeOfWork typeOfWork) {
         this.typeOfWork = typeOfWork;
     }
 
-    public TypeOfWork getTypeOfWork() {
+    public final TypeOfWork getTypeOfWork() {
         return typeOfWork;
     }
 
-    public void setWeeklyHours(final Float weeklyHours) {
+    public final void setWeeklyHours(final Float weeklyHours) {
         this.weeklyHours = weeklyHours;
     }
 
-    public Float getWeeklyHours() {
+    public final Float getWeeklyHours() {
         return weeklyHours;
     }
 
-    public void setDailyHours(final Float dailyHours) {
+    public final void setDailyHours(final Float dailyHours) {
         this.dailyHours = dailyHours;
     }
 
-    public Float getDailyHours() {
+    public final Float getDailyHours() {
         return dailyHours;
     }
 
-    public void setWeeklyWorkDays(final Float weeklyWorkDays) {
+    public final void setWeeklyWorkDays(final Float weeklyWorkDays) {
         this.weeklyWorkDays = weeklyWorkDays;
     }
 
-    public Float getWeeklyWorkDays() {
+    public final Float getWeeklyWorkDays() {
         return weeklyWorkDays;
     }
 
-    public void setStudyLevels(final String studyLevels) {
+    public final void setStudyLevels(final String studyLevels) {
         this.studyLevels = studyLevels;
     }
 
-    public String getStudyLevels() {
+    public final String getStudyLevels() {
         return studyLevels;
     }
 
-    public void setFieldOfStudies(final String fieldOfStudies) {
+    public final void setFieldOfStudies(final String fieldOfStudies) {
         this.fieldOfStudies = fieldOfStudies;
     }
 
-    public String getFieldOfStudies() {
+    public final String getFieldOfStudies() {
         return fieldOfStudies;
     }
 
-    public void setSpecializations(final String specializations) {
+    public final void setSpecializations(final String specializations) {
         this.specializations = specializations;
     }
 
-    public String getSpecializations() {
+    public final String getSpecializations() {
         return specializations;
     }
 
-    public void setPrevTrainingRequired(final Boolean prevTrainingRequired) {
+    public final void setPrevTrainingRequired(final Boolean prevTrainingRequired) {
         this.prevTrainingRequired = prevTrainingRequired;
     }
 
-    public Boolean getPrevTrainingRequired() {
+    public final Boolean getPrevTrainingRequired() {
         return prevTrainingRequired;
     }
 
-    public void setOtherRequirements(final String otherRequirements) {
+    public final void setOtherRequirements(final String otherRequirements) {
         this.otherRequirements = otherRequirements;
     }
 
-    public String getOtherRequirements() {
+    public final String getOtherRequirements() {
         return otherRequirements;
     }
 
-    public void setMinimumWeeks(final Integer minimumWeeks) {
+    public final void setMinimumWeeks(final Integer minimumWeeks) {
         this.minimumWeeks = minimumWeeks;
     }
 
-    public Integer getMinimumWeeks() {
+    public final Integer getMinimumWeeks() {
         return minimumWeeks;
     }
 
-    public void setMaximumWeeks(final Integer maximumWeeks) {
+    public final void setMaximumWeeks(final Integer maximumWeeks) {
         this.maximumWeeks = maximumWeeks;
     }
 
-    public Integer getMaximumWeeks() {
+    public final Integer getMaximumWeeks() {
         return maximumWeeks;
     }
 
-    public void setFromDate(final Date fromDate) {
+    public final void setFromDate(final Date fromDate) {
         this.fromDate = fromDate;
     }
 
-    public Date getFromDate() {
+    public final Date getFromDate() {
         return fromDate;
     }
 
-    public void setToDate(final Date toDate) {
+    public final void setToDate(final Date toDate) {
         this.toDate = toDate;
     }
 
-    public Date getToDate() {
+    public final Date getToDate() {
         return toDate;
     }
 
-    public void setFromDate2(final Date fromDate2) {
+    public final void setFromDate2(final Date fromDate2) {
         this.fromDate2 = fromDate2;
     }
 
-    public Date getFromDate2() {
+    public final Date getFromDate2() {
         return fromDate2;
     }
 
-    public void setToDate2(final Date toDate2) {
+    public final void setToDate2(final Date toDate2) {
         this.toDate2 = toDate2;
     }
 
-    public Date getToDate2() {
+    public final Date getToDate2() {
         return toDate2;
     }
 
-    public void setUnavailableFrom(final Date unavailableFrom) {
+    public final void setUnavailableFrom(final Date unavailableFrom) {
         this.unavailableFrom = unavailableFrom;
     }
 
-    public Date getUnavailableFrom() {
+    public final Date getUnavailableFrom() {
         return unavailableFrom;
     }
 
-    public void setUnavailableTo(final Date unavailableTo) {
+    public final void setUnavailableTo(final Date unavailableTo) {
         this.unavailableTo = unavailableTo;
     }
 
-    public Date getUnavailableTo() {
+    public final Date getUnavailableTo() {
         return unavailableTo;
     }
 
-    public void setLanguage1(final Language language1) {
+    public final void setLanguage1(final Language language1) {
         this.language1 = language1;
     }
 
-    public Language getLanguage1() {
+    public final Language getLanguage1() {
         return language1;
     }
 
-    public void setLanguage1Level(final LanguageLevel language1Level) {
+    public final void setLanguage1Level(final LanguageLevel language1Level) {
         this.language1Level = language1Level;
     }
 
-    public LanguageLevel getLanguage1Level() {
+    public final LanguageLevel getLanguage1Level() {
         return language1Level;
     }
 
-    public void setLanguage1Operator(final LanguageOperator language1Operator) {
+    public final void setLanguage1Operator(final LanguageOperator language1Operator) {
         this.language1Operator = language1Operator;
     }
 
-    public LanguageOperator getLanguage1Operator() {
+    public final LanguageOperator getLanguage1Operator() {
         return language1Operator;
     }
 
-    public void setLanguage2(final Language language2) {
+    public final void setLanguage2(final Language language2) {
         this.language2 = language2;
     }
 
-    public Language getLanguage2() {
+    public final Language getLanguage2() {
         return language2;
     }
 
-    public void setLanguage2Level(final LanguageLevel language2Level) {
+    public final void setLanguage2Level(final LanguageLevel language2Level) {
         this.language2Level = language2Level;
     }
 
-    public LanguageLevel getLanguage2Level() {
+    public final LanguageLevel getLanguage2Level() {
         return language2Level;
     }
 
-    public void setLanguage2Operator(final LanguageOperator language2Operator) {
+    public final void setLanguage2Operator(final LanguageOperator language2Operator) {
         this.language2Operator = language2Operator;
     }
 
-    public LanguageOperator getLanguage2Operator() {
+    public final LanguageOperator getLanguage2Operator() {
         return language2Operator;
     }
 
-    public void setLanguage3(final Language language3) {
+    public final void setLanguage3(final Language language3) {
         this.language3 = language3;
     }
 
-    public Language getLanguage3() {
+    public final Language getLanguage3() {
         return language3;
     }
 
-    public void setLanguage3Level(final LanguageLevel language3Level) {
+    public final void setLanguage3Level(final LanguageLevel language3Level) {
         this.language3Level = language3Level;
     }
 
-    public LanguageLevel getLanguage3Level() {
+    public final LanguageLevel getLanguage3Level() {
         return language3Level;
     }
 
-    public void setPayment(final BigDecimal payment) {
+    public final void setPayment(final BigDecimal payment) {
         this.payment = payment;
     }
 
-    public BigDecimal getPayment() {
+    public final BigDecimal getPayment() {
         return payment;
     }
 
-    public void setPaymentFrequency(final PaymentFrequency paymentFrequency) {
+    public final void setPaymentFrequency(final PaymentFrequency paymentFrequency) {
         this.paymentFrequency = paymentFrequency;
     }
 
-    public PaymentFrequency getPaymentFrequency() {
+    public final PaymentFrequency getPaymentFrequency() {
         return paymentFrequency;
     }
 
-    public void setCurrency(final Currency currency) {
+    public final void setCurrency(final Currency currency) {
         this.currency = currency;
     }
 
-    public Currency getCurrency() {
+    public final Currency getCurrency() {
         return currency;
     }
 
-    public void setDeduction(final String deduction) {
+    public final void setDeduction(final String deduction) {
         this.deduction = deduction;
     }
 
-    public String getDeduction() {
+    public final String getDeduction() {
         return deduction;
     }
 
-    public void setLivingCost(final BigDecimal livingCost) {
+    public final void setLivingCost(final BigDecimal livingCost) {
         this.livingCost = livingCost;
     }
 
-    public BigDecimal getLivingCost() {
+    public final BigDecimal getLivingCost() {
         return livingCost;
     }
 
-    public void setLivingCostFrequency(final PaymentFrequency livingCostFrequency) {
+    public final void setLivingCostFrequency(final PaymentFrequency livingCostFrequency) {
         this.livingCostFrequency = livingCostFrequency;
     }
 
-    public PaymentFrequency getLivingCostFrequency() {
+    public final PaymentFrequency getLivingCostFrequency() {
         return livingCostFrequency;
     }
 
-    public void setLodgingBy(final String lodgingBy) {
+    public final void setLodgingBy(final String lodgingBy) {
         this.lodgingBy = lodgingBy;
     }
 
-    public String getLodgingBy() {
+    public final String getLodgingBy() {
         return lodgingBy;
     }
 
-    public void setLodgingCost(final BigDecimal lodgingCost) {
+    public final void setLodgingCost(final BigDecimal lodgingCost) {
         this.lodgingCost = lodgingCost;
     }
 
-    public BigDecimal getLodgingCost() {
+    public final BigDecimal getLodgingCost() {
         return lodgingCost;
     }
 
-    public void setLodgingCostFrequency(final PaymentFrequency lodgingCostFrequency) {
+    public final void setLodgingCostFrequency(final PaymentFrequency lodgingCostFrequency) {
         this.lodgingCostFrequency = lodgingCostFrequency;
     }
 
-    public PaymentFrequency getLodgingCostFrequency() {
+    public final PaymentFrequency getLodgingCostFrequency() {
         return lodgingCostFrequency;
     }
 
-    public void setNominationDeadline(final Date nominationDeadline) {
+    public final void setNominationDeadline(final Date nominationDeadline) {
         this.nominationDeadline = nominationDeadline;
     }
 
-    public Date getNominationDeadline() {
+    public final Date getNominationDeadline() {
         return nominationDeadline;
     }
 
-    public void setNumberOfHardCopies(final Integer numberOfHardCopies) {
+    public final void setNumberOfHardCopies(final Integer numberOfHardCopies) {
         this.numberOfHardCopies = numberOfHardCopies;
     }
 
-    public Integer getNumberOfHardCopies() {
+    public final Integer getNumberOfHardCopies() {
         return numberOfHardCopies;
     }
 
-    public void setAdditionalInformation(final String additionalInformation) {
+    public final void setAdditionalInformation(final String additionalInformation) {
         this.additionalInformation = additionalInformation;
     }
 
-    public String getAdditionalInformation() {
+    public final String getAdditionalInformation() {
         return additionalInformation;
     }
 
-    public void setPrivateComment(final String privateComment) {
+    public final void setPrivateComment(final String privateComment) {
         this.privateComment = privateComment;
     }
 
-    public String getPrivateComment() {
+    public final String getPrivateComment() {
         return privateComment;
     }
 
-    public void setStatus(final OfferState status) {
+    public final void setStatus(final OfferState status) {
         this.status = status;
     }
 
-    public OfferState getStatus() {
+    public final OfferState getStatus() {
         return status;
     }
 
@@ -761,7 +761,7 @@ public class OfferEntity extends AbstractUpdateable<OfferEntity> implements Exte
      * {@inheritDoc}
      */
     @Override
-    public void setModified(final Date modified) {
+    public final void setModified(final Date modified) {
         this.modified = modified;
     }
 
@@ -769,7 +769,7 @@ public class OfferEntity extends AbstractUpdateable<OfferEntity> implements Exte
      * {@inheritDoc}
      */
     @Override
-    public Date getModified() {
+    public final Date getModified() {
         return modified;
     }
 
@@ -777,7 +777,7 @@ public class OfferEntity extends AbstractUpdateable<OfferEntity> implements Exte
      * {@inheritDoc}
      */
     @Override
-    public void setCreated(final Date created) {
+    public final void setCreated(final Date created) {
         this.created = created;
     }
 
@@ -785,7 +785,7 @@ public class OfferEntity extends AbstractUpdateable<OfferEntity> implements Exte
      * {@inheritDoc}
      */
     @Override
-    public Date getCreated() {
+    public final Date getCreated() {
         return created;
     }
 
@@ -797,7 +797,7 @@ public class OfferEntity extends AbstractUpdateable<OfferEntity> implements Exte
      * {@inheritDoc}
      */
     @Override
-    public boolean diff(final OfferEntity obj) {
+    public final boolean diff(final OfferEntity obj) {
         // Until properly implemented, better return true to avoid that we're
         // missing updates!
         return true;
@@ -807,7 +807,7 @@ public class OfferEntity extends AbstractUpdateable<OfferEntity> implements Exte
      * {@inheritDoc}
      */
     @Override
-    public void merge(final OfferEntity obj) {
+    public final void merge(final OfferEntity obj) {
         if (canMerge(obj)) {
             // Note, Id, ExternalId & refNo are *not* allowed to be updated!
             // Also note, oldOfferId and oldRefNo are *not* allowed to be updated!

@@ -101,7 +101,7 @@ public class MonitoringEntity implements IWSEntity {
     }
 
     /**
-     * Default Constructor, for creating new Monitoring Enttiy without the
+     * Default Constructor, for creating new Monitoring Entity without the
      * changed field values
      *
      * @param user      The User making the change
@@ -117,7 +117,7 @@ public class MonitoringEntity implements IWSEntity {
     }
 
     /**
-     * Default Constructor, for creating new Monitoring Enttiy without the
+     * Default Constructor, for creating new Monitoring Entity without the
      * changed field values
      *
      * @param user      The User making the change
@@ -142,7 +142,7 @@ public class MonitoringEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public void setId(final Long id) {
+    public final void setId(final Long id) {
         this.id = id;
     }
 
@@ -150,47 +150,47 @@ public class MonitoringEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public Long getId() {
+    public final Long getId() {
         return id;
     }
 
-    public void setUser(final UserEntity user) {
+    public final void setUser(final UserEntity user) {
         this.user = user;
     }
 
-    public UserEntity getUser() {
+    public final UserEntity getUser() {
         return user;
     }
 
-    public void setGroup(final GroupEntity group) {
+    public final void setGroup(final GroupEntity group) {
         this.group = group;
     }
 
-    public GroupEntity getGroup() {
+    public final GroupEntity getGroup() {
         return group;
     }
 
-    public void setTableName(final String tableName) {
+    public final void setTableName(final String tableName) {
         this.tableName = tableName;
     }
 
-    public String getTableName() {
+    public final String getTableName() {
         return tableName;
     }
 
-    public void setRecordId(final Long recordId) {
+    public final void setRecordId(final Long recordId) {
         this.recordId = recordId;
     }
 
-    public Long getRecordId() {
+    public final Long getRecordId() {
         return recordId;
     }
 
-    public void setFields(final byte[] fields) {
+    public final void setFields(final byte[] fields) {
         this.fields = fields;
     }
 
-    public byte[] getFields() {
+    public final byte[] getFields() {
         return fields;
     }
 
@@ -198,7 +198,7 @@ public class MonitoringEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public void setCreated(final Date created) {
+    public final void setCreated(final Date created) {
         this.created = created;
     }
 
@@ -206,7 +206,7 @@ public class MonitoringEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public Date getCreated() {
+    public final Date getCreated() {
         return created;
     }
 }

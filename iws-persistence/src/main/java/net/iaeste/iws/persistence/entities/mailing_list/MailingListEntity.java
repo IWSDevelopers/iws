@@ -67,7 +67,7 @@ public class MailingListEntity extends AbstractUpdateable<MailingListEntity> {
     @Column(name = "private")
     private boolean privateList = true;
 
-    @Column(name = "list_address", length = 100)
+    @Column(name = "list_address", length = 100, unique = true)
     private String listAddress = null;
 
     @Column(name = "subject_prefix", length = 50)

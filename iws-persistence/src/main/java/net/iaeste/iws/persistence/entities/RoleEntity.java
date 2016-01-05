@@ -90,9 +90,9 @@ public class RoleEntity extends AbstractUpdateable<RoleEntity> implements Extern
     /**
      * The content of this Entity is exposed externally, however to avoid that
      * someone tries to spoof the system by second guessing our Sequence values,
-     * An External Id is used, the External Id is a Uniqie UUID value, which in
+     * An External Id is used, the External Id is a Unique UUID value, which in
      * all external references is referred to as the "Id". Although this can be
-     * classified as StO (Security through Obscrutity), there is no need to
+     * classified as StO (Security through Obscurity), there is no need to
      * expose more information than necessary.
      */
     @Column(name = "external_id", length = 36, unique = true, nullable = false, updatable = false)
@@ -167,7 +167,7 @@ public class RoleEntity extends AbstractUpdateable<RoleEntity> implements Extern
      * Default Constructor, when creating new Roles to a country.
      *
      * @param role         The name of the role
-     * @param country      Customr Roles requires either a Group or Country
+     * @param country      Custom Roles requires either a Group or Country
      * @param description  Description of the role
      */
     public RoleEntity(final String role, final CountryEntity country, final String description) {
@@ -180,7 +180,7 @@ public class RoleEntity extends AbstractUpdateable<RoleEntity> implements Extern
      * Default Constructor, when creating new Roles for a specific Group.
      *
      * @param role         The name of the role
-     * @param group        Customr Roles requires either a Group or Country
+     * @param group        Custom Roles requires either a Group or Country
      * @param description  Description of the role
      */
     public RoleEntity(final String role, final GroupEntity group, final String description) {
@@ -197,7 +197,7 @@ public class RoleEntity extends AbstractUpdateable<RoleEntity> implements Extern
      * {@inheritDoc}
      */
     @Override
-    public void setId(final Long id) {
+    public final void setId(final Long id) {
         this.id = id;
     }
 
@@ -205,7 +205,7 @@ public class RoleEntity extends AbstractUpdateable<RoleEntity> implements Extern
      * {@inheritDoc}
      */
     @Override
-    public Long getId() {
+    public final Long getId() {
         return id;
     }
 
@@ -213,7 +213,7 @@ public class RoleEntity extends AbstractUpdateable<RoleEntity> implements Extern
      * {@inheritDoc}
      */
     @Override
-    public void setExternalId(final String externalId) {
+    public final void setExternalId(final String externalId) {
         this.externalId = externalId;
     }
 
@@ -221,39 +221,39 @@ public class RoleEntity extends AbstractUpdateable<RoleEntity> implements Extern
      * {@inheritDoc}
      */
     @Override
-    public String getExternalId() {
+    public final String getExternalId() {
         return externalId;
     }
 
-    public void setRole(final String role) {
+    public final void setRole(final String role) {
         this.role = role;
     }
 
-    public String getRole() {
+    public final String getRole() {
         return role;
     }
 
-    public void setCountry(final CountryEntity country) {
+    public final void setCountry(final CountryEntity country) {
         this.country = country;
     }
 
-    public CountryEntity getCountry() {
+    public final CountryEntity getCountry() {
         return country;
     }
 
-    public void setGroup(final GroupEntity group) {
+    public final void setGroup(final GroupEntity group) {
         this.group = group;
     }
 
-    public GroupEntity getGroup() {
+    public final GroupEntity getGroup() {
         return group;
     }
 
-    public void setDescription(final String description) {
+    public final void setDescription(final String description) {
         this.description = description;
     }
 
-    public String getDescription() {
+    public final String getDescription() {
         return description;
     }
 
@@ -261,7 +261,7 @@ public class RoleEntity extends AbstractUpdateable<RoleEntity> implements Extern
      * {@inheritDoc}
      */
     @Override
-    public void setModified(final Date modified) {
+    public final void setModified(final Date modified) {
         this.modified = modified;
     }
 
@@ -269,7 +269,7 @@ public class RoleEntity extends AbstractUpdateable<RoleEntity> implements Extern
      * {@inheritDoc}
      */
     @Override
-    public Date getModified() {
+    public final Date getModified() {
         return modified;
     }
 
@@ -277,7 +277,7 @@ public class RoleEntity extends AbstractUpdateable<RoleEntity> implements Extern
      * {@inheritDoc}
      */
     @Override
-    public void setCreated(final Date created) {
+    public final void setCreated(final Date created) {
         this.created = created;
     }
 
@@ -285,7 +285,7 @@ public class RoleEntity extends AbstractUpdateable<RoleEntity> implements Extern
      * {@inheritDoc}
      */
     @Override
-    public Date getCreated() {
+    public final Date getCreated() {
         return created;
     }
 
@@ -297,7 +297,7 @@ public class RoleEntity extends AbstractUpdateable<RoleEntity> implements Extern
      * {@inheritDoc}
      */
     @Override
-    public boolean diff(final RoleEntity obj) {
+    public final boolean diff(final RoleEntity obj) {
         // Until properly implemented, better return true to avoid that we're
         // missing updates!
         return true;
@@ -307,7 +307,7 @@ public class RoleEntity extends AbstractUpdateable<RoleEntity> implements Extern
      * {@inheritDoc}
      */
     @Override
-    public void merge(final RoleEntity obj) {
+    public final void merge(final RoleEntity obj) {
         if (canMerge(obj)) {
             role = which(role, obj.role);
             description = which(description, obj.description);

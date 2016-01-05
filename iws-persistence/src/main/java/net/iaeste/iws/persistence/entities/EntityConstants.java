@@ -26,7 +26,7 @@ package net.iaeste.iws.persistence.entities;
  * Constant class must be updated to reflect this, and so must the database,
  * since the three parts must always be synchronized!
  *   Note, JQL cannot reference values that in anyway can be overwritten. Which
- * means that an Interface constant class cannot be derefenced.
+ * means that an Interface constant class cannot be dereferenced.
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -91,11 +91,6 @@ public final class EntityConstants {
     public static final String GROUP_STATUS_ACTIVE = DELIMITER + "ACTIVE" + DELIMITER;
 
     /**
-     * Status value for Suspended; {@link net.iaeste.iws.api.enums.GroupStatus#SUSPENDED}.
-     */
-    public static final String GROUP_STATUS_SUSPENDED = DELIMITER + "SUSPENDED" + DELIMITER;
-
-    /**
      * Status value for Deleted; {@link net.iaeste.iws.api.enums.GroupStatus#DELETED}.
      */
     public static final String GROUP_STATUS_DELETED = DELIMITER + "DELETED" + DELIMITER;
@@ -129,27 +124,27 @@ public final class EntityConstants {
     // =========================================================================
 
     /**
-     * The pre-defined Role Owner; {@link net.iaeste.iws.api.constants.IWSConstants#ROLE_OWNER}.
+     * The pre-defined Role Owner; {@see EntityConstants#ROLE_OWNER}.
      */
     public static final int ROLE_OWNER = 1;
 
     /**
-     * The pre-defined Role Owner; {@link net.iaeste.iws.api.constants.IWSConstants#ROLE_MODERATOR}.
+     * The pre-defined Role Owner; {@see EntityConstants#ROLE_MODERATOR}.
      */
     public static final int ROLE_MODERATOR = 2;
 
     /**
-     * The pre-defined Role Owner; {@link net.iaeste.iws.api.constants.IWSConstants#ROLE_MEMBER}.
+     * The pre-defined Role Owner; {@see EntityConstants#ROLE_MEMBER}.
      */
     public static final int ROLE_MEMBER = 3;
 
     /**
-     * The pre-defined Role Owner; {@link net.iaeste.iws.api.constants.IWSConstants#ROLE_STUDENT}.
+     * The pre-defined Role Owner; {@see EntityConstants#ROLE_STUDENT}.
      */
     public static final int ROLE_STUDENT = 5;
 
     /**
-     * The name of the Attachement for Applications in the Attachment Table.
+     * The name of the Attachment for Applications in the Attachment Table.
      */
     public static final String STUDENT_APPLICATIONS_ATTACHMENT = DELIMITER + "student_applications" + DELIMITER;
 }

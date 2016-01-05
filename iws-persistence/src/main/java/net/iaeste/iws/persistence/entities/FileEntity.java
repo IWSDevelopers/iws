@@ -77,9 +77,9 @@ public class FileEntity extends AbstractUpdateable<FileEntity> implements Extern
     /**
      * The content of this Entity is exposed externally, however to avoid that
      * someone tries to spoof the system by second guessing our Sequence values,
-     * An External Id is used, the External Id is a Uniqie UUID value, which in
+     * An External Id is used, the External Id is a Unique UUID value, which in
      * all external references is referred to as the "Id". Although this can be
-     * classified as StO (Security through Obscrutity), there is no need to
+     * classified as StO (Security through Obscurity), there is no need to
      * expose more information than necessary.
      */
     @Column(name = "external_id", length = 36, unique = true, nullable = false, updatable = false)
@@ -162,7 +162,7 @@ public class FileEntity extends AbstractUpdateable<FileEntity> implements Extern
      * {@inheritDoc}
      */
     @Override
-    public void setId(final Long id) {
+    public final void setId(final Long id) {
         this.id = id;
     }
 
@@ -170,7 +170,7 @@ public class FileEntity extends AbstractUpdateable<FileEntity> implements Extern
      * {@inheritDoc}
      */
     @Override
-    public Long getId() {
+    public final Long getId() {
         return id;
     }
 
@@ -178,7 +178,7 @@ public class FileEntity extends AbstractUpdateable<FileEntity> implements Extern
      * {@inheritDoc}
      */
     @Override
-    public void setExternalId(final String externalId) {
+    public final void setExternalId(final String externalId) {
         this.externalId = externalId;
     }
 
@@ -186,43 +186,43 @@ public class FileEntity extends AbstractUpdateable<FileEntity> implements Extern
      * {@inheritDoc}
      */
     @Override
-    public String getExternalId() {
+    public final String getExternalId() {
         return externalId;
     }
 
-    public void setPrivacy(final Privacy privacy) {
+    public final void setPrivacy(final Privacy privacy) {
         this.privacy = privacy;
     }
 
-    public Privacy getPrivacy() {
+    public final Privacy getPrivacy() {
         return privacy;
     }
 
-    public void setGroup(final GroupEntity group) {
+    public final void setGroup(final GroupEntity group) {
         this.group = group;
     }
 
-    public GroupEntity getGroup() {
+    public final GroupEntity getGroup() {
         return group;
     }
 
-    public void setUser(final  UserEntity user) {
+    public final void setUser(final UserEntity user) {
         this.user = user;
     }
 
-    public UserEntity getUser() {
+    public final UserEntity getUser() {
         return user;
     }
 
-    public void setFolder(final FolderEntity folder) {
+    public final void setFolder(final FolderEntity folder) {
         this.folder = folder;
     }
 
-    public FolderEntity getFolder() {
+    public final FolderEntity getFolder() {
         return folder;
     }
 
-    public void setFilename(final String filename) {
+    public final void setFilename(final String filename) {
         this.filename = filename;
     }
 
@@ -230,59 +230,59 @@ public class FileEntity extends AbstractUpdateable<FileEntity> implements Extern
         return filename;
     }
 
-    public void setStoredFilename(final String filedata) {
+    public final void setStoredFilename(final String filedata) {
         this.storedFilename = filedata;
     }
 
-    public String getStoredFilename() {
+    public final String getStoredFilename() {
         return storedFilename;
     }
 
-    public void setFilesize(final Integer filesize) {
+    public final void setFilesize(final Integer filesize) {
         this.filesize = filesize;
     }
 
-    public Integer getFilesize() {
+    public final Integer getFilesize() {
         return filesize;
     }
 
-    public void setMimetype(final String mimetype) {
+    public final void setMimetype(final String mimetype) {
         this.mimetype = mimetype;
     }
 
-    public String getMimetype() {
+    public final String getMimetype() {
         return mimetype;
     }
 
-    public void setDescription(final String description) {
+    public final void setDescription(final String description) {
         this.description = description;
     }
 
-    public String getDescription() {
+    public final String getDescription() {
         return description;
     }
 
-    public void setKeywords(final String keywords) {
+    public final void setKeywords(final String keywords) {
         this.keywords = keywords;
     }
 
-    public String getKeywords() {
+    public final String getKeywords() {
         return keywords;
     }
 
-    public void setChecksum(final Long checksum) {
+    public final void setChecksum(final Long checksum) {
         this.checksum = checksum;
     }
 
-    public Long getChecksum() {
+    public final Long getChecksum() {
         return checksum;
     }
 
-    public void setOldIW3FileId(final Long oldIW3FileId) {
+    public final void setOldIW3FileId(final Long oldIW3FileId) {
         this.oldIW3FileId = oldIW3FileId;
     }
 
-    public Long getOldIW3FileId() {
+    public final Long getOldIW3FileId() {
         return oldIW3FileId;
     }
 
@@ -290,7 +290,7 @@ public class FileEntity extends AbstractUpdateable<FileEntity> implements Extern
      * {@inheritDoc}
      */
     @Override
-    public void setModified(final Date modified) {
+    public final void setModified(final Date modified) {
         this.modified = modified;
     }
 
@@ -298,7 +298,7 @@ public class FileEntity extends AbstractUpdateable<FileEntity> implements Extern
      * {@inheritDoc}
      */
     @Override
-    public Date getModified() {
+    public final Date getModified() {
         return modified;
     }
 
@@ -306,7 +306,7 @@ public class FileEntity extends AbstractUpdateable<FileEntity> implements Extern
      * {@inheritDoc}
      */
     @Override
-    public void setCreated(final Date created) {
+    public final void setCreated(final Date created) {
         this.created = created;
     }
 
@@ -314,7 +314,7 @@ public class FileEntity extends AbstractUpdateable<FileEntity> implements Extern
      * {@inheritDoc}
      */
     @Override
-    public Date getCreated() {
+    public final Date getCreated() {
         return created;
     }
 
@@ -326,7 +326,7 @@ public class FileEntity extends AbstractUpdateable<FileEntity> implements Extern
      * {@inheritDoc}
      */
     @Override
-    public boolean diff(final FileEntity obj) {
+    public final boolean diff(final FileEntity obj) {
         // Until properly implemented, better return true to avoid that we're
         // missing updates!
         return true;
@@ -336,7 +336,7 @@ public class FileEntity extends AbstractUpdateable<FileEntity> implements Extern
      * {@inheritDoc}
      */
     @Override
-    public void merge(final FileEntity obj) {
+    public final void merge(final FileEntity obj) {
         if (canMerge(obj)) {
             // Note; Id & ExternalId are *not* allowed to be updated!
             privacy = which(privacy, obj.privacy);

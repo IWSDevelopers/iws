@@ -228,7 +228,7 @@ public class ApplicationEntity extends AbstractUpdateable<ApplicationEntity> imp
      * {@inheritDoc}
      */
     @Override
-    public void setId(final Long id) {
+    public final void setId(final Long id) {
         this.id = id;
     }
 
@@ -236,7 +236,7 @@ public class ApplicationEntity extends AbstractUpdateable<ApplicationEntity> imp
      * {@inheritDoc}
      */
     @Override
-    public Long getId() {
+    public final Long getId() {
         return id;
     }
 
@@ -244,7 +244,7 @@ public class ApplicationEntity extends AbstractUpdateable<ApplicationEntity> imp
      * {@inheritDoc}
      */
     @Override
-    public void setExternalId(final String externalId) {
+    public final void setExternalId(final String externalId) {
         this.externalId = externalId;
     }
 
@@ -252,263 +252,263 @@ public class ApplicationEntity extends AbstractUpdateable<ApplicationEntity> imp
      * {@inheritDoc}
      */
     @Override
-    public String getExternalId() {
+    public final String getExternalId() {
         return externalId;
     }
 
-    public void setOfferGroup(final OfferGroupEntity offerGroup) {
+    public final void setOfferGroup(final OfferGroupEntity offerGroup) {
         this.offerGroup = offerGroup;
     }
 
-    public OfferGroupEntity getOfferGroup() {
+    public final OfferGroupEntity getOfferGroup() {
         return offerGroup;
     }
 
-    public void setStudent(final StudentEntity student) {
+    public final void setStudent(final StudentEntity student) {
         this.student = student;
     }
 
-    public StudentEntity getStudent() {
+    public final StudentEntity getStudent() {
         return student;
     }
 
-    public void setStatus(final ApplicationStatus status) {
+    public final void setStatus(final ApplicationStatus status) {
         this.status = status;
     }
 
-    public ApplicationStatus getStatus() {
+    public final ApplicationStatus getStatus() {
         return status;
     }
 
-    public void setHomeAddress(final AddressEntity homeAddress) {
+    public final void setHomeAddress(final AddressEntity homeAddress) {
         this.homeAddress = homeAddress;
     }
 
-    public AddressEntity getHomeAddress() {
+    public final AddressEntity getHomeAddress() {
         return homeAddress;
     }
 
-    public void setEmail(final String email) {
+    public final void setEmail(final String email) {
         this.email = email;
     }
 
-    public String getEmail() {
+    public final String getEmail() {
         return email;
     }
 
-    public void setPhoneNumber(final String phoneNumber) {
+    public final void setPhoneNumber(final String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getPhoneNumber() {
+    public final String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setAddressDuringTerms(final AddressEntity addressDuringTerms) {
+    public final void setAddressDuringTerms(final AddressEntity addressDuringTerms) {
         this.addressDuringTerms = addressDuringTerms;
     }
 
-    public AddressEntity getAddressDuringTerms() {
+    public final AddressEntity getAddressDuringTerms() {
         return addressDuringTerms;
     }
 
-    public void setDateOfBirth(final Date dateOfBirth) {
+    public final void setDateOfBirth(final Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public Date getDateOfBirth() {
+    public final Date getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setUniversity(final String university) {
+    public final void setUniversity(final String university) {
         this.university = university;
     }
 
-    public String getUniversity() {
+    public final String getUniversity() {
         return university;
     }
 
-    public void setPlaceOfBirth(final String placeOfBirth) {
+    public final void setPlaceOfBirth(final String placeOfBirth) {
         this.placeOfBirth = placeOfBirth;
     }
 
-    public String getPlaceOfBirth() {
+    public final String getPlaceOfBirth() {
         return placeOfBirth;
     }
 
-    public void setNationality(final CountryEntity nationality) {
+    public final void setNationality(final CountryEntity nationality) {
         this.nationality = nationality;
     }
 
-    public CountryEntity getNationality() {
+    public final CountryEntity getNationality() {
         return nationality;
     }
 
-    public void setGender(final Gender gender) {
+    public final void setGender(final Gender gender) {
         this.gender = gender;
     }
 
-    public Gender getGender() {
+    public final Gender getGender() {
         return gender;
     }
 
-    public void setCompletedYearsOfStudy(final Integer completedYearsOfStudy) {
+    public final void setCompletedYearsOfStudy(final Integer completedYearsOfStudy) {
         this.completedYearsOfStudy = completedYearsOfStudy;
     }
 
-    public Integer getCompletedYearsOfStudy() {
+    public final Integer getCompletedYearsOfStudy() {
         return completedYearsOfStudy;
     }
 
-    public void setTotalYearsOfStudy(final Integer totalYearsOfStudy) {
+    public final void setTotalYearsOfStudy(final Integer totalYearsOfStudy) {
         this.totalYearsOfStudy = totalYearsOfStudy;
     }
 
-    public Integer getTotalYearsOfStudy() {
+    public final Integer getTotalYearsOfStudy() {
         return totalYearsOfStudy;
     }
 
-    public void setIsLodgingByIaeste(final boolean lodgingByIaeste) {
+    public final void setIsLodgingByIaeste(final boolean lodgingByIaeste) {
         this.lodgingByIaeste = lodgingByIaeste;
     }
 
-    public boolean getIsLodgingByIaeste() {
+    public final boolean getIsLodgingByIaeste() {
         return lodgingByIaeste;
     }
 
-    public void setLanguage1(final Language language1) {
+    public final void setLanguage1(final Language language1) {
         this.language1 = language1;
     }
 
-    public Language getLanguage1() {
+    public final Language getLanguage1() {
         return language1;
     }
 
-    public void setLanguage1Level(final LanguageLevel language1Level) {
+    public final void setLanguage1Level(final LanguageLevel language1Level) {
         this.language1Level = language1Level;
     }
 
-    public LanguageLevel getLanguage1Level() {
+    public final LanguageLevel getLanguage1Level() {
         return language1Level;
     }
 
-    public void setLanguage2(final Language language2) {
+    public final void setLanguage2(final Language language2) {
         this.language2 = language2;
     }
 
-    public Language getLanguage2() {
+    public final Language getLanguage2() {
         return language2;
     }
 
-    public void setLanguage2Level(final LanguageLevel language2Level) {
+    public final void setLanguage2Level(final LanguageLevel language2Level) {
         this.language2Level = language2Level;
     }
 
-    public LanguageLevel getLanguage2Level() {
+    public final LanguageLevel getLanguage2Level() {
         return language2Level;
     }
 
-    public void setLanguage3(final Language language3) {
+    public final void setLanguage3(final Language language3) {
         this.language3 = language3;
     }
 
-    public Language getLanguage3() {
+    public final Language getLanguage3() {
         return language3;
     }
 
-    public void setLanguage3Level(final LanguageLevel language3Level) {
+    public final void setLanguage3Level(final LanguageLevel language3Level) {
         this.language3Level = language3Level;
     }
 
-    public LanguageLevel getLanguage3Level() {
+    public final LanguageLevel getLanguage3Level() {
         return language3Level;
     }
 
-    public void setInternshipStart(final Date internshipStart) {
+    public final void setInternshipStart(final Date internshipStart) {
         this.internshipStart = internshipStart;
     }
 
-    public Date getInternshipStart() {
+    public final Date getInternshipStart() {
         return internshipStart;
     }
 
-    public void setInternshipEnd(final Date internshipEnd) {
+    public final void setInternshipEnd(final Date internshipEnd) {
         this.internshipEnd = internshipEnd;
     }
 
-    public Date getInternshipEnd() {
+    public final Date getInternshipEnd() {
         return internshipEnd;
     }
 
-    public void setFieldOfStudies(final String fieldOfStudies) {
+    public final void setFieldOfStudies(final String fieldOfStudies) {
         this.fieldOfStudies = fieldOfStudies;
     }
 
-    public String getFieldOfStudies() {
+    public final String getFieldOfStudies() {
         return fieldOfStudies;
     }
 
-    public void setSpecializations(final String specializations) {
+    public final void setSpecializations(final String specializations) {
         this.specializations = specializations;
     }
 
-    public String getSpecializations() {
+    public final String getSpecializations() {
         return specializations;
     }
 
-    public void setPassportNumber(final String passportNumber) {
+    public final void setPassportNumber(final String passportNumber) {
         this.passportNumber = passportNumber;
     }
 
-    public String getPassportNumber() {
+    public final String getPassportNumber() {
         return passportNumber;
     }
 
-    public void setPassportPlaceOfIssue(final String passportPlaceOfIssue) {
+    public final void setPassportPlaceOfIssue(final String passportPlaceOfIssue) {
         this.passportPlaceOfIssue = passportPlaceOfIssue;
     }
 
-    public String getPassportPlaceOfIssue() {
+    public final String getPassportPlaceOfIssue() {
         return passportPlaceOfIssue;
     }
 
-    public void setPassportValidUntil(final String passportValidUntil) {
+    public final void setPassportValidUntil(final String passportValidUntil) {
         this.passportValidUntil = passportValidUntil;
     }
 
-    public String getPassportValidUntil() {
+    public final String getPassportValidUntil() {
         return passportValidUntil;
     }
 
-    public void setRejectByEmployerReason(final String rejectByEmployerReason) {
+    public final void setRejectByEmployerReason(final String rejectByEmployerReason) {
         this.rejectByEmployerReason = rejectByEmployerReason;
     }
 
-    public String getRejectByEmployerReason() {
+    public final String getRejectByEmployerReason() {
         return rejectByEmployerReason;
     }
 
-    public void setRejectDescription(final String rejectDescription) {
+    public final void setRejectDescription(final String rejectDescription) {
         this.rejectDescription = rejectDescription;
     }
 
-    public String getRejectDescription() {
+    public final String getRejectDescription() {
         return rejectDescription;
     }
 
-    public void setRejectInternalComment(final String rejectInternalComment) {
+    public final void setRejectInternalComment(final String rejectInternalComment) {
         this.rejectInternalComment = rejectInternalComment;
     }
 
-    public String getRejectInternalComment() {
+    public final String getRejectInternalComment() {
         return rejectInternalComment;
     }
 
-    public void setNominatedAt(final Date nominatedAt) {
+    public final void setNominatedAt(final Date nominatedAt) {
         this.nominatedAt = nominatedAt;
     }
 
-    public Date getNominatedAt() {
+    public final Date getNominatedAt() {
         return nominatedAt;
     }
 
@@ -516,7 +516,7 @@ public class ApplicationEntity extends AbstractUpdateable<ApplicationEntity> imp
      * {@inheritDoc}
      */
     @Override
-    public void setModified(final Date modified) {
+    public final void setModified(final Date modified) {
         this.modified = modified;
     }
 
@@ -524,7 +524,7 @@ public class ApplicationEntity extends AbstractUpdateable<ApplicationEntity> imp
      * {@inheritDoc}
      */
     @Override
-    public Date getModified() {
+    public final Date getModified() {
         return modified;
     }
 
@@ -532,7 +532,7 @@ public class ApplicationEntity extends AbstractUpdateable<ApplicationEntity> imp
      * {@inheritDoc}
      */
     @Override
-    public void setCreated(final Date created) {
+    public final void setCreated(final Date created) {
         this.created = created;
     }
 
@@ -540,7 +540,7 @@ public class ApplicationEntity extends AbstractUpdateable<ApplicationEntity> imp
      * {@inheritDoc}
      */
     @Override
-    public Date getCreated() {
+    public final Date getCreated() {
         return created;
     }
 
@@ -552,19 +552,17 @@ public class ApplicationEntity extends AbstractUpdateable<ApplicationEntity> imp
      * {@inheritDoc}
      */
     @Override
-    public boolean diff(final ApplicationEntity obj) {
-        int changes = 0;
-
-        //changes += different("aaa", "bbb");
-
-        return changes == 0;
+    public final boolean diff(final ApplicationEntity obj) {
+        // Until properly implemented, better return true to avoid that we're
+        // missing updates!
+        return true;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void merge(final ApplicationEntity obj) {
+    public final void merge(final ApplicationEntity obj) {
         if (canMerge(obj)) {
             status = which(status, obj.status);
             nominatedAt = which(nominatedAt, obj.nominatedAt);

@@ -98,33 +98,6 @@ public class AddressEntity extends AbstractUpdateable<AddressEntity> {
     private Date created = new Date();
 
     // =========================================================================
-    // Entity Constructors
-    // =========================================================================
-
-    /**
-     * Empty Constructor, JPA requirement.
-     */
-    public AddressEntity() {
-    }
-
-    /**
-     * Default Constructor, for creating new entity.
-     *
-     * @param street1    First Street information
-     * @param street2    Second Street information
-     * @param postalCode Postal Code
-     * @param city       City
-     * @param country    Country
-     */
-    public AddressEntity(final String street1, final String street2, final String postalCode, final String city, final CountryEntity country) {
-        this.street1 = street1;
-        this.street2 = street2;
-        this.postalCode = postalCode;
-        this.city = city;
-        this.country = country;
-    }
-
-    // =========================================================================
     // Entity Setters & Getters
     // =========================================================================
 
@@ -132,7 +105,7 @@ public class AddressEntity extends AbstractUpdateable<AddressEntity> {
      * {@inheritDoc}
      */
     @Override
-    public void setId(final Long id) {
+    public final void setId(final Long id) {
         this.id = id;
     }
 
@@ -140,63 +113,63 @@ public class AddressEntity extends AbstractUpdateable<AddressEntity> {
      * {@inheritDoc}
      */
     @Override
-    public Long getId() {
+    public final Long getId() {
         return id;
     }
 
-    public void setStreet1(final String street1) {
+    public final void setStreet1(final String street1) {
         this.street1 = street1;
     }
 
-    public String getStreet1() {
+    public final String getStreet1() {
         return street1;
     }
 
-    public void setStreet2(final String street2) {
+    public final void setStreet2(final String street2) {
         this.street2 = street2;
     }
 
-    public String getStreet2() {
+    public final String getStreet2() {
         return street2;
     }
 
-    public void setCity(final String city) {
+    public final void setCity(final String city) {
         this.city = city;
     }
 
-    public String getCity() {
+    public final String getCity() {
         return city;
     }
 
-    public void setState(final String region) {
+    public final void setState(final String region) {
         this.state = region;
     }
 
-    public String getState() {
+    public final String getState() {
         return state;
     }
 
-    public void setPostalCode(final String postalCode) {
+    public final void setPostalCode(final String postalCode) {
         this.postalCode = postalCode;
     }
 
-    public String getPostalCode() {
+    public final String getPostalCode() {
         return postalCode;
     }
 
-    public void setPobox(final String pobox) {
+    public final void setPobox(final String pobox) {
         this.pobox = pobox;
     }
 
-    public String getPobox() {
+    public final String getPobox() {
         return pobox;
     }
 
-    public void setCountry(final CountryEntity country) {
+    public final void setCountry(final CountryEntity country) {
         this.country = country;
     }
 
-    public CountryEntity getCountry() {
+    public final CountryEntity getCountry() {
         return country;
     }
 
@@ -204,7 +177,7 @@ public class AddressEntity extends AbstractUpdateable<AddressEntity> {
      * {@inheritDoc}
      */
     @Override
-    public void setModified(final Date modified) {
+    public final void setModified(final Date modified) {
         this.modified = modified;
     }
 
@@ -212,7 +185,7 @@ public class AddressEntity extends AbstractUpdateable<AddressEntity> {
      * {@inheritDoc}
      */
     @Override
-    public Date getModified() {
+    public final Date getModified() {
         return modified;
     }
 
@@ -220,7 +193,7 @@ public class AddressEntity extends AbstractUpdateable<AddressEntity> {
      * {@inheritDoc}
      */
     @Override
-    public void setCreated(final Date created) {
+    public final void setCreated(final Date created) {
         this.created = created;
     }
 
@@ -228,7 +201,7 @@ public class AddressEntity extends AbstractUpdateable<AddressEntity> {
      * {@inheritDoc}
      */
     @Override
-    public Date getCreated() {
+    public final Date getCreated() {
         return created;
     }
 
@@ -240,7 +213,7 @@ public class AddressEntity extends AbstractUpdateable<AddressEntity> {
      * {@inheritDoc}
      */
     @Override
-    public boolean diff(final AddressEntity obj) {
+    public final boolean diff(final AddressEntity obj) {
         int changes = 0;
 
         changes += different(street1, obj.street1);
@@ -257,7 +230,7 @@ public class AddressEntity extends AbstractUpdateable<AddressEntity> {
      * {@inheritDoc}
      */
     @Override
-    public void merge(final AddressEntity obj) {
+    public final void merge(final AddressEntity obj) {
         if (canMerge(obj)) {
             street1 = which(street1, obj.street1);
             street2 = which(street2, obj.street2);

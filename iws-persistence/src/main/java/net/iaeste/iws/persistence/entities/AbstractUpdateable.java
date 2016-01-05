@@ -67,8 +67,8 @@ public abstract class AbstractUpdateable<T> implements Updateable<T> {
      * @param changes  Updated value to use if not null
      * @return Changes if they are not null, otherwise the existing
      */
-    protected <E> E which(final E existing, final E changes) {
-        return changes != null ? changes : existing;
+    protected final <E> E which(final E existing, final E changes) {
+        return (changes != null) ? changes : existing;
     }
 
     /**
@@ -80,7 +80,7 @@ public abstract class AbstractUpdateable<T> implements Updateable<T> {
      * @param changes  The changes to be merged in
      * @return True if the records can be merged, otherwise false is returned
      */
-    protected <E extends Externable<E>> boolean canMerge(final E existing, final E changes) {
+    protected final <E extends Externable<E>> boolean canMerge(final E existing, final E changes) {
         // don't merge if objects are not the same entity
         boolean result = false;
 
@@ -88,7 +88,7 @@ public abstract class AbstractUpdateable<T> implements Updateable<T> {
             final String existingExternalId = existing.getExternalId();
             final String changesExternalId = changes.getExternalId();
 
-            if (changesExternalId == null || (existingExternalId.equals(changesExternalId))) {
+            if ((changesExternalId == null) || existingExternalId.equals(changesExternalId)) {
                 result = true;
             }
         }
@@ -104,23 +104,23 @@ public abstract class AbstractUpdateable<T> implements Updateable<T> {
      * @param changes  The changes to be merged in
      * @return True if the records can be merged, otherwise false is returned
      */
-    protected boolean canMerge(final T changes) {
+    protected final boolean canMerge(final T changes) {
         boolean result = false;
 
         // Merging cannot be done if the Object to merge is null or if the
         // current Object has not yet been persisted.
-        if ((changes != null) && (this.getId() != null)) {
+        if ((changes != null) && (getId() != null)) {
             // If we have an Externable Object, then we also have to verify that
             // the Id's match, as we do not wish to merge two different Offers
             // since it may potentially give Unique Constraint Violations.
             if (this instanceof Externable) {
-                final String existingId = ((Externable) this).getExternalId();
-                final String givenId = ((Externable) changes).getExternalId();
+                final String existingId = ((Externable<?>) this).getExternalId();
+                final String givenId = ((Externable<?>) changes).getExternalId();
 
                 // Often, changes are created using an empty Entity, i.e. an
                 // Entity which have not been persisted. So the check exclude
                 // these.
-                if (givenId == null || (existingId.equals(givenId))) {
+                if ((givenId == null) || existingId.equals(givenId)) {
                     result = true;
                 }
             } else {

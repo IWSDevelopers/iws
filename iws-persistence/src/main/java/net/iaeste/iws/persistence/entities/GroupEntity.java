@@ -295,7 +295,7 @@ public class GroupEntity extends AbstractUpdateable<GroupEntity> implements Exte
      * {@inheritDoc}
      */
     @Override
-    public void setId(final Long id) {
+    public final void setId(final Long id) {
         this.id = id;
     }
 
@@ -303,7 +303,7 @@ public class GroupEntity extends AbstractUpdateable<GroupEntity> implements Exte
      * {@inheritDoc}
      */
     @Override
-    public Long getId() {
+    public final Long getId() {
         return id;
     }
 
@@ -311,7 +311,7 @@ public class GroupEntity extends AbstractUpdateable<GroupEntity> implements Exte
      * {@inheritDoc}
      */
     @Override
-    public void setExternalId(final String externalId) {
+    public final void setExternalId(final String externalId) {
         this.externalId = externalId;
     }
 
@@ -319,127 +319,127 @@ public class GroupEntity extends AbstractUpdateable<GroupEntity> implements Exte
      * {@inheritDoc}
      */
     @Override
-    public String getExternalId() {
+    public final String getExternalId() {
         return externalId;
     }
 
-    public void setParentId(final Long parentId) {
+    public final void setParentId(final Long parentId) {
         this.parentId = parentId;
     }
 
-    public Long getParentId() {
+    public final Long getParentId() {
         return parentId;
     }
 
-    public void setExternalParentId(String externalParentId) {
+    public final void setExternalParentId(final String externalParentId) {
         this.externalParentId = externalParentId;
     }
 
-    public String getExternalParentId() {
+    public final String getExternalParentId() {
         return externalParentId;
     }
 
-    public void setGroupType(final GroupTypeEntity groupType) {
+    public final void setGroupType(final GroupTypeEntity groupType) {
         this.groupType = groupType;
     }
 
-    public GroupTypeEntity getGroupType() {
+    public final GroupTypeEntity getGroupType() {
         return groupType;
     }
 
-    public void setGroupName(final String groupName) {
+    public final void setGroupName(final String groupName) {
         this.groupName = groupName;
     }
 
-    public String getGroupName() {
+    public final String getGroupName() {
         return groupName;
     }
 
-    public void setFullName(final String fullName) {
+    public final void setFullName(final String fullName) {
         this.fullName = fullName;
     }
 
-    public String getFullName() {
+    public final String getFullName() {
         return fullName;
     }
 
-    public void setDescription(final String description) {
+    public final void setDescription(final String description) {
         this.description = description;
     }
 
-    public String getDescription() {
+    public final String getDescription() {
         return description;
     }
 
-    public void setCountry(final CountryEntity country) {
+    public final void setCountry(final CountryEntity country) {
         this.country = country;
     }
 
-    public CountryEntity getCountry() {
+    public final CountryEntity getCountry() {
         return country;
     }
 
-    public void setListName(final String listName) {
+    public final void setListName(final String listName) {
         this.listName = listName;
     }
 
-    public String getListName() {
+    public final String getListName() {
         return listName;
     }
 
-    public void setPrivateList(final Boolean privateList) {
+    public final void setPrivateList(final Boolean privateList) {
         this.privateList = privateList;
     }
 
-    public Boolean getPrivateList() {
+    public final Boolean getPrivateList() {
         return privateList;
     }
 
-    public void setPublicList(final Boolean publicList) {
+    public final void setPublicList(final Boolean publicList) {
         this.publicList = publicList;
     }
 
-    public Boolean getPublicList() {
+    public final Boolean getPublicList() {
         return publicList;
     }
 
-    public void setPrivateReplyTo(final MailReply privateReplyTo) {
+    public final void setPrivateReplyTo(final MailReply privateReplyTo) {
         this.privateReplyTo = privateReplyTo;
     }
 
-    public MailReply getPrivateReplyTo() {
+    public final MailReply getPrivateReplyTo() {
         return privateReplyTo;
     }
 
-    public void setPublicReplyTo(final MailReply publicReplyTo) {
+    public final void setPublicReplyTo(final MailReply publicReplyTo) {
         this.publicReplyTo = publicReplyTo;
     }
 
-    public MailReply getPublicReplyTo() {
+    public final MailReply getPublicReplyTo() {
         return publicReplyTo;
     }
 
-    public void setStatus(final GroupStatus status) {
+    public final void setStatus(final GroupStatus status) {
         this.status = status;
     }
 
-    public GroupStatus getStatus() {
+    public final GroupStatus getStatus() {
         return status;
     }
 
-    public void setMonitoringLevel(final MonitoringLevel monitoringLevel) {
+    public final void setMonitoringLevel(final MonitoringLevel monitoringLevel) {
         this.monitoringLevel = monitoringLevel;
     }
 
-    public MonitoringLevel getMonitoringLevel() {
+    public final MonitoringLevel getMonitoringLevel() {
         return monitoringLevel;
     }
 
-    public void setOldId(final Integer oldId) {
+    public final void setOldId(final Integer oldId) {
         this.oldId = oldId;
     }
 
-    public Integer getOldId() {
+    public final Integer getOldId() {
         return oldId;
     }
 
@@ -447,7 +447,7 @@ public class GroupEntity extends AbstractUpdateable<GroupEntity> implements Exte
      * {@inheritDoc}
      */
     @Override
-    public void setModified(final Date modified) {
+    public final void setModified(final Date modified) {
         this.modified = modified;
     }
 
@@ -455,7 +455,7 @@ public class GroupEntity extends AbstractUpdateable<GroupEntity> implements Exte
      * {@inheritDoc}
      */
     @Override
-    public Date getModified() {
+    public final Date getModified() {
         return modified;
     }
 
@@ -463,7 +463,7 @@ public class GroupEntity extends AbstractUpdateable<GroupEntity> implements Exte
      * {@inheritDoc}
      */
     @Override
-    public void setCreated(final Date created) {
+    public final void setCreated(final Date created) {
         this.created = created;
     }
 
@@ -471,7 +471,7 @@ public class GroupEntity extends AbstractUpdateable<GroupEntity> implements Exte
      * {@inheritDoc}
      */
     @Override
-    public Date getCreated() {
+    public final Date getCreated() {
         return created;
     }
 
@@ -484,7 +484,7 @@ public class GroupEntity extends AbstractUpdateable<GroupEntity> implements Exte
      * {@inheritDoc}
      */
     @Override
-    public boolean equals(final Object obj) {
+    public final boolean equals(final Object obj) {
         if (this == obj) {
             return true;
         }
@@ -497,14 +497,14 @@ public class GroupEntity extends AbstractUpdateable<GroupEntity> implements Exte
         // The ExternalId is sufficient to compare two internal GroupEntity
         // Objects, and even to compare if a not found external Group Object
         // matches an internal.
-        return !((externalId != null) ? !externalId.equals(that.externalId) : (that.externalId != null));
+        return (externalId != null) ? externalId.equals(that.externalId) : that.externalId == null;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public int hashCode() {
+    public final int hashCode() {
         // The External Id is sufficient for the HashCode value of this Object
         return (externalId != null) ? externalId.hashCode() : 0;
     }
@@ -513,7 +513,7 @@ public class GroupEntity extends AbstractUpdateable<GroupEntity> implements Exte
      * {@inheritDoc}
      */
     @Override
-    public boolean diff(final GroupEntity obj) {
+    public final boolean diff(final GroupEntity obj) {
         // Until properly implemented, better return true to avoid that we're
         // missing updates!
         return true;
@@ -523,7 +523,7 @@ public class GroupEntity extends AbstractUpdateable<GroupEntity> implements Exte
      * {@inheritDoc}
      */
     @Override
-    public void merge(final GroupEntity obj) {
+    public final void merge(final GroupEntity obj) {
         if (canMerge(obj)) {
             groupName = which(groupName, obj.groupName);
             fullName = which(fullName, obj.fullName);
@@ -574,7 +574,7 @@ public class GroupEntity extends AbstractUpdateable<GroupEntity> implements Exte
      * {@inheritDoc}
      */
     @Override
-    public String toString() {
+    public final String toString() {
         return "GroupEntity{" +
                 "id='" + externalId + '\'' +
                 ", groupName='" + groupName + '\'' +

@@ -38,12 +38,12 @@ import java.util.Date;
  * one of the key elements is the Table & RecordId. The key element is that the
  * Object (Table & RecordId) and File (FileId) must be unique.<br />
  *   Although JPA support Collection mapping it can only be done using the
- * ElementCollection Annotation, which is limited to either Embeddables or
+ * ElementCollection Annotation, which is limited to either Embeddable or
  * simple Object Types. Complex Object Types, like other Entities requires that
  * we resort to very complex Annotation logic which will eventually make the
  * code harder to understand / maintain and also more error prone. For this
  * reason, it is initially implemented using a simpler construction, which can
- * later on be improved, hopefully without needing to change the datamodel.
+ * later on be improved, hopefully without needing to change the data model.
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -116,7 +116,7 @@ public class AttachmentEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public void setId(final Long id) {
+    public final void setId(final Long id) {
         this.id = id;
     }
 
@@ -124,31 +124,31 @@ public class AttachmentEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public Long getId() {
+    public final Long getId() {
         return id;
     }
 
-    public void setTable(final String table) {
+    public final void setTable(final String table) {
         this.table = table;
     }
 
-    public String getTable() {
+    public final String getTable() {
         return table;
     }
 
-    public void setRecord(final Long record) {
+    public final void setRecord(final Long record) {
         this.record = record;
     }
 
-    public Long getRecord() {
+    public final Long getRecord() {
         return record;
     }
 
-    public void setFile(final FileEntity file) {
+    public final void setFile(final FileEntity file) {
         this.file = file;
     }
 
-    public FileEntity getFile() {
+    public final FileEntity getFile() {
         return file;
     }
 
@@ -156,7 +156,7 @@ public class AttachmentEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public void setCreated(final Date created) {
+    public final void setCreated(final Date created) {
         this.created = created;
     }
 
@@ -164,7 +164,7 @@ public class AttachmentEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public Date getCreated() {
+    public final Date getCreated() {
         return created;
     }
 }

@@ -110,7 +110,7 @@ public class UserNotificationEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public void setId(final Long id) {
+    public final void setId(final Long id) {
         this.id = id;
     }
 
@@ -118,31 +118,31 @@ public class UserNotificationEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public Long getId() {
+    public final Long getId() {
         return id;
     }
 
-    public void setUser(final UserEntity user) {
+    public final void setUser(final UserEntity user) {
         this.user = user;
     }
 
-    public UserEntity getUser() {
+    public final UserEntity getUser() {
         return user;
     }
 
-    public void setType(final NotificationType type) {
+    public final void setType(final NotificationType type) {
         this.type = type;
     }
 
-    public NotificationType getType() {
+    public final NotificationType getType() {
         return type;
     }
 
-    public void setFrequency(final NotificationFrequency frequency) {
+    public final void setFrequency(final NotificationFrequency frequency) {
         this.frequency = frequency;
     }
 
-    public NotificationFrequency getFrequency() {
+    public final NotificationFrequency getFrequency() {
         return frequency;
     }
 
@@ -150,7 +150,7 @@ public class UserNotificationEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public void setCreated(final Date created) {
+    public final void setCreated(final Date created) {
         this.created = created;
     }
 
@@ -158,7 +158,7 @@ public class UserNotificationEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public Date getCreated() {
+    public final Date getCreated() {
         return created;
     }
 }

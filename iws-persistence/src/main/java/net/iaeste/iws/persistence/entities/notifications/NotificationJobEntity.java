@@ -119,7 +119,7 @@ public class NotificationJobEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public void setId(final Long id) {
+    public final void setId(final Long id) {
         this.id = id;
     }
 
@@ -127,47 +127,39 @@ public class NotificationJobEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public Long getId() {
+    public final Long getId() {
         return id;
     }
 
-    public void setNotificationType(final NotificationType notificationType) {
+    public final void setNotificationType(final NotificationType notificationType) {
         this.notificationType = notificationType;
     }
 
-    public NotificationType getNotificationType() {
+    public final NotificationType getNotificationType() {
         return notificationType;
     }
 
-    public void setObject(final byte[] object) {
+    public final void setObject(final byte[] object) {
         this.object = object;
     }
 
-    public byte[] getObject() {
+    public final byte[] getObject() {
         return object;
     }
 
-    public void setNotified(final boolean notified) {
+    public final void setNotified(final boolean notified) {
         this.notified = notified;
     }
 
-    public boolean isNotified() {
+    public final boolean isNotified() {
         return notified;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setCreated(final Date created) {
-        this.created = created;
-    }
-
-    public void setModified(final Date modified) {
+    public final void setModified(final Date modified) {
         this.modified = modified;
     }
 
-    public Date getModified() {
+    public final Date getModified() {
         return modified;
     }
 
@@ -175,7 +167,15 @@ public class NotificationJobEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public Date getCreated() {
+    public final void setCreated(final Date created) {
+        this.created = created;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final Date getCreated() {
         return created;
     }
 }

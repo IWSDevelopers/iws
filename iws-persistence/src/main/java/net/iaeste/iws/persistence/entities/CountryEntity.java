@@ -159,12 +159,12 @@ public class CountryEntity extends AbstractUpdateable<CountryEntity> implements 
      * {@inheritDoc}
      */
     @Override
-    public void setId(final Long id) {
+    public final void setId(final Long id) {
         this.id = id;
     }
 
     @Override
-    public Long getId() {
+    public final Long getId() {
         return id;
     }
 
@@ -172,7 +172,7 @@ public class CountryEntity extends AbstractUpdateable<CountryEntity> implements 
      * {@inheritDoc}
      */
     @Override
-    public void setExternalId(final String externalId) {
+    public final void setExternalId(final String externalId) {
         this.countryCode = externalId;
     }
 
@@ -180,95 +180,95 @@ public class CountryEntity extends AbstractUpdateable<CountryEntity> implements 
      * {@inheritDoc}
      */
     @Override
-    public String getExternalId() {
+    public final String getExternalId() {
         return countryCode;
     }
 
-    public void setCountryCode(final String countryCode) {
+    public final void setCountryCode(final String countryCode) {
         this.countryCode = countryCode;
     }
 
-    public String getCountryCode() {
+    public final String getCountryCode() {
         return countryCode;
     }
 
-    public void setCountryName(final String countryName) {
+    public final void setCountryName(final String countryName) {
         this.countryName = countryName;
     }
 
-    public String getCountryName() {
+    public final String getCountryName() {
         return countryName;
     }
 
-    public void setCountryNameFull(final String countryNameFull) {
+    public final void setCountryNameFull(final String countryNameFull) {
         this.countryNameFull = countryNameFull;
     }
 
-    public String getCountryNameFull() {
+    public final String getCountryNameFull() {
         return countryNameFull;
     }
 
-    public void setCountryNameNative(final String countryNameNative) {
+    public final void setCountryNameNative(final String countryNameNative) {
         this.countryNameNative = countryNameNative;
     }
 
-    public String getCountryNameNative() {
+    public final String getCountryNameNative() {
         return countryNameNative;
     }
 
-    public void setNationality(final String nationality) {
+    public final void setNationality(final String nationality) {
         this.nationality = nationality;
     }
 
-    public String getNationality() {
+    public final String getNationality() {
         return nationality;
     }
 
-    public void setCitizens(final String citizens) {
+    public final void setCitizens(final String citizens) {
         this.citizens = citizens;
     }
 
-    public String getCitizens() {
+    public final String getCitizens() {
         return citizens;
     }
 
-    public void setPhonecode(final String phonecode) {
+    public final void setPhonecode(final String phonecode) {
         this.phonecode = phonecode;
     }
 
-    public String getPhonecode() {
+    public final String getPhonecode() {
         return phonecode;
     }
 
-    public void setCurrency(final Currency currency) {
+    public final void setCurrency(final Currency currency) {
         this.currency = currency;
     }
 
-    public Currency getCurrency() {
+    public final Currency getCurrency() {
         return currency;
     }
 
-    public void setLanguages(final String languages) {
+    public final void setLanguages(final String languages) {
         this.languages = languages;
     }
 
-    public String getLanguages() {
+    public final String getLanguages() {
         return languages;
     }
 
-    public void setMembership(final Membership membership) {
+    public final void setMembership(final Membership membership) {
         this.membership = membership;
     }
 
-    public Membership getMembership() {
+    public final Membership getMembership() {
         return membership;
     }
 
-    public void setMemberSince(final Integer memberSince) {
+    public final void setMemberSince(final Integer memberSince) {
         this.memberSince = memberSince;
     }
 
-    public Integer getMemberSince() {
+    public final Integer getMemberSince() {
         return memberSince;
     }
 
@@ -276,7 +276,7 @@ public class CountryEntity extends AbstractUpdateable<CountryEntity> implements 
      * {@inheritDoc}
      */
     @Override
-    public void setModified(final Date modified) {
+    public final void setModified(final Date modified) {
         this.modified = modified;
     }
 
@@ -284,7 +284,7 @@ public class CountryEntity extends AbstractUpdateable<CountryEntity> implements 
      * {@inheritDoc}
      */
     @Override
-    public Date getModified() {
+    public final Date getModified() {
         return modified;
     }
 
@@ -292,7 +292,7 @@ public class CountryEntity extends AbstractUpdateable<CountryEntity> implements 
      * {@inheritDoc}
      */
     @Override
-    public void setCreated(final Date created) {
+    public final void setCreated(final Date created) {
         this.created = created;
     }
 
@@ -300,7 +300,7 @@ public class CountryEntity extends AbstractUpdateable<CountryEntity> implements 
      * {@inheritDoc}
      */
     @Override
-    public Date getCreated() {
+    public final Date getCreated() {
         return created;
     }
 
@@ -312,7 +312,7 @@ public class CountryEntity extends AbstractUpdateable<CountryEntity> implements 
      * {@inheritDoc}
      */
     @Override
-    public boolean diff(final CountryEntity obj) {
+    public final boolean diff(final CountryEntity obj) {
         // Until properly implemented, better return true to avoid that we're
         // missing updates!
         return true;
@@ -322,7 +322,7 @@ public class CountryEntity extends AbstractUpdateable<CountryEntity> implements 
      * {@inheritDoc}
      */
     @Override
-    public void merge(final CountryEntity obj) {
+    public final void merge(final CountryEntity obj) {
         if (canMerge(obj)) {
             countryName = which(countryName, obj.countryName);
             countryNameFull = which(countryNameFull, obj.countryNameFull);

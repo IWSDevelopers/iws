@@ -61,7 +61,7 @@ import java.util.List;
 @Monitored(name = "PublishingGroup", level = MonitoringLevel.DETAILED)
 public class PublishingGroupEntity extends AbstractUpdateable<PublishingGroupEntity> implements Externable<PublishingGroupEntity> {
 
-    /** {@link net.iaeste.iws.api.constants.IWSConstants#SERIAL_VERSION_UID}. */
+    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     @Id
@@ -73,9 +73,9 @@ public class PublishingGroupEntity extends AbstractUpdateable<PublishingGroupEnt
     /**
      * The content of this Entity is exposed externally, however to avoid that
      * someone tries to spoof the system by second guessing our Sequence values,
-     * An External Id is used, the External Id is a Uniqie UUID value, which in
+     * An External Id is used, the External Id is a Unique UUID value, which in
      * all external references is referred to as the "Id". Although this can be
-     * classified as StO (Security through Obscrutity), there is no need to
+     * classified as StO (Security through Obscurity), there is no need to
      * expose more information than necessary.
      */
     @Column(name = "external_id", length = 36, unique = true, nullable = false, updatable = false)
@@ -90,9 +90,7 @@ public class PublishingGroupEntity extends AbstractUpdateable<PublishingGroupEnt
     private String name = null;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "publishing_group_selection",
-               joinColumns = { @JoinColumn(name = "publishing_group_id")},
-               inverseJoinColumns = {@JoinColumn(name = "group_id")})
+    @JoinTable(name = "publishing_group_selection", joinColumns = @JoinColumn(name = "publishing_group_id"), inverseJoinColumns = @JoinColumn(name = "group_id"))
     private List<GroupEntity> list = null;
 
 //    @Monitored(name="Employer name", level = MonitoringLevel.DETAILED)
@@ -114,27 +112,6 @@ public class PublishingGroupEntity extends AbstractUpdateable<PublishingGroupEnt
     private Date created = new Date();
 
     // =========================================================================
-    // Entity Constructors
-    // =========================================================================
-
-    /**
-     * Empty Constructor, required by JPA.
-     */
-    public PublishingGroupEntity() {
-    }
-
-    /**
-     * Default Constructor for creating new Entities of this type.
-     *
-     * @param name  Name of the Sharing List
-     * @param group National Group, which this Sharing List belongs to
-     */
-    public PublishingGroupEntity(final String name, final GroupEntity group) {
-        this.name = name;
-        this.group = group;
-    }
-
-    // =========================================================================
     // Entity Setters & Getters
     // =========================================================================
 
@@ -142,7 +119,7 @@ public class PublishingGroupEntity extends AbstractUpdateable<PublishingGroupEnt
      * {@inheritDoc}
      */
     @Override
-    public void setId(final Long id) {
+    public final void setId(final Long id) {
         this.id = id;
     }
 
@@ -150,7 +127,7 @@ public class PublishingGroupEntity extends AbstractUpdateable<PublishingGroupEnt
      * {@inheritDoc}
      */
     @Override
-    public Long getId() {
+    public final Long getId() {
         return id;
     }
 
@@ -158,7 +135,7 @@ public class PublishingGroupEntity extends AbstractUpdateable<PublishingGroupEnt
      * {@inheritDoc}
      */
     @Override
-    public void setExternalId(final String externalId) {
+    public final void setExternalId(final String externalId) {
         this.externalId = externalId;
     }
 
@@ -166,31 +143,31 @@ public class PublishingGroupEntity extends AbstractUpdateable<PublishingGroupEnt
      * {@inheritDoc}
      */
     @Override
-    public String getExternalId() {
+    public final String getExternalId() {
         return externalId;
     }
 
-    public void setGroup(final GroupEntity group) {
+    public final void setGroup(final GroupEntity group) {
         this.group = group;
     }
 
-    public GroupEntity getGroup() {
+    public final GroupEntity getGroup() {
         return group;
     }
 
-    public void setName(final String name) {
+    public final void setName(final String name) {
         this.name = name;
     }
 
-    public String getName() {
+    public final String getName() {
         return name;
     }
 
-    public void setList(final List<GroupEntity> list) {
+    public final void setList(final List<GroupEntity> list) {
         this.list = list;
     }
 
-    public List<GroupEntity> getList() {
+    public final List<GroupEntity> getList() {
         return list;
     }
 
@@ -198,7 +175,7 @@ public class PublishingGroupEntity extends AbstractUpdateable<PublishingGroupEnt
      * {@inheritDoc}
      */
     @Override
-    public void setModified(final Date modified) {
+    public final void setModified(final Date modified) {
         this.modified = modified;
     }
 
@@ -206,7 +183,7 @@ public class PublishingGroupEntity extends AbstractUpdateable<PublishingGroupEnt
      * {@inheritDoc}
      */
     @Override
-    public Date getModified() {
+    public final Date getModified() {
         return modified;
     }
 
@@ -214,7 +191,7 @@ public class PublishingGroupEntity extends AbstractUpdateable<PublishingGroupEnt
      * {@inheritDoc}
      */
     @Override
-    public void setCreated(final Date created) {
+    public final void setCreated(final Date created) {
         this.created = created;
     }
 
@@ -222,7 +199,7 @@ public class PublishingGroupEntity extends AbstractUpdateable<PublishingGroupEnt
      * {@inheritDoc}
      */
     @Override
-    public Date getCreated() {
+    public final Date getCreated() {
         return created;
     }
 
@@ -234,7 +211,7 @@ public class PublishingGroupEntity extends AbstractUpdateable<PublishingGroupEnt
      * {@inheritDoc}
      */
     @Override
-    public boolean diff(final PublishingGroupEntity obj) {
+    public final boolean diff(final PublishingGroupEntity obj) {
         int changes = 0;
 
         changes += different(name, obj.name);
@@ -246,7 +223,7 @@ public class PublishingGroupEntity extends AbstractUpdateable<PublishingGroupEnt
      * {@inheritDoc}
      */
     @Override
-    public void merge(final PublishingGroupEntity obj) {
+    public final void merge(final PublishingGroupEntity obj) {
         if (canMerge(obj)) {
             name = which(name, obj.name);
             list = which(list, obj.list);

@@ -130,9 +130,9 @@ public class OfferGroupEntity extends AbstractUpdateable<OfferGroupEntity> imple
     /**
      * The content of this Entity is exposed externally, however to avoid that
      * someone tries to spoof the system by second guessing our Sequence values,
-     * An External Id is used, the External Id is a Uniqie UUID value, which in
+     * An External Id is used, the External Id is a Unique UUID value, which in
      * all external references is referred to as the "Id". Although this can be
-     * classified as StO (Security through Obscrutity), there is no need to
+     * classified as StO (Security through Obscurity), there is no need to
      * expose more information than necessary.
      */
     @Column(name = "external_id", length = 36, unique = true, nullable = false, updatable = false)
@@ -233,7 +233,7 @@ public class OfferGroupEntity extends AbstractUpdateable<OfferGroupEntity> imple
      * {@inheritDoc}
      */
     @Override
-    public void setId(final Long id) {
+    public final void setId(final Long id) {
         this.id = id;
     }
 
@@ -241,7 +241,7 @@ public class OfferGroupEntity extends AbstractUpdateable<OfferGroupEntity> imple
      * {@inheritDoc}
      */
     @Override
-    public Long getId() {
+    public final Long getId() {
         return id;
     }
 
@@ -249,7 +249,7 @@ public class OfferGroupEntity extends AbstractUpdateable<OfferGroupEntity> imple
      * {@inheritDoc}
      */
     @Override
-    public void setExternalId(final String externalId) {
+    public final void setExternalId(final String externalId) {
         this.externalId = externalId;
     }
 
@@ -257,71 +257,71 @@ public class OfferGroupEntity extends AbstractUpdateable<OfferGroupEntity> imple
      * {@inheritDoc}
      */
     @Override
-    public String getExternalId() {
+    public final String getExternalId() {
         return externalId;
     }
 
-    public void setOffer(final OfferEntity offer) {
+    public final void setOffer(final OfferEntity offer) {
         this.offer = offer;
     }
 
-    public OfferEntity getOffer() {
+    public final OfferEntity getOffer() {
         return offer;
     }
 
-    public void setGroup(final GroupEntity group) {
+    public final void setGroup(final GroupEntity group) {
         this.group = group;
     }
 
-    public GroupEntity getGroup() {
+    public final GroupEntity getGroup() {
         return group;
     }
 
-    public void setComment(final String comment) {
+    public final void setComment(final String comment) {
         this.comment = comment;
     }
 
-    public String getComment() {
+    public final String getComment() {
         return comment;
     }
 
-    public OfferState getStatus() {
+    public final OfferState getStatus() {
         return status;
     }
 
-    public void setStatus(final OfferState status) {
+    public final void setStatus(final OfferState status) {
         this.status = status;
     }
 
-    public void setModifiedBy(final UserEntity modifiedBy) {
+    public final void setModifiedBy(final UserEntity modifiedBy) {
         this.modifiedBy = modifiedBy;
     }
 
-    public UserEntity getModifiedBy() {
+    public final UserEntity getModifiedBy() {
         return modifiedBy;
     }
 
-    public void setCreatedBy(final UserEntity createdBy) {
+    public final void setCreatedBy(final UserEntity createdBy) {
         this.createdBy = createdBy;
     }
 
-    public UserEntity getCreatedBy() {
+    public final UserEntity getCreatedBy() {
         return createdBy;
     }
 
-    public void setHasApplication(final Boolean hasApplication) {
+    public final void setHasApplication(final Boolean hasApplication) {
         this.hasApplication = hasApplication;
     }
 
-    public Boolean getHasApplication() {
+    public final Boolean getHasApplication() {
         return hasApplication;
     }
 
-    public void setHidden(final Boolean hidden) {
+    public final void setHidden(final Boolean hidden) {
         this.hidden = hidden;
     }
 
-    public Boolean getHidden() {
+    public final Boolean getHidden() {
         return hidden;
     }
 
@@ -329,7 +329,7 @@ public class OfferGroupEntity extends AbstractUpdateable<OfferGroupEntity> imple
      * {@inheritDoc}
      */
     @Override
-    public void setModified(final Date modified) {
+    public final void setModified(final Date modified) {
         this.modified = modified;
     }
 
@@ -337,7 +337,7 @@ public class OfferGroupEntity extends AbstractUpdateable<OfferGroupEntity> imple
      * {@inheritDoc}
      */
     @Override
-    public Date getModified() {
+    public final Date getModified() {
         return modified;
     }
 
@@ -345,7 +345,7 @@ public class OfferGroupEntity extends AbstractUpdateable<OfferGroupEntity> imple
      * {@inheritDoc}
      */
     @Override
-    public void setCreated(final Date created) {
+    public final void setCreated(final Date created) {
         this.created = created;
     }
 
@@ -353,7 +353,7 @@ public class OfferGroupEntity extends AbstractUpdateable<OfferGroupEntity> imple
      * {@inheritDoc}
      */
     @Override
-    public Date getCreated() {
+    public final Date getCreated() {
         return created;
     }
 
@@ -365,7 +365,7 @@ public class OfferGroupEntity extends AbstractUpdateable<OfferGroupEntity> imple
      * {@inheritDoc}
      */
     @Override
-    public boolean diff(final OfferGroupEntity obj) {
+    public final boolean diff(final OfferGroupEntity obj) {
         int changes = 0;
 
         changes += different(comment, obj.comment);
@@ -378,7 +378,7 @@ public class OfferGroupEntity extends AbstractUpdateable<OfferGroupEntity> imple
      * {@inheritDoc}
      */
     @Override
-    public void merge(final OfferGroupEntity obj) {
+    public final void merge(final OfferGroupEntity obj) {
         if (canMerge(obj)) {
             comment = which(comment, obj.comment);
             status = which(status, obj.status);

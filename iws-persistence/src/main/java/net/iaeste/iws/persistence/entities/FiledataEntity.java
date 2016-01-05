@@ -78,7 +78,7 @@ public class FiledataEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public void setId(final Long id) {
+    public final void setId(final Long id) {
         this.id = id;
     }
 
@@ -86,23 +86,23 @@ public class FiledataEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public Long getId() {
+    public final Long getId() {
         return id;
     }
 
-    public void setFile(final FileEntity file) {
+    public final void setFile(final FileEntity file) {
         this.file = file;
     }
 
-    public FileEntity getFile() {
+    public final FileEntity getFile() {
         return file;
     }
 
-    public void setFileData(final byte[] fileData) {
+    public final void setFileData(final byte[] fileData) {
         this.fileData = fileData;
     }
 
-    public byte[] getFileData() {
+    public final byte[] getFileData() {
         return fileData;
     }
 
@@ -110,7 +110,7 @@ public class FiledataEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public void setCreated(final Date created) {
+    public final void setCreated(final Date created) {
         this.created = created;
     }
 
@@ -118,7 +118,7 @@ public class FiledataEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public Date getCreated() {
+    public final Date getCreated() {
         return created;
     }
 }

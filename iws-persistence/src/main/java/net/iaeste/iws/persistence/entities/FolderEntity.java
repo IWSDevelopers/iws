@@ -103,7 +103,7 @@ public class FolderEntity extends AbstractUpdateable<FolderEntity> implements Ex
      * {@inheritDoc}
      */
     @Override
-    public void setId(final Long id) {
+    public final void setId(final Long id) {
         this.id = id;
     }
 
@@ -111,7 +111,7 @@ public class FolderEntity extends AbstractUpdateable<FolderEntity> implements Ex
      * {@inheritDoc}
      */
     @Override
-    public Long getId() {
+    public final Long getId() {
         return id;
     }
 
@@ -119,7 +119,7 @@ public class FolderEntity extends AbstractUpdateable<FolderEntity> implements Ex
      * {@inheritDoc}
      */
     @Override
-    public void setExternalId(final String externalId) {
+    public final void setExternalId(final String externalId) {
         this.externalId = externalId;
     }
 
@@ -127,47 +127,47 @@ public class FolderEntity extends AbstractUpdateable<FolderEntity> implements Ex
      * {@inheritDoc}
      */
     @Override
-    public String getExternalId() {
+    public final String getExternalId() {
         return externalId;
     }
 
-    public void setParentId(final Long parentId) {
+    public final void setParentId(final Long parentId) {
         this.parentId = parentId;
     }
 
-    public Long getParentId() {
+    public final Long getParentId() {
         return parentId;
     }
 
-    public void setGroup(final GroupEntity group) {
+    public final void setGroup(final GroupEntity group) {
         this.group = group;
     }
 
-    public GroupEntity getGroup() {
+    public final GroupEntity getGroup() {
         return group;
     }
 
-    public void setFoldername(final String foldername) {
+    public final void setFoldername(final String foldername) {
         this.foldername = foldername;
     }
 
-    public String getFoldername() {
+    public final String getFoldername() {
         return foldername;
     }
 
-    public void setPrivacy(final Privacy privacy) {
+    public final void setPrivacy(final Privacy privacy) {
         this.privacy = privacy;
     }
 
-    public Privacy getPrivacy() {
+    public final Privacy getPrivacy() {
         return privacy;
     }
 
-    public void setOldIW3FileId(final Long oldIW3FileId) {
+    public final void setOldIW3FileId(final Long oldIW3FileId) {
         this.oldIW3FileId = oldIW3FileId;
     }
 
-    public Long getOldIW3FileId() {
+    public final Long getOldIW3FileId() {
         return oldIW3FileId;
     }
 
@@ -175,7 +175,7 @@ public class FolderEntity extends AbstractUpdateable<FolderEntity> implements Ex
      * {@inheritDoc}
      */
     @Override
-    public void setModified(final Date modified) {
+    public final void setModified(final Date modified) {
         this.modified = modified;
     }
 
@@ -183,7 +183,7 @@ public class FolderEntity extends AbstractUpdateable<FolderEntity> implements Ex
      * {@inheritDoc}
      */
     @Override
-    public Date getModified() {
+    public final Date getModified() {
         return modified;
     }
 
@@ -191,7 +191,7 @@ public class FolderEntity extends AbstractUpdateable<FolderEntity> implements Ex
      * {@inheritDoc}
      */
     @Override
-    public void setCreated(final Date created) {
+    public final void setCreated(final Date created) {
         this.created = created;
     }
 
@@ -199,7 +199,7 @@ public class FolderEntity extends AbstractUpdateable<FolderEntity> implements Ex
      * {@inheritDoc}
      */
     @Override
-    public Date getCreated() {
+    public final Date getCreated() {
         return created;
     }
 
@@ -211,7 +211,7 @@ public class FolderEntity extends AbstractUpdateable<FolderEntity> implements Ex
      * {@inheritDoc}
      */
     @Override
-    public boolean diff(final FolderEntity obj) {
+    public final boolean diff(final FolderEntity obj) {
         // Until properly implemented, better return true to avoid that we're
         // missing updates!
         return true;
@@ -221,7 +221,7 @@ public class FolderEntity extends AbstractUpdateable<FolderEntity> implements Ex
      * {@inheritDoc}
      */
     @Override
-    public void merge(final FolderEntity obj) {
+    public final void merge(final FolderEntity obj) {
         if (canMerge(obj)) {
             // Note; Id & ExternalId are *not* allowed to be updated!
             foldername = which(foldername, obj.foldername);
@@ -232,7 +232,7 @@ public class FolderEntity extends AbstractUpdateable<FolderEntity> implements Ex
      * {@inheritDoc}
      */
     @Override
-    public String toString() {
+    public final String toString() {
         return "FolderEntity{" +
                 "externalId='" + externalId + '\'' +
                 ", parentId=" + parentId +

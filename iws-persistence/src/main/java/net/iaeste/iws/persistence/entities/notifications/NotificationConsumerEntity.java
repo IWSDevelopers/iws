@@ -101,29 +101,6 @@ public class NotificationConsumerEntity implements IWSEntity {
     private Date created = new Date();
 
     // =========================================================================
-    // Entity Constructors
-    // =========================================================================
-
-    /**
-     * Empty Constructor, JPA requirement.
-     */
-    public NotificationConsumerEntity() {
-    }
-
-    /**
-     * Default Constructor, for creating Message Entity without date of processing.
-     *
-     * @param group    The Group this entity belongs to
-     * @param name    Name of the consumer
-     * @param className Class name of the consumer
-     */
-    public NotificationConsumerEntity(final GroupEntity group, final String name, final String className) {
-        this.group = group;
-        this.name = name;
-        this.className = className;
-    }
-
-    // =========================================================================
     // Entity Setters & Getters
     // =========================================================================
 
@@ -131,7 +108,7 @@ public class NotificationConsumerEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public void setId(final Long id) {
+    public final void setId(final Long id) {
         this.id = id;
     }
 
@@ -139,47 +116,47 @@ public class NotificationConsumerEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public Long getId() {
+    public final Long getId() {
         return id;
     }
 
-    public void setGroup(final GroupEntity group) {
+    public final void setGroup(final GroupEntity group) {
         this.group = group;
     }
 
-    public GroupEntity getGroup() {
+    public final GroupEntity getGroup() {
         return group;
     }
 
-    public void setName(final String name) {
+    public final void setName(final String name) {
         this.name = name;
     }
 
-    public String getName() {
+    public final String getName() {
         return name;
     }
 
-    public void setClassName(final String className) {
+    public final void setClassName(final String className) {
         this.className = className;
     }
 
-    public String getClassName() {
+    public final String getClassName() {
         return className;
     }
 
-    public void setActive(final Boolean active) {
+    public final void setActive(final Boolean active) {
         this.active = active;
     }
 
-    public Boolean getActive() {
+    public final Boolean getActive() {
         return active;
     }
 
-    public void setModified(final Date modified) {
+    public final void setModified(final Date modified) {
         this.modified = modified;
     }
 
-    public Date getModified() {
+    public final Date getModified() {
         return modified;
     }
 
@@ -187,7 +164,7 @@ public class NotificationConsumerEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public void setCreated(final Date created) {
+    public final void setCreated(final Date created) {
         this.created = created;
     }
 
@@ -195,7 +172,7 @@ public class NotificationConsumerEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public Date getCreated() {
+    public final Date getCreated() {
         return created;
     }
 }

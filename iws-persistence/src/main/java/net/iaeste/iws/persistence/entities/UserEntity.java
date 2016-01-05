@@ -225,7 +225,7 @@ public class UserEntity extends AbstractUpdateable<UserEntity> implements Extern
      * Privacy is a rather important topic. A users data is only exposed to be
      * exposed to those groups where user user is a member. Only Exception, is
      * the NC's mailinglist, and the corresponding Contact list, which will
-     * contain the users phonenumbers.
+     * contain the users phone numbers.
      */
     @Enumerated(EnumType.STRING)
     @Column(name = "private_data", length = 10, nullable = false)
@@ -324,7 +324,7 @@ public class UserEntity extends AbstractUpdateable<UserEntity> implements Extern
      * {@inheritDoc}
      */
     @Override
-    public void setId(final Long id) {
+    public final void setId(final Long id) {
         this.id = id;
     }
 
@@ -332,7 +332,7 @@ public class UserEntity extends AbstractUpdateable<UserEntity> implements Extern
      * {@inheritDoc}
      */
     @Override
-    public Long getId() {
+    public final Long getId() {
         return id;
     }
 
@@ -340,7 +340,7 @@ public class UserEntity extends AbstractUpdateable<UserEntity> implements Extern
      * {@inheritDoc}
      */
     @Override
-    public void setExternalId(final String externalId) {
+    public final void setExternalId(final String externalId) {
         this.externalId = externalId;
     }
 
@@ -348,119 +348,119 @@ public class UserEntity extends AbstractUpdateable<UserEntity> implements Extern
      * {@inheritDoc}
      */
     @Override
-    public String getExternalId() {
+    public final String getExternalId() {
         return externalId;
     }
 
-    public void setUsername(final String username) {
+    public final void setUsername(final String username) {
         this.username = username;
     }
 
-    public String getUsername() {
+    public final String getUsername() {
         return username;
     }
 
-    public void setAlias(final String alias) {
+    public final void setAlias(final String alias) {
         this.alias = alias;
     }
 
-    public String getAlias() {
+    public final String getAlias() {
         return alias;
     }
 
-    public void setPassword(final String password) {
+    public final void setPassword(final String password) {
         this.password = password;
     }
 
-    public String getPassword() {
+    public final String getPassword() {
         return password;
     }
 
-    public void setSalt(final String salt) {
+    public final void setSalt(final String salt) {
         this.salt = salt;
     }
 
-    public String getSalt() {
+    public final String getSalt() {
         return salt;
     }
 
-    public void setFirstname(final String firstname) {
+    public final void setFirstname(final String firstname) {
         this.firstname = firstname;
     }
 
-    public String getFirstname() {
+    public final String getFirstname() {
         return firstname;
     }
 
-    public void setLastname(final String lastname) {
+    public final void setLastname(final String lastname) {
         this.lastname = lastname;
     }
 
-    public String getLastname() {
+    public final String getLastname() {
         return lastname;
     }
 
-    public void setPerson(final PersonEntity person) {
+    public final void setPerson(final PersonEntity person) {
         this.person = person;
     }
 
-    public PersonEntity getPerson() {
+    public final PersonEntity getPerson() {
         return person;
     }
 
-    public void setStatus(final UserStatus status) {
+    public final void setStatus(final UserStatus status) {
         this.status = status;
     }
 
-    public UserStatus getStatus() {
+    public final UserStatus getStatus() {
         return status;
     }
 
-    public void setType(final UserType type) {
+    public final void setType(final UserType type) {
         this.type = type;
     }
 
-    public UserType getType() {
+    public final UserType getType() {
         return type;
     }
 
-    public void setPrivateData(final Privacy privateData) {
+    public final void setPrivateData(final Privacy privateData) {
         this.privateData = privateData;
     }
 
-    public Privacy getPrivateData() {
+    public final Privacy getPrivateData() {
         return privateData;
     }
 
-    public void setNotifications(final NotificationFrequency notifications) {
+    public final void setNotifications(final NotificationFrequency notifications) {
         this.notifications = notifications;
     }
 
-    public NotificationFrequency getNotifications() {
+    public final NotificationFrequency getNotifications() {
         return notifications;
     }
 
-    public void setCode(final String code) {
+    public final void setCode(final String code) {
         this.code = code;
     }
 
-    public String getCode() {
+    public final String getCode() {
         return code;
     }
 
-    public void setData(final String data) {
+    public final void setData(final String data) {
         this.data = data;
     }
 
-    public String getData() {
+    public final String getData() {
         return data;
     }
 
-    public void setOldId(final Integer oldId) {
+    public final void setOldId(final Integer oldId) {
         this.oldId = oldId;
     }
 
-    public Integer getOldId() {
+    public final Integer getOldId() {
         return oldId;
     }
 
@@ -468,7 +468,7 @@ public class UserEntity extends AbstractUpdateable<UserEntity> implements Extern
      * {@inheritDoc}
      */
     @Override
-    public void setModified(final Date modified) {
+    public final void setModified(final Date modified) {
         this.modified = modified;
     }
 
@@ -476,7 +476,7 @@ public class UserEntity extends AbstractUpdateable<UserEntity> implements Extern
      * {@inheritDoc}
      */
     @Override
-    public Date getModified() {
+    public final Date getModified() {
         return modified;
     }
 
@@ -484,7 +484,7 @@ public class UserEntity extends AbstractUpdateable<UserEntity> implements Extern
      * {@inheritDoc}
      */
     @Override
-    public void setCreated(final Date created) {
+    public final void setCreated(final Date created) {
         this.created = created;
     }
 
@@ -492,20 +492,20 @@ public class UserEntity extends AbstractUpdateable<UserEntity> implements Extern
      * {@inheritDoc}
      */
     @Override
-    public Date getCreated() {
+    public final Date getCreated() {
         return created;
     }
 
     /**
      * This setter is for the temporary, none-persisted information, that can be
-     * added to the User Object. The information is used for the Notifcation
+     * added to the User Object. The information is used for the Notification
      * Generation.<br />
      *   Note, there is no getter for this value, instead the information is
      * retrieved via the Map generated for Notifications.
      *
      * @param temporary Temporary Information, not persisted
      */
-    public void setTemporary(final String temporary) {
+    public final void setTemporary(final String temporary) {
         this.temporary = temporary;
     }
 
@@ -517,7 +517,7 @@ public class UserEntity extends AbstractUpdateable<UserEntity> implements Extern
      * {@inheritDoc}
      */
     @Override
-    public boolean diff(final UserEntity obj) {
+    public final boolean diff(final UserEntity obj) {
         // Until properly implemented, better return true to avoid that we're
         // missing updates!
         return true;
@@ -527,7 +527,7 @@ public class UserEntity extends AbstractUpdateable<UserEntity> implements Extern
      * {@inheritDoc}
      */
     @Override
-    public void merge(final UserEntity obj) {
+    public final void merge(final UserEntity obj) {
         if (canMerge(obj)) {
             privateData = which(privateData, obj.privateData);
             notifications = which(notifications, obj.notifications);
@@ -538,7 +538,7 @@ public class UserEntity extends AbstractUpdateable<UserEntity> implements Extern
      * {@inheritDoc}
      */
     @Override
-    public EnumMap<NotificationField, String> prepareNotifiableFields(final NotificationType type) {
+    public final EnumMap<NotificationField, String> prepareNotifiableFields(final NotificationType type) {
         final EnumMap<NotificationField, String> fields = new EnumMap<>(NotificationField.class);
 
         // By default, all notifications need the name of the person to receive
@@ -597,7 +597,7 @@ public class UserEntity extends AbstractUpdateable<UserEntity> implements Extern
      * {@inheritDoc}
      */
     @Override
-    public String toString() {
+    public final String toString() {
         return "UserEntity{" +
                 " firstname='" + firstname + '\'' +
                 ", lastname='" + lastname + '\'' +

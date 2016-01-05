@@ -90,7 +90,7 @@ public class GroupTypeEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public void setId(final Long id) {
+    public final void setId(final Long id) {
         this.id = id;
     }
 
@@ -98,55 +98,55 @@ public class GroupTypeEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public Long getId() {
+    public final Long getId() {
         return id;
     }
 
-    public void setGrouptype(final GroupType grouptype) {
+    public final void setGrouptype(final GroupType grouptype) {
         this.grouptype = grouptype;
     }
 
-    public GroupType getGrouptype() {
+    public final GroupType getGrouptype() {
         return grouptype;
     }
 
-    public void setWhoMayJoin(final GroupType.WhoMayJoin whoMayJoin) {
+    public final void setWhoMayJoin(final GroupType.WhoMayJoin whoMayJoin) {
         this.whoMayJoin = whoMayJoin;
     }
 
-    public GroupType.WhoMayJoin getWhoMayJoin() {
+    public final GroupType.WhoMayJoin getWhoMayJoin() {
         return whoMayJoin;
     }
 
-    public void setDescription(final String description) {
+    public final void setDescription(final String description) {
         this.description = description;
     }
 
-    public String getDescription() {
+    public final String getDescription() {
         return description;
     }
 
-    public void setPrivateList(final Boolean privateList) {
+    public final void setPrivateList(final Boolean privateList) {
         this.privateList = privateList;
     }
 
-    public Boolean getPrivateList() {
+    public final Boolean getPrivateList() {
         return privateList;
     }
 
-    public void setPublicList(final Boolean publicList) {
+    public final void setPublicList(final Boolean publicList) {
         this.publicList = publicList;
     }
 
-    public Boolean getPublicList() {
+    public final Boolean getPublicList() {
         return publicList;
     }
 
-    public void setFolderType(final GroupType.FolderType folderType) {
+    public final void setFolderType(final GroupType.FolderType folderType) {
         this.folderType = folderType;
     }
 
-    public GroupType.FolderType getFolderType() {
+    public final GroupType.FolderType getFolderType() {
         return folderType;
     }
 
@@ -154,7 +154,7 @@ public class GroupTypeEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public void setCreated(final Date created) {
+    public final void setCreated(final Date created) {
         this.created = created;
     }
 
@@ -162,7 +162,7 @@ public class GroupTypeEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public Date getCreated() {
+    public final Date getCreated() {
         return created;
     }
 }

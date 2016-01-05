@@ -89,7 +89,7 @@ public class RequestEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public void setId(final Long id) {
+    public final void setId(final Long id) {
         this.id = id;
     }
 
@@ -97,47 +97,47 @@ public class RequestEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public Long getId() {
+    public final Long getId() {
         return id;
     }
 
-    public void setSession(final SessionEntity session) {
+    public final void setSession(final SessionEntity session) {
         this.session = session;
     }
 
-    public SessionEntity getSession() {
+    public final SessionEntity getSession() {
         return session;
     }
 
-    public void setRequest(final String request) {
+    public final void setRequest(final String request) {
         this.request = request;
     }
 
-    public String getRequest() {
+    public final String getRequest() {
         return request;
     }
 
-    public void setErrorcode(final Long errorcode) {
+    public final void setErrorcode(final Long errorcode) {
         this.errorcode = errorcode;
     }
 
-    public Long getErrorcode() {
+    public final Long getErrorcode() {
         return errorcode;
     }
 
-    public void setErrormessage(final String errormessage) {
+    public final void setErrormessage(final String errormessage) {
         this.errormessage = errormessage;
     }
 
-    public String getErrormessage() {
+    public final String getErrormessage() {
         return errormessage;
     }
 
-    public void setRequestObject(final byte[] requestObject) {
+    public final void setRequestObject(final byte[] requestObject) {
         this.requestObject = requestObject;
     }
 
-    public byte[] getRequestObject() {
+    public final byte[] getRequestObject() {
         return requestObject;
     }
 
@@ -145,7 +145,7 @@ public class RequestEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public void setCreated(final Date created) {
+    public final void setCreated(final Date created) {
         this.created = created;
     }
 
@@ -153,7 +153,7 @@ public class RequestEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public Date getCreated() {
+    public final Date getCreated() {
         return created;
     }
 }

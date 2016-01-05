@@ -144,27 +144,6 @@ public class EmployerEntity extends AbstractUpdateable<EmployerEntity> implement
     private Date created = new Date();
 
     // =========================================================================
-    // Entity Constructors
-    // =========================================================================
-
-    /**
-     * Empty Constructor, required by JPA.
-     */
-    public EmployerEntity() {
-    }
-
-    /**
-     * Default Constructor for creating new Entities of this type.
-     *
-     * @param name  Name of the Employer, must be unique for the given Group
-     * @param group National Group, which this Employer belongs to
-     */
-    public EmployerEntity(final String name, final GroupEntity group) {
-        this.name = name;
-        this.group = group;
-    }
-
-    // =========================================================================
     // Entity Setters & Getters
     // =========================================================================
 
@@ -172,7 +151,7 @@ public class EmployerEntity extends AbstractUpdateable<EmployerEntity> implement
      * {@inheritDoc}
      */
     @Override
-    public void setId(final Long id) {
+    public final void setId(final Long id) {
         this.id = id;
     }
 
@@ -180,7 +159,7 @@ public class EmployerEntity extends AbstractUpdateable<EmployerEntity> implement
      * {@inheritDoc}
      */
     @Override
-    public Long getId() {
+    public final Long getId() {
         return id;
     }
 
@@ -188,7 +167,7 @@ public class EmployerEntity extends AbstractUpdateable<EmployerEntity> implement
      * {@inheritDoc}
      */
     @Override
-    public void setExternalId(final String externalId) {
+    public final void setExternalId(final String externalId) {
         this.externalId = externalId;
     }
 
@@ -196,95 +175,95 @@ public class EmployerEntity extends AbstractUpdateable<EmployerEntity> implement
      * {@inheritDoc}
      */
     @Override
-    public String getExternalId() {
+    public final String getExternalId() {
         return externalId;
     }
 
-    public void setGroup(final GroupEntity group) {
+    public final void setGroup(final GroupEntity group) {
         this.group = group;
     }
 
-    public GroupEntity getGroup() {
+    public final GroupEntity getGroup() {
         return group;
     }
 
-    public void setName(final String name) {
+    public final void setName(final String name) {
         this.name = name;
     }
 
-    public String getName() {
+    public final String getName() {
         return name;
     }
 
-    public void setDepartment(final String department) {
+    public final void setDepartment(final String department) {
         this.department = department;
     }
 
-    public String getDepartment() {
+    public final String getDepartment() {
         return department;
     }
 
-    public void setBusiness(final String business) {
+    public final void setBusiness(final String business) {
         this.business = business;
     }
 
-    public String getBusiness() {
+    public final String getBusiness() {
         return business;
     }
 
-    public void setWorkingPlace(final String workingPlace) {
+    public final void setWorkingPlace(final String workingPlace) {
         this.workingPlace = workingPlace;
     }
 
-    public String getWorkingPlace() {
+    public final String getWorkingPlace() {
         return workingPlace;
     }
 
-    public void setAddress(final AddressEntity address) {
+    public final void setAddress(final AddressEntity address) {
         this.address = address;
     }
 
-    public AddressEntity getAddress() {
+    public final AddressEntity getAddress() {
         return address;
     }
 
-    public void setNumberOfEmployees(final String numberOfEmployees) {
+    public final void setNumberOfEmployees(final String numberOfEmployees) {
         this.numberOfEmployees = numberOfEmployees;
     }
 
-    public String getNumberOfEmployees() {
+    public final String getNumberOfEmployees() {
         return numberOfEmployees;
     }
 
-    public void setWebsite(final String website) {
+    public final void setWebsite(final String website) {
         this.website = website;
     }
 
-    public String getWebsite() {
+    public final String getWebsite() {
         return website;
     }
 
-    public void setCanteen(final Boolean canteen) {
+    public final void setCanteen(final Boolean canteen) {
         this.canteen = canteen;
     }
 
-    public Boolean getCanteen() {
+    public final Boolean getCanteen() {
         return canteen;
     }
 
-    public void setNearestAirport(final String nearestAirport) {
+    public final void setNearestAirport(final String nearestAirport) {
         this.nearestAirport = nearestAirport;
     }
 
-    public String getNearestAirport() {
+    public final String getNearestAirport() {
         return nearestAirport;
     }
 
-    public void setNearestPublicTransport(final String nearestPublicTransport) {
+    public final void setNearestPublicTransport(final String nearestPublicTransport) {
         this.nearestPublicTransport = nearestPublicTransport;
     }
 
-    public String getNearestPublicTransport() {
+    public final String getNearestPublicTransport() {
         return nearestPublicTransport;
     }
 
@@ -292,7 +271,7 @@ public class EmployerEntity extends AbstractUpdateable<EmployerEntity> implement
      * {@inheritDoc}
      */
     @Override
-    public void setModified(final Date modified) {
+    public final void setModified(final Date modified) {
         this.modified = modified;
     }
 
@@ -300,7 +279,7 @@ public class EmployerEntity extends AbstractUpdateable<EmployerEntity> implement
      * {@inheritDoc}
      */
     @Override
-    public Date getModified() {
+    public final Date getModified() {
         return modified;
     }
 
@@ -308,7 +287,7 @@ public class EmployerEntity extends AbstractUpdateable<EmployerEntity> implement
      * {@inheritDoc}
      */
     @Override
-    public void setCreated(final Date created) {
+    public final void setCreated(final Date created) {
         this.created = created;
     }
 
@@ -316,7 +295,7 @@ public class EmployerEntity extends AbstractUpdateable<EmployerEntity> implement
      * {@inheritDoc}
      */
     @Override
-    public Date getCreated() {
+    public final Date getCreated() {
         return created;
     }
 
@@ -328,7 +307,7 @@ public class EmployerEntity extends AbstractUpdateable<EmployerEntity> implement
      * {@inheritDoc}
      */
     @Override
-    public boolean diff(final EmployerEntity obj) {
+    public final boolean diff(final EmployerEntity obj) {
         int changes = 0;
 
         changes += different(name, obj.name);
@@ -348,7 +327,7 @@ public class EmployerEntity extends AbstractUpdateable<EmployerEntity> implement
      * {@inheritDoc}
      */
     @Override
-    public void merge(final EmployerEntity obj) {
+    public final void merge(final EmployerEntity obj) {
         if (canMerge(obj)) {
             name = which(name, obj.name);
             department = which(department, obj.department);

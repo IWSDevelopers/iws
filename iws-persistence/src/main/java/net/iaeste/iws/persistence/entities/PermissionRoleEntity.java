@@ -108,7 +108,7 @@ public class PermissionRoleEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public void setId(final Long id) {
+    public final void setId(final Long id) {
         this.id = id;
     }
 
@@ -116,23 +116,23 @@ public class PermissionRoleEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public Long getId() {
+    public final Long getId() {
         return id;
     }
 
-    public void setPermission(final PermissionEntity permission) {
+    public final void setPermission(final PermissionEntity permission) {
         this.permission = permission;
     }
 
-    public PermissionEntity getPermission() {
+    public final PermissionEntity getPermission() {
         return permission;
     }
 
-    public void setRole(final RoleEntity role) {
+    public final void setRole(final RoleEntity role) {
         this.role = role;
     }
 
-    public RoleEntity getRole() {
+    public final RoleEntity getRole() {
         return role;
     }
 
@@ -140,7 +140,7 @@ public class PermissionRoleEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public void setCreated(final Date created) {
+    public final void setCreated(final Date created) {
         this.created = created;
     }
 
@@ -148,7 +148,7 @@ public class PermissionRoleEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public Date getCreated() {
+    public final Date getCreated() {
         return created;
     }
 }

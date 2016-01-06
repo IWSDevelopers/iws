@@ -16,7 +16,6 @@ package net.iaeste.iws.persistence.jpa;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.persistence.AdminDao;
-import net.iaeste.iws.persistence.entities.CountryEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.UserGroupEntity;
 
@@ -32,7 +31,7 @@ import java.util.List;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
-public class AdminJpaDao extends BasicJpaDao implements AdminDao {
+public final class AdminJpaDao extends BasicJpaDao implements AdminDao {
 
     /**
      * Default Constructor.
@@ -47,42 +46,8 @@ public class AdminJpaDao extends BasicJpaDao implements AdminDao {
      * {@inheritDoc}
      */
     @Override
-    public CountryEntity findCountryByName(final String countryName) {
-        final Query query = entityManager.createNamedQuery("country.findByName");
-        query.setParameter("name", countryName);
-        final List<CountryEntity> found = query.getResultList();
-
-        return found.size() == 1 ? found.get(0) : null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public List<UserGroupEntity> findEmergencyList() {
-        final Query query = entityManager.createNamedQuery("usergroup.emergencylist");
-
-        return query.getResultList();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<UserGroupEntity> findGroupMembers(final String externalGroupId) {
-        final Query query = entityManager.createNamedQuery("usergroup.findForExternalGroupId");
-        query.setParameter("egid", externalGroupId);
-
-        return query.getResultList();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<UserGroupEntity> findUserGroups(final String externalUserId) {
-        final Query query = entityManager.createNamedQuery("usergroup.findForExternalUserId");
-        query.setParameter("euid", externalUserId);
+        final Query query = entityManager.createNamedQuery("userGroup.emergencyList");
 
         return query.getResultList();
     }
@@ -92,7 +57,7 @@ public class AdminJpaDao extends BasicJpaDao implements AdminDao {
      */
     @Override
     public List<UserGroupEntity> findUserGroupsForContactsByExternalUserId(final String externalUserId) {
-        final Query query = entityManager.createNamedQuery("usergroup.findContactForExternalUserId");
+        final Query query = entityManager.createNamedQuery("userGroup.findContactForExternalUserId");
         query.setParameter("euid", externalUserId);
 
         return query.getResultList();
@@ -103,7 +68,7 @@ public class AdminJpaDao extends BasicJpaDao implements AdminDao {
      */
     @Override
     public List<UserGroupEntity> findUserGroupsForContactsByExternalGroupId(final String externalGroupId) {
-        final Query query = entityManager.createNamedQuery("usergroup.findContactForExternalGroupId");
+        final Query query = entityManager.createNamedQuery("userGroup.findContactForExternalGroupId");
         query.setParameter("egid", externalGroupId);
 
         return query.getResultList();
@@ -113,7 +78,7 @@ public class AdminJpaDao extends BasicJpaDao implements AdminDao {
      * {@inheritDoc}
      */
     @Override
-    public List<UserGroupEntity> searchUsers(String firstname, String lastname) {
+    public List<UserGroupEntity> searchUsers(final String firstname, final String lastname) {
         final Query query = entityManager.createNamedQuery("userGroup.searchByFirstNameAndLastNameInMembers");
         // Weird, if I add the following lines directly into the setParameter,
         // then the trailing percentage sign is dropped!
@@ -129,7 +94,7 @@ public class AdminJpaDao extends BasicJpaDao implements AdminDao {
      * {@inheritDoc}
      */
     @Override
-    public List<UserGroupEntity> searchUsers(String firstname, String lastname, String externalMemberGroupId) {
+    public List<UserGroupEntity> searchUsers(final String firstname, final String lastname, final String externalMemberGroupId) {
         final Query query = entityManager.createNamedQuery("userGroup.searchByFirstNameAndLastNameInSpecificMember");
         query.setParameter("egid", externalMemberGroupId);
         final String name1 = '%' + firstname.toLowerCase(IWSConstants.DEFAULT_LOCALE) + '%';
@@ -146,17 +111,6 @@ public class AdminJpaDao extends BasicJpaDao implements AdminDao {
     @Override
     public List<GroupEntity> findGroupsForContacts() {
         final Query query = entityManager.createNamedQuery("group.findAllForContacts");
-
-        return query.getResultList();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<GroupEntity> findSubGroupsByParentId(Long parentGroupId) {
-        final Query query = entityManager.createNamedQuery("group.findSubGroupsByParentId");
-        query.setParameter("pid", parentGroupId);
 
         return query.getResultList();
     }

@@ -74,7 +74,7 @@ import java.util.Date;
 })
 @Entity
 @Table(name = "sessions")
-public class SessionEntity extends AbstractUpdateable<SessionEntity> implements Externable<SessionEntity> {
+public final class SessionEntity extends AbstractUpdateable<SessionEntity> implements Externable<SessionEntity> {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -141,7 +141,7 @@ public class SessionEntity extends AbstractUpdateable<SessionEntity> implements 
      * {@inheritDoc}
      */
     @Override
-    public final void setId(final Long id) {
+    public void setId(final Long id) {
         this.id = id;
     }
 
@@ -149,7 +149,7 @@ public class SessionEntity extends AbstractUpdateable<SessionEntity> implements 
      * {@inheritDoc}
      */
     @Override
-    public final Long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -157,7 +157,7 @@ public class SessionEntity extends AbstractUpdateable<SessionEntity> implements 
      * {@inheritDoc}
      */
     @Override
-    public final void setExternalId(final String externalId) {
+    public void setExternalId(final String externalId) {
         this.sessionKey = externalId;
     }
 
@@ -165,39 +165,39 @@ public class SessionEntity extends AbstractUpdateable<SessionEntity> implements 
      * {@inheritDoc}
      */
     @Override
-    public final String getExternalId() {
+    public String getExternalId() {
         return sessionKey;
     }
 
-    public final void setSessionKey(final String sessionKey) {
+    public void setSessionKey(final String sessionKey) {
         this.sessionKey = sessionKey;
     }
 
-    public final String getSessionKey() {
+    public String getSessionKey() {
         return sessionKey;
     }
 
-    public final void setUser(final UserEntity user) {
+    public void setUser(final UserEntity user) {
         this.user = user;
     }
 
-    public final UserEntity getUser() {
+    public UserEntity getUser() {
         return user;
     }
 
-    public final void setDeprecated(final String deprecated) {
+    public void setDeprecated(final String deprecated) {
         this.deprecated = deprecated;
     }
 
-    public final String getDeprecated() {
+    public String getDeprecated() {
         return deprecated;
     }
 
-    public final void setSessionData(final byte[] sessionData) {
+    public void setSessionData(final byte[] sessionData) {
         this.sessionData = sessionData;
     }
 
-    public final byte[] getSessionData() {
+    public byte[] getSessionData() {
         return sessionData;
     }
 
@@ -205,7 +205,7 @@ public class SessionEntity extends AbstractUpdateable<SessionEntity> implements 
      * {@inheritDoc}
      */
     @Override
-    public final void setModified(final Date modified) {
+    public void setModified(final Date modified) {
         this.modified = modified;
     }
 
@@ -213,7 +213,7 @@ public class SessionEntity extends AbstractUpdateable<SessionEntity> implements 
      * {@inheritDoc}
      */
     @Override
-    public final Date getModified() {
+    public Date getModified() {
         return modified;
     }
 
@@ -221,7 +221,7 @@ public class SessionEntity extends AbstractUpdateable<SessionEntity> implements 
      * {@inheritDoc}
      */
     @Override
-    public final void setCreated(final Date created) {
+    public void setCreated(final Date created) {
         this.created = created;
     }
 
@@ -229,7 +229,7 @@ public class SessionEntity extends AbstractUpdateable<SessionEntity> implements 
      * {@inheritDoc}
      */
     @Override
-    public final Date getCreated() {
+    public Date getCreated() {
         return created;
     }
 
@@ -241,7 +241,7 @@ public class SessionEntity extends AbstractUpdateable<SessionEntity> implements 
      * {@inheritDoc}
      */
     @Override
-    public final boolean diff(final SessionEntity obj) {
+    public boolean diff(final SessionEntity obj) {
         // Until properly implemented, better return true to avoid that we're
         // missing updates!
         return true;
@@ -251,7 +251,7 @@ public class SessionEntity extends AbstractUpdateable<SessionEntity> implements 
      * {@inheritDoc}
      */
     @Override
-    public final void merge(final SessionEntity obj) {
+    public void merge(final SessionEntity obj) {
         if (canMerge(obj)) {
             deprecated = which(deprecated, obj.deprecated);
             sessionData = which(sessionData, obj.sessionData);

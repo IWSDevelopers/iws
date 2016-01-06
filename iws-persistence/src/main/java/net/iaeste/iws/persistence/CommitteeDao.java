@@ -17,7 +17,6 @@ package net.iaeste.iws.persistence;
 import net.iaeste.iws.api.enums.GroupStatus;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.Membership;
-import net.iaeste.iws.api.enums.UserStatus;
 import net.iaeste.iws.persistence.entities.CountryEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.GroupTypeEntity;
@@ -60,12 +59,6 @@ public interface CommitteeDao extends BasicDao {
     List<GroupEntity> findAllCommitteesForCountry(CountryEntity country);
 
     GroupEntity findMemberGroupForStaff(GroupEntity staff);
-
-    List<UserGroupEntity> findGroupMembers(GroupEntity group, Set<UserStatus> statuses);
-
-    GroupEntity findPrivateGroup(UserEntity user);
-
-    int deleteSessions(UserEntity user);
 
     List<GroupEntity> findSubgroups(GroupEntity group);
 

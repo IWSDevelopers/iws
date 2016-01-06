@@ -22,8 +22,6 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import java.io.Serializable;
 
@@ -32,19 +30,9 @@ import java.io.Serializable;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
-@NamedQueries({
-        @NamedQuery(name = "permission.findAll",
-                query = "select p from PermissionEntity p"),
-        @NamedQuery(name = "permission.findAllNotRestricted",
-                query = "select p from PermissionEntity p " +
-                        "where p.restricted = false"),
-        @NamedQuery(name = "permission.findByName",
-                query = "select p from PermissionEntity p " +
-                        "where p.permission = :permission")
-})
 @Entity
 @Table(name = "permissions")
-public class PermissionEntity implements Serializable {
+public final class PermissionEntity implements Serializable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -77,35 +65,35 @@ public class PermissionEntity implements Serializable {
     // Entity Setters & Getters
     // =========================================================================
 
-    public final void setId(final Long id) {
+    public void setId(final Long id) {
         this.id = id;
     }
 
-    public final Long getId() {
+    public Long getId() {
         return id;
     }
 
-    public final void setPermission(final Permission permission) {
+    public void setPermission(final Permission permission) {
         this.permission = permission;
     }
 
-    public final Permission getPermission() {
+    public Permission getPermission() {
         return permission;
     }
 
-    public final void setRestricted(final Boolean restricted) {
+    public void setRestricted(final Boolean restricted) {
         this.restricted = restricted;
     }
 
-    public final Boolean getRestricted() {
+    public Boolean getRestricted() {
         return restricted;
     }
 
-    public final void setDescription(final String description) {
+    public void setDescription(final String description) {
         this.description = description;
     }
 
-    public final String getDescription() {
+    public String getDescription() {
         return description;
     }
 }

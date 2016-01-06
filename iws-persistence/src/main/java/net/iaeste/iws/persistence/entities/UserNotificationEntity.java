@@ -49,7 +49,7 @@ import java.util.Date;
                 "  and un.type = :type"))
 @Entity
 @Table(name = "user_notifications")
-public class UserNotificationEntity implements IWSEntity {
+public final class UserNotificationEntity implements IWSEntity {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -110,7 +110,7 @@ public class UserNotificationEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public final void setId(final Long id) {
+    public void setId(final Long id) {
         this.id = id;
     }
 
@@ -118,31 +118,31 @@ public class UserNotificationEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public final Long getId() {
+    public Long getId() {
         return id;
     }
 
-    public final void setUser(final UserEntity user) {
+    public void setUser(final UserEntity user) {
         this.user = user;
     }
 
-    public final UserEntity getUser() {
+    public UserEntity getUser() {
         return user;
     }
 
-    public final void setType(final NotificationType type) {
+    public void setType(final NotificationType type) {
         this.type = type;
     }
 
-    public final NotificationType getType() {
+    public NotificationType getType() {
         return type;
     }
 
-    public final void setFrequency(final NotificationFrequency frequency) {
+    public void setFrequency(final NotificationFrequency frequency) {
         this.frequency = frequency;
     }
 
-    public final NotificationFrequency getFrequency() {
+    public NotificationFrequency getFrequency() {
         return frequency;
     }
 
@@ -150,7 +150,7 @@ public class UserNotificationEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public final void setCreated(final Date created) {
+    public void setCreated(final Date created) {
         this.created = created;
     }
 
@@ -158,7 +158,7 @@ public class UserNotificationEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public final Date getCreated() {
+    public Date getCreated() {
         return created;
     }
 }

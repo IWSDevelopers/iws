@@ -41,7 +41,7 @@ import javax.persistence.Table;
                     "  and o.offer.externalId in (:eids)")
 })
 @Table(name = "offer_view")
-public class OfferView extends AbstractView<OfferView> {
+public final class OfferView extends AbstractView<OfferView> {
 
     @Id
     @Column(name = "offer_id", insertable = false, updatable = false)

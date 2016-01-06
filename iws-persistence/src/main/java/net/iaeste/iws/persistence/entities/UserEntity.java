@@ -53,22 +53,9 @@ import java.util.EnumMap;
  * @since   IWS 1.0
  */
 @NamedQueries({
-        // Query is used by the Migration Tool
-        @NamedQuery(name = "user.findAll",
-                query = "select u from UserEntity u " +
-                        "where u.status <> " + EntityConstants.USER_STATUS_DELETED),
-        // Query is used by the Migration Tool
-        @NamedQuery(name = "user.findByIW3Id",
-                query = "select u from UserEntity u " +
-                        "where u.oldId = :oldid"),
         @NamedQuery(name = "user.findById",
                 query = "select u from UserEntity u " +
                         "where u.id = :id"),
-        @NamedQuery(name = "user.loginCredentials",
-                query = "select u from UserEntity u " +
-                        "where u.status = " + EntityConstants.USER_STATUS_ACTIVE +
-                        "  and u.username = :username" +
-                        "  and u.password = :password"),
         @NamedQuery(name = "user.findByUserName",
                 query = "select u from UserEntity u " +
                         "where u.username = :username"),
@@ -106,10 +93,6 @@ import java.util.EnumMap;
                 query = "select u from UserEntity u " +
                         "where u.status = :status" +
                         "  and u.modified < :days"),
-        @NamedQuery(name = "user.findByAlias",
-                query = "select u from UserEntity u " +
-                        "where u.status <> " + EntityConstants.USER_STATUS_DELETED +
-                        "  and u.alias = :alias"),
         @NamedQuery(name = "user.findNumberOfSimilarAliases",
                 query = "select count(u.id) from UserEntity u " +
                         "where lower(alias) like :startOfAlias"),
@@ -120,7 +103,7 @@ import java.util.EnumMap;
 @Entity
 @Table(name = "users")
 @Monitored(name = "User", level = MonitoringLevel.DETAILED)
-public class UserEntity extends AbstractUpdateable<UserEntity> implements Externable<UserEntity>, Notifiable {
+public final class UserEntity extends AbstractUpdateable<UserEntity> implements Externable<UserEntity>, Notifiable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -324,7 +307,7 @@ public class UserEntity extends AbstractUpdateable<UserEntity> implements Extern
      * {@inheritDoc}
      */
     @Override
-    public final void setId(final Long id) {
+    public void setId(final Long id) {
         this.id = id;
     }
 
@@ -332,7 +315,7 @@ public class UserEntity extends AbstractUpdateable<UserEntity> implements Extern
      * {@inheritDoc}
      */
     @Override
-    public final Long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -340,7 +323,7 @@ public class UserEntity extends AbstractUpdateable<UserEntity> implements Extern
      * {@inheritDoc}
      */
     @Override
-    public final void setExternalId(final String externalId) {
+    public void setExternalId(final String externalId) {
         this.externalId = externalId;
     }
 
@@ -348,119 +331,119 @@ public class UserEntity extends AbstractUpdateable<UserEntity> implements Extern
      * {@inheritDoc}
      */
     @Override
-    public final String getExternalId() {
+    public String getExternalId() {
         return externalId;
     }
 
-    public final void setUsername(final String username) {
+    public void setUsername(final String username) {
         this.username = username;
     }
 
-    public final String getUsername() {
+    public String getUsername() {
         return username;
     }
 
-    public final void setAlias(final String alias) {
+    public void setAlias(final String alias) {
         this.alias = alias;
     }
 
-    public final String getAlias() {
+    public String getAlias() {
         return alias;
     }
 
-    public final void setPassword(final String password) {
+    public void setPassword(final String password) {
         this.password = password;
     }
 
-    public final String getPassword() {
+    public String getPassword() {
         return password;
     }
 
-    public final void setSalt(final String salt) {
+    public void setSalt(final String salt) {
         this.salt = salt;
     }
 
-    public final String getSalt() {
+    public String getSalt() {
         return salt;
     }
 
-    public final void setFirstname(final String firstname) {
+    public void setFirstname(final String firstname) {
         this.firstname = firstname;
     }
 
-    public final String getFirstname() {
+    public String getFirstname() {
         return firstname;
     }
 
-    public final void setLastname(final String lastname) {
+    public void setLastname(final String lastname) {
         this.lastname = lastname;
     }
 
-    public final String getLastname() {
+    public String getLastname() {
         return lastname;
     }
 
-    public final void setPerson(final PersonEntity person) {
+    public void setPerson(final PersonEntity person) {
         this.person = person;
     }
 
-    public final PersonEntity getPerson() {
+    public PersonEntity getPerson() {
         return person;
     }
 
-    public final void setStatus(final UserStatus status) {
+    public void setStatus(final UserStatus status) {
         this.status = status;
     }
 
-    public final UserStatus getStatus() {
+    public UserStatus getStatus() {
         return status;
     }
 
-    public final void setType(final UserType type) {
+    public void setType(final UserType type) {
         this.type = type;
     }
 
-    public final UserType getType() {
+    public UserType getType() {
         return type;
     }
 
-    public final void setPrivateData(final Privacy privateData) {
+    public void setPrivateData(final Privacy privateData) {
         this.privateData = privateData;
     }
 
-    public final Privacy getPrivateData() {
+    public Privacy getPrivateData() {
         return privateData;
     }
 
-    public final void setNotifications(final NotificationFrequency notifications) {
+    public void setNotifications(final NotificationFrequency notifications) {
         this.notifications = notifications;
     }
 
-    public final NotificationFrequency getNotifications() {
+    public NotificationFrequency getNotifications() {
         return notifications;
     }
 
-    public final void setCode(final String code) {
+    public void setCode(final String code) {
         this.code = code;
     }
 
-    public final String getCode() {
+    public String getCode() {
         return code;
     }
 
-    public final void setData(final String data) {
+    public void setData(final String data) {
         this.data = data;
     }
 
-    public final String getData() {
+    public String getData() {
         return data;
     }
 
-    public final void setOldId(final Integer oldId) {
+    public void setOldId(final Integer oldId) {
         this.oldId = oldId;
     }
 
-    public final Integer getOldId() {
+    public Integer getOldId() {
         return oldId;
     }
 
@@ -468,7 +451,7 @@ public class UserEntity extends AbstractUpdateable<UserEntity> implements Extern
      * {@inheritDoc}
      */
     @Override
-    public final void setModified(final Date modified) {
+    public void setModified(final Date modified) {
         this.modified = modified;
     }
 
@@ -476,7 +459,7 @@ public class UserEntity extends AbstractUpdateable<UserEntity> implements Extern
      * {@inheritDoc}
      */
     @Override
-    public final Date getModified() {
+    public Date getModified() {
         return modified;
     }
 
@@ -484,7 +467,7 @@ public class UserEntity extends AbstractUpdateable<UserEntity> implements Extern
      * {@inheritDoc}
      */
     @Override
-    public final void setCreated(final Date created) {
+    public void setCreated(final Date created) {
         this.created = created;
     }
 
@@ -492,7 +475,7 @@ public class UserEntity extends AbstractUpdateable<UserEntity> implements Extern
      * {@inheritDoc}
      */
     @Override
-    public final Date getCreated() {
+    public Date getCreated() {
         return created;
     }
 
@@ -505,7 +488,7 @@ public class UserEntity extends AbstractUpdateable<UserEntity> implements Extern
      *
      * @param temporary Temporary Information, not persisted
      */
-    public final void setTemporary(final String temporary) {
+    public void setTemporary(final String temporary) {
         this.temporary = temporary;
     }
 
@@ -517,7 +500,7 @@ public class UserEntity extends AbstractUpdateable<UserEntity> implements Extern
      * {@inheritDoc}
      */
     @Override
-    public final boolean diff(final UserEntity obj) {
+    public boolean diff(final UserEntity obj) {
         // Until properly implemented, better return true to avoid that we're
         // missing updates!
         return true;
@@ -527,7 +510,7 @@ public class UserEntity extends AbstractUpdateable<UserEntity> implements Extern
      * {@inheritDoc}
      */
     @Override
-    public final void merge(final UserEntity obj) {
+    public void merge(final UserEntity obj) {
         if (canMerge(obj)) {
             privateData = which(privateData, obj.privateData);
             notifications = which(notifications, obj.notifications);
@@ -538,7 +521,7 @@ public class UserEntity extends AbstractUpdateable<UserEntity> implements Extern
      * {@inheritDoc}
      */
     @Override
-    public final EnumMap<NotificationField, String> prepareNotifiableFields(final NotificationType type) {
+    public EnumMap<NotificationField, String> prepareNotifiableFields(final NotificationType type) {
         final EnumMap<NotificationField, String> fields = new EnumMap<>(NotificationField.class);
 
         // By default, all notifications need the name of the person to receive
@@ -597,7 +580,7 @@ public class UserEntity extends AbstractUpdateable<UserEntity> implements Extern
      * {@inheritDoc}
      */
     @Override
-    public final String toString() {
+    public String toString() {
         return "UserEntity{" +
                 " firstname='" + firstname + '\'' +
                 ", lastname='" + lastname + '\'' +

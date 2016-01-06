@@ -61,7 +61,7 @@ import java.util.Date;
 @Entity
 @Table(name = "students")
 @Monitored(name = "Student", level = MonitoringLevel.DETAILED)
-public class StudentEntity extends AbstractUpdateable<StudentEntity> {
+public final class StudentEntity extends AbstractUpdateable<StudentEntity> {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -171,7 +171,7 @@ public class StudentEntity extends AbstractUpdateable<StudentEntity> {
      * {@inheritDoc}
      */
     @Override
-    public final void setId(final Long id) {
+    public void setId(final Long id) {
         this.id = id;
     }
 
@@ -179,103 +179,103 @@ public class StudentEntity extends AbstractUpdateable<StudentEntity> {
      * {@inheritDoc}
      */
     @Override
-    public final Long getId() {
+    public Long getId() {
         return id;
     }
 
-    public final void setUser(final UserEntity user) {
+    public void setUser(final UserEntity user) {
         this.user = user;
     }
 
-    public final UserEntity getUser() {
+    public UserEntity getUser() {
         return user;
     }
 
-    public final void setStudyLevel(final StudyLevel studyLevel) {
+    public void setStudyLevel(final StudyLevel studyLevel) {
         this.studyLevel = studyLevel;
     }
 
-    public final StudyLevel getStudyLevel() {
+    public StudyLevel getStudyLevel() {
         return studyLevel;
     }
 
-    public final void setFieldOfStudies(final String fieldOfStudies) {
+    public void setFieldOfStudies(final String fieldOfStudies) {
         this.fieldOfStudies = fieldOfStudies;
     }
 
-    public final String getFieldOfStudies() {
+    public String getFieldOfStudies() {
         return fieldOfStudies;
     }
 
-    public final void setSpecializations(final String specializations) {
+    public void setSpecializations(final String specializations) {
         this.specializations = specializations;
     }
 
-    public final String getSpecializations() {
+    public String getSpecializations() {
         return specializations;
     }
 
-    public final void setAvailableFrom(final Date availableFrom) {
+    public void setAvailableFrom(final Date availableFrom) {
         this.availableFrom = availableFrom;
     }
 
-    public final Date getAvailableFrom() {
+    public Date getAvailableFrom() {
         return availableFrom;
     }
 
-    public final void setAvailableTo(final Date availableTo) {
+    public void setAvailableTo(final Date availableTo) {
         this.availableTo = availableTo;
     }
 
-    public final Date getAvailableTo() {
+    public Date getAvailableTo() {
         return availableTo;
     }
 
-    public final void setLanguage1(final Language language1) {
+    public void setLanguage1(final Language language1) {
         this.language1 = language1;
     }
 
-    public final Language getLanguage1() {
+    public Language getLanguage1() {
         return language1;
     }
 
-    public final void setLanguage1Level(final LanguageLevel language1Level) {
+    public void setLanguage1Level(final LanguageLevel language1Level) {
         this.language1Level = language1Level;
     }
 
-    public final LanguageLevel getLanguage1Level() {
+    public LanguageLevel getLanguage1Level() {
         return language1Level;
     }
 
-    public final void setLanguage2(final Language language2) {
+    public void setLanguage2(final Language language2) {
         this.language2 = language2;
     }
 
-    public final Language getLanguage2() {
+    public Language getLanguage2() {
         return language2;
     }
 
-    public final void setLanguage2Level(final LanguageLevel language2Level) {
+    public void setLanguage2Level(final LanguageLevel language2Level) {
         this.language2Level = language2Level;
     }
 
-    public final LanguageLevel getLanguage2Level() {
+    public LanguageLevel getLanguage2Level() {
         return language2Level;
     }
 
-    public final void setLanguage3(final Language language3) {
+    public void setLanguage3(final Language language3) {
         this.language3 = language3;
     }
 
-    public final Language getLanguage3() {
+    public Language getLanguage3() {
         return language3;
     }
 
-    public final void setLanguage3Level(final LanguageLevel language3Level) {
+    public void setLanguage3Level(final LanguageLevel language3Level) {
         this.language3Level = language3Level;
     }
 
-    public final LanguageLevel getLanguage3Level() {
+    public LanguageLevel getLanguage3Level() {
         return language3Level;
     }
 
@@ -283,7 +283,7 @@ public class StudentEntity extends AbstractUpdateable<StudentEntity> {
      * {@inheritDoc}
      */
     @Override
-    public final void setModified(final Date modified) {
+    public void setModified(final Date modified) {
         this.modified = modified;
     }
 
@@ -291,7 +291,7 @@ public class StudentEntity extends AbstractUpdateable<StudentEntity> {
      * {@inheritDoc}
      */
     @Override
-    public final Date getModified() {
+    public Date getModified() {
         return modified;
     }
 
@@ -299,7 +299,7 @@ public class StudentEntity extends AbstractUpdateable<StudentEntity> {
      * {@inheritDoc}
      */
     @Override
-    public final void setCreated(final Date created) {
+    public void setCreated(final Date created) {
         this.created = created;
     }
 
@@ -307,7 +307,7 @@ public class StudentEntity extends AbstractUpdateable<StudentEntity> {
      * {@inheritDoc}
      */
     @Override
-    public final Date getCreated() {
+    public Date getCreated() {
         return created;
     }
 
@@ -319,7 +319,7 @@ public class StudentEntity extends AbstractUpdateable<StudentEntity> {
      * {@inheritDoc}
      */
     @Override
-    public final boolean diff(final StudentEntity obj) {
+    public boolean diff(final StudentEntity obj) {
         // Until properly implemented, better return true to avoid that we're
         // missing updates!
         return true;
@@ -329,7 +329,7 @@ public class StudentEntity extends AbstractUpdateable<StudentEntity> {
      * {@inheritDoc}
      */
     @Override
-    public final void merge(final StudentEntity obj) {
+    public void merge(final StudentEntity obj) {
         // don't merge if objects are not the same entity
         //if ((id != null) && (obj != null) && id.equals(obj.id)) {
         if ((id != null) && (obj != null) && (user != null) && (user.getExternalId() != null) && user.getExternalId().equals(obj.user.getExternalId())) {

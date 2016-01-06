@@ -50,9 +50,6 @@ import java.util.Date;
  * @since   IWS 1.0
  */
 @NamedQueries({
-        @NamedQuery(name = "attachments.findById",
-                query = "select a from AttachmentEntity a " +
-                        "where a.id = :id"),
         @NamedQuery(name = "attachments.findForRecord",
                 query = "select a from AttachmentEntity a " +
                         "where a.table = :table" +
@@ -80,7 +77,7 @@ import java.util.Date;
 })
 @Entity
 @Table(name = "attachments")
-public class AttachmentEntity implements IWSEntity {
+public final class AttachmentEntity implements IWSEntity {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -116,7 +113,7 @@ public class AttachmentEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public final void setId(final Long id) {
+    public void setId(final Long id) {
         this.id = id;
     }
 
@@ -124,31 +121,31 @@ public class AttachmentEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public final Long getId() {
+    public Long getId() {
         return id;
     }
 
-    public final void setTable(final String table) {
+    public void setTable(final String table) {
         this.table = table;
     }
 
-    public final String getTable() {
+    public String getTable() {
         return table;
     }
 
-    public final void setRecord(final Long record) {
+    public void setRecord(final Long record) {
         this.record = record;
     }
 
-    public final Long getRecord() {
+    public Long getRecord() {
         return record;
     }
 
-    public final void setFile(final FileEntity file) {
+    public void setFile(final FileEntity file) {
         this.file = file;
     }
 
-    public final FileEntity getFile() {
+    public FileEntity getFile() {
         return file;
     }
 
@@ -156,7 +153,7 @@ public class AttachmentEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public final void setCreated(final Date created) {
+    public void setCreated(final Date created) {
         this.created = created;
     }
 
@@ -164,7 +161,7 @@ public class AttachmentEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public final Date getCreated() {
+    public Date getCreated() {
         return created;
     }
 }

@@ -32,7 +32,7 @@ import java.util.Date;
  * @since   IWS 1.0
  */
 @Embeddable
-public class EmbeddedStudent {
+public final class EmbeddedStudent {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "student_study_level", insertable = false, updatable = false)

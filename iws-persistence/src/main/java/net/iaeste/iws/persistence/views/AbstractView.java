@@ -30,7 +30,7 @@ public abstract class AbstractView<T> implements IWSView<T> {
      * {@inheritDoc}
      */
     @Override
-    public void setSorting(final SortingField sortField, final boolean sortAscending) {
+    public final void setSorting(final SortingField sortField, final boolean sortAscending) {
         this.sortField = sortField;
         this.sortAscending = sortAscending;
     }

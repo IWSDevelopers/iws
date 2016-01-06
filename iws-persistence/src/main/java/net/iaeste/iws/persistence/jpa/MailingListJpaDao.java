@@ -28,7 +28,7 @@ import javax.persistence.Query;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
-public class MailingListJpaDao extends BasicJpaDao implements MailingListDao {
+public final class MailingListJpaDao extends BasicJpaDao implements MailingListDao {
 
     /**
      * Default Constructor.
@@ -100,32 +100,10 @@ public class MailingListJpaDao extends BasicJpaDao implements MailingListDao {
      * {@inheritDoc}
      */
     @Override
-    public MailingAliasEntity findMailingAliasByAlias(final String userAlias) {
-        final Query query = entityManager.createNamedQuery("mailing_list.findAliasByUserAlias");
-        query.setParameter("alias", StringUtils.toLower(userAlias));
-
-        return findSingleResult(query, "MailingAlias");
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void updateUsernameInMailingAlias(final String newEmailAddress, final String oldEmailAddress) {
         final Query query = entityManager.createNamedQuery("mailing_list.updateUsernameinMailingAlias");
         query.setParameter("newUserAddress", StringUtils.toLower(newEmailAddress));
         query.setParameter("oldUserAddress", StringUtils.toLower(oldEmailAddress));
-
-        query.executeUpdate();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void wipeOutMailingListMembers(final Long id) {
-        final Query query = entityManager.createNamedQuery("mailing_list.deleteAllSubscriptions");
-        query.setParameter("id", id);
 
         query.executeUpdate();
     }

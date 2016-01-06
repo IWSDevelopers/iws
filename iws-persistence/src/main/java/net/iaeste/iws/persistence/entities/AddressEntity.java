@@ -44,7 +44,7 @@ import java.util.Date;
 @Entity
 @Table(name = "addresses")
 @Monitored(name = "Address", level = MonitoringLevel.DETAILED)
-public class AddressEntity extends AbstractUpdateable<AddressEntity> {
+public final class AddressEntity extends AbstractUpdateable<AddressEntity> {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -105,7 +105,7 @@ public class AddressEntity extends AbstractUpdateable<AddressEntity> {
      * {@inheritDoc}
      */
     @Override
-    public final void setId(final Long id) {
+    public void setId(final Long id) {
         this.id = id;
     }
 
@@ -113,63 +113,63 @@ public class AddressEntity extends AbstractUpdateable<AddressEntity> {
      * {@inheritDoc}
      */
     @Override
-    public final Long getId() {
+    public Long getId() {
         return id;
     }
 
-    public final void setStreet1(final String street1) {
+    public void setStreet1(final String street1) {
         this.street1 = street1;
     }
 
-    public final String getStreet1() {
+    public String getStreet1() {
         return street1;
     }
 
-    public final void setStreet2(final String street2) {
+    public void setStreet2(final String street2) {
         this.street2 = street2;
     }
 
-    public final String getStreet2() {
+    public String getStreet2() {
         return street2;
     }
 
-    public final void setCity(final String city) {
+    public void setCity(final String city) {
         this.city = city;
     }
 
-    public final String getCity() {
+    public String getCity() {
         return city;
     }
 
-    public final void setState(final String region) {
+    public void setState(final String region) {
         this.state = region;
     }
 
-    public final String getState() {
+    public String getState() {
         return state;
     }
 
-    public final void setPostalCode(final String postalCode) {
+    public void setPostalCode(final String postalCode) {
         this.postalCode = postalCode;
     }
 
-    public final String getPostalCode() {
+    public String getPostalCode() {
         return postalCode;
     }
 
-    public final void setPobox(final String pobox) {
+    public void setPobox(final String pobox) {
         this.pobox = pobox;
     }
 
-    public final String getPobox() {
+    public String getPobox() {
         return pobox;
     }
 
-    public final void setCountry(final CountryEntity country) {
+    public void setCountry(final CountryEntity country) {
         this.country = country;
     }
 
-    public final CountryEntity getCountry() {
+    public CountryEntity getCountry() {
         return country;
     }
 
@@ -177,7 +177,7 @@ public class AddressEntity extends AbstractUpdateable<AddressEntity> {
      * {@inheritDoc}
      */
     @Override
-    public final void setModified(final Date modified) {
+    public void setModified(final Date modified) {
         this.modified = modified;
     }
 
@@ -185,7 +185,7 @@ public class AddressEntity extends AbstractUpdateable<AddressEntity> {
      * {@inheritDoc}
      */
     @Override
-    public final Date getModified() {
+    public Date getModified() {
         return modified;
     }
 
@@ -193,7 +193,7 @@ public class AddressEntity extends AbstractUpdateable<AddressEntity> {
      * {@inheritDoc}
      */
     @Override
-    public final void setCreated(final Date created) {
+    public void setCreated(final Date created) {
         this.created = created;
     }
 
@@ -201,7 +201,7 @@ public class AddressEntity extends AbstractUpdateable<AddressEntity> {
      * {@inheritDoc}
      */
     @Override
-    public final Date getCreated() {
+    public Date getCreated() {
         return created;
     }
 
@@ -213,7 +213,7 @@ public class AddressEntity extends AbstractUpdateable<AddressEntity> {
      * {@inheritDoc}
      */
     @Override
-    public final boolean diff(final AddressEntity obj) {
+    public boolean diff(final AddressEntity obj) {
         int changes = 0;
 
         changes += different(street1, obj.street1);
@@ -230,7 +230,7 @@ public class AddressEntity extends AbstractUpdateable<AddressEntity> {
      * {@inheritDoc}
      */
     @Override
-    public final void merge(final AddressEntity obj) {
+    public void merge(final AddressEntity obj) {
         if (canMerge(obj)) {
             street1 = which(street1, obj.street1);
             street2 = which(street2, obj.street2);

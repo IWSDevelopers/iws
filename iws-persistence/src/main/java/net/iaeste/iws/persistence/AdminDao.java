@@ -14,7 +14,6 @@
  */
 package net.iaeste.iws.persistence;
 
-import net.iaeste.iws.persistence.entities.CountryEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.UserGroupEntity;
 
@@ -35,25 +34,12 @@ public interface AdminDao extends BasicDao {
     // =========================================================================
 
     /**
-     * Finds the given Country by the name, if no such country exists, then the
-     * method will return a null value, otherwise the found Country.
-     *
-     * @param countryName  The Name of the Country to find
-     * @return Found {@code CountryEntity} or null
-     */
-    CountryEntity findCountryByName(String countryName);
-
-    /**
      * Retrieves the Emergency Phone list, which is the list of all Owners and
      * Moderators from the National Committees.
      *
      * @return List of all Owners and Moderators of National Groups
      */
     List<UserGroupEntity> findEmergencyList();
-
-    List<UserGroupEntity> findGroupMembers(String externalGroupId);
-
-    List<UserGroupEntity> findUserGroups(String externalUserId);
 
     List<UserGroupEntity> findUserGroupsForContactsByExternalUserId(String externalUserId);
 
@@ -64,6 +50,4 @@ public interface AdminDao extends BasicDao {
     List<UserGroupEntity> searchUsers(String firstname, String lastname, String externalMemberGroupId);
 
     List<GroupEntity> findGroupsForContacts();
-
-    List<GroupEntity> findSubGroupsByParentId(Long parentGroupId);
 }

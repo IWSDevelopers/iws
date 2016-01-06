@@ -63,7 +63,7 @@ import java.util.Date;
 @Entity
 @Table(name = "employers")
 @Monitored(name = "Employer", level = MonitoringLevel.DETAILED)
-public class EmployerEntity extends AbstractUpdateable<EmployerEntity> implements Externable<EmployerEntity> {
+public final class EmployerEntity extends AbstractUpdateable<EmployerEntity> implements Externable<EmployerEntity> {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -151,7 +151,7 @@ public class EmployerEntity extends AbstractUpdateable<EmployerEntity> implement
      * {@inheritDoc}
      */
     @Override
-    public final void setId(final Long id) {
+    public void setId(final Long id) {
         this.id = id;
     }
 
@@ -159,7 +159,7 @@ public class EmployerEntity extends AbstractUpdateable<EmployerEntity> implement
      * {@inheritDoc}
      */
     @Override
-    public final Long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -167,7 +167,7 @@ public class EmployerEntity extends AbstractUpdateable<EmployerEntity> implement
      * {@inheritDoc}
      */
     @Override
-    public final void setExternalId(final String externalId) {
+    public void setExternalId(final String externalId) {
         this.externalId = externalId;
     }
 
@@ -175,95 +175,95 @@ public class EmployerEntity extends AbstractUpdateable<EmployerEntity> implement
      * {@inheritDoc}
      */
     @Override
-    public final String getExternalId() {
+    public String getExternalId() {
         return externalId;
     }
 
-    public final void setGroup(final GroupEntity group) {
+    public void setGroup(final GroupEntity group) {
         this.group = group;
     }
 
-    public final GroupEntity getGroup() {
+    public GroupEntity getGroup() {
         return group;
     }
 
-    public final void setName(final String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
-    public final String getName() {
+    public String getName() {
         return name;
     }
 
-    public final void setDepartment(final String department) {
+    public void setDepartment(final String department) {
         this.department = department;
     }
 
-    public final String getDepartment() {
+    public String getDepartment() {
         return department;
     }
 
-    public final void setBusiness(final String business) {
+    public void setBusiness(final String business) {
         this.business = business;
     }
 
-    public final String getBusiness() {
+    public String getBusiness() {
         return business;
     }
 
-    public final void setWorkingPlace(final String workingPlace) {
+    public void setWorkingPlace(final String workingPlace) {
         this.workingPlace = workingPlace;
     }
 
-    public final String getWorkingPlace() {
+    public String getWorkingPlace() {
         return workingPlace;
     }
 
-    public final void setAddress(final AddressEntity address) {
+    public void setAddress(final AddressEntity address) {
         this.address = address;
     }
 
-    public final AddressEntity getAddress() {
+    public AddressEntity getAddress() {
         return address;
     }
 
-    public final void setNumberOfEmployees(final String numberOfEmployees) {
+    public void setNumberOfEmployees(final String numberOfEmployees) {
         this.numberOfEmployees = numberOfEmployees;
     }
 
-    public final String getNumberOfEmployees() {
+    public String getNumberOfEmployees() {
         return numberOfEmployees;
     }
 
-    public final void setWebsite(final String website) {
+    public void setWebsite(final String website) {
         this.website = website;
     }
 
-    public final String getWebsite() {
+    public String getWebsite() {
         return website;
     }
 
-    public final void setCanteen(final Boolean canteen) {
+    public void setCanteen(final Boolean canteen) {
         this.canteen = canteen;
     }
 
-    public final Boolean getCanteen() {
+    public Boolean getCanteen() {
         return canteen;
     }
 
-    public final void setNearestAirport(final String nearestAirport) {
+    public void setNearestAirport(final String nearestAirport) {
         this.nearestAirport = nearestAirport;
     }
 
-    public final String getNearestAirport() {
+    public String getNearestAirport() {
         return nearestAirport;
     }
 
-    public final void setNearestPublicTransport(final String nearestPublicTransport) {
+    public void setNearestPublicTransport(final String nearestPublicTransport) {
         this.nearestPublicTransport = nearestPublicTransport;
     }
 
-    public final String getNearestPublicTransport() {
+    public String getNearestPublicTransport() {
         return nearestPublicTransport;
     }
 
@@ -271,7 +271,7 @@ public class EmployerEntity extends AbstractUpdateable<EmployerEntity> implement
      * {@inheritDoc}
      */
     @Override
-    public final void setModified(final Date modified) {
+    public void setModified(final Date modified) {
         this.modified = modified;
     }
 
@@ -279,7 +279,7 @@ public class EmployerEntity extends AbstractUpdateable<EmployerEntity> implement
      * {@inheritDoc}
      */
     @Override
-    public final Date getModified() {
+    public Date getModified() {
         return modified;
     }
 
@@ -287,7 +287,7 @@ public class EmployerEntity extends AbstractUpdateable<EmployerEntity> implement
      * {@inheritDoc}
      */
     @Override
-    public final void setCreated(final Date created) {
+    public void setCreated(final Date created) {
         this.created = created;
     }
 
@@ -295,7 +295,7 @@ public class EmployerEntity extends AbstractUpdateable<EmployerEntity> implement
      * {@inheritDoc}
      */
     @Override
-    public final Date getCreated() {
+    public Date getCreated() {
         return created;
     }
 
@@ -307,7 +307,7 @@ public class EmployerEntity extends AbstractUpdateable<EmployerEntity> implement
      * {@inheritDoc}
      */
     @Override
-    public final boolean diff(final EmployerEntity obj) {
+    public boolean diff(final EmployerEntity obj) {
         int changes = 0;
 
         changes += different(name, obj.name);
@@ -327,7 +327,7 @@ public class EmployerEntity extends AbstractUpdateable<EmployerEntity> implement
      * {@inheritDoc}
      */
     @Override
-    public final void merge(final EmployerEntity obj) {
+    public void merge(final EmployerEntity obj) {
         if (canMerge(obj)) {
             name = which(name, obj.name);
             department = which(department, obj.department);

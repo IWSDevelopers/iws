@@ -53,7 +53,7 @@ import java.util.Date;
 })
 @Entity
 @Table(name = "notification_job_tasks")
-public class NotificationJobTaskEntity implements IWSEntity {
+public final class NotificationJobTaskEntity implements IWSEntity {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -133,7 +133,7 @@ public class NotificationJobTaskEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public final void setId(final Long id) {
+    public void setId(final Long id) {
         this.id = id;
     }
 
@@ -141,47 +141,47 @@ public class NotificationJobTaskEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public final Long getId() {
+    public Long getId() {
         return id;
     }
 
-    public final void setJob(final NotificationJobEntity job) {
+    public void setJob(final NotificationJobEntity job) {
         this.job = job;
     }
 
-    public final NotificationJobEntity getJob() {
+    public NotificationJobEntity getJob() {
         return job;
     }
 
-    public final void setConsumer(final NotificationConsumerEntity consumer) {
+    public void setConsumer(final NotificationConsumerEntity consumer) {
         this.consumer = consumer;
     }
 
-    public final NotificationConsumerEntity getConsumer() {
+    public NotificationConsumerEntity getConsumer() {
         return consumer;
     }
 
-    public final void setProcessed(final boolean processed) {
+    public void setProcessed(final boolean processed) {
         this.processed = processed;
     }
 
-    public final boolean isProcessed() {
+    public boolean isProcessed() {
         return processed;
     }
 
-    public final void setAttempts(final int attempts) {
+    public void setAttempts(final int attempts) {
         this.attempts = attempts;
     }
 
-    public final int getAttempts() {
+    public int getAttempts() {
         return attempts;
     }
 
-    public final void setModified(final Date modified) {
+    public void setModified(final Date modified) {
         this.modified = modified;
     }
 
-    public final Date getModified() {
+    public Date getModified() {
         return modified;
     }
 
@@ -189,7 +189,7 @@ public class NotificationJobTaskEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public final void setCreated(final Date created) {
+    public void setCreated(final Date created) {
         this.created = created;
     }
 
@@ -197,7 +197,7 @@ public class NotificationJobTaskEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public final Date getCreated() {
+    public Date getCreated() {
         return created;
     }
 }

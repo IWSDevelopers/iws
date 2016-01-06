@@ -42,7 +42,7 @@ import java.util.Date;
                 "  and s.offerExternalId in (:externalOfferIds)" +
                 "  and s.status not in ('CLOSED', 'REJECTED')"))
 @Table(name = "find_shared_to_groups")
-public class OfferSharedToGroupView {
+public final class OfferSharedToGroupView {
 
     @Id
     @Column(name = "id", insertable = false, updatable = false)

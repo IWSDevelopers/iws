@@ -60,7 +60,7 @@ import java.util.Date;
 @Entity
 @Table(name = "countries")
 @Monitored(name = "Country", level = MonitoringLevel.DETAILED)
-public class CountryEntity extends AbstractUpdateable<CountryEntity> implements Externable<CountryEntity> {
+public final class CountryEntity extends AbstractUpdateable<CountryEntity> implements Externable<CountryEntity> {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -159,12 +159,12 @@ public class CountryEntity extends AbstractUpdateable<CountryEntity> implements 
      * {@inheritDoc}
      */
     @Override
-    public final void setId(final Long id) {
+    public void setId(final Long id) {
         this.id = id;
     }
 
     @Override
-    public final Long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -172,7 +172,7 @@ public class CountryEntity extends AbstractUpdateable<CountryEntity> implements 
      * {@inheritDoc}
      */
     @Override
-    public final void setExternalId(final String externalId) {
+    public void setExternalId(final String externalId) {
         this.countryCode = externalId;
     }
 
@@ -180,95 +180,95 @@ public class CountryEntity extends AbstractUpdateable<CountryEntity> implements 
      * {@inheritDoc}
      */
     @Override
-    public final String getExternalId() {
+    public String getExternalId() {
         return countryCode;
     }
 
-    public final void setCountryCode(final String countryCode) {
+    public void setCountryCode(final String countryCode) {
         this.countryCode = countryCode;
     }
 
-    public final String getCountryCode() {
+    public String getCountryCode() {
         return countryCode;
     }
 
-    public final void setCountryName(final String countryName) {
+    public void setCountryName(final String countryName) {
         this.countryName = countryName;
     }
 
-    public final String getCountryName() {
+    public String getCountryName() {
         return countryName;
     }
 
-    public final void setCountryNameFull(final String countryNameFull) {
+    public void setCountryNameFull(final String countryNameFull) {
         this.countryNameFull = countryNameFull;
     }
 
-    public final String getCountryNameFull() {
+    public String getCountryNameFull() {
         return countryNameFull;
     }
 
-    public final void setCountryNameNative(final String countryNameNative) {
+    public void setCountryNameNative(final String countryNameNative) {
         this.countryNameNative = countryNameNative;
     }
 
-    public final String getCountryNameNative() {
+    public String getCountryNameNative() {
         return countryNameNative;
     }
 
-    public final void setNationality(final String nationality) {
+    public void setNationality(final String nationality) {
         this.nationality = nationality;
     }
 
-    public final String getNationality() {
+    public String getNationality() {
         return nationality;
     }
 
-    public final void setCitizens(final String citizens) {
+    public void setCitizens(final String citizens) {
         this.citizens = citizens;
     }
 
-    public final String getCitizens() {
+    public String getCitizens() {
         return citizens;
     }
 
-    public final void setPhonecode(final String phonecode) {
+    public void setPhonecode(final String phonecode) {
         this.phonecode = phonecode;
     }
 
-    public final String getPhonecode() {
+    public String getPhonecode() {
         return phonecode;
     }
 
-    public final void setCurrency(final Currency currency) {
+    public void setCurrency(final Currency currency) {
         this.currency = currency;
     }
 
-    public final Currency getCurrency() {
+    public Currency getCurrency() {
         return currency;
     }
 
-    public final void setLanguages(final String languages) {
+    public void setLanguages(final String languages) {
         this.languages = languages;
     }
 
-    public final String getLanguages() {
+    public String getLanguages() {
         return languages;
     }
 
-    public final void setMembership(final Membership membership) {
+    public void setMembership(final Membership membership) {
         this.membership = membership;
     }
 
-    public final Membership getMembership() {
+    public Membership getMembership() {
         return membership;
     }
 
-    public final void setMemberSince(final Integer memberSince) {
+    public void setMemberSince(final Integer memberSince) {
         this.memberSince = memberSince;
     }
 
-    public final Integer getMemberSince() {
+    public Integer getMemberSince() {
         return memberSince;
     }
 
@@ -276,7 +276,7 @@ public class CountryEntity extends AbstractUpdateable<CountryEntity> implements 
      * {@inheritDoc}
      */
     @Override
-    public final void setModified(final Date modified) {
+    public void setModified(final Date modified) {
         this.modified = modified;
     }
 
@@ -284,7 +284,7 @@ public class CountryEntity extends AbstractUpdateable<CountryEntity> implements 
      * {@inheritDoc}
      */
     @Override
-    public final Date getModified() {
+    public Date getModified() {
         return modified;
     }
 
@@ -292,7 +292,7 @@ public class CountryEntity extends AbstractUpdateable<CountryEntity> implements 
      * {@inheritDoc}
      */
     @Override
-    public final void setCreated(final Date created) {
+    public void setCreated(final Date created) {
         this.created = created;
     }
 
@@ -300,7 +300,7 @@ public class CountryEntity extends AbstractUpdateable<CountryEntity> implements 
      * {@inheritDoc}
      */
     @Override
-    public final Date getCreated() {
+    public Date getCreated() {
         return created;
     }
 
@@ -312,7 +312,7 @@ public class CountryEntity extends AbstractUpdateable<CountryEntity> implements 
      * {@inheritDoc}
      */
     @Override
-    public final boolean diff(final CountryEntity obj) {
+    public boolean diff(final CountryEntity obj) {
         // Until properly implemented, better return true to avoid that we're
         // missing updates!
         return true;
@@ -322,7 +322,7 @@ public class CountryEntity extends AbstractUpdateable<CountryEntity> implements 
      * {@inheritDoc}
      */
     @Override
-    public final void merge(final CountryEntity obj) {
+    public void merge(final CountryEntity obj) {
         if (canMerge(obj)) {
             countryName = which(countryName, obj.countryName);
             countryNameFull = which(countryNameFull, obj.countryNameFull);

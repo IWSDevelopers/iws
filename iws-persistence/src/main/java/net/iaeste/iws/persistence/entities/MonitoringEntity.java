@@ -55,7 +55,7 @@ import java.util.Date;
 @Entity
 @Table(name = "history")
 @Monitored(name = "history", level = MonitoringLevel.NONE)
-public class MonitoringEntity implements IWSEntity {
+public final class MonitoringEntity implements IWSEntity {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -91,50 +91,6 @@ public class MonitoringEntity implements IWSEntity {
     private Date created = new Date();
 
     // =========================================================================
-    // Entity Constructors
-    // =========================================================================
-
-    /**
-     * Empty Constructor, JPA requirement.
-     */
-    public MonitoringEntity() {
-    }
-
-    /**
-     * Default Constructor, for creating new Monitoring Entity without the
-     * changed field values
-     *
-     * @param user      The User making the change
-     * @param group     The Group, which the Entity belongs to
-     * @param tableName The name of the Entity to store the change for
-     * @param recordId  The Id of the changed Entity
-     */
-    public MonitoringEntity(final UserEntity user, final GroupEntity group, final String tableName, final Long recordId) {
-        this.user = user;
-        this.group = group;
-        this.tableName = tableName;
-        this.recordId = recordId;
-    }
-
-    /**
-     * Default Constructor, for creating new Monitoring Entity without the
-     * changed field values
-     *
-     * @param user      The User making the change
-     * @param group     The Group, which the Entity belongs to
-     * @param tableName The name of the Entity to store the change for
-     * @param recordId  The Id of the changed Entity
-     * @param fields    Field values in a serialized, compressed byte array form
-     */
-    public MonitoringEntity(final UserEntity user, final GroupEntity group, final String tableName, final Long recordId, final byte[] fields) {
-        this.user = user;
-        this.group = group;
-        this.tableName = tableName;
-        this.recordId = recordId;
-        this.fields = fields;
-    }
-
-    // =========================================================================
     // Entity Setters & Getters
     // =========================================================================
 
@@ -142,7 +98,7 @@ public class MonitoringEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public final void setId(final Long id) {
+    public void setId(final Long id) {
         this.id = id;
     }
 
@@ -150,47 +106,47 @@ public class MonitoringEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public final Long getId() {
+    public Long getId() {
         return id;
     }
 
-    public final void setUser(final UserEntity user) {
+    public void setUser(final UserEntity user) {
         this.user = user;
     }
 
-    public final UserEntity getUser() {
+    public UserEntity getUser() {
         return user;
     }
 
-    public final void setGroup(final GroupEntity group) {
+    public void setGroup(final GroupEntity group) {
         this.group = group;
     }
 
-    public final GroupEntity getGroup() {
+    public GroupEntity getGroup() {
         return group;
     }
 
-    public final void setTableName(final String tableName) {
+    public void setTableName(final String tableName) {
         this.tableName = tableName;
     }
 
-    public final String getTableName() {
+    public String getTableName() {
         return tableName;
     }
 
-    public final void setRecordId(final Long recordId) {
+    public void setRecordId(final Long recordId) {
         this.recordId = recordId;
     }
 
-    public final Long getRecordId() {
+    public Long getRecordId() {
         return recordId;
     }
 
-    public final void setFields(final byte[] fields) {
+    public void setFields(final byte[] fields) {
         this.fields = fields;
     }
 
-    public final byte[] getFields() {
+    public byte[] getFields() {
         return fields;
     }
 
@@ -198,7 +154,7 @@ public class MonitoringEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public final void setCreated(final Date created) {
+    public void setCreated(final Date created) {
         this.created = created;
     }
 
@@ -206,7 +162,7 @@ public class MonitoringEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public final Date getCreated() {
+    public Date getCreated() {
         return created;
     }
 }

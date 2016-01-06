@@ -21,8 +21,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -40,17 +38,9 @@ import java.util.Date;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
-@NamedQueries({
-        @NamedQuery(name = "version.findAll",
-                query = "select v from VersionEntity v " +
-                        "order by id desc"),
-        @NamedQuery(name = "version.findLatest",
-                query = "select v from VersionEntity v " +
-                        "where id = (select max(id) from VersionEntity)")
-})
 @Entity
 @Table(name = "versions")
-public class VersionEntity implements IWSEntity {
+public final class VersionEntity implements IWSEntity {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -82,7 +72,7 @@ public class VersionEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public final void setId(final Long id) {
+    public void setId(final Long id) {
         this.id = id;
     }
 
@@ -90,23 +80,23 @@ public class VersionEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public final Long getId() {
+    public Long getId() {
         return id;
     }
 
-    public final void setDbVersion(final Integer dbVersion) {
+    public void setDbVersion(final Integer dbVersion) {
         this.dbVersion = dbVersion;
     }
 
-    public final Integer getDbVersion() {
+    public Integer getDbVersion() {
         return dbVersion;
     }
 
-    public final void setIwsVersion(final String iwsVersion) {
+    public void setIwsVersion(final String iwsVersion) {
         this.iwsVersion = iwsVersion;
     }
 
-    public final String getIwsVersion() {
+    public String getIwsVersion() {
         return iwsVersion;
     }
 
@@ -114,7 +104,7 @@ public class VersionEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public final void setCreated(final Date created) {
+    public void setCreated(final Date created) {
         this.created = created;
     }
 
@@ -122,7 +112,7 @@ public class VersionEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public final Date getCreated() {
+    public Date getCreated() {
         return created;
     }
 }

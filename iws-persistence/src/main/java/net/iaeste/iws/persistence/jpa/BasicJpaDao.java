@@ -80,7 +80,7 @@ public class BasicJpaDao implements BasicDao {
      * {@inheritDoc}
      */
     @Override
-    public void persist(final IWSEntity entityToPersist) {
+    public final void persist(final IWSEntity entityToPersist) {
         ensureUpdateableHasExternalId(entityToPersist);
         entityManager.persist(entityToPersist);
     }
@@ -89,11 +89,11 @@ public class BasicJpaDao implements BasicDao {
      * {@inheritDoc}
      */
     @Override
-    public void persist(final Authentication authentication, final IWSEntity entityToPersist) {
+    public final void persist(final Authentication authentication, final IWSEntity entityToPersist) {
         ensureUpdateableHasExternalId(entityToPersist);
 
         if ((entityToPersist instanceof Updateable<?>) && (entityToPersist.getId() != null)) {
-            ((Updateable) entityToPersist).setModified(new Date());
+            ((Updateable<?>) entityToPersist).setModified(new Date());
         }
 
         // We have to start by persisting the entityToPersist, to have an Id
@@ -111,7 +111,7 @@ public class BasicJpaDao implements BasicDao {
      * {@inheritDoc}
      */
     @Override
-    public <T extends Updateable<T>> void persist(final Authentication authentication, final T entityToPersist, final T changesToBeMerged) {
+    public final <T extends Updateable<T>> void persist(final Authentication authentication, final T entityToPersist, final T changesToBeMerged) {
         final MonitoringLevel level = findMonitoringLevel(entityToPersist, authentication.getGroup());
         if (level != MonitoringLevel.NONE) {
             final ArrayList<Field> changes = monitoringProcessor.findChanges(level, entityToPersist, changesToBeMerged);
@@ -128,7 +128,7 @@ public class BasicJpaDao implements BasicDao {
      * {@inheritDoc}
      */
     @Override
-    public void delete(final IWSEntity entity) {
+    public final void delete(final IWSEntity entity) {
         // First, let's drop all Objects matching the entityToPersist. Since
         // the record Id in the history table cannot be set up as a foreign
         // key, we must do this manually.
@@ -145,29 +145,7 @@ public class BasicJpaDao implements BasicDao {
      * {@inheritDoc}
      */
     @Override
-    public List<MonitoringEntity> findHistory(final IWSEntity entity) {
-        final String name = monitoringProcessor.findClassMonitoringName(entity);
-        final Long id = entity.getId();
-        final List<MonitoringEntity> result;
-
-        if ((name != null) && (id != null)) {
-            final Query query = entityManager.createNamedQuery("monitoring.findChanges");
-            query.setParameter("table", name);
-            query.setParameter("record", id);
-
-            result = query.getResultList();
-        } else {
-            result = new ArrayList<>(0);
-        }
-
-        return result;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T extends IWSView<T>> List<T> fetchList(final Query query, final Paginatable page) {
+    public final <T extends IWSView<T>> List<T> fetchList(final Query query, final Paginatable page) {
         // The Pagination starts with page 1, so we have to subtract one here,
         // to ensure that we read out the correct data from the database.
         query.setFirstResult((page.pageNumber() - 1) * page.pageSize());
@@ -203,7 +181,7 @@ public class BasicJpaDao implements BasicDao {
      * {@inheritDoc}
      */
     @Override
-    public List<PermissionRoleEntity> findRoles(final GroupEntity group) {
+    public final List<PermissionRoleEntity> findRoles(final GroupEntity group) {
         final Query query = entityManager.createNamedQuery("permissionRole.findByRoleToGroup");
         //final Query query = entityManager.createNamedQuery("role.findByGroup");
         final Long cid = (group.getCountry() != null) ? group.getCountry().getId() : 0;
@@ -217,7 +195,7 @@ public class BasicJpaDao implements BasicDao {
      * {@inheritDoc}
      */
     @Override
-    public CountryEntity findCountry(final String countryCode) {
+    public final CountryEntity findCountry(final String countryCode) {
         final Query query = entityManager.createNamedQuery("country.findByCountryCode");
         query.setParameter("code", toUpper(countryCode));
 
@@ -228,7 +206,7 @@ public class BasicJpaDao implements BasicDao {
      * {@inheritDoc}
      */
     @Override
-    public List<CountryEntity> findAllCountries() {
+    public final List<CountryEntity> findAllCountries() {
         final Query query = entityManager.createNamedQuery("country.findAll");
 
         return query.getResultList();
@@ -238,7 +216,7 @@ public class BasicJpaDao implements BasicDao {
      * {@inheritDoc}
      */
     @Override
-    public AddressEntity findAddress(final Long id) {
+    public final AddressEntity findAddress(final Long id) {
         final Query query = entityManager.createNamedQuery("address.findById");
         query.setParameter("id", id);
 
@@ -249,7 +227,7 @@ public class BasicJpaDao implements BasicDao {
      * {@inheritDoc}
      */
     @Override
-    public Long findNumberOfAliasesForName(final String name) {
+    public final Long findNumberOfAliasesForName(final String name) {
         final Query query = entityManager.createNamedQuery("user.findNumberOfSimilarAliases");
         query.setParameter("startOfAlias", name.toLowerCase(IWSConstants.DEFAULT_LOCALE) + '%');
 
@@ -260,7 +238,7 @@ public class BasicJpaDao implements BasicDao {
      * {@inheritDoc}
      */
     @Override
-    public GroupTypeEntity findGroupType(final GroupType groupType) {
+    public final GroupTypeEntity findGroupType(final GroupType groupType) {
         final Query query = entityManager.createNamedQuery("grouptype.findByName");
         // Query runs a String lower check on the value
         query.setParameter("name", groupType.name());
@@ -272,7 +250,7 @@ public class BasicJpaDao implements BasicDao {
      * {@inheritDoc}
      */
     @Override
-    public FileEntity findFileByUserAndExternalId(final UserEntity user, final String externalId) {
+    public final FileEntity findFileByUserAndExternalId(final UserEntity user, final String externalId) {
         final Query query = entityManager.createNamedQuery("file.findByUserAndExternalId");
         query.setParameter("uid", user.getId());
         query.setParameter("efid", externalId);
@@ -284,7 +262,7 @@ public class BasicJpaDao implements BasicDao {
      * {@inheritDoc}
      */
     @Override
-    public FileEntity findAttachedFileByUserAndExternalId(final GroupEntity group, final String externalId) throws PersistenceException {
+    public final FileEntity findAttachedFileByUserAndExternalId(final GroupEntity group, final String externalId) throws PersistenceException {
         final Query query = entityManager.createNamedQuery("file.findApplicationBySendingGroupAndExternalFileId");
         query.setParameter("gid", group.getId());
         query.setParameter("efid", externalId);
@@ -296,7 +274,7 @@ public class BasicJpaDao implements BasicDao {
      * {@inheritDoc}
      */
     @Override
-    public int deleteAttachmentRecord(final FileEntity file) {
+    public final int deleteAttachmentRecord(final FileEntity file) {
         final Query query = entityManager.createNamedQuery("attachments.deleteByFile");
         query.setParameter("fid", file.getId());
 
@@ -307,7 +285,7 @@ public class BasicJpaDao implements BasicDao {
      * {@inheritDoc}
      */
     @Override
-    public GroupEntity findMemberGroup(final UserEntity user) {
+    public final GroupEntity findMemberGroup(final UserEntity user) {
         final Query query = entityManager.createNamedQuery("group.findGroupByUserAndType");
         query.setParameter("uid", user.getId());
         query.setParameter("type", GroupType.MEMBER);
@@ -319,18 +297,7 @@ public class BasicJpaDao implements BasicDao {
      * {@inheritDoc}
      */
     @Override
-    public FileEntity findFileById(final Long id) {
-        final Query query = entityManager.createNamedQuery("file.findById");
-        query.setParameter("id", id);
-
-        return findSingleResult(query, "File");
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public FileEntity findFileByUserGroupAndExternalId(final UserEntity user, final GroupEntity group, final String externalId) {
+    public final FileEntity findFileByUserGroupAndExternalId(final UserEntity user, final GroupEntity group, final String externalId) {
         final Query query = entityManager.createNamedQuery("file.findByUserGroupAndExternalId");
         query.setParameter("uid", user.getId());
         query.setParameter("gid", group.getId());
@@ -343,7 +310,7 @@ public class BasicJpaDao implements BasicDao {
      * {@inheritDoc}
      */
     @Override
-    public FileEntity findAttachedFile(String externalFileId, String externalGroupId, StorageType type) {
+    public final FileEntity findAttachedFile(final String externalFileId, final String externalGroupId, final StorageType type) {
         final Query query;
 
         switch (type) {
@@ -380,7 +347,7 @@ public class BasicJpaDao implements BasicDao {
      * @param emptyValue new value to be added if the list is empty
      * @return Collection with at least 1 element
      */
-    protected <T> Collection<T> expandEmptyCollection(final Collection<T> collection, final T emptyValue) {
+    protected final <T> Collection<T> expandEmptyCollection(final Collection<T> collection, final T emptyValue) {
         if (collection.isEmpty()) {
             collection.add(emptyValue);
         }
@@ -437,7 +404,7 @@ public class BasicJpaDao implements BasicDao {
             if (((Externable<?>) entity).getExternalId() == null) {
                 ((Externable<?>) entity).setExternalId(UUID.randomUUID().toString());
                 // Just to make sure that the modification date is always set
-                ((Externable<?>) entity).setModified(new Date());
+                ((Updateable<?>) entity).setModified(new Date());
             }
         }
     }
@@ -474,15 +441,13 @@ public class BasicJpaDao implements BasicDao {
      * @param entityName Name of the entity expected, used if exception is thrown
      * @return Single Entity
      */
-    protected <T extends IWSEntity> T findSingleResult(final Query query, final String entityName) {
+    protected final <T extends IWSEntity> T findSingleResult(final Query query, final String entityName) {
         final List<T> found = query.getResultList();
-        final T result;
+        T result = null;
 
-        if (found.isEmpty()) {
-            result = null;
-        } else if (found.size() == 1) {
+        if (found.size() == 1) {
             result = found.get(0);
-        } else {
+        } else if (found.size() > 1) {
             throw new IdentificationException("Multiple " + entityName + "s were found.");
         }
 

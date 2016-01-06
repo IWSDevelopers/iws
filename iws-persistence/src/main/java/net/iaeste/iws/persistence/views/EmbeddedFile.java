@@ -27,7 +27,7 @@ import java.util.Date;
  * @since   IWS 1.0
  */
 @Embeddable
-public class EmbeddedFile {
+public final class EmbeddedFile {
 
     @Column(name = "file_id", insertable = false, updatable = false)
     private Long id = null;

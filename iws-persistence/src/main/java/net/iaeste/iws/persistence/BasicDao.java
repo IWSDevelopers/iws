@@ -23,7 +23,6 @@ import net.iaeste.iws.persistence.entities.FileEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.GroupTypeEntity;
 import net.iaeste.iws.persistence.entities.IWSEntity;
-import net.iaeste.iws.persistence.entities.MonitoringEntity;
 import net.iaeste.iws.persistence.entities.PermissionRoleEntity;
 import net.iaeste.iws.persistence.entities.Updateable;
 import net.iaeste.iws.persistence.entities.UserEntity;
@@ -34,7 +33,7 @@ import javax.persistence.Query;
 import java.util.List;
 
 /**
- * Contains the most basic database functionality, perstisting and deleting.
+ * Contains the most basic database functionality, persisting and deleting.
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -81,14 +80,6 @@ public interface BasicDao {
     void delete(IWSEntity entity);
 
     /**
-     * Finds the monitored history for a given Entity, and returns it.
-     *
-     * @param entity The Entity to find the history for
-     * @return List of the Entity history
-     */
-    List<MonitoringEntity> findHistory(IWSEntity entity);
-
-    /**
      * IWSViews should be used for all listings, since a View can be optimized
      * in the database, and further - we need to add paginating information
      * like page number, size, sorting by and sorting direction. This method
@@ -100,7 +91,7 @@ public interface BasicDao {
      * before using it.
      *
      * @param query Query to invoke with the paging information
-     * @param page  Paginf information
+     * @param page  Paging information
      * @return List of results from the Query
      */
     <T extends IWSView<T>> List<T> fetchList(Query query, Paginatable page);
@@ -164,14 +155,6 @@ public interface BasicDao {
     int deleteAttachmentRecord(FileEntity file);
 
     GroupEntity findMemberGroup(UserEntity user);
-
-    /**
-     * Finds a file based on the internal Id.
-     *
-     * @param id File Id
-     * @return Found File or null if no such file exists
-     */
-    FileEntity findFileById(Long id);
 
     /**
      * Finds a file for a given Group with the given External File Id, which the

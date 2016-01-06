@@ -57,11 +57,6 @@ import java.util.EnumMap;
                 query = "select g from GroupEntity g " +
                         "where g.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
                         "  and g.externalId = :id"),
-        @NamedQuery(name = "group.findAllNationalAndInternational",
-                query = "select g from GroupEntity g " +
-                        "where g.groupType.grouptype = " + EntityConstants.GROUPTYPE_MEMBER +
-                        "   or g.groupType.grouptype = " + EntityConstants.GROUPTYPE_INTERNATIONAL +
-                        "order by g.groupType.grouptype asc, g.groupName asc"),
         @NamedQuery(name = "group.findAllForContacts",
                 query = "select g from GroupEntity g " +
                         "where g.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
@@ -85,10 +80,6 @@ import java.util.EnumMap;
                         "  and g.id = ug.group.id" +
                         "  and g.groupType.grouptype = :type" +
                         "  and ug.user.id = :uid"),
-        @NamedQuery(name = "group.findGroupByParent",
-                query = "select g from GroupEntity g " +
-                        "where g.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
-                        "and g.parentId = :pid"),
         @NamedQuery(name = "group.findGroupByParentAndName",
                 query = "select g from GroupEntity g " +
                         "where g.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
@@ -497,7 +488,7 @@ public class GroupEntity extends AbstractUpdateable<GroupEntity> implements Exte
         // The ExternalId is sufficient to compare two internal GroupEntity
         // Objects, and even to compare if a not found external Group Object
         // matches an internal.
-        return (externalId != null) ? externalId.equals(that.externalId) : that.externalId == null;
+        return (externalId != null) ? externalId.equals(that.externalId) : (that.externalId == null);
     }
 
     /**

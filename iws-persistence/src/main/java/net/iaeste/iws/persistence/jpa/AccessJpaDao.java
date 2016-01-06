@@ -48,7 +48,7 @@ import java.util.List;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
-public class AccessJpaDao extends BasicJpaDao implements AccessDao {
+public final class AccessJpaDao extends BasicJpaDao implements AccessDao {
 
     private static final Integer DAY_IN_MILLIS = 24 * 60 * 60 * 1000;
 
@@ -112,17 +112,6 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
     public UserEntity findNewUserByCode(final String code) {
         final Query query = entityManager.createNamedQuery("user.findNewByCode");
         query.setParameter("code", code);
-
-        return findSingleResult(query, "User");
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public UserEntity findUserByAlias(final String alias) {
-        final Query query = entityManager.createNamedQuery("user.findByAlias");
-        query.setParameter("alias", alias);
 
         return findSingleResult(query, "User");
     }
@@ -257,28 +246,6 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
      * {@inheritDoc}
      */
     @Override
-    public GroupEntity findGroupById(final Long id) {
-        final Query query = entityManager.createNamedQuery("group.findById");
-        query.setParameter("id", id);
-
-        return findSingleResult(query, "Group");
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public UserEntity findUserByIW3Id(final Integer oldId) {
-        final Query query = entityManager.createNamedQuery("user.findByIW3Id");
-        query.setParameter("oldid", oldId);
-
-        return findSingleResult(query, "User");
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public GroupEntity findGroup(final UserEntity user, final String externalGroupId) {
         final Query query = entityManager.createNamedQuery("group.findByUserAndExternalId");
         query.setParameter("uid", user.getId());
@@ -291,20 +258,8 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
      * {@inheritDoc}
      */
     @Override
-    public UserGroupEntity findIw3UserGroup(final Integer iw3UserId, final Integer iw3GroupId) {
-        final Query query = entityManager.createNamedQuery("usergroup.findByIw3UserAndGroup");
-        query.setParameter("iw3User", iw3UserId);
-        query.setParameter("iw3Group", iw3GroupId);
-
-        return findSingleResult(query, "UserGroup");
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public List<UserGroupEntity> findActiveGroupMembers(final GroupEntity group) {
-        final Query query = entityManager.createNamedQuery("usergroup.findActiveGroupMembers");
+        final Query query = entityManager.createNamedQuery("userGroup.findActiveGroupMembers");
         query.setParameter("gid", group.getId());
 
         return query.getResultList();
@@ -315,7 +270,7 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
      */
     @Override
     public List<UserGroupEntity> findAllGroupMembers(final GroupEntity group) {
-        final Query query = entityManager.createNamedQuery("usergroup.findAllGroupMembers");
+        final Query query = entityManager.createNamedQuery("userGroup.findAllGroupMembers");
         query.setParameter("gid", group.getId());
 
         return query.getResultList();
@@ -326,7 +281,7 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
      */
     @Override
     public List<UserGroupEntity> findStudents(final Long memberGroupId) {
-        final Query query = entityManager.createNamedQuery("usergroup.findStudents");
+        final Query query = entityManager.createNamedQuery("userGroup.findStudents");
         query.setParameter("pid", memberGroupId);
 
         return query.getResultList();
@@ -498,35 +453,11 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
      */
     @Override
     public UserEntity findNationalSecretaryByMemberGroup(final GroupEntity memberGroup) {
-        final Query query = entityManager.createNamedQuery("usergroup.findNationalSecretaryByMemberGroup");
+        final Query query = entityManager.createNamedQuery("userGroup.findNationalSecretaryByMemberGroup");
         query.setParameter("mgid", memberGroup.getParentId());
 
-        UserGroupEntity userGroupEntity = findUniqueResult(query, "UserGroup");
+        final UserGroupEntity userGroupEntity = findUniqueResult(query, "UserGroup");
         return userGroupEntity.getUser();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public UserEntity findOwnerByGroup(final GroupEntity group) {
-        final Query query = entityManager.createNamedQuery("usergroup.findOwnerByExternalGroupId");
-        query.setParameter("egid", group.getExternalId());
-
-        UserGroupEntity userGroupEntity = findUniqueResult(query, "UserGroup");
-        return userGroupEntity.getUser();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public UserGroupEntity findMemberByGroupAndUser(final GroupEntity group, final UserEntity user) {
-        final Query query = entityManager.createNamedQuery("usergroup.findByGroupAndUser");
-        query.setParameter("gid", group.getId());
-        query.setParameter("uid", user.getId());
-
-        return findSingleResult(query, "UserGroup");
     }
 
     /**
@@ -534,7 +465,7 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
      */
     @Override
     public UserGroupEntity findMemberByExternalId(final String externalUserId, final GroupEntity group) {
-        final Query query = entityManager.createNamedQuery("usergroup.findMemberByGroupAndUser");
+        final Query query = entityManager.createNamedQuery("userGroup.findMemberByGroupAndUser");
         query.setParameter("gid", group.getId());
         query.setParameter("euid", externalUserId);
 
@@ -546,7 +477,7 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
      */
     @Override
     public UserGroupEntity findMemberByExternalId(final String externalUserId) {
-        final Query query = entityManager.createNamedQuery("usergroup.findMemberByUserExternalId");
+        final Query query = entityManager.createNamedQuery("userGroup.findMemberByUserExternalId");
         query.setParameter("euid", externalUserId);
 
         return findUniqueResult(query, "UserGroup");
@@ -557,7 +488,7 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
      */
     @Override
     public UserGroupEntity findMemberGroupByUser(final UserEntity user) {
-        final Query query = entityManager.createNamedQuery("usergroup.findMemberByUserId");
+        final Query query = entityManager.createNamedQuery("userGroup.findMemberByUserId");
         query.setParameter("uid", user.getId());
 
         return findUniqueResult(query, "UserGroup");
@@ -591,17 +522,6 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
      * {@inheritDoc}
      */
     @Override
-    public List<RoleEntity> findRolesByName(final String role) {
-        final Query query = entityManager.createNamedQuery("role.findRoleByName");
-        query.setParameter("role", role);
-
-        return query.getResultList();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public GroupTypeEntity findGroupTypeByType(final GroupType groupType) {
         final Query query = entityManager.createNamedQuery("grouptype.findByType");
         query.setParameter("type", groupType);
@@ -627,7 +547,7 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
     public RoleEntity findRoleByExternalIdAndGroup(final String reid, final GroupEntity group) {
         final Query query = entityManager.createNamedQuery("role.findByExternalIdAndGroup");
         query.setParameter("reid", reid);
-        query.setParameter("cid", group.getCountry() != null ?  group.getCountry().getId() : null);
+        query.setParameter("cid", (group.getCountry() != null) ? group.getCountry().getId() : null);
         query.setParameter("gid", group.getId());
 
         return findUniqueResult(query, "Role");
@@ -659,30 +579,8 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
      * {@inheritDoc}
      */
     @Override
-    public List<UserGroupEntity> findGroupUsersOnPublicList(final GroupEntity group) {
-        final Query query = entityManager.createNamedQuery("usergroup.findGroupMembersOnPublicList");
-        query.setParameter("gid", group.getId());
-
-        return query.getResultList();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<UserGroupEntity> findGroupUsersOnPrivateList(final GroupEntity group) {
-        final Query query = entityManager.createNamedQuery("usergroup.findGroupMembersOnPrivateList");
-        query.setParameter("gid", group.getId());
-
-        return query.getResultList();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public List<UserGroupEntity> findAllUserGroups(final UserEntity user) {
-        final Query query = entityManager.createNamedQuery("usergroup.findAllUserGroups");
+        final Query query = entityManager.createNamedQuery("userGroup.findAllUserGroups");
         query.setParameter("uid", user.getId());
 
         return query.getResultList();
@@ -692,18 +590,8 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
      * {@inheritDoc}
      */
     @Override
-    public List<UserGroupEntity> findNcs() {
-        final Query query = entityManager.createNamedQuery("usergroup.findncs");
-
-        return query.getResultList();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public UserGroupEntity findGroupMemberByUsernameAndGroupExternalId(final String username, final String groupExternalId) {
-        final Query query = entityManager.createNamedQuery("usergroup.findByUsernameAndGroupExternalId");
+        final Query query = entityManager.createNamedQuery("userGroup.findByUsernameAndGroupExternalId");
         query.setParameter("username", username);
         query.setParameter("egid", groupExternalId);
 
@@ -715,7 +603,7 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
      */
     @Override
     public List<UserEntity> findAccountsWithState(final UserStatus status, final Long daysBeforeExpiration) {
-        final Date date = new Date(new Date().getTime() - daysBeforeExpiration * DAY_IN_MILLIS);
+        final Date date = new Date(new Date().getTime() - (daysBeforeExpiration * DAY_IN_MILLIS));
         final Query query = entityManager.createNamedQuery("user.findAccountsWithStateAfterModification");
         query.setParameter("status", status);
         query.setParameter("days", date);
@@ -810,13 +698,14 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
     /**
      * {@inheritDoc}
      */
+    @Override
     public UserEntity findNcsMember(final String username) {
-        final Query query = entityManager.createNamedQuery("usergroup.userOnNcsList");
+        final Query query = entityManager.createNamedQuery("userGroup.userOnNCsList");
         query.setParameter("username", username);
         final List<UserEntity> found = query.getResultList();
 
         UserEntity result = null;
-        if (found != null && found.size() == 1) {
+        if ((found != null) && (found.size() == 1)) {
             result = found.get(0);
         }
 
@@ -836,7 +725,7 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
      * @return Unique result
      */
     @Override
-    protected final <T extends IWSEntity> T findUniqueResult(final Query query, final String entityName) {
+    protected <T extends IWSEntity> T findUniqueResult(final Query query, final String entityName) {
         final List<T> found = query.getResultList();
 
         if (found.isEmpty()) {

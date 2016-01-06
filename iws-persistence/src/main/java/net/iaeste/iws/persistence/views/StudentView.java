@@ -38,7 +38,7 @@ import javax.persistence.Table;
                         "where s.group.parentId = :parentId")
 })
 @Table(name = "student_view")
-public class StudentView extends AbstractView<StudentView> {
+public final class StudentView extends AbstractView<StudentView> {
 
     @Id
     @Column(name = "student_id", insertable = false, updatable = false)

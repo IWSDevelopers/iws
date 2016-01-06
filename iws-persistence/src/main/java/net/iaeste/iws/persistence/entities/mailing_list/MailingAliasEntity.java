@@ -49,7 +49,7 @@ import java.util.Date;
 })
 @Entity
 @Table(name = "mailing_aliases")
-public class MailingAliasEntity implements IWSEntity {
+public final class MailingAliasEntity implements IWSEntity {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;

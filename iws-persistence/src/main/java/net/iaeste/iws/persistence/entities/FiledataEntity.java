@@ -23,8 +23,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -41,14 +39,9 @@ import java.util.Date;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.1
  */
-@NamedQueries({
-        @NamedQuery(name = "filedata.findById",
-                query = "select f from FiledataEntity f " +
-                        "where f.file.id = :id")
-})
 @Entity
 @Table(name = "filedata")
-public class FiledataEntity implements IWSEntity {
+public final class FiledataEntity implements IWSEntity {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -78,7 +71,7 @@ public class FiledataEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public final void setId(final Long id) {
+    public void setId(final Long id) {
         this.id = id;
     }
 
@@ -86,23 +79,23 @@ public class FiledataEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public final Long getId() {
+    public Long getId() {
         return id;
     }
 
-    public final void setFile(final FileEntity file) {
+    public void setFile(final FileEntity file) {
         this.file = file;
     }
 
-    public final FileEntity getFile() {
+    public FileEntity getFile() {
         return file;
     }
 
-    public final void setFileData(final byte[] fileData) {
+    public void setFileData(final byte[] fileData) {
         this.fileData = fileData;
     }
 
-    public final byte[] getFileData() {
+    public byte[] getFileData() {
         return fileData;
     }
 
@@ -110,7 +103,7 @@ public class FiledataEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public final void setCreated(final Date created) {
+    public void setCreated(final Date created) {
         this.created = created;
     }
 
@@ -118,7 +111,7 @@ public class FiledataEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public final Date getCreated() {
+    public Date getCreated() {
         return created;
     }
 }

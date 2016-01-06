@@ -30,7 +30,7 @@ import java.util.Date;
  * @since   IWS 1.0
  */
 @Embeddable
-public class EmbeddedUser {
+public final class EmbeddedUser {
 
     @Column(name = "user_external_id", insertable = false, updatable = false)
     private String externalId = null;

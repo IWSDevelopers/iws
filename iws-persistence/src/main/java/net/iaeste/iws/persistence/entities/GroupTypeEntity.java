@@ -34,8 +34,6 @@ import java.util.Date;
  * @since   IWS 1.0
  */
 @NamedQueries({
-        @NamedQuery(name = "grouptype.findAll",
-                query = "select gt from GroupTypeEntity gt"),
         @NamedQuery(name= "grouptype.findByType",
                 query = "select gt from GroupTypeEntity gt " +
                         "where gt.grouptype = :type"),
@@ -45,7 +43,7 @@ import java.util.Date;
 })
 @Entity
 @Table(name = "grouptypes")
-public class GroupTypeEntity implements IWSEntity {
+public final class GroupTypeEntity implements IWSEntity {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -90,7 +88,7 @@ public class GroupTypeEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public final void setId(final Long id) {
+    public void setId(final Long id) {
         this.id = id;
     }
 
@@ -98,55 +96,55 @@ public class GroupTypeEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public final Long getId() {
+    public Long getId() {
         return id;
     }
 
-    public final void setGrouptype(final GroupType grouptype) {
+    public void setGrouptype(final GroupType grouptype) {
         this.grouptype = grouptype;
     }
 
-    public final GroupType getGrouptype() {
+    public GroupType getGrouptype() {
         return grouptype;
     }
 
-    public final void setWhoMayJoin(final GroupType.WhoMayJoin whoMayJoin) {
+    public void setWhoMayJoin(final GroupType.WhoMayJoin whoMayJoin) {
         this.whoMayJoin = whoMayJoin;
     }
 
-    public final GroupType.WhoMayJoin getWhoMayJoin() {
+    public GroupType.WhoMayJoin getWhoMayJoin() {
         return whoMayJoin;
     }
 
-    public final void setDescription(final String description) {
+    public void setDescription(final String description) {
         this.description = description;
     }
 
-    public final String getDescription() {
+    public String getDescription() {
         return description;
     }
 
-    public final void setPrivateList(final Boolean privateList) {
+    public void setPrivateList(final Boolean privateList) {
         this.privateList = privateList;
     }
 
-    public final Boolean getPrivateList() {
+    public Boolean getPrivateList() {
         return privateList;
     }
 
-    public final void setPublicList(final Boolean publicList) {
+    public void setPublicList(final Boolean publicList) {
         this.publicList = publicList;
     }
 
-    public final Boolean getPublicList() {
+    public Boolean getPublicList() {
         return publicList;
     }
 
-    public final void setFolderType(final GroupType.FolderType folderType) {
+    public void setFolderType(final GroupType.FolderType folderType) {
         this.folderType = folderType;
     }
 
-    public final GroupType.FolderType getFolderType() {
+    public GroupType.FolderType getFolderType() {
         return folderType;
     }
 
@@ -154,7 +152,7 @@ public class GroupTypeEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public final void setCreated(final Date created) {
+    public void setCreated(final Date created) {
         this.created = created;
     }
 
@@ -162,7 +160,7 @@ public class GroupTypeEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public final Date getCreated() {
+    public Date getCreated() {
         return created;
     }
 }

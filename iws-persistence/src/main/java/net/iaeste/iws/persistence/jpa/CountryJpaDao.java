@@ -78,7 +78,7 @@ public final class CountryJpaDao extends BasicJpaDao implements CountryDao {
      * {@inheritDoc}
      */
     @Override
-    public List<CountryView> getMemberCountries(List<String> countryCodes, Paginatable page) {
+    public List<CountryView> getMemberCountries(final List<String> countryCodes, final Paginatable page) {
         final List<String> codes = new ArrayList<>(countryCodes.size());
         for (final String code : countryCodes) {
             codes.add(toUpper(code));

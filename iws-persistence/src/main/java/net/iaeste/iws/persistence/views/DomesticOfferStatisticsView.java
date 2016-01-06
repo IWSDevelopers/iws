@@ -32,7 +32,7 @@ import javax.persistence.Table;
                 "where s.id.groupId = :gid" +
                 "  and s.exchangeYear in :years"))
 @Table(name = "domestic_offer_statistics")
-public class DomesticOfferStatisticsView {
+public final class DomesticOfferStatisticsView {
 
     @EmbeddedId
     private DomesticOfferStatisticsId id = new DomesticOfferStatisticsId();

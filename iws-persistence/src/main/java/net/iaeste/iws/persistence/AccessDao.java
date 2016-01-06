@@ -82,8 +82,6 @@ public interface AccessDao extends BasicDao {
 
     UserEntity findNewUserByCode(String code);
 
-    UserEntity findUserByAlias(String alias);
-
     SessionEntity findActiveSession(UserEntity user);
 
     SessionEntity findActiveSession(AuthenticationToken token);
@@ -130,13 +128,7 @@ public interface AccessDao extends BasicDao {
 
     GroupEntity findGroupByPermission(UserEntity user, String groupId, Permission permission);
 
-    GroupEntity findGroupById(Long id);
-
-    UserEntity findUserByIW3Id(Integer oldId);
-
     GroupEntity findGroup(UserEntity user, String externalGroupId);
-
-    UserGroupEntity findIw3UserGroup(Integer iw3UserId, Integer iw3GroupId);
 
     List<UserGroupEntity> findActiveGroupMembers(GroupEntity group);
 
@@ -180,16 +172,6 @@ public interface AccessDao extends BasicDao {
     GroupEntity findGroupByExternalId(String externalId);
 
     /**
-     * Find a Role by the name. However, as it is possible to have multiple
-     * roles with the same name, but assigned to different Countries or Groups,
-     * the result of this method is a list.
-     *
-     * @param role Name of the role to find Entities for
-     * @return List of all Roles in the IWS, matching the given name
-     */
-    List<RoleEntity> findRolesByName(String role);
-
-    /**
      * Finds a role based on the Id. Returns either the found RoleEntity or if
      * nothing was found - null.
      *
@@ -202,13 +184,9 @@ public interface AccessDao extends BasicDao {
 
     UserEntity findNationalSecretaryByMemberGroup(GroupEntity memberGroup);
 
-    UserEntity findOwnerByGroup(GroupEntity group);
-
     UserEntity findActiveUserByExternalId(String externalUserId);
 
     UserEntity findUserByExternalId(String externalUserId);
-
-    UserGroupEntity findMemberByGroupAndUser(GroupEntity group, UserEntity user);
 
     /**
      * Finds a user from the given Member Group. If no such user account is
@@ -252,22 +230,6 @@ public interface AccessDao extends BasicDao {
     RoleEntity findRoleByExternalId(String externalId);
 
     /**
-     * Finds all users subscribed to group's public mailing list
-     *
-     * @param  group
-     * @return List of UserGroupEntity
-     */
-    List<UserGroupEntity> findGroupUsersOnPublicList(GroupEntity group);
-
-    /**
-     * Finds all users subscribed to group's private mailing list
-     *
-     * @param  group
-     * @return List of UserGroupEntity
-     */
-    List<UserGroupEntity> findGroupUsersOnPrivateList(GroupEntity group);
-
-    /**
      * Finds all groups the user is member
      *
      * @param  user UserEntity
@@ -276,15 +238,10 @@ public interface AccessDao extends BasicDao {
     List<UserGroupEntity> findAllUserGroups(UserEntity user);
 
     /**
-     * Finds all users for NCS mailing list
-     */
-    List<UserGroupEntity> findNcs();
-
-    /**
      * Finds a group membership for given username
      *
-     * @param username
-     * @param groupExternalId
+     * @param username        Username
+     * @param groupExternalId External Group Id
      */
     UserGroupEntity findGroupMemberByUsernameAndGroupExternalId(String username, String groupExternalId);
 
@@ -294,7 +251,7 @@ public interface AccessDao extends BasicDao {
      * Settings, and injected here as parameter.
      *
      * @param  daysBeforeExpiration Days before a NEW account has expired
-     * @return
+     * @return List of found User Accounts
      */
     List<UserEntity> findAccountsWithState(UserStatus status, Long daysBeforeExpiration);
 

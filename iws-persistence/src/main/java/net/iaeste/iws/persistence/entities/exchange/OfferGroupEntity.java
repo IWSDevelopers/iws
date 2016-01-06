@@ -95,7 +95,7 @@ import java.util.Date;
                         "where og.offer.id = :oid" +
                         "  and og.group.id in :gids"),
         // The HSQLDB has an annoying issues with delete queries, hence we have
-        // to create the query with a subselect, see:
+        // to create the query with a sub select, see:
         // http://docs.jboss.org/hibernate/orm/4.1/devguide/en-US/html_single/#d5e1041
         @NamedQuery(name = "offerGroup.deleteByExternalOfferId",
                 query = "delete from OfferGroupEntity og " +
@@ -116,7 +116,7 @@ import java.util.Date;
 @Entity
 @Table(name = "offer_to_group")
 @Monitored(name = "Offer2Group", level = MonitoringLevel.DETAILED)
-public class OfferGroupEntity extends AbstractUpdateable<OfferGroupEntity> implements Externable<OfferGroupEntity> {
+public final class OfferGroupEntity extends AbstractUpdateable<OfferGroupEntity> implements Externable<OfferGroupEntity> {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -233,7 +233,7 @@ public class OfferGroupEntity extends AbstractUpdateable<OfferGroupEntity> imple
      * {@inheritDoc}
      */
     @Override
-    public final void setId(final Long id) {
+    public void setId(final Long id) {
         this.id = id;
     }
 
@@ -241,7 +241,7 @@ public class OfferGroupEntity extends AbstractUpdateable<OfferGroupEntity> imple
      * {@inheritDoc}
      */
     @Override
-    public final Long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -249,7 +249,7 @@ public class OfferGroupEntity extends AbstractUpdateable<OfferGroupEntity> imple
      * {@inheritDoc}
      */
     @Override
-    public final void setExternalId(final String externalId) {
+    public void setExternalId(final String externalId) {
         this.externalId = externalId;
     }
 
@@ -257,71 +257,71 @@ public class OfferGroupEntity extends AbstractUpdateable<OfferGroupEntity> imple
      * {@inheritDoc}
      */
     @Override
-    public final String getExternalId() {
+    public String getExternalId() {
         return externalId;
     }
 
-    public final void setOffer(final OfferEntity offer) {
+    public void setOffer(final OfferEntity offer) {
         this.offer = offer;
     }
 
-    public final OfferEntity getOffer() {
+    public OfferEntity getOffer() {
         return offer;
     }
 
-    public final void setGroup(final GroupEntity group) {
+    public void setGroup(final GroupEntity group) {
         this.group = group;
     }
 
-    public final GroupEntity getGroup() {
+    public GroupEntity getGroup() {
         return group;
     }
 
-    public final void setComment(final String comment) {
+    public void setComment(final String comment) {
         this.comment = comment;
     }
 
-    public final String getComment() {
+    public String getComment() {
         return comment;
     }
 
-    public final OfferState getStatus() {
+    public OfferState getStatus() {
         return status;
     }
 
-    public final void setStatus(final OfferState status) {
+    public void setStatus(final OfferState status) {
         this.status = status;
     }
 
-    public final void setModifiedBy(final UserEntity modifiedBy) {
+    public void setModifiedBy(final UserEntity modifiedBy) {
         this.modifiedBy = modifiedBy;
     }
 
-    public final UserEntity getModifiedBy() {
+    public UserEntity getModifiedBy() {
         return modifiedBy;
     }
 
-    public final void setCreatedBy(final UserEntity createdBy) {
+    public void setCreatedBy(final UserEntity createdBy) {
         this.createdBy = createdBy;
     }
 
-    public final UserEntity getCreatedBy() {
+    public UserEntity getCreatedBy() {
         return createdBy;
     }
 
-    public final void setHasApplication(final Boolean hasApplication) {
+    public void setHasApplication(final Boolean hasApplication) {
         this.hasApplication = hasApplication;
     }
 
-    public final Boolean getHasApplication() {
+    public Boolean getHasApplication() {
         return hasApplication;
     }
 
-    public final void setHidden(final Boolean hidden) {
+    public void setHidden(final Boolean hidden) {
         this.hidden = hidden;
     }
 
-    public final Boolean getHidden() {
+    public Boolean getHidden() {
         return hidden;
     }
 
@@ -329,7 +329,7 @@ public class OfferGroupEntity extends AbstractUpdateable<OfferGroupEntity> imple
      * {@inheritDoc}
      */
     @Override
-    public final void setModified(final Date modified) {
+    public void setModified(final Date modified) {
         this.modified = modified;
     }
 
@@ -337,7 +337,7 @@ public class OfferGroupEntity extends AbstractUpdateable<OfferGroupEntity> imple
      * {@inheritDoc}
      */
     @Override
-    public final Date getModified() {
+    public Date getModified() {
         return modified;
     }
 
@@ -345,7 +345,7 @@ public class OfferGroupEntity extends AbstractUpdateable<OfferGroupEntity> imple
      * {@inheritDoc}
      */
     @Override
-    public final void setCreated(final Date created) {
+    public void setCreated(final Date created) {
         this.created = created;
     }
 
@@ -353,7 +353,7 @@ public class OfferGroupEntity extends AbstractUpdateable<OfferGroupEntity> imple
      * {@inheritDoc}
      */
     @Override
-    public final Date getCreated() {
+    public Date getCreated() {
         return created;
     }
 
@@ -365,7 +365,7 @@ public class OfferGroupEntity extends AbstractUpdateable<OfferGroupEntity> imple
      * {@inheritDoc}
      */
     @Override
-    public final boolean diff(final OfferGroupEntity obj) {
+    public boolean diff(final OfferGroupEntity obj) {
         int changes = 0;
 
         changes += different(comment, obj.comment);
@@ -378,7 +378,7 @@ public class OfferGroupEntity extends AbstractUpdateable<OfferGroupEntity> imple
      * {@inheritDoc}
      */
     @Override
-    public final void merge(final OfferGroupEntity obj) {
+    public void merge(final OfferGroupEntity obj) {
         if (canMerge(obj)) {
             comment = which(comment, obj.comment);
             status = which(status, obj.status);

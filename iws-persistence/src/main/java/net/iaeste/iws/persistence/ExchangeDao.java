@@ -16,7 +16,6 @@ package net.iaeste.iws.persistence;
 
 import net.iaeste.iws.api.dtos.exchange.Employer;
 import net.iaeste.iws.api.enums.exchange.OfferState;
-import net.iaeste.iws.persistence.entities.AttachmentEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.exchange.EmployerEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
@@ -24,7 +23,6 @@ import net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity;
 import net.iaeste.iws.persistence.entities.exchange.PublishingGroupEntity;
 import net.iaeste.iws.persistence.exceptions.IdentificationException;
 import net.iaeste.iws.persistence.exceptions.PersistenceException;
-import net.iaeste.iws.persistence.views.EmployerView;
 
 import java.util.Date;
 import java.util.List;
@@ -63,15 +61,6 @@ public interface ExchangeDao extends BasicDao {
     /**
      * Finds the entity in the database.
      *
-     * @param offerId primary key for offers
-     * @return OfferEntity for given id, if no entity exists, then a null value is returned.
-     * @throws PersistenceException
-     */
-    OfferEntity findOffer(Authentication authentication, Long offerId);
-
-    /**
-     * Finds the entity in the database.
-     *
      * @param externalId The External Id of the Offer
      * @return OfferEntity for given id, if no entity exists, then a null value is returned.
      * @throws PersistenceException
@@ -93,16 +82,10 @@ public interface ExchangeDao extends BasicDao {
      * returned, otherwise the found Entity is returned.
      *
      * @param externalId The External Id of the Offer
-     * @param refNo      The unique Offer Refence Number
+     * @param refNo      The unique Offer Reference Number
      * @return Found Offer Entity or null
      */
     OfferEntity findOfferByExternalIdAndRefNo(Authentication authentication, String externalId, String refNo);
-
-    /**
-     * @param offerIds list of primary keys for offers
-     * @return list of {@code OfferEntity}
-     */
-    List<OfferEntity> findOffers(Authentication authentication, List<Long> offerIds);
 
     /**
      * @param externalIds list of external IDs for fetching
@@ -111,63 +94,12 @@ public interface ExchangeDao extends BasicDao {
     List<OfferEntity> findOffersByExternalId(Authentication authentication, Set<String> externalIds);
 
     /**
-     * Finds the entity in the database.
-     *
-     * @param employerName employer name to search for
-     * @return list of {@code OfferEntity}
-     * @throws PersistenceException
-     */
-    List<OfferEntity> findOffersByEmployerName(Authentication authentication, String employerName);
-
-    /**
-     * Finds the entity in the database.
-     *
-     * @param employerName employer name to search for
-     * @return list of {@code OfferEntity}
-     * @throws PersistenceException
-     */
-    List<EmployerView> findOffersByLikeEmployerName(Authentication authentication, String employerName);
-
-    /**
-     * Finds all shared offers.
-     *
-     * @return list of {@link OfferEntity} which are shared
-     */
-    List<OfferEntity> findSharedOffers(Authentication authentication, Integer exchangeYear);
-
-    /**
      * Finds information about sharing of the offer
      *
      * @param  offerId id of the offer to get sharing info for
      * @return list of {@link OfferGroupEntity} which are shared
      */
     List<OfferGroupEntity> findInfoForSharedOffer(Long offerId);
-
-    /**
-     * Finds information about sharing of the offers
-     *
-     * @param  offerIds list of ids of the offers to get sharing info for
-     * @return list of {@link OfferGroupEntity} which are shared
-     */
-    List<OfferGroupEntity> findInfoForSharedOffers(List<Long> offerIds);
-
-    /**
-     * Finds information about sharing of the offer for specified group
-     *
-     * @param  offerId id of the offer to get sharing info for
-     * @param  groupId id of the group to get sharing info for
-     * @return {@link OfferGroupEntity}
-     */
-    OfferGroupEntity findInfoForSharedOfferAndGroup(Long offerId, Long groupId);
-
-    /**
-     * Finds information about sharing of the offer for specified list of groups
-     *
-     * @param  offerId id of the offer to get sharing info for
-     * @param  groupIds list of id of the groups to get sharing info for
-     * @return list of {@link OfferGroupEntity} which are shared
-     */
-    List<OfferGroupEntity> findInfoForSharedOfferAndGroup(Long offerId, List<Long> groupIds);
 
     /**
      * Finds information about sharing of the offer
@@ -195,16 +127,7 @@ public interface ExchangeDao extends BasicDao {
     List<OfferGroupEntity> findInfoForSharedOffers(GroupEntity group, Set<String> offerIds);
 
     /**
-     * Finds information about sharing of the offer only if offer did not expire because of deadline
-     *
-     * @param  externalOfferId reference number of the offer to get sharing info for
-     * @param currentDate current date for comparing with nomination deadlines
-     * @return list of {@link OfferGroupEntity} which are shared
-     */
-    List<OfferGroupEntity> findInfoForUnexpiredSharedOffer(String externalOfferId, Date currentDate);
-
-    /**
-     * Unshares the offer from all groups
+     * Unshare's the offer from all groups
      *
      * @param offerId id of the offer to get sharing info for
      * @return number of groups from which the offer was unshared
@@ -212,30 +135,13 @@ public interface ExchangeDao extends BasicDao {
     Integer unshareFromAllGroups(Long offerId);
 
     /**
-     * Unshares the offer from all groups
-     *
-     * @param  externalId reference number of the offer to get sharing info for
-     * @return number of groups from which the offer was unshared
-     */
-    Integer unshareFromAllGroups(String externalId);
-
-    /**
-     * Unshares the offer from groups
+     * Unshare's the offer from groups
      *
      * @param  offerId id of the offer to get sharing info for
      * @param  groups list of groups from which the offer is unshared
      * @return number of groups from which the offer was unshared
      */
     Integer unshareFromGroups(Long offerId, List<Long> groups);
-
-    /**
-     * Unshares the offer from groups
-     *
-     * @param  externalId The External Id for the Offer
-     * @param  groups     List of groups from which the offer is unshared
-     * @return number of groups from which the offer was unshared
-     */
-    Integer unshareFromGroups(String externalId, List<Long> groups);
 
     /**
      * Finds all groups for given external ids
@@ -255,10 +161,8 @@ public interface ExchangeDao extends BasicDao {
 
     List<GroupEntity> findGroupsForSharing(GroupEntity group);
 
-    List<AttachmentEntity> findAttachments(String table, Long id);
-
     /**
-     * Finds a list of Offers which has expiired, meaning that the nominational
+     * Finds a list of Offers which has expired, meaning that the nomination's
      * deadline has been exceeded. Please see Trac ticket #1020 for more
      * information.
      *
@@ -274,21 +178,6 @@ public interface ExchangeDao extends BasicDao {
      * @param state New offer state
      */
     void updateOfferState(List<Long> ids, OfferState state);
-
-    /**
-     * Sets given state for given list of OfferGroup IDs
-     *
-     * @param ids List of OfferGroups IDs
-     * @param state New OfferGroup state
-     */
-    void updateOfferGroupState(List<Long> ids, OfferState state);
-
-    /**
-     * Deletes OfferGroup by given list of IDs
-     *
-     * @param ids List of offer IDs
-     */
-    void deleteOfferGroup(List<Long> ids);
 
     /**
      * Sets the hidden flag in OfferGroup for given list of OfferGroup IDs

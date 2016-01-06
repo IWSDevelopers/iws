@@ -30,7 +30,7 @@ import java.util.Date;
  * @since   IWS 1.0
  */
 @Embeddable
-public class EmbeddedOfferGroup {
+public final class EmbeddedOfferGroup {
 
     @Column(name = "shared_external_id", insertable = false, updatable = false)
     private String externalId = null;

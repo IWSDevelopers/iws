@@ -42,7 +42,7 @@ import javax.persistence.Table;
                         "  and lower(e.employer.name) like :name")
 })
 @Table(name = "employer_view")
-public class EmployerView extends AbstractView<EmployerView> {
+public final class EmployerView extends AbstractView<EmployerView> {
 
     @Id
     @Column(name = "id", insertable = false, updatable = false)

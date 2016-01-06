@@ -35,7 +35,7 @@ import java.io.Serializable;
  * @since   IWS 1.0
  */
 @Embeddable
-public class ForeignOfferStatisticsId implements Serializable {
+public final class ForeignOfferStatisticsId implements Serializable {
 
     /** {@see IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;

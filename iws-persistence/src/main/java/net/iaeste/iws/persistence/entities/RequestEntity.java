@@ -37,7 +37,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "requests")
-public class RequestEntity implements IWSEntity {
+public final class RequestEntity implements IWSEntity {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -72,16 +72,6 @@ public class RequestEntity implements IWSEntity {
     private Date created = new Date();
 
     // =========================================================================
-    // Entity Constructors
-    // =========================================================================
-
-    /**
-     * Empty Constructor, JPA requirement.
-     */
-    public RequestEntity() {
-    }
-
-    // =========================================================================
     // Entity Setters & Getters
     // =========================================================================
 
@@ -89,7 +79,7 @@ public class RequestEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public final void setId(final Long id) {
+    public void setId(final Long id) {
         this.id = id;
     }
 
@@ -97,47 +87,47 @@ public class RequestEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public final Long getId() {
+    public Long getId() {
         return id;
     }
 
-    public final void setSession(final SessionEntity session) {
+    public void setSession(final SessionEntity session) {
         this.session = session;
     }
 
-    public final SessionEntity getSession() {
+    public SessionEntity getSession() {
         return session;
     }
 
-    public final void setRequest(final String request) {
+    public void setRequest(final String request) {
         this.request = request;
     }
 
-    public final String getRequest() {
+    public String getRequest() {
         return request;
     }
 
-    public final void setErrorcode(final Long errorcode) {
+    public void setErrorcode(final Long errorcode) {
         this.errorcode = errorcode;
     }
 
-    public final Long getErrorcode() {
+    public Long getErrorcode() {
         return errorcode;
     }
 
-    public final void setErrormessage(final String errormessage) {
+    public void setErrormessage(final String errormessage) {
         this.errormessage = errormessage;
     }
 
-    public final String getErrormessage() {
+    public String getErrormessage() {
         return errormessage;
     }
 
-    public final void setRequestObject(final byte[] requestObject) {
+    public void setRequestObject(final byte[] requestObject) {
         this.requestObject = requestObject;
     }
 
-    public final byte[] getRequestObject() {
+    public byte[] getRequestObject() {
         return requestObject;
     }
 
@@ -145,7 +135,7 @@ public class RequestEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public final void setCreated(final Date created) {
+    public void setCreated(final Date created) {
         this.created = created;
     }
 
@@ -153,7 +143,7 @@ public class RequestEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public final Date getCreated() {
+    public Date getCreated() {
         return created;
     }
 }

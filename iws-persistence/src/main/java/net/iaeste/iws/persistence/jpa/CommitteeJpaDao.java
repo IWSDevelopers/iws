@@ -17,7 +17,6 @@ package net.iaeste.iws.persistence.jpa;
 import net.iaeste.iws.api.enums.GroupStatus;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.Membership;
-import net.iaeste.iws.api.enums.UserStatus;
 import net.iaeste.iws.common.configuration.InternalConstants;
 import net.iaeste.iws.persistence.CommitteeDao;
 import net.iaeste.iws.persistence.entities.CountryEntity;
@@ -39,7 +38,7 @@ import java.util.Set;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.1
  */
-public class CommitteeJpaDao extends BasicJpaDao implements CommitteeDao {
+public final class CommitteeJpaDao extends BasicJpaDao implements CommitteeDao {
 
     /**
      * Default Constructor.
@@ -218,7 +217,7 @@ public class CommitteeJpaDao extends BasicJpaDao implements CommitteeDao {
      */
     @Override
     public UserGroupEntity findExistingRelation(final GroupEntity groupEntity, final UserEntity userEntity) {
-        final Query query = entityManager.createNamedQuery("usergroup.findByGroupAndUser");
+        final Query query = entityManager.createNamedQuery("userGroup.findByGroupAndUser");
         query.setParameter("gid", groupEntity.getId());
         query.setParameter("uid", userEntity.getId());
 
@@ -255,46 +254,6 @@ public class CommitteeJpaDao extends BasicJpaDao implements CommitteeDao {
         query.setParameter("pgid", staff.getParentId());
 
         return findSingleResult(query, "Group");
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<UserGroupEntity> findGroupMembers(final GroupEntity group, final Set<UserStatus> statuses) {
-        final String jql =
-                "select ug from UserGroupEntity ug " +
-                "where ug.user.status in :status" +
-                "  and ug.group.id = :gid";
-
-        final Query query = entityManager.createQuery(jql);
-        query.setParameter("status", statuses);
-        query.setParameter("gid", group.getId());
-
-        return query.getResultList();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public GroupEntity findPrivateGroup(final UserEntity user) {
-        final Query query = entityManager.createNamedQuery("group.findGroupByUserAndType");
-        query.setParameter("uid", user.getId());
-        query.setParameter("type", GroupType.PRIVATE);
-
-        return findSingleResult(query, "Group");
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int deleteSessions(final UserEntity user) {
-        final Query query = entityManager.createNamedQuery("session.deleteUserSessions");
-        query.setParameter("uid", user.getId());
-
-        return query.executeUpdate();
     }
 
     /**

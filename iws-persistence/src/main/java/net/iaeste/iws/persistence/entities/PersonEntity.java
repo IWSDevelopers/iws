@@ -39,7 +39,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "persons")
-public class PersonEntity extends AbstractUpdateable<PersonEntity> {
+public final class PersonEntity extends AbstractUpdateable<PersonEntity> {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -105,7 +105,7 @@ public class PersonEntity extends AbstractUpdateable<PersonEntity> {
      * {@inheritDoc}
      */
     @Override
-    public final void setId(final Long id) {
+    public void setId(final Long id) {
         this.id = id;
     }
 
@@ -113,87 +113,87 @@ public class PersonEntity extends AbstractUpdateable<PersonEntity> {
      * {@inheritDoc}
      */
     @Override
-    public final Long getId() {
+    public Long getId() {
         return id;
     }
 
-    public final void setNationality(final CountryEntity nationality) {
+    public void setNationality(final CountryEntity nationality) {
         this.nationality = nationality;
     }
 
-    public final CountryEntity getNationality() {
+    public CountryEntity getNationality() {
         return nationality;
     }
 
-    public final void setAddress(final AddressEntity address) {
+    public void setAddress(final AddressEntity address) {
         this.address = address;
     }
 
-    public final AddressEntity getAddress() {
+    public AddressEntity getAddress() {
         return address;
     }
 
-    public final void setEmail(final String email) {
+    public void setEmail(final String email) {
         this.email = email;
     }
 
-    public final String getEmail() {
+    public String getEmail() {
         return email;
     }
 
-    public final void setPhone(final String phone) {
+    public void setPhone(final String phone) {
         this.phone = phone;
     }
 
-    public final String getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public final void setMobile(final String mobile) {
+    public void setMobile(final String mobile) {
         this.mobile = mobile;
     }
 
-    public final String getMobile() {
+    public String getMobile() {
         return mobile;
     }
 
-    public final void setFax(final String fax) {
+    public void setFax(final String fax) {
         this.fax = fax;
     }
 
-    public final String getFax() {
+    public String getFax() {
         return fax;
     }
 
-    public final void setBirthday(final Date birthday) {
+    public void setBirthday(final Date birthday) {
         this.birthday = birthday;
     }
 
-    public final Date getBirthday() {
+    public Date getBirthday() {
         return birthday;
     }
 
-    public final void setGender(final Gender gender) {
+    public void setGender(final Gender gender) {
         this.gender = gender;
     }
 
-    public final Gender getGender() {
+    public Gender getGender() {
         return gender;
     }
 
-    public final void setUnderstoodPrivacy(final Boolean understoodPrivacy) {
+    public void setUnderstoodPrivacy(final Boolean understoodPrivacy) {
         this.understoodPrivacy = understoodPrivacy;
     }
 
-    public final Boolean getUnderstoodPrivacy() {
+    public Boolean getUnderstoodPrivacy() {
         return understoodPrivacy;
     }
 
-    public final void setAcceptNewsletters(final Boolean acceptNewsletters) {
+    public void setAcceptNewsletters(final Boolean acceptNewsletters) {
         this.acceptNewsletters = acceptNewsletters;
     }
 
-    public final Boolean getAcceptNewsletters() {
+    public Boolean getAcceptNewsletters() {
         return acceptNewsletters;
     }
 
@@ -201,7 +201,7 @@ public class PersonEntity extends AbstractUpdateable<PersonEntity> {
      * {@inheritDoc}
      */
     @Override
-    public final void setModified(final Date modified) {
+    public void setModified(final Date modified) {
         this.modified = modified;
     }
 
@@ -209,7 +209,7 @@ public class PersonEntity extends AbstractUpdateable<PersonEntity> {
      * {@inheritDoc}
      */
     @Override
-    public final Date getModified() {
+    public Date getModified() {
         return modified;
     }
 
@@ -217,7 +217,7 @@ public class PersonEntity extends AbstractUpdateable<PersonEntity> {
      * {@inheritDoc}
      */
     @Override
-    public final void setCreated(final Date created) {
+    public void setCreated(final Date created) {
         this.created = created;
     }
 
@@ -225,7 +225,7 @@ public class PersonEntity extends AbstractUpdateable<PersonEntity> {
      * {@inheritDoc}
      */
     @Override
-    public final Date getCreated() {
+    public Date getCreated() {
         return created;
     }
 
@@ -237,7 +237,7 @@ public class PersonEntity extends AbstractUpdateable<PersonEntity> {
      * {@inheritDoc}
      */
     @Override
-    public final boolean diff(final PersonEntity obj) {
+    public boolean diff(final PersonEntity obj) {
         // Until properly implemented, better return true to avoid that we're
         // missing updates!
         return true;
@@ -247,7 +247,7 @@ public class PersonEntity extends AbstractUpdateable<PersonEntity> {
      * {@inheritDoc}
      */
     @Override
-    public final void merge(final PersonEntity obj) {
+    public void merge(final PersonEntity obj) {
         if (canMerge(obj)) {
             // We're skipping the Address here, since the Address is another
             // Entity, which must be dealt with separately. It should be noted,

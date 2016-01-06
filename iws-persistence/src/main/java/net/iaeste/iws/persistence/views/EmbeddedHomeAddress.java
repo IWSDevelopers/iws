@@ -37,7 +37,7 @@ import java.util.Date;
  * @since   IWS 1.0
  */
 @Embeddable
-public class EmbeddedHomeAddress {
+public final class EmbeddedHomeAddress {
 
     @Column(name = "home_address_street1", insertable = false, updatable = false)
     private String street1 = null;

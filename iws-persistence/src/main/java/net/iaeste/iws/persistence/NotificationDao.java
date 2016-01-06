@@ -68,7 +68,7 @@ public interface NotificationDao extends BasicDao {
      * Finds NotificationJobTaskEntity by ConsumerId
      *
      * @param consumerId    The consumer id
-     * @param attemptsLimit Number of attempts when the processing failed, if the value is larger than limit, ignor the task
+     * @param attemptsLimit Number of attempts when the processing failed, if the value is larger than limit, ignore the task
      * @return            NotificationJobTaskEntity
      */
     List<NotificationJobTasksView> findUnprocessedNotificationJobTaskByConsumerId(Long consumerId, Integer attemptsLimit);
@@ -76,7 +76,7 @@ public interface NotificationDao extends BasicDao {
     /**
      * Updates NotificationJobTask entity
      *
-     * @param id         NotificaitonJobTask id
+     * @param id         NotificationJobTask id
      * @param processed  flag processed/unprocessed
      * @param attempts   number of processing attempts
      */

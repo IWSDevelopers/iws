@@ -34,7 +34,7 @@ import javax.persistence.TemporalType;
 import java.util.Date;
 
 /**
- * This entity is to be used for storing registerd notification consumers
+ * This entity is to be used for storing registered notification consumers
  *
  * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -50,7 +50,7 @@ import java.util.Date;
 })
 @Entity
 @Table(name = "notification_consumers")
-public class NotificationConsumerEntity implements IWSEntity {
+public final class NotificationConsumerEntity implements IWSEntity {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -108,7 +108,7 @@ public class NotificationConsumerEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public final void setId(final Long id) {
+    public void setId(final Long id) {
         this.id = id;
     }
 
@@ -116,47 +116,47 @@ public class NotificationConsumerEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public final Long getId() {
+    public Long getId() {
         return id;
     }
 
-    public final void setGroup(final GroupEntity group) {
+    public void setGroup(final GroupEntity group) {
         this.group = group;
     }
 
-    public final GroupEntity getGroup() {
+    public GroupEntity getGroup() {
         return group;
     }
 
-    public final void setName(final String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
-    public final String getName() {
+    public String getName() {
         return name;
     }
 
-    public final void setClassName(final String className) {
+    public void setClassName(final String className) {
         this.className = className;
     }
 
-    public final String getClassName() {
+    public String getClassName() {
         return className;
     }
 
-    public final void setActive(final Boolean active) {
+    public void setActive(final Boolean active) {
         this.active = active;
     }
 
-    public final Boolean getActive() {
+    public Boolean getActive() {
         return active;
     }
 
-    public final void setModified(final Date modified) {
+    public void setModified(final Date modified) {
         this.modified = modified;
     }
 
-    public final Date getModified() {
+    public Date getModified() {
         return modified;
     }
 
@@ -164,7 +164,7 @@ public class NotificationConsumerEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public final void setCreated(final Date created) {
+    public void setCreated(final Date created) {
         this.created = created;
     }
 
@@ -172,7 +172,7 @@ public class NotificationConsumerEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public final Date getCreated() {
+    public Date getCreated() {
         return created;
     }
 }

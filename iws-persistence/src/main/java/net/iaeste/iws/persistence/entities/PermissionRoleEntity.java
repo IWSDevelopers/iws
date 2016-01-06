@@ -32,7 +32,7 @@ import javax.persistence.TemporalType;
 import java.util.Date;
 
 /**
- * A custome Role consists of a number of Permissions, which exists in a many
+ * A custom Role consists of a number of Permissions, which exists in a many
  * to many relation (this Entity). The permissions are either present or not.
  *
  * @author  Kim Jensen / last $Author:$
@@ -47,7 +47,7 @@ import java.util.Date;
                 "    or p.role.group.id = :gid)"))
 @Entity
 @Table(name = "permission_to_role")
-public class PermissionRoleEntity implements IWSEntity {
+public final class PermissionRoleEntity implements IWSEntity {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -108,7 +108,7 @@ public class PermissionRoleEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public final void setId(final Long id) {
+    public void setId(final Long id) {
         this.id = id;
     }
 
@@ -116,23 +116,23 @@ public class PermissionRoleEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public final Long getId() {
+    public Long getId() {
         return id;
     }
 
-    public final void setPermission(final PermissionEntity permission) {
+    public void setPermission(final PermissionEntity permission) {
         this.permission = permission;
     }
 
-    public final PermissionEntity getPermission() {
+    public PermissionEntity getPermission() {
         return permission;
     }
 
-    public final void setRole(final RoleEntity role) {
+    public void setRole(final RoleEntity role) {
         this.role = role;
     }
 
-    public final RoleEntity getRole() {
+    public RoleEntity getRole() {
         return role;
     }
 
@@ -140,7 +140,7 @@ public class PermissionRoleEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public final void setCreated(final Date created) {
+    public void setCreated(final Date created) {
         this.created = created;
     }
 
@@ -148,7 +148,7 @@ public class PermissionRoleEntity implements IWSEntity {
      * {@inheritDoc}
      */
     @Override
-    public final Date getCreated() {
+    public Date getCreated() {
         return created;
     }
 }

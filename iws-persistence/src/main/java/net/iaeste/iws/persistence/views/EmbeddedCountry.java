@@ -38,7 +38,7 @@ import java.util.Date;
  * @since   IWS 1.0
  */
 @Embeddable
-public class EmbeddedCountry {
+public final class EmbeddedCountry {
 
     @Column(name = "country_code", insertable = false, updatable = false)
     private String countryCode = null;

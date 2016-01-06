@@ -45,34 +45,16 @@ import java.util.EnumMap;
  * @since   IWS 1.0
  */
 @NamedQueries({
-        @NamedQuery(name = "usergroup.findById",
-                query = "select ug from UserGroupEntity ug " +
-                        "where ug.group.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
-                        "  and ug.id = :id"),
-        @NamedQuery(name = "usergroup.findForExternalGroupId",
-                query = "select ug from UserGroupEntity ug " +
-                        "where ug.group.status <> " + EntityConstants.GROUP_STATUS_DELETED +
-                        "  and ug.user.status <> " + EntityConstants.USER_STATUS_DELETED +
-                        "  and ug.group.externalId = :egid"),
-        @NamedQuery(name = "usergroup.findContactForExternalGroupId",
+        @NamedQuery(name = "userGroup.findContactForExternalGroupId",
                 query = "select ug from UserGroupEntity ug " +
                         "where ug.group.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
                         "  and ug.user.status = " + EntityConstants.USER_STATUS_ACTIVE +
                         "  and ug.group.externalId = :egid"),
-        @NamedQuery(name = "usergroup.findContactForExternalUserId",
+        @NamedQuery(name = "userGroup.findContactForExternalUserId",
                 query = "select ug from UserGroupEntity ug " +
                         "where ug.group.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
                         "  and ug.user.status = " + EntityConstants.USER_STATUS_ACTIVE +
                         "  and ug.user.externalId = :euid"),
-        @NamedQuery(name = "usergroup.findForExternalUserId",
-                query = "select ug from UserGroupEntity ug " +
-                        "where ug.group.status <> " + EntityConstants.GROUP_STATUS_DELETED +
-                        "  and ug.user.externalId = :euid"),
-        @NamedQuery(name = "usergroup.findByIw3UserAndGroup",
-                query = "select ug from UserGroupEntity ug " +
-                        "where ug.user.oldId = :iw3User" +
-                        "  and ug.user.status <> " + EntityConstants.USER_STATUS_DELETED +
-                        "  and ug.group.oldId = :iw3Group"),
         @NamedQuery(name = "userGroup.searchByFirstNameAndLastNameInMembers",
                 query = "select ug from UserGroupEntity ug " +
                         "where ug.group.groupType.grouptype = " + EntityConstants.GROUPTYPE_MEMBER +
@@ -88,38 +70,29 @@ import java.util.EnumMap;
                         "  and ug.user.status <> " + EntityConstants.USER_STATUS_SUSPENDED +
                         "  and (lower(ug.user.firstname) like :firstname" +
                         "   or lower(ug.user.lastname) like :lastname)"),
-        @NamedQuery(name = "usergroup.findByExternalId",
-                query = "select ug from UserGroupEntity ug " +
-                        "where ug.group.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
-                        "  and ug.externalId = :eid"),
-        @NamedQuery(name = "usergroup.findMemberByGroupAndUser",
+        @NamedQuery(name = "userGroup.findMemberByGroupAndUser",
                 query = "select ug from UserGroupEntity ug " +
                         "where ug.group.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
                         "  and ug.group.groupType.grouptype = " + EntityConstants.GROUPTYPE_MEMBER +
                         "  and ug.group.id = :gid" +
                         "  and ug.user.externalId = :euid"),
-        @NamedQuery(name = "usergroup.findByGroupAndUser",
+        @NamedQuery(name = "userGroup.findByGroupAndUser",
                 query = "select ug from UserGroupEntity ug " +
                         "where ug.group.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
                         "  and ug.group.id = :gid" +
                         "  and ug.user.id= :uid"),
-        @NamedQuery(name = "usergroup.findMemberByUserExternalId",
+        @NamedQuery(name = "userGroup.findMemberByUserExternalId",
                 query = "select ug from UserGroupEntity ug " +
                         "where ug.group.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
                         "  and ug.group.groupType.grouptype = " + EntityConstants.GROUPTYPE_MEMBER +
                         "  and ug.user.externalId = :euid"),
-        @NamedQuery(name = "usergroup.findNationalSecretaryByMemberGroup",
+        @NamedQuery(name = "userGroup.findNationalSecretaryByMemberGroup",
                 query = "select ug from UserGroupEntity ug " +
                         "where ug.group.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
                         "  and ug.group.groupType.grouptype = " + EntityConstants.GROUPTYPE_NATIONAL +
                         "  and ug.role.id = " + EntityConstants.ROLE_OWNER +
                         "  and ug.group.parentId = :mgid"),
-        @NamedQuery(name = "usergroup.findOwnerByExternalGroupId",
-                query = "select ug from UserGroupEntity ug " +
-                        "where ug.group.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
-                        "  and ug.group.externalId = :egid" +
-                        "  and ug.role.id = " + EntityConstants.ROLE_OWNER),
-        @NamedQuery(name = "usergroup.findMemberByUserId",
+        @NamedQuery(name = "userGroup.findMemberByUserId",
                 query = "select ug from UserGroupEntity ug " +
                         "where ug.group.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
                         "  and ug.group.groupType.grouptype = " + EntityConstants.GROUPTYPE_MEMBER +
@@ -135,41 +108,29 @@ import java.util.EnumMap;
                         "  and ug.user = :user"),
         // The roles are hardcoded to Owner, Moderator & Member, see
         // IWSConstants for more information
-        @NamedQuery(name = "usergroup.findActiveGroupMembers",
+        @NamedQuery(name = "userGroup.findActiveGroupMembers",
                 query = "select ug from UserGroupEntity ug " +
                         "where ug.group.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
                         "  and ug.user.status = " + EntityConstants.USER_STATUS_ACTIVE +
                         "  and ug.group.id = :gid"),
-        @NamedQuery(name = "usergroup.findAllGroupMembers",
+        @NamedQuery(name = "userGroup.findAllGroupMembers",
                 query = "select ug from UserGroupEntity ug " +
                         "where ug.group.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
                         "  and ug.user.status <> " + EntityConstants.USER_STATUS_DELETED +
                         "  and ug.group.id = :gid"),
         // The roles are hardcoded to Students, see IWSConstants for more
         // information
-        @NamedQuery(name = "usergroup.findStudents",
+        @NamedQuery(name = "userGroup.findStudents",
                 query = "select ug from UserGroupEntity ug " +
                         "where ug.group.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
                         "  and ug.group.parentId = :pid" +
                         "  and ug.role.id = " + EntityConstants.ROLE_STUDENT),
-        @NamedQuery(name = "usergroup.findGroupMembersOnPublicList",
-                query = "select ug from UserGroupEntity ug " +
-                        "where ug.group.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
-                        "  and ug.user.status = " + EntityConstants.USER_STATUS_ACTIVE +
-                        "  and ug.group.id = :gid" +
-                        "  and ug.onPublicList = true"),
-        @NamedQuery(name = "usergroup.findGroupMembersOnPrivateList",
-                query = "select ug from UserGroupEntity ug " +
-                        "where ug.group.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
-                        "  and ug.user.status = " + EntityConstants.USER_STATUS_ACTIVE +
-                        "  and ug.group.id = :gid" +
-                        "  and ug.onPrivateList = true"),
-        @NamedQuery(name = "usergroup.findAllUserGroups",
+        @NamedQuery(name = "userGroup.findAllUserGroups",
                 query = "select ug from UserGroupEntity ug " +
                         "where ug.user.id = :uid"),
         // The roles are hardcoded to Owner & Moderator, see
         // IWSConstants for more information
-        @NamedQuery(name = "usergroup.emergencylist",
+        @NamedQuery(name = "userGroup.emergencyList",
                 query = "select ug from UserGroupEntity ug " +
                         "where ug.group.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
                         "  and ug.user.status = " + EntityConstants.USER_STATUS_ACTIVE +
@@ -182,7 +143,7 @@ import java.util.EnumMap;
         // the public list of the following Groups (Administration, National &
         // International) are all included. For now, a hybrid version is used,
         // which allows both variants.
-        @NamedQuery(name = "usergroup.findncs",
+        @NamedQuery(name = "userGroup.findNCs",
                 query = "select distinct ug from UserGroupEntity ug " +
                         "where ug.group.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
                         "  and ug.user.status = " + EntityConstants.USER_STATUS_ACTIVE +
@@ -190,7 +151,7 @@ import java.util.EnumMap;
                         "  and (ug.group.groupType.grouptype = " + EntityConstants.GROUPTYPE_ADMINISTRATION +
                         "    or ug.group.groupType.grouptype = " + EntityConstants.GROUPTYPE_INTERNATIONAL +
                         "    or ug.group.groupType.grouptype = " + EntityConstants.GROUPTYPE_NATIONAL + ')'),
-        @NamedQuery(name = "usergroup.userOnNcsList",
+        @NamedQuery(name = "userGroup.userOnNCsList",
                 query = "select distinct ug.user from UserGroupEntity ug " +
                         "where ug.group.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
                         "  and ug.user.status = " + EntityConstants.USER_STATUS_ACTIVE +
@@ -199,7 +160,7 @@ import java.util.EnumMap;
                         "    or ug.group.groupType.grouptype = " + EntityConstants.GROUPTYPE_INTERNATIONAL +
                         "    or ug.group.groupType.grouptype = " + EntityConstants.GROUPTYPE_NATIONAL + ')' +
                         "  and ug.user.username = :username"),
-        @NamedQuery(name = "usergroup.findByUsernameAndGroupExternalId",
+        @NamedQuery(name = "userGroup.findByUsernameAndGroupExternalId",
                 query = "select ug from UserGroupEntity ug " +
                         "where ug.group.externalId = :egid" +
                         "  and ug.user.username = :username")
@@ -207,7 +168,7 @@ import java.util.EnumMap;
 @Entity
 @Table(name = "user_to_group")
 @Monitored(name = "User2Group", level = MonitoringLevel.DETAILED)
-public class UserGroupEntity extends AbstractUpdateable<UserGroupEntity> implements Externable<UserGroupEntity>, Notifiable {
+public final class UserGroupEntity extends AbstractUpdateable<UserGroupEntity> implements Externable<UserGroupEntity>, Notifiable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -306,7 +267,7 @@ public class UserGroupEntity extends AbstractUpdateable<UserGroupEntity> impleme
      * {@inheritDoc}
      */
     @Override
-    public final void setId(final Long id) {
+    public void setId(final Long id) {
         this.id = id;
     }
 
@@ -314,7 +275,7 @@ public class UserGroupEntity extends AbstractUpdateable<UserGroupEntity> impleme
      * {@inheritDoc}
      */
     @Override
-    public final Long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -322,7 +283,7 @@ public class UserGroupEntity extends AbstractUpdateable<UserGroupEntity> impleme
      * {@inheritDoc}
      */
     @Override
-    public final void setExternalId(final String externalId) {
+    public void setExternalId(final String externalId) {
         this.externalId = externalId;
     }
 
@@ -330,63 +291,63 @@ public class UserGroupEntity extends AbstractUpdateable<UserGroupEntity> impleme
      * {@inheritDoc}
      */
     @Override
-    public final String getExternalId() {
+    public String getExternalId() {
         return externalId;
     }
 
-    public final void setUser(final UserEntity user) {
+    public void setUser(final UserEntity user) {
         this.user = user;
     }
 
-    public final UserEntity getUser() {
+    public UserEntity getUser() {
         return user;
     }
 
-    public final void setGroup(final GroupEntity group) {
+    public void setGroup(final GroupEntity group) {
         this.group = group;
     }
 
-    public final GroupEntity getGroup() {
+    public GroupEntity getGroup() {
         return group;
     }
 
-    public final void setRole(final RoleEntity role) {
+    public void setRole(final RoleEntity role) {
         this.role = role;
     }
 
-    public final RoleEntity getRole() {
+    public RoleEntity getRole() {
         return role;
     }
 
-    public final void setTitle(final String title) {
+    public void setTitle(final String title) {
         this.title = title;
     }
 
-    public final String getTitle() {
+    public String getTitle() {
         return title;
     }
 
-    public final void setOnPublicList(final Boolean onPublicList) {
+    public void setOnPublicList(final Boolean onPublicList) {
         this.onPublicList = onPublicList;
     }
 
-    public final Boolean getOnPublicList() {
+    public Boolean getOnPublicList() {
         return onPublicList;
     }
 
-    public final void setOnPrivateList(final Boolean onPrivateList) {
+    public void setOnPrivateList(final Boolean onPrivateList) {
         this.onPrivateList = onPrivateList;
     }
 
-    public final Boolean getOnPrivateList() {
+    public Boolean getOnPrivateList() {
         return onPrivateList;
     }
 
-    public final void setWriteToPrivateList(final Boolean writeToPrivateList) {
+    public void setWriteToPrivateList(final Boolean writeToPrivateList) {
         this.writeToPrivateList = writeToPrivateList;
     }
 
-    public final Boolean getWriteToPrivateList() {
+    public Boolean getWriteToPrivateList() {
         return writeToPrivateList;
     }
 
@@ -394,7 +355,7 @@ public class UserGroupEntity extends AbstractUpdateable<UserGroupEntity> impleme
      * {@inheritDoc}
      */
     @Override
-    public final void setModified(final Date modified) {
+    public void setModified(final Date modified) {
         this.modified = modified;
     }
 
@@ -402,7 +363,7 @@ public class UserGroupEntity extends AbstractUpdateable<UserGroupEntity> impleme
      * {@inheritDoc}
      */
     @Override
-    public final Date getModified() {
+    public Date getModified() {
         return modified;
     }
 
@@ -410,7 +371,7 @@ public class UserGroupEntity extends AbstractUpdateable<UserGroupEntity> impleme
      * {@inheritDoc}
      */
     @Override
-    public final void setCreated(final Date created) {
+    public void setCreated(final Date created) {
         this.created = created;
     }
 
@@ -418,7 +379,7 @@ public class UserGroupEntity extends AbstractUpdateable<UserGroupEntity> impleme
      * {@inheritDoc}
      */
     @Override
-    public final Date getCreated() {
+    public Date getCreated() {
         return created;
     }
 
@@ -430,7 +391,7 @@ public class UserGroupEntity extends AbstractUpdateable<UserGroupEntity> impleme
      * {@inheritDoc}
      */
     @Override
-    public final boolean diff(final UserGroupEntity obj) {
+    public boolean diff(final UserGroupEntity obj) {
         // Until properly implemented, better return true to avoid that we're
         // missing updates!
         return true;
@@ -440,7 +401,7 @@ public class UserGroupEntity extends AbstractUpdateable<UserGroupEntity> impleme
      * {@inheritDoc}
      */
     @Override
-    public final void merge(final UserGroupEntity obj) {
+    public void merge(final UserGroupEntity obj) {
         if (canMerge(obj)) {
             title = which(title, obj.title);
             onPublicList = which(onPublicList, obj.onPublicList);
@@ -453,7 +414,7 @@ public class UserGroupEntity extends AbstractUpdateable<UserGroupEntity> impleme
      * {@inheritDoc}
      */
     @Override
-    public final EnumMap<NotificationField, String> prepareNotifiableFields(final NotificationType type) {
+    public EnumMap<NotificationField, String> prepareNotifiableFields(final NotificationType type) {
         final EnumMap<NotificationField, String> fields = new EnumMap<>(NotificationField.class);
 
         switch (type) {

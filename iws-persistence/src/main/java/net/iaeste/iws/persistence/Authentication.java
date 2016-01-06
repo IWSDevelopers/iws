@@ -56,7 +56,7 @@ public final class Authentication implements Traceable {
     /**
      * Full Constructor.
      *
-     * @param token  User Authenticatin Token
+     * @param token  User Authentication Token
      * @param user   User Entity for the current user
      * @param group  Group Entity for the group being worked with
      * @param traceId Trace Id for logging and issue tracking
@@ -69,10 +69,10 @@ public final class Authentication implements Traceable {
     }
 
     /**
-     * Default Constructor, for private access, mening access to personal data
+     * Default Constructor, for private access, meaning access to personal data
      * where the GroupId is implicit the users private Group.
      *
-     * @param token  User Authenticatin Token
+     * @param token  User Authentication Token
      * @param user   User Entity for the current user
      */
     public Authentication(final AuthenticationToken token, final UserEntity user) {

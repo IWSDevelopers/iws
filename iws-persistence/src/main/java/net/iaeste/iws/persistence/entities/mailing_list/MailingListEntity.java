@@ -50,7 +50,7 @@ import java.util.Date;
 })
 @Entity
 @Table(name = "mailing_lists")
-public class MailingListEntity extends AbstractUpdateable<MailingListEntity> {
+public final class MailingListEntity extends AbstractUpdateable<MailingListEntity> {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;

@@ -39,7 +39,7 @@ import java.util.Date;
  * @since   IWS 1.0
  */
 @Embeddable
-public class EmbeddedGroup {
+public final class EmbeddedGroup {
 
     @Column(name = "group_external_id", insertable = false, updatable = false)
     private String externalId = null;

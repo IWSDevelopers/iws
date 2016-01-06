@@ -49,7 +49,7 @@ public final class StudentJpaDao extends BasicJpaDao implements StudentDao {
      */
     @Override
     public ApplicationEntity findApplicationByExternalId(final String externalId) {
-        //TODO very stupid but efective fix for #515
+        //TODO very stupid but effective fix for #515
         //TODO Does it mean that now it buffers OfferGroupEntity and then it works but without the extra query, it can't find OfferGroupEntities???
         final List workaround = entityManager.createQuery("select og from OfferGroupEntity og").getResultList();
 
@@ -125,12 +125,12 @@ public final class StudentJpaDao extends BasicJpaDao implements StudentDao {
      * {@inheritDoc}
      */
     @Override
-    public Boolean otherOfferGroupWithCertainStatus(final Long offerId, Set<OfferState> offerStates) {
+    public Boolean otherOfferGroupWithCertainStatus(final Long offerId, final Set<OfferState> offerStates) {
         final Query query = entityManager.createNamedQuery("offerGroup.findByOfferAndStatuses");
         query.setParameter("oid", offerId);
         query.setParameter("statuses", offerStates);
 
-        List<OfferGroupEntity> list = query.getResultList();
+        final List<OfferGroupEntity> list = query.getResultList();
 
         return !list.isEmpty();
     }
@@ -144,7 +144,7 @@ public final class StudentJpaDao extends BasicJpaDao implements StudentDao {
         query.setParameter("ogid", offerGroupId);
         query.setParameter("statuses", applicationStates);
 
-        List<OfferGroupEntity> list = query.getResultList();
+        final List<OfferGroupEntity> list = query.getResultList();
 
         return !list.isEmpty();
     }

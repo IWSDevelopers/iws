@@ -22,7 +22,6 @@ import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.ViewsDao;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.exceptions.IdentificationException;
-import net.iaeste.iws.persistence.views.AttachedFileView;
 import net.iaeste.iws.persistence.views.DomesticOfferStatisticsView;
 import net.iaeste.iws.persistence.views.EmployerView;
 import net.iaeste.iws.persistence.views.ForeignOfferStatisticsView;
@@ -82,14 +81,12 @@ public final class ViewsJpaDao extends BasicJpaDao implements ViewsDao {
         query.setParameter("id", externalId);
 
         final List<EmployerView> found = query.getResultList();
-        final EmployerView result;
+        EmployerView result = null;
 
-        if (found.isEmpty()) {
-            result = null;
+        if (found.size() == 1) {
+            result = found.get(0);
         } else if (found.size() > 1) {
             throw new IdentificationException("Found multiple Employer Records.");
-        } else {
-            result = found.get(0);
         }
 
         return result;
@@ -196,18 +193,6 @@ public final class ViewsJpaDao extends BasicJpaDao implements ViewsDao {
         query.setParameter("parentId", groupId);
 
         return fetchList(query, page);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<AttachedFileView> findAttachments(final String table, final Long id) {
-        final Query query = entityManager.createNamedQuery("view.findAttachments");
-        query.setParameter("table", table);
-        query.setParameter("recordId", id);
-
-        return query.getResultList();
     }
 
     // =========================================================================

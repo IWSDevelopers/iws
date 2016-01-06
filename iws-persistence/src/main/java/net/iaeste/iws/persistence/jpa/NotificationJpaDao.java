@@ -35,7 +35,7 @@ import java.util.List;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
-public class NotificationJpaDao extends BasicJpaDao implements NotificationDao {
+public final class NotificationJpaDao extends BasicJpaDao implements NotificationDao {
 
     /**
      * Default Constructor.
@@ -56,14 +56,15 @@ public class NotificationJpaDao extends BasicJpaDao implements NotificationDao {
         query.setParameter("type", type);
 
         final List<UserNotificationEntity> result = query.getResultList();
+        UserNotificationEntity entity = null;
 
-        if (result.isEmpty()) {
-            return null;
+        if (result.size() == 1) {
+            entity = result.get(0);
         } else if (result.size() > 1) {
             throw new IWSException(IWSErrors.AUTHORIZATION_ERROR, "No user notification (" + type + ") for the user with id: '" + user.getId() + "' was found.");
         }
 
-        return result.get(0);
+        return entity;
     }
 
     /**

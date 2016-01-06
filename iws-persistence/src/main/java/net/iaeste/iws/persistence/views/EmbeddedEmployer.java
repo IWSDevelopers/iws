@@ -30,7 +30,7 @@ import javax.persistence.Embeddable;
  * @since   IWS 1.0
  */
 @Embeddable
-public class EmbeddedEmployer {
+public final class EmbeddedEmployer {
 
     @Column(name = "employer_external_id", insertable = false, updatable = false)
     private String externalId = null;

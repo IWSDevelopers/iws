@@ -862,7 +862,10 @@ public final class OfferEntity extends AbstractUpdateable<OfferEntity> implement
             numberOfHardCopies = which(numberOfHardCopies, obj.numberOfHardCopies);
             additionalInformation = which(additionalInformation, obj.additionalInformation);
             privateComment = which(privateComment, obj.privateComment);
-            status = which(status, obj.status);
+
+            // Omitting the Offer Status from the merge. The Status should never
+            // be controlled externally, but rather internally as part of the
+            // Exchange Process.
         }
     }
 

@@ -182,10 +182,10 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
             final OfferEntity existingEntity = dao.findOfferByExternalIdAndRefNo(authentication, externalId, newEntity.getRefNo());
 
             if (existingEntity == null) {
-                // We could not find an Offer matching the given criterias,
+                // We could not find an Offer matching the given criteria's,
                 // hence we have a case, where the user have not provided the
                 // correct information, we cannot process this Offer
-                throw new IdentificationException(formatLogMessage(authentication, "No Offer could be found with the Id %s and Refefence Number %s.", externalId, newEntity.getRefNo()));
+                throw new IdentificationException(formatLogMessage(authentication, "No Offer could be found with the Id %s and Reference Number %s.", externalId, newEntity.getRefNo()));
             }
 
             // Persist the changes, the method takes the existing and merges the

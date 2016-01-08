@@ -1,6 +1,6 @@
 /*
  * =============================================================================
- * Copyright 1998-2015, IAESTE Internet Development Team. All rights reserved.
+ * Copyright 1998-2016, IAESTE Internet Development Team. All rights reserved.
  * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-ejb) - net.iaeste.iws.ejb.notifications.consumers.NotificationEmailSender
  * -----------------------------------------------------------------------------
@@ -84,7 +84,7 @@ public class NotificationEmailSender implements Observer {
     private QueueSession session = null;
 
     @Override
-    public final void init(final EntityManager iwsEntityManager, final EntityManager mailingEntityManager, final Settings settings) {
+    public final void init(final EntityManager iwsEntityManager, final Settings settings) {
         dao = new NotificationJpaDao(iwsEntityManager);
         accessDao = new AccessJpaDao(iwsEntityManager);
         messageGenerator = new MessageGenerator(settings);
@@ -254,7 +254,8 @@ public class NotificationEmailSender implements Observer {
                 } else if (userSetting == null) {
                     LOG.warn("User {} has no setting for notification type '{}'", recipient.getId(), type);
                 }
-            } catch (IWSException ignore) {
+            } catch (IWSException e) {
+                LOG.debug(e.getMessage(), e);
                 LOG.warn("User {} has not proper notification setting for notification type {}", recipient.getId(), type);
             }
         }

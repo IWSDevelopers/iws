@@ -1,6 +1,6 @@
 /*
  * =============================================================================
- * Copyright 1998-2015, IAESTE Internet Development Team. All rights reserved.
+ * Copyright 1998-2016, IAESTE Internet Development Team. All rights reserved.
  * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-ejb) - net.iaeste.iws.ejb.notifications.consumers.NotificationSystemAdministration
  * -----------------------------------------------------------------------------
@@ -65,8 +65,7 @@ public class NotificationSystemAdministration implements Observer {
     private static final Integer ATTEMPTS_LIMIT = 3;
     private boolean initialized = false;
 
-    private EntityManager mailingListEntityManager;
-
+    private EntityManager iwsEntityManager;
     private AccessDao accessDao;
     private MailingListDao mailingListDao;
     private NotificationDao notificationDao;
@@ -76,13 +75,12 @@ public class NotificationSystemAdministration implements Observer {
     }
 
     @Override
-    public void init(final EntityManager iwsEntityManager, final EntityManager mailingEntityManager, final Settings settings) {
+    public void init(final EntityManager iwsEntityManager, final Settings settings) {
         this.accessDao = new AccessJpaDao(iwsEntityManager);
-        this.mailingListDao = new MailingListJpaDao(mailingEntityManager);
+        this.mailingListDao = new MailingListJpaDao(iwsEntityManager);
         this.notificationDao = new NotificationJpaDao(iwsEntityManager);
+        this.iwsEntityManager = iwsEntityManager;
         this.settings = settings;
-
-        mailingListEntityManager = mailingEntityManager;
 
         initialized = true;
     }
@@ -216,7 +214,7 @@ public class NotificationSystemAdministration implements Observer {
                 final MailingListMembershipEntity entity = new MailingListMembershipEntity();
                 entity.setMailingList(ncsList);
                 entity.setMember(StringUtils.toLower(username));
-                mailingListEntityManager.persist(entity);
+                accessDao.persist(entity);
             }
         } else {
             LOG.error("NCs mailing list lookup failed using '{}' address.", settings.getNcsList());
@@ -231,7 +229,7 @@ public class NotificationSystemAdministration implements Observer {
             final MailingListMembershipEntity subscription = mailingListDao.findMailingListSubscription(ncsList.getId(), username);
 
             if (subscription != null) {
-                mailingListEntityManager.remove(subscription);
+                iwsEntityManager.remove(subscription);
                 LOG.info("User {} deleted from ncs list.", username);
             }
         } else {
@@ -292,7 +290,7 @@ public class NotificationSystemAdministration implements Observer {
         if (user.getAlias() != null) {
             alias.setUserAlias(StringUtils.toLower(user.getAlias()));
 
-            mailingListEntityManager.persist(alias);
+            accessDao.persist(alias);
         } else {
             throw new IllegalArgumentException("Null user alias not allowed, user id " + user.getId());
         }
@@ -359,7 +357,7 @@ public class NotificationSystemAdministration implements Observer {
                     publicList.setListAddress(getPublicListAddress(groupType, groupName, countryName));
                     publicList.setModified(new Date());
                     //mailingListDao.persist(publicList);
-                    mailingListEntityManager.persist(publicList);
+                    accessDao.persist(publicList);
                 } else {
                     LOG.error("Logic approach unclear: Modify non-existing list -> throw exception? ignore?");
                 }
@@ -371,7 +369,7 @@ public class NotificationSystemAdministration implements Observer {
                 if (privateList != null) {
                     privateList.setListAddress(getPrivateListAddress(groupType, groupName, countryName));
                     privateList.setModified(new Date());
-                    mailingListEntityManager.persist(privateList);
+                    accessDao.persist(privateList);
                 } else {
                     LOG.error("Logic approach unclear: Modify non-existing list -> throw exception? ignore?");
                 }
@@ -387,7 +385,7 @@ public class NotificationSystemAdministration implements Observer {
         list.setListAddress(StringUtils.toLower(address));
         list.setPrivateList(privateList);
 
-        mailingListEntityManager.persist(list);
+        accessDao.persist(list);
     }
 
     private void updateMailingListSubscription(final String type, final String groupExternalId, final String role, final String emailAddress, final String userStatus, final String onPrivateList, final String onPublicList) {
@@ -443,7 +441,7 @@ public class NotificationSystemAdministration implements Observer {
             }
             if ((subscription != null) && !onList) {
                 LOG.debug("Removing user from mailing list.");
-                mailingListEntityManager.remove(subscription);
+                iwsEntityManager.remove(subscription);
             } else if ((subscription == null) && onList) {
                 LOG.debug("Adding user to mailing list.");
                 createListSubscription(mailingList, emailAddress);
@@ -455,7 +453,7 @@ public class NotificationSystemAdministration implements Observer {
         final MailingListMembershipEntity subscription = new MailingListMembershipEntity();
         subscription.setMailingList(mailingList);
         subscription.setMember(emailAddress);
-        mailingListEntityManager.persist(subscription);
+        accessDao.persist(subscription);
     }
 
     private void updateUserSubscriptionEmail(final String oldAddress, final String newAddress) {

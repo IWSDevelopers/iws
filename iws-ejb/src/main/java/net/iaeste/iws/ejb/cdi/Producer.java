@@ -1,6 +1,6 @@
 /*
  * =============================================================================
- * Copyright 1998-2015, IAESTE Internet Development Team. All rights reserved.
+ * Copyright 1998-2016, IAESTE Internet Development Team. All rights reserved.
  * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-ejb) - net.iaeste.iws.ejb.cdi.Producer
  * -----------------------------------------------------------------------------
@@ -54,18 +54,9 @@ public class Producer {
     /**
      * The primary database for the IWS.
      */
-    @Produces @IWSBean(IWSBean.Type.PRIMARY)
+    @Produces @IWSBean
     @PersistenceContext(unitName = "iwsDatabase")
     private EntityManager iwsEntityManager = null;
-
-    /**
-     * The mail database, which is an external resource. This resource is
-     * currently being dismantled, and with the completion of the PostgreSQL
-     * upgrade (see Trac task #) & PostgreSQL replication (see Trac task #).
-     */
-    @Produces @IWSBean(IWSBean.Type.SECONDARY)
-    @PersistenceContext(unitName = "mailDatabase")
-    private EntityManager mailEntityManager = null;
 
     /**
      * Producer for the IWS Settings. This will create a managed bean that can

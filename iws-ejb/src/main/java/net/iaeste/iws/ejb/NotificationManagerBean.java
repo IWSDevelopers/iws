@@ -59,7 +59,6 @@ import javax.persistence.EntityManager;
 public class NotificationManagerBean implements NotificationManagerLocal {
 
     private static final Logger LOG = LoggerFactory.getLogger(NotificationManagerBean.class);
-    @Inject @IWSBean(IWSBean.Type.SECONDARY) private EntityManager mailEntityManager;
     @Inject @IWSBean private EntityManager entityManager;
     @Inject @IWSBean private Notifications notifications;
     @Inject @IWSBean private Settings settings;
@@ -82,16 +81,6 @@ public class NotificationManagerBean implements NotificationManagerLocal {
      */
     public void setEntityManager(final EntityManager entityManager) {
         this.entityManager = entityManager;
-    }
-
-    /**
-     * Setter for the JNDI injected persistence context. This allows us to also
-     * test the code, by invoking these setters on the instantiated Object.
-     *
-     * @param mailEntityManager Transactional Entity Manager instance for mailing list database
-     */
-    public void setMailEntityManager(final EntityManager mailEntityManager) {
-        this.mailEntityManager = mailEntityManager;
     }
 
     /**

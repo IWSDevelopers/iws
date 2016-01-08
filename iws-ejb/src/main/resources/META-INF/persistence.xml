@@ -8,6 +8,7 @@
 
         <!-- Entities -->
         <class>net.iaeste.iws.persistence.entities.AddressEntity</class>
+        <class>net.iaeste.iws.persistence.entities.AliasEntity</class>
         <class>net.iaeste.iws.persistence.entities.AttachmentEntity</class>
         <class>net.iaeste.iws.persistence.entities.CountryEntity</class>
         <class>net.iaeste.iws.persistence.entities.FileEntity</class>
@@ -15,6 +16,7 @@
         <class>net.iaeste.iws.persistence.entities.FolderEntity</class>
         <class>net.iaeste.iws.persistence.entities.GroupEntity</class>
         <class>net.iaeste.iws.persistence.entities.GroupTypeEntity</class>
+        <class>net.iaeste.iws.persistence.entities.MailinglistEntity</class>
         <class>net.iaeste.iws.persistence.entities.MonitoringEntity</class>
         <class>net.iaeste.iws.persistence.entities.PersonEntity</class>
         <class>net.iaeste.iws.persistence.entities.PermissionEntity</class>
@@ -24,6 +26,7 @@
         <class>net.iaeste.iws.persistence.entities.SessionEntity</class>
         <class>net.iaeste.iws.persistence.entities.UserEntity</class>
         <class>net.iaeste.iws.persistence.entities.UserGroupEntity</class>
+        <class>net.iaeste.iws.persistence.entities.UserMailinglistEntity</class>
         <class>net.iaeste.iws.persistence.entities.UserNotificationEntity</class>
         <class>net.iaeste.iws.persistence.entities.VersionEntity</class>
         <class>net.iaeste.iws.persistence.entities.notifications.NotificationConsumerEntity</class>
@@ -62,28 +65,5 @@
             <property name="hibernate.show_sql" value="false"/>
             <property name="hibernate.format_sql" value="true"/>
         </properties>
-
-    </persistence-unit>
-    <persistence-unit name="mailDatabase" transaction-type="JTA">
-        <provider>org.hibernate.ejb.HibernatePersistence</provider>
-        <jta-data-source>datasources/mailDS</jta-data-source>
-
-        <class>net.iaeste.iws.persistence.entities.mailing_list.MailingAliasEntity</class>
-        <class>net.iaeste.iws.persistence.entities.mailing_list.MailingListEntity</class>
-        <class>net.iaeste.iws.persistence.entities.mailing_list.MailingListMembershipEntity</class>
-
-        <properties>
-            <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
-            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
-            <!-- Under WildFly, using the production database, the Sequences
-                 were causing problems. The cause of this problem is that JBoss
-                 has enabled an experimental Hibernate feature. By disabling
-                 this, we no longer have the problem.
-                 http://stackoverflow.com/questions/9861416/hibernate-generates-negative-id-values-when-using-a-sequence -->
-            <property name="hibernate.id.new_generator_mappings" value="false"/>
-            <property name="hibernate.show_sql" value="false"/>
-            <property name="hibernate.format_sql" value="true"/>
-        </properties>
-
     </persistence-unit>
 </persistence>

@@ -1,6 +1,6 @@
 /*
  * =============================================================================
- * Copyright 1998-2015, IAESTE Internet Development Team. All rights reserved.
+ * Copyright 1998-2016, IAESTE Internet Development Team. All rights reserved.
  * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-common) - net.iaeste.iws.common.utils.Observer
  * -----------------------------------------------------------------------------
@@ -34,7 +34,7 @@ public interface Observer {
     /**
      * Whenever an observer needs to be notified of a change, this method is
      * invoked with the subject as parameter. The method is invoked by the
-     * Observable notityObservers method.
+     * Observable notifyObservers method.
      *
      * @param  subject  the observable object
      */
@@ -47,8 +47,7 @@ public interface Observer {
      * Method to initialize Observer
      *
      * @param iwsEntityManager     IWS Entity Manager
-     * @param mailingEntityManager Mailinglist Entity Manager
      * @param settings             IWS Settings
      */
-    void init(EntityManager iwsEntityManager, EntityManager mailingEntityManager, Settings settings);
+    void init(EntityManager iwsEntityManager, Settings settings);
 }

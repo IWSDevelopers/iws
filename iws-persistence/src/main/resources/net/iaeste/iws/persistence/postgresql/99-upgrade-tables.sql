@@ -9,7 +9,6 @@
 -- correct some problems discovered with the Views & Data Content
 insert into versions (db_version, iws_version) values (7, '1.1.16');
 
-
 -- Changes to the User table.
 alter table users add eula_version        integer     default 0;
 alter table users add password_changed    timestamp   default now();
@@ -27,7 +26,7 @@ create table aliases (
     external_id         varchar(36),
     group_id            integer,
     alias_address       varchar(100),
-    status              varchar(36) default 'active',
+    deprecated          varchar(36) default 'active',
     expires             date,
     modified            timestamp default now(),
     created             timestamp default now(),
@@ -38,19 +37,18 @@ create table aliases (
 
     /* Unique Constraints */
     constraint alias_unique_external_id unique (external_id),
-    constraint alias_unique_alias       unique (alias_address, status),
+    constraint alias_unique_alias       unique (alias_address, deprecated),
 
     /* Not Null Constraints */
     constraint alias_notnull_id             check (id is not null),
     constraint alias_notnull_external_id    check (external_id is not null),
     constraint alias_notnull_alias_address  check (alias_address is not null),
-    constraint alias_notnull_status         check (status is not null),
+    constraint alias_notnull_status         check (deprecated is not null),
     constraint alias_notnull_modified       check (modified is not null),
     constraint alias_notnull_created        check (created is not null)
 );
 
--- Aliases which we already have, when we migrated IW3 -> IWS. The following
--- were manually added via the MailMigrator.
+-- Aliases which we already have, from the IW3 -> IWS migration.
 insert into aliases (external_id, group_id, alias_address) values
     -- Aliases for the Board
     ('30f0efd4-63d0-4f6e-9a97-e7621951b1dc', 3, 'president@iaeste.org'),
@@ -86,3 +84,70 @@ insert into aliases (external_id, group_id, alias_address) values
 
     -- Aliases for Co-operating Institution: Palestine, ANU
     ('22758861-a78c-4273-a4b2-909d8c965dec', 317, 'west_bank_anu@iaeste.org');
+
+-- Before adding the new mailing list tables, we have to clean up the old
+-- garbage.
+drop table mailing_list_membership;
+drop table mailing_lists;
+drop table mailing_aliases;
+drop sequence mailing_list_sequence;
+drop sequence mailing_alias_sequence;
+drop sequence mailing_list_membership_sequence;
+
+-- Now adding the new mailing lists as part of Trac ticket #1082.
+create sequence mailing_list_sequence start with 1 increment by 1;
+create table mailing_lists (
+    id              integer default nextval('mailing_list_sequence'),
+    list_address    varchar(100),
+    group_id        integer,
+    subject_prefix  varchar(50),
+    list_type       varchar(25) default 'LIST',
+    replyto_style   varchar(25) default 'REPLY_TO_SENDER',
+    status          varchar(25) default 'ACTIVE',
+    modified        timestamp default now(),
+    created         timestamp default now(),
+
+    /* Primary & Foreign Keys */
+    constraint mailing_list_pk                     primary key (id),
+    constraint mailing_list_group_id_fk            foreign key (group_id) references groups (id) on delete cascade,
+
+    /* Unique Constraints */
+    constraint mailing_list_unique_address         unique (list_address),
+
+    /* Not Null Constraints */
+    constraint mailing_list_notnull_id             check (id is not null),
+    constraint mailing_list_notnull_list_address   check (list_address is not null),
+    constraint mailing_list_notnull_group_id       check (group_id is not null),
+    constraint mailing_list_notnull_list_type      check (list_type is not null),
+    constraint mailing_list_notnull_replyto_style  check (replyto_style is not null),
+    constraint mailing_list_notnull_modified       check (modified is not null),
+    constraint mailing_list_notnull_created        check (created is not null)
+);
+
+create sequence user_to_mailing_list_sequence start with 1 increment by 1;
+create table user_to_mailing_list (
+    id                integer default nextval('user_to_mailing_list_sequence'),
+    mailing_list_id   integer,
+    user_to_group_id  integer,
+    member            varchar(100),
+    status            varchar(25) default 'ACTIVE',
+    may_write         boolean default true,
+    modified          timestamp default now(),
+    created           timestamp default now(),
+
+    /* Primary & Foreign Keys */
+    constraint user_to_mailing_list_pk                             primary key (id),
+    constraint user_to_mailing_list_fk_mailing_list_id             foreign key (mailing_list_id) references mailing_lists (id) on delete cascade,
+    constraint user_to_mailing_list_user_group_id                  foreign key (user_to_group_id) references user_to_group (id) on delete cascade,
+
+    /* Unique Constraints */
+    constraint user_to_mailing_list_unique_mailing_list_id_member  unique (mailing_list_id, member),
+
+    /* Not Null Constraints */
+    constraint user_to_mailing_list_notnull_id                     check (id is not null),
+    constraint user_to_mailing_list_notnull_mailing_list_id        check (mailing_list_id is not null),
+    constraint user_to_mailing_list_notnull_user_to_group_id       check (user_to_group_id is not null),
+    constraint user_to_mailing_list_notnull_list_member            check (member is not null),
+    constraint user_to_mailing_list_notnull_modified               check (modified is not null),
+    constraint user_to_mailing_list_notnull_created                check (created is not null)
+);

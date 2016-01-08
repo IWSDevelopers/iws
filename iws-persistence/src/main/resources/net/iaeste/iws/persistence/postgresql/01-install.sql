@@ -46,10 +46,8 @@ create schema public;
 \ir 10-base-tables.sql
 \ir ../15-base-views.sql
 \ir ../19-base-data.sql
-\ir 20-mailing-list-tables.sql
 \ir 30-exchange-tables.sql
 \ir ../35-exchange-views.sql
-\ir ../39-exchange-data.sql
 
 -- Finally, we grant the permissions to use this database to the IWS Mail User.
 -- Please note, that the IWS Mail User is only allowed to read from the

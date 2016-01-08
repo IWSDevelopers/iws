@@ -1,6 +1,6 @@
 /*
  * =============================================================================
- * Copyright 1998-2015, IAESTE Internet Development Team. All rights reserved.
+ * Copyright 1998-2016, IAESTE Internet Development Team. All rights reserved.
  * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-ejb) - net.iaeste.iws.ejb.notifications.NotificationConsumerClassLoader
  * -----------------------------------------------------------------------------
@@ -30,14 +30,14 @@ import java.lang.reflect.InvocationTargetException;
  */
 public final class NotificationConsumerClassLoader {
 
-    public Observer findConsumerClass(final String name, final EntityManager iwsEntityManager, final EntityManager mailingEntityManager, final Settings settings) {
+    public Observer findConsumerClass(final String name, final EntityManager iwsEntityManager, final Settings settings) {
         try {
             final Class<?> consumerClass = Class.forName(name);
             final Constructor<?> constructor = consumerClass.getDeclaredConstructor();
             final Object consumer = constructor.newInstance();
             if (consumer instanceof Observer) {
                 final Observer observer = (Observer)consumer;
-                observer.init(iwsEntityManager, mailingEntityManager, settings);
+                observer.init(iwsEntityManager, settings);
                 return observer;
             }
 

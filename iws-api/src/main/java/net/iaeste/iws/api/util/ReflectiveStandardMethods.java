@@ -80,17 +80,8 @@ public final class ReflectiveStandardMethods {
                 // if it is the same. Meaning that both Objects must be of the
                 // same Class.
                 if (Objects.equals(left.getClass(), right.getClass())) {
-                    // Same Classes, so we can iterate over the fields and
-                    // verify that they have the same value, if not - then
-                    // we'll just end here.
-                    for (final Field field : readFields(left)) {
-                        final Object obj1 = readValue(left, field);
-                        final Object obj2 = readValue(right, field);
-                        if (reflectField(field, StandardMethods.For.HASH) && !Objects.equals(obj1, obj2)) {
-                            result = false;
-                            break;
-                        }
-                    }
+                    // Same Classes, now, we can start comparing fields.
+                    result = equalizeFields(left, right);
                 } else {
                     // Not the same Class, then they cannot be equal.
                     result = false;
@@ -180,6 +171,31 @@ public final class ReflectiveStandardMethods {
     }
 
     /**
+     * Compares two Objects of the same type, to see if they are equal or not.
+     *
+     * @param left  First Object or &quot;this&quot;
+     * @param right Second Object to compare against
+     * @return True if they are the same, otherwise false
+     */
+    private static boolean equalizeFields(final Object left, final Object right) {
+        boolean result = true;
+
+        // Same Classes, so we can iterate over the fields and
+        // verify that they have the same value, if not - then
+        // we'll just end here.
+        for (final Field field : readFields(left)) {
+            final Object obj1 = readValue(left, field);
+            final Object obj2 = readValue(right, field);
+            if (reflectField(field, StandardMethods.For.HASH) && !Objects.equals(obj1, obj2)) {
+                result = false;
+                break;
+            }
+        }
+
+        return result;
+    }
+
+    /**
      * <p>Some fields like Password or similar sensitive fields, should never be
      * part of the standard methods, as the standard methods often is used for
      * more generic things like logging information or direct comparison. If
@@ -203,17 +219,10 @@ public final class ReflectiveStandardMethods {
         // that unless it is explicitly annotated and the annotation states it
         // shouldn't be used, we'll use it. Only exception to this rule is the
         // standard serialization Id & Synthetic fields.
-        boolean useField = true;
+        final boolean useField;
 
         if (isMember(field) && !"serialVersionUID".equals(field.getName())) {
-            for (final Annotation annotation : field.getDeclaredAnnotations()) {
-                if (annotation instanceof StandardMethods) {
-                    final StandardMethods.For forField = ((StandardMethods) annotation).value();
-                    if ((forField == StandardMethods.For.NONE) || ((forField != use) && (forField != StandardMethods.For.ALL))) {
-                        useField = false;
-                    }
-                }
-            }
+            useField = reflectOverFieldAnnotations(field, use);
         } else {
             // The field is neither a standard Class member or part of the Class
             // Business Logic, so it should be skipped. Note, that the Serial
@@ -257,6 +266,30 @@ public final class ReflectiveStandardMethods {
         }
 
         return member;
+    }
+
+    /**
+     * Reflects over the Field Annotations, to see if there is a reason why not
+     * to use the field. If so, then a false is returned as the field should be
+     * skipped, otherwise a true is returned, if the field should be used.
+     *
+     * @param field Field to reflect over
+     * @param use   The Standard Method Annotation to use
+     * @return True if we should use the field, otherwise false
+     */
+    private static boolean reflectOverFieldAnnotations(final Field field, final StandardMethods.For use) {
+        boolean useField = true;
+
+        for (final Annotation annotation : field.getDeclaredAnnotations()) {
+            if (annotation instanceof StandardMethods) {
+                final StandardMethods.For forField = ((StandardMethods) annotation).value();
+                if ((forField == StandardMethods.For.NONE) || ((forField != use) && (forField != StandardMethods.For.ALL))) {
+                    useField = false;
+                }
+            }
+        }
+
+        return useField;
     }
 
     /**

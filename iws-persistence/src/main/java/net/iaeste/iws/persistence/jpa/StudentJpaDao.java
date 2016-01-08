@@ -51,7 +51,7 @@ public final class StudentJpaDao extends BasicJpaDao implements StudentDao {
     public ApplicationEntity findApplicationByExternalId(final String externalId) {
         //TODO very stupid but effective fix for #515
         //TODO Does it mean that now it buffers OfferGroupEntity and then it works but without the extra query, it can't find OfferGroupEntities???
-        final List workaround = entityManager.createQuery("select og from OfferGroupEntity og").getResultList();
+        final List<OfferGroupEntity> workaround = entityManager.createQuery("select og from OfferGroupEntity og").getResultList();
 
         //TODO ensure that only application for owned or shared offers can be retrieved
         final Query query = entityManager.createNamedQuery("application.findByExternalId");

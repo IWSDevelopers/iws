@@ -66,9 +66,6 @@ public final class CommitteeWSClient extends CommonWSClient implements Committee
         super(new URL(wsdlLocation), ACCESS_SERVICE_NAME);
         client = getPort(ACCESS_SERVICE_PORT, CommitteeWS.class);
 
-        // make sure to initialize tlsParams prior to this call somewhere
-        //http.setTlsClientParameters(getTlsParams());
-
         // The CXF will by default attempt to read the URL from the WSDL at the
         // Server, which is normally given with the server's name. However, as
         // we're running via a load balancer and/or proxies, this address may

@@ -73,6 +73,10 @@ import java.util.Map;
  */
 public final class ExchangeMapper extends CommonMapper {
 
+    /** Private Constructor, this is a Utility Class. */
+    private ExchangeMapper() {
+    }
+
     public static net.iaeste.iws.ws.OfferStatisticsRequest map(final OfferStatisticsRequest api) {
         net.iaeste.iws.ws.OfferStatisticsRequest ws = null;
 

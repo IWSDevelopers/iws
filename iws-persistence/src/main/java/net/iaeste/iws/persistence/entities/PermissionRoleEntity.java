@@ -80,27 +80,6 @@ public final class PermissionRoleEntity implements IWSEntity {
     private Date created = new Date();
 
     // =========================================================================
-    // Entity Constructors
-    // =========================================================================
-
-    /**
-     * Empty Constructor, JPA requirement.
-     */
-    public PermissionRoleEntity() {
-    }
-
-    /**
-     * Default Constructor, for adding a Permission to a Role.
-     *
-     * @param permission Permission to add
-     * @param role       Role to add Permission to
-     */
-    public PermissionRoleEntity(final PermissionEntity permission, final RoleEntity role) {
-        this.permission = permission;
-        this.role = role;
-    }
-
-    // =========================================================================
     // Entity Setters & Getters
     // =========================================================================
 

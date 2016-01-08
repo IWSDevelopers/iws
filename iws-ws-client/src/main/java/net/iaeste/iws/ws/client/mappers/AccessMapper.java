@@ -33,6 +33,10 @@ import java.util.List;
  */
 public final class AccessMapper extends CommonMapper {
 
+    /** Private Constructor, this is a Utility Class. */
+    private AccessMapper() {
+    }
+
     public static net.iaeste.iws.ws.AuthenticationRequest map(final AuthenticationRequest api) {
         net.iaeste.iws.ws.AuthenticationRequest ws = null;
 

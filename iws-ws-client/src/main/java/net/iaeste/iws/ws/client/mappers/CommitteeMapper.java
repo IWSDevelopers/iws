@@ -38,6 +38,10 @@ import java.util.Set;
  */
 public final class CommitteeMapper extends CommonMapper {
 
+    /** Private Constructor, this is a Utility Class. */
+    private CommitteeMapper() {
+    }
+
     public static net.iaeste.iws.ws.FetchCommitteeRequest map(final FetchCommitteeRequest api) {
         net.iaeste.iws.ws.FetchCommitteeRequest ws = null;
 

@@ -44,6 +44,10 @@ import java.util.Set;
  */
 public final class StudentMapper extends CommonMapper {
 
+    /** Private Constructor, this is a Utility Class. */
+    private StudentMapper() {
+    }
+
     public static net.iaeste.iws.ws.StudentRequest map(final StudentRequest api) {
         net.iaeste.iws.ws.StudentRequest ws = null;
 

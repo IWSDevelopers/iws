@@ -178,7 +178,7 @@ public final class OfferView extends AbstractView<OfferView> {
         // As the view is reading from the current data model, and the Id is
         // always unique. It is sufficient to compare against this field.
         final OfferView that = (OfferView) obj;
-        return !(id != null ? !id.equals(that.id) : that.id != null);
+        return (id != null) ? id.equals(that.id) : (that.id == null);
     }
 
     /**
@@ -186,7 +186,7 @@ public final class OfferView extends AbstractView<OfferView> {
      */
     @Override
     public int hashCode() {
-        return id != null ? id.hashCode() : 0;
+        return (id != null) ? id.hashCode() : 0;
     }
 
     /**

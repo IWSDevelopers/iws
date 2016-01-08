@@ -14,7 +14,6 @@
  */
 package net.iaeste.iws.ws.client.clients;
 
-import org.apache.cxf.configuration.jsse.TLSClientParameters;
 import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
 
 import javax.xml.namespace.QName;
@@ -36,9 +35,8 @@ public class CommonWSClient extends Service {
     // them without locking - as we would otherwise end up in a race-condition.
     // Solution is simple, pre-initialize it with default settings, and then use
     // a Lock & Flag to complete the process. This way the parameters can be
-    // used regardlessly, provided we're checking and initializing it in all
+    // used regardless, provided we're checking and initializing it in all
     // Client Constructors.
-    protected static final TLSClientParameters tlsClientParameters = new TLSClientParameters();
     protected final HTTPClientPolicy policy = new HTTPClientPolicy();
 
     protected CommonWSClient(final URL wsdlLocation, final QName serviceName) {

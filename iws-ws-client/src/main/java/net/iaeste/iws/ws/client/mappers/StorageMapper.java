@@ -35,6 +35,10 @@ import java.util.List;
  */
 public final class StorageMapper extends CommonMapper {
 
+    /** Private Constructor, this is a Utility Class. */
+    private StorageMapper() {
+    }
+
     public static net.iaeste.iws.ws.FolderRequest map(final FolderRequest api) {
         net.iaeste.iws.ws.FolderRequest ws = null;
 
@@ -215,6 +219,6 @@ public final class StorageMapper extends CommonMapper {
     }
 
     private static net.iaeste.iws.ws.StorageType map(final StorageType api) {
-        return api != null ? net.iaeste.iws.ws.StorageType.valueOf(api.name()) : null;
+        return (api != null) ? net.iaeste.iws.ws.StorageType.valueOf(api.name()) : null;
     }
 }

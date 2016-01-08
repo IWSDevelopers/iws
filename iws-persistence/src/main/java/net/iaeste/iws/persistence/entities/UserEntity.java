@@ -20,7 +20,6 @@ import net.iaeste.iws.api.enums.NotificationFrequency;
 import net.iaeste.iws.api.enums.Privacy;
 import net.iaeste.iws.api.enums.UserStatus;
 import net.iaeste.iws.api.enums.UserType;
-import net.iaeste.iws.common.exceptions.NotificationException;
 import net.iaeste.iws.common.notification.Notifiable;
 import net.iaeste.iws.common.notification.NotificationField;
 import net.iaeste.iws.common.notification.NotificationType;
@@ -242,17 +241,6 @@ public final class UserEntity extends AbstractUpdateable<UserEntity> implements 
     private String data = null;
 
     /**
-     * For the data migration, it is problematic to use the old Id's, hence
-     * we're storing the old Id in a separate field - which is purely internal,
-     * and should be dropped once the IWS has become feature complete in
-     * relation to IW3. The plan is that this should happen during 2014. Once
-     * the IWS is feature complete, it means that all old data has been properly
-     * migrated over, and the old Id is then considered obsolete.
-     */
-    @Column(name = "old_iw3_id")
-    private Integer oldId = null;
-
-    /**
      * Last time the Entity was modified.
      */
     @Temporal(TemporalType.TIMESTAMP)
@@ -439,14 +427,6 @@ public final class UserEntity extends AbstractUpdateable<UserEntity> implements 
         return data;
     }
 
-    public void setOldId(final Integer oldId) {
-        this.oldId = oldId;
-    }
-
-    public Integer getOldId() {
-        return oldId;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -544,12 +524,10 @@ public final class UserEntity extends AbstractUpdateable<UserEntity> implements 
                 break;
             case RESET_PASSWORD:
             case RESET_SESSION:
-                // These three types all require that we send the information
-                // too the current e-mail address
-                fields.put(NotificationField.EMAIL, username);
-                break;
             case NEW_USER:
             case USER_ACTIVATED:
+                // These four types all require that we send the information
+                // too the current e-mail address
                 fields.put(NotificationField.EMAIL, username);
                 break;
             case UPDATE_USERNAME:
@@ -565,12 +543,6 @@ public final class UserEntity extends AbstractUpdateable<UserEntity> implements 
             case PROCESS_EMAIL_ALIAS:
                 fields.put(NotificationField.EMAIL, data);
                 break;
-            case SUSPEND_ACTIVE_USER:
-            case ACTIVATE_SUSPENDED_USER:
-                // Ignore for now
-                break;
-            default:
-                throw new NotificationException("NotificationType " + type + " is not supported in this context.");
         }
 
         return fields;

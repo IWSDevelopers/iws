@@ -189,7 +189,7 @@ public final class SharedOfferView extends AbstractView<SharedOfferView> {
         // As the view is reading from the current data model, and the Id is
         // always unique. It is sufficient to compare against this field.
         final SharedOfferView that = (SharedOfferView) obj;
-        return !((id != null) ? !id.equals(that.id) : (that.id != null));
+        return (id != null) ? id.equals(that.id) : (that.id == null);
     }
 
     /**

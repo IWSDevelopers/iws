@@ -64,13 +64,11 @@ public final class AccessWSClient extends CommonWSClient implements Access {
         super(new URL(wsdlLocation), ACCESS_SERVICE_NAME);
         client = getPort(ACCESS_SERVICE_PORT, AccessWS.class);
 
-        // make sure to initialize tlsParams prior to this call somewhere
-        //http.setTlsClientParameters(getTlsParams());
         // The CXF will by default attempt to read the URL from the WSDL at the
         // Server, which is normally given with the server's name. However, as
-        // we're running via a loadbalancer and/or proxies, this address may not
-        // be available or resolvable via DNS. Instead, we force using the same
-        // WSDL for requests as we use for accessing the server.
+        // we're running via a load balancer and/or proxies, this address may
+        // not be available or resolvable via DNS. Instead, we force using the
+        // same WSDL for requests as we use for accessing the server.
         // Binding: http://cxf.apache.org/docs/client-http-transport-including-ssl-support.html#ClientHTTPTransport%28includingSSLsupport%29-Howtooverridetheserviceaddress?
         ((BindingProvider) client).getRequestContext().put(ENDPOINT_ADDRESS, wsdlLocation);
 

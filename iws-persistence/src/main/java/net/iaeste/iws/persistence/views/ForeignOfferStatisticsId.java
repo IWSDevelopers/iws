@@ -89,7 +89,7 @@ public final class ForeignOfferStatisticsId implements Serializable {
 
         final ForeignOfferStatisticsId that = (ForeignOfferStatisticsId) obj;
 
-        if (groupId != null ? !groupId.equals(that.groupId) : that.groupId != null) {
+        if ((groupId != null) ? !groupId.equals(that.groupId) : (that.groupId != null)) {
             return false;
         }
 
@@ -101,9 +101,9 @@ public final class ForeignOfferStatisticsId implements Serializable {
      */
     @Override
     public int hashCode() {
-        int result = status != null ? status.hashCode() : 0;
+        int result = (status != null) ? status.hashCode() : 0;
 
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (groupId != null ? groupId.hashCode() : 0);
+        result = (IWSConstants.HASHCODE_MULTIPLIER * result) + ((groupId != null) ? groupId.hashCode() : 0);
 
         return result;
     }

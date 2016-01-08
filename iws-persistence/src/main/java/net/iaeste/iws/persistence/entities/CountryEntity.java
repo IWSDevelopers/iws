@@ -131,27 +131,6 @@ public final class CountryEntity extends AbstractUpdateable<CountryEntity> imple
     private Date created = new Date();
 
     // =========================================================================
-    // Entity Constructors
-    // =========================================================================
-
-    /**
-     * Empty Constructor, required by JPA.
-     */
-    public CountryEntity() {
-    }
-
-    /**
-     * Default Constructor.
-     *
-     * @param countryCode The two-letter UN specified Country Code
-     * @param countryName The name of the Country
-     */
-    public CountryEntity(final String countryCode, final String countryName) {
-        this.countryCode = countryCode;
-        this.countryName = countryName;
-    }
-
-    // =========================================================================
     // Entity Setters & Getters
     // =========================================================================
 

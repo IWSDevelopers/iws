@@ -53,6 +53,10 @@ import java.util.List;
  */
 public final class AdministrationMapper extends CommonMapper {
 
+    /** Private Constructor, this is a Utility Class. */
+    private AdministrationMapper() {
+    }
+
     public static net.iaeste.iws.ws.CountryRequest map(final CountryRequest api) {
         net.iaeste.iws.ws.CountryRequest ws = null;
 

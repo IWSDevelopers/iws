@@ -143,42 +143,6 @@ public final class RoleEntity extends AbstractUpdateable<RoleEntity> implements 
     private Date created = new Date();
 
     // =========================================================================
-    // Entity Constructors
-    // =========================================================================
-
-    /**
-     * Empty Constructor, JPA requirement.
-     */
-    public RoleEntity() {
-    }
-
-    /**
-     * Default Constructor, when creating new Roles to a country.
-     *
-     * @param role         The name of the role
-     * @param country      Custom Roles requires either a Group or Country
-     * @param description  Description of the role
-     */
-    public RoleEntity(final String role, final CountryEntity country, final String description) {
-        this.role = role;
-        this.country = country;
-        this.description = description;
-    }
-
-    /**
-     * Default Constructor, when creating new Roles for a specific Group.
-     *
-     * @param role         The name of the role
-     * @param group        Custom Roles requires either a Group or Country
-     * @param description  Description of the role
-     */
-    public RoleEntity(final String role, final GroupEntity group, final String description) {
-        this.role = role;
-        this.group = group;
-        this.description = description;
-    }
-
-    // =========================================================================
     // Entity Setters & Getters
     // =========================================================================
 

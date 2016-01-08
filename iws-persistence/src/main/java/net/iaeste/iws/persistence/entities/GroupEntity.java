@@ -185,7 +185,7 @@ public class GroupEntity extends AbstractUpdateable<GroupEntity> implements Exte
 
     @Monitored(name="Group Name", level = MonitoringLevel.DETAILED)
     @Column(name = "group_name", length = 50)
-    private String groupName;
+    private String groupName = null;
 
     @Monitored(name="Group Full Name", level = MonitoringLevel.DETAILED)
     @Column(name = "full_name", length = 125)
@@ -232,17 +232,6 @@ public class GroupEntity extends AbstractUpdateable<GroupEntity> implements Exte
     private MonitoringLevel monitoringLevel = MonitoringLevel.NONE;
 
     /**
-     * For the data migration, it is problematic to use the old Id's, hence
-     * we're storing the old Id in a separate field - which is purely internal,
-     * and should be dropped once the IWS has become feature complete in
-     * relation to IW3. The plan is that this should happen during 2014. Once
-     * the IWS is feature complete, it means that all old data has been properly
-     * migrated over, and the old Id is then considered obsolete.
-     */
-    @Column(name = "old_iw3_id")
-    private Integer oldId = null;
-
-    /**
      * Last time the Entity was modified.
      */
     @Temporal(TemporalType.TIMESTAMP)
@@ -255,28 +244,6 @@ public class GroupEntity extends AbstractUpdateable<GroupEntity> implements Exte
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created", nullable = false, updatable = false)
     private Date created = new Date();
-
-    // =========================================================================
-    // Entity Constructors
-    // =========================================================================
-
-    /**
-     * Empty Constructor, JPA requirement.
-     */
-    public GroupEntity() {
-        this.id = null;
-        this.groupName = null;
-    }
-
-    /**
-     * Default Constructor, for creating new entity.
-     *
-     * @param groupName Group Name
-     */
-    public GroupEntity(final String groupName) {
-        this.id = null;
-        this.groupName = groupName;
-    }
 
     // =========================================================================
     // Entity Setters & Getters
@@ -426,14 +393,6 @@ public class GroupEntity extends AbstractUpdateable<GroupEntity> implements Exte
         return monitoringLevel;
     }
 
-    public final void setOldId(final Integer oldId) {
-        this.oldId = oldId;
-    }
-
-    public final Integer getOldId() {
-        return oldId;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -534,11 +493,9 @@ public class GroupEntity extends AbstractUpdateable<GroupEntity> implements Exte
     @Override
     public final EnumMap<NotificationField, String> prepareNotifiableFields(final NotificationType type) {
         final EnumMap<NotificationField, String> fields = new EnumMap<>(NotificationField.class);
-        //TODO process_mailing_list
+
         switch (type) {
             case NEW_GROUP:
-            //case CHANGE_IN_GROUP_MEMBERS:
-            //case NEW_GROUP_OWNER:
                 fields.put(NotificationField.GROUP_NAME, groupName);
                 if (country != null) {
                     fields.put(NotificationField.COUNTRY_NAME, country.getCountryName());

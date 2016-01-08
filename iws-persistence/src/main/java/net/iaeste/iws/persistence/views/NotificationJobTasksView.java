@@ -118,7 +118,7 @@ public final class NotificationJobTasksView extends AbstractView<NotificationJob
         }
 
         final NotificationJobTasksView view = (NotificationJobTasksView) obj;
-        return !(id != null ? !id.equals(view.id) : view.id != null);
+        return (id != null) ? id.equals(view.id) : (view.id == null);
     }
 
     /**
@@ -126,7 +126,7 @@ public final class NotificationJobTasksView extends AbstractView<NotificationJob
      */
     @Override
     public int hashCode() {
-        return id != null ? id.hashCode() : 0;
+        return (id != null) ? id.hashCode() : 0;
     }
 
     /**

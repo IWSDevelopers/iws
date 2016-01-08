@@ -275,7 +275,7 @@ public final class UserPermissionView extends AbstractView<UserPermissionView> {
      * @noinspection JpaObjectClassSignatureInspection, PackageVisibleInnerClass
      */
     @Embeddable
-    static class UserPermissionViewId implements Serializable {
+    static final class UserPermissionViewId implements Serializable {
 
         /** {@see IWSConstants#SERIAL_VERSION_UID}. */
         private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -301,19 +301,19 @@ public final class UserPermissionView extends AbstractView<UserPermissionView> {
             return userId;
         }
 
-        protected void setGroupId(final Long groupId) {
+        private void setGroupId(final Long groupId) {
             this.groupId = groupId;
         }
 
-        protected Long getGroupId() {
+        private Long getGroupId() {
             return groupId;
         }
 
-        protected void setPermissionId(final Long permissionId) {
+        private void setPermissionId(final Long permissionId) {
             this.permissionId = permissionId;
         }
 
-        protected Long getPermissionId() {
+        private Long getPermissionId() {
             return permissionId;
         }
 
@@ -348,8 +348,8 @@ public final class UserPermissionView extends AbstractView<UserPermissionView> {
         public int hashCode() {
             int result = userId.hashCode();
 
-            result = IWSConstants.HASHCODE_MULTIPLIER * result + groupId.hashCode();
-            result = IWSConstants.HASHCODE_MULTIPLIER * result + permissionId.hashCode();
+            result = (IWSConstants.HASHCODE_MULTIPLIER * result) + groupId.hashCode();
+            result = (IWSConstants.HASHCODE_MULTIPLIER * result) + permissionId.hashCode();
 
             return result;
         }

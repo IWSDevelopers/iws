@@ -31,6 +31,7 @@ import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.GroupList;
 import net.iaeste.iws.api.dtos.TestData;
+import net.iaeste.iws.api.dtos.exchange.CSVProcessingErrors;
 import net.iaeste.iws.api.dtos.exchange.Employer;
 import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.enums.FetchType;
@@ -64,10 +65,12 @@ import net.iaeste.iws.client.ExchangeClient;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -768,45 +771,6 @@ public final class OfferTest extends AbstractTest {
     }
 
     @Test
-    @Ignore("Ignored 2014-04-10 by Pavel - Reason: Countries want to see expired offers")
-    public void testFetchSharedOfferAfterDeadline() {
-        final Date nominationDeadlineInThePast = new Date().plusDays(-20);
-
-        final String refNo = PL_YEAR + "-000010";
-        final Offer offer = TestData.prepareMinimalOffer(refNo, "Polish Employer");
-
-        final ProcessOfferRequest saveRequest1 = new ProcessOfferRequest(offer);
-        final OfferResponse saveResponse1 = exchange.processOffer(token, saveRequest1);
-
-        final FetchOffersRequest fetchSharedRequest = new FetchOffersRequest(FetchType.SHARED);
-        final FetchOffersResponse fetchSharedResponse = exchange.fetchOffers(austriaToken, fetchSharedRequest);
-        final int size = fetchSharedResponse.getOffers().size();
-
-        assertThat("verify that the offer was persisted", saveResponse1.isOk(), is(true));
-
-        final Offer offerToShare = saveResponse1.getOffer();
-        assertThat(offerToShare, is(not(nullValue())));
-
-        final Set<String> offersToShare1 = new HashSet<>(1);
-        offersToShare1.add(offerToShare.getOfferId());
-
-        final List<String> groupIds = new ArrayList<>(1);
-        groupIds.add(findNationalGroup(austriaToken).getGroupId());
-
-        final PublishOfferRequest publishRequest = new PublishOfferRequest(offersToShare1, groupIds, nominationDeadlineInThePast);
-        final PublishOfferResponse publishResponse = exchange.processPublishOffer(token, publishRequest);
-
-        assertThat("verify that the offer has been shared to Austria", publishResponse.getError(), is(IWSErrors.SUCCESS));
-
-        final FetchOffersRequest fetchSharedRequest2 = new FetchOffersRequest(FetchType.SHARED);
-        final FetchOffersResponse fetchSharedResponse2 = exchange.fetchOffers(austriaToken, fetchSharedRequest2);
-        final Offer readOffer = findOfferFromResponse(refNo, fetchSharedResponse2);
-
-        assertThat(fetchSharedResponse2.getOffers().size(), is(size));
-        assertThat("Polish offer was shared with Croatia but it's after the nomination deadline, so it should not be loaded", readOffer, is(nullValue()));
-    }
-
-    @Test
     public void testFetchSharedOfferDeadlineToday() {
         final AuthenticationToken austriaTokenWithNationalGroup = new AuthenticationToken(austriaToken);
         if (austriaTokenNationallGroup != null) {
@@ -1343,6 +1307,103 @@ public final class OfferTest extends AbstractTest {
         OfferCSVUploadRequest uploadRequest = new OfferCSVUploadRequest(outboxCsvResponse.getData(), OfferCSVUploadRequest.FieldDelimiter.COMMA);
         OfferCSVUploadResponse uploadResponse = exchange.uploadOffers(austriaTokenWithNationalGroup, uploadRequest);
         assertThat(uploadResponse.isOk(), is(true));
+    }
+
+    /**
+     * <p>On January 12, 2016 - Germany tried to upload an Offer with an invalid
+     * Reference Number, however - it resulted in a Stack trace in the logs,
+     * which was unexpected, as the error handling should've prevented it. So,
+     * it seems that internally in the Reflection mechanism - the expected
+     * IllegalArgument Exception is converted to an InvocationException.</p>
+     *
+     * <p>Test is written to ensure that we get the correct error information
+     * in the end.</p>
+     */
+    @Test
+    public void testInvalidRefNoInCsv() throws UnsupportedEncodingException {
+        // First, we need a valid offer which we can download as CSV and change
+        // to a new, different Offer
+        final AuthenticationToken germany = login("germany@iaeste.de", "germany");
+        final String refno = "DE-" + AbstractVerification.calculateExchangeYear() + "-00123456";
+        final String invalidRefno = refno + "123";
+        final Offer initialOffer = TestData.prepareFullOffer(refno, "Germany A/S");
+
+        final ProcessOfferRequest processRequest = new ProcessOfferRequest();
+        processRequest.setOffer(initialOffer);
+        final ProcessOfferRequest request = new ProcessOfferRequest(initialOffer);
+        final OfferResponse saveResponse = exchange.processOffer(germany, request);
+        assertThat(saveResponse.isOk(), is(true));
+
+        final OfferCSVDownloadRequest downloadRequest = new OfferCSVDownloadRequest();
+        downloadRequest.setFetchType(FetchType.DOMESTIC);
+        final OfferCSVDownloadResponse downloadResponse = exchange.downloadOffers(germany, downloadRequest);
+        assertThat(downloadResponse.isOk(), is(true));
+
+        // Okay, preparations is in place. Now we're replacing the refno with
+        // one that exceeds the allowed size. This should result in the refno
+        // Setter to throw an IllegalArgumentException
+        final String originalCSV = new String(downloadResponse.getData(), IWSConstants.DEFAULT_ENCODING);
+        final String newCSV = originalCSV.replace(refno, invalidRefno);
+
+        final OfferCSVUploadRequest uploadRequest = new OfferCSVUploadRequest();
+        uploadRequest.setData(newCSV.getBytes(IWSConstants.DEFAULT_ENCODING));
+        final OfferCSVUploadResponse uploadResponse = exchange.uploadOffers(germany, uploadRequest);
+
+        assertThat(uploadResponse.isOk(), is(true));
+        final Map<String, CSVProcessingErrors> result = uploadResponse.getErrors();
+        assertThat(result.size(), is(1));
+        final Map<String, String> errors = result.get(invalidRefno).getCsvErrors();
+        assertThat(errors.get("Ref.No"), is("The provided reference number (refno) " + invalidRefno + " is invalid."));
+
+        logout(germany);
+    }
+
+    /**
+     * <p>On January 12, 2016 - Germany tried to upload an Offer with an invalid
+     * Language reference, however - it resulted in a Stack trace in the logs,
+     * which was unexpected, as the error handling should've prevented it. So,
+     * it seems that internally in the Reflection mechanism - the expected
+     * IllegalArgument Exception is converted to an InvocationException.</p>
+     *
+     * <p>Test is written to ensure that we get the correct error information
+     * in the end.</p>
+     */
+    @Test
+    public void testInvalidLanguageInCsv() throws UnsupportedEncodingException {
+        // First, we need a valid offer which we can download as CSV and change
+        // to a new, different Offer
+        final AuthenticationToken germany = login("germany@iaeste.de", "germany");
+        final String refno = "DE-" + AbstractVerification.calculateExchangeYear() + "-00123457";
+        final Offer initialOffer = TestData.prepareFullOffer(refno, "Germany A/S");
+
+        final ProcessOfferRequest processRequest = new ProcessOfferRequest();
+        processRequest.setOffer(initialOffer);
+        final ProcessOfferRequest request = new ProcessOfferRequest(initialOffer);
+        final OfferResponse saveResponse = exchange.processOffer(germany, request);
+        assertThat(saveResponse.isOk(), is(true));
+
+        final OfferCSVDownloadRequest downloadRequest = new OfferCSVDownloadRequest();
+        downloadRequest.setFetchType(FetchType.DOMESTIC);
+        final OfferCSVDownloadResponse downloadResponse = exchange.downloadOffers(germany, downloadRequest);
+        assertThat(downloadResponse.isOk(), is(true));
+
+        // Okay, preparations is in place. Now we're replacing the language with
+        // one that is not allowed. This should result in the Language setter
+        // throwing an IllegalArgument Exception
+        final String originalCSV = new String(downloadResponse.getData(), IWSConstants.DEFAULT_ENCODING);
+        final String newCSV = originalCSV.replace("English", "ENGLISCH");
+
+        final OfferCSVUploadRequest uploadRequest = new OfferCSVUploadRequest();
+        uploadRequest.setData(newCSV.getBytes(IWSConstants.DEFAULT_ENCODING));
+        final OfferCSVUploadResponse uploadResponse = exchange.uploadOffers(germany, uploadRequest);
+
+        assertThat(uploadResponse.isOk(), is(true));
+        final Map<String, CSVProcessingErrors> result = uploadResponse.getErrors();
+        assertThat(result.size(), is(1));
+        final Map<String, String> errors = result.get(refno).getCsvErrors();
+        assertThat(errors.get("Language1"), is("No enum constant net.iaeste.iws.api.enums.Language.ENGLISCH"));
+
+        logout(germany);
     }
 
     /**

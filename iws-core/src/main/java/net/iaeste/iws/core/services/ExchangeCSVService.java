@@ -239,9 +239,13 @@ public final class ExchangeCSVService extends CommonService<ExchangeDao> {
         final Offer offer = ExchangeTransformer.offerFromCsv(record, errors);
         offer.setEmployer(employer);
 
-        // Before returning, let's just verify the Offer.
-        errors.putAll(offer.validate());
-
+        // As all the Setters from the Offer has been invoked, all errors for
+        // this Offer has already been caught. Invoking the validator will only
+        // generate additional false error messages, since the validator will
+        // apply null checks to those values that failed the Setter checks and
+        // has not been set. Example, if the RefNo is wrong, then the Setter
+        // will reject it but not set it, the Validator will see it as null and
+        // set that as error as well, which is incorrect.
         return offer;
     }
 
@@ -253,12 +257,11 @@ public final class ExchangeCSVService extends CommonService<ExchangeDao> {
             refNo = record.get(OfferFields.REF_NO.getField());
             final Offer csvOffer = extractOfferFromCSV(authentication, conversionErrors, record);
 
-            final CSVProcessingErrors validationErrors = new CSVProcessingErrors(csvOffer.validate());
-            validationErrors.putAll(conversionErrors);
+            final CSVProcessingErrors validationErrors = new CSVProcessingErrors(conversionErrors);
             if (validationErrors.isEmpty()) {
                 processingResult.put(refNo, processOffer(authentication, refNo, csvOffer));
             } else {
-                LOG.warn(formatLogMessage(authentication, "CSV Offer with RefNo " + refNo + " has some Problems: " + validationErrors));
+                LOG.warn(formatLogMessage(authentication, "CSV Offer with RefNo " + refNo + " has some Problems: " + conversionErrors));
                 processingResult.put(refNo, OfferCSVUploadResponse.ProcessingResult.ERROR);
                 errors.put(refNo, validationErrors);
             }

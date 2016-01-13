@@ -265,11 +265,12 @@ public final class CsvTransformer {
     }
 
     /**
-     * Reflective invocation of the Object Setter methods. To enforce the Setter
-     * Validation checks on the values. Required to avoid that illegal values is
-     * being processed.<br />
-     *   The method will also catch any thrown IllegalArgument Exceptions and
-     * add the result to the error map given.
+     * <p>Reflective invocation of the Object Setter methods. To enforce the
+     * Setter Validation checks on the values. Required to avoid that illegal
+     * values is being processed.</p>
+     *
+     * <p>The method will also catch any thrown IllegalArgument Exceptions and
+     * add the result to the error map given.</p>
      *
      * @param errors Validation Error Map
      * @param obj    The Object to invoke the Setter on
@@ -282,13 +283,24 @@ public final class CsvTransformer {
             try {
                 final Method implementation = obj.getClass().getMethod(field.getMethod(), field.getArgumentClasses());
                 implementation.invoke(obj, args);
-            } catch (IllegalArgumentException e) {
-                LOG.debug("Setter {} Invocation Error: {}", field.getMethod(), e.getMessage(), e);
-                errors.put(field.getField(), e.getMessage());
-            } catch (SecurityException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-                // The Reflection framework forces a check for the NoSuchMethod
-                // and InvocationTarget Exceptions. Additionally, if the Java
-                // Security Manager is used, we may also see a SecurityException
+            } catch (InvocationTargetException e) {
+                // The Reflection Framework is wrapping all caught Exceptions
+                // inside the Invocation Target Exception. Since our setters
+                // is throwing an IllegalArgument Exception, we have to see if
+                // this occurs.
+                if (e.getTargetException() instanceof IllegalArgumentException) {
+                    LOG.debug("Setter {} Invocation Error: {}", field.getMethod(), e.getTargetException(), e.getTargetException());
+                    errors.put(field.getField(), e.getTargetException().getMessage());
+                } else {
+                    LOG.debug("Setter {} Invocation Error: {}", field.getMethod(), e.getMessage(), e);
+                    errors.put(field.getField(), e.getMessage());
+                }
+            } catch (SecurityException | NoSuchMethodException | IllegalArgumentException | IllegalAccessException e) {
+                // The Reflection framework forces a check for the
+                // NoSuchMethodException. Additionally, if the Java Security
+                // Manager is used, we may also see a SecurityException.
+                //   Invoking the method may also result in either an
+                // IllegalArgumentException or IllegalAccessException.
                 LOG.error(e.getMessage(), e);
                 throw new IWSException(IWSErrors.FATAL, e.getMessage(), e);
             }

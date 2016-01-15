@@ -22,10 +22,13 @@ import net.iaeste.iws.common.notification.NotificationField;
 import net.iaeste.iws.common.notification.NotificationType;
 import net.iaeste.iws.ejb.emails.MessageField;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
@@ -83,38 +86,30 @@ public final class MessageGenerator {
 
             result.put(MessageField.SUBJECT, parseTemplate(subjectTemplate, parseMap));
             result.put(MessageField.MESSAGE, parseTemplate(messageTemplate, parseMap));
-        } catch (IOException | RuntimeException e) {
+        } catch (IOException | URISyntaxException | RuntimeException e) {
             throw new IWSException(IWSErrors.ERROR, "Error during processing template", e);
         }
 
         return result;
     }
 
-    private static String readTemplate(final String name) throws IOException {
-        try (InputStream stream = MessageGenerator.class.getResourceAsStream(DIR + name);
-             InputStreamReader streamReader = new InputStreamReader(stream);
-             BufferedReader reader = new BufferedReader(streamReader)) {
+    /**
+     * Simplified template reader, which is simply reading the content byte for
+     * byte and returning an IWS encoded String of it.
+     *
+     * @param name The name of the template to read
+     * @return Template
+     * @throws IOException if unable to read the template
+     * @throws URISyntaxException if the template path or name is invalid
+     */
+    private static String readTemplate(final String name) throws IOException, URISyntaxException {
+        final URL url = MessageGenerator.class.getResource(DIR + name);
+        final Path path = Paths.get(url.toURI());
 
-            final StringBuilder builder = new StringBuilder(16);
-            String line = reader.readLine();
-            boolean firstline = true;
-
-            while (line != null) {
-                if (firstline) {
-                    // We cannot append a newline to each line, as the subject
-                    // is also generated via this method. So instead, we're
-                    // only appending newlines if there was something before.
-                    firstline = false;
-                } else {
-                    // Missing line break, must be added. See Trac #1089
-                    builder.append('\n');
-                }
-                builder.append(line);
-                line = reader.readLine();
-            }
-
-            return builder.toString();
-        }
+        // All data inside the IWS is stored in Latin9 (ISO-8859-15), however
+        // our templates are written by us and stored as UTF-8, so we're
+        // reading them into this character set.
+        return new String(Files.readAllBytes(path), StandardCharsets.UTF_8);
     }
 
     private Map<String, String> generateParseMap(final Map<NotificationField, String> input) {

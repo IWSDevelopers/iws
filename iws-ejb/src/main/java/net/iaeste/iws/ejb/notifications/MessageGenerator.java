@@ -97,8 +97,18 @@ public final class MessageGenerator {
 
             final StringBuilder builder = new StringBuilder(16);
             String line = reader.readLine();
+            boolean firstline = true;
 
             while (line != null) {
+                if (firstline) {
+                    // We cannot append a newline to each line, as the subject
+                    // is also generated via this method. So instead, we're
+                    // only appending newlines if there was something before.
+                    firstline = false;
+                } else {
+                    // Missing line break, must be added. See Trac #1089
+                    builder.append('\n');
+                }
                 builder.append(line);
                 line = reader.readLine();
             }

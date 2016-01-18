@@ -86,21 +86,21 @@ public final class Employer extends AbstractVerification {
      */
     public Employer(final Employer employer) {
         if (employer != null) {
-            employerId = employer.employerId;
+            setEmployerId(employer.employerId);
             group = (employer.group != null) ? new Group(employer.group) : null;
-            name = employer.name;
-            department = employer.department;
-            business = employer.business;
+            setName(employer.name);
+            setDepartment(employer.department);
+            setBusiness(employer.business);
             address = (employer.address != null) ? new Address(employer.address) : null;
-            employeesCount = employer.employeesCount;
-            website = employer.website;
-            workingPlace = employer.workingPlace;
-            canteen = employer.canteen;
-            nearestAirport = employer.nearestAirport;
-            nearestPublicTransport = employer.nearestPublicTransport;
-            offerReferenceNumbers = employer.offerReferenceNumbers;
-            modified = employer.modified;
-            created = employer.created;
+            setEmployeesCount(employer.employeesCount);
+            setWebsite(employer.website);
+            setWorkingPlace(employer.workingPlace);
+            setCanteen(employer.canteen);
+            setNearestAirport(employer.nearestAirport);
+            setNearestPublicTransport(employer.nearestPublicTransport);
+            setOfferReferenceNumbers(employer.offerReferenceNumbers);
+            setModified(employer.modified);
+            setCreated(employer.created);
         }
     }
 

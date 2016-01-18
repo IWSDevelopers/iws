@@ -79,12 +79,12 @@ public final class Address extends AbstractVerification {
      */
     public Address(final Address address) {
         if (address != null) {
-            street1 = address.street1;
-            street2 = address.street2;
-            postalCode = address.postalCode;
-            city = address.city;
-            state = address.state;
-            pobox = address.pobox;
+            setStreet1(address.street1);
+            setStreet2(address.street2);
+            setPostalCode(address.postalCode);
+            setCity(address.city);
+            setState(address.state);
+            setPobox(address.pobox);
             country = new Country(address.country);
         }
     }
@@ -106,7 +106,7 @@ public final class Address extends AbstractVerification {
      */
     public void setStreet1(final String street1) throws IllegalArgumentException {
         ensureNotTooLong("street1", street1, FIELD_LENGTH);
-        this.street1 = street1;
+        this.street1 = sanitize(street1);
     }
 
     public String getStreet1() {
@@ -126,7 +126,7 @@ public final class Address extends AbstractVerification {
      */
     public void setStreet2(final String street2) throws IllegalArgumentException {
         ensureNotTooLong("street2", street2, FIELD_LENGTH);
-        this.street2 = street2;
+        this.street2 = sanitize(street2);
     }
 
     public String getStreet2() {
@@ -146,7 +146,7 @@ public final class Address extends AbstractVerification {
      */
     public void setPostalCode(final String postalCode) throws IllegalArgumentException {
         ensureNotTooLong("postalCode", postalCode, POSTAL_CODE_LENGTH);
-        this.postalCode = postalCode;
+        this.postalCode = sanitize(postalCode);
     }
 
     public String getPostalCode() {
@@ -166,7 +166,7 @@ public final class Address extends AbstractVerification {
      */
     public void setCity(final String city) throws IllegalArgumentException {
         ensureNotTooLong("city", city, FIELD_LENGTH);
-        this.city = city;
+        this.city = sanitize(city);
     }
 
     public String getCity() {
@@ -186,7 +186,7 @@ public final class Address extends AbstractVerification {
      */
     public void setState(final String state) throws IllegalArgumentException {
         ensureNotTooLong("state", state, FIELD_LENGTH);
-        this.state = state;
+        this.state = sanitize(state);
     }
 
     public String getState() {
@@ -206,7 +206,7 @@ public final class Address extends AbstractVerification {
      */
     public void setPobox(final String pobox) throws IllegalArgumentException {
         ensureNotTooLong("pobox", pobox, FIELD_LENGTH);
-        this.pobox = pobox;
+        this.pobox = sanitize(pobox);
     }
 
     public String getPobox() {

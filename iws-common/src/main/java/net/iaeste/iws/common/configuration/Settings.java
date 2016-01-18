@@ -38,6 +38,9 @@ public final class Settings {
     private static final String PROPERTY_MAX_LOGIN_RETRIES = "max.login.retries";
     private static final String PROPERTY_MAX_IDLE_TIME_FOR_SESSIONS = "max.idle.time.for.sessions";
     private static final String PROPERTY_LOGIN_BLOCKED_PERIOD = "login.blocked.period";
+    private static final String PROPERTY_ANNUAL_CONFERENCE_START = "annual.conference.start";
+    private static final String PROPERTY_ANNUAL_CONFERENCE_END = "annual.conference.end";
+    private static final String PROPERTY_ANNUAL_CONFERENCE_DEADLINE = "annual.conference.nomination.deadline";
     private static final String PROPERTY_ACCOUNT_UNUSED_REMOVED_DAYS = "account.unused.removed.days";
     private static final String PROPERTY_ACCOUNT_INACTIVE_DAYS = "account.inactive.days";
     private static final String PROPERTY_ACCOUNT_SUSPENDED_DAYS = "account.suspended.days";
@@ -47,7 +50,8 @@ public final class Settings {
     private static final String PROPERTY_SMTP_ADDRESS = "smtp.address";
     private static final String PROPERTY_SMTP_PORT = "smtp.port";
     private static final String PROPERTY_BASE_URL = "base.url";
-    private static final String PROPERTY_NCS_LIST = "ncs.list";
+    private static final String PROPERTY_LIST_NCS = "virtual.mailing.list.ncs";
+    private static final String PROPERTY_LIST_ANNOUNCE = "virtual.mailing.list.announce";
 
     /**
      * Default Value Constructor, sets all values to the default, which for most
@@ -63,6 +67,9 @@ public final class Settings {
         properties.setProperty(PROPERTY_MAX_LOGIN_RETRIES, String.valueOf(InternalConstants.MAX_LOGIN_RETRIES));
         properties.setProperty(PROPERTY_MAX_IDLE_TIME_FOR_SESSIONS, String.valueOf(InternalConstants.MAX_SESSION_IDLE_PERIOD));
         properties.setProperty(PROPERTY_LOGIN_BLOCKED_PERIOD, String.valueOf(InternalConstants.LOGIN_BLOCKING_PERIOD));
+        properties.setProperty(PROPERTY_ANNUAL_CONFERENCE_START, InternalConstants.AC_START);
+        properties.setProperty(PROPERTY_ANNUAL_CONFERENCE_END, InternalConstants.AC_END);
+        properties.setProperty(PROPERTY_ANNUAL_CONFERENCE_DEADLINE, InternalConstants.AC_DEADLINE);
         properties.setProperty(PROPERTY_ACCOUNT_UNUSED_REMOVED_DAYS, String.valueOf(InternalConstants.ACCOUNT_UNUSED_REMOVED_DAYS));
         properties.setProperty(PROPERTY_ACCOUNT_INACTIVE_DAYS, String.valueOf(InternalConstants.ACCOUNT_INACTIVE_DAYS));
         properties.setProperty(PROPERTY_ACCOUNT_SUSPENDED_DAYS, String.valueOf(InternalConstants.ACCOUNT_SUSPENDED_DAYS));
@@ -72,7 +79,8 @@ public final class Settings {
         properties.setProperty(PROPERTY_SMTP_ADDRESS, "");
         properties.setProperty(PROPERTY_SMTP_PORT, "");
         properties.setProperty(PROPERTY_BASE_URL, IWSConstants.BASE_URL);
-        properties.setProperty(PROPERTY_NCS_LIST, IWSConstants.NCS_LIST_NAME);
+        properties.setProperty(PROPERTY_LIST_NCS, IWSConstants.MAILING_LIST_NCS_NAME);
+        properties.setProperty(PROPERTY_LIST_ANNOUNCE, IWSConstants.MAILING_LIST_ANNOUNCE);
     }
 
     /**
@@ -82,7 +90,7 @@ public final class Settings {
      * @param properties Properties file to read the values from
      */
     public Settings(final Properties properties) {
-        this.properties = properties;
+        this.properties = new Properties(properties);
     }
 
     // =========================================================================
@@ -135,6 +143,30 @@ public final class Settings {
 
     public long getLoginBlockedTime() {
         return Long.valueOf(properties.getProperty(PROPERTY_LOGIN_BLOCKED_PERIOD));
+    }
+
+    public void setAnnualConferenceStart(final String start) {
+        properties.setProperty(PROPERTY_ANNUAL_CONFERENCE_START, start);
+    }
+
+    public String getAnnualConferenceStart() {
+        return properties.getProperty(PROPERTY_ANNUAL_CONFERENCE_START);
+    }
+
+    public void setAnnualConferenceEnd(final String end) {
+        properties.setProperty(PROPERTY_ANNUAL_CONFERENCE_END, end);
+    }
+
+    public String getAnnualConferenceEnd() {
+        return properties.getProperty(PROPERTY_ANNUAL_CONFERENCE_END);
+    }
+
+    public void setAnnualConferenceDeadline(final String deadline) {
+        properties.setProperty(PROPERTY_ANNUAL_CONFERENCE_END, deadline);
+    }
+
+    public String getAnnualConferenceDeadline() {
+        return properties.getProperty(PROPERTY_ANNUAL_CONFERENCE_DEADLINE);
     }
 
     public void setAccountUnusedRemovedDays(final Long accountUnusedRemovedDays) {
@@ -219,11 +251,19 @@ public final class Settings {
     }
 
     public void setNcsList(final String ncsList) {
-        properties.setProperty(PROPERTY_NCS_LIST, ncsList);
+        properties.setProperty(PROPERTY_LIST_NCS, ncsList);
     }
 
     public String getNcsList() {
-        return properties.getProperty(PROPERTY_NCS_LIST);
+        return properties.getProperty(PROPERTY_LIST_NCS);
+    }
+
+    public void setAnnounceList(final String annuunceList) {
+        properties.setProperty(PROPERTY_LIST_ANNOUNCE, annuunceList);
+    }
+
+    public String getAnnounceList() {
+        return properties.getProperty(PROPERTY_LIST_ANNOUNCE);
     }
 
     private static void throwIfNull(final String name, final Object obj) {

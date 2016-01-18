@@ -30,7 +30,11 @@ import java.util.regex.Pattern;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
-public interface IWSConstants {
+public final class IWSConstants {
+
+    /** Private Constructor, this is a Constants Class. */
+    private IWSConstants() {
+    }
 
     /**
      * <p>All serialized classes should use this value. The value reflects the
@@ -47,7 +51,7 @@ public interface IWSConstants {
      *
      * {@code private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;}
      */
-    long SERIAL_VERSION_UID = 201510260010000L;//// YYYYMMDDvvvnnnn
+    public static final long SERIAL_VERSION_UID = 201510260010000L;//// YYYYMMDDvvvnnnn
 
     /**
      * <p>The default encoding used for all processing of strings. The main
@@ -62,13 +66,13 @@ public interface IWSConstants {
      * <p>Latin9 was chosen as default, as it supports the Euro sign. The Euro
      * is one of the largest currencies being used.</p>
      */
-    String DEFAULT_ENCODING = "ISO-8859-15";
+    public static final String DEFAULT_ENCODING = "ISO-8859-15";
 
     /**
      * <p>As IAESTE is an English organization, the default locale is also
      * English.</p>
      */
-    Locale DEFAULT_LOCALE = Locale.ENGLISH;
+    public static final Locale DEFAULT_LOCALE = Locale.ENGLISH;
 
     /**
      * <p>E-mail addresses have changed numerous times over the years. To ensure
@@ -83,14 +87,14 @@ public interface IWSConstants {
      * <p>This regex does not support the quotation rules, which makes the rule
      * check more complicated, nor does it support IPv6 addresses.</p>
      */
-    String EMAIL_REGEX = "^[a-zA-Z0-9_\\.\\-\\+ !#\\$%&'\\*/=\\?\\^`\\{\\}\\|~]+@([a-zA-Z0-9_\\-]+\\.)*[a-zA-Z0-9]{2,}$";
+    public static final String EMAIL_REGEX = "^[a-zA-Z0-9_\\.\\-\\+ !#\\$%&'\\*/=\\?\\^`\\{\\}\\|~]+@([a-zA-Z0-9_\\-]+\\.)*[a-zA-Z0-9]{2,}$";
 
     /**
      * <p>The compiled e-mail pattern to use. Note, that the Pattern Class is
      * safe to pre-compile into a Global constant, whereas the Matcher must be
      * generated on a per-thread basis.</p>
      */
-    Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX);
+    public static final Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX);
 
     /**
      * <p>XML files are generally very error tolerant, however - certain
@@ -113,14 +117,14 @@ public interface IWSConstants {
      *   <li><b>31 (0x1F)</b> US or Unit Separator</li>
      * </ul>
      */
-    String REGEX_INVALID_SPACES = "[\\x1C\\x1D\\x1E\\x1F]";
+    public static final String REGEX_INVALID_SPACES = "[\\x1C\\x1D\\x1E\\x1F]";
 
     /**
      * <p>The compiled invalid newline pattern to use. Note, that the Pattern
      * Class is safe to pre-compile into a Global constant, whereas the Matcher
      * must be generated on a per-thread basis.</p>
      */
-    Pattern PATTERN_INVALID_SPACES = Pattern.compile(REGEX_INVALID_SPACES);
+    public static final Pattern PATTERN_INVALID_SPACES = Pattern.compile(REGEX_INVALID_SPACES);
 
     /**
      * <p>XML files are generally very error tolerant, however - certain
@@ -141,14 +145,14 @@ public interface IWSConstants {
      *   <li><b>12 (0x0C)</b> FF or Form Feed</li>
      * </ul>
      */
-    String REGEX_INVALID_NEWLINES = "[\\x0B\\x0C]";
+    public static final String REGEX_INVALID_NEWLINES = "[\\x0B\\x0C]";
 
     /**
      * <p>The compiled invalid space pattern to use. Note, that the Pattern
      * Class is safe to pre-compile into a Global constant, whereas the Matcher
      * must be generated on a per-thread basis.</p>
      */
-    Pattern PATTERN_INVALID_NEWLINES = Pattern.compile(REGEX_INVALID_NEWLINES);
+    public static final Pattern PATTERN_INVALID_NEWLINES = Pattern.compile(REGEX_INVALID_NEWLINES);
 
     /**
      * <p>XML files are generally very error tolerant, however - certain
@@ -170,20 +174,20 @@ public interface IWSConstants {
      *   <li><b>23 (0x17)</b> ETB or End of Transmission Block</li>
      * </ul>
      */
-    String REGEX_INVALID_CHARS = "[\\x04\\x08\\x17]";
+    public static final String REGEX_INVALID_CHARS = "[\\x04\\x07\\x17]";
 
     /**
      * <p>The compiled invalid char pattern to use. Note, that the Pattern Class
      * is safe to pre-compile into a Global constant, whereas the Matcher must be
      * generated on a per-thread basis.</p>
      */
-    Pattern PATTERN_INVALID_CHARS = Pattern.compile(REGEX_INVALID_CHARS);
+    public static final Pattern PATTERN_INVALID_CHARS = Pattern.compile(REGEX_INVALID_CHARS);
 
     /**
      * <p>The minimal length for a password which the user is choosing must be
      * this long.</p>
      */
-    int MINIMAL_PASSWORD_LENGTH = 6;
+    public static final int MINIMAL_PASSWORD_LENGTH = 6;
 
     /**
      * <p>Passwords must have a minimal length, using whatever characters the
@@ -198,19 +202,19 @@ public interface IWSConstants {
      * a two-factor salt. Hence, we trust that users are competent enough at
      * choosing passwords, which will protect their access.</p>
      */
-    String PASSWORD_REGEX = "^.{" + MINIMAL_PASSWORD_LENGTH + ",}$";
+    public static final String PASSWORD_REGEX = "^.{" + MINIMAL_PASSWORD_LENGTH + ",}$";
 
     /**
      * <p>The compiled password pattern to use. Note, that the Pattern Class is
      * safe to pre-compile into a Global constant, whereas the Matcher must be
      * generated on a per-thread basis.</p>
      */
-    Pattern PASSWORD_PATTERN = Pattern.compile(PASSWORD_REGEX);
+    public static final Pattern PASSWORD_PATTERN = Pattern.compile(PASSWORD_REGEX);
 
     /**
      * <p>The year that IAESTE was founded.</p>
      */
-    int FOUNDING_YEAR = 1948;
+    public static final int FOUNDING_YEAR = 1948;
 
     /**
      * <p>The public e-mail address, is for all public mailing lists and for all
@@ -218,47 +222,48 @@ public interface IWSConstants {
      * or User is suspended or removed, then the public address will cease to
      * work.</p>
      */
-    String PUBLIC_EMAIL_ADDRESS = "iaeste.org";
+    public static final String PUBLIC_EMAIL_ADDRESS = "iaeste.org";
 
     /**
      * <p>The private e-mail address, is for all groups. This will allow a group
      * to have a private way to communicate. If a Group is suspended or removed,
      * then the private address will cease to work.</p>
      */
-    String PRIVATE_EMAIL_ADDRESS = "iaeste.net";
+    public static final String PRIVATE_EMAIL_ADDRESS = "iaeste.net";
 
-    String NCS_LIST_NAME = "ncs";
+    public static final String MAILING_LIST_NCS_NAME = "ncs";
+    public static final String MAILING_LIST_ANNOUNCE = "announce";
 
-    String BASE_URL = "https://www.iaeste.net/intraweb";
-    String IWS_EMAIL_SENDER = "intraweb@iaeste.net";
+    public static final String BASE_URL = "https://www.iaeste.net/intraweb";
+    public static final String IWS_EMAIL_SENDER = "intraweb@iaeste.net";
 
     /**
      * <p>A non-zero, odd number used as the initial value, when generating
      * HashCode values. See Item 9, from Effective Java 2nd Edition by
      * Joshua Bloch.</p>
      */
-    int HASHCODE_INITIAL_VALUE = 17;
+    public static final int HASHCODE_INITIAL_VALUE = 17;
 
     /**
      * <p>A non-zero, odd number used as the multiplier, when generating
      * HashCode values. See Item 9, from Effective Java 2nd Edition by
      * Joshua Bloch.</p>
      */
-    int HASHCODE_MULTIPLIER = 31;
+    public static final int HASHCODE_MULTIPLIER = 31;
 
     /**
      * <p>Default IWS Date Format. The format was chosen as it gives the fewest
      * problems for users, regarding understanding it.</p>
      */
-    String DATE_FORMAT = "dd-MMM-yyyy";
+    public static final String DATE_FORMAT = "dd-MMM-yyyy";
 
     /**
      * <p>Default IWS DateTime Format.</p>
      */
-    String DATE_TIME_FORMAT = DATE_FORMAT + " HH:mm:ss";
+    public static final String DATE_TIME_FORMAT = DATE_FORMAT + " HH:mm:ss";
 
     /**
      * <p>Default IWS Success message.</p>
      */
-    String SUCCESS = "OK";
+    public static final String SUCCESS = "OK";
 }

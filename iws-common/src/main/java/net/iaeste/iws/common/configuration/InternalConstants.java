@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.common.configuration;
 
+import java.util.Calendar;
+
 /**
  * The public constants defined in the IWSConstants interface, is all exposed
  * via the API. Certain constants are only for internal IWS usage, so instead of
@@ -23,20 +25,24 @@ package net.iaeste.iws.common.configuration;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.1
  */
-public interface InternalConstants {
+public final class InternalConstants {
+
+    /** Private Constructor, this is a Constants Class. */
+    private InternalConstants() {
+    }
 
     /**
      * The time in hours and minutes, when the IWS State Bean which performs
      * regular cleanups, should run. The format must be HH:MM.
      */
-    String RUN_CLEAN_TIME = "02:00";
+    public static final String RUN_CLEAN_TIME = "02:00";
 
     /**
      * When starting the IWS, it is possible to tell the IWS to reset all
      * currently open Sessions, so nothing is hanging. By default, it is set
      * to false.
      */
-    String STARTUP_RESET_SESSIONS = "false";
+    public static final String STARTUP_RESET_SESSIONS = "false";
 
     /**
      * Accounts, which have been created but not activated before this number of
@@ -47,17 +53,22 @@ public interface InternalConstants {
      * as no data was associated with the account. So it is a simple matter to
      * create a new one.
      */
-    long ACCOUNT_UNUSED_REMOVED_DAYS = 91;
+    public static final long ACCOUNT_UNUSED_REMOVED_DAYS = 91;
 
     /**
-     * Active accounts, which have not been used after this number of days, is
-     * considered deprecated, and will be suspended.<br />
-     *   Suspension of an account simply means that it cannot be used unless it
+     * <p>Active accounts, which have not been used after this number of days,
+     * is considered deprecated, and will be suspended.</p>
+     *
+     * <p>Suspension of an account simply means that it cannot be used unless it
      * is reactivated. The User account data is still there, but all the account
      * will be removed from the mailing lists and the alias will also be
-     * removed. However, all personal data is still present.
+     * removed. However, all personal data is still present.</p>
+     *
+     * <p>Since it has been a problem that many National Secretaries have not
+     * used their Accounts between Annual Conferences, and therefore have seen
+     * them be Suspended, it is being updated to 400 days or 13 months.</p>
      */
-    long ACCOUNT_INACTIVE_DAYS = 365;
+    public static final long ACCOUNT_INACTIVE_DAYS = 400;
 
     /**
      * Accounts, which have been suspended this number of days, will be deleted.
@@ -69,7 +80,7 @@ public interface InternalConstants {
      * login) will be replaced with an invalid random value, the password will
      * also be removed.
      */
-    long ACCOUNT_SUSPENDED_DAYS = 365;
+    public static final long ACCOUNT_SUSPENDED_DAYS = 365;
 
     /**
      * The maximum number of concurrently active tokens in the system. Meaning
@@ -78,7 +89,7 @@ public interface InternalConstants {
      * overload the system. The tokens are kept in-memory - since read-only
      * requests cannot update the database.
      */
-    int MAX_ACTIVE_TOKENS = 500;
+    public static final int MAX_ACTIVE_TOKENS = 500;
 
     /**
      * Sessions will time-out after a number of minutes being idle. Meaning that
@@ -90,7 +101,7 @@ public interface InternalConstants {
      * monitored, and updated - the default 8 hours has been reduced to 30
      * minutes.
      */
-    long MAX_SESSION_IDLE_PERIOD = 1800000;  // 30 minutes
+    public static final long MAX_SESSION_IDLE_PERIOD = 1800000;  // 30 minutes
 
     /**
      * The maximum number of times a user may attempt to login with incorrect
@@ -103,7 +114,7 @@ public interface InternalConstants {
      * requests are kept in memory, and nothing is persisted, meaning that only
      * a restart of the system will reset these.
      */
-    int MAX_LOGIN_RETRIES = 5;
+    public static final int MAX_LOGIN_RETRIES = 5;
 
     /**
      * The amount of minutes that a user account is blocked, if too many invalid
@@ -111,30 +122,56 @@ public interface InternalConstants {
      * attempt to login.<br />
      *   The time is specified in milli seconds.
      */
-    long LOGIN_BLOCKING_PERIOD = 1800000L; // 30 minutes
+    public static final long LOGIN_BLOCKING_PERIOD = 1800000L; // 30 minutes
+
+    private static final Integer CURRENT_YEAR = Calendar.getInstance().get(Calendar.YEAR);
+
+    /**
+     * <p>The Annual Conference is special for the IAESTE Exchange Year, since
+     * this is the time when the Exchange Type AC applies, which means that
+     * during this period - only this type applies. However, as the Annual
+     * Conference takes place at different dates in January, these values only
+     * serves as a guideline to ensure that the IWS can handle it. The real
+     * values should be controlled via the IWS configuration file.</p>
+     *
+     * <p>This is the Start date, i.e. the first day of the Conference, where
+     * the an Exchange Session takes place, normally this is Saturday.</p>
+     */
+    public static final String AC_START = "20-JAN-" + CURRENT_YEAR;
+    /**
+     * <p>This is the end date for the Annual Conference Exchange Sessions, it
+     * is normally on Wednesday.</p>
+     */
+    public static final String AC_END = "30-JAN-" + CURRENT_YEAR;
+
+    /**
+     * <p>Offers exchanged at the Annual Conference, is normally having a fixed
+     * deadline, which is March 31st of the current year.</p>
+     */
+    public static final String AC_DEADLINE = "31-MAR-" + CURRENT_YEAR;
 
     /**
      * This is the length for generated Passwords. Meaning passwords for
      * accounts where no initial password was given.
      */
-    int GENERATED_PASSWORD_LENGTH = 8;
+    public static final int GENERATED_PASSWORD_LENGTH = 8;
 
     /**
      * For the automatic password generator, we need a list of characters, that
      * cannot be misinterpreted when read, i.e. l and 1 should not be in the
      * list, since they can too easily be mistaken for each other.
      */
-    String ALLOWED_GENERATOR_CHARACTERS = "abcdefghjkmnpqrstuvwxzy23456789";
+    public static final String ALLOWED_GENERATOR_CHARACTERS = "abcdefghjkmnpqrstuvwxzy23456789";
 
     /** Internal Id for the Owner Role. */
-    long ROLE_OWNER = 1L;
+    public static final long ROLE_OWNER = 1L;
 
     /** Internal Id for the Moderator Role. */
-    long ROLE_MODERATOR = 2L;
+    public static final long ROLE_MODERATOR = 2L;
 
     /** Internal Id for the Member Role. */
-    long ROLE_MEMBER = 3L;
+    public static final long ROLE_MEMBER = 3L;
 
     /** Internal Id for the Student Role. */
-    long ROLE_STUDENT = 5L;
+    public static final long ROLE_STUDENT = 5L;
 }

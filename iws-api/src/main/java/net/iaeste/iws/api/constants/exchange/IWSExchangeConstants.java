@@ -23,7 +23,11 @@ import java.util.regex.Pattern;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
-public interface IWSExchangeConstants {
+public final class IWSExchangeConstants {
+
+    /** Private Constructor, this is a Constants Class. */
+    private IWSExchangeConstants() {
+    }
 
     /**
      * Following a Board decision in the Autumn, 2014 - all Reference Numbers
@@ -31,14 +35,14 @@ public interface IWSExchangeConstants {
      * ticket #930, which superseeds the format ticket #414. The actual decision
      * points from the Board minutes is still pending.
      */
-    String REFNO_FORMAT = "[A-Z]{2}-[0-9]{4}-[A-Z0-9\\-]{1,8}";
-    Pattern REFNO_PATTERN = Pattern.compile(REFNO_FORMAT);
+    public static final String REFNO_FORMAT = "[A-Z]{2}-[0-9]{4}-[A-Z0-9\\-]{1,8}";
+    public static final Pattern REFNO_PATTERN = Pattern.compile(REFNO_FORMAT);
 
     /**
      * Defines the maximum number of {@link net.iaeste.iws.api.enums.exchange.FieldOfStudy}
      * for an {@link net.iaeste.iws.api.dtos.exchange.Offer}
      */
-    int MAX_OFFER_FIELDS_OF_STUDY = 3;
+    public static final int MAX_OFFER_FIELDS_OF_STUDY = 3;
 
     /**
      * Defines the maximum number of {@link net.iaeste.iws.api.enums.exchange.Specialization}
@@ -48,43 +52,43 @@ public interface IWSExchangeConstants {
      * amount of records, we're raising the bar to make sure that existing
      * Offers will work.
      */
-    int MAX_OFFER_SPECIALIZATIONS = 12;
+    public static final int MAX_OFFER_SPECIALIZATIONS = 12;
 
     /**
      * Sets are converted into Strings internally, using this constant as
      * delimiter. For this reason, it is not allowed to use this in the String
      * given as it will cause errors.
      */
-    String SET_DELIMITER = "|";
+    public static final String SET_DELIMITER = "|";
 
     /**
      * Defines the maximum number of {@link net.iaeste.iws.api.enums.Language}
      * for an {@link net.iaeste.iws.api.dtos.exchange.Offer}
      */
-    int MAX_OFFER_LANGUAGES = 3;
+    public static final int MAX_OFFER_LANGUAGES = 3;
 
     /**
      * Defines the maximum length of offer description
      * for an {@link net.iaeste.iws.api.dtos.exchange.Offer}
      */
-    int MAX_OFFER_WORK_DESCRIPTION_SIZE = 3000;
+    public static final int MAX_OFFER_WORK_DESCRIPTION_SIZE = 3000;
 
     /**
      * Defines the maximum length of other requirements
      * for an {@link net.iaeste.iws.api.dtos.exchange.Offer}
      */
-    int MAX_OFFER_OTHER_REQUIREMENTS_SIZE = 4000;
+    public static final int MAX_OFFER_OTHER_REQUIREMENTS_SIZE = 4000;
 
     /**
      * Defines the minimum number of weeks required
      * for an {@link net.iaeste.iws.api.dtos.exchange.Offer}
      */
-    int MIN_OFFER_MINIMUM_WEEKS = 4;
+    public static final int MIN_OFFER_MINIMUM_WEEKS = 4;
 
     /**
      * Defines the maximum number of additional documents
      * allowed to attach to a {@link net.iaeste.iws.api.dtos.exchange.StudentApplication}
      */
-    int MAX_NUMBER_OF_ADDITIONAL_DOCUMENTS = 10;
+    public static final int MAX_NUMBER_OF_ADDITIONAL_DOCUMENTS = 10;
 
 }

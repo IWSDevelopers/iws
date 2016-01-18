@@ -101,7 +101,7 @@ create table mailing_lists (
     list_address    varchar(100),
     group_id        integer,
     subject_prefix  varchar(50),
-    list_type       varchar(25) default 'LIST',
+    list_type       varchar(25),
     replyto_style   varchar(25) default 'REPLY_TO_SENDER',
     status          varchar(25) default 'ACTIVE',
     modified        timestamp default now(),
@@ -141,7 +141,7 @@ create table user_to_mailing_list (
     constraint user_to_mailing_list_user_group_id                  foreign key (user_to_group_id) references user_to_group (id) on delete cascade,
 
     /* Unique Constraints */
-    constraint user_to_mailing_list_unique_mailing_list_id_member  unique (mailing_list_id, member),
+    constraint user_to_mailing_list_unique_mailing_list_user_id    unique (mailing_list_id, user_to_group_id),
 
     /* Not Null Constraints */
     constraint user_to_mailing_list_notnull_id                     check (id is not null),
@@ -151,3 +151,7 @@ create table user_to_mailing_list (
     constraint user_to_mailing_list_notnull_modified               check (modified is not null),
     constraint user_to_mailing_list_notnull_created                check (created is not null)
 );
+
+insert into mailing_lists (list_address, group_id, subject_prefix, list_type, replyto_style, status) values
+    ('ncs@iaeste.net', 3, 'NCS', 'PRIVATE_LIST', 'REPLY_TO_SENDER', 'ACTIVE'),
+    ('announce@iaeste.net', 3, 'ANNOUNCE', 'PRIVATE_LIST', 'NO_REPLY', 'ACTIVE');

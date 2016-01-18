@@ -26,6 +26,7 @@ import net.iaeste.iws.persistence.entities.IWSEntity;
 import net.iaeste.iws.persistence.entities.PermissionRoleEntity;
 import net.iaeste.iws.persistence.entities.Updateable;
 import net.iaeste.iws.persistence.entities.UserEntity;
+import net.iaeste.iws.persistence.entities.UserGroupEntity;
 import net.iaeste.iws.persistence.exceptions.PersistenceException;
 import net.iaeste.iws.persistence.views.IWSView;
 
@@ -179,4 +180,6 @@ public interface BasicDao {
      * @throws PersistenceException if a single file could not be found
      */
     FileEntity findAttachedFile(String externalFileId, String externalGroupId, StorageType type);
+
+    List<UserGroupEntity> findGroupMembers(GroupEntity group);
 }

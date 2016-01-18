@@ -17,7 +17,7 @@ package net.iaeste.iws.persistence.entities;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.GroupStatus;
 import net.iaeste.iws.api.enums.MailReply;
-import net.iaeste.iws.api.enums.exchange.MailinglistType;
+import net.iaeste.iws.api.enums.MailinglistType;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,6 +28,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -39,6 +41,14 @@ import java.util.Date;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.1
  */
+@NamedQueries({
+        @NamedQuery(name = "mailingList.findListsByGroup",
+                query = "select m from MailinglistEntity m " +
+                        "where m.group = :group"),
+        @NamedQuery(name = "mailingList.findByMailingListAddress",
+                query = "select m from MailinglistEntity m " +
+                        "where m.listAddress = :address ")
+})
 @Entity
 @Table(name = "mailing_lists")
 public final class MailinglistEntity extends AbstractUpdateable<MailinglistEntity> {
@@ -68,7 +78,7 @@ public final class MailinglistEntity extends AbstractUpdateable<MailinglistEntit
 
     @Enumerated(EnumType.STRING)
     @Column(name = "list_type", length = 25, nullable = false, updatable = false)
-    private MailinglistType listType = MailinglistType.LIST;
+    private MailinglistType listType = MailinglistType.PUBLIC_LIST;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "replyto_style", length = 25, nullable = false, updatable = false)

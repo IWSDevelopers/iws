@@ -906,7 +906,7 @@ create table mailing_lists (
     list_address    varchar(100),
     group_id        integer,
     subject_prefix  varchar(50),
-    list_type       varchar(25) default 'LIST',
+    list_type       varchar(25),
     replyto_style   varchar(25) default 'REPLY_TO_SENDER',
     status          varchar(25) default 'ACTIVE',
     modified        timestamp default now(),
@@ -937,6 +937,10 @@ create table mailing_lists (
 -- the e-mail address from the user group relation, it is added here to make the
 -- using of the mailing lists simpler for the MTA. The mayWrite flag from the
 -- user group relation is also added here, so the query can be simplified.
+--   Note, that the Unique constraint on the Mailing List & User, is added
+-- rather than on the mailing list and member. As it can be a problem to
+-- ascertain which UserGroup Id to apply. So we're adding all known. This will
+-- make loads of processing easier, and the reading can be made with a grouping.
 -- =============================================================================
 create sequence user_to_mailing_list_sequence start with 1 increment by 1;
 create table user_to_mailing_list (
@@ -955,7 +959,7 @@ create table user_to_mailing_list (
     constraint user_to_mailing_list_user_group_id                  foreign key (user_to_group_id) references user_to_group (id) on delete cascade,
 
     /* Unique Constraints */
-    constraint user_to_mailing_list_unique_mailing_list_id_member  unique (mailing_list_id, member),
+    constraint user_to_mailing_list_unique_mailing_list_user_id    unique (mailing_list_id, user_to_group_id),
 
     /* Not Null Constraints */
     constraint user_to_mailing_list_notnull_id                     check (id is not null),

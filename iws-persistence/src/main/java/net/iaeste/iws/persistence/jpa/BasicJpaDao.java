@@ -20,10 +20,10 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.Field;
 import net.iaeste.iws.api.enums.GroupType;
+import net.iaeste.iws.api.enums.MonitoringLevel;
 import net.iaeste.iws.api.enums.StorageType;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.util.Paginatable;
-import net.iaeste.iws.api.enums.MonitoringLevel;
 import net.iaeste.iws.api.util.Serializer;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.BasicDao;
@@ -38,6 +38,7 @@ import net.iaeste.iws.persistence.entities.MonitoringEntity;
 import net.iaeste.iws.persistence.entities.PermissionRoleEntity;
 import net.iaeste.iws.persistence.entities.Updateable;
 import net.iaeste.iws.persistence.entities.UserEntity;
+import net.iaeste.iws.persistence.entities.UserGroupEntity;
 import net.iaeste.iws.persistence.exceptions.IdentificationException;
 import net.iaeste.iws.persistence.exceptions.PersistenceException;
 import net.iaeste.iws.persistence.monitoring.MonitoringProcessor;
@@ -171,6 +172,17 @@ public class BasicJpaDao implements BasicDao {
         monitoringEntity.setFields(data);
 
         entityManager.persist(monitoringEntity);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<UserGroupEntity> findGroupMembers(final GroupEntity group) {
+        final Query query = entityManager.createQuery("select u from UserGroupEntity u where u.group = :group");
+        query.setParameter("group", group);
+
+        return query.getResultList();
     }
 
     // =========================================================================

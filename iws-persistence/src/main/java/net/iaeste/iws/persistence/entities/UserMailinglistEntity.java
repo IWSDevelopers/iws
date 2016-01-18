@@ -26,17 +26,35 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.1
  */
+@NamedQueries({
+        @NamedQuery(name = "userMailingList.findSubscriptionByUserAddressAndListId",
+                query = "select u from UserMailinglistEntity u " +
+                        "where u.mailinglist.id = :lid " +
+                        "  and u.member = :userAddress "),
+        @NamedQuery(name = "userMailingList.findSubscriptionForUser",
+                query = "select u from UserMailinglistEntity u " +
+                        "where u.userGroup = :ug"),
+        @NamedQuery(name = "userMailingList.findByMailingListAddress",
+                query = "select u from UserMailinglistEntity u " +
+                        "where u.mailinglist.listAddress = :address "),
+        @NamedQuery(name = "userMailingList.deleteSubscriptionsByGroup",
+                query = "delete from UserMailinglistEntity " +
+                        "where userGroup.group = :group")
+})
 @Entity
 @Table(name = "user_to_mailing_list")
 public final class UserMailinglistEntity extends AbstractUpdateable<UserMailinglistEntity> {
@@ -102,6 +120,46 @@ public final class UserMailinglistEntity extends AbstractUpdateable<UserMailingl
         return id;
     }
 
+    public void setMailinglist(final MailinglistEntity mailinglist) {
+        this.mailinglist = mailinglist;
+    }
+
+    public MailinglistEntity getMailinglist() {
+        return mailinglist;
+    }
+
+    public void setUserGroup(final UserGroupEntity userGroup) {
+        this.userGroup = userGroup;
+    }
+
+    public UserGroupEntity getUserGroup() {
+        return userGroup;
+    }
+
+    public void setMember(final String member) {
+        this.member = member;
+    }
+
+    public String getMember() {
+        return member;
+    }
+
+    public void setStatus(final UserStatus status) {
+        this.status = status;
+    }
+
+    public UserStatus getStatus() {
+        return status;
+    }
+
+    public void setMayWrite(final Boolean mayWrite) {
+        this.mayWrite = mayWrite;
+    }
+
+    public Boolean getMayWrite() {
+        return mayWrite;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -143,9 +201,28 @@ public final class UserMailinglistEntity extends AbstractUpdateable<UserMailingl
      */
     @Override
     public boolean diff(final UserMailinglistEntity obj) {
-        // Until properly implemented, better return true to avoid that we're
-        // missing updates!
-        return true;
+        boolean differs = false;
+
+        if (!Objects.equals(member, obj.member)) {
+            // We have different target e-mail addresses
+            differs = true;
+        }
+
+        if (!Objects.equals(status, obj.status)) {
+            // We have different status, i.e. user has gone from new to
+            // activate, suspended. Deleted should not be checked here,
+            // since it should instead result in the record being
+            // completely deleted.
+            differs = true;
+        }
+
+        if (!Objects.equals(mayWrite, obj.mayWrite)) {
+            // If the list is a private mailing list, then it may be that the
+            // User is not allowed to write to it.
+            differs = true;
+        }
+
+        return differs;
     }
 
     /**
@@ -154,7 +231,17 @@ public final class UserMailinglistEntity extends AbstractUpdateable<UserMailingl
     @Override
     public void merge(final UserMailinglistEntity obj) {
         if (canMerge(obj)) {
+            // The member or the target e-mail address for a user, i.e. the
+            // username for the User
+            member = obj.member;
+
+            // We will update the status with the status of the User. This way,
+            // if a User is suspended or activated, the list will reflect this
             status = obj.status;
+
+            // If it is a private List, then this field may also be set, for
+            // public lists, it is ignored
+            mayWrite = obj.mayWrite;
         }
     }
 }

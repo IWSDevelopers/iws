@@ -81,8 +81,8 @@ public final class MessageGenerator {
         final Map<MessageField, String> result = new EnumMap<>(MessageField.class);
 
         try {
+            final String subjectTemplate = readTemplate(template + SUBJECT).replaceAll("\\n", "");
             final String messageTemplate = readTemplate(template + MESSAGE);
-            final String subjectTemplate = readTemplate(template + SUBJECT);
 
             result.put(MessageField.SUBJECT, parseTemplate(subjectTemplate, parseMap));
             result.put(MessageField.MESSAGE, parseTemplate(messageTemplate, parseMap));

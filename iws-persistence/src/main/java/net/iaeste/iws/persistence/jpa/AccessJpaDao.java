@@ -36,8 +36,6 @@ import net.iaeste.iws.persistence.views.UserPermissionView;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -737,14 +735,5 @@ public final class AccessJpaDao extends BasicJpaDao implements AccessDao {
         }
 
         return super.findUniqueResult(query, entityName);
-    }
-
-    private static String generateTimestamp() {
-        // Format is: Year + Month + Date + Hour24 + Minute + Second + Millis
-        // Example: 20140503193432987 -> May 3rd, 2014 at 19:34:43.987
-        final String timestampFormat = "yyyyMMddHHmmssSSS";
-        final DateFormat formatter = new SimpleDateFormat(timestampFormat, IWSConstants.DEFAULT_LOCALE);
-
-        return formatter.format(new Date());
     }
 }

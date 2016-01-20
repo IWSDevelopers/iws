@@ -46,6 +46,8 @@ import net.iaeste.iws.persistence.views.IWSView;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -464,5 +466,14 @@ public class BasicJpaDao implements BasicDao {
         }
 
         return result;
+    }
+
+    protected static String generateTimestamp() {
+        // Format is: Year + Month + Date + Hour24 + Minute + Second + Millis
+        // Example: 20140503193432987 -> May 3rd, 2014 at 19:34:43.987
+        final String timestampFormat = "yyyyMMddHHmmssSSS";
+        final DateFormat formatter = new SimpleDateFormat(timestampFormat, IWSConstants.DEFAULT_LOCALE);
+
+        return formatter.format(new Date());
     }
 }

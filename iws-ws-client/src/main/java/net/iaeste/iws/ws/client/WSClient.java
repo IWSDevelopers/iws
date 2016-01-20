@@ -24,6 +24,7 @@ import net.iaeste.iws.api.enums.FetchType;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.requests.exchange.FetchEmployerRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
+import net.iaeste.iws.api.requests.exchange.OfferCSVDownloadRequest;
 import net.iaeste.iws.api.requests.exchange.OfferStatisticsRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessEmployerRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
@@ -34,6 +35,7 @@ import net.iaeste.iws.api.responses.FetchPermissionResponse;
 import net.iaeste.iws.api.responses.exchange.EmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchEmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
+import net.iaeste.iws.api.responses.exchange.OfferCSVDownloadResponse;
 import net.iaeste.iws.api.responses.exchange.OfferResponse;
 import net.iaeste.iws.api.responses.exchange.OfferStatisticsResponse;
 import net.iaeste.iws.ws.client.clients.AccessWSClient;
@@ -82,22 +84,26 @@ public final class WSClient {
             try {
                 // Access related requests
                 final FetchPermissionResponse permissionResponse = client.fetchPermissions(token);
-                LOG.info("PermissionResponse: " + permissionResponse.getMessage());
+                LOG.info("PermissionResponse: {}.", permissionResponse.getMessage());
 
                 final EmergencyListResponse emergency = client.fetchEmergencyList(token);
-                LOG.info("Received the Emergency List with " + emergency.getEmergencyContacts().size() + " records.");
+                LOG.info("Received the Emergency List with {} records.", emergency.getEmergencyContacts().size());
+
+                final OfferCSVDownloadResponse downloadResponse = client.downloadOffers(token, FetchType.DOMESTIC);
+                LOG.info("Offer CSV Download: {}.", downloadResponse.getMessage());
+                //Files.write(Paths.get(System.getProperty("java.io.tmpdir") + "/offers.csv"), downloadResponse.getData());
 
                 // Exchange related requests
-                LOG.info("Offer Statistics: " + client.fetchOfferStatistics(token).getMessage());
-                LOG.info("Fetch Employers: " + client.fetchEmployers(token).getMessage());
+                LOG.info("Offer Statistics: {}.", client.fetchOfferStatistics(token).getMessage());
+                LOG.info("Fetch Employers: {}.", client.fetchEmployers(token).getMessage());
                 final FetchOffersResponse domesticOfferResponse = client.fetchOffers(token, FetchType.DOMESTIC);
                 final FetchOffersResponse sharedOfferResponse = client.fetchOffers(token, FetchType.SHARED);
-                LOG.info("Fetch Domestic Offers: " + domesticOfferResponse.getMessage() + " with " + domesticOfferResponse.getOffers().size() + " Offers.");
-                LOG.info("Fetch Shared Offers: " + sharedOfferResponse.getMessage() + " with " + sharedOfferResponse.getOffers().size() + " Offers.");
-                if (domesticOfferResponse.isOk() && domesticOfferResponse.getOffers() != null) {
+                LOG.info("Fetch Domestic Offers: {} with {} Offers.", domesticOfferResponse.getMessage(), domesticOfferResponse.getOffers().size());
+                LOG.info("Fetch Shared Offers: {} with {} Offers.", sharedOfferResponse.getMessage(), sharedOfferResponse.getOffers().size());
+                if (domesticOfferResponse.isOk() && (domesticOfferResponse.getOffers() != null)) {
                     for (final Offer offer : domesticOfferResponse.getOffers()) {
-                        LOG.info("Processing Employer '" + offer.getEmployer().getName() + "': " + client.processEmployer(token, offer.getEmployer()).getMessage());
-                        LOG.info("Processing Offer with Reference Number '" + offer.getRefNo() + "': " + client.processOffer(token, offer).getMessage());
+                        LOG.info("Processing Employer '{}': {}.", offer.getEmployer().getName(), client.processEmployer(token, offer.getEmployer()).getMessage());
+                        LOG.info("Processing Offer with Reference Number '{}': {}.", offer.getRefNo(), client.processOffer(token, offer).getMessage());
                     }
                 }
             } catch (RuntimeException t) {
@@ -105,7 +111,7 @@ public final class WSClient {
             } finally {
                 // Always remember to log out, otherwise the Account will be
                 // blocked for a longer time period
-                LOG.info("DeprecateSession: " + client.deprecateSession(token).getMessage());
+                LOG.info("DeprecateSession: {}.", client.deprecateSession(token).getMessage());
             }
         }
     }
@@ -250,6 +256,25 @@ public final class WSClient {
         final ProcessEmployerRequest request = new ProcessEmployerRequest(copy);
 
         return getExchange().processEmployer(token, request);
+    }
+
+    /**
+     * <p>Sample IWS Download Offers request. The request requires two
+     * parameters, the current Session Token and the type of Offers to be
+     * fetched. The Exchange Year is omitted, as it is the current.</p>
+     *
+     * <p>The method will build and send the Request Object, and return the
+     * Response Object from the IWS.</p>
+     *
+     * @param token User Authentication (Session) Token
+     * @param type  Type of Offers to be fetch (domestic or shared)
+     * @return Response Object from the IWS
+     */
+    public OfferCSVDownloadResponse downloadOffers(final AuthenticationToken token, final FetchType type) {
+        final OfferCSVDownloadRequest request = new OfferCSVDownloadRequest();
+        request.setFetchType(type);
+
+        return getExchange().downloadOffers(token, request);
     }
 
     /**

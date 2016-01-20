@@ -84,9 +84,9 @@ public class NotificationEmailSender implements Observer {
     private QueueSession session = null;
 
     @Override
-    public final void init(final EntityManager iwsEntityManager, final Settings settings) {
-        dao = new NotificationJpaDao(iwsEntityManager);
-        accessDao = new AccessJpaDao(iwsEntityManager);
+    public final void init(final EntityManager entityManager, final Settings settings) {
+        dao = new NotificationJpaDao(entityManager);
+        accessDao = new AccessJpaDao(entityManager);
         messageGenerator = new MessageGenerator(settings);
 
         initializeQueue();

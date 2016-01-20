@@ -31,6 +31,18 @@ import javax.persistence.EntityManager;
  */
 public interface Observer {
 
+    void setId(Long id);
+
+    Long getId();
+
+    /**
+     * Method to initialize Observer
+     *
+     * @param entityManager IWS Entity Manager
+     * @param settings      IWS Settings
+     */
+    void init(EntityManager entityManager, Settings settings);
+
     /**
      * Whenever an observer needs to be notified of a change, this method is
      * invoked with the subject as parameter. The method is invoked by the
@@ -39,15 +51,4 @@ public interface Observer {
      * @param  subject  the observable object
      */
     void update(Observable subject);
-
-    Long getId();
-    void setId(Long id);
-
-    /**
-     * Method to initialize Observer
-     *
-     * @param iwsEntityManager     IWS Entity Manager
-     * @param settings             IWS Settings
-     */
-    void init(EntityManager iwsEntityManager, Settings settings);
 }

@@ -193,6 +193,7 @@ public final class ExchangeSpringClient implements Exchange {
 
     /**
      * {@inheritDoc}
+     * @deprecated
      */
     @Override
     @Deprecated

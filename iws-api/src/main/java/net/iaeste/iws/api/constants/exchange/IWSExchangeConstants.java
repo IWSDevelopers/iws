@@ -25,14 +25,10 @@ import java.util.regex.Pattern;
  */
 public final class IWSExchangeConstants {
 
-    /** Private Constructor, this is a Constants Class. */
-    private IWSExchangeConstants() {
-    }
-
     /**
      * Following a Board decision in the Autumn, 2014 - all Reference Numbers
      * must apply to the following regex. The format was updated as part of Trac
-     * ticket #930, which superseeds the format ticket #414. The actual decision
+     * ticket #930, which supersede the format ticket #414. The actual decision
      * points from the Board minutes is still pending.
      */
     public static final String REFNO_FORMAT = "[A-Z]{2}-[0-9]{4}-[A-Z0-9\\-]{1,8}";
@@ -91,4 +87,7 @@ public final class IWSExchangeConstants {
      */
     public static final int MAX_NUMBER_OF_ADDITIONAL_DOCUMENTS = 10;
 
+    /** Private Constructor, this is a Constants Class. */
+    private IWSExchangeConstants() {
+    }
 }

@@ -26,7 +26,6 @@ import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.api.requests.exchange.FetchEmployerRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
-import net.iaeste.iws.api.requests.exchange.FetchPublishGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishedGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.OfferStatisticsRequest;
 import net.iaeste.iws.api.responses.exchange.FetchEmployerResponse;
@@ -231,7 +230,7 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
         return result;
     }
 
-    public FetchPublishingGroupResponse fetchPublishGroups(final Authentication authentication, final FetchPublishGroupsRequest request) {
+    public FetchPublishingGroupResponse fetchPublishGroups(final Authentication authentication) {
         final List<PublishingGroupEntity> sharingLists = dao.getSharingListForOwner(authentication.getGroup().getId());
         final List<PublishingGroup> publishingGroups = new ArrayList<>(sharingLists.size());
         for (final PublishingGroupEntity sharingList : sharingLists) {

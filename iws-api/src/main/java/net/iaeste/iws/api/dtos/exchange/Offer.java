@@ -316,7 +316,6 @@ public final class Offer extends AbstractVerification {
      * @throws IllegalArgumentException if not valid, i.e. null or not verifiable
      */
     public void setEmployer(final Employer employer) throws IllegalArgumentException {
-        //ensureNotNullAndVerifiable("employer", employer);
         ensureNotNull("employer", employer);
         this.employer = new Employer(employer);
     }

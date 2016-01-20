@@ -34,24 +34,6 @@ public final class CountrySurvey extends AbstractVerification {
     // Object Constructors
     // =========================================================================
 
-    /**
-     * Empty Constructor, to use if the setters are invoked. This is required
-     * for WebServices to work properly.
-     */
-    public CountrySurvey() {
-        // Required for WebServices to work. Comment added to please Sonar.
-    }
-
-    /**
-     * Copy Constructor.
-     *
-     * @param survey Survey Of Country Object to copy
-     */
-    public CountrySurvey(final CountrySurvey survey) {
-        if (survey != null) {
-        }
-    }
-
     // =========================================================================
     // Standard Setters & Getters
     // =========================================================================

@@ -78,32 +78,6 @@ public final class DatePeriod extends AbstractVerification {
     }
 
     // =========================================================================
-    // Other Operations
-    // =========================================================================
-
-    ///**
-    // * Checks if the given Date is after the current. If so, then a true is
-    // * returned, otherwise a false.
-    // *
-    // * @param period  DatePeriod to check if it comes after this
-    // * @return True if the given Date is after the current, otherwise false
-    // */
-    //public Boolean isAfter(final DatePeriod period) {
-    //    return toDate.isAfter(period.fromDate);
-    //}
-
-    ///**
-    // * Checks if the given Period is before the current. If so, then a true is
-    // * returned, otherwise a false.
-    // *
-    // * @param period  DatePeriod to check if it comes before this
-    // * @return True if the given Date is after the current, otherwise false
-    // */
-    //public Boolean isBefore(final DatePeriod period) {
-    //    return fromDate.isBefore(period.toDate);
-    //}
-
-    // =========================================================================
     // Standard Setters & Getters
     // =========================================================================
 
@@ -161,6 +135,7 @@ public final class DatePeriod extends AbstractVerification {
 
         return validation;
     }
+
     // =========================================================================
     // Internal Methods
     // =========================================================================

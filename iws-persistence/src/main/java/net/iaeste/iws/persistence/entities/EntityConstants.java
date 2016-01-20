@@ -25,8 +25,6 @@ package net.iaeste.iws.persistence.entities;
  *   If any changes is made to the String value of an enumerated type, then this
  * Constant class must be updated to reflect this, and so must the database,
  * since the three parts must always be synchronized!
- *   Note, JQL cannot reference values that in anyway can be overwritten. Which
- * means that an Interface constant class cannot be dereferenced.
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -35,12 +33,6 @@ package net.iaeste.iws.persistence.entities;
 public final class EntityConstants {
 
     private static final char DELIMITER = '\'';
-
-    /**
-     * Private Constructor, this is a utility class.
-     */
-    private EntityConstants() {
-    }
 
     // =========================================================================
     // Constant Mapping of the Group Type values
@@ -147,4 +139,10 @@ public final class EntityConstants {
      * The name of the Attachment for Applications in the Attachment Table.
      */
     public static final String STUDENT_APPLICATIONS_ATTACHMENT = DELIMITER + "student_applications" + DELIMITER;
+
+    /**
+     * Private Constructor, this is a utility class.
+     */
+    private EntityConstants() {
+    }
 }

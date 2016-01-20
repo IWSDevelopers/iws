@@ -146,6 +146,7 @@ public final class ExchangeClient implements Exchange {
 
     /**
      * {@inheritDoc}
+     * @deprecated
      */
     @Override
     @Deprecated

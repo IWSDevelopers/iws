@@ -32,10 +32,6 @@ import java.util.regex.Pattern;
  */
 public final class IWSConstants {
 
-    /** Private Constructor, this is a Constants Class. */
-    private IWSConstants() {
-    }
-
     /**
      * <p>All serialized classes should use this value. The value reflects the
      * current version of the system. If updates are made in one or more of the
@@ -266,4 +262,8 @@ public final class IWSConstants {
      * <p>Default IWS Success message.</p>
      */
     public static final String SUCCESS = "OK";
+
+    /** Private Constructor, this is a Constants Class. */
+    private IWSConstants() {
+    }
 }

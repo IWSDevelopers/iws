@@ -23,10 +23,6 @@ package net.iaeste.iws.api.constants;
  */
 public final class IWSErrors {
 
-    /** Private Constructor, this is a Constants Class. */
-    private IWSErrors() {
-    }
-
     /**
      * All requests, which is processed normally, i.e. without any issues should
      * have this as the default error.
@@ -165,4 +161,8 @@ public final class IWSErrors {
      * The current method is not yet implemented.
      */
     public static final IWSError NOT_IMPLEMENTED = new IWSError(999, "Not Implemented");
+
+    /** Private Constructor, this is a Constants Class. */
+    private IWSErrors() {
+    }
 }

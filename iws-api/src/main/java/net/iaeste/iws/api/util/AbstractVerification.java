@@ -14,8 +14,9 @@
  */
 package net.iaeste.iws.api.util;
 
+import static net.iaeste.iws.api.constants.exchange.IWSExchangeConstants.REFNO_PATTERN;
+
 import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.api.constants.exchange.IWSExchangeConstants;
 import net.iaeste.iws.api.exceptions.VerificationException;
 
 import java.util.Calendar;
@@ -65,8 +66,6 @@ public abstract class AbstractVerification implements Verifiable {
     // Our internal constants to verify the Id
     private static final String UUID_FORMAT = "[\\da-z]{8}-[\\da-z]{4}-[\\da-z]{4}-[\\da-z]{4}-[\\da-z]{12}";
     private static final Pattern UUID_PATTERN = Pattern.compile(UUID_FORMAT);
-    //  Internal pattern for verifying Offer reference numbers
-    private static final Pattern REFNO_PATTERN = Pattern.compile(IWSExchangeConstants.REFNO_FORMAT);
 
     /**
      * {@inheritDoc}
@@ -394,13 +393,18 @@ public abstract class AbstractVerification implements Verifiable {
         if ((value != null) && !value.isEmpty() && (forbidden != null) && (forbidden.length > 0)) {
             for (final E collectionField : value) {
                 for (final String forbiddenValue : forbidden) {
-                    final String collectionValue = collectionField.toString().toLowerCase(IWSConstants.DEFAULT_LOCALE);
-                    final String toFind = forbiddenValue.toLowerCase(IWSConstants.DEFAULT_LOCALE);
-                    if (collectionValue.contains(toFind)) {
-                        throw new IllegalArgumentException(format(ERROR_DELIMITER_FOUND, field, forbiddenValue));
-                    }
+                    throwIfContaining(field, collectionField, forbiddenValue);
                 }
             }
+        }
+    }
+
+    private static <E> void throwIfContaining(final String field, final E value, final String forbidden) {
+        final String collectionValue = lower(value.toString());
+        final String toFind = lower(forbidden);
+
+        if (collectionValue.contains(toFind)) {
+            throw new IllegalArgumentException(format(ERROR_DELIMITER_FOUND, field, forbidden));
         }
     }
 
@@ -430,10 +434,8 @@ public abstract class AbstractVerification implements Verifiable {
      * @throws IllegalArgumentException if the value is too small
      */
     protected static <T extends Number> void ensureMinimum(final String field, final T value, final T minimum) {
-        if (value != null) {
-            if (value.doubleValue() < minimum.doubleValue()) {
-                throw new IllegalArgumentException(format(ERROR_MINIMUM_VALUE, field, minimum));
-            }
+        if ((value != null) && (value.doubleValue() < minimum.doubleValue())) {
+            throw new IllegalArgumentException(format(ERROR_MINIMUM_VALUE, field, minimum));
         }
     }
 
@@ -449,10 +451,8 @@ public abstract class AbstractVerification implements Verifiable {
      * @throws IllegalArgumentException if the value is null not of exact length
      */
     protected static <T extends Number> void ensureWithinLimits(final String field, final T value, final T minimum, final T maximum) {
-        if (value != null) {
-            if ((value.doubleValue() < minimum.doubleValue()) || (value.doubleValue() > maximum.doubleValue())) {
-                throw new IllegalArgumentException(format(ERROR_NOT_WITHIN_LIMITS, field, minimum, maximum));
-            }
+        if ((value != null) && ((value.doubleValue() < minimum.doubleValue()) || (value.doubleValue() > maximum.doubleValue()))) {
+            throw new IllegalArgumentException(format(ERROR_NOT_WITHIN_LIMITS, field, minimum, maximum));
         }
     }
 
@@ -695,11 +695,13 @@ public abstract class AbstractVerification implements Verifiable {
 
         if (value != null) {
             boolean containIllegalValue = false;
+
             for (final E found : value) {
                 if (!acceptable.contains(found)) {
                     containIllegalValue = true;
                 }
             }
+
             if (containIllegalValue) {
                 addError(validation, field, "The field contains illegal values.");
             }
@@ -719,10 +721,8 @@ public abstract class AbstractVerification implements Verifiable {
     protected static <E extends Enum<?>> void isNotNullAndContains(final Map<String, String> validation, final String field, final E value, final Collection<E> acceptable) {
         isNotNull(validation, field, value);
 
-        if (value != null) {
-            if (!acceptable.contains(value)) {
-                addError(validation, field, "The field contains illegal values.");
-            }
+        if ((value != null) && !acceptable.contains(value)) {
+            addError(validation, field, "The field contains illegal values.");
         }
     }
 
@@ -792,5 +792,9 @@ public abstract class AbstractVerification implements Verifiable {
      */
     protected static String format(final String message, final Object... args) {
         return String.format(message, args);
+    }
+
+    private static String lower(final String str) {
+        return str.toLowerCase(IWSConstants.DEFAULT_LOCALE);
     }
 }

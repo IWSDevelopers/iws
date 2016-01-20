@@ -379,7 +379,7 @@ public final class ExchangeController extends CommonController implements Exchan
             final Authentication authentication = verifyAccess(token, Permission.FETCH_PUBLISH_GROUPS);
 
             final ExchangeFetchService service = factory.prepareExchangeFetchService();
-            response = service.fetchPublishGroups(authentication, request);
+            response = service.fetchPublishGroups(authentication);
         } catch (IWSException e) {
             // Generally, Exceptions should always be either logged or rethrown.
             // In our case, we're transforming the Exception into an Error
@@ -398,6 +398,7 @@ public final class ExchangeController extends CommonController implements Exchan
 
     /**
      * {@inheritDoc}
+     * @deprecated
      */
     @Override
     @Deprecated

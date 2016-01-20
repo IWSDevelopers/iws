@@ -134,7 +134,7 @@ public final class ContactsService {
      * @return Response with the retrieved information
      */
     public ContactsResponse fetchContacts(final ContactsRequest request) {
-        ContactsResponse response = null;
+        final ContactsResponse response;
 
         switch (request.getType()) {
             case USER:
@@ -148,6 +148,8 @@ public final class ContactsService {
                 // are considered the "master" groups
                 response = retrieveContactGroups();
                 break;
+            default:
+                response = null;
         }
 
         return response;

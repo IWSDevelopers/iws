@@ -27,10 +27,6 @@ import java.util.Calendar;
  */
 public final class InternalConstants {
 
-    /** Private Constructor, this is a Constants Class. */
-    private InternalConstants() {
-    }
-
     /**
      * The time in hours and minutes, when the IWS State Bean which performs
      * regular cleanups, should run. The format must be HH:MM.
@@ -174,4 +170,8 @@ public final class InternalConstants {
 
     /** Internal Id for the Student Role. */
     public static final long ROLE_STUDENT = 5L;
+
+    /** Private Constructor, this is a Constants Class. */
+    private InternalConstants() {
+    }
 }

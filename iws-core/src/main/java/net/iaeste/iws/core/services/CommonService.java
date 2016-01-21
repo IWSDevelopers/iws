@@ -55,8 +55,8 @@ import java.util.zip.CRC32;
 import java.util.zip.Checksum;
 
 /**
- * All Common Service funtionality is collected here. Although the Class ought
- * to be Abstract, since we should (or cat) not use it directly, it should not
+ * All Common Service functionality is collected here. Although the Class ought
+ * to be Abstract, since we should (or can) not use it directly, it should not
  * be instantiated anywhere, but rather just extended in our Actual Services.
  *
  * @author  Kim Jensen / last $Author:$
@@ -87,11 +87,11 @@ public class CommonService<T extends BasicDao> {
      *   The creation process will run some checks, and also generate some
      * information by default. First, the user alias will be generated, if no
      * alias can be generated (user provided information was not unique enough),
-     * then the create processs will fail.<br />
+     * then the create process will fail.<br />
      *   If no password was provided, then a random password is generated and
      * returned to the user in the activation e-mail. Regardless, a salt is
-     * generated and used together with the password to create a cryptographical
-     * hashvalue that is then stored. The Salt is also stored in the database
+     * generated and used together with the password to create a cryptographic
+     * hashValue that is then stored. The Salt is also stored in the database
      * for verification when the user attempts to login.<br />
      *   Finally, an Activation Code is generated, this is required for the user
      * to activate the account, if an account is not activated, then it cannot
@@ -112,7 +112,7 @@ public class CommonService<T extends BasicDao> {
         final UserEntity user = new UserEntity();
 
         // First, the Password. If no password is specified, then we'll generate
-        // one. Regardlessly, the password is set in the UserEntity, for the
+        // one. Regardless, the password is set in the UserEntity, for the
         // Notification
         final String thePassword = password == null ? generatePassword() : toLower(password);
 
@@ -138,7 +138,7 @@ public class CommonService<T extends BasicDao> {
         return user;
     }
 
-    private String generateUserAlias(final String firstname, final String lastname, final boolean studentAccount) throws IWSException {
+    protected String generateUserAlias(final String firstname, final String lastname, final boolean studentAccount) throws IWSException {
         String alias = null;
 
         if (!studentAccount) {
@@ -205,15 +205,13 @@ public class CommonService<T extends BasicDao> {
     protected PersonEntity processPerson(final Authentication authentication, final PersonEntity entity, final Person... persons) {
         final Person person = getFirstObject(persons);
         final PersonEntity newEntity = CommonTransformer.transform(person);
-        final PersonEntity persisted;
+        PersonEntity persisted = null;
 
         if (entity == null) {
             if (newEntity != null) {
                 newEntity.setAddress(processAddress(authentication, null, person.getAddress()));
                 dao.persist(authentication, newEntity);
                 persisted = newEntity;
-            } else {
-                persisted = null;
             }
         } else {
             entity.setAddress(processAddress(authentication, entity.getAddress(), person.getAddress()));
@@ -282,7 +280,7 @@ public class CommonService<T extends BasicDao> {
      */
     protected AddressEntity processAddress(final Authentication authentication, final AddressEntity entity, final Address... addresses) {
         final AddressEntity newEntity = CommonTransformer.transform(getFirstObject(addresses));
-        final AddressEntity persisted;
+        AddressEntity persisted = null;
 
         if (entity == null) {
             // Okay, no Address Entity exists - lets simply use the newEntity as
@@ -292,8 +290,6 @@ public class CommonService<T extends BasicDao> {
                 newEntity.setCountry(country);
                 dao.persist(authentication, newEntity);
                 persisted = newEntity;
-            } else {
-                persisted = null;
             }
         } else if (entity.getId() == null) {
             // The Address Entity was not earlier persisted. We're adding
@@ -358,7 +354,7 @@ public class CommonService<T extends BasicDao> {
             final String newId = UUID.randomUUID().toString();
             final String storedNamed = authentication.getGroup().getExternalId() + '/' + newId;
 
-            entity = transform(file, folder != null ? folder[0] : null);
+            entity = transform(file, (folder != null) ? folder[0] : null);
             entity.setExternalId(newId);
             entity.setChecksum(calculateChecksum(data));
             entity.setStoredFilename(storedNamed);
@@ -366,7 +362,7 @@ public class CommonService<T extends BasicDao> {
             entity.setUser(authentication.getUser());
             entity.setGroup(authentication.getGroup());
             // TODO The Storage Service & Common Service needs to be updated to better control how and where files are handled
-            if (folder != null && folder.length == 1) {
+            if ((folder != null) && (folder.length == 1)) {
                 entity.setFolder(folder[0]);
             } else {
                 entity.setFolder(null);
@@ -538,12 +534,10 @@ public class CommonService<T extends BasicDao> {
      */
     @SafeVarargs
     private static <T> T getFirstObject(final T... objs) {
-        final T result;
+        T result = null;
 
         if ((objs != null) && (objs.length == 1)) {
             result = objs[0];
-        } else {
-            result = null;
         }
 
         return result;

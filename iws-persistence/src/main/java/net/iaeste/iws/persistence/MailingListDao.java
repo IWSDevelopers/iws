@@ -14,9 +14,13 @@
  */
 package net.iaeste.iws.persistence;
 
-import net.iaeste.iws.persistence.entities.mailing_list.MailingAliasEntity;
-import net.iaeste.iws.persistence.entities.mailing_list.MailingListEntity;
-import net.iaeste.iws.persistence.entities.mailing_list.MailingListMembershipEntity;
+import net.iaeste.iws.persistence.entities.AliasEntity;
+import net.iaeste.iws.persistence.entities.GroupEntity;
+import net.iaeste.iws.persistence.entities.MailinglistEntity;
+import net.iaeste.iws.persistence.entities.UserGroupEntity;
+import net.iaeste.iws.persistence.entities.UserMailinglistEntity;
+
+import java.util.List;
 
 /**
  * @author  Pavel Fiala / last $Author:$
@@ -26,20 +30,24 @@ import net.iaeste.iws.persistence.entities.mailing_list.MailingListMembershipEnt
 public interface MailingListDao extends BasicDao {
 
     /**
-     * Finds a public Mailing List based on the given external id
+     * <p>Finds all the Mailing lists, which a Group has, this include both
+     * public, private lists as well as alias lists regardless of their current
+     * state.</p>
      *
-     * @param externalId The external id of the Group the mailing list belongs to
-     * @return Found MailingList or null
+     * @param group The group to find the mailing lists for
+     * @return List of current mailing lists
      */
-    MailingListEntity findPublicMailingList(String externalId);
+    List<MailinglistEntity> findMailinglists(GroupEntity group);
 
     /**
-     * Finds a private Mailing List based on the given external id
+     * Finds a subscription to the Mailing List based on the given list id
+     * and user's email address
      *
-     * @param externalId The external id of the Group the mailing list belongs to
-     * @return Found MailingList or null
+     * @param list The Mailing list
+     * @param member User Group relation
+     * @return Found MailingListMembership or null
      */
-    MailingListEntity findPrivateMailingList(String externalId);
+    UserMailinglistEntity findMailingListSubscription(MailinglistEntity list, UserGroupEntity member);
 
     /**
      * Finds a subscription to the Mailing List based on the given list id
@@ -49,33 +57,35 @@ public interface MailingListDao extends BasicDao {
      * @param emailAddress user email address
      * @return Found MailingListMembership or null
      */
-    MailingListMembershipEntity findMailingListSubscription(Long listId, String emailAddress);
+    UserMailinglistEntity findMailingListSubscription(Long listId, String emailAddress);
 
-    /**
-     * Update user's address used to subscribed to a mailing list. This happens when user requested a change of username
-     *
-     * @param newEmailAddress new user private email address
-     * @param oldEmailAddress old user private email address
-     */
-    void updateUserSubscriptionEmail(String newEmailAddress, String oldEmailAddress);
-
-    /**
-     * Finds an Mailing Alias based on the given user e-mail
-     *
-     * @param username user e-mail
-     */
-    MailingAliasEntity findMailingAliasByUsername(String username);
-
-    /**
-     * Update user's address used to subscribed to a mailing alias. This happens when user requested a change of username
-     *
-     * @param newEmailAddress new user private email address
-     * @param oldEmailAddress old user private email address
-     */
-    void updateUsernameInMailingAlias(String newEmailAddress, String oldEmailAddress);
+    List<UserMailinglistEntity> findMailingListSubscription(UserGroupEntity userGroup);
 
     /**
      * Finds ncs mailing list
      */
-    MailingListEntity findNcsList(String ncsList);
+    MailinglistEntity findNcsList(String ncsList);
+
+    UserMailinglistEntity findListByName(String name);
+
+    List<MailinglistEntity> findListsByGroup(GroupEntity group);
+
+    List<GroupEntity> findUnprocessedGroups();
+    List<UserGroupEntity> findUnprocessedSubscriptions();
+
+
+    int activateMailinglists();
+    int suspendMailinglists();
+    int deleteDeadMailinglists();
+    int deleteMailingLists(GroupEntity group);
+
+    int activateMailinglistSubscriptions();
+    int suspendMailinglistSubscriptions();
+    int deleteDeadMailinglistSubscriptions();
+
+    List<AliasEntity> findAliasesForGroup(GroupEntity group);
+
+    MailinglistEntity findAliasList(AliasEntity alias);
+
+    void deprecateAlias(Authentication authentication, AliasEntity alias);
 }

@@ -37,15 +37,11 @@ create table employers (
 
     /* Unique Constraints */
     constraint employer_unique_external_id unique (external_id),
-    -- To uniquely identify an Employer, the ideal version would be with the
-    -- name, department and working place. However, there seems to be a bug in
-    -- the Hibernate version we're using under JEE6, that causes problems when
-    -- trying to create a Query to find a unique Employer. Under JEE7, using
-    -- Hibernate 4.3.x, the problem seems to be resolved, so until we can
-    -- upgrade, we will add a second, temporary constraint.
-    -- The temporary Constraint to have until IWS is upgraded to JEE7.
-    constraint employer_unique_values      unique (group_id, name, working_place),
-    -- Permanent Unique Constraint
+    -- Unique Constraint for the Employer, which embraces the Name, Department
+    -- and the WorkPlace for a given Committee (GroupId). Note, that this
+    -- Constraint caused massive problems under Glassfish, and has been the
+    -- cause of many "duplicate" data entries, where the difference is in
+    -- whitespace, as the DB lookup's is made using trimmed strings
     constraint employer_unique_fields      unique (group_id, name, department, working_place),
 
     /* Not Null Constraints */

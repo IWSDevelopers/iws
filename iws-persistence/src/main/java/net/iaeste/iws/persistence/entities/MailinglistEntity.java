@@ -35,6 +35,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -211,9 +212,13 @@ public final class MailinglistEntity extends AbstractUpdateable<MailinglistEntit
      */
     @Override
     public boolean diff(final MailinglistEntity obj) {
-        // Until properly implemented, better return true to avoid that we're
-        // missing updates!
-        return true;
+        boolean differs = false;
+
+        if (!Objects.equals(subjectPrefix, obj.subjectPrefix) || (status != obj.status)) {
+            differs = true;
+        }
+
+        return differs;
     }
 
     /**

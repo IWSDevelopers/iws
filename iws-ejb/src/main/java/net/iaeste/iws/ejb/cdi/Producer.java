@@ -42,12 +42,13 @@ public class Producer {
 
     private static final Logger LOG = LoggerFactory.getLogger(Producer.class);
 
-    //See https://docs.jboss.org/author/display/WFLY8/Command+line+parameters
+    // Note, that the IWS is currently only developed and tested under WildFly,
+    // the Community Edition Open Source version of RedHat JBoss. If other
+    // Application Servers should be supported, then there is nothing in the
+    // IWS, which is Application Server dependent except for this path.
+    // See https://docs.jboss.org/author/display/WFLY8/Command+line+parameters
     private static final String JBOSS_CONFIG_DIR = "jboss.server.config.dir";
-    //See http://czetsuya-tech.blogspot.de/2012/07/how-to-load-property-file-from.html
-    private static final String GLASSFISH_HOME = "com.sun.aas.instanceRoot";
-    //Glassfish configuration folder.
-    private static final String GLASSFISH_CONFIG_DIR = "config";
+
     // The IWS Properties File
     private static final String PROPERTIES_FILE = "iws.properties";
 
@@ -63,7 +64,7 @@ public class Producer {
      * be used for injections.
      */
     @Produces @IWSBean
-    private Settings settings = prepareSettings();
+    private final Settings settings = prepareSettings();
 
     @Produces @IWSBean
     @EJB(beanInterface = NotificationManagerLocal.class)
@@ -91,13 +92,13 @@ public class Producer {
      *
      * @return IWS Settings
      */
-    private Settings prepareSettings() {
-        final String dir = readPropertyFileLocationFromSystem();
-        Settings mySettings = null;
+    private static Settings prepareSettings() {
+        final String dir = System.getProperty(JBOSS_CONFIG_DIR);
+        Settings mySettings;
 
         if (dir != null) {
             final String file = dir + File.separator + PROPERTIES_FILE;
-            LOG.debug("Reading the IWS Properties from '" + file + "'.");
+            LOG.debug("Reading the IWS Properties from '{}'.", file);
 
             try (InputStream stream = new FileInputStream(file)) {
                 final Properties properties = new Properties();
@@ -117,21 +118,5 @@ public class Producer {
         }
 
         return mySettings;
-    }
-
-    private String readPropertyFileLocationFromSystem() {
-        String config = null;
-
-        final String jbossConfig = System.getProperty(JBOSS_CONFIG_DIR);
-        if (jbossConfig != null) {
-            config = jbossConfig;
-        } else {
-            final String glassfishInstance = System.getProperty(GLASSFISH_HOME);
-            if (glassfishInstance != null) {
-                config = glassfishInstance + File.separator + GLASSFISH_CONFIG_DIR;
-            }
-        }
-
-        return config;
     }
 }

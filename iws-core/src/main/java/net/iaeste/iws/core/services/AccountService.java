@@ -543,13 +543,12 @@ public final class AccountService extends CommonService<AccessDao> {
             if (!dao.findStudentWithApplications(user).isEmpty()) {
                 LOG.info("Expired Account to be deleted is a Student Account with Applications. Only private information is removed.");
                 deleteAccountData(user);
-            //} else if (!dao.findHistory(user).isEmpty()) {
-            //    LOG.info("Damn, we found some history for user " + user.getUsername());
             } else {
                 deletePerson(user.getPerson());
                 // We'll just remove the Student Account, if added - since we
                 // have already checked that no data is associated with it
                 dao.deleteStudent(user);
+                dao.deletePrivateGroup(user);
                 dao.delete(user);
             }
         } else {

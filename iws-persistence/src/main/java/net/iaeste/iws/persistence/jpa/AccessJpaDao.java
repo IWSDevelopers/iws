@@ -697,6 +697,25 @@ public final class AccessJpaDao extends BasicJpaDao implements AccessDao {
      * {@inheritDoc}
      */
     @Override
+    public int deletePrivateGroup(final UserEntity user) {
+        final String jql =
+                "delete from GroupEntity g " +
+                "where g.id in (" +
+                "    select ug.group.id" +
+                "    from UserGroupEntity ug" +
+                "    where ug.user = :user" +
+                "      and ug.group.groupType.grouptype = :type)";
+        final Query query = entityManager.createQuery(jql);
+        query.setParameter("user", user);
+        query.setParameter("type", GroupType.PRIVATE);
+
+        return query.executeUpdate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public UserEntity findNcsMember(final String username) {
         final Query query = entityManager.createNamedQuery("userGroup.userOnNCsList");
         query.setParameter("username", username);

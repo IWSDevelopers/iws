@@ -278,4 +278,6 @@ public interface AccessDao extends BasicDao {
      * @return Found User Entity if on the list, otherwise null
      */
     UserEntity findNcsMember(String username);
+
+    int deletePrivateGroup(UserEntity user);
 }

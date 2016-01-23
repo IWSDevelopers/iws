@@ -25,6 +25,9 @@ update grouptypes set description = 'All members are assigned to this type, whic
 update groups set public_list = false and groups.private_list = false;
 update groups set public_list = true where grouptype_id in (select id from grouptypes where public_list = true);
 update groups set private_list = true where grouptype_id in (select id from grouptypes where private_list = true);
+-- Deleting Private Groups (1), WorkGroups (6) and Student Groups (7) without members
+-- Note, that Group 341 is the old IDT Members group, which is in status Deleted bu has data associated, so it is omitted
+delete from groups where grouptype_id in (1, 6, 7) and id not in (select distinct group_id from user_to_group) and id not in (341);
 
 create sequence alias_sequence start with 1 increment by 1;
 create table aliases (

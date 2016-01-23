@@ -143,7 +143,9 @@ create view list_members as
     u.created        as member_added,
     u.modified       as member_modified
   from mailing_lists m
-    left join user_to_mailing_list u on u.mailing_list_id = m.id;
+    left join user_to_mailing_list u on u.mailing_list_id = m.id
+  where m.status = 'ACTIVE'
+    and u.status = 'ACTIVE';
 
 
 -- =============================================================================

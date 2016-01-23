@@ -126,6 +126,27 @@ create view country_details as
 
 
 -- =============================================================================
+-- View to list all the mailing lists and their subscriptions
+-- =============================================================================
+create view list_members as
+  select
+    m.id             as list_id,
+    u.id             as member_id,
+    m.list_address   as address,
+    m.subject_prefix as prefix,
+    m.list_type      as type,
+    m.replyto_style  as replyto,
+    u.member         as member,
+    u.may_write      as may_write,
+    m.created        as list_created,
+    m.modified       as list_modified,
+    u.created        as member_added,
+    u.modified       as member_modified
+  from mailing_lists m
+    left join user_to_mailing_list u on u.mailing_list_id = m.id;
+
+
+-- =============================================================================
 -- View to publishingGroup file attachments to a document
 -- =============================================================================
 create view file_attachments as

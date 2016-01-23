@@ -20,6 +20,12 @@ alter table users add constraint user_notnull_password_changed  check (password_
 alter table offers add local_committee_id        integer;
 alter table offers add constraint offer_fk_local_committee_id foreign key (local_committee_id) references groups (id);
 
+-- Synchronizing the Group state, so all mail changes will work.
+update grouptypes set description = 'All members are assigned to this type, which gives the rights to the basic functionality in the system.<br /> Each member country have a designated Members group, where all their members are added. However, as some members may not be a member of a specific country, to avoid conflicts between their work and their national organization - another group exists called "Global", for all other members. Mostly this consists of the General Secretary, Ombudsman, IDT members, etc.<br /> Note; users can only be member of 1 Members Group!' where id = 2;
+update groups set public_list = false and groups.private_list = false;
+update groups set public_list = true where grouptype_id in (select id from grouptypes where public_list = true);
+update groups set private_list = true where grouptype_id in (select id from grouptypes where private_list = true);
+
 create sequence alias_sequence start with 1 increment by 1;
 create table aliases (
     id                  integer default nextval('alias_sequence'),
@@ -51,39 +57,39 @@ create table aliases (
 -- Aliases which we already have, from the IW3 -> IWS migration.
 insert into aliases (external_id, group_id, alias_address) values
     -- Aliases for the Board
-    ('30f0efd4-63d0-4f6e-9a97-e7621951b1dc', 3, 'president@iaeste.org'),
-    ('3d61f1ce-532a-4dab-8a05-c1c4916f9931', 3, 'gs@iaeste.org'),
-    ('3e4f67ba-78d5-4672-8a3e-0e79d41af5ee', 3, 'general.secretary@iaeste.org'),
+    ('30f0efd4-63d0-4f6e-9a97-e7621951b1dc', 3, 'president'),
+    ('3d61f1ce-532a-4dab-8a05-c1c4916f9931', 3, 'gs'),
+    ('3e4f67ba-78d5-4672-8a3e-0e79d41af5ee', 3, 'general.secretary'),
 
     -- Private Alias for Bruce Wicks
-    ('3d56ce65-fd65-49f5-974f-193800564a82', 1429, 'bruce.mehlmann-wicks@iaeste.org'),
+    ('3d56ce65-fd65-49f5-974f-193800564a82', 1429, 'bruce.mehlmann-wicks'),
 
     -- Aliases for Associate Member: India
-    ('7a61558a-73be-4bd7-ae08-28397de6cf92', 155, 'india_ku@iaeste.org'),
-    ('96e7841d-87f1-400a-82fa-e95d13803f41', 155, 'india_mit@iaeste.org'),
+    ('7a61558a-73be-4bd7-ae08-28397de6cf92', 155, 'india_ku'),
+    ('96e7841d-87f1-400a-82fa-e95d13803f41', 155, 'india_mit'),
 
     -- Aliases for Co-operating Institution: Nepal
-    ('c7ea2ea7-2190-4ed9-8872-7fad6f562e22', 425, 'nepal@iaeste.org'),
-    ('25ba6612-34a5-4d6a-8173-a4781e3a27ae', 425, 'nepalci@iaeste.org'),
+    ('c7ea2ea7-2190-4ed9-8872-7fad6f562e22', 425, 'nepal'),
+    ('25ba6612-34a5-4d6a-8173-a4781e3a27ae', 425, 'nepalci'),
 
     -- Aliases for Co-operating Institution: Bangladesh, AFM
-    ('3c5c3715-f5eb-4b95-a1e6-1da324482434', 2860, 'bangladeshafm@iaeste.org'),
-    ('e7f2eb54-bed0-4f17-a50e-4ff7cf436439', 2860, 'bangladesh_afzal_management@iaeste.org'),
+    ('3c5c3715-f5eb-4b95-a1e6-1da324482434', 2860, 'bangladeshafm'),
+    ('e7f2eb54-bed0-4f17-a50e-4ff7cf436439', 2860, 'bangladesh_afzal_management'),
 
     -- Aliases for Co-operating Institution: Bangladesh, CAT
-    ('2a7e3e7a-32e1-4b67-94e4-c481744bbbdd', 416, 'college_of_aviation_technology@iaeste.org'),
+    ('2a7e3e7a-32e1-4b67-94e4-c481744bbbdd', 416, 'college_of_aviation_technology'),
 
     -- Aliases for Co-operating Institution: Bolivia, IB
-    ('7f44c78f-48b8-468a-861f-5cbc811d4feb', 407, 'boliviaib@iaeste.org'),
+    ('7f44c78f-48b8-468a-861f-5cbc811d4feb', 407, 'boliviaib'),
 
     -- Aliases for Co-operating Institution: Vietnam, NU
-    ('e00eec36-c128-47b9-8482-4d230d1d24a9', 242, 'vietnamnu@iaeste.org'),
+    ('e00eec36-c128-47b9-8482-4d230d1d24a9', 242, 'vietnamnu'),
 
     -- Aliases for Co-operating Institution: Kenya, DKUT
-    ('e138b5fc-2d38-4174-a058-e5cf77e24423', 422, 'kenya_dekut@iaeste.org'),
+    ('e138b5fc-2d38-4174-a058-e5cf77e24423', 422, 'kenya_dekut'),
 
     -- Aliases for Co-operating Institution: Palestine, ANU
-    ('22758861-a78c-4273-a4b2-909d8c965dec', 317, 'west_bank_anu@iaeste.org');
+    ('22758861-a78c-4273-a4b2-909d8c965dec', 317, 'west_bank_anu');
 
 -- Before adding the new mailing list tables, we have to clean up the old
 -- garbage.
@@ -95,7 +101,7 @@ drop sequence mailing_alias_sequence;
 drop sequence mailing_list_membership_sequence;
 
 -- Now adding the new mailing lists as part of Trac ticket #1082.
-create sequence mailing_list_sequence start with 1 increment by 1;
+create sequence mailing_list_sequence start with 10 increment by 1;
 create table mailing_lists (
     id              integer default nextval('mailing_list_sequence'),
     list_address    varchar(100),
@@ -152,6 +158,23 @@ create table user_to_mailing_list (
     constraint user_to_mailing_list_notnull_created                check (created is not null)
 );
 
-insert into mailing_lists (list_address, group_id, subject_prefix, list_type, replyto_style, status) values
-    ('ncs@iaeste.net', 3, 'NCS', 'PRIVATE_LIST', 'REPLY_TO_SENDER', 'ACTIVE'),
-    ('announce@iaeste.net', 3, 'ANNOUNCE', 'PRIVATE_LIST', 'NO_REPLY', 'ACTIVE');
+create or replace view list_members as
+  select
+    m.id             as list_id,
+    u.id             as member_id,
+    m.list_address   as address,
+    m.subject_prefix as prefix,
+    m.list_type      as type,
+    m.replyto_style  as replyto,
+    u.member         as member,
+    u.may_write      as may_write,
+    m.created        as list_created,
+    m.modified       as list_modified,
+    u.created        as member_added,
+    u.modified       as member_modified
+  from mailing_lists m
+    left join user_to_mailing_list u on u.mailing_list_id = m.id;
+
+insert into mailing_lists (id, list_address, group_id, subject_prefix, list_type, replyto_style, status) values
+    (1, 'ncs@iaeste.net', 3, 'NCS', 'PRIVATE_LIST', 'REPLY_TO_SENDER', 'ACTIVE'),
+    (2, 'announce@iaeste.net', 3, 'ANNOUNCE', 'PRIVATE_LIST', 'NO_REPLY', 'ACTIVE');

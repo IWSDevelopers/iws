@@ -114,7 +114,7 @@ public class CommonService<T extends BasicDao> {
         // First, the Password. If no password is specified, then we'll generate
         // one. Regardless, the password is set in the UserEntity, for the
         // Notification
-        final String thePassword = password == null ? generatePassword() : toLower(password);
+        final String thePassword = (password == null) ? generatePassword() : toLower(password);
 
         // As we doubt that a user will provide enough entropy to enable us to
         // generate a hash value that cannot be looked up in rainbow tables,
@@ -187,6 +187,7 @@ public class CommonService<T extends BasicDao> {
         group.setPublicList(type.getMayHavePublicMailinglist());
         group.setPrivateReplyTo(MailReply.REPLY_TO_LIST);
         group.setPublicReplyTo(MailReply.REPLY_TO_SENDER);
+        group.setListName(user.getAlias().replaceAll('@' + settings.getPublicMailAddress(), ""));
         dao.persist(group);
 
         return group;

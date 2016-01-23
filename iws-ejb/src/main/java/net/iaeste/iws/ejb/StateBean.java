@@ -23,6 +23,7 @@ import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.core.monitors.ActiveSessions;
 import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.core.services.AccountService;
+import net.iaeste.iws.core.services.MailService;
 import net.iaeste.iws.ejb.cdi.IWSBean;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
@@ -53,6 +54,7 @@ import javax.persistence.EntityManager;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * When the IWS is starting up, we need to ensure that the current State is such
@@ -94,8 +96,10 @@ public class StateBean {
 
     private ActiveSessions activeSessions = null;
     private ExchangeDao exchangeDao = null;
-    private AccountService service = null;
     private AccessDao accessDao = null;
+
+    private MailService mailService = null;
+    private AccountService service = null;
 
     // =========================================================================
     // Startup Functionality
@@ -123,6 +127,7 @@ public class StateBean {
         accessDao = new AccessJpaDao(entityManager);
         exchangeDao = new ExchangeJpaDao(entityManager);
         service = new AccountService(settings, accessDao, notifications);
+        mailService = new MailService(settings, entityManager);
 
         // Second, we're registering the Timer Service. This will ensure that the
         // Bean is invoked daily at 2 in the morning.
@@ -145,6 +150,10 @@ public class StateBean {
         } else {
             loadActiveTokens();
         }
+
+        final UserEntity system = entityManager.find(UserEntity.class, SYSTEM_ACCOUNT);
+        final Authentication authentication = new Authentication(system, UUID.randomUUID().toString());
+        updateMailingLists(authentication);
 
         // That's it - we're done :-)
         LOG.info("IWS Initialization Completed.");
@@ -186,15 +195,19 @@ public class StateBean {
         // Second, we'll handle Offers which have expired.
         runExpiredOfferProcessing();
 
-        // Finally, we'll deal with accounts which are inactive. For more
+        // third, we'll deal with accounts which are inactive. For more
         // information, see the Trac ticket #720.
         final int expired = removeUnusedNewAccounts();
         final int suspended = suspendInactiveAccounts(authentication);
         final int deleted = deleteSuspendedAccounts(authentication);
 
+        // Finally, let's do the cleanup of our mailing lists and ensure that
+        // the data is synchronized with the current Users and Groups.
+        updateMailingLists(authentication);
+
         final DateFormat dateFormatter = new SimpleDateFormat(IWSConstants.DATE_TIME_FORMAT, IWSConstants.DEFAULT_LOCALE);
         final long duration = (System.nanoTime() - start) / 1000000;
-        LOG.info("Cleanup took: {}ms (expired {}, suspended {} & deleted {}), next Timeout: {}", duration, expired, suspended, deleted, dateFormatter.format(timer.getNextTimeout()));
+        LOG.info("Cleanup took: {}ms (Users expired {}, suspended {} & deleted {}), next Timeout: {}", duration, expired, suspended, deleted, dateFormatter.format(timer.getNextTimeout()));
     }
 
     /**
@@ -376,5 +389,22 @@ public class StateBean {
         }
 
         return accounts;
+    }
+
+    /**
+     * <p>Mailing lists are a central part of the system. However, there has
+     * been several problems with mailing lists getting out of sync or that
+     * someone is present who shouldn't be. This method will ensure the lists
+     * and subscribers to the lists are correct.</p>
+     */
+    private void updateMailingLists(final Authentication authentication) {
+        // Missing features:
+        //  - Ensure that the announce list has the correct mayWrite flag set
+        //  - Subscribe/unsubscribe Users, where the UserGroup flags were changed
+        mailService.synchronizeVirtualLists(authentication);
+        mailService.processAliases(authentication);
+        mailService.processMissingMailingLists(authentication);
+        mailService.processMissingMailingListSubscriptions(authentication);
+        mailService.synchronizeMailStates();
     }
 }

@@ -15,18 +15,18 @@
 package net.iaeste.iws.persistence.jpa;
 
 import net.iaeste.iws.api.enums.GroupStatus;
+import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.UserStatus;
-import net.iaeste.iws.common.utils.StringUtils;
-import net.iaeste.iws.persistence.Authentication;
+import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.persistence.MailingListDao;
 import net.iaeste.iws.persistence.entities.AliasEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.MailinglistEntity;
 import net.iaeste.iws.persistence.entities.UserGroupEntity;
-import net.iaeste.iws.persistence.entities.UserMailinglistEntity;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import java.util.EnumSet;
 import java.util.List;
 
 /**
@@ -36,13 +36,17 @@ import java.util.List;
  */
 public final class MailingListJpaDao extends BasicJpaDao implements MailingListDao {
 
+    private final Settings settings;
+
     /**
      * Default Constructor.
      *
      * @param entityManager Entity Manager instance to use
      */
-    public MailingListJpaDao(final EntityManager entityManager) {
+    public MailingListJpaDao(final EntityManager entityManager, final Settings settings) {
         super(entityManager);
+
+        this.settings = settings;
     }
 
     /**
@@ -60,62 +64,15 @@ public final class MailingListJpaDao extends BasicJpaDao implements MailingListD
      * {@inheritDoc}
      */
     @Override
-    public UserMailinglistEntity findMailingListSubscription(final MailinglistEntity list, final UserGroupEntity member) {
-        final Query query = entityManager.createQuery("select u from UserMailinglistEntity u where u.mailinglist = :list and u.userGroup = :member");
-        query.setParameter("list", list);
-        query.setParameter("member", member);
+    public MailinglistEntity findListByAddress(final String address) {
+        final String jql =
+                "select m " +
+                "from MailinglistEntity m " +
+                "where m.listAddress = :address";
+        final Query query = entityManager.createQuery(jql);
+        query.setParameter("address", address);
 
-        final List<UserMailinglistEntity> found = query.getResultList();
-        UserMailinglistEntity entity = null;
-        if (!found.isEmpty()) {
-            entity = found.get(0);
-        }
-        return entity;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public UserMailinglistEntity findMailingListSubscription(final Long listId, final String emailAddress) {
-        final Query query = entityManager.createNamedQuery("userMailingList.findSubscriptionByUserAddressAndListId");
-        query.setParameter("lid", listId);
-        query.setParameter("userAddress", StringUtils.toLower(emailAddress));
-
-        return findSingleResult(query, "mailinglist");
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<UserMailinglistEntity> findMailingListSubscription(final UserGroupEntity userGroup) {
-        final Query query = entityManager.createNamedQuery("userMailingList.findSubscriptionForUser");
-        query.setParameter("ug", userGroup);
-
-        return query.getResultList();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public MailinglistEntity findNcsList(final String ncsList) {
-        final Query query = entityManager.createNamedQuery("mailingList.findByMailingListAddress");
-        query.setParameter("address", StringUtils.toLower(ncsList));
-
-        return findSingleResult(query, "NCs List");
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public UserMailinglistEntity findListByName(final String name) {
-        final Query query = entityManager.createNamedQuery("userMailingList.findByMailingListAddress");
-        query.setParameter("address", StringUtils.toLower(name));
-
-        return findSingleResult(query, "UserMailinglist");
+        return findSingleResult(query, "Mailinglist");
     }
 
     /**
@@ -133,26 +90,12 @@ public final class MailingListJpaDao extends BasicJpaDao implements MailingListD
      * {@inheritDoc}
      */
     @Override
-    public List<AliasEntity> findAliasesForGroup(final GroupEntity group) {
-        final String jql =
-                "select a " +
-                "from AliasEntity a " +
-                "where a.group = :group" +
-                "  and a.deprecated is null";
-        final Query query = entityManager.createQuery(jql);
-        query.setParameter("group", group);
-
-        return query.getResultList();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public List<GroupEntity> findUnprocessedGroups() {
         final String jql =
                 "select g from GroupEntity g " +
-                "where g.status <> 'DELETED'" +
+                "where g.status = 'ACTIVE'" +
+                "  and (g.publicList = true" +
+                "    or g.privateList = true)" +
                 "  and g.id not in (" +
                 "    select m.group.id" +
                 "    from MailinglistEntity m)";
@@ -168,7 +111,7 @@ public final class MailingListJpaDao extends BasicJpaDao implements MailingListD
     public List<UserGroupEntity> findUnprocessedSubscriptions() {
         final String jql =
                 "select u from UserGroupEntity u " +
-                "where u.user.status <> 'DELETED'" +
+                "where u.user.status = 'ACTIVE'" +
                 "  and u.id not in (" +
                 "    select s.userGroup.id" +
                 "    from UserMailinglistEntity s)";
@@ -260,37 +203,96 @@ public final class MailingListJpaDao extends BasicJpaDao implements MailingListD
      * {@inheritDoc}
      */
     @Override
-    public MailinglistEntity findAliasList(final AliasEntity alias) {
-        // The data is always written with lowercase in the table, and as the
-        // data is not suppose to be touched by "human hands", it is safe to
-        // assume that we can find it alone via this query.
+    public List<AliasEntity> findAliases() {
         final String jql =
-                "select m " +
-                "from MailinglistEntity m " +
-                "where listAddress = :address";
+                "select a from AliasEntity a";
         final Query query = entityManager.createQuery(jql);
-        query.setParameter("address", alias.getAliasAddress());
 
-        // In the mailing list Entity, it is the complete public e-mail address
-        // which is stored, and this address must be unique! So, looking up the
-        // address based on the list alone should ensure that we find either a
-        // mailing list or nothing.
-        final List<MailinglistEntity> list = query.getResultList();
-        MailinglistEntity entity = null;
-        if (list.size() == 1) {
-            entity = list.get(0);
-        }
-
-        return entity;
+        return query.getResultList();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void deprecateAlias(final Authentication authentication, final AliasEntity alias) {
-        alias.setDeprecated(generateTimestamp());
-        persist(authentication, alias);
+    public int deleteMailinglistSubscriptions(final MailinglistEntity mailingList) {
+        final String jql =
+                "delete from UserMailinglistEntity " +
+                "where mailinglist = :list";
+        final Query query = entityManager.createQuery(jql);
+        query.setParameter("list", mailingList);
+
+        return query.executeUpdate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void deleteMailingList(final MailinglistEntity mailinglist) {
+        entityManager.remove(mailinglist);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<UserGroupEntity> findMissingNcsSubscribers() {
+        //// Under IW3, the schema for the NC's mailing list was that
+        //// Owner/Moderator of the Staff's were on it. At the same time the
+        //// list was limited to Owners of the International Groups. This rule
+        //// was inflexible and instead, the new rule is that members who are on
+        //// the public list of the following Groups (Administration, National &
+        //// International) are all included. For now, a hybrid version is used,
+        //// which allows both variants.
+        //@NamedQuery(name = "userGroup.findNCs",
+        //        query = "select distinct ug from UserGroupEntity ug " +
+        //                "where ug.group.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
+        //                "  and ug.user.status = " + EntityConstants.USER_STATUS_ACTIVE +
+        //                "  and ug.onPublicList = true" +
+        //                "  and (ug.group.groupType.grouptype = " + EntityConstants.GROUPTYPE_ADMINISTRATION +
+        //                "    or ug.group.groupType.grouptype = " + EntityConstants.GROUPTYPE_INTERNATIONAL +
+        //                "    or ug.group.groupType.grouptype = " + EntityConstants.GROUPTYPE_NATIONAL + ')'),
+        final String jql =
+                "select ug " +
+                "from UserGroupEntity ug " +
+                "where ug.group.status = :groupStatus" +
+                "  and ug.user.status = :userStatus" +
+                "  and ug.onPublicList = true" +
+                "  and ug.group.groupType.grouptype in (:types)" +
+                "  and ug not in (" +
+                "    select um.userGroup" +
+                "    from UserMailinglistEntity um" +
+                "    where um.mailinglist.listAddress = :address)";
+        final Query query = entityManager.createQuery(jql);
+        query.setParameter("groupStatus", GroupStatus.ACTIVE);
+        query.setParameter("userStatus", UserStatus.ACTIVE);
+        query.setParameter("types", EnumSet.of(GroupType.ADMINISTRATION, GroupType.INTERNATIONAL, GroupType.NATIONAL));
+        query.setParameter("address", settings.getNcsList() + '@' + settings.getPrivateMailAddress());
+
+        return query.getResultList();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<UserGroupEntity> findMissingAnnounceSubscribers() {
+        final String jql =
+                "select ug " +
+                "from UserGroupEntity ug " +
+                "where ug.group.groupType.grouptype = :type" +
+                "  and ug.user.status = :status" +
+                "  and ug not in (" +
+                "    select um.userGroup" +
+                "    from UserMailinglistEntity um" +
+                "    where um.mailinglist.listAddress = :address)";
+        final Query query = entityManager.createQuery(jql);
+        query.setParameter("type", GroupType.MEMBER);
+        query.setParameter("status", UserStatus.ACTIVE);
+        query.setParameter("address", settings.getAnnounceList() + '@' + settings.getPrivateMailAddress());
+
+        return query.getResultList();
     }
 
     private int changeMailingListState(final GroupStatus status) {

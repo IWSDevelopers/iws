@@ -18,7 +18,6 @@ import net.iaeste.iws.persistence.entities.AliasEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.MailinglistEntity;
 import net.iaeste.iws.persistence.entities.UserGroupEntity;
-import net.iaeste.iws.persistence.entities.UserMailinglistEntity;
 
 import java.util.List;
 
@@ -39,34 +38,7 @@ public interface MailingListDao extends BasicDao {
      */
     List<MailinglistEntity> findMailinglists(GroupEntity group);
 
-    /**
-     * Finds a subscription to the Mailing List based on the given list id
-     * and user's email address
-     *
-     * @param list The Mailing list
-     * @param member User Group relation
-     * @return Found MailingListMembership or null
-     */
-    UserMailinglistEntity findMailingListSubscription(MailinglistEntity list, UserGroupEntity member);
-
-    /**
-     * Finds a subscription to the Mailing List based on the given list id
-     * and user's email address
-     *
-     * @param listId       The list id
-     * @param emailAddress user email address
-     * @return Found MailingListMembership or null
-     */
-    UserMailinglistEntity findMailingListSubscription(Long listId, String emailAddress);
-
-    List<UserMailinglistEntity> findMailingListSubscription(UserGroupEntity userGroup);
-
-    /**
-     * Finds ncs mailing list
-     */
-    MailinglistEntity findNcsList(String ncsList);
-
-    UserMailinglistEntity findListByName(String name);
+    MailinglistEntity findListByAddress(String address);
 
     List<MailinglistEntity> findListsByGroup(GroupEntity group);
 
@@ -83,9 +55,13 @@ public interface MailingListDao extends BasicDao {
     int suspendMailinglistSubscriptions();
     int deleteDeadMailinglistSubscriptions();
 
-    List<AliasEntity> findAliasesForGroup(GroupEntity group);
+    List<AliasEntity> findAliases();
 
-    MailinglistEntity findAliasList(AliasEntity alias);
+    int deleteMailinglistSubscriptions(MailinglistEntity mailingList);
 
-    void deprecateAlias(Authentication authentication, AliasEntity alias);
+    void deleteMailingList(MailinglistEntity mailinglist);
+
+    List<UserGroupEntity> findMissingNcsSubscribers();
+
+    List<UserGroupEntity> findMissingAnnounceSubscribers();
 }

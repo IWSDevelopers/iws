@@ -78,10 +78,12 @@ public final class MailService extends CommonService<MailingListDao> {
     }
 
     private void addSubscribers(final Authentication authentication, final MailinglistEntity list, final List<UserGroupEntity> subscribers) {
-        for (final UserGroupEntity subscriber : subscribers) {
-            final UserMailinglistEntity entity = prepareSubscription(list, subscriber);
-            dao.persist(authentication, entity);
-            LOG.info("Subscribed {} {} to the MailingList {}.", subscriber.getUser().getFirstname(), subscriber.getUser().getLastname(), list.getListAddress());
+        if (list != null) {
+            for (final UserGroupEntity subscriber : subscribers) {
+                final UserMailinglistEntity entity = prepareSubscription(list, subscriber);
+                dao.persist(authentication, entity);
+                LOG.info("Subscribed {} {} to the MailingList {}.", subscriber.getUser().getFirstname(), subscriber.getUser().getLastname(), list.getListAddress());
+            }
         }
     }
 
@@ -255,15 +257,17 @@ public final class MailService extends CommonService<MailingListDao> {
         entity.setMember(userGroup.getUser().getUsername());
         entity.setMayWrite(true);
 
-        final MailinglistType type = list.getListType();
-        if (type == MailinglistType.PRIVATE_LIST) {
-            entity.setMayWrite(userGroup.getWriteToPrivateList());
+        if (list != null) {
+            final MailinglistType type = list.getListType();
+            if (type == MailinglistType.PRIVATE_LIST) {
+                entity.setMayWrite(userGroup.getWriteToPrivateList());
 
-            if (!userGroup.getOnPrivateList()) {
+                if (!userGroup.getOnPrivateList()) {
+                    entity.setStatus(UserStatus.SUSPENDED);
+                }
+            } else if (!userGroup.getOnPublicList() && ((type == MailinglistType.PUBLIC_LIST) || (type == MailinglistType.LIMITED_ALIAS))) {
                 entity.setStatus(UserStatus.SUSPENDED);
             }
-        } else if (!userGroup.getOnPublicList() && ((type == MailinglistType.PUBLIC_LIST) || (type == MailinglistType.LIMITED_ALIAS))) {
-            entity.setStatus(UserStatus.SUSPENDED);
         }
 
         return entity;

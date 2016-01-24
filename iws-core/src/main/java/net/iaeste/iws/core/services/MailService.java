@@ -21,6 +21,7 @@ import net.iaeste.iws.api.enums.GroupStatus;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.MailReply;
 import net.iaeste.iws.api.enums.MailinglistType;
+import net.iaeste.iws.api.enums.UserStatus;
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.MailingListDao;
@@ -67,12 +68,13 @@ public final class MailService extends CommonService<MailingListDao> {
             addSubscribers(authentication, list, ncsListSubscribers);
         }
 
-        final List<UserGroupEntity> announceListSubscribers = dao.findMissingAnnounceSubscribers();
-        if (!announceListSubscribers.isEmpty()) {
-            final String announceList = settings.getAnnounceList() + privateList;
-            final MailinglistEntity list = dao.findListByAddress(announceList);
-            addSubscribers(authentication, list, announceListSubscribers);
-        }
+        // TODO Correct the logic, so the members will follow the subscription rules regarding who may write to it
+        //final List<UserGroupEntity> announceListSubscribers = dao.findMissingAnnounceSubscribers();
+        //if (!announceListSubscribers.isEmpty()) {
+        //    final String announceList = settings.getAnnounceList() + privateList;
+        //    final MailinglistEntity list = dao.findListByAddress(announceList);
+        //    addSubscribers(authentication, list, announceListSubscribers);
+        //}
     }
 
     private void addSubscribers(final Authentication authentication, final MailinglistEntity list, final List<UserGroupEntity> subscribers) {
@@ -98,8 +100,12 @@ public final class MailService extends CommonService<MailingListDao> {
         LOG.info("Updated Mailing Lists; Activated {}, Suspended {} and Deleted {}.", activatedLists, suspendedLists, deletedLists);
 
         final int deletedSubscriptions = dao.deleteDeadMailinglistSubscriptions();
-        final int activatedSubscriptions = dao.activateMailinglistSubscriptions();
-        final int suspendedSubscriptions = dao.suspendMailinglistSubscriptions();
+        final int activatedPrivateSubscriptions = dao.activatePrivateMailinglistSubscriptions();
+        final int activatedPublicSubscriptions = dao.activatePublicMailinglistSubscriptions();
+        final int suspendedPublicSubscriptions = dao.suspendPublicMailinglistSubscriptions();
+        final int suspendedPrivateSubscriptions = dao.suspendPrivateMailinglistSubscriptions();
+        final int activatedSubscriptions = activatedPrivateSubscriptions + activatedPublicSubscriptions;
+        final int suspendedSubscriptions = suspendedPrivateSubscriptions + suspendedPublicSubscriptions;
         LOG.info("Update Mailing List Subscriptions; Activated {}, Suspended {} and Deleted {}.", activatedSubscriptions, suspendedSubscriptions, deletedSubscriptions);
     }
 
@@ -222,6 +228,20 @@ public final class MailService extends CommonService<MailingListDao> {
      * The Entity is returned without un-persisted, so it can either be
      * persisted or merged with an existing entity.</p>
      *
+     * <p>Regardless if a User is allowed to be on the list or not, the record
+     * is added, so we have it available. This way, we can switch the flag
+     * rather than having to constantly drop/create records. The initial
+     * version of the Record is reflecting the state, and later runs should
+     * update the state as well.</p>
+     *
+     * <p>Note, that we only have 1 flag in the Entity which we're packing the
+     * access information into. A User can either be active or Suspended but
+     * also present or not present on a mailing list. And the status flag is
+     * used to reflect both. Although it can be argued to be bad design, it is
+     * also a question of simplifying the logic. The Mailing List subscription
+     * is only there to see if a User can or cannot receive mail. Not to show
+     * the actual status.</p>
+     *
      * @param list      The Mailing List to subscribe to
      * @param userGroup The User Group relation to use
      * @return New, not persisted, User Mailing List Subscription
@@ -233,9 +253,17 @@ public final class MailService extends CommonService<MailingListDao> {
         entity.setUserGroup(userGroup);
         entity.setStatus(userGroup.getUser().getStatus());
         entity.setMember(userGroup.getUser().getUsername());
+        entity.setMayWrite(true);
 
-        if (entity.getMailinglist().getListType() == MailinglistType.PRIVATE_LIST) {
+        final MailinglistType type = list.getListType();
+        if (type == MailinglistType.PRIVATE_LIST) {
             entity.setMayWrite(userGroup.getWriteToPrivateList());
+
+            if (!userGroup.getOnPrivateList()) {
+                entity.setStatus(UserStatus.SUSPENDED);
+            }
+        } else if (!userGroup.getOnPublicList() && ((type == MailinglistType.PUBLIC_LIST) || (type == MailinglistType.LIMITED_ALIAS))) {
+            entity.setStatus(UserStatus.SUSPENDED);
         }
 
         return entity;

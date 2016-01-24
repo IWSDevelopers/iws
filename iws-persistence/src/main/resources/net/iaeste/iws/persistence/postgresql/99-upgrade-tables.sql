@@ -176,7 +176,9 @@ create or replace view list_members as
     u.created        as member_added,
     u.modified       as member_modified
   from mailing_lists m
-    left join user_to_mailing_list u on u.mailing_list_id = m.id;
+    left join user_to_mailing_list u on u.mailing_list_id = m.id
+  where m.status = 'ACTIVE'
+    and u.status = 'ACTIVE';
 
 insert into mailing_lists (id, list_address, group_id, subject_prefix, list_type, replyto_style, status) values
     (1, 'ncs@iaeste.net', 3, 'NCS', 'PRIVATE_LIST', 'REPLY_TO_SENDER', 'ACTIVE'),

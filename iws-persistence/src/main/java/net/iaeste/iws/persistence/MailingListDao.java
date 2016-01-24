@@ -45,14 +45,15 @@ public interface MailingListDao extends BasicDao {
     List<GroupEntity> findUnprocessedGroups();
     List<UserGroupEntity> findUnprocessedSubscriptions();
 
-
     int activateMailinglists();
     int suspendMailinglists();
     int deleteDeadMailinglists();
     int deleteMailingLists(GroupEntity group);
 
-    int activateMailinglistSubscriptions();
-    int suspendMailinglistSubscriptions();
+    int activatePrivateMailinglistSubscriptions();
+    int activatePublicMailinglistSubscriptions();
+    int suspendPrivateMailinglistSubscriptions();
+    int suspendPublicMailinglistSubscriptions();
     int deleteDeadMailinglistSubscriptions();
 
     List<AliasEntity> findAliases();

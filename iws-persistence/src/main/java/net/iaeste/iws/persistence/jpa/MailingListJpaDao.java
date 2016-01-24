@@ -16,6 +16,7 @@ package net.iaeste.iws.persistence.jpa;
 
 import net.iaeste.iws.api.enums.GroupStatus;
 import net.iaeste.iws.api.enums.GroupType;
+import net.iaeste.iws.api.enums.MailinglistType;
 import net.iaeste.iws.api.enums.UserStatus;
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.persistence.MailingListDao;
@@ -171,16 +172,92 @@ public final class MailingListJpaDao extends BasicJpaDao implements MailingListD
      * {@inheritDoc}
      */
     @Override
-    public int activateMailinglistSubscriptions() {
-        return changeMailingListSubscriptionState(UserStatus.ACTIVE);
+    public int activatePrivateMailinglistSubscriptions() {
+        final String jql =
+                "update UserMailinglistEntity set" +
+                "   status = :status," +
+                "   modified = current_timestamp " +
+                "where userGroup.id in (" +
+                "    select s.userGroup.id" +
+                "    from UserMailinglistEntity s" +
+                "    where s.mailinglist.listType = :type" +
+                "      and s.status != :status" +
+                "      and (s.userGroup.user.status = :status" +
+                "        and s.userGroup.onPrivateList = true))";
+        final Query query = entityManager.createQuery(jql);
+        query.setParameter("status", UserStatus.ACTIVE);
+        query.setParameter("type", MailinglistType.PRIVATE_LIST);
+
+        return query.executeUpdate();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public int suspendMailinglistSubscriptions() {
-        return changeMailingListSubscriptionState(UserStatus.SUSPENDED);
+    public int activatePublicMailinglistSubscriptions() {
+        final String jql =
+                "update UserMailinglistEntity set" +
+                "   status = :status," +
+                "   modified = current_timestamp " +
+                "where userGroup.id in (" +
+                "    select s.userGroup.id" +
+                "    from UserMailinglistEntity s" +
+                "    where s.mailinglist.listType != :type" +
+                "      and s.status != :status" +
+                "      and (s.userGroup.user.status = :status" +
+                "        and s.userGroup.onPublicList = true))";
+        final Query query = entityManager.createQuery(jql);
+        query.setParameter("status", UserStatus.ACTIVE);
+        query.setParameter("type", MailinglistType.PRIVATE_LIST);
+
+        return query.executeUpdate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int suspendPrivateMailinglistSubscriptions() {
+        final String jql =
+                "update UserMailinglistEntity set" +
+                "   status = :status," +
+                "   modified = current_timestamp " +
+                "where userGroup.id in (" +
+                "    select s.userGroup.id" +
+                "    from UserMailinglistEntity s" +
+                "    where s.mailinglist.listType = :type" +
+                "      and s.status != :status" +
+                "      and (s.userGroup.user.status = :status" +
+                "        or s.userGroup.onPrivateList = false))";
+        final Query query = entityManager.createQuery(jql);
+        query.setParameter("status", UserStatus.SUSPENDED);
+        query.setParameter("type", MailinglistType.PRIVATE_LIST);
+
+        return query.executeUpdate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int suspendPublicMailinglistSubscriptions() {
+        final String jql =
+                "update UserMailinglistEntity set" +
+                        "   status = :status," +
+                        "   modified = current_timestamp " +
+                        "where userGroup.id in (" +
+                        "    select s.userGroup.id" +
+                        "    from UserMailinglistEntity s" +
+                        "    where s.mailinglist.listType != :type" +
+                        "      and s.status != :status" +
+                        "      and (s.userGroup.user.status = :status" +
+                        "        or s.userGroup.onPublicList = false))";
+        final Query query = entityManager.createQuery(jql);
+        query.setParameter("status", UserStatus.SUSPENDED);
+        query.setParameter("type", MailinglistType.PRIVATE_LIST);
+
+        return query.executeUpdate();
     }
 
     /**
@@ -238,21 +315,6 @@ public final class MailingListJpaDao extends BasicJpaDao implements MailingListD
      */
     @Override
     public List<UserGroupEntity> findMissingNcsSubscribers() {
-        //// Under IW3, the schema for the NC's mailing list was that
-        //// Owner/Moderator of the Staff's were on it. At the same time the
-        //// list was limited to Owners of the International Groups. This rule
-        //// was inflexible and instead, the new rule is that members who are on
-        //// the public list of the following Groups (Administration, National &
-        //// International) are all included. For now, a hybrid version is used,
-        //// which allows both variants.
-        //@NamedQuery(name = "userGroup.findNCs",
-        //        query = "select distinct ug from UserGroupEntity ug " +
-        //                "where ug.group.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
-        //                "  and ug.user.status = " + EntityConstants.USER_STATUS_ACTIVE +
-        //                "  and ug.onPublicList = true" +
-        //                "  and (ug.group.groupType.grouptype = " + EntityConstants.GROUPTYPE_ADMINISTRATION +
-        //                "    or ug.group.groupType.grouptype = " + EntityConstants.GROUPTYPE_INTERNATIONAL +
-        //                "    or ug.group.groupType.grouptype = " + EntityConstants.GROUPTYPE_NATIONAL + ')'),
         final String jql =
                 "select ug " +
                 "from UserGroupEntity ug " +
@@ -305,22 +367,6 @@ public final class MailingListJpaDao extends BasicJpaDao implements MailingListD
                 "    from MailinglistEntity m" +
                 "    where m.group.status = :status" +
                 "      and m.status <> m.group.status)";
-        final Query query = entityManager.createQuery(jql);
-        query.setParameter("status", status);
-
-        return query.executeUpdate();
-    }
-
-    private int changeMailingListSubscriptionState(final UserStatus status) {
-        final String jql =
-                "update UserMailinglistEntity set" +
-                "   status = :status," +
-                "   modified = current_timestamp " +
-                "where userGroup.id in (" +
-                "    select s.userGroup.id" +
-                "    from UserMailinglistEntity s" +
-                "    where s.userGroup.user.status = :status" +
-                "      and s.status <> s.userGroup.user.status)";
         final Query query = entityManager.createQuery(jql);
         query.setParameter("status", status);
 

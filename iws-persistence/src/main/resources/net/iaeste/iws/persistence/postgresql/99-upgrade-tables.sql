@@ -181,5 +181,5 @@ create or replace view list_members as
     and u.status = 'ACTIVE';
 
 insert into mailing_lists (id, list_address, group_id, subject_prefix, list_type, replyto_style, status) values
-    (1, 'ncs@iaeste.net', 3, 'NCS', 'PRIVATE_LIST', 'REPLY_TO_SENDER', 'ACTIVE'),
-    (2, 'announce@iaeste.net', 3, 'ANNOUNCE', 'PRIVATE_LIST', 'NO_REPLY', 'ACTIVE');
+    (1, 'ncs@iaeste.net', 2, 'NCS', 'PRIVATE_LIST', 'REPLY_TO_SENDER', 'ACTIVE'),
+    (2, 'announce@iaeste.net', 2, 'ANNOUNCE', 'PRIVATE_LIST', 'NO_REPLY', 'ACTIVE');

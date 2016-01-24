@@ -393,7 +393,15 @@ public class StateBean {
      * and subscribers to the lists are correct.</p>
      */
     private void updateMailingLists(final Authentication authentication) {
-        // 1. Aliases.
+        // 1. Mailing Lists
+        //    Mailing Lists is one of the core parts of the IWS. Each Group can
+        //    have either a public, a private or both kinds of mailing lists.
+        //    And Users can be subscribed to either one or the other.
+        //      Please see the GroupType for more information about what kind
+        //    of Mailing Lists a Group can have.
+        mailService.processMissingMailingLists(authentication);
+
+        // 2. Aliases.
         //    Aliases is a feature, whereby a Group which have changed name can
         //    keep the old name for a period. The period is determined by an
         //    expiration date associated with the Alias. But it can also be that
@@ -409,14 +417,6 @@ public class StateBean {
         //    "limited alias", as they can expire. But otherwise it is treated
         //    just as any other public mailing list.
         mailService.processAliases(authentication);
-
-        // 2. Mailing Lists
-        //    Mailing Lists is one of the core parts of the IWS. Each Group can
-        //    have either a public, a private or both kinds of mailing lists.
-        //    And Users can be subscribed to either one or the other.
-        //      Please see the GroupType for more information about what kind
-        //    of Mailing Lists a Group can have.
-        mailService.processMissingMailingLists(authentication);
 
         // 3. Mailing List Subscriptions
         //    Users may belong to an arbitrary number of Groups, and their

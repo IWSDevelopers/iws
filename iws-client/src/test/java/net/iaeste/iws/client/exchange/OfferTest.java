@@ -107,6 +107,22 @@ public final class OfferTest extends AbstractTest {
     }
 
     /**
+     * Numerous NPE's were found in the production logs on 2016-01-24. The cause
+     * was that the request was empty. This test was created to replicate the
+     * error and ensure that the fix is in place.
+     */
+    @Test
+    public void testPublishOffersWithEmptyRequest() {
+        final PublishOfferRequest request = new PublishOfferRequest();
+        final PublishOfferResponse response = exchange.processPublishOffer(token, request);
+
+        assertThat(response, is(not(nullValue())));
+        assertThat(response.isOk(), is(false));
+        assertThat(response.getError(), is(IWSErrors.VERIFICATION_ERROR));
+        assertThat(response.getMessage(), is("Validation failed: {Ids=OfferIds and groupIds are both missing}"));
+    }
+
+    /**
      * Preliminary test to verify that the new method is not causing a meltdown.
      * The Statistics View in the Database needs refinement, once we have a
      * clarification of the Statistics data, considering the current

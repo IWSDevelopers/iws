@@ -46,7 +46,7 @@ public final class PublishOfferRequest extends AbstractVerification {
 
     /** The group to which the offer will be published. */
     @XmlElement(required = true, nillable = true)
-    private List<String> groupIds;
+    private List<String> groupIds = null;
 
     /**
      * New nomination deadline for submitted offers.
@@ -111,6 +111,11 @@ public final class PublishOfferRequest extends AbstractVerification {
     @Override
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(0);
+
+        if ((offerIds == null) && ((groupIds == null) || groupIds.isEmpty())) {
+            validation.put("Ids", "OfferIds and groupIds are both missing");
+        }
+
         return validation;
     }
 }

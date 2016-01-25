@@ -355,15 +355,26 @@ public class BasicJpaDao implements BasicDao {
      * there is no solution pending. Hence we're having this method which will
      * provide a work-around.<br />
      *   Basically, what the method does, is that it takes a list and expands
-     * it, if it is empty with the given value.
+     * it, if it is empty, with the given value.
      *
      * @param collection Collection of values to expand if empty
      * @param emptyValue new value to be added if the list is empty
      * @return Collection with at least 1 element
      */
     protected final <T> Collection<T> expandEmptyCollection(final Collection<T> collection, final T emptyValue) {
-        if (collection.isEmpty()) {
-            collection.add(emptyValue);
+        final Collection<T> expanded;
+
+        if (collection != null) {
+            expanded = collection;
+
+            if (expanded.isEmpty()) {
+                expanded.add(emptyValue);
+            }
+        } else {
+            // To prevent NullPointer Exception, we're simply creating a new
+            // Collection and add the Empty value to it.
+            expanded = new ArrayList<>();
+            expanded.add(emptyValue);
         }
 
         return collection;

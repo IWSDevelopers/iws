@@ -68,9 +68,9 @@ public final class PublishOfferRequest extends AbstractVerification {
     }
 
     public PublishOfferRequest(final Set<String> offerIds, final List<String> groupIds, final Date nominationDeadline) {
-        this.offerIds = offerIds;
-        this.groupIds = groupIds;
-        this.nominationDeadline = nominationDeadline;
+        setOfferIds(offerIds);
+        setGroupIds(groupIds);
+        setNominationDeadline(nominationDeadline);
     }
 
     // =========================================================================
@@ -78,6 +78,7 @@ public final class PublishOfferRequest extends AbstractVerification {
     // =========================================================================
 
     public void setOfferIds(final Set<String> offerIds) {
+        ensureValidIdentifiers("offerIds", offerIds);
         this.offerIds = offerIds;
     }
 
@@ -86,6 +87,7 @@ public final class PublishOfferRequest extends AbstractVerification {
     }
 
     public void setGroupIds(final List<String> groupIds) {
+        ensureNotNullAndValidIdentifiers("groupIds", groupIds);
         this.groupIds = groupIds;
     }
 

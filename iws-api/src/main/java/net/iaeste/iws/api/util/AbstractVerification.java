@@ -22,7 +22,6 @@ import net.iaeste.iws.api.exceptions.VerificationException;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -555,7 +554,7 @@ public abstract class AbstractVerification implements Verifiable {
      * @param values List of Identifiers to check for validity
      * @throws IllegalArgumentException if the list contain invalid identifiers
      */
-    protected static void ensureValidIdentifiers(final String field, final List<String> values) {
+    protected static void ensureValidIdentifiers(final String field, final Collection<String> values) {
         if (values != null) {
             for (final String id : values) {
                 ensureValidIdentifier(field, id);
@@ -584,7 +583,7 @@ public abstract class AbstractVerification implements Verifiable {
      * @param values List of Identifiers to check
      * @throws IllegalArgumentException if the values is null or invalid
      */
-    protected static void ensureNotNullAndValidIdentifiers(final String field, final List<String> values) {
+    protected static void ensureNotNullAndValidIdentifiers(final String field, final Collection<String> values) {
         ensureNotNull(field, values);
         ensureValidIdentifiers(field, values);
     }

@@ -26,8 +26,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -40,21 +38,6 @@ import java.util.Objects;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.1
  */
-@NamedQueries({
-        @NamedQuery(name = "userMailingList.findSubscriptionByUserAddressAndListId",
-                query = "select u from UserMailinglistEntity u " +
-                        "where u.mailinglist.id = :lid " +
-                        "  and u.member = :userAddress "),
-        @NamedQuery(name = "userMailingList.findSubscriptionForUser",
-                query = "select u from UserMailinglistEntity u " +
-                        "where u.userGroup = :ug"),
-        @NamedQuery(name = "userMailingList.findByMailingListAddress",
-                query = "select u from UserMailinglistEntity u " +
-                        "where u.mailinglist.listAddress = :address "),
-        @NamedQuery(name = "userMailingList.deleteSubscriptionsByGroup",
-                query = "delete from UserMailinglistEntity " +
-                        "where userGroup.group = :group")
-})
 @Entity
 @Table(name = "user_to_mailing_list")
 public final class UserMailinglistEntity extends AbstractUpdateable<UserMailinglistEntity> {

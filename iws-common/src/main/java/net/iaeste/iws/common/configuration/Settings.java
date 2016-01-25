@@ -32,6 +32,7 @@ public final class Settings {
     private final Properties properties;
 
     private static final String PROPERTY_RUN_CLEAN_TIME = "run.clean.time";
+    private static final String PROPERTY_MAIL_SYNCHRONIZE_TIME = "mail.synchronize.time";
     private static final String PROPERTY_STARTUP_RESET_SESSIONS = "startup.reset.sessions";
     private static final String PROPERTY_ROOT_FILE_PATH = "root.file.path";
     private static final String PROPERTY_MAX_ACTIVE_TOKENS = "max.active.tokens";
@@ -62,6 +63,7 @@ public final class Settings {
 
         properties.setProperty(PROPERTY_ROOT_FILE_PATH, System.getProperty("java.io.tmpdir"));
         properties.setProperty(PROPERTY_RUN_CLEAN_TIME, InternalConstants.RUN_CLEAN_TIME);
+        properties.setProperty(PROPERTY_MAIL_SYNCHRONIZE_TIME, InternalConstants.MAIL_SYNCHRONIZE_TIME);
         properties.setProperty(PROPERTY_STARTUP_RESET_SESSIONS, InternalConstants.STARTUP_RESET_SESSIONS);
         properties.setProperty(PROPERTY_MAX_ACTIVE_TOKENS, String.valueOf(InternalConstants.MAX_ACTIVE_TOKENS));
         properties.setProperty(PROPERTY_MAX_LOGIN_RETRIES, String.valueOf(InternalConstants.MAX_LOGIN_RETRIES));
@@ -99,6 +101,10 @@ public final class Settings {
 
     public String getRunCleanTime() {
         return properties.getProperty(PROPERTY_RUN_CLEAN_TIME);
+    }
+
+    public String getMailSynchronizeTime() {
+        return properties.getProperty(PROPERTY_MAIL_SYNCHRONIZE_TIME);
     }
 
     public boolean resetSessionsAtStartup() {

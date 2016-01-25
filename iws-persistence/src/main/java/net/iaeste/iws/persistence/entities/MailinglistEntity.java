@@ -28,8 +28,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -42,14 +40,6 @@ import java.util.Objects;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.1
  */
-@NamedQueries({
-        @NamedQuery(name = "mailingList.findListsByGroup",
-                query = "select m from MailinglistEntity m " +
-                        "where m.group = :group"),
-        @NamedQuery(name = "mailingList.findByMailingListAddress",
-                query = "select m from MailinglistEntity m " +
-                        "where m.listAddress = :address ")
-})
 @Entity
 @Table(name = "mailing_lists")
 public final class MailinglistEntity extends AbstractUpdateable<MailinglistEntity> {

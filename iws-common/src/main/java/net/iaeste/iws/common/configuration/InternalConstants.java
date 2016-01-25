@@ -34,6 +34,13 @@ public final class InternalConstants {
     public static final String RUN_CLEAN_TIME = "02:00";
 
     /**
+     * To ensure that the mail system is updated with the latest information
+     * from the Users and Groups, the IWS has a Synchronize Scheduler running,
+     * which will handle it. This Scheduler must run at intervals, which is
+     * defined via this value.
+     */
+    public static final String MAIL_SYNCHRONIZE_TIME = "*:00";
+    /**
      * When starting the IWS, it is possible to tell the IWS to reset all
      * currently open Sessions, so nothing is hanging. By default, it is set
      * to false.

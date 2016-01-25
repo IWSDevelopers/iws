@@ -19,6 +19,7 @@ import net.iaeste.iws.api.enums.UserStatus;
 import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.util.Date;
+import net.iaeste.iws.common.configuration.InternalConstants;
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.core.monitors.ActiveSessions;
 import net.iaeste.iws.core.notifications.Notifications;
@@ -80,12 +81,6 @@ import java.util.List;
 public class StateBean {
 
     private static final Logger LOG = LoggerFactory.getLogger(StateBean.class);
-
-    /**
-     * The System Account is the Account used by the Notification system & this
-     * Bean to write history information, and log
-     */
-    private static final long SYSTEM_ACCOUNT = 2553L;
 
     @Inject @IWSBean private Notifications notifications;
     @Inject @IWSBean private EntityManager entityManager;
@@ -177,7 +172,7 @@ public class StateBean {
         // this. Even if nothing is to be deleted, we're still fetching the
         // record here, since the Cron job is only running once every 24 hours,
         // we do not care much for performance problems.
-        final UserEntity system = entityManager.find(UserEntity.class, SYSTEM_ACCOUNT);
+        final UserEntity system = entityManager.find(UserEntity.class, InternalConstants.SYSTEM_ACCOUNT);
         final Authentication authentication = new Authentication(system, timer.getInfo().toString());
 
         // First, let's get rid of those pesky expired sessions. For more
@@ -264,7 +259,9 @@ public class StateBean {
         // delete completely
         final List<UserEntity> newUsers = accessDao.findAccountsWithState(UserStatus.NEW, days);
         for (final UserEntity user : newUsers) {
-            if (user.getId() != SYSTEM_ACCOUNT) {
+            // Just to make sure that we're not removing the System Account, as
+            // that would be rather fatal!
+            if (user.getId() != InternalConstants.SYSTEM_ACCOUNT) {
                 LOG.info("Deleting Expired NEW Account for {} {} <{}>.", user.getFirstname(), user.getLastname(), user.getUsername());
                 service.deleteNewUser(user);
                 accounts++;

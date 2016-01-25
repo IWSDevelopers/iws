@@ -65,51 +65,98 @@ public final class MailService extends CommonService<MailingListDao> {
         super(settings, new MailingListJpaDao(entityManager, settings));
     }
 
-    public void synchronizeVirtualLists(final Authentication authentication) {
-        final String privateList = '@' + settings.getPrivateMailAddress();
-        final String ncsListAddress = settings.getNcsList() + privateList;
-        final MailinglistEntity ncsList = dao.findMailingList(ncsListAddress);
+    // =========================================================================
+    // Public methods for handling Mail Service Synchronization
+    // =========================================================================
 
-        final List<UserGroupEntity> ncsListSubscribers = dao.findMissingNcsSubscribers();
-        if (!ncsListSubscribers.isEmpty()) {
-            addSubscribers(authentication, ncsList, ncsListSubscribers);
-        }
-        LOG.info("Subscribed {} Users to the NC's Mailing List.", ncsListSubscribers.size());
+    /**
+     * Mailing Lists is one of the core parts of the IWS. Each Group can have
+     * either a public, a private or both kinds of mailing lists. And Users can
+     * be subscribed to either one or the other. Please see the GroupType for
+     * more information about what kind of Mailing Lists a Group can have.
+     *
+     * @param authentication User Authentication information
+     */
+    public void processMissingMailingLists(final Authentication authentication) {
+        final List<GroupEntity> groups = dao.findUnprocessedGroups();
 
-        final List<UserGroupEntity> ncsListUnsubscribers = dao.findDeprecatedNcsSubscribers();
-        if (!ncsListUnsubscribers.isEmpty()) {
-            removeSubscribers(ncsList, ncsListUnsubscribers);
-        }
-        LOG.info("Removed {} Users from the NC's Mailing List.", ncsListUnsubscribers.size());
+        if (!groups.isEmpty()) {
+            LOG.info("Found {} Active Groups without a mailing list.", groups.size());
 
-        // TODO Correct the logic, so the members will follow the subscription rules regarding who may write to it
-        //final List<UserGroupEntity> announceListSubscribers = dao.findMissingAnnounceSubscribers();
-        //if (!announceListSubscribers.isEmpty()) {
-        //    final String announceList = settings.getAnnounceList() + privateList;
-        //    final MailinglistEntity list = dao.findMailingList(announceList);
-        //    addSubscribers(authentication, list, announceListSubscribers);
-        //}
-    }
-
-    private void addSubscribers(final Authentication authentication, final MailinglistEntity list, final List<UserGroupEntity> subscribers) {
-        if (list != null) {
-            for (final UserGroupEntity subscriber : subscribers) {
-                final UserMailinglistEntity entity = prepareSubscription(list, subscriber);
-                dao.persist(authentication, entity);
-                LOG.info("Subscribed {} {} to the {} MailingList.", subscriber.getUser().getFirstname(), subscriber.getUser().getLastname(), list.getListAddress());
+            for (final GroupEntity group : groups) {
+                processGroupLists(authentication, group);
+                LOG.info("Created Mailing list(s) for {}.", group);
             }
         } else {
-            LOG.error("Cannot add the Users {} to a null list, please check the IWS Configuration, as the Virtual List settings is wrong.", subscribers.size());
+            LOG.info("No Groups found with missing mailing lists.");
         }
     }
 
-    private void removeSubscribers(final MailinglistEntity list, final List<UserGroupEntity> subscribers) {
-        if (list != null) {
-            for (final UserGroupEntity subscriber : subscribers) {
-                final UserMailinglistEntity entity = dao.findSubscription(list, subscriber);
-                dao.delete(entity);
-                LOG.info("Removed {} {} from the {} MailingList.", subscriber.getUser().getFirstname(), subscriber.getUser().getLastname(), list.getListAddress());
+    /**
+     *  <p>Aliases is a feature, whereby a Group which have changed name can
+     *  keep the old name for a period. The period is determined by an
+     *  expiration date associated with the Alias. But it can also be that
+     *  there is no expiration. Most National Committees going from Cooperating
+     *  Institution to Full Member require a transition period, before their
+     *  new address is known to all. Others, like the Board have aliases of a
+     *  permanent basis, like president - the president alias must always
+     *  work.</p>
+     *
+     *  <p>Aliases are always re-processed, as it can be that they change. And
+     *  as there is a rather limited amount of Aliases, reducing the logic for
+     *  handling these makes it easier.</p>
+     *
+     *  <p>Aliases is treated as a public mailing list, but is marked as a
+     *  &quot;limited alias&quot;, as they can expire. But otherwise it is
+     *  treated just as any other public mailing list.</p>
+     *
+     * @param authentication User Authentication information
+     */
+    public void processAliases(final Authentication authentication) {
+        final List<AliasEntity> aliases = dao.findAliases();
+
+        for (final AliasEntity alias : aliases) {
+            final MailinglistEntity found = dao.findMailingList(alias.getAliasAddress());
+
+            if ((alias.getExpires() != null) && alias.getExpires().after(new Date())) {
+                if (found != null) {
+                    dao.deleteMailinglistSubscriptions(found);
+                    dao.delete(found);
+                }
+            } else {
+                if (found == null) {
+                    final MailinglistEntity entity = new MailinglistEntity();
+
+                    entity.setListType(MailinglistType.LIMITED_ALIAS);
+                    entity.setMailReply(MailReply.REPLY_TO_SENDER);
+                    entity.setStatus(GroupStatus.ACTIVE);
+                    entity.setGroup(alias.getGroup());
+                    entity.setListAddress(alias.getAliasAddress());
+                    entity.setSubjectPrefix(alias.getGroup().getGroupName());
+
+                    dao.persist(authentication, entity);
+                    LOG.info("Alias {} created for {}.", alias.getAliasAddress(), alias.getGroup());
+                }
             }
+        }
+    }
+
+    /**
+     * Users may belong to an arbitrary number of Groups, and their relation to
+     * a Group is also reflected in their inclusion on Mailing Lists.
+     * Regardless of the relationship, a User will always be present on the
+     * Lists which the Group may have, so if a Group may have two Lists (Public
+     * &amp; Private), the User has a relation to both. However, each relation
+     * also have a state, and only if the User according to the Group Relation
+     * is allowed to receive and write to a list, will the state allow it.
+     *
+     * @param authentication User Authentication information
+     */
+    public void processMissingMailingListSubscriptions(final Authentication authentication) {
+        final List<UserGroupEntity> userGroups = dao.findUnprocessedSubscriptions();
+
+        for (final UserGroupEntity userGroup : userGroups) {
+            processListSubscriptions(authentication, userGroup);
         }
     }
 
@@ -140,47 +187,72 @@ public final class MailService extends CommonService<MailingListDao> {
         LOG.info("Updated {} Subscriptions, where the username was changed.", updatedAddress);
     }
 
-    public void processAliases(final Authentication authentication) {
-        final List<AliasEntity> aliases = dao.findAliases();
+    /**
+     * <p>In IWS, almost all Mailing Lists is build based on the rules for a
+     * given Group. However, there is also exceptions to this rule, and these
+     * fall under the Virtual Mailing Lists category.</p>
+     *
+     * <p>A Virtual Mailing List is one where the Subscription Rule is rather
+     * special. By default, there's is 2 such Mailing Lists, the NC's Mailing
+     * Lists, going to all National Committees, Board &amp; International
+     * Groups. And the Announce List, which is limited regarding who may write
+     * to it, but otherwise goes to everybody.</p>
+     *
+     * <p>As the Mailing List Synchronization above cannot and should not be
+     * aware of Rules regarding Virtual Mailing lists, it is important that we
+     * handle Virtual Mailing Lists as the last part, so we rules can be
+     * adjusted accordingly.</p>
+     *
+     * @param authentication User Authentication information
+     */
+    public void synchronizeVirtualLists(final Authentication authentication) {
+        final String privateList = '@' + settings.getPrivateMailAddress();
+        final String ncsListAddress = settings.getNcsList() + privateList;
+        final MailinglistEntity ncsList = dao.findMailingList(ncsListAddress);
 
-        for (final AliasEntity alias : aliases) {
-            final MailinglistEntity found = dao.findMailingList(alias.getAliasAddress());
+        final List<UserGroupEntity> ncsListSubscribers = dao.findMissingNcsSubscribers();
+        if (!ncsListSubscribers.isEmpty()) {
+            addSubscribers(authentication, ncsList, ncsListSubscribers);
+        }
 
-            if ((alias.getExpires() != null) && alias.getExpires().after(new Date())) {
-                if (found != null) {
-                    dao.deleteMailinglistSubscriptions(found);
-                    dao.delete(found);
-                }
-            } else {
-                if (found == null) {
-                    final MailinglistEntity entity = new MailinglistEntity();
+        final List<UserGroupEntity> ncsListUnsubscribers = dao.findDeprecatedNcsSubscribers();
+        if (!ncsListUnsubscribers.isEmpty()) {
+            removeSubscribers(ncsList, ncsListUnsubscribers);
+        }
+        LOG.info("NC's Mailing List; Added {} and removed {} Subscribers.",  ncsListSubscribers.size(), ncsListUnsubscribers.size());
 
-                    entity.setListType(MailinglistType.LIMITED_ALIAS);
-                    entity.setMailReply(MailReply.REPLY_TO_SENDER);
-                    entity.setStatus(GroupStatus.ACTIVE);
-                    entity.setGroup(alias.getGroup());
-                    entity.setListAddress(alias.getAliasAddress());
-                    entity.setSubjectPrefix(alias.getGroup().getGroupName());
+        // TODO Correct the logic, so the members will follow the subscription rules regarding who may write to it
+        //final List<UserGroupEntity> announceListSubscribers = dao.findMissingAnnounceSubscribers();
+        //if (!announceListSubscribers.isEmpty()) {
+        //    final String announceList = settings.getAnnounceList() + privateList;
+        //    final MailinglistEntity list = dao.findMailingList(announceList);
+        //    addSubscribers(authentication, list, announceListSubscribers);
+        //}
+    }
 
-                    dao.persist(authentication, entity);
-                    LOG.info("Alias {} created for {}.", alias.getAliasAddress(), alias.getGroup());
-                }
+    // =========================================================================
+    // Internal helper methods
+    // =========================================================================
+
+    private void addSubscribers(final Authentication authentication, final MailinglistEntity list, final List<UserGroupEntity> subscribers) {
+        if (list != null) {
+            for (final UserGroupEntity subscriber : subscribers) {
+                final UserMailinglistEntity entity = prepareSubscription(list, subscriber);
+                dao.persist(authentication, entity);
+                LOG.info("Subscribed {} {} to the {} MailingList.", subscriber.getUser().getFirstname(), subscriber.getUser().getLastname(), list.getListAddress());
             }
+        } else {
+            LOG.error("Cannot add the Users {} to a null list, please check the IWS Configuration, as the Virtual List settings is wrong.", subscribers.size());
         }
     }
 
-    public void processMissingMailingLists(final Authentication authentication) {
-        final List<GroupEntity> groups = dao.findUnprocessedGroups();
-
-        if (!groups.isEmpty()) {
-            LOG.info("Found {} Active Groups without a mailing list.", groups.size());
-
-            for (final GroupEntity group : groups) {
-                processGroupLists(authentication, group);
-                LOG.info("Created Mailing list(s) for {}.", group);
+    private void removeSubscribers(final MailinglistEntity list, final List<UserGroupEntity> subscribers) {
+        if (list != null) {
+            for (final UserGroupEntity subscriber : subscribers) {
+                final UserMailinglistEntity entity = dao.findSubscription(list, subscriber);
+                dao.delete(entity);
+                LOG.info("Removed {} {} from the {} MailingList.", subscriber.getUser().getFirstname(), subscriber.getUser().getLastname(), list.getListAddress());
             }
-        } else {
-            LOG.info("No Groups found with missing mailing lists.");
         }
     }
 
@@ -193,7 +265,7 @@ public final class MailService extends CommonService<MailingListDao> {
      * @param authentication User Authentication information
      * @param group Group to process mailing list(s)s for
      */
-    public void processGroupLists(final Authentication authentication, final GroupEntity group) {
+    private void processGroupLists(final Authentication authentication, final GroupEntity group) {
         // Whenever we're dealing with Group changes, we also have to deal with
         // the mailing list(s), which belongs to the Group.
 
@@ -221,14 +293,6 @@ public final class MailService extends CommonService<MailingListDao> {
                     }
                 }
             }
-        }
-    }
-
-    public void processMissingMailingListSubscriptions(final Authentication authentication) {
-        final List<UserGroupEntity> userGroups = dao.findUnprocessedSubscriptions();
-
-        for (final UserGroupEntity userGroup : userGroups) {
-            processListSubscriptions(authentication, userGroup);
         }
     }
 

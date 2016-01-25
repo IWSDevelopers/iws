@@ -166,6 +166,13 @@ public final class InternalConstants {
      */
     public static final String ALLOWED_GENERATOR_CHARACTERS = "abcdefghjkmnpqrstuvwxzy23456789";
 
+    /**
+     * Whenever one of the Schedulers or any other System Service requires a
+     * User for the Authentication information, the System Account should be
+     * used.
+     */
+    public static final long SYSTEM_ACCOUNT = 2553L;
+
     /** Internal Id for the Owner Role. */
     public static final long ROLE_OWNER = 1L;
 

@@ -63,9 +63,9 @@ public final class MailingListJpaDao extends BasicJpaDao implements MailingListD
         final String jql =
                 "select m " +
                 "from MailinglistEntity m " +
-                "where m.group = :group";
+                "where m.group.id = :group";
         final Query query = entityManager.createQuery(jql);
-        query.setParameter("group", group);
+        query.setParameter("group", group.getId());
 
         return query.getResultList();
     }
@@ -106,10 +106,10 @@ public final class MailingListJpaDao extends BasicJpaDao implements MailingListD
                 "select u " +
                 "from UserMailinglistEntity u " +
                 "where u.mailinglist = :list" +
-                "  and u.userGroup = :subscriber";
+                "  and u.userGroup.id = :subscriber";
         final Query query = entityManager.createQuery(jql);
         query.setParameter("list", list);
-        query.setParameter("subscriber", subscriber);
+        query.setParameter("subscriber", subscriber.getId());
 
         return findSingleResult(query, "UserMailinglist");
     }
@@ -224,30 +224,18 @@ public final class MailingListJpaDao extends BasicJpaDao implements MailingListD
     @Override
     public int updateSubscribedAddress() {
         final String jql =
-                "select u.userGroup " +
+                "select u " +
                 "from UserMailinglistEntity u " +
                 "where u.member != u.userGroup.user.username";
         final Query query = entityManager.createQuery(jql);
-        final List<UserGroupEntity> subscribers = query.getResultList();
+        final List<UserMailinglistEntity> subscribers = query.getResultList();
 
-        for (final UserGroupEntity userGroup : subscribers) {
-            updateMemberAddress(userGroup);
+        for (final UserMailinglistEntity subscriber : subscribers) {
+            subscriber.setMember(subscriber.getUserGroup().getUser().getUsername());
+            persist(subscriber);
         }
 
         return subscribers.size();
-    }
-
-    private int updateMemberAddress(final UserGroupEntity userGroup) {
-        final String jql =
-                "update UserMailinglistEntity set" +
-                        "  member = :address," +
-                        "  modified = current_timestamp " +
-                        "where userGroup = :subscriber";
-        final Query query = entityManager.createQuery(jql);
-        query.setParameter("address", userGroup.getUser().getUsername());
-        query.setParameter("subscriber", userGroup);
-
-        return query.executeUpdate();
     }
 
     /**
@@ -257,9 +245,9 @@ public final class MailingListJpaDao extends BasicJpaDao implements MailingListD
     public int deleteMailinglistSubscriptions(final MailinglistEntity mailingList) {
         final String jql =
                 "delete from UserMailinglistEntity " +
-                "where mailinglist = :list";
+                "where mailinglist.id = :list";
         final Query query = entityManager.createQuery(jql);
-        query.setParameter("list", mailingList);
+        query.setParameter("list", mailingList.getId());
 
         return query.executeUpdate();
     }
@@ -320,9 +308,9 @@ public final class MailingListJpaDao extends BasicJpaDao implements MailingListD
     public int deleteMailingLists(final GroupEntity group) {
         final String jql =
                 "delete from MailinglistEntity " +
-                "where group = :group";
+                "where group.id = :group";
         final Query query = entityManager.createQuery(jql);
-        query.setParameter("group", group);
+        query.setParameter("group", group.getId());
 
         return query.executeUpdate();
     }

@@ -111,7 +111,6 @@ public final class ExchangeTransformer {
             result.setLodgingCostFrequency(offer.getLodgingCostFrequency());
             result.setAdditionalInformation(offer.getAdditionalInformation());
             result.setPrivateComment(offer.getPrivateComment());
-            result.setStatus(offer.getStatus());
             result.setNumberOfHardCopies(offer.getNumberOfHardCopies());
             result.setNominationDeadline(CommonTransformer.convert(offer.getNominationDeadline()));
         }

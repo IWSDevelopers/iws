@@ -75,7 +75,7 @@ public final class FetchOffersRequest extends AbstractPaginatable {
      * @param fetchType The Fetch Type
      */
     public FetchOffersRequest(final FetchType fetchType) {
-        this.fetchType = fetchType;
+        setFetchType(fetchType);
     }
 
     // =========================================================================

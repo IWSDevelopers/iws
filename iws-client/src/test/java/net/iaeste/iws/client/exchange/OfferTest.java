@@ -285,6 +285,54 @@ public final class OfferTest extends AbstractTest {
         assertThat(updatedOffer.getNsLastname(), is(not(nullValue())));
     }
 
+    /**
+     * <p>Trac Bug report #1100, there is a problem with the processOffer
+     * method, whereby it is possible to change the state of an existing Offer.
+     * Changing the State should never be possible via processing, only via
+     * the State Scheduler or Publishing of an Offer.</p>
+     *
+     * <p>Note, that after having written this test, a problem was found, and
+     * that was that the Offer returned was a copy of the given Object, which
+     * was not the same as the updated Object in the Database, that flaw has
+     * now been fixed, but it doesn't answer why some Offers have been set to
+     * Expired in Production!</p>
+     */
+    @Test
+    public void testUpdateOfferState() {
+        final Offer initialOffer = TestData.prepareFullOffer("PL-" + exchangeYear + "-754321-C", "Poland GmbH");
+        final ProcessOfferRequest request = new ProcessOfferRequest();
+        request.setOffer(initialOffer);
+        final OfferResponse saveResponse = exchange.processOffer(token, request);
+        assertThat(saveResponse, is(not(nullValue())));
+        assertThat(saveResponse.isOk(), is(true));
+
+        // Verify that the Offer was saved and has state NEW.
+        final Offer savedOffer = saveResponse.getOffer();
+        assertThat(savedOffer, is(not(nullValue())));
+        assertThat(savedOffer.getStatus(), is(OfferState.NEW));
+
+        // Update the State to Expired, and save it again.
+        savedOffer.setStatus(OfferState.EXPIRED);
+        request.setOffer(savedOffer);
+        final OfferResponse updateResponse = exchange.processOffer(token, request);
+
+        // Now, let's verify that everything is as expected.
+        assertThat(updateResponse, is(not(nullValue())));
+        assertThat(updateResponse.isOk(), is(true));
+        final Offer updatedOffer = updateResponse.getOffer();
+        assertThat(updatedOffer, is(not(nullValue())));
+        assertThat(updatedOffer.getStatus(), is(OfferState.NEW));
+
+        // Let's also try to fetch the Offer via the Id, so we can check it. As
+        // one flaw was that the given record was returned.
+        final FetchOffersRequest fetchRequest = new FetchOffersRequest(FetchType.DOMESTIC);
+        fetchRequest.setIdentifiers(Collections.singletonList(initialOffer.getRefNo()));
+        final FetchOffersResponse fetchResponse = exchange.fetchOffers(token, fetchRequest);
+        assertThat(fetchResponse.isOk(), is(true));
+        assertThat(fetchResponse.getOffers().size(), is(1));
+        assertThat(fetchResponse.getOffers().get(0).getStatus(), is(OfferState.NEW));
+    }
+
     @Test
     public void testProcessOfferWithInvalidRefno() {
         // We're logged in as Poland, so the Offer must start with "PL".
@@ -355,7 +403,7 @@ public final class OfferTest extends AbstractTest {
         assertThat(response.getOffers().isEmpty(), is(false));
         final int size = response.getOffers().size();
 
-        Offer offerToDelete = findOfferFromResponse(saveResponse.getOffer().getRefNo(), response);
+        final Offer offerToDelete = findOfferFromResponse(saveResponse.getOffer().getRefNo(), response);
 
         final DeleteOfferRequest deleteRequest = new DeleteOfferRequest(offerToDelete.getOfferId());
         final OfferResponse deleteResponse = exchange.deleteOffer(token, deleteRequest);
@@ -417,7 +465,7 @@ public final class OfferTest extends AbstractTest {
 
         //is it shared to two groups?
         assertThat(fetchPublishResponse1.isOk(), is(true));
-        GroupList offerGroupsSharedTo = fetchPublishResponse1.getOffersGroups().get(offersExternalId.get(0));
+        final GroupList offerGroupsSharedTo = fetchPublishResponse1.getOffersGroups().get(offersExternalId.get(0));
         assertThat(2, is(offerGroupsSharedTo.size()));
 
         allOffersResponse = exchange.fetchOffers(token, allOffersRequest);
@@ -759,8 +807,8 @@ public final class OfferTest extends AbstractTest {
 
         assertThat("verify that the offer was persisted", processResponse.isOk(), is(true));
 
-        String austriaNsFirstName = processResponse.getOffer().getNsFirstname();
-        String austriaNsLastName = processResponse.getOffer().getNsLastname();
+        final String austriaNsFirstName = processResponse.getOffer().getNsFirstname();
+        final String austriaNsLastName = processResponse.getOffer().getNsLastname();
 
         final Set<String> offersToShare = new HashSet<>(1);
         offersToShare.add(processResponse.getOffer().getOfferId());
@@ -982,7 +1030,7 @@ public final class OfferTest extends AbstractTest {
 
         //is it shared to two groups?
         assertThat(fetchPublishResponse.isOk(), is(true));
-        GroupList offerGroupsSharedTo = fetchPublishResponse.getOffersGroups().get(offersExternalId.get(0));
+        final GroupList offerGroupsSharedTo = fetchPublishResponse.getOffersGroups().get(offersExternalId.get(0));
         assertThat(1, is(offerGroupsSharedTo.size()));
 
         allOffersResponse = exchange.fetchOffers(token, allOffersRequest);
@@ -1001,7 +1049,7 @@ public final class OfferTest extends AbstractTest {
         //offersToHide.add(offer.getOfferId());
         offersToHide.add(sharedOffer.getOfferId());
         final HideForeignOffersRequest hideOfferRequest = new HideForeignOffersRequest(offersToHide);
-        Fallible hideOfferResponse = exchange.processHideForeignOffers(austriaTokenWithNationalGroup, hideOfferRequest);
+        final Fallible hideOfferResponse = exchange.processHideForeignOffers(austriaTokenWithNationalGroup, hideOfferRequest);
         assertThat(hideOfferResponse.getError(), is(IWSErrors.SUCCESS));
         assertThat(hideOfferResponse.isOk(), is(true));
 
@@ -1052,7 +1100,7 @@ public final class OfferTest extends AbstractTest {
 
         //is it shared to one groups?
         assertThat(fetchPublishResponse.isOk(), is(true));
-        GroupList offerGroupsSharedTo = fetchPublishResponse.getOffersGroups().get(offersExternalId.get(0));
+        final GroupList offerGroupsSharedTo = fetchPublishResponse.getOffersGroups().get(offersExternalId.get(0));
         assertThat(1, is(offerGroupsSharedTo.size()));
 
         allOffersResponse = exchange.fetchOffers(token, allOffersRequest);
@@ -1063,12 +1111,12 @@ public final class OfferTest extends AbstractTest {
         assertThat("The offer is shared now, the status has to be SHARED", sharedOffer.getStatus(), is(OfferState.SHARED));
 
         final FetchOffersRequest fetchSharedRequest = new FetchOffersRequest(FetchType.SHARED);
-        FetchOffersResponse fetchSharedResponse = exchange.fetchOffers(austriaTokenWithNationalGroup, fetchSharedRequest);
-        Offer foreignOffer = findOfferFromResponse(offer.getRefNo(), fetchSharedResponse);
+        final FetchOffersResponse fetchSharedResponse = exchange.fetchOffers(austriaTokenWithNationalGroup, fetchSharedRequest);
+        final Offer foreignOffer = findOfferFromResponse(offer.getRefNo(), fetchSharedResponse);
         assertThat(foreignOffer, is(not(nullValue())));
 
         final RejectOfferRequest rejectOfferRequest = new RejectOfferRequest(foreignOffer.getOfferId());
-        Fallible rejectOfferResponse = exchange.rejectOffer(austriaTokenWithNationalGroup, rejectOfferRequest);
+        final Fallible rejectOfferResponse = exchange.rejectOffer(austriaTokenWithNationalGroup, rejectOfferRequest);
         assertThat(rejectOfferResponse.getError(), is(IWSErrors.SUCCESS));
         assertThat(rejectOfferResponse.isOk(), is(true));
 
@@ -1141,12 +1189,12 @@ public final class OfferTest extends AbstractTest {
         assertThat("The offer is shared now, the status has to be SHARED", sharedOffer.getStatus(), is(OfferState.SHARED));
 
         final FetchOffersRequest fetchSharedRequest = new FetchOffersRequest(FetchType.SHARED);
-        FetchOffersResponse fetchSharedResponse = exchange.fetchOffers(austriaTokenWithNationalGroup, fetchSharedRequest);
-        Offer foreignOffer = findOfferFromResponse(offer.getRefNo(), fetchSharedResponse);
+        final FetchOffersResponse fetchSharedResponse = exchange.fetchOffers(austriaTokenWithNationalGroup, fetchSharedRequest);
+        final Offer foreignOffer = findOfferFromResponse(offer.getRefNo(), fetchSharedResponse);
         assertThat(foreignOffer, is(not(nullValue())));
 
         final RejectOfferRequest rejectOfferRequest = new RejectOfferRequest(foreignOffer.getOfferId());
-        Fallible rejectOfferResponse = exchange.rejectOffer(austriaTokenWithNationalGroup, rejectOfferRequest);
+        final Fallible rejectOfferResponse = exchange.rejectOffer(austriaTokenWithNationalGroup, rejectOfferRequest);
         assertThat(rejectOfferResponse.getError(), is(IWSErrors.SUCCESS));
         assertThat(rejectOfferResponse.isOk(), is(true));
 
@@ -1238,12 +1286,12 @@ public final class OfferTest extends AbstractTest {
         assertThat("The offer is shared now, the status has to be SHARED", sharedOffer.getStatus(), is(OfferState.SHARED));
 
         final FetchOffersRequest fetchSharedRequest = new FetchOffersRequest(FetchType.SHARED);
-        FetchOffersResponse fetchSharedResponse = exchange.fetchOffers(austriaTokenWithNationalGroup, fetchSharedRequest);
-        Offer foreignOffer = findOfferFromResponse(offer.getRefNo(), fetchSharedResponse);
+        final FetchOffersResponse fetchSharedResponse = exchange.fetchOffers(austriaTokenWithNationalGroup, fetchSharedRequest);
+        final Offer foreignOffer = findOfferFromResponse(offer.getRefNo(), fetchSharedResponse);
         assertThat(foreignOffer, is(not(nullValue())));
 
         final RejectOfferRequest rejectOfferRequest = new RejectOfferRequest(foreignOffer.getOfferId());
-        Fallible rejectOfferResponse = exchange.rejectOffer(austriaTokenWithNationalGroup, rejectOfferRequest);
+        final Fallible rejectOfferResponse = exchange.rejectOffer(austriaTokenWithNationalGroup, rejectOfferRequest);
         assertThat(rejectOfferResponse.getError(), is(IWSErrors.SUCCESS));
         assertThat(rejectOfferResponse.isOk(), is(true));
 
@@ -1308,20 +1356,20 @@ public final class OfferTest extends AbstractTest {
         assertThat(publishResponse.getError(), is(IWSErrors.SUCCESS));
         assertThat(publishResponse.isOk(), is(true));
 
-        OfferCSVDownloadRequest outboxCsvRequest = new OfferCSVDownloadRequest(FetchType.DOMESTIC, new ArrayList<String>(0), AbstractVerification.calculateExchangeYear());
-        OfferCSVDownloadResponse outboxCsvResponse = exchange.downloadOffers(austriaTokenWithNationalGroup, outboxCsvRequest);
+        final OfferCSVDownloadRequest outboxCsvRequest = new OfferCSVDownloadRequest(FetchType.DOMESTIC, new ArrayList<String>(0), AbstractVerification.calculateExchangeYear());
+        final OfferCSVDownloadResponse outboxCsvResponse = exchange.downloadOffers(austriaTokenWithNationalGroup, outboxCsvRequest);
 
         assertThat(outboxCsvResponse.isOk(), is(true));
         assertThat(outboxCsvResponse.getData(), is(not(nullValue())));
 
-        OfferCSVDownloadRequest inboxCsvRequest = new OfferCSVDownloadRequest(FetchType.SHARED, new ArrayList<String>(0), AbstractVerification.calculateExchangeYear());
-        OfferCSVDownloadResponse inboxCsvResponse = exchange.downloadOffers(croatiaToken, inboxCsvRequest);
+        final OfferCSVDownloadRequest inboxCsvRequest = new OfferCSVDownloadRequest(FetchType.SHARED, new ArrayList<String>(0), AbstractVerification.calculateExchangeYear());
+        final OfferCSVDownloadResponse inboxCsvResponse = exchange.downloadOffers(croatiaToken, inboxCsvRequest);
 
         assertThat(inboxCsvResponse.isOk(), is(true));
         assertThat(inboxCsvResponse.getData(), is(not(nullValue())));
 
-        OfferCSVUploadRequest uploadRequest = new OfferCSVUploadRequest(outboxCsvResponse.getData(), OfferCSVUploadRequest.FieldDelimiter.COMMA);
-        OfferCSVUploadResponse uploadResponse = exchange.uploadOffers(austriaTokenWithNationalGroup, uploadRequest);
+        final OfferCSVUploadRequest uploadRequest = new OfferCSVUploadRequest(outboxCsvResponse.getData(), OfferCSVUploadRequest.FieldDelimiter.COMMA);
+        final OfferCSVUploadResponse uploadResponse = exchange.uploadOffers(austriaTokenWithNationalGroup, uploadRequest);
         assertThat(uploadResponse.isOk(), is(true));
     }
 

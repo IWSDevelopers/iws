@@ -46,6 +46,7 @@ import net.iaeste.iws.persistence.ViewsDao;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.exchange.PublishingGroupEntity;
 import net.iaeste.iws.persistence.views.DomesticOfferStatisticsView;
+import net.iaeste.iws.persistence.views.EmbeddedOffer;
 import net.iaeste.iws.persistence.views.EmployerView;
 import net.iaeste.iws.persistence.views.ForeignOfferStatisticsView;
 import net.iaeste.iws.persistence.views.OfferSharedToGroupView;
@@ -208,12 +209,14 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
         final List<Offer> result = new ArrayList<>(found.size());
 
         for (final OfferView view : found) {
-            final Offer offer = transform(view);
-            // do not expose private comment to foreign offers
-            if (!view.getGroupId().equals(authentication.getGroup().getId())) {
-                offer.setPrivateComment(null);
+            if (applyIdentifiers(request.getIdentifiers(), view.getOffer())) {
+                final Offer offer = transform(view);
+                // do not expose private comment to foreign offers
+                if (!view.getGroupId().equals(authentication.getGroup().getId())) {
+                    offer.setPrivateComment(null);
+                }
+                result.add(offer);
             }
-            result.add(offer);
         }
 
         return result;
@@ -224,7 +227,33 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
         final List<Offer> result = new ArrayList<>(found.size());
 
         for (final SharedOfferView view : found) {
-            result.add(transform(view));
+            if (applyIdentifiers(request.getIdentifiers(), view.getOffer())) {
+                result.add(transform(view));
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * The Fetch Offer Request contain a list of Identifiers, which may be
+     * applied to limit the result. This method will check if the Identifiers
+     * should be applied, and if so - also apply them on the given Offer.
+     * Method will return true if the Identifiers should not be applied or if
+     * they should be applied and the Offer matches the criteria. Otherwise
+     * the method will return false.
+     *
+     * @param identifiers List of Identifiers, if empty not applicable
+     * @param offer       The Offer to check
+     * @return True if applicable, otherwise false
+     */
+    private static boolean applyIdentifiers(final List<String> identifiers, final EmbeddedOffer offer) {
+        final boolean result;
+
+        if (identifiers.isEmpty()) {
+            result = true;
+        } else {
+            result = identifiers.contains(offer.getExternalId()) || identifiers.contains(offer.getRefNo());
         }
 
         return result;

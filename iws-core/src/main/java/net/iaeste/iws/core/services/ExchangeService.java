@@ -144,6 +144,7 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
         final OfferEntity newEntity = transform(request.getOffer());
         final Offer givenOffer = request.getOffer();
         final String externalId = givenOffer.getOfferId();
+        final Offer offer;
 
         if (externalId == null) {
             // Add the Group to the Offer, otherwise our ref-no checks will fail
@@ -167,6 +168,9 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
 
                 // Persist the Offer with history
                 dao.persist(authentication, newEntity);
+
+                // Now transform our saved Entity for the result
+                offer = transform(newEntity);
             } else {
                 // An Offer exists with this RefNo, but the Id was not provided,
                 // hence we have the case where someone tries to create a new
@@ -192,13 +196,14 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
             // new values into it, and finally it also writes an entry in the
             // history table
             dao.persist(authentication, existingEntity, newEntity);
+
+            // Now transform the existing entity for the result
+            offer = transform(existingEntity);
         }
 
         // Send a notification to the users who so desire. Via the Notifiable
         // Interface, can the Object handle it itself
         notifications.notify(authentication, newEntity, NotificationType.GENERAL);
-
-        final Offer offer = transform(newEntity);
 
         final UserEntity nationalSecretary = accessDao.findNationalSecretaryByMemberGroup(authentication.getGroup());
         offer.setNsFirstname(nationalSecretary.getFirstname());
@@ -441,7 +446,7 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
                 LOG.info("The Offer {} is currently shared but the deadline is {}. Changing Offer State to Expired.", refno, deadline);
                 state = OfferState.EXPIRED;
             } else if ((current == OfferState.EXPIRED) && deadline.isAfter(now)) {
-                LOG.info("The Offer {} is currently expired but the deadline is {}. Changing Offer State to Shared.", refno, deadline);
+                LOG.info("The Offer {} is currently Expired but the deadline is {}. Changing Offer State to Shared.", refno, deadline);
                 state = OfferState.SHARED;
             }
         }

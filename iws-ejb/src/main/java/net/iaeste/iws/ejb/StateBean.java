@@ -15,6 +15,8 @@
 package net.iaeste.iws.ejb;
 
 import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.api.enums.GroupStatus;
+import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.UserStatus;
 import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.api.exceptions.IWSException;
@@ -30,6 +32,7 @@ import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.ExchangeDao;
 import net.iaeste.iws.persistence.entities.SessionEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
+import net.iaeste.iws.persistence.entities.UserGroupEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
 import net.iaeste.iws.persistence.jpa.AccessJpaDao;
 import net.iaeste.iws.persistence.jpa.ExchangeJpaDao;
@@ -53,22 +56,27 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.EnumSet;
 import java.util.List;
+import java.util.Set;
 
 /**
- * When the IWS is starting up, we need to ensure that the current State is such
- * that the system will work correctly. The purpose of this Bean is simply to
- * ensure that.<br />
- *   The Bean has two parts. First is what happens at startup, the second is to
+ * <p>When the IWS is starting up, we need to ensure that the current State is
+ * such that the system will work correctly. The purpose of this Bean is simply
+ * to ensure that.</p>
+ *
+ * <p>The Bean has two parts. First is what happens at startup, the second is to
  * managed a Cron like service, which will run every night during the time where
- * the system has the lowest load.<br />
- *   At startup, the Bean will Clear all existing active Sessions, so nothing
+ * the system has the lowest load.</p>
+ *
+ * <p>At startup, the Bean will Clear all existing active Sessions, so nothing
  * exists in the database. This will prevent existing Sessions from continuing
  * to work, but as there may be other issues around a re-start, it is the least
- * harmful.<br />
- *   The Cron part will run every night, and both discard deprecated Sessions,
+ * harmful.</p>
+ *
+ * <p>The Cron part will run every night, and both discard deprecated Sessions,
  * but also update Accounts. To avoid that inactive/suspended/dead Accounts will
- * clutter up the system.
+ * clutter up the system.</p>
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -272,63 +280,70 @@ public class StateBean {
     }
 
     /**
-     * Suspend inactive users. Accounts which are currently having status
-     * ACTIVE, but have not been used after z days, will be set to SUSPENDED.
+     * <p>This will suspend all inactive Accounts, meaning an account which has
+     * not been used for a period of time, which is defined in the IWS
+     * Properties.</p>
+     *
+     * <p>Suspension will change the state of the Account from ACTIVE to
+     * SUSPENDED. Note that National Secretaries is except from this rule, so
+     * any currently active Committee will always have at least one active
+     * account.</p>
      *
      * @return Number of Suspended Accounts
      */
     private int suspendInactiveAccounts(final Authentication authentication) {
-        // Note, that we have 2 problems here. The first problem is to fetch all
-        // Users, who've been inactive for a a period of x days. This is the
-        // permanent problem to solve with this function, since otherwise
-        // inactive accounts, i.e. accounts where no sessions exists will be
-        // dealt with also.
-        //   However, it leaves remaining accounts, which was migrated and have
-        // status ACTIVE, but was never used. Dealing with these accounts is
-        // beyond the scope of this Bean - and must be dealt with separately. It
-        // is easy to find these, since the SALT they have for their encrypted
-        // Passwords is either "undefined" or "heartbleed".
-        //   Accounts which have not been used since the Migration from IW3 to
-        // IWS in January 2014, was given the "undefined" SALT, since IW3 used a
-        // simple MD5 checksum, and IWS uses a Salted SHA2. As of September
-        // 2014, 1.645 Accounts still have this Salt. Which means these Accounts
-        // can all be considered abandoned or deprecated.
-        //   In April 2014, an OpenSSL flaw submerged dubbed Heartbleed. All
-        // Accounts was re-salted with the salt "heartbleed", to force a renewal
-        // of the Passwords. As of September 2014, 375 Accounts still have this
-        // Salt, and have thus never updated the Passwords. However, Re-salting
-        // was never applied to the originally migrated Accounts, so these will
-        // be caught by this method.
-        //   The complexity of this Update is rather high, since we have to look
-        // at a number of parameters, which either is or should be indexed! This
-        // is an SQL query to solve the issue, which must be converted to JPA:
-        // -----------------------------------
-        // with activity as (
-        //   select
-        //     u.id           as id,
-        //     max(s.created) as latest
-        //   from
-        //     users u
-        //     left join sessions s on u.id = s.user_id
-        //   where u.status = 'ACTIVE'
-        //   group by u.id)
-        // select id
-        // from activity
-        // where latest is null
-        //    or latest < :date;
-        // -----------------------------------
         final Long days = settings.getAccountInactiveDays();
         LOG.info("Fetching the list of Users to be suspended.");
         final List<UserEntity> users = accessDao.findInactiveAccounts(days);
+        int suspended = 0;
+
         if (!users.isEmpty()) {
             for (final UserEntity user : users) {
-                LOG.info("Attempting to suspend the User {} {} <{}>.", user.getFirstname(), user.getLastname(), user.getUsername());
-                service.suspendUser(authentication, user);
+                if (maySuspendUser(user)) {
+                    LOG.info("Attempting to suspend the User {} {} <{}>.", user.getFirstname(), user.getLastname(), user.getUsername());
+                    service.suspendUser(authentication, user);
+                    suspended++;
+                } else {
+                    LOG.info("Ignoring inactive National Secretary {} {} <{}>.", user.getFirstname(), user.getLastname(), user.getUsername());
+                }
             }
         }
 
-        // For now - just returning the number of Records
-        return users.size();
+        return suspended;
+    }
+
+    /**
+     * <p>It has been an ongoing problem that some accounts have been suspended,
+     * although they belong to the National Secretary of a Country. This is
+     * problematic, as it prevents that the person can do a correct hand-over if
+     * been inactive for too long.</p>
+     *
+     * <p>Instead, this check is added, and if a User is Owner of either an
+     * Administrative, International, Member or National (Staff) Group, then it
+     * is skipped.</p>
+     *
+     * @param user The User to check, if may be suspended
+     * @return True if the User may be suspended, otherwise false
+     */
+    private boolean maySuspendUser(final UserEntity user) {
+        final List<UserGroupEntity> relations = accessDao.findAllUserGroups(user);
+        final Set<GroupType> allowed = EnumSet.of(GroupType.ADMINISTRATION, GroupType.INTERNATIONAL, GroupType.MEMBER, GroupType.NATIONAL);
+        boolean maySuspend = true;
+
+        for (final UserGroupEntity relation : relations) {
+            final GroupType type = relation.getGroup().getGroupType().getGrouptype();
+            final GroupStatus status = relation.getGroup().getStatus();
+            final long roleId = relation.getRole().getId();
+
+            if ((status == GroupStatus.ACTIVE) &&
+                (roleId == InternalConstants.ROLE_OWNER) &&
+                 allowed.contains(type)) {
+                maySuspend = false;
+                break;
+            }
+        }
+
+        return maySuspend;
     }
 
     /**
@@ -343,18 +358,6 @@ public class StateBean {
      * @return Number of Deleted Accounts
      */
     private int deleteSuspendedAccounts(final Authentication authentication) {
-        // select
-        //   u.id,
-        //   u.firstname,
-        //   u.lastname,
-        //   max(s.modified)
-        // from
-        //   sessions s
-        //   join users u on s.user_id = u.id
-        // where u.status = 'ACTIVE'
-        //   and s.modified < '2014-09-01'::date
-        // group by u.id, u.firstname, u.lastname
-        // order by max(s.modified);
         final Long days = settings.getAccountSuspendedDays();
         LOG.debug("Checking if Accounts exists with status SUSPENDED after {} days.", days);
         int accounts = 0;

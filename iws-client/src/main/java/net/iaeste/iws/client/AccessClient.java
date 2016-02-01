@@ -27,7 +27,7 @@ import net.iaeste.iws.api.responses.SessionDataResponse;
 import java.io.Serializable;
 
 /**
- * Simple Client to work with the IWS Acess functionality. The access to
+ * Simple Client to work with the IWS Access functionality. The access to
  * be used is controlled via the Factory, which loads the settings from a
  * properties file.
  *

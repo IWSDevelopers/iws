@@ -71,7 +71,7 @@ public final class ExchangeSpringClient implements Exchange {
 
     /**
      * Injects the {@code EntityManager} instance required to invoke our
-     * transactional daos. The EntityManager instance can only be injected into
+     * transactional DAOs. The EntityManager instance can only be injected into
      * the Spring Beans, we cannot create a Spring Bean for the Exchange EJB
      * otherwise.
      *

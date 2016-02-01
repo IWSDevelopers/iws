@@ -68,7 +68,7 @@ public final class AdministrationSpringClient implements Administration {
 
     /**
      * Injects the {@code EntityManager} instance required to invoke our
-     * transactional daos. The EntityManager instance can only be injected into
+     * transactional DAOs. The EntityManager instance can only be injected into
      * the Spring Beans, we cannot create a Spring Bean for the Administration
      * EJB otherwise.
      *

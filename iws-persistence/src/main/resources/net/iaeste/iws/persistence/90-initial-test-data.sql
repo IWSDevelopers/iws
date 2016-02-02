@@ -808,6 +808,15 @@ insert into user_to_group (external_id, user_id, group_id, role_id) values ('9ab
 insert into user_to_group (external_id, user_id, group_id, role_id) values ('48b86ad0-a8c9-4f79-840b-2d930c76ffd2', 26, 6, 1);
 update groups set status = 'SUSPENDED' where id = 6;
 
+-- For the Mailing List to work, we need the two virtual mailing lists, and to
+-- update the existing Groups & UserGroup relations to have the correct flags.
+insert into mailing_lists (id, list_address, group_id, subject_prefix, list_type, replyto_style, status) values (1, 'ncs@iaeste.net', 2, 'NCS', 'PRIVATE_LIST', 'REPLY_TO_SENDER', 'ACTIVE');
+insert into mailing_lists (id, list_address, group_id, subject_prefix, list_type, replyto_style, status) values (2, 'announce@iaeste.net', 2, 'ANNOUNCE', 'PRIVATE_LIST', 'NO_REPLY', 'ACTIVE');
+insert into aliases (id, external_id, group_id, alias_address, deprecated, expires) values (1, '30f0efd4-63d0-4f6e-9a97-e7621951b1dc', 3, 'president', 'active', null);
+update user_to_group set on_public_list = true, on_private_list = true, write_to_private_list = true;
+update groups set public_list = true where grouptype_id in (0, 1, 3, 4, 5, 6);
+update groups set private_list = true where grouptype_id in (0, 2, 3, 5, 6);
+
 -- Non Member Country, for our Committee Testing
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('AA', 'Aardvark', 'Aardvark', 'EUR', null, 'LISTED');
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('AB', 'Absinthe', 'Absinthe', 'EUR', null, 'LISTED');

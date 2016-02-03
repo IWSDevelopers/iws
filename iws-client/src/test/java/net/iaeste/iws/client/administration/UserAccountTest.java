@@ -35,6 +35,7 @@ import net.iaeste.iws.api.requests.CreateUserRequest;
 import net.iaeste.iws.api.requests.FetchGroupRequest;
 import net.iaeste.iws.api.requests.FetchRoleRequest;
 import net.iaeste.iws.api.requests.FetchUserRequest;
+import net.iaeste.iws.api.requests.SearchUserRequest;
 import net.iaeste.iws.api.requests.UserRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentsRequest;
 import net.iaeste.iws.api.responses.CreateUserResponse;
@@ -42,6 +43,7 @@ import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchPermissionResponse;
 import net.iaeste.iws.api.responses.FetchRoleResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
+import net.iaeste.iws.api.responses.SearchUserResponse;
 import net.iaeste.iws.api.responses.student.FetchStudentsResponse;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.api.util.Fallible;
@@ -134,7 +136,7 @@ public final class UserAccountTest extends AbstractAdministration {
         final CreateUserResponse createResponse = administration.createUser(token, createRequest);
         final AccountNameRequest request = new AccountNameRequest(createResponse.getUser(), "Aaberg");
 
-        // To rename someone, we need to be Administator, for the test,
+        // To rename someone, we need to be Administrator, for the test,
         // Australia acts as Administrator, so we're using this Account for it
         final AuthenticationToken adminToken = login("australia@iaeste.au", "australia");
         final Fallible response = administration.changeAccountName(adminToken, request);
@@ -589,6 +591,49 @@ public final class UserAccountTest extends AbstractAdministration {
 
         assertThat(deletedUserResponse, is(not(nullValue())));
         assertThat(deletedUserResponse.isOk(), is(true));
+    }
+
+    @Test
+    public void testSearchUsersByName() {
+        // The token requires that we set a GroupId, since the Search Request
+        // is possible for many types of Groups
+        token.setGroupId(findMemberGroup(token).getGroupId());
+
+        // Setting a partial name to search for. The search will look at both
+        // first and last names which contain this as part of their name. In
+        // this case, we're searching for "man", which will yield the following:
+        //  - Germany
+        //  - Oman
+        //  - Romania
+        final SearchUserRequest request = new SearchUserRequest();
+        request.setName("man");
+
+        // Now, invoke the search for users with a partial name given
+        final SearchUserResponse response = administration.searchUsers(token, request);
+
+        // And verify the result
+        assertThat(response.isOk(), is(true));
+        assertThat(response.getUsers().size(), is(3));
+    }
+
+    @Test
+    public void testSearchUsersByGroupAndName() {
+        final Group group = findMemberGroup(token);
+        // The token requires that we set a GroupId, since the Search Request
+        // is possible for many types of Groups
+        token.setGroupId(group.getGroupId());
+
+        // If we're only interested in finding a person to add to a Subgroup in
+        // a country, the search can be limited to a specific Member Group.
+        // However, the name must always be present.
+        final SearchUserRequest request = new SearchUserRequest(group, "NS");
+
+        // Now, invoke the search for users with a partial name given
+        final SearchUserResponse response = administration.searchUsers(token, request);
+
+        // And verify the result
+        assertThat(response.isOk(), is(true));
+        assertThat(response.getUsers().size(), is(1));
     }
 
     @Test

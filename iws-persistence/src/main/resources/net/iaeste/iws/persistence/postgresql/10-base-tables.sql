@@ -738,7 +738,7 @@ create table history (
 -- =============================================================================
 create sequence folder_sequence start with 10 increment by 1 no cycle;
 create table folders (
-    id               integer default nextval('folder_sequence'),--
+    id               integer default nextval('folder_sequence'),
     external_id      varchar(36),
     parent_id        integer,
     group_id         integer,

@@ -261,10 +261,17 @@ public class NotificationEmailSender implements Observer {
         }
 
         return ret;
-    }
-
+    }//
     //TODO probably not necessary to have the whole UserEntity, maybe just List<string> (emails) would be enough
     //     for the current notification processing
+
+    /**
+     * Retrieve recipients.
+     *
+     * @param fields Fields
+     * @param type   Type
+     * @return List of Users
+     */
     private List<UserEntity> getRecipients(final Map<NotificationField, String> fields, final NotificationType type) {
         final List<UserEntity> result = new ArrayList<>();
         final UserEntity user;

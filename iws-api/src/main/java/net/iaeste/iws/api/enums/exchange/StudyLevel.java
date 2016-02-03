@@ -26,13 +26,13 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "studyLevel")
 public enum StudyLevel implements Descriptable<StudyLevel> {
 
-    B("Begin (1-3 semesters)"),
-    M("Middle (4-6 semesters)"),
-    E("End (7 or more semesters)");
+    B("Begin (1-3 Semesters)"),
+    M("Middle (4-6 Semesters)"),
+    E("End (7 or more Semesters)");
 
-    // ========================================================================
+    // =========================================================================
     // Private Constructor & functionality
-    // ========================================================================
+    // =========================================================================
 
     private final String description;
 

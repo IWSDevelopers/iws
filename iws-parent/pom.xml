@@ -18,13 +18,6 @@
         <module>../iws-ear</module>
         <module>../iws-ws-client</module>
         <module>../iws-client</module>
-        <!-- As we have not had time to write any tests, this module is
-             currently pending a decision if it should be discontinued or not.
-             It would be good to complete it so there exists tests and
-             documentation written which will display how to work with the IWS.
-             Further. it will serve as a module, which can be given to others
-             so they can help document and test the IWS. -->
-        <!--<module>../iws-fitnesse</module>-->
     </modules>
 
     <organization>
@@ -280,6 +273,21 @@
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-simple</artifactId>
                 <version>1.7.13</version>
+                <scope>test</scope>
+            </dependency>
+            <!-- Some of the third-part libraries needed for the Client tests,
+                 uses Log4J. We therefore use Log4J also to make sure we can
+                 disable the logging of these, as it is noise. -->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-log4j12</artifactId>
+                <version>1.7.10</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>log4j</groupId>
+                <artifactId>log4j</artifactId>
+                <version>1.2.17</version>
                 <scope>test</scope>
             </dependency>
             <dependency>

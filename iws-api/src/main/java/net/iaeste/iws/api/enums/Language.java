@@ -63,8 +63,7 @@ public enum Language implements Descriptable<Language> {
     THAI("Thai"),
     TURKISH("Turkish"),
     VIETNAMESE("Vietnamese"),
-    UKRAINIAN("Ukrainian"),
-    OTHER("Other");
+    UKRAINIAN("Ukrainian");
 
     // =========================================================================
     // Private Constructor & functionality
@@ -75,11 +74,12 @@ public enum Language implements Descriptable<Language> {
     Language(final String description) {
         this.description = description;
     }
+
     /**
      * {@inheritDoc}
      */
     @Override
     public String getDescription() {
         return description;
-    }//
+    }
 }

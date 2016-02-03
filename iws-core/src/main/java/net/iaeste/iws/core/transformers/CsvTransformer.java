@@ -140,7 +140,6 @@ public final class CsvTransformer {
 
     public static <T extends Enum<T>> void transformEnum(final Map<String, String> errors, final Verifiable obj, final OfferFields field, final CSVRecord record, final Class<T> enumType) {
         final String value = record.get(field.getField());
-
         if ((value != null) && !value.isEmpty()) {
             try {
                 final T theEnum = Enum.valueOf(enumType, value.toUpperCase(IWSConstants.DEFAULT_LOCALE));
@@ -258,9 +257,8 @@ public final class CsvTransformer {
             } catch (ParseException e) {
                 LOG.debug(e.getMessage(), e);
                 errors.put(field.getField(), e.getMessage());
-            }
-        }
-
+            }//
+        }//
         return result;
     }
 

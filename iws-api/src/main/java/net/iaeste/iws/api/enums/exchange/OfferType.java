@@ -28,9 +28,9 @@ import java.util.Set;
 @XmlType(name = "offerType")
 public enum OfferType implements Descriptable<OfferType> {
 
-    //OPEN("Open", "", EnumSet.of(ExchangeType.AC, ExchangeType.IW, ExchangeType.COBE)),
-    LIMITED("Limited", "-L", EnumSet.of(ExchangeType.AC, ExchangeType.IW, ExchangeType.COBE));
-    //RESERVED("Reserved", "-R", EnumSet.of(ExchangeType.AC, ExchangeType.IW));
+    OPEN("Open", "", EnumSet.of(ExchangeType.AC, ExchangeType.IW, ExchangeType.COBE)),
+    LIMITED("Limited", "-L", EnumSet.of(ExchangeType.AC, ExchangeType.IW, ExchangeType.COBE)),
+    RESERVED("Reserved", "-R", EnumSet.of(ExchangeType.AC, ExchangeType.IW));
 
     // =========================================================================
     // Private Constructor & functionality

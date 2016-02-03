@@ -1,2 +1,0 @@
-|Import                          |
-|net.iaeste.iws.fitnesse         |

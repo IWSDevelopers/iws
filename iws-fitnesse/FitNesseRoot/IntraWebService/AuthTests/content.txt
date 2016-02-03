@@ -1,9 +1,0 @@
-!path iws-fitnesse.jar
-!define SLIM_VERSION {0.1}
-!define TEST_SYSTEM {slim}
-
-|Is alive                                                                                            |
-|username|password |is request ok?|error code?|error message?                              |token?   |
-|austria |incorrect|false         |403        |No account for the user 'austria' was found.|         |
-|austria |austria  |true          |0          |OK                                          |=~/.{64}/|
-|Germany |germany  |true          |0          |OK                                          |=~/.{64}/|

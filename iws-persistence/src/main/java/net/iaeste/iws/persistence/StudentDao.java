@@ -20,18 +20,15 @@ import net.iaeste.iws.persistence.entities.AttachmentEntity;
 import net.iaeste.iws.persistence.entities.exchange.ApplicationEntity;
 import net.iaeste.iws.persistence.entities.exchange.StudentEntity;
 import net.iaeste.iws.persistence.views.ApplicationView;
-
-import java.util.List;
+import java.util.*;
 import java.util.Set;
-
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
 public interface StudentDao extends BasicDao {
-
-    /**
+    ///**
      * Find the application by its external Id.
      *
      * @param externalId application external Id

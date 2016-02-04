@@ -23,10 +23,10 @@ import net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity;
 import net.iaeste.iws.persistence.entities.exchange.StudentEntity;
 import net.iaeste.iws.persistence.views.ApplicationView;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
-import java.util.List;
-import java.util.Set;
+//import javax.persistence.EntityManager;
+//import javax.persistence.Query;
+//import java.util.List;
+//import java.util.Set;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -44,10 +44,10 @@ public final class StudentJpaDao extends BasicJpaDao implements StudentDao {
         super(entityManager);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
+//    /**
+//     * {@inheritDoc}
+//     */
+//    @Override
     public ApplicationEntity findApplicationByExternalId(final String externalId) {
         //TODO very stupid but effective fix for #515
         //TODO Does it mean that now it buffers OfferGroupEntity and then it works but without the extra query, it can't find OfferGroupEntities???

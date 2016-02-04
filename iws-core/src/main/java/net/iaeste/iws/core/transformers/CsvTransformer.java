@@ -46,7 +46,7 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 /**
- * CSV Transformer.
+ * Handles all IWS CSV Transformations.
  *
  * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -309,3 +309,4 @@ public final class CsvTransformer {
         }
     }
 }
+//

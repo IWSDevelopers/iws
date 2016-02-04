@@ -237,11 +237,13 @@
                 <groupId>${project.groupId}</groupId>
                 <artifactId>iws-ejb</artifactId>
                 <version>${project.version}</version>
+                <type>ejb</type>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>iws-ws</artifactId>
                 <version>${project.version}</version>
+                <type>war</type>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
@@ -267,12 +269,12 @@
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
-                <version>1.7.13</version>
+                <version>1.7.14</version>
             </dependency>
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-simple</artifactId>
-                <version>1.7.13</version>
+                <version>1.7.14</version>
                 <scope>test</scope>
             </dependency>
             <!-- Some of the third-part libraries needed for the Client tests,

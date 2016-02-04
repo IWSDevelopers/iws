@@ -14,7 +14,7 @@
  */
 package net.iaeste.iws.core.transformers;
 
-import static net.iaeste.iws.core.transformers.CsvTransformer.transformString;
+import static net.iaeste.iws.core.transformers.CSVTransformer.transformString;
 
 import net.iaeste.iws.api.dtos.Address;
 import net.iaeste.iws.api.dtos.Country;

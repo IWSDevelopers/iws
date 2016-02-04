@@ -81,6 +81,7 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>iws-ejb</artifactId>
+            <type>ejb</type>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>

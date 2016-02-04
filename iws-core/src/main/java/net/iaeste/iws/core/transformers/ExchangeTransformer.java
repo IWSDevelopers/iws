@@ -15,7 +15,7 @@
 package net.iaeste.iws.core.transformers;
 
 import static net.iaeste.iws.api.enums.exchange.OfferFields.*;
-import static net.iaeste.iws.core.transformers.CsvTransformer.*;
+import static net.iaeste.iws.core.transformers.CSVTransformer.*;
 
 import net.iaeste.iws.api.dtos.File;
 import net.iaeste.iws.api.dtos.exchange.Employer;

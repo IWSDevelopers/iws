@@ -4,14 +4,17 @@
 # Statistics Script
 # -----------------------------------------------------------------------------
 # History:
+#   Version 1.01 - 2016-02-04, Kim Jensen <Kim.Jensen@dawn.dk>
+#     o Added Blame
 #   Version 1.00 - 2015-01-06, Kim Jensen <Kim.Jensen@dawn.dk>
 #     o Initial version
 # -----------------------------------------------------------------------------
 # Methods:
 #     o show_help     ( Void )      :: Shows help on using the script
 #     o doLock        ( Void )      :: Creates a lock file
-#     0 doSloc        ( Project )   :: Generate Raw SLOC Count
 #     o doStats       ( Project )   :: Project to generate Statistics for
+#     0 doBlame       ( Project )   :: Generate Git Blame report
+#     0 doSloc        ( Project )   :: Generate Raw SLOC Count
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -33,7 +36,7 @@ readonly scriptLockFD="200"
 readonly scriptLock="/tmp/.`basename $0`.lock"
 
 # Script specific information, should only be altered, if logic is updated
-readonly scriptVersion="1.00"
+readonly scriptVersion="1.01"
 readonly scriptAuthor="Kim Jensen"
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
@@ -49,6 +52,7 @@ show_help () {
     echo
     echo "  The Action imust be one of the following:"
     echo "    git      Generate the Git Statistics"
+    echo "    blame    Generate a Git Blame report"
     echo "    sloc     Generate Raw SLOC (Source Lines of Code) Count"
     echo
     echo "  The Project must be one of the following:"
@@ -91,6 +95,27 @@ doStats () {
 }
 
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+# doBlame - Generating a Git Blame report
+# -----------------------------------------------------------------------------
+# Param  -> Project
+# Return -> Void
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+doBlame () {
+    local root="${projectRoot}/${1}"
+
+    # The Blame feature will only work if invoked in the root directory
+    cd ${root}
+
+    echo "Git Blame for ${1}"
+    if [ ${1} == "iws-pdf" ]; then
+        # Loads of boilerplate stuff added, so we're skipping those
+        git ls-files "*.java" "*.xml" 2>/dev/null | xargs -n1 git blame --line-porcelain | sed -n 's/^author //p' | sort -f | uniq -ic | sort -nr
+    else
+        git ls-files -x "*.jar" 2>/dev/null | xargs -n1 git blame --line-porcelain | sed -n 's/^author //p' | sort -f | uniq -ic | sort -nr
+    fi
+}
+
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 # doSloc - Generating raw SLOC count
 # -----------------------------------------------------------------------------
 # Param  -> Project
@@ -129,6 +154,8 @@ elif [ $# -ge 1 ]; then
     if [ "$project" != "" ]; then
         if [ "${action}" == "git" ]; then
             doStats ${project}
+        elif [ "${action}" == "blame" ]; then
+            doBlame ${project}
         elif [ "${action}" == "sloc" ]; then
             doSloc ${project}
         else

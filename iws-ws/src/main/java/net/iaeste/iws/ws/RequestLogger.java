@@ -35,11 +35,11 @@ public final class RequestLogger {
     }
 
     public String prepareLogMessage(final Traceable trace, final String method) {
-        return LogUtil.formatLogMessage(trace, "Incoming WebService Request for '" + method + "' from '" + readClientIp() + '\'');
+        return LogUtil.formatLogMessage(trace, "WebService Request: '" + method + "' from '" + readClientIp() + '\'');
     }
 
     public String prepareLogMessage(final String method) {
-        return LogUtil.formatLogMessage(null, "Incoming WebService Request for '" + method + "' from '" + readClientIp() + '\'');
+        return LogUtil.formatLogMessage(null, "WebService Request: '" + method + "' from '" + readClientIp() + '\'');
     }
 
     // =========================================================================

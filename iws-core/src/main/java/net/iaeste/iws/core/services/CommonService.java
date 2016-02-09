@@ -355,7 +355,7 @@ public class CommonService<T extends BasicDao> {
             final String newId = UUID.randomUUID().toString();
             final String storedNamed = authentication.getGroup().getExternalId() + '/' + newId;
 
-            entity = transform(file, (folder != null) ? folder[0] : null);
+            entity = transform(file, ((folder != null) && (folder.length > 0)) ? folder[0] : null);
             entity.setExternalId(newId);
             entity.setChecksum(calculateChecksum(data));
             entity.setStoredFilename(storedNamed);

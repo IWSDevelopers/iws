@@ -16,7 +16,6 @@ package net.iaeste.iws.core.services;
 
 import static net.iaeste.iws.common.utils.StringUtils.toLower;
 
-import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.GroupStatus;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.MailReply;
@@ -59,7 +58,6 @@ import java.util.regex.Pattern;
 public final class MailService extends CommonService<MailingListDao> {
 
     private static final Logger LOG = LoggerFactory.getLogger(MailService.class);
-    private static final Pattern PATTERN_PUBLIC_ADDRESS = Pattern.compile('@' + IWSConstants.PUBLIC_EMAIL_ADDRESS);
 
     public MailService(final Settings settings, final EntityManager entityManager) {
         super(settings, new MailingListJpaDao(entityManager, settings));
@@ -131,7 +129,7 @@ public final class MailService extends CommonService<MailingListDao> {
                     entity.setMailReply(MailReply.REPLY_TO_SENDER);
                     entity.setStatus(GroupStatus.ACTIVE);
                     entity.setGroup(alias.getGroup());
-                    entity.setListAddress(alias.getAliasAddress());
+                    entity.setListAddress(alias.getAliasAddress() + '@' + settings.getPublicMailAddress());
                     entity.setSubjectPrefix(alias.getGroup().getGroupName());
 
                     dao.persist(authentication, entity);
@@ -375,7 +373,7 @@ public final class MailService extends CommonService<MailingListDao> {
      * @param type  The List type
      * @return New Mailing List Entity
      */
-    private static MailinglistEntity createGroupList(final GroupEntity group, final MailinglistType type) {
+    private MailinglistEntity createGroupList(final GroupEntity group, final MailinglistType type) {
         final MailinglistEntity entity = new MailinglistEntity();
         final String listname = toLower(group.getListName()) + '@';
 
@@ -388,7 +386,7 @@ public final class MailService extends CommonService<MailingListDao> {
             // reply to the sender, regardless if it is set in the Group or not.
             entity.setSubjectPrefix("");
             entity.setListType(MailinglistType.PERSONAL_ALIAS);
-            entity.setListAddress(listname + IWSConstants.PUBLIC_EMAIL_ADDRESS);
+            entity.setListAddress(listname + settings.getPublicMailAddress());
             entity.setMailReply(MailReply.REPLY_TO_SENDER);
         } else {
             entity.setSubjectPrefix(group.getGroupName());
@@ -397,10 +395,10 @@ public final class MailService extends CommonService<MailingListDao> {
             if (type == MailinglistType.PRIVATE_LIST) {
                 // Only the Private List option is for closes mailing lists, all
                 // other is for public lists.
-                entity.setListAddress(listname + IWSConstants.PRIVATE_EMAIL_ADDRESS);
+                entity.setListAddress(listname + settings.getPrivateMailAddress());
                 entity.setMailReply(group.getPrivateReplyTo());
             } else {
-                entity.setListAddress(listname + IWSConstants.PUBLIC_EMAIL_ADDRESS);
+                entity.setListAddress(listname + settings.getPublicMailAddress());
                 entity.setMailReply(group.getPublicReplyTo());
             }
         }
@@ -420,7 +418,8 @@ public final class MailService extends CommonService<MailingListDao> {
                 final String address;
 
                 if (alias != null) {
-                    address = PATTERN_PUBLIC_ADDRESS.matcher(alias).replaceAll("");
+                    final Pattern pattern = Pattern.compile('@' + settings.getPublicMailAddress());
+                    address = pattern.matcher(alias).replaceAll("");
                 } else {
                     address = generateUserAlias(user.getFirstname(), user.getLastname(), false);
                 }

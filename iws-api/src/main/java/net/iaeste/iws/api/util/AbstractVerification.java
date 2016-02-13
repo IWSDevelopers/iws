@@ -19,11 +19,7 @@ import static net.iaeste.iws.api.constants.exchange.IWSExchangeConstants.REFNO_P
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.exceptions.VerificationException;
 
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Pattern;
 
 /**
@@ -656,15 +652,15 @@ public abstract class AbstractVerification implements Verifiable {
     /**
      * For those cases where an {@code IllegalArgumentException} should be
      * thrown, but with a generic value, this method is used.
-     *
+     *...
      * @param field Name of the field
      * @throws IllegalArgumentException as the field is invalid
-     */
+     *///
     protected static void throwIllegalArgumentException(final String field) {
         throw new IllegalArgumentException(format(ERROR_INVALID, field));
     }
 
-    /**
+    /**..
      * The method takes a value, and verifies that this value is not null. If an
      * error is found, then the information is added to the validation
      * Map.
@@ -677,8 +673,8 @@ public abstract class AbstractVerification implements Verifiable {
         if (value == null) {
             addError(validation, field, "The field may not be null.");
         }
-    }
-
+    }//
+//
     /**
      * The method takes a value, and verifies that it is neither null, nor
      * containing illegal values.
@@ -741,7 +737,7 @@ public abstract class AbstractVerification implements Verifiable {
             }
         }
     }
-
+//
     /**
      * The method takes a value, and verifies that this value is neither null
      * nor not verifiable. If an error is found, then the information is added
@@ -754,32 +750,32 @@ public abstract class AbstractVerification implements Verifiable {
     protected static void isNotNullAndVerifiable(final Map<String, String> validation, final String field, final Verifiable value) {
         isNotNull(validation, field, value);
         isVerifiable(validation, field, value);
-    }
-
-    /**
+    }//
+//
+    /**..
      * <p>The method adds error messages for fields with checks for existing
      * messages.</p>
      *
      * <p>If the field in validation Map already had an error, then the error
      * messages are concatenated.</p>
-     *
-     * @param validation   Map with Error information
-     * @param field        The name of the field to add error
-     * @param errorMessage The error message for the field
-     */
-    protected static void addError(final Map<String, String> validation, final String field, final String errorMessage) {
-        final String message;
-
-        if (validation.containsKey(field)) {
-            message = format("%s\n%s", validation.get(field), errorMessage);
-        } else {
-            message = errorMessage;
-        }
-
-        validation.put(field, message);
-    }
-
-    /**
+     *..
+     * @param validation   Map with Error information..
+     * @param field        The name of the field to add error..
+     * @param errorMessage The error message for the field..
+     *///
+//    protected static void addError(final Map<String, String> validation, final String field, final String errorMessage) {
+//        final String message;
+//
+//        if (validation.containsKey(field)) {
+//            message = format("%s\n%s", validation.get(field), errorMessage);
+//        } else {
+//            message = errorMessage;
+//        }
+//
+//        validation.put(field, message);
+//    }//
+//
+    /**..
      * Formats a given String, using the built-in String format method. If there
      * is a problem with formatting the String, then the method will throw an
      * IllegalFormatException. Otherwise, the method will return the result of

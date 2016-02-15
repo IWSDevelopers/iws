@@ -358,77 +358,77 @@ public final class StudentTest extends AbstractTest {
         assertThat(createStudentApplicationResponse2.getStudentApplication().getUniversity(), is(application2.getUniversity()));
     }
 
-//    @Test
-//    public void testNominatingApplication() {
+    @Test
+    public void testNominatingApplication() {
         final AuthenticationToken austriaTokenWithNationalGroup = new AuthenticationToken(austriaToken);
         if (austriaTokenNationallGroup != null) {
             austriaTokenWithNationalGroup.setGroupId(austriaTokenNationallGroup.getGroupId());
         }
 
-//        final Date nominationDeadline = new Date().plusDays(20);
+        final Date nominationDeadline = new Date().plusDays(20);
         final Offer offer = TestData.prepareMinimalOffer("PL-" + exchangeYear + "-001004", "Employer");
-//
-//        final OfferResponse saveResponse = exchange.processOffer(token, new ProcessOfferRequest(offer));
-//        assertThat("Offer has been saved", saveResponse.isOk(), is(true));
-//
-//        final Set<String> offersToShare = new HashSet<>(1);
-//        final String offerId = saveResponse.getOffer().getOfferId();
-//        offersToShare.add(offerId);
-//
-//        final List<String> groupIds = new ArrayList<>(2);
-//        groupIds.add(findNationalGroup(austriaToken).getGroupId());
-//        groupIds.add(findNationalGroup(croatiaToken).getGroupId());
-//
-//        final PublishOfferResponse publishResponse1 = exchange.processPublishOffer(token, new PublishOfferRequest(offersToShare, groupIds, nominationDeadline));
-//
-//        assertThat("Offer has been shared to 2 countries", publishResponse1.isOk(), is(true));
-//
-//        final CreateUserRequest createUserRequest1 = new CreateUserRequest("student_app004@university.edu", "password1", "Student1", "Graduate1");
-//        createUserRequest1.setStudentAccount(true);
-//
-//        final CreateUserResponse createStudentResponse1 = administration.createUser(austriaToken, createUserRequest1);
-//
-//        assertThat("Student has been saved", createStudentResponse1.isOk(), is(true));
-//
-//        final FetchStudentsRequest fetchStudentsRequest = new FetchStudentsRequest();
-//        final FetchStudentsResponse fetchStudentsResponse = students.fetchStudents(austriaToken, fetchStudentsRequest);
-//        assertThat("At least one student has been fetched", fetchStudentsResponse.isOk(), is(true));
-//        assertThat("At least one student has been fetched", fetchStudentsResponse.getStudents().isEmpty(), is(false));
-//
-//        final Student student = fetchStudentsResponse.getStudents().get(0);
-//        student.setAvailable(new DatePeriod(new Date(), nominationDeadline));
-//
-//        final StudentApplication application = new StudentApplication();
+
+        final OfferResponse saveResponse = exchange.processOffer(token, new ProcessOfferRequest(offer));
+        assertThat("Offer has been saved", saveResponse.isOk(), is(true));
+
+        final Set<String> offersToShare = new HashSet<>(1);
+        final String offerId = saveResponse.getOffer().getOfferId();
+        offersToShare.add(offerId);
+
+        final List<String> groupIds = new ArrayList<>(2);
+        groupIds.add(findNationalGroup(austriaToken).getGroupId());
+        groupIds.add(findNationalGroup(croatiaToken).getGroupId());
+
+        final PublishOfferResponse publishResponse1 = exchange.processPublishOffer(token, new PublishOfferRequest(offersToShare, groupIds, nominationDeadline));
+
+        assertThat("Offer has been shared to 2 countries", publishResponse1.isOk(), is(true));
+
+        final CreateUserRequest createUserRequest1 = new CreateUserRequest("student_app004@university.edu", "password1", "Student1", "Graduate1");
+        createUserRequest1.setStudentAccount(true);
+
+        final CreateUserResponse createStudentResponse1 = administration.createUser(austriaToken, createUserRequest1);
+
+        assertThat("Student has been saved", createStudentResponse1.isOk(), is(true));
+
+        final FetchStudentsRequest fetchStudentsRequest = new FetchStudentsRequest();
+        final FetchStudentsResponse fetchStudentsResponse = students.fetchStudents(austriaToken, fetchStudentsRequest);
+        assertThat("At least one student has been fetched", fetchStudentsResponse.isOk(), is(true));
+        assertThat("At least one student has been fetched", fetchStudentsResponse.getStudents().isEmpty(), is(false));
+
+        final Student student = fetchStudentsResponse.getStudents().get(0);
+        student.setAvailable(new DatePeriod(new Date(), nominationDeadline));
+
+        final StudentApplication application = new StudentApplication();
         application.setOfferId(saveResponse.getOffer().getOfferId());
-//        application.setStudent(student);
-//        application.setStatus(ApplicationStatus.APPLIED);
+        application.setStudent(student);
+        application.setStatus(ApplicationStatus.APPLIED);
         application.setHomeAddress(TestData.prepareAddress("DE"));
         application.setAddressDuringTerms(TestData.prepareAddress("AT"));
-//
-//        final ProcessStudentApplicationsRequest createApplicationsRequest = new ProcessStudentApplicationsRequest(application);
+
+        final ProcessStudentApplicationsRequest createApplicationsRequest = new ProcessStudentApplicationsRequest(application);
         final StudentApplicationResponse createApplicationResponse = students.processStudentApplication(austriaTokenWithNationalGroup, createApplicationsRequest);
-//        final StudentApplication studentApplication = createApplicationResponse.getStudentApplication();
-//        assertThat("Student application has been created", createApplicationResponse.isOk(), is(true));
-//
-//        final StudentApplicationRequest nominateStudentRequest = new StudentApplicationRequest(
-//                studentApplication.getApplicationId(),
-//                ApplicationStatus.NOMINATED);
+        final StudentApplication studentApplication = createApplicationResponse.getStudentApplication();
+        assertThat("Student application has been created", createApplicationResponse.isOk(), is(true));
+
+        final StudentApplicationRequest nominateStudentRequest = new StudentApplicationRequest(
+                studentApplication.getApplicationId(),
+                ApplicationStatus.NOMINATED);
         final StudentApplicationResponse nominateStudentResponse = students.processApplicationStatus(austriaTokenWithNationalGroup, nominateStudentRequest);
-//
-//        assertThat("Student has been nominated by Austria to Poland", nominateStudentResponse.isOk(), is(true));
-//        assertThat("Application state is NOMINATED", nominateStudentResponse.getStudentApplication().getStatus(), is(ApplicationStatus.NOMINATED));
-//        assertThat(nominateStudentResponse.getStudentApplication().getNominatedAt(), not(nullValue()));
-//
-//        final FetchStudentApplicationsRequest fetchApplicationsRequest = new FetchStudentApplicationsRequest(offerId);
+
+        assertThat("Student has been nominated by Austria to Poland", nominateStudentResponse.isOk(), is(true));
+        assertThat("Application state is NOMINATED", nominateStudentResponse.getStudentApplication().getStatus(), is(ApplicationStatus.NOMINATED));
+        assertThat(nominateStudentResponse.getStudentApplication().getNominatedAt(), not(nullValue()));
+
+        final FetchStudentApplicationsRequest fetchApplicationsRequest = new FetchStudentApplicationsRequest(offerId);
         final FetchStudentApplicationsResponse fetchApplicationsResponse = students.fetchStudentApplications(austriaTokenWithNationalGroup, fetchApplicationsRequest);
-//
-//        assertThat(fetchApplicationsResponse.isOk(), is(true));
-//        final StudentApplication foundApplication = findApplicationFromResponse(studentApplication.getApplicationId(), fetchApplicationsResponse);
-//
-//        assertThat("Make sure that new application state has been persisted", foundApplication.getStatus(), is(ApplicationStatus.NOMINATED));
-//        assertThat("Nomination date is set", foundApplication.getNominatedAt(), not(nullValue()));
-//    }
-//
+
+        assertThat(fetchApplicationsResponse.isOk(), is(true));
+        final StudentApplication foundApplication = findApplicationFromResponse(studentApplication.getApplicationId(), fetchApplicationsResponse);
+
+        assertThat("Make sure that new application state has been persisted", foundApplication.getStatus(), is(ApplicationStatus.NOMINATED));
+        assertThat("Nomination date is set", foundApplication.getNominatedAt(), not(nullValue()));
+    }
+
     @Test
     public void testProcessStudent() {
         final CreateUserRequest createUserRequest = new CreateUserRequest("student_app005@university.edu", "password1", "Student1", "Graduate1");
@@ -1059,13 +1059,13 @@ public final class StudentTest extends AbstractTest {
 
         return offer;
     }
-//
-//    private static StudentApplication findApplicationFromResponse(final String applicationId, final FetchStudentApplicationsResponse response) {
-//        for (final StudentApplication found : response.getStudentApplications()) {
-//            if (found.getApplicationId().equals(applicationId)) {
-//                return found;
-//            }
-//        }
-//        return null;
-//    }
+
+    private static StudentApplication findApplicationFromResponse(final String applicationId, final FetchStudentApplicationsResponse response) {
+        for (final StudentApplication found : response.getStudentApplications()) {
+            if (found.getApplicationId().equals(applicationId)) {
+                return found;
+            }
+        }
+        return null;
+    }
 }

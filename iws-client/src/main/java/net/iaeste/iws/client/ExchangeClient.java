@@ -92,7 +92,7 @@ public final class ExchangeClient implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    public OfferResponse processOffer(final AuthenticationToken token, final ProcessOfferRequest request) {
+//    public OfferResponse processOffer(final AuthenticationToken token, final ProcessOfferRequest request) {
         return client.processOffer(token, request);
     }
 
@@ -100,7 +100,7 @@ public final class ExchangeClient implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    public OfferResponse deleteOffer(final AuthenticationToken token, final DeleteOfferRequest request) {
+//    public OfferResponse deleteOffer(final AuthenticationToken token, final DeleteOfferRequest request) {
         return client.deleteOffer(token, request);
     }
 
@@ -116,7 +116,7 @@ public final class ExchangeClient implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    public FetchOffersResponse fetchOffers(final AuthenticationToken token, final FetchOffersRequest request) {
+//    public FetchOffersResponse fetchOffers(final AuthenticationToken token, final FetchOffersRequest request) {
         return client.fetchOffers(token, request);
     }
 

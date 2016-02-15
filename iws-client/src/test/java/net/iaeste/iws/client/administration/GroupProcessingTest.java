@@ -85,18 +85,18 @@ public final class GroupProcessingTest extends AbstractAdministration {
 
     @Test
     public void testCreatingLocalAsSubGroupToMembers() {
-        final String groupName = "My Local Committee";
+//        final String groupName = "My Local Committee";
         final String groupDescription = "The Group Description";
         final String fullName = "Denmark." + groupName;
         final String listName = toLower(fullName.replace(' ', '_'));
         final String publicListName = toLower(fullName.replace(' ', '_') + '@' + IWSConstants.PUBLIC_EMAIL_ADDRESS);
         final String privateListName = toLower(fullName.replace(' ', '_') + '@' + IWSConstants.PRIVATE_EMAIL_ADDRESS);
-
-        final ProcessGroupResponse result = createGroup(token, GroupType.MEMBER, GroupType.LOCAL, groupName);
+//
+//        final ProcessGroupResponse result = createGroup(token, GroupType.MEMBER, GroupType.LOCAL, groupName);
         assertThat(result.isOk(), is(true));
         assertThat(result.getGroup(), is(not(nullValue())));
-        assertThat(result.getGroup().getListName(), is(listName));
-        assertThat(result.getGroup().getFullName(), is(fullName));
+//        assertThat(result.getGroup().getListName(), is(listName));
+//        assertThat(result.getGroup().getFullName(), is(fullName));
 
         // Okay, created Group - let's try to modify it
         final Group group = result.getGroup();
@@ -114,7 +114,7 @@ public final class GroupProcessingTest extends AbstractAdministration {
         assertThat(response.getGroup().getDescription(), is(groupDescription));
         assertThat(response.getGroup().getGroupType(), is(GroupType.LOCAL));
         assertThat(response.getGroup().getGroupName(), is(groupName));
-        assertThat(response.getGroup().getFullName(), is(fullName));
+//        assertThat(response.getGroup().getFullName(), is(fullName));
         assertThat(response.getGroup().hasPrivateList(), is(GroupType.LOCAL.getMayHavePrivateMailinglist()));
         assertThat(response.getGroup().hasPublicList(), is(GroupType.LOCAL.getMayHavePublicMailinglist()));
         assertThat(response.getGroup().getPublicList(), is(publicListName));
@@ -129,12 +129,12 @@ public final class GroupProcessingTest extends AbstractAdministration {
         final String listName = toLower(fullName.replace(' ', '_'));
         final String publicListName = toLower(fullName.replace(' ', '_') + '@' + IWSConstants.PUBLIC_EMAIL_ADDRESS);
         final String privateListName = toLower(fullName.replace(' ', '_') + '@' + IWSConstants.PRIVATE_EMAIL_ADDRESS);
-
-        final ProcessGroupResponse result = createGroup(token, GroupType.MEMBER, GroupType.WORKGROUP, groupName);
+//
+//        final ProcessGroupResponse result = createGroup(token, GroupType.MEMBER, GroupType.WORKGROUP, groupName);
         assertThat(result.isOk(), is(true));
         assertThat(result.getGroup(), is(not(nullValue())));
-        assertThat(result.getGroup().getFullName(), is(fullName));
-        assertThat(result.getGroup().getListName(), is(listName));
+//        assertThat(result.getGroup().getFullName(), is(fullName));
+//        assertThat(result.getGroup().getListName(), is(listName));
 
         // Okay, created Group - let's try to modify it
         final Group group = result.getGroup();
@@ -151,9 +151,9 @@ public final class GroupProcessingTest extends AbstractAdministration {
         assertThat(response.getGroup().getGroupId(), is(group.getGroupId()));
         assertThat(response.getGroup().getDescription(), is(groupDescription));
         assertThat(response.getGroup().getGroupType(), is(GroupType.WORKGROUP));
-        assertThat(response.getGroup().getGroupName(), equalToIgnoringCase(groupName));
-        assertThat(response.getGroup().getFullName(), is(fullName));
-        assertThat(response.getGroup().getListName(), is(listName));
+//        assertThat(response.getGroup().getGroupName(), equalToIgnoringCase(groupName));
+//        assertThat(response.getGroup().getFullName(), is(fullName));
+//        assertThat(response.getGroup().getListName(), is(listName));
         assertThat(response.getGroup().getPublicList(), is(publicListName));
         assertThat(response.getGroup().getPrivateList(), is(privateListName));
     }
@@ -162,8 +162,8 @@ public final class GroupProcessingTest extends AbstractAdministration {
     public void testCreatingWorkGroupAsSubGroupToNational() {
         final String groupName = "My Work Group";
         final String groupDescription = "My Description";
-
-        final ProcessGroupResponse result = createGroup(token, GroupType.NATIONAL, GroupType.WORKGROUP, groupName);
+//
+//        final ProcessGroupResponse result = createGroup(token, GroupType.NATIONAL, GroupType.WORKGROUP, groupName);
         assertThat(result.isOk(), is(true));
         assertThat(result.getGroup(), is(not(nullValue())));
 
@@ -183,43 +183,43 @@ public final class GroupProcessingTest extends AbstractAdministration {
         assertThat(response.getGroup().getDescription(), is(groupDescription));
         assertThat(response.getGroup().getGroupType(), is(GroupType.WORKGROUP));
         assertThat(response.getGroup().getGroupName(), is(groupName));
-        assertThat(result.getGroup().getFullName(), not(nullValue()));
-        assertThat(result.getGroup().getListName(), not(nullValue()));
+//        assertThat(result.getGroup().getFullName(), not(nullValue()));
+//        assertThat(result.getGroup().getListName(), not(nullValue()));
         assertThat(result.getGroup().getListName(), not(startsWith("null")));
     }
 
-    @Test
-    public void testCreatingWorkgroupAsSubGroupToLocal() {
-        final String localName = "Some Local Committee";
-        final String workgroupName = "My Local Work Group";
-        final String workgroupDescription = "The Group Description";
-        final String workgroupFullName = "Denmark." + localName + '.' + workgroupName;
+//    @Test
+//    public void testCreatingWorkgroupAsSubGroupToLocal() {
+//        final String localName = "Some Local Committee";
+//        final String workgroupName = "My Local Work Group";
+//        final String workgroupDescription = "The Group Description";
+//        final String workgroupFullName = "Denmark." + localName + '.' + workgroupName;
         final String workgroupPublicListName = toLower(workgroupFullName.replace(' ', '_') + '@' + IWSConstants.PUBLIC_EMAIL_ADDRESS);
         final String workgroupPrivateListName = toLower(workgroupFullName.replace(' ', '_') + '@' + IWSConstants.PRIVATE_EMAIL_ADDRESS);
-
-        final ProcessGroupResponse result = createGroup(token, GroupType.MEMBER, GroupType.LOCAL, localName);
-        assertThat(result.isOk(), is(true));
-
-        final Group group = new Group();
-        group.setGroupName(workgroupName);
-        group.setGroupType(GroupType.WORKGROUP);
-        group.setDescription(workgroupDescription);
-        token.setGroupId(result.getGroup().getGroupId());
-
-        final GroupRequest request = new GroupRequest(group);
+//
+//        final ProcessGroupResponse result = createGroup(token, GroupType.MEMBER, GroupType.LOCAL, localName);
+//        assertThat(result.isOk(), is(true));
+//
+//        final Group group = new Group();
+//        group.setGroupName(workgroupName);
+//        group.setGroupType(GroupType.WORKGROUP);
+//        group.setDescription(workgroupDescription);
+//        token.setGroupId(result.getGroup().getGroupId());
+//
+//        final GroupRequest request = new GroupRequest(group);
         final ProcessGroupResponse response = administration.processGroup(token, request);
-
-        assertThat(response.isOk(), is(true));
-        assertThat(response.getGroup(), is(not(nullValue())));
-        assertThat(response.getGroup().getGroupId(), not(nullValue()));
-        assertThat(response.getGroup().getDescription(), is(workgroupDescription));
-        assertThat(response.getGroup().getGroupType(), is(GroupType.WORKGROUP));
-        assertThat(response.getGroup().getGroupName(), is(workgroupName));
+//
+//        assertThat(response.isOk(), is(true));
+//        assertThat(response.getGroup(), is(not(nullValue())));
+//        assertThat(response.getGroup().getGroupId(), not(nullValue()));
+//        assertThat(response.getGroup().getDescription(), is(workgroupDescription));
+//        assertThat(response.getGroup().getGroupType(), is(GroupType.WORKGROUP));
+//        assertThat(response.getGroup().getGroupName(), is(workgroupName));
         assertThat(response.getGroup().getPrivateList(), is(workgroupPrivateListName));
         assertThat(response.getGroup().getPublicList(), is(workgroupPublicListName));
-        assertThat(response.getGroup().getFullName(), is(workgroupFullName));
-    }
-
+//        assertThat(response.getGroup().getFullName(), is(workgroupFullName));
+//    }
+//
     // =========================================================================
     // Negative tests, when creating new subgroups
     // =========================================================================

@@ -48,37 +48,34 @@ import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.ejb.ExchangeBean;
 import net.iaeste.iws.ejb.NotificationManagerBean;
 import net.iaeste.iws.ejb.SessionRequestBean;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.*;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 /**
- * Spring based Exchange Client, which wraps the Exchange Controller from the
- * IWS core module within a transactional layer.
- *
+// * Spring based Exchange Client, which wraps the Exchange Controller from the
+// * IWS core module within a transactional layer.
+// *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
-@Transactional
+//@Transactional
 @Repository("exchangeSpringClient")
 public final class ExchangeSpringClient implements Exchange {
 
     private Exchange client = null;
 
     /**
-     * Injects the {@code EntityManager} instance required to invoke our
+//     * Injects the {@code EntityManager} instance required to invoke our
      * transactional DAOs. The EntityManager instance can only be injected into
      * the Spring Beans, we cannot create a Spring Bean for the Exchange EJB
      * otherwise.
-     *
-     * @param entityManager Spring controlled EntityManager instance
+//     *
+//     * @param entityManager Spring controlled EntityManager instance
      */
-    @PersistenceContext
-    public void init(final EntityManager entityManager) {
+//    @PersistenceContext
+//    public void init(final EntityManager entityManager) {
         // Create the Notification Spy, and inject it
         final Notifications notitications = NotificationSpy.getInstance();
         final NotificationManagerBean notificationBean = new NotificationManagerBean();
@@ -136,7 +133,7 @@ public final class ExchangeSpringClient implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    public OfferResponse processOffer(final AuthenticationToken token, final ProcessOfferRequest request) {
+//    public OfferResponse processOffer(final AuthenticationToken token, final ProcessOfferRequest request) {
         return client.processOffer(token, request);
     }
 
@@ -144,7 +141,7 @@ public final class ExchangeSpringClient implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    public OfferResponse deleteOffer(final AuthenticationToken token, final DeleteOfferRequest request) {
+//    public OfferResponse deleteOffer(final AuthenticationToken token, final DeleteOfferRequest request) {
         return client.deleteOffer(token, request);
     }
 
@@ -162,7 +159,7 @@ public final class ExchangeSpringClient implements Exchange {
      */
     @Override
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
-    public FetchOffersResponse fetchOffers(final AuthenticationToken token, final FetchOffersRequest request) {
+//    public FetchOffersResponse fetchOffers(final AuthenticationToken token, final FetchOffersRequest request) {
         return client.fetchOffers(token, request);
     }
 

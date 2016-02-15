@@ -196,7 +196,7 @@ public final class UserGroupTest extends AbstractAdministration {
     public void testChangingNationalSecretaryToActiveMember() {
         // We need to use a different token, since this test will otherwise
         // cause other tests to fail!
-        final AuthenticationToken alternativeToken = login("norway@iaeste.no", "norway");
+//        final AuthenticationToken alternativeToken = login("norway@iaeste.no", "norway");
         final User user = createAndActiveUser(alternativeToken, "gamma@iaeste.dk", "Gamma", "Beta");
         final Group group = findNationalGroup(alternativeToken);
 

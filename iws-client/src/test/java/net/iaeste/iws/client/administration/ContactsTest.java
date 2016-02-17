@@ -112,7 +112,7 @@ public final class ContactsTest extends AbstractAdministration {
         assertThat(responseAll.getUsers(), is(nullValue()));
 
         final ContactsRequest requestGroup = new ContactsRequest();
-        requestGroup.setGroupId(responseAll.getGroups().get(10).getGroupId());
+        requestGroup.setGroupId(responseAll.getGroups().get(12).getGroupId());
         final ContactsResponse responseGroup = administration.fetchContacts(token, requestGroup);
         assertThat(responseGroup.isOk(), is(true));
         assertThat(responseGroup.getType(), is(ContactsType.GROUP));

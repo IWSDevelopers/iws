@@ -14,8 +14,8 @@
  */
 package net.iaeste.iws.persistence.entities.exchange;
 
-import net.iaeste.iws.api.enums.Gender;
 import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.api.enums.Gender;
 import net.iaeste.iws.api.enums.Language;
 import net.iaeste.iws.api.enums.exchange.ApplicationStatus;
 import net.iaeste.iws.api.enums.exchange.LanguageLevel;
@@ -88,14 +88,6 @@ public final class ApplicationEntity extends AbstractUpdateable<ApplicationEntit
     @Enumerated(EnumType.STRING)
     @Column(name = "status", length = 30, nullable = false)
     private ApplicationStatus status = null;
-
-//    @ManyToOne(targetEntity = UserEntity.class)
-//    @JoinColumn(name = "modified_by", nullable = false)
-//    private UserEntity modifiedBy = null;
-
-//    @ManyToOne(targetEntity = UserEntity.class)
-//    @JoinColumn(name = "created_by", nullable = false)
-//    private UserEntity createdBy = null;
 
     @ManyToOne(targetEntity = AddressEntity.class)
     @JoinColumn(name = "home_address_id", updatable = true)
@@ -194,10 +186,10 @@ public final class ApplicationEntity extends AbstractUpdateable<ApplicationEntit
     @Column(name = "reject_internal_comment", length = 1000)
     private String rejectInternalComment = null;
 
-//    @Temporal(TemporalType.DATE)
-//    @Column(name = "nominated_at", nullable = true)
-//    private Date nominatedAt = null;
-//
+    @Temporal(TemporalType.DATE)
+    @Column(name = "nominated_at", nullable = true)
+    private Date nominatedAt = null;
+
     /**
      * Last time the Entity was modified.
      */
@@ -496,14 +488,14 @@ public final class ApplicationEntity extends AbstractUpdateable<ApplicationEntit
         return rejectInternalComment;
     }
 
-//    public void setNominatedAt(final Date nominatedAt) {
-//        this.nominatedAt = nominatedAt;
-//    }
-//
-//    public Date getNominatedAt() {
-//        return nominatedAt;
-//    }
-//
+    public void setNominatedAt(final Date nominatedAt) {
+        this.nominatedAt = nominatedAt;
+    }
+
+    public Date getNominatedAt() {
+        return nominatedAt;
+    }
+
     /**
      * {@inheritDoc}
      */

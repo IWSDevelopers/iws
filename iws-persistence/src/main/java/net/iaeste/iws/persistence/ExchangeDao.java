@@ -22,11 +22,10 @@ import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity;
 import net.iaeste.iws.persistence.entities.exchange.PublishingGroupEntity;
 import net.iaeste.iws.persistence.exceptions.IdentificationException;
-import net.iaeste.iws.persistence.exceptions.PersistenceException;
+//
+import java.util.*;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+//
 
 /**
  * @author  Matej Kosco / last $Author:$
@@ -34,7 +33,7 @@ import java.util.Set;
  * @since   IWS 1.0
  */
 public interface ExchangeDao extends BasicDao {
-
+//
     EmployerEntity findEmployer(Authentication authentication, String externalId);
 
     /**
@@ -51,29 +50,29 @@ public interface ExchangeDao extends BasicDao {
      */
     EmployerEntity findUniqueEmployer(Authentication authentication, Employer employer) throws IdentificationException;
 
-    /**
-     * Get all offers from the database.
-     *
-     * @return list of {@code OfferEntity}
-     */
+//    /**
+//     * Get all offers from the database.
+//     *
+//     * @return list of {@code OfferEntity}
+//     */
     List<OfferEntity> findAllOffers(Authentication authentication);
-
-    /**
-     * Finds the entity in the database.
-     *
-     * @param externalId The External Id of the Offer
-     * @return OfferEntity for given id, if no entity exists, then a null value is returned.
-     * @throws PersistenceException
-     */
+//
+//    /**
+//     * Finds the entity in the database.
+//     *
+//     * @param externalId The External Id of the Offer
+//     * @return OfferEntity for given id, if no entity exists, then a null value is returned.
+//     * @throws PersistenceException
+//     */
     OfferEntity findOfferByExternalId(Authentication authentication, String externalId);
 
-    /**
-     * Finds the entity in the database.
-     *
-     * @param refNo unique offer reference number
-     * @return OfferEntity for given id, if no entity exists, then a null value is returned.
-     * @throws PersistenceException
-     */
+//    /**
+//     * Finds the entity in the database.
+//     *
+//     * @param refNo unique offer reference number
+//     * @return OfferEntity for given id, if no entity exists, then a null value is returned.
+//     * @throws PersistenceException
+//     */
     OfferEntity findOfferByRefNo(Authentication authentication, String refNo);
 
     /**
@@ -86,8 +85,8 @@ public interface ExchangeDao extends BasicDao {
      * @return Found Offer Entity or null
      */
     OfferEntity findOfferByExternalIdAndRefNo(Authentication authentication, String externalId, String refNo);
-
-    /**
+//
+    /**--
      * @param externalIds list of external IDs for fetching
      * @return list of {@code OfferEntity}
      */

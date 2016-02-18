@@ -90,21 +90,21 @@ public final class OfferTest extends AbstractTest {
 
     private Group austriaTokenNationallGroup = null;
 
-    @Override
-    public void setup() {
-        token = login("poland@iaeste.pl", "poland");
-        austriaToken = login("austria@iaeste.at", "austria");
-        croatiaToken = login("croatia@iaeste.hr", "croatia");
-
-        austriaTokenNationallGroup = findNationalGroup(austriaToken);
-    }
-
-    @Override
-    public void tearDown() {
-        logout(token);
-        logout(austriaToken);
-        logout(croatiaToken);
-    }
+//    @Override
+//    public void setup() {
+//        token = login("poland@iaeste.pl", "poland");
+//        austriaToken = login("austria@iaeste.at", "austria");
+//        croatiaToken = login("croatia@iaeste.hr", "croatia");
+//
+//        austriaTokenNationallGroup = findNationalGroup(austriaToken);
+//    }
+//
+//    @Override
+//    public void tearDown() {
+//        logout(token);
+//        logout(austriaToken);
+//        logout(croatiaToken);
+//    }
 
     /**
      * Numerous NPE's were found in the production logs on 2016-01-24. The cause
@@ -835,7 +835,7 @@ public final class OfferTest extends AbstractTest {
     }
 
     @Test
-    public void testFetchSharedOfferDeadlineToday() {
+    public void testFetchSharedOfferDeadlineToday() {//
         final AuthenticationToken austriaTokenWithNationalGroup = new AuthenticationToken(austriaToken);
         if (austriaTokenNationallGroup != null) {
             austriaTokenWithNationalGroup.setGroupId(austriaTokenNationallGroup.getGroupId());

@@ -141,14 +141,14 @@ insert into user_to_group (external_id, user_id, group_id, role_id) values ('b98
 insert into user_to_group (external_id, user_id, group_id, role_id) values ('29be4afe-a489-4df3-a58e-5c4e8619af63', 14, 37, 1);
 -- Completed generating test data for China
 
--- Generating Test data for Colombia
-insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('CO', 'Colombia', 'Colombia', 'COP', 1960, 'FULL_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, group_name) values ('e4012e2b-b444-4ead-9223-4efabbeaac68', 2, null, 15, 'Colombia');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, group_name) values ('34823d36-9b1d-4058-88f2-deaeb95f11ab', 4, 38, 15, 'Colombia');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('2119acdb-e595-444a-81e7-3cbbe6d867dd', 'ACTIVE', 'colombia@iaeste.co', 'NS.Colombia@iaeste.org', '3791e172b4de4e935da7dda50528d679e1a2ffc44d8d1e6bb1d435d0e102a12c', 'f39bd566-d279-4efd-992f-30426f8a9f85', 'NS', 'Colombia');
+--- -- Generating Test data for Colombia
+--- insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('CO', 'Colombia', 'Colombia', 'COP', 1960, 'FULL_MEMBER');
+--- insert into Groups (external_id, grouptype_id, parent_id, country_id, group_name) values ('e4012e2b-b444-4ead-9223-4efabbeaac68', 2, null, 15, 'Colombia');
+--- insert into Groups (external_id, grouptype_id, parent_id, country_id, group_name) values ('34823d36-9b1d-4058-88f2-deaeb95f11ab', 4, 38, 15, 'Colombia');
+--- insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('2119acdb-e595-444a-81e7-3cbbe6d867dd', 'ACTIVE', 'colombia@iaeste.co', 'NS.Colombia@iaeste.org', '3791e172b4de4e935da7dda50528d679e1a2ffc44d8d1e6bb1d435d0e102a12c', 'f39bd566-d279-4efd-992f-30426f8a9f85', 'NS', 'Colombia');
 insert into user_to_group (external_id, user_id, group_id, role_id) values ('f2e5369b-9d0f-4132-ae04-ed0876071636', 15, 38, 1);
 insert into user_to_group (external_id, user_id, group_id, role_id) values ('138b754c-9bbe-4e8c-9257-4e7e6ceef5b5', 15, 39, 1);
--- Completed generating test data for Colombia
+--- -- Completed generating test data for Colombia
 
 -- Generating Test data for Croatia
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('HR', 'Croatia', 'Croatia', 'HRK', 1960, 'FULL_MEMBER');
@@ -394,7 +394,7 @@ insert into user_to_group (external_id, user_id, group_id, role_id) values ('036
 -- Completed generating test data for Korea
 
 -- Generating Test data for Latvia
-insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('LV', 'Latvia', 'Latvia', 'EUR', 2002, 'FULL_MEMBER');
+--- insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('LV', 'Latvia', 'Latvia', 'EUR', 2002, 'FULL_MEMBER');
 insert into Groups (external_id, grouptype_id, parent_id, country_id, group_name) values ('a657b0ce-b120-4bcf-824c-ac9739ebfb37', 2, null, 43, 'Latvia');
 insert into Groups (external_id, grouptype_id, parent_id, country_id, group_name) values ('377ab884-b042-4ffd-9041-5455bc79baf4', 4, 94, 43, 'Latvia');
 insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('1ac0b03e-3c2d-4d72-9610-2593aeac90b4', 'ACTIVE', 'latvia@iaeste.lv', 'NS.Latvia@iaeste.org', '31cd082f37c1ed15b81796e6b505ce3debdda271a1c9a56c35adf7e636bd4a68', '8644e27f-c771-4902-bfc4-ca205feb7f9f', 'NS', 'Latvia');
@@ -628,10 +628,10 @@ insert into user_to_group (external_id, user_id, group_id, role_id) values ('384
 -- Completed generating test data for Slovakia
 
 -- Generating Test data for Slovenia
-insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('SI', 'Slovenia', 'Slovenia', 'EUR', 1993, 'FULL_MEMBER');
+--- insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('SI', 'Slovenia', 'Slovenia', 'EUR', 1993, 'FULL_MEMBER');
 insert into Groups (external_id, grouptype_id, parent_id, country_id, group_name) values ('ff5ec00d-5aad-40bf-a733-7cf3244ede4b', 2, null, 69, 'Slovenia');
 insert into Groups (external_id, grouptype_id, parent_id, country_id, group_name) values ('dd61acdf-7a01-4123-8003-aef82310e772', 4, 146, 69, 'Slovenia');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('898d3faa-93db-4b8b-a230-a1669320635a', 'ACTIVE', 'slovenia@iaeste.si', 'NS.Slovenia@iaeste.org', 'dbdc52ee0ebb70b944c680c8ce1fccf77714513e76c49c7d107df357816932fc', 'cccb345d-ada6-4b19-8ad7-60be508b2da7', 'NS', 'Slovenia');
+--- insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('898d3faa-93db-4b8b-a230-a1669320635a', 'ACTIVE', 'slovenia@iaeste.si', 'NS.Slovenia@iaeste.org', 'dbdc52ee0ebb70b944c680c8ce1fccf77714513e76c49c7d107df357816932fc', 'cccb345d-ada6-4b19-8ad7-60be508b2da7', 'NS', 'Slovenia');
 insert into user_to_group (external_id, user_id, group_id, role_id) values ('b85ddba8-db9c-423b-b472-a1f3cade2530', 69, 146, 1);
 insert into user_to_group (external_id, user_id, group_id, role_id) values ('fe530d96-978f-4dc8-bcd7-3349564b1e84', 69, 147, 1);
 -- Completed generating test data for Slovenia

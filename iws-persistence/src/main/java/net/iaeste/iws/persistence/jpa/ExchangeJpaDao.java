@@ -27,7 +27,9 @@ import net.iaeste.iws.persistence.entities.exchange.PublishingGroupEntity;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.util.ArrayList;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author  Matej Kosco / last $Author:$
@@ -44,11 +46,11 @@ public final class ExchangeJpaDao extends BasicJpaDao implements ExchangeDao {
     public ExchangeJpaDao(final EntityManager entityManager) {
         super(entityManager);
     }
-//
+
     /**
      * {@inheritDoc}
      */
-    @Override//
+    @Override
     public EmployerEntity findEmployer(final Authentication authentication, final String externalId) {
         final Query query = entityManager.createNamedQuery("employer.findByExternalId");
         query.setParameter("eid", externalId);
@@ -80,12 +82,12 @@ public final class ExchangeJpaDao extends BasicJpaDao implements ExchangeDao {
         query.setParameter("gid", authentication.getGroup().getId());
 
         return query.getResultList();
-    }//
-//
+    }
+
     /**
      * {@inheritDoc}
      */
-    @Override//
+    @Override
     public OfferEntity findOfferByExternalId(final Authentication authentication, final String externalId) {
         final Query query = entityManager.createNamedQuery("offer.findByGroupAndExternalId");
         query.setParameter("gid", authentication.getGroup().getId());
@@ -99,18 +101,18 @@ public final class ExchangeJpaDao extends BasicJpaDao implements ExchangeDao {
      */
     @Override
     public OfferEntity findOfferByRefNo(final Authentication authentication, final String refNo) {
-//        OfferEntity entity = null;
-//
-//        if (refNo != null) {
-//            final Query query = entityManager.createNamedQuery("offer.findByGroupAndRefNo");
-//            query.setParameter("gid", authentication.getGroup().getId());
-//            query.setParameter("refNo", refNo);
-//
-//            final List<OfferEntity> found = query.getResultList();
-//            if (found.size() == 1) {
-//                entity = found.get(0);
-//            }
-//        }
+        OfferEntity entity = null;
+
+        if (refNo != null) {
+            final Query query = entityManager.createNamedQuery("offer.findByGroupAndRefNo");
+            query.setParameter("gid", authentication.getGroup().getId());
+            query.setParameter("refNo", refNo);
+
+            final List<OfferEntity> found = query.getResultList();
+            if (found.size() == 1) {
+                entity = found.get(0);
+            }
+        }
 
         return entity;
     }
@@ -131,13 +133,13 @@ public final class ExchangeJpaDao extends BasicJpaDao implements ExchangeDao {
             entity = found.get(0);
         }
 
-        return entity;//
-    }//
-//
+        return entity;
+    }
+
     /**
      * {@inheritDoc}
      */
-    @Override//
+    @Override
     public List<OfferEntity> findOffersByExternalId(final Authentication authentication, final Set<String> externalIds) {
         final Query query = entityManager.createNamedQuery("offer.findByGroupAndExternalIds");
         query.setParameter("gid", authentication.getGroup().getId());
@@ -183,7 +185,7 @@ public final class ExchangeJpaDao extends BasicJpaDao implements ExchangeDao {
     /**
      * {@inheritDoc}
      */
-    @Override//
+    @Override
     public List<OfferGroupEntity> findInfoForSharedOffers(final GroupEntity group, final Set<String> offerIds) {
         final Query query = entityManager.createNamedQuery("offerGroup.findByGroupAndExternalIds");
         query.setParameter("eoids", expandEmptyCollection(offerIds, ""));

@@ -17,7 +17,7 @@ package net.iaeste.iws.core.transformers;
 import static net.iaeste.iws.api.enums.exchange.OfferFields.*;
 import static net.iaeste.iws.core.transformers.CSVTransformer.*;
 
-import net.iaeste.iws.api.dtos.File;
+import net.iaeste.iws.api.dtos.File;//
 import net.iaeste.iws.api.dtos.exchange.Employer;
 import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.dtos.exchange.OfferGroup;
@@ -33,8 +33,8 @@ import net.iaeste.iws.api.enums.exchange.OfferType;
 import net.iaeste.iws.api.enums.exchange.PaymentFrequency;
 import net.iaeste.iws.api.enums.exchange.Specialization;
 import net.iaeste.iws.api.enums.exchange.StudyLevel;
-import net.iaeste.iws.api.util.DateTime;
-import net.iaeste.iws.persistence.entities.AttachmentEntity;
+import net.iaeste.iws.api.util.DateTime;//
+import net.iaeste.iws.persistence.entities.AttachmentEntity;//
 import net.iaeste.iws.persistence.entities.exchange.ApplicationEntity;
 import net.iaeste.iws.persistence.entities.exchange.EmployerEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
@@ -43,10 +43,10 @@ import net.iaeste.iws.persistence.entities.exchange.PublishingGroupEntity;
 import net.iaeste.iws.persistence.entities.exchange.StudentEntity;
 import org.apache.commons.csv.CSVRecord;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.ArrayList;//
+import java.util.List;//
 import java.util.Map;
-
+//
 /**
  * Transformer for the Exchange module, handles transformation of the DTO Objects
  * to and from the Entity data structure.
@@ -61,7 +61,7 @@ public final class ExchangeTransformer {
      * Private Constructor, this is a utility class.
      */
     private ExchangeTransformer() {
-    }
+    }//
 
     public static OfferEntity transform(final Offer offer) {
         OfferEntity result = null;
@@ -80,8 +80,8 @@ public final class ExchangeTransformer {
             result.setWeeklyWorkDays(offer.getWeeklyWorkDays());
             result.setTypeOfWork(offer.getTypeOfWork());
             result.setStudyLevels(CollectionTransformer.concatEnumCollection(offer.getStudyLevels()));
-            result.setFieldOfStudies(CollectionTransformer.concatEnumCollection(offer.getFieldOfStudies()));
-            result.setSpecializations(CollectionTransformer.join(offer.getSpecializations()));
+            result.setFieldOfStudies(CollectionTransformer.concatEnumCollection(offer.getFieldOfStudies()));//
+            result.setSpecializations(CollectionTransformer.join(offer.getSpecializations()));//
             result.setPrevTrainingRequired(offer.getPreviousTrainingRequired());
             result.setOtherRequirements(offer.getOtherRequirements());
             result.setMinimumWeeks(offer.getMinimumWeeks());
@@ -183,7 +183,7 @@ public final class ExchangeTransformer {
             result.setRefNo(entity.getRefNo());
             result.setOfferType(entity.getOfferType());
             result.setExchangeType(entity.getExchangeType());
-            result.setOldRefNo(entity.getOldRefno());
+            result.setOldRefNo(entity.getOldRefno());//
             result.setEmployer(transform(entity.getEmployer()));
             result.setWorkDescription(entity.getWorkDescription());
             result.setTypeOfWork(entity.getTypeOfWork());
@@ -304,7 +304,7 @@ public final class ExchangeTransformer {
 
             result.setOfferRefNo(entity.getOffer().getRefNo());
             result.setGroupId(entity.getGroup().getExternalId());
-            result.setStatus(entity.getStatus());
+            result.setStatus(entity.getStatus());//
             result.setComment(entity.getComment());
             result.setModified(new DateTime(entity.getModified()));
             result.setCreated(new DateTime(entity.getCreated()));
@@ -361,18 +361,18 @@ public final class ExchangeTransformer {
     }
 
     public static StudentApplication transform(final ApplicationEntity entity, final List<AttachmentEntity> attachments) {
-        final StudentApplication application = transform(entity);
-
+        final StudentApplication application = transform(entity);//
+//
         final List<File> files = new ArrayList<>(attachments.size());
-        for (final AttachmentEntity attachment : attachments) {
-            final File file = StorageTransformer.transform(attachment.getFile());
-            files.add(file);
-        }
-        application.setAttachments(files);
-
-        return application;
-    }
-
+        for (final AttachmentEntity attachment : attachments) {//
+            final File file = StorageTransformer.transform(attachment.getFile());//
+            files.add(file);//
+        }//
+        application.setAttachments(files);//
+//
+        return application;//
+    }//
+//
     public static StudentApplication transform(final ApplicationEntity entity) {
         StudentApplication result = null;
 

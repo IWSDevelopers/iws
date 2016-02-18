@@ -34,7 +34,7 @@ import net.iaeste.iws.api.responses.student.FetchStudentApplicationsResponse;
 import net.iaeste.iws.api.responses.student.FetchStudentsResponse;
 import net.iaeste.iws.api.responses.student.StudentApplicationResponse;
 import net.iaeste.iws.api.responses.student.StudentResponse;
-import net.iaeste.iws.api.util.DateTime;
+import net.iaeste.iws.api.util.DateTime;//
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.core.transformers.StorageTransformer;
 import net.iaeste.iws.core.transformers.ViewTransformer;
@@ -113,10 +113,10 @@ public final class StudentService extends CommonService<StudentDao> {
         final List<AttachmentEntity> attachments = processAttachments(authentication, entity, request.getStudentApplication().getAttachments());
 
         final StudentApplication application = transform(entity, attachments);
-        return new StudentApplicationResponse(application);
+        return new StudentApplicationResponse(application);//
     }
 
-    private ApplicationEntity processStudentApplication(final Authentication authentication, final StudentApplication application) {
+    private ApplicationEntity processStudentApplication(final Authentication authentication, final StudentApplication application) {//
         final GroupEntity nationalGroup = accessDao.findNationalGroup(authentication.getUser());
         final String externalId = application.getApplicationId();
         ApplicationEntity applicationEntity = dao.findApplicationByExternalId(externalId);
@@ -127,7 +127,7 @@ public final class StudentService extends CommonService<StudentDao> {
         } else {
             final OfferGroupEntity sharedOfferGroup = applicationEntity.getOfferGroup();
             final OfferEntity offer = sharedOfferGroup.getOffer();
-            if (offer.getEmployer().getGroup().getId().equals(nationalGroup.getId())) {
+            if (offer.getEmployer().getGroup().getId().equals(nationalGroup.getId())) {//
                 //offer owner
                 return processStudentApplicationByOfferOwner(authentication, application, applicationEntity);
             }
@@ -208,7 +208,7 @@ public final class StudentService extends CommonService<StudentDao> {
         final OfferGroupEntity sharedOfferGroup = applicationEntity.getOfferGroup();
         final OfferEntity offer = sharedOfferGroup.getOffer();
 
-        if (!offer.getEmployer().getGroup().getId().equals(nationalGroup.getId())) {
+        if (!offer.getEmployer().getGroup().getId().equals(nationalGroup.getId())) {//
             throw new VerificationException("The group with '" + authentication.getGroup().getGroupName() + "' does not own the offer with id '" + offer.getExternalId() + "'.");
         }
 
@@ -285,18 +285,18 @@ public final class StudentService extends CommonService<StudentDao> {
 
     public StudentApplicationResponse processApplicationStatus(final Authentication authentication, final StudentApplicationRequest request) {
         final ApplicationEntity found = dao.findApplicationByExternalId(request.getApplicationId());
-
-        if (found == null) {
-            throw new VerificationException("The application with id '" + request.getApplicationId() + "' was not found.");
-        }
-
+//
+        if (found == null) {//
+            throw new VerificationException("The application with id '" + request.getApplicationId() + "' was not found.");//
+        }//
+//
         final GroupEntity nationalGroup = accessDao.findNationalGroup(authentication.getUser());
         final OfferEntity offer = found.getOfferGroup().getOffer();
 
-        if (found.getOfferGroup().getGroup().getId().equals(nationalGroup.getId())) {
+        if (found.getOfferGroup().getGroup().getId().equals(nationalGroup.getId())) {//
             //application owner
              processApplicationStatusByApplicationOwner(authentication, request, found);
-        } else if (offer.getEmployer().getGroup().getId().equals(nationalGroup.getId())) {
+        } else if (offer.getEmployer().getGroup().getId().equals(nationalGroup.getId())) {//
             //offer owner
             processApplicationStatusByOfferOwner(authentication, request, found);
         } else {
@@ -313,7 +313,7 @@ public final class StudentService extends CommonService<StudentDao> {
 
         verifyOfferAcceptNewApplicationStatus(sharedOfferGroup.getStatus(), request.getStatus());
         verifyApplicationStatusTransition(studentApplication.getStatus(), request.getStatus());
-
+//
         switch (request.getStatus()) {
             case REJECTED:
                 rejectApplication(authentication, request, applicationEntity);
@@ -338,8 +338,8 @@ public final class StudentService extends CommonService<StudentDao> {
         verifyApplicationStatusTransition(studentApplication.getStatus(), request.getStatus());
         //TODO - see #526
         //TODO - when application status affects also offer status, change it accordingly
-        switch (request.getStatus()) {
-            case NOMINATED:
+        switch (request.getStatus()) {//
+            case NOMINATED://
                 nominateApplication(authentication, studentApplication, applicationEntity);
                 break;
             case CANCELLED:
@@ -514,9 +514,9 @@ public final class StudentService extends CommonService<StudentDao> {
                     case REJECTED:
                     case CANCELLED:
                         break;
-                    default:
+                    default://
                         throw new VerificationException("Offer with status '" + offerState + "' does not accept new application status '" + applicationStatus + '\'');
-                }
+                }//
                 break;
             case CLOSED:
                 switch (applicationStatus) {
@@ -525,7 +525,7 @@ public final class StudentService extends CommonService<StudentDao> {
                     default:
                         throw new VerificationException("Offer with status '" + offerState + "' does not accept new application status '" + applicationStatus + '\'');
                 }
-        }
+        }//
     }
 
     private static void verifyApplicationStatusTransition(final ApplicationStatus oldStatus, final ApplicationStatus newStatus) {

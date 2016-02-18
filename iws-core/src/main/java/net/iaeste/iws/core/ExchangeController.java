@@ -174,11 +174,11 @@ public final class ExchangeController extends CommonController implements Exchan
      * {@inheritDoc}
      */
     @Override
-    public OfferResponse processOffer(final AuthenticationToken token, final ProcessOfferRequest request) {
+    public OfferResponse processOffer(final AuthenticationToken token, final ProcessOfferRequest request) {//
         if (LOG.isTraceEnabled()) {
             LOG.trace(formatLogMessage(token, "Starting processOffer()"));
         }
-        OfferResponse response;
+        OfferResponse response;//
 
         try {
             verify(request);
@@ -206,11 +206,11 @@ public final class ExchangeController extends CommonController implements Exchan
      * {@inheritDoc}
      */
     @Override
-    public OfferResponse deleteOffer(final AuthenticationToken token, final DeleteOfferRequest request) {
+    public OfferResponse deleteOffer(final AuthenticationToken token, final DeleteOfferRequest request) {//
         if (LOG.isTraceEnabled()) {
             LOG.trace(formatLogMessage(token, "Starting deleteOffer()"));
         }
-        OfferResponse response;
+        OfferResponse response;//
 
         try {
             verify(request);
@@ -271,11 +271,11 @@ public final class ExchangeController extends CommonController implements Exchan
      * {@inheritDoc}
      */
     @Override
-    public FetchOffersResponse fetchOffers(final AuthenticationToken token, final FetchOffersRequest request) {
+    public FetchOffersResponse fetchOffers(final AuthenticationToken token, final FetchOffersRequest request) {//
         if (LOG.isTraceEnabled()) {
             LOG.trace(formatLogMessage(token, "Starting fetchOffers()"));
         }
-        FetchOffersResponse response;
+        FetchOffersResponse response;//
 
         try {
             verify(request);
@@ -290,7 +290,7 @@ public final class ExchangeController extends CommonController implements Exchan
             // that we're not loosing anything - the Exception is also LOG.ed
             // here as a debug message
             LOG.debug(e.getMessage(), e);
-            response = new FetchOffersResponse(e.getError(), e.getMessage());
+            response = new FetchOffersResponse(e.getError(), e.getMessage());//
         }
 
         if (LOG.isTraceEnabled()) {

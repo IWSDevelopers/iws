@@ -2,7 +2,7 @@
 -- Preparing to create test data for users.
 -- ============================================================================
 
--- First reset the existing tables & sequences, regardlessly!
+-- First reset the existing tables & sequences, regardless!
 delete from user_to_group;
 delete from sessions;
 delete from history;
@@ -94,14 +94,14 @@ insert into user_to_group (external_id, user_id, group_id, role_id) values ('ca4
 insert into user_to_group (external_id, user_id, group_id, role_id) values ('932ad701-055c-4a8c-aa92-8eee430617db', 9, 27, 1);
 -- Completed generating test data for Bolivia
 
--- Generating Test data for BosniaandHerzegovina
+-- Generating Test data for Bosnia and Herzegovina
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('BA', 'BosniaandHerzegovina', 'BosniaandHerzegovina', 'BAM', 2000, 'FULL_MEMBER');
 insert into Groups (external_id, grouptype_id, parent_id, country_id, group_name) values ('b11dea53-4350-4353-8008-27052e276917', 2, null, 10, 'BosniaandHerzegovina');
 insert into Groups (external_id, grouptype_id, parent_id, country_id, group_name) values ('9da0c7b2-f3fa-40c8-89e9-126bb677a514', 4, 28, 10, 'BosniaandHerzegovina');
 insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('d780dbb3-d43e-49b2-b4e3-d9ca204615d3', 'ACTIVE', 'bosniaandherzegovina@iaeste.ba', 'NS.BosniaandHerzegovina@iaeste.org', 'de7d8b281c82bba6d6c9f7651fe7f8dad9d8899eedfd985bf9907ef1c8d61415', '53ed11f3-f688-4142-9386-2ad359fd0832', 'NS', 'BosniaandHerzegovina');
 insert into user_to_group (external_id, user_id, group_id, role_id) values ('97cb85b2-4c53-4beb-83ab-963568771e3b', 10, 28, 1);
 insert into user_to_group (external_id, user_id, group_id, role_id) values ('65c1a98b-07f5-47fd-9627-c547b8bbda5c', 10, 29, 1);
--- Completed generating test data for BosniaandHerzegovina
+-- Completed generating test data for Bosnia and Herzegovina
 
 -- Generating Test data for Brazil
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('BR', 'Brazil', 'Brazil', 'BRL', 1982, 'FULL_MEMBER');
@@ -267,14 +267,14 @@ insert into user_to_group (external_id, user_id, group_id, role_id) values ('1e6
 insert into user_to_group (external_id, user_id, group_id, role_id) values ('42680a58-04aa-4c5c-b9ba-4ccb50497212', 28, 65, 1);
 -- Completed generating test data for Greece
 
--- Generating Test data for HongKong
+-- Generating Test data for Hong Kong
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('HK', 'HongKong', 'HongKong', 'HKD', 1997, 'ASSOCIATE_MEMBER');
 insert into Groups (external_id, grouptype_id, parent_id, country_id, group_name) values ('33864a9b-5032-475a-8bc5-3c43336a409e', 2, null, 29, 'HongKong');
 insert into Groups (external_id, grouptype_id, parent_id, country_id, group_name) values ('341ac3a6-ffde-42ec-83b1-a04227ec194b', 4, 66, 29, 'HongKong');
 insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('f0efae8f-cc15-416a-9055-4163274452c5', 'ACTIVE', 'hongkong@iaeste.hk', 'NS.HongKong@iaeste.org', 'f2164c0aaf435561ee7c96d87587e4d933953a1518ff41b68a9ea20b656ee4f1', '7cbcfec9-2d53-4691-b5d6-5c05f498990a', 'NS', 'HongKong');
 insert into user_to_group (external_id, user_id, group_id, role_id) values ('753f942e-9e13-4f41-a94d-6b2f1d5cd5f6', 29, 66, 1);
 insert into user_to_group (external_id, user_id, group_id, role_id) values ('b5e4457a-ca44-401f-a60d-13e95604e655', 29, 67, 1);
--- Completed generating test data for HongKong
+-- Completed generating test data for Hong Kong
 
 -- Generating Test data for Hungary
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('HU', 'Hungary', 'Hungary', 'HUF', 1983, 'FULL_MEMBER');
@@ -645,14 +645,14 @@ insert into user_to_group (external_id, user_id, group_id, role_id) values ('016
 insert into user_to_group (external_id, user_id, group_id, role_id) values ('4bf951eb-70ac-419b-9b5b-5d2281890747', 70, 149, 1);
 -- Completed generating test data for Spain
 
--- Generating Test data for SriLanka
+-- Generating Test data for Sri Lanka
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('LK', 'SriLanka', 'SriLanka', 'LKR', 2000, 'COOPERATING_INSTITUTION');
 insert into Groups (external_id, grouptype_id, parent_id, country_id, group_name) values ('2e6551b5-c832-43a0-bb47-88af2e82fc79', 2, null, 71, 'SriLanka');
 insert into Groups (external_id, grouptype_id, parent_id, country_id, group_name) values ('7ccf6069-6ada-4045-91c0-2ccdde794dc6', 4, 150, 71, 'SriLanka');
 insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('d8cc0286-a6e9-4837-93b8-04e48a33ed49', 'ACTIVE', 'srilanka@iaeste.lk', 'NS.SriLanka@iaeste.org', 'ba32f322b3fc77ff8ef8452a5f693393b64e7f485db1d056f6c94b4f3d6c4b1f', 'cc32854f-82ea-443f-b0e4-842086488f3d', 'NS', 'SriLanka');
 insert into user_to_group (external_id, user_id, group_id, role_id) values ('cefaefbd-3f21-42cf-81be-b0c721e24eab', 71, 150, 1);
 insert into user_to_group (external_id, user_id, group_id, role_id) values ('cf0d33b7-eddc-411f-a364-7e4f39b4bf78', 71, 151, 1);
--- Completed generating test data for SriLanka
+-- Completed generating test data for Sri Lanka
 
 -- Generating Test data for Sweden
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('SE', 'Sweden', 'Sweden', 'SEK', 1948, 'FULL_MEMBER');
@@ -869,7 +869,7 @@ insert into folders (external_id, parent_id, group_id, foldername, privacy) valu
 insert into folders (external_id, parent_id, group_id, foldername, privacy) values
   ('d8d6d7eb-754a-4e3b-8d4d-7657339096d1', (select id from folders where external_id = 'afec3bc0-296b-4bf2-8a9e-c2d7b74e93a0'), 4, '2014', 'PUBLIC');
 insert into folders (external_id, parent_id, group_id, foldername, privacy) values
-  ('60ba5c47-3dce-41a1-94f9-e0dafe2f717a', (select id from folders where external_id = 'afec3bc0-296b-4bf2-8a9e-c2d7b74e93a0'), 4, '2015', 'PROTECTED');
+  ('60ba5c47-3dce-41a1-94f9-e0dafe2f717a', (select id from folders where external_id = 'afec3bc0-296b-4bf2-8a9e-c2d7b74e93a0'), 165, '2015', 'PROTECTED');
   -- NC Tunisia
 insert into folders (external_id, parent_id, group_id, foldername, privacy) values
   ('94a6d74f-c510-4302-83fd-cd79ea8a4c9a', (select id from folders where external_id = 'afec3bc0-296b-4bf2-8a9e-c2d7b74e93a0'), 165, 'Travel Documents', 'PUBLIC');

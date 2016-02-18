@@ -340,21 +340,19 @@ create table publishing_groups (
 -- Description of Table
 -- =============================================================================
 create table publishing_group_selection (
-  publishing_group_id           integer,
-  group_id                  integer,
-  modified                  timestamp default now(),
-  created                   timestamp default now(),
+    publishing_group_id       integer,
+    group_id                  integer,
+    modified                  timestamp default now(),
+    created                   timestamp default now(),
 
-/* Primary & Foreign Keys */
-  constraint publishing_group_selection_pk                         primary key (publishing_group_id, group_id),
-  constraint publishing_group_selection_fk_publishing_group_id     foreign key (publishing_group_id) references publishing_groups (id) on delete cascade,
-  constraint publishing_group_selection_fk_group_id                foreign key (group_id) references groups (id) on delete cascade,
+    /* Primary & Foreign Keys */
+    constraint publishing_group_selection_pk                         primary key (publishing_group_id, group_id),
+    constraint publishing_group_selection_fk_publishing_group_id     foreign key (publishing_group_id) references publishing_groups (id) on delete cascade,
+    constraint publishing_group_selection_fk_group_id                foreign key (group_id) references groups (id) on delete cascade,
 
-/* Unique Constraints */
-
-/* Not Null Constraints */
-  constraint publishing_group_selection_notnull_publishing_group_id     check (publishing_group_id is not null),
-  constraint publishing_group_selection_notnull_group_id                check (group_id is not null),
-  constraint publishing_group_selection_notnull_modified                check (modified is not null),
-  constraint publishing_group_selection_notnull_created                 check (created is not null)
+    /* Not Null Constraints */
+    constraint publishing_group_selection_notnull_publishing_group_id     check (publishing_group_id is not null),
+    constraint publishing_group_selection_notnull_group_id                check (group_id is not null),
+    constraint publishing_group_selection_notnull_modified                check (modified is not null),
+    constraint publishing_group_selection_notnull_created                 check (created is not null)
 );

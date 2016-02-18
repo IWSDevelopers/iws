@@ -41,7 +41,7 @@ public enum GroupType implements Descriptable<GroupType> {
      * folder for others to view the content of, if the files have been marked
      * public, otherwise only the Group may access the files.</p>
      */
-    ADMINISTRATION("Administration", WhoMayJoin.All, true, true, FolderType.Public),
+    ADMINISTRATION("Administration", WhoMayJoin.ALL, true, true, FolderType.PUBLIC),
 
     /**
      * <p>All user accounts have a private group assigned, with this type. It is
@@ -53,7 +53,7 @@ public enum GroupType implements Descriptable<GroupType> {
      * well. Among the private data is also users files. A user may store files
      * for private purposes.</p>
      */
-    PRIVATE("Private", WhoMayJoin.None, false, true, FolderType.Private),
+    PRIVATE("Private", WhoMayJoin.NONE, false, true, FolderType.PRIVATE),
 
     /**
      * <p>All members are assigned to this type, which gives the rights to the
@@ -71,7 +71,7 @@ public enum GroupType implements Descriptable<GroupType> {
      *
      * <p><i>Note;</i> users can only be member of 1 Members Group!</p>
      */
-    MEMBER("Members", WhoMayJoin.None, true, false, FolderType.Private),
+    MEMBER("Members", WhoMayJoin.NONE, true, false, FolderType.PRIVATE),
 
     /**
      * <p>International Groups, are Groups which share members across Country
@@ -118,7 +118,7 @@ public enum GroupType implements Descriptable<GroupType> {
      * can be shared to others, if the containing files have been marked public,
      * otherwise only the group members may view them.</p>
      */
-    INTERNATIONAL("International", WhoMayJoin.All, true, true, FolderType.Public),
+    INTERNATIONAL("International", WhoMayJoin.ALL, true, true, FolderType.PUBLIC),
 
     /**
      * <p>All Countries have both a Members group, where all the people who are
@@ -137,7 +137,7 @@ public enum GroupType implements Descriptable<GroupType> {
      *
      * <p>Note; users can only be member of 1 National Group!</p>
      */
-    NATIONAL("Staff", WhoMayJoin.Members, false, true, FolderType.Public),
+    NATIONAL("Staff", WhoMayJoin.MEMBERS, false, true, FolderType.PUBLIC),
 
     /**
      * <p>Local Groups are for Local Committees around the Country. Local Groups
@@ -149,7 +149,7 @@ public enum GroupType implements Descriptable<GroupType> {
      * National. However, the Local Committees may have private sharing of
      * files.</p>
      */
-    LOCAL("Local Committee", WhoMayJoin.Members, true, true, FolderType.Private),
+    LOCAL("Local Committee", WhoMayJoin.MEMBERS, true, true, FolderType.PRIVATE),
 
     /**
      * <p>For Groups, where you need only to have a common mailinglist as well
@@ -164,7 +164,7 @@ public enum GroupType implements Descriptable<GroupType> {
      * <p>WorkGroup's can be assigned as a sub-group to any of the other
      * groups.</p>
      */
-    WORKGROUP("WorkGroup", WhoMayJoin.Inherited, true, true, FolderType.Private),
+    WORKGROUP("WorkGroup", WhoMayJoin.INHERITED, true, true, FolderType.PRIVATE),
 
     /**
      * <p>The Student Group is for Offer Applicants, meaning that if a person
@@ -183,7 +183,7 @@ public enum GroupType implements Descriptable<GroupType> {
      * <p>Student Groups may also not have file sharing, neither public not
      * private.</p>
      */
-    STUDENT("Students", WhoMayJoin.Members, false, false, FolderType.None);
+    STUDENT("Students", WhoMayJoin.MEMBERS, false, false, FolderType.NONE);
 
     // =========================================================================
     // Private Constructor & functionality
@@ -196,22 +196,22 @@ public enum GroupType implements Descriptable<GroupType> {
     public enum WhoMayJoin {
 
         /** Only users belonging to the Member Group may join. */
-        Members,
+        MEMBERS,
 
         /** Everybody may join this type of Group. */
-        All,
+        ALL,
 
         /** The group is closed for adding members. */
-        None,
+        NONE,
 
         /** The rule, regarding who may join is the same as the parents. */
-        Inherited
+        INHERITED
     }
 
     public enum FolderType {
-        Private,
-        Public,
-        None
+        PRIVATE,
+        PUBLIC,
+        NONE
     }
 
     private final String description;

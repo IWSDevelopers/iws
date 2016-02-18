@@ -21,6 +21,7 @@ import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.enums.Language;
 import net.iaeste.iws.api.enums.exchange.FieldOfStudy;
 import net.iaeste.iws.api.enums.exchange.LanguageLevel;
+import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.api.enums.exchange.StudyLevel;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
@@ -34,6 +35,7 @@ import net.iaeste.iws.persistence.setup.SpringConfig;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -96,14 +98,14 @@ public class OfferGroupEntityTest {
     public void cleanUp() {
     }
 
-//    @Test
-//    public void testDefaultOfferGroupStatus() {
-//        final OfferGroupEntity offerGroupEntity = new OfferGroupEntity();
-//
-//        assertThat(offerGroupEntity.getStatus(), is(OfferState.SHARED));
-//    }
-//
-//    @Test
+    @Test
+    public void testDefaultOfferGroupStatus() {
+        final OfferGroupEntity offerGroupEntity = new OfferGroupEntity();
+
+        assertThat(offerGroupEntity.getStatus(), is(OfferState.SHARED));
+    }
+
+    @Test
     @Transactional
     @Ignore("Ignored 2013-10-15 by Kim - Reason: The test is using hardcoded Id's, which is bad.")
     public void testFindGroupsForSharedOffer() {

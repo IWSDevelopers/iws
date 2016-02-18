@@ -1,19 +1,19 @@
 -- =============================================================================
 -- This script contain the basic tables for the IWS
 -- -----------------------------------------------------------------------------
----- Revision History:
+-- Revision History:
 -- 1.00 September 7, 2014 - Kim Jensen <kim@dawn.dk>
 --   - Various minor upgrades for IWS 1.1
 --   - Moved creation to a different script, making this script safer to run
 -- 0.01 June 4, 2013 - Kim Jensen <kim@dawn.dk>
-----   - Initial revision, based on the hsqldb
+--   - Initial revision, based on the hsqldb
 -- -----------------------------------------------------------------------------
----- The script uses PostgreSQL 9+ specific commands, it will not work with
----- previous versions of PostgreSQL, nor with any other database system.
-----   To install, please do the following:
+-- The script uses PostgreSQL 9+ specific commands, it will not work with
+-- previous versions of PostgreSQL, nor with any other database system.
+--   To install, please do the following:
 -- $ psql -f 10-base-tables.sql <DATABASE_NAME>
 -- -----------------------------------------------------------------------------
----- To view the comments, please invoke the enhanced descriptor command: \d+
+-- To view the comments, please invoke the enhanced descriptor command: \d+
 -- -----------------------------------------------------------------------------
 -- Country Model:
 --     - countries
@@ -29,8 +29,8 @@
 -- File Handling:
 --     - Files
 -- =============================================================================
---
---
+
+
 -- =============================================================================
 -- Database / System Version
 -- -----------------------------------------------------------------------------
@@ -120,8 +120,8 @@ create table countries (
     constraint country_notnull_country_name check (country_name is not null),
     constraint country_notnull_modified     check (modified is not null),
     constraint country_notnull_created      check (created is not null)
-);--
---
+);
+
 
 -- =============================================================================
 -- Permissions or IWS Functionality
@@ -148,8 +148,8 @@ create table permissions (
     constraint permission_notnull_id         check (id is not null),
     constraint permission_notnull_permission check (permission is not null),
     constraint permission_notnull_restricted check (restricted is not null)
-);--
---
+);
+
 
 -- =============================================================================
 -- GroupTypes, see net.iaeste.iws.api.enums.GroupType
@@ -184,8 +184,8 @@ create table grouptypes (
     constraint grouptype_notnull_public_list   check (public_list is not null),
     constraint grouptype_notnull_private_list  check (private_list is not null),
     constraint grouptype_notnull_folder_type   check (folder_type is not null)
-);--
---
+);
+
 
 -- =============================================================================
 -- Groups
@@ -270,8 +270,8 @@ create table groups (
     constraint group_notnull_public_reply  check (public_list_reply is not null),
     constraint group_notnull_modified      check (modified is not null),
     constraint group_notnull_created       check (created is not null)
-);--
---
+);
+
 
 -- =============================================================================
 -- Aliases
@@ -371,8 +371,8 @@ create table roles (
     constraint role_notnull_role        check (role is not null),
     constraint role_notnull_modified    check (modified is not null),
     constraint role_notnull_created     check (created is not null)
-);--
---
+);
+
 
 -- =============================================================================
 -- Permission to GroupType Associations
@@ -398,8 +398,8 @@ create table permission_to_grouptype (
     /* Not Null Constraints */
     constraint p2gt_notnull_permission_id check (permission_id is not null),
     constraint p2gt_notnull_grouptype_id  check (grouptype_id is not null)
-);--
---
+);
+
 
 -- =============================================================================
 -- Permission to Role Associations
@@ -434,8 +434,8 @@ create table permission_to_role (
     constraint p2r_notnull_permission_id check (permission_id is not null),
     constraint p2r_notnull_role_id       check (role_id is not null),
     constraint p2r_notnull_created       check (created is not null)
-);--
---
+);
+
 
 -- =============================================================================
 -- Addresses
@@ -565,8 +565,8 @@ create table users (
     constraint user_notnull_password_changed  check (password_changed is not null),
     constraint user_notnull_modified          check (modified is not null),
     constraint user_notnull_created           check (created is not null)
-);--
---
+);
+
 
 -- =============================================================================
 -- User Sessions
@@ -604,8 +604,8 @@ create table sessions (
     constraint session_notnull_deprecated  check (deprecated is not null),
     constraint session_notnull_modified    check (modified is not null),
     constraint session_notnull_created     check (created is not null)
-);--
---
+);
+
 
 -- =============================================================================
 -- Session Request Information
@@ -688,8 +688,8 @@ create table user_to_group (
     constraint u2g_notnull_status             check (status is not null),
     constraint u2g_notnull_modified           check (modified is not null),
     constraint u2g_notnull_created            check (created is not null)
-);--
---
+);
+
 
 -- =============================================================================
 -- Monitoring History
@@ -725,8 +725,8 @@ create table history (
     constraint history_notnull_tablename check (tablename is not null),
     constraint history_notnull_record_id check (record_id is not null),
     constraint history_notnull_created   check (created is not null)
-);--
---
+);
+
 
 -- =============================================================================
 -- Folders
@@ -1031,7 +1031,7 @@ create table notification_messages (
     constraint notitication_messages_notnull_delivery_mode     check (delivery_mode is not null),
     constraint notitication_messages_notnull_process_after     check (process_after is not null),
     constraint notitication_messages_notnull_created           check (created is not null)
-);--
+);
 
 
 -- =============================================================================

@@ -118,21 +118,21 @@ public final class IWSErrors {
      */
     public static final IWSError PERSISTENCE_ERROR = new IWSError(503, "Persistence Error.");
 
-//    /**
-//     * The Identification Error is passed when trying to access Objects, that
-//     * either doesn't exist, or where the requesting user do not have sufficient
-//     * permissions.
-//     */
-//    public static final IWSError OBJECT_IDENTIFICATION_ERROR = new IWSError(504, "Object Identification Error.");
-//
-//    /**
-//     * The processing of the request failed.
-//     */
-//    public static final IWSError PROCESSING_FAILURE = new IWSError(505, "Request cannot be processed.");
-//
-//    /**
-//     * Error reading or writing the monitoring data in serialized form.
-//     */
+    /**
+     * The Identification Error is passed when trying to access Objects, that
+     * either doesn't exist, or where the requesting user do not have sufficient
+     * permissions.
+     */
+    public static final IWSError OBJECT_IDENTIFICATION_ERROR = new IWSError(504, "Object Identification Error.");
+
+    /**
+     * The processing of the request failed.
+     */
+    public static final IWSError PROCESSING_FAILURE = new IWSError(505, "Request cannot be processed.");
+
+    /**
+     * Error reading or writing the monitoring data in serialized form.
+     */
     public static final IWSError MONITORING_FAILURE = new IWSError(506, "Monitoring Serialization Error.");
 
     public static final IWSError ILLEGAL_ACTION = new IWSError(507, "User attempted to perform an illegal action.");

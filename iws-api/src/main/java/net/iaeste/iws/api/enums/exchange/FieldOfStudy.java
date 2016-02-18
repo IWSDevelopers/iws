@@ -80,14 +80,14 @@ public enum FieldOfStudy implements Descriptable<FieldOfStudy> {
             Specialization.GRAPHICS_AND_PRINTING
     )),
 
-    AQUA_CULTURE("Aquaculture", Arrays.asList(//
-            Specialization.AQUACULTURE_AQUAFARMING,//
-            Specialization.MARINE_BIOLOGY,//
-            Specialization.MARINE_GEOLOGY,//
-            Specialization.MARINE_TECHNOLOGY,//
-            Specialization.SEAFOOD//
-    )),//
-//
+    AQUA_CULTURE("Aquaculture", Arrays.asList(
+            Specialization.AQUACULTURE_AQUAFARMING,
+            Specialization.MARINE_BIOLOGY,
+            Specialization.MARINE_GEOLOGY,
+            Specialization.MARINE_TECHNOLOGY,
+            Specialization.SEAFOOD
+    )),
+
     ARCHITECTURE("Architecture", Arrays.asList(
             Specialization.INDUSTRIAL_DESIGN,
             Specialization.INTERIOR_DESIGN,
@@ -173,22 +173,22 @@ public enum FieldOfStudy implements Descriptable<FieldOfStudy> {
             Specialization.WASTEWATER_TREATMENT
     )),
 
-    ECONOMY_AND_MANAGEMENT("Economy and Management", Arrays.asList(//
-            Specialization.ADMINISTRATION,//
-            Specialization.AGRIBUSINESS,//
-            Specialization.COMMERCE,//
-            Specialization.ECONOMICS,//
-            Specialization.ENTERPRISE_ENGINEERING,//
-            Specialization.DEVELOPMENT_STUDIES,//
-            Specialization.HOTEL_MANAGEMENT,//
-            Specialization.INDUSTRIAL_ECONOMICS,//
-            Specialization.INNOVATION_MANAGEMENT,//
-            Specialization.LOGISTICS,//
-            Specialization.PROJECT_MANAGEMENT,//
-            Specialization.PRODUCTION_MANAGEMENT,//
-            Specialization.STATISTICS//
-    )),//
-//
+    ECONOMY_AND_MANAGEMENT("Economy and Management", Arrays.asList(
+            Specialization.ADMINISTRATION,
+            Specialization.AGRIBUSINESS,
+            Specialization.COMMERCE,
+            Specialization.ECONOMICS,
+            Specialization.ENTERPRISE_ENGINEERING,
+            Specialization.DEVELOPMENT_STUDIES,
+            Specialization.HOTEL_MANAGEMENT,
+            Specialization.INDUSTRIAL_ECONOMICS,
+            Specialization.INNOVATION_MANAGEMENT,
+            Specialization.LOGISTICS,
+            Specialization.PROJECT_MANAGEMENT,
+            Specialization.PRODUCTION_MANAGEMENT,
+            Specialization.STATISTICS
+    )),
+
     EDUCATION("Education", Arrays.asList(
             Specialization.LANGUAGE,
             Specialization.SCIENCE
@@ -208,15 +208,15 @@ public enum FieldOfStudy implements Descriptable<FieldOfStudy> {
             Specialization.POWER_GENERATION
     )),
 
-    ENERGY_ENGINEERING("Energy Engineering", Arrays.asList(//
-            Specialization.ENERGY_AND_PROCESS_ENGINEERING,//
-            Specialization.ENERGY_SYSTEMS_PLANNING,//
-            Specialization.RENEWABLE_ENERGY,//
-            Specialization.NUCLEAR_ENERGY_ENGINEERING,//
-            Specialization.POWER_ENGINEERING,//
-            Specialization.POWER_GENERATION//
-    )),//
-//
+    ENERGY_ENGINEERING("Energy Engineering", Arrays.asList(
+            Specialization.ENERGY_AND_PROCESS_ENGINEERING,
+            Specialization.ENERGY_SYSTEMS_PLANNING,
+            Specialization.RENEWABLE_ENERGY,
+            Specialization.NUCLEAR_ENERGY_ENGINEERING,
+            Specialization.POWER_ENGINEERING,
+            Specialization.POWER_GENERATION
+    )),
+
     ENVIRONMENTAL_ENGINEERING("Environmental Science", Arrays.asList(
             Specialization.BIODIVERSITY,
             Specialization.EARTH_SCIENCE,
@@ -315,17 +315,17 @@ public enum FieldOfStudy implements Descriptable<FieldOfStudy> {
             Specialization.WOOD_SCIENCE
     )),
 
-    MATHEMATICS("Mathematics", Arrays.asList(//
-            Specialization.APPLIED_MATHEMATICS,//
-            Specialization.APPLIED_STATISTICS,//
-            Specialization.CALCULUS,//
-            Specialization.DISCRETE_MATHEMATICS,//
-            Specialization.FINANCIAL_MATHEMATICS,//
-            Specialization.GEOMETRY,//
-            Specialization.OPTIMIZATION,//
-            Specialization.STATISTICS//
-    )),//
-//
+    MATHEMATICS("Mathematics", Arrays.asList(
+            Specialization.APPLIED_MATHEMATICS,
+            Specialization.APPLIED_STATISTICS,
+            Specialization.CALCULUS,
+            Specialization.DISCRETE_MATHEMATICS,
+            Specialization.FINANCIAL_MATHEMATICS,
+            Specialization.GEOMETRY,
+            Specialization.OPTIMIZATION,
+            Specialization.STATISTICS
+    )),
+
     MECHANICAL_ENGINEERING("Mechanical Engineering", Arrays.asList(
             Specialization.AUTOMATION,
             Specialization.AUTOMOTIVE_ENGINEERING,
@@ -373,11 +373,11 @@ public enum FieldOfStudy implements Descriptable<FieldOfStudy> {
             Specialization.BIOVETERINARY_SCIENCE,
             Specialization.VETERINARY_MEDICINE,
             Specialization.VETERINARY_SCIENCE
-    )),//
-//
-    OTHER("Other", new ArrayList<Specialization>(0)),//
-//
-    ANY("Any", new ArrayList<Specialization>(0));//
+    )),
+
+    OTHER("Other", new ArrayList<Specialization>(0)),
+
+    ANY("Any", new ArrayList<Specialization>(0));
 
     // =========================================================================
     // Private Constructor & functionality
@@ -390,16 +390,16 @@ public enum FieldOfStudy implements Descriptable<FieldOfStudy> {
         this.description = description;
         this.specializations = specializations;
     }
-//
-    public List<Specialization> getSpecializations() {//
-        return specializations;//
-    }//
-//
+
+    public List<Specialization> getSpecializations() {
+        return specializations;
+    }
+
     /**
      * {@inheritDoc}
      */
     @Override
     public String getDescription() {
         return description;
-    }//
+    }
 }

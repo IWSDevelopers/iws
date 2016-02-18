@@ -1,17 +1,17 @@
-///*
-// * =============================================================================
-// * Copyright 1998-2016, IAESTE Internet Development Team. All rights reserved.
-// * ----------------------------------------------------------------------------
-// * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.constants.exchange.IWSExchangeConstants
-// * -----------------------------------------------------------------------------
-// * This software is provided by the members of the IAESTE Internet Development
-// * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
-// * redistributed. IAESTE A.s.b.l. is not permitted to sell this software.
-// *
-// * This software is provided "as is"; the IDT or individuals within the IDT
-// * cannot be held legally responsible for any problems the software may cause.
-// * =============================================================================
-// */
+/*
+ * =============================================================================
+ * Copyright 1998-2016, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
+ * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.constants.exchange.IWSExchangeConstants
+ * -----------------------------------------------------------------------------
+ * This software is provided by the members of the IAESTE Internet Development
+ * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
+ * redistributed. IAESTE A.s.b.l. is not permitted to sell this software.
+ *
+ * This software is provided "as is"; the IDT or individuals within the IDT
+ * cannot be held legally responsible for any problems the software may cause.
+ * =============================================================================
+ */
 package net.iaeste.iws.api.constants.exchange;
 
 import java.util.regex.Pattern;
@@ -62,31 +62,31 @@ public final class IWSExchangeConstants {
      * for an {@link net.iaeste.iws.api.dtos.exchange.Offer}
      */
     public static final int MAX_OFFER_LANGUAGES = 3;
-//
-//    /**
-//     * Defines the maximum length of offer description
-//     * for an {@link net.iaeste.iws.api.dtos.exchange.Offer}
-//     */
+
+    /**
+     * Defines the maximum length of offer description
+     * for an {@link net.iaeste.iws.api.dtos.exchange.Offer}
+     */
     public static final int MAX_OFFER_WORK_DESCRIPTION_SIZE = 3000;
-//
-//    /**
-//     * Defines the maximum length of other requirements
-//     * for an {@link net.iaeste.iws.api.dtos.exchange.Offer}
-//     */
+
+    /**
+     * Defines the maximum length of other requirements
+     * for an {@link net.iaeste.iws.api.dtos.exchange.Offer}
+     */
     public static final int MAX_OFFER_OTHER_REQUIREMENTS_SIZE = 4000;
-//
-//    /**
-//     * Defines the minimum number of weeks required
-//     * for an {@link net.iaeste.iws.api.dtos.exchange.Offer}
-//     */
+
+    /**
+     * Defines the minimum number of weeks required
+     * for an {@link net.iaeste.iws.api.dtos.exchange.Offer}
+     */
     public static final int MIN_OFFER_MINIMUM_WEEKS = 4;
-//
-//    /**
-//     * Defines the maximum number of additional documents
-//     * allowed to attach to a {@link net.iaeste.iws.api.dtos.exchange.StudentApplication}
-//     */
+
+    /**
+     * Defines the maximum number of additional documents
+     * allowed to attach to a {@link net.iaeste.iws.api.dtos.exchange.StudentApplication}
+     */
     public static final int MAX_NUMBER_OF_ADDITIONAL_DOCUMENTS = 10;
-//
+
     /** Private Constructor, this is a Constants Class. */
     private IWSExchangeConstants() {
     }

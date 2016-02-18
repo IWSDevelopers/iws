@@ -16,8 +16,8 @@ package net.iaeste.iws.api.dtos.exchange;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.exchange.IWSExchangeConstants;
-import net.iaeste.iws.api.enums.Currency;
-import net.iaeste.iws.api.enums.Language;
+import net.iaeste.iws.api.enums.Currency;//
+import net.iaeste.iws.api.enums.Language;//
 import net.iaeste.iws.api.enums.exchange.ExchangeType;
 import net.iaeste.iws.api.enums.exchange.FieldOfStudy;
 import net.iaeste.iws.api.enums.exchange.LanguageLevel;
@@ -30,18 +30,18 @@ import net.iaeste.iws.api.enums.exchange.TypeOfWork;
 import net.iaeste.iws.api.util.AbstractVerification;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.api.util.DatePeriod;
-import net.iaeste.iws.api.util.DateTime;
+import net.iaeste.iws.api.util.DateTime;//
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 import java.math.BigDecimal;
-import java.util.EnumSet;
+import java.util.EnumSet;//
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.HashSet;//
 import java.util.Map;
-import java.util.Set;
+import java.util.Set;//
 
 /**
  * Standard IAESTE Offer.
@@ -52,7 +52,7 @@ import java.util.Set;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "offer", propOrder = { "offerId", "refNo", "offerType", "exchangeType", "oldRefNo", "employer", "workDescription", "typeOfWork", "weeklyHours", "dailyHours", "weeklyWorkDays", "studyLevels", "fieldOfStudies", "specializations", "previousTrainingRequired", "otherRequirements", "minimumWeeks", "maximumWeeks", "period1", "period2", "unavailable", "language1", "language1Level", "language1Operator", "language2", "language2Level", "language2Operator", "language3", "language3Level", "payment", "paymentFrequency", "currency", "deduction", "livingCost", "livingCostFrequency", "lodgingBy", "lodgingCost", "lodgingCostFrequency", "nominationDeadline", "numberOfHardCopies", "additionalInformation", "privateComment", "status", "modified", "created", "nsFirstname", "nsLastname", "shared", "hidden" })
-public final class Offer extends AbstractVerification {
+public final class Offer extends AbstractVerification {//
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -62,9 +62,9 @@ public final class Offer extends AbstractVerification {
     @XmlElement(required = true, nillable = false) private OfferType offerType = OfferType.OPEN;
     // Defaulting to IW, as COBE is causing problems for Reserved Offers
     @XmlElement(required = true, nillable = true)  private ExchangeType exchangeType = ExchangeType.IW;
-
+//
     @XmlElement(required = true, nillable = true)  private String oldRefNo = null;
-
+//
     // General Work Description
     @XmlElement(required = true, nillable = false) private Employer employer = null;
     @XmlElement(required = true, nillable = false) private String workDescription = null;
@@ -77,14 +77,14 @@ public final class Offer extends AbstractVerification {
     @XmlElement(required = true, nillable = true)  private Set<String> specializations = new HashSet<>(1);
     @XmlElement(required = true, nillable = true)  private Boolean previousTrainingRequired = null;
     @XmlElement(required = true, nillable = true)  private String otherRequirements = null;
-
+//
     // DatePeriod for the Offer
     @XmlElement(required = true, nillable = false) private Integer minimumWeeks = null;
     @XmlElement(required = true, nillable = false) private Integer maximumWeeks = null;
     @XmlElement(required = true, nillable = false) private DatePeriod period1 = null;
     @XmlElement(required = true, nillable = true)  private DatePeriod period2 = null;
     @XmlElement(required = true, nillable = true)  private DatePeriod unavailable = null;
-
+//
     // Language restrictions
     @XmlElement(required = true, nillable = false) private Language language1 = null;
     @XmlElement(required = true, nillable = false) private LanguageLevel language1Level = null;
@@ -115,7 +115,7 @@ public final class Offer extends AbstractVerification {
     @XmlElement(required = true, nillable = true)  private OfferState status = null;
     @XmlElement(required = true, nillable = true)  private DateTime modified = null;
     @XmlElement(required = true, nillable = true)  private DateTime created = null;
-
+//
     // Additional information
     @XmlElement(required = true, nillable = true)  private String nsFirstname = null;
     @XmlElement(required = true, nillable = true)  private String nsLastname = null;
@@ -288,23 +288,23 @@ public final class Offer extends AbstractVerification {
     }
 
     /**
-     * Sets the IW3 Offer refNo.
-     * The oldRefNo once set after migration cannot be changed,
-     * any changes of this field made to DTO will be ignored during
-     * persiting the entity.
-     *
-     * @param oldRefNo old Offer Reference Number
-     */
-    public void setOldRefNo(final String oldRefNo) {
-        ensureNotTooLong("oldRefNo", oldRefNo, 50);
-        this.oldRefNo = oldRefNo;
-    }
-
-    public String getOldRefNo() {
-        return oldRefNo;
-    }
-
-    /**
+//     * Sets the IW3 Offer refNo.
+//     * The oldRefNo once set after migration cannot be changed,
+//     * any changes of this field made to DTO will be ignored during
+//     * persiting the entity.
+//     *
+//     * @param oldRefNo old Offer Reference Number
+//     */
+//    public void setOldRefNo(final String oldRefNo) {
+//        ensureNotTooLong("oldRefNo", oldRefNo, 50);
+//        this.oldRefNo = oldRefNo;
+//    }
+//
+//    public String getOldRefNo() {
+//        return oldRefNo;
+//    }
+//
+//    /**
      * <p>Sets the Offer Employer. The Employer must be defined, i.e. it cannot
      * be a null value.</p>
      *
@@ -517,7 +517,7 @@ public final class Offer extends AbstractVerification {
         return new DatePeriod(unavailable);
     }
 
-    public void setLanguage1(final Language language1) {
+    public void setLanguage1(final Language language1) {//
         this.language1 = language1;
     }
 
@@ -525,7 +525,7 @@ public final class Offer extends AbstractVerification {
         return language1;
     }
 
-    public void setLanguage1Level(final LanguageLevel language1Level) {
+    public void setLanguage1Level(final LanguageLevel language1Level) {//
         this.language1Level = language1Level;
     }
 
@@ -533,7 +533,7 @@ public final class Offer extends AbstractVerification {
         return language1Level;
     }
 
-    public void setLanguage1Operator(final LanguageOperator language1Operator) {
+    public void setLanguage1Operator(final LanguageOperator language1Operator) {//
         this.language1Operator = language1Operator;
     }
 
@@ -541,7 +541,7 @@ public final class Offer extends AbstractVerification {
         return language1Operator;
     }
 
-    public void setLanguage2(final Language language2) {
+    public void setLanguage2(final Language language2) {//
         this.language2 = language2;
     }
 
@@ -549,7 +549,7 @@ public final class Offer extends AbstractVerification {
         return language2;
     }
 
-    public void setLanguage2Level(final LanguageLevel language2Level) {
+    public void setLanguage2Level(final LanguageLevel language2Level) {//
         this.language2Level = language2Level;
     }
 
@@ -557,7 +557,7 @@ public final class Offer extends AbstractVerification {
         return language2Level;
     }
 
-    public void setLanguage2Operator(final LanguageOperator language2Operator) {
+    public void setLanguage2Operator(final LanguageOperator language2Operator) {//
         this.language2Operator = language2Operator;
     }
 
@@ -565,7 +565,7 @@ public final class Offer extends AbstractVerification {
         return language2Operator;
     }
 
-    public void setLanguage3(final Language language3) {
+    public void setLanguage3(final Language language3) {//
         this.language3 = language3;
     }
 
@@ -573,7 +573,7 @@ public final class Offer extends AbstractVerification {
         return language3;
     }
 
-    public void setLanguage3Level(final LanguageLevel language3Level) {
+    public void setLanguage3Level(final LanguageLevel language3Level) {//
         this.language3Level = language3Level;
     }
 
@@ -581,7 +581,7 @@ public final class Offer extends AbstractVerification {
         return language3Level;
     }
 
-    public void setPayment(final BigDecimal payment) {
+    public void setPayment(final BigDecimal payment) {//
         this.payment = payment;
     }
 
@@ -589,7 +589,7 @@ public final class Offer extends AbstractVerification {
         return payment;
     }
 
-    public void setPaymentFrequency(final PaymentFrequency paymentFrequency) {
+    public void setPaymentFrequency(final PaymentFrequency paymentFrequency) {//
         this.paymentFrequency = paymentFrequency;
     }
 
@@ -675,8 +675,8 @@ public final class Offer extends AbstractVerification {
 
     public Date getNominationDeadline() {
         return nominationDeadline;
-    }
-
+    }//
+//
     public void setNumberOfHardCopies(final Integer numberOfHardCopies) {
         this.numberOfHardCopies = numberOfHardCopies;
     }
@@ -731,31 +731,31 @@ public final class Offer extends AbstractVerification {
      *
      * @param modified DateTime of latest modification
      */
-    public void setModified(final DateTime modified) {
-        this.modified = modified;
-    }
-
+    public void setModified(final DateTime modified) {//
+        this.modified = modified;//
+    }//
+//
     public DateTime getModified() {
         return modified;
-    }
-
+    }//
+//
     /**
      * Sets the Offer Creation DateTime. Note, this field is controlled by the
      * IWS, and cannot be altered by users.
      *
      * @param created Offer Creation DateTime
      */
-    public void setCreated(final DateTime created) {
-        this.created = created;
-    }
-
+    public void setCreated(final DateTime created) {//
+        this.created = created;//
+    }//
+//
     public DateTime getCreated() {
         return created;
     }
 
     /**
      * Sets the National Secretary for this Offer (from the National Group).
-     * Note, this field is controlled by the IWS and cannot be altered via this
+     * Note, this field is controlled by the IWS and cannot be altered via this...
      * Object.
      *
      * @param nsFirstname NS Firstname
@@ -770,7 +770,7 @@ public final class Offer extends AbstractVerification {
 
     /**
      * Sets the National Secretary for this Offer (from the National Group).
-     * Note, this field is controlled by the IWS and cannot be altered via this
+     * Note, this field is controlled by the IWS and cannot be altered via this...
      * Object.
      *
      * @param nsLastname NS Lastname

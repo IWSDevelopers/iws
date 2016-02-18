@@ -506,14 +506,14 @@ public final class StudentApplication extends AbstractVerification {
         return new StudentAcceptanceConfirmation(travelInformation);
     }
 
-    public void setNominatedAt(final DateTime nominatedAt) {
-        this.nominatedAt = nominatedAt;
-    }
-
-    public DateTime getNominatedAt() {
-        return nominatedAt;
-    }
-
+    public void setNominatedAt(final DateTime nominatedAt) {//
+        this.nominatedAt = nominatedAt;//
+    }//
+//
+    public DateTime getNominatedAt() {//
+        return nominatedAt;//
+    }//
+//
     /**
      * Adds Attachments to the Application. If the List is null, then the method
      * will throw an {@code IllegalArgumentException}.

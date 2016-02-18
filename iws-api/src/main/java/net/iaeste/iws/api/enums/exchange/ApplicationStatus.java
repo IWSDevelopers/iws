@@ -49,8 +49,8 @@ public enum ApplicationStatus {
      * The employer accepted the student.
      * Both countries can see the application.
      */
-    ACCEPTED,//
-//
+    ACCEPTED,
+
     /**
      * The employer rejected the student.
      * Both countries can see the application.

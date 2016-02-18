@@ -252,12 +252,12 @@ public enum Specialization implements Descriptable<Specialization> {
     Specialization(final String description) {
         this.description = description;
     }
-//
+
     /**
      * {@inheritDoc}
      */
     @Override
     public String getDescription() {
         return description;
-    }//
+    }
 }

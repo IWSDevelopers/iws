@@ -91,12 +91,12 @@ public enum OfferState implements Descriptable<OfferState> {
     OfferState(final String description) {
         this.description = description;
     }
-//
+
     /**
      * {@inheritDoc}
      */
     @Override
-    public String getDescription() {//
+    public String getDescription() {
         return description;
-    }//
+    }
 }

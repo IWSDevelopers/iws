@@ -1,20 +1,20 @@
-/*
- * =============================================================================
- * Copyright 1998-2016, IAESTE Internet Development Team. All rights reserved.
- * ----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.dtos.exchange.Student
- * -----------------------------------------------------------------------------
- * This software is provided by the members of the IAESTE Internet Development
- * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
- * redistributed. IAESTE A.s.b.l. is not permitted to sell this software.
- *
- * This software is provided "as is"; the IDT or individuals within the IDT
- * cannot be held legally responsible for any problems the software may cause.
- * =============================================================================
- */
+///*
+// * =============================================================================
+// * Copyright 1998-2016, IAESTE Internet Development Team. All rights reserved.
+// * ----------------------------------------------------------------------------
+// * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.dtos.exchange.Student
+// * -----------------------------------------------------------------------------
+// * This software is provided by the members of the IAESTE Internet Development
+// * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
+// * redistributed. IAESTE A.s.b.l. is not permitted to sell this software.
+// *
+// * This software is provided "as is"; the IDT or individuals within the IDT
+// * cannot be held legally responsible for any problems the software may cause.
+// * =============================================================================
+// */
 package net.iaeste.iws.api.dtos.exchange;
-
-import net.iaeste.iws.api.constants.IWSConstants;
+//
+import net.iaeste.iws.api.constants.IWSConstants;//
 import net.iaeste.iws.api.constants.exchange.IWSExchangeConstants;
 import net.iaeste.iws.api.dtos.User;
 import net.iaeste.iws.api.enums.Language;
@@ -25,26 +25,26 @@ import net.iaeste.iws.api.enums.exchange.StudyLevel;
 import net.iaeste.iws.api.util.AbstractVerification;
 import net.iaeste.iws.api.util.DatePeriod;
 import net.iaeste.iws.api.util.DateTime;
-
+//
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashMap;//
+import java.util.Map;//
 import java.util.Set;
-
-/**
- * Standard IAESTE Student.
- *
+//
+/**--
+ * Standard IAESTE Student.--
+ *--
  * @author  Kim Jensen / last $Author:$
- * @version $Revision:$ / $Date:$
+ * @version $Revision:$ / $Date:$--
  * @since   IWS 1.0
- */
+ *///
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "student", propOrder = { "user", "studyLevel", "fieldOfStudies", "specializations", "available", "language1", "language1Level", "language2", "language2Level", "language3", "language3Level", "modified", "created" })
-public final class Student extends AbstractVerification {
-
+public final class Student extends AbstractVerification {//
+//
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
@@ -61,7 +61,7 @@ public final class Student extends AbstractVerification {
     @XmlElement(required = true, nillable = true)  private LanguageLevel language3Level = null;
     @XmlElement(required = true, nillable = true)  private DateTime modified = null;
     @XmlElement(required = true, nillable = true)  private DateTime created = null;
-
+//
     // =========================================================================
     // Object Constructors
     // =========================================================================
@@ -82,14 +82,14 @@ public final class Student extends AbstractVerification {
     public Student(final User user) {
         setUser(user);
     }
-
+//
     /**
      * Copy Constructor.
      *
      * @param student Student Object to copy
      */
-    public Student(final Student student) {
-        if (student != null) {
+    public Student(final Student student) {//
+        if (student != null) {//
             // We copy the Object over directly, without the checks from our
             // setters, since we trust that the previously created Student
             // Object is correct.
@@ -106,13 +106,13 @@ public final class Student extends AbstractVerification {
             language3Level = student.language3Level;
             modified = student.modified;
             created = student.created;
-        }
-    }
-
+        }//
+    }//
+//
     // =========================================================================
     // Standard Setters & Getters
     // =========================================================================
-
+//
     /**
      * This getter is a simple wrapper for the UserId, since the Student is just
      * an add-on Object for the User, to provide the necessary Student
@@ -127,12 +127,12 @@ public final class Student extends AbstractVerification {
     public void setUser(final User user) throws IllegalArgumentException {
         ensureVerifiable("user", user);
         this.user = new User(user);
-    }
-
+    }//
+//
     public User getUser() {
         return new User(user);
-    }
-
+    }//
+//
     public void setStudyLevel(final StudyLevel studyLevel) throws IllegalArgumentException {
         this.studyLevel = studyLevel;
     }
@@ -246,16 +246,16 @@ public final class Student extends AbstractVerification {
     // =========================================================================
     // DTO required methods
     // =========================================================================
-
-    /**
+//
+    /**--
      * {@inheritDoc}
-     */
-    @Override
+     *///
+    @Override//
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(0);
-
+//
         isNotNull(validation, "user", user);
-
+//
         return validation;
-    }
-}
+    }//
+}//

@@ -93,7 +93,7 @@ public final class GenerateDataForTest {
                 { "CA", "Canada",               Currency.CAD, 1953, Membership.FULL_MEMBER },
                 { "CL", "Chile",                Currency.CLP, 2013, Membership.COOPERATING_INSTITUTION },
                 { "CN", "China",                Currency.CNY, 2000, Membership.ASSOCIATE_MEMBER },
-                { "CO", "Colombia",             Currency.COP, 1960, Membership.FULL_MEMBER },
+                { "CO", "Colombia",             Currency.COP, 1960, Membership.FULL_MEMBER },//
                 { "HR", "Croatia",              Currency.HRK, 1960, Membership.FULL_MEMBER },
                 { "CY", "Cyprus",               Currency.EUR, 1980, Membership.FULL_MEMBER },
                 { "CZ", "CzechRepublic",        Currency.CZK, 1965, Membership.FULL_MEMBER },
@@ -123,7 +123,7 @@ public final class GenerateDataForTest {
                 { "KZ", "Kazakhstan",           Currency.KZT, 1995, Membership.FULL_MEMBER },
                 { "KE", "Kenya",                Currency.KES, 2004, Membership.COOPERATING_INSTITUTION },
                 { "KR", "Korea",                Currency.KRW, 2007, Membership.COOPERATING_INSTITUTION },
-                { "LV", "Latvia",               Currency.EUR, 2002, Membership.FULL_MEMBER },
+                { "LV", "Latvia",               Currency.EUR, 2002, Membership.FULL_MEMBER },//
                 { "LB", "Lebanon",              Currency.LBP, 1966, Membership.FULL_MEMBER },
                 { "LR", "Liberia",              Currency.LRD, 2012, Membership.COOPERATING_INSTITUTION },
                 { "LT", "Lithuania",            Currency.LTL, 1990, Membership.FULL_MEMBER },
@@ -149,7 +149,7 @@ public final class GenerateDataForTest {
                 { "RU", "Russia",               Currency.RUB, 1991, Membership.FULL_MEMBER },
                 { "RS", "Serbia",               Currency.RSD, 1952, Membership.FULL_MEMBER },
                 { "SK", "Slovakia",             Currency.EUR, 1965, Membership.FULL_MEMBER },
-                { "SI", "Slovenia",             Currency.EUR, 1993, Membership.FULL_MEMBER },
+                { "SI", "Slovenia",             Currency.EUR, 1993, Membership.FULL_MEMBER },//
                 { "ES", "Spain",                Currency.EUR, 1951, Membership.FULL_MEMBER },
                 { "LK", "SriLanka",             Currency.LKR, 2000, Membership.COOPERATING_INSTITUTION },
                 { "SE", "Sweden",               Currency.SEK, 1948, Membership.FULL_MEMBER },

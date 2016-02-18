@@ -31,8 +31,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "offerResponse", propOrder = { "offer" })
-public final class
-  OfferResponse extends FallibleResponse {
+public final class OfferResponse extends FallibleResponse {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -44,34 +43,34 @@ public final class
     // Object Constructors
     // =========================================================================
 
-//    /**
-//     * Empty Constructor, to use if the setters are invoked. This is required
-//     * for WebServices to work properly.
-//     * Constructor is used in {@code OfferResponse} when deleting an offer.
-//     */
-//    public OfferResponse() {
-//        // Required for WebServices to work. Comment added to please Sonar.
-//    }
-//
-//    /**
-//     * Constructor is used when succeed on creating or updating an offer.
-//     *
-//     * @param offer offer which was saved
-//     */
-    public OfferResponse(final Offer offer) {//
+    /**
+     * Empty Constructor, to use if the setters are invoked. This is required
+     * for WebServices to work properly.
+     * Constructor is used in {@code OfferResponse} when deleting an offer.
+     */
+    public OfferResponse() {
+        // Required for WebServices to work. Comment added to please Sonar.
+    }
+
+    /**
+     * Constructor is used when succeed on creating or updating an offer.
+     *
+     * @param offer offer which was saved
+     */
+    public OfferResponse(final Offer offer) {
         setOffer(offer);
-    }//
-//
-//    /**..
-//     * Error Constructor.
-//     *
-//     * @param error   IWS Error Object
-//     * @param message Error Message
-//     */
-//    public OfferResponse(final IWSError error, final String message) {
-//        super(error, message);
-//    }//
-//
+    }
+
+    /**
+     * Error Constructor.
+     *
+     * @param error   IWS Error Object
+     * @param message Error Message
+     */
+    public OfferResponse(final IWSError error, final String message) {
+        super(error, message);
+    }
+
     // =========================================================================
     // Standard Setters & Getters
     // =========================================================================
@@ -80,7 +79,7 @@ public final class
         this.offer = offer;
     }
 
-    public Offer getOffer() {//
-        return new Offer(offer);//
-    }//
+    public Offer getOffer() {
+        return new Offer(offer);
+    }
 }

@@ -96,8 +96,8 @@ public interface Exchange {
      * @param request contains a {@link net.iaeste.iws.api.dtos.exchange.Offer}
      * @return the persisted {@link net.iaeste.iws.api.dtos.exchange.Offer} including the generated Id
      */
-    OfferResponse processOffer(AuthenticationToken token, ProcessOfferRequest request);//
-//
+    OfferResponse processOffer(AuthenticationToken token, ProcessOfferRequest request);
+
     /**
      * <p>Performs a deletion of the offer.</p>
      *
@@ -109,8 +109,8 @@ public interface Exchange {
      * @param request contains a field with the RefNo (will be changed to id #359)
      * @return empty {@link OfferResponse} (offer=null) on success
      */
-    OfferResponse deleteOffer(AuthenticationToken token, DeleteOfferRequest request);//
-//
+    OfferResponse deleteOffer(AuthenticationToken token, DeleteOfferRequest request);
+
     /**
      * <p>IW3, IAESTE IntraWeb version 3, allowed users to upload their Offers
      * directly as a CSV file, to avoid typing it all again. Although IWS
@@ -141,8 +141,8 @@ g     * <dl>
      *                should be returned
      * @return contains a list of {@link net.iaeste.iws.api.dtos.exchange.Offer}
      */
-    FetchOffersResponse fetchOffers(AuthenticationToken token, FetchOffersRequest request);//
-//
+    FetchOffersResponse fetchOffers(AuthenticationToken token, FetchOffersRequest request);
+
     /**
      * <p>The IAESTE IntraWeb version 3, IW3, provided a simple way whereby
      * Offers could be downloaded. The download was primarily of the countries

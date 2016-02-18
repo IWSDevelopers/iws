@@ -47,7 +47,7 @@ public final class StudentApplicationRequest extends AbstractVerification {
     @XmlElement(required = true, nillable = true) private String rejectByEmployerReason = null;
     @XmlElement(required = true, nillable = true) private String rejectDescription = null;
     @XmlElement(required = true, nillable = true) private String rejectInternalComment = null;
-//
+
     // =========================================================================
     // Object Constructors
     // =========================================================================
@@ -60,11 +60,11 @@ public final class StudentApplicationRequest extends AbstractVerification {
         // Required for WebServices to work. Comment added to please Sonar.
     }
 
-    public StudentApplicationRequest(final String applicationId, final ApplicationStatus status) {//
-        this.applicationId = applicationId;//
+    public StudentApplicationRequest(final String applicationId, final ApplicationStatus status) {
+        this.applicationId = applicationId;
         this.status = status;
-    }//
-//
+    }
+
     // =========================================================================
     // Standard Setters & Getters
     // =========================================================================
@@ -79,12 +79,12 @@ public final class StudentApplicationRequest extends AbstractVerification {
     public void setApplicationId(final String applicationId) throws IllegalArgumentException {
         ensureNotNullAndValidId("applicationId", applicationId);
         this.applicationId = applicationId;
-    }//
-//
-    public String getApplicationId() {//
-        return applicationId;//
-    }//
-//
+    }
+
+    public String getApplicationId() {
+        return applicationId;
+    }
+
     /**
      * Sets the new Status for the Student Application. The Status may not be
      * null. If invalid, then the method will throw an
@@ -136,10 +136,10 @@ public final class StudentApplicationRequest extends AbstractVerification {
     @Override
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(0);
-//
-        isNotNull(validation, "applicationId", applicationId);//
-        isNotNull(validation, "status", status);//
-//
-        return validation;//
+
+        isNotNull(validation, "applicationId", applicationId);
+        isNotNull(validation, "status", status);
+
+        return validation;
     }
 }

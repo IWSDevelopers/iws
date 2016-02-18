@@ -64,7 +64,7 @@ public final class PublishOfferRequest extends AbstractVerification {
      * for WebServices to work properly.
      */
     public PublishOfferRequest() {
-        groupIds = new ArrayList<>(10);//
+        groupIds = new ArrayList<>(10);
     }
 
     public PublishOfferRequest(final Set<String> offerIds, final List<String> groupIds, final Date nominationDeadline) {
@@ -86,12 +86,12 @@ public final class PublishOfferRequest extends AbstractVerification {
         return offerIds;
     }
 
-    public void setGroupIds(final List<String> groupIds) {//
+    public void setGroupIds(final List<String> groupIds) {
         ensureNotNullAndValidIdentifiers("groupIds", groupIds);
         this.groupIds = groupIds;
     }
 
-    public List<String> getGroupIds() {//
+    public List<String> getGroupIds() {
         return groupIds;
     }
 

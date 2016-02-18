@@ -40,7 +40,7 @@ public final class ProcessOfferRequest extends AbstractVerification {
     /** The Offer Object to process. */
     @XmlElement(required = true, nillable = false)
     private Offer offer;
-
+//
     // =========================================================================
     // Object Constructors
     // =========================================================================
@@ -51,18 +51,18 @@ public final class ProcessOfferRequest extends AbstractVerification {
      */
     public ProcessOfferRequest() {
         offer = null;
-    }
-
-    /**
+    }//
+//
+    /**--
      * Default Constructor, sets the Offer to be processed. If the Offer exists,
      * it will be updated otherwise a new Offer will be created.
-     *
-     * @param offer object to create or update
-     */
+     *--
+     * @param offer object to create or update--
+     *///
     public ProcessOfferRequest(final Offer offer) {
         this.offer = new Offer(offer);
-    }
-
+    }//
+//
     // =========================================================================
     // Standard Setters & Getters
     // =========================================================================
@@ -71,7 +71,7 @@ public final class ProcessOfferRequest extends AbstractVerification {
         ensureNotNullAndVerifiable("offer", offer);
         this.offer = new Offer(offer);
     }
-
+//
     public Offer getOffer() {
         return new Offer(offer);
     }
@@ -84,11 +84,11 @@ public final class ProcessOfferRequest extends AbstractVerification {
      * {@inheritDoc}
      */
     @Override
-    public Map<String, String> validate() {
+    public Map<String, String> validate() {//
         final Map<String, String> validation = new HashMap<>(0);
-
+//
         isNotNull(validation, "offer", offer);
 
-        return validation;
+        return validation;//
     }
 }

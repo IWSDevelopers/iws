@@ -37,7 +37,7 @@ import java.util.Map;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "person", propOrder = { "nationality", "address", "alternateEmail", "phone", "mobile", "fax", "birthday", "gender", "understoodPrivacySettings", "acceptNewsletters" })
-public final class Person extends AbstractVerification {
+public final class Person extends AbstractVerification {//
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -68,7 +68,7 @@ public final class Person extends AbstractVerification {
     /**
      * Copy Constructor.
      *
-     * @param person Person Object to copy
+     * @param person Person Object to copy.
      */
     public Person(final Person person) {
         if (person != null) {

@@ -80,7 +80,7 @@ public final class UserGroup extends AbstractVerification {
             title = userGroup.title;
             onPublicList = userGroup.onPublicList;
             onPrivateList = userGroup.onPrivateList;
-            writeToPrivateList = userGroup.writeToPrivateList;
+            writeToPrivateList = userGroup.writeToPrivateList;//
             memberSince = userGroup.memberSince;
         }
     }

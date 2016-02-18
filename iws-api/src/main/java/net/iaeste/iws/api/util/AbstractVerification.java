@@ -676,7 +676,7 @@ public abstract class AbstractVerification implements Verifiable {
     protected static void isNotNull(final Map<String, String> validation, final String field, final Object value) {
         if (value == null) {
             addError(validation, field, "The field may not be null.");
-        }
+        }//
     }
 
     /**

@@ -113,7 +113,7 @@ public final class User extends AbstractVerification {
      *            DELETED
      * </pre>
      *
-     * @param userId The internal Id of the user
+     * @param userId The internal User Id
      * @param status The new Status
      */
     public User(final String userId, final UserStatus status) {

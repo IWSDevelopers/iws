@@ -40,7 +40,7 @@ import java.util.Set;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "fetchOffersRequest", propOrder = { "fetchType", "identifiers", "exchangeYear", "states", "retrieveCurrentAndNextExchangeYear" })
 public final class FetchOffersRequest extends AbstractPaginatable {
-
+//
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
@@ -67,8 +67,8 @@ public final class FetchOffersRequest extends AbstractPaginatable {
      */
     public FetchOffersRequest() {
         // Required for WebServices to work. Comment added to please Sonar.
-    }
-
+    }//
+//
     /**
      * <p>Default Constructor.</p>
      *
@@ -76,32 +76,32 @@ public final class FetchOffersRequest extends AbstractPaginatable {
      */
     public FetchOffersRequest(final FetchType fetchType) {
         setFetchType(fetchType);
-    }
-
-    // =========================================================================
-    // Standard Setters & Getters
-    // =========================================================================
-
-    /**
-     * <p>Sets the mandatory FetchType for the CSV Downloading of Offers, the
-     * type can be either Domestic (a Committee's own Offers) or Shared (Offers from
-     * other Committee's). However, the value cannot be null.</p>
-     *
-     * <p>The method will thrown an {@code IllegalArgumentException} if the given
-     * value is null.</p>
-     *
-     * @param fetchType Type of Offers to be fetched
-     * @throws IllegalArgumentException if the parameter is null
-     */
-    public void setFetchType(final FetchType fetchType) throws IllegalArgumentException {
-        ensureNotNull("fetchType", fetchType);
-        this.fetchType = fetchType;
-    }
-
-    public FetchType getFetchType() {
-        return fetchType;
-    }
-
+    }//
+//
+//    // =========================================================================
+//    // Standard Setters & Getters
+//    // =========================================================================
+//
+//    /**
+//     * <p>Sets the mandatory FetchType for the CSV Downloading of Offers, the
+//     * type can be either Domestic (a Committee's own Offers) or Shared (Offers from
+//     * other Committee's). However, the value cannot be null.</p>
+//     *
+//     * <p>The method will thrown an {@code IllegalArgumentException} if the given
+//     * value is null.</p>
+//     *
+//     * @param fetchType Type of Offers to be fetched
+//     * @throws IllegalArgumentException if the parameter is null
+//     */
+//    public void setFetchType(final FetchType fetchType) throws IllegalArgumentException {
+//        ensureNotNull("fetchType", fetchType);
+//        this.fetchType = fetchType;
+//    }//
+////
+//    public FetchType getFetchType() {//
+//        return fetchType;//
+//    }//
+//
     /**
      * <p>Sets a list of Identifiers, meaning either the Id of the Offers or
      * their Reference Number, which both can be used to uniquely identify an

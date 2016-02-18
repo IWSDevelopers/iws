@@ -18,13 +18,13 @@ import net.iaeste.iws.api.enums.Descriptable;
 
 import javax.xml.bind.annotation.XmlType;
 
-/**
- * All types of work that can be selected in the system
- *
- * @author  Marko Cilimkovic / last $Author:$
- * @version $Revision:$ / $Date:$
- * @since   IWS 1.0
- */
+///**
+// * All types of work that can be selected in the system
+// *
+// * @author  Matej Kosco / last $Author:$
+// * @version $Revision:$ / $Date:$
+// * @since   IWS 1.0
+// */
 @XmlType(name = "typeOfWork")
 public enum TypeOfWork implements Descriptable<TypeOfWork> {
 

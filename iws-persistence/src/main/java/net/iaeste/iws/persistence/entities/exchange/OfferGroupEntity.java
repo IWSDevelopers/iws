@@ -15,7 +15,7 @@
 package net.iaeste.iws.persistence.entities.exchange;
 
 import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.api.enums.exchange.OfferState;
+import net.iaeste.iws.api.enums.exchange.*;
 import net.iaeste.iws.persistence.monitoring.Monitored;
 import net.iaeste.iws.api.enums.MonitoringLevel;
 import net.iaeste.iws.persistence.Externable;
@@ -23,21 +23,7 @@ import net.iaeste.iws.persistence.entities.AbstractUpdateable;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -80,10 +66,10 @@ import java.util.Date;
                 query = "select og from OfferGroupEntity og " +
                         "where og.offer.externalId in :eoids" +
                         "  and og.group.id = :gid"),
-        @NamedQuery(name = "offerGroup.findUnexpiredByExternalOfferId",
-                query = "select og from OfferGroupEntity og " +
-                        "where og.offer.externalId = :eoid" +
-                        "  and og.offer.nominationDeadline >= :date"),
+//        @NamedQuery(name = "offerGroup.findUnexpiredByExternalOfferId",
+//                query = "select og from OfferGroupEntity og " +
+//                        "where og.offer.externalId = :eoid" +
+//                        "  and og.offer.nominationDeadline >= :date"),
         @NamedQuery(name = "offerGroup.deleteByOffer",
                 query = "delete from OfferGroupEntity og " +
                         "where og.offer.id = :oid"),
@@ -150,11 +136,11 @@ public final class OfferGroupEntity extends AbstractUpdateable<OfferGroupEntity>
     @Column(name = "comment", length = 500)
     private String comment = null;
 
-    @Monitored(name="Offer2Group status", level = MonitoringLevel.DETAILED)
-    @Enumerated(EnumType.STRING)
+//    @Monitored(name="Offer2Group status", level = MonitoringLevel.DETAILED)
+//    @Enumerated(EnumType.STRING)
     @Column(name = "status", length = 25)
     private OfferState status = OfferState.SHARED;
-
+//
     @Column(name = "has_application")
     private Boolean hasApplication = false;
 
@@ -285,14 +271,14 @@ public final class OfferGroupEntity extends AbstractUpdateable<OfferGroupEntity>
         return comment;
     }
 
-    public OfferState getStatus() {
-        return status;
-    }
-
-    public void setStatus(final OfferState status) {
-        this.status = status;
-    }
-
+//    public OfferState getStatus() {
+//        return status;
+//    }
+//
+//    public void setStatus(final OfferState status) {
+//        this.status = status;
+//    }
+//
     public void setModifiedBy(final UserEntity modifiedBy) {
         this.modifiedBy = modifiedBy;
     }

@@ -13,11 +13,9 @@
  * =============================================================================
  */
 package net.iaeste.iws.persistence.entities.exchange;
-
+//
 import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.api.enums.Currency;
-import net.iaeste.iws.api.enums.Language;
-import net.iaeste.iws.api.enums.MonitoringLevel;
+import net.iaeste.iws.api.enums.*;
 import net.iaeste.iws.api.enums.exchange.ExchangeType;
 import net.iaeste.iws.api.enums.exchange.LanguageLevel;
 import net.iaeste.iws.api.enums.exchange.LanguageOperator;
@@ -31,32 +29,18 @@ import net.iaeste.iws.common.notification.NotificationType;
 import net.iaeste.iws.persistence.Externable;
 import net.iaeste.iws.persistence.entities.AbstractUpdateable;
 import net.iaeste.iws.persistence.monitoring.Monitored;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+//
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.EnumMap;
-
-/**
+//
+/**--
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
- */
-@NamedQueries({
+ *///
+@NamedQueries( {
         @NamedQuery(name = "offer.findAllForGroup",
                 query = "select o from OfferEntity o " +
                         "where o.employer.group.id = :gid"),
@@ -105,7 +89,7 @@ import java.util.EnumMap;
 @Table(name = "offers")
 @Monitored(name = "Offer", level = MonitoringLevel.DETAILED)
 public final class OfferEntity extends AbstractUpdateable<OfferEntity> implements Externable<OfferEntity>, Notifiable {
-
+//
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
@@ -114,7 +98,7 @@ public final class OfferEntity extends AbstractUpdateable<OfferEntity> implement
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "pk_sequence")
     @Column(name = "id", unique = true, nullable = false, updatable = false)
     private Long id = null;
-
+//
     /**
      * The content of this Entity is exposed externally, however to avoid that
      * someone tries to spoof the system by second guessing our Sequence values,
@@ -135,7 +119,7 @@ public final class OfferEntity extends AbstractUpdateable<OfferEntity> implement
      */
     @Column(name = "ref_no", length = 16, nullable = false, unique = true)
     private String refNo = null;
-
+//
     @Monitored(name="Offer type", level = MonitoringLevel.DETAILED)
     @Enumerated(EnumType.STRING)
     @Column(name = "offer_type", length = 10, nullable = false)
@@ -169,12 +153,12 @@ public final class OfferEntity extends AbstractUpdateable<OfferEntity> implement
     @Monitored(name="Offer work description", level = MonitoringLevel.DETAILED)
     @Column(name = "work_description", length = 3000, nullable = false)
     private String workDescription = null;
-
+//
     @Monitored(name="Offer type of work", level = MonitoringLevel.DETAILED)
     @Enumerated(EnumType.STRING)
     @Column(name = "work_type", length = 1)
     private TypeOfWork typeOfWork = null;
-
+//
     @Monitored(name="Offer weekly hours", level = MonitoringLevel.DETAILED)
     @Column(name = "weekly_hours")
     private Float weeklyHours = null;
@@ -190,61 +174,61 @@ public final class OfferEntity extends AbstractUpdateable<OfferEntity> implement
     @Monitored(name="Offer study levels", level = MonitoringLevel.DETAILED)
     @Column(name = "study_levels", length = 25, nullable = false)
     private String studyLevels = null;
-
+//
     @Monitored(name="Offer study fields", level = MonitoringLevel.DETAILED)
     @Column(name = "study_fields", length = 1000, nullable = false)
     private String fieldOfStudies = null;
-
+//
     @Monitored(name="Offer specializations", level = MonitoringLevel.DETAILED)
     @Column(name = "specializations")
     private String specializations = null;
-
+//
     @Monitored(name="Offer previous training required", level = MonitoringLevel.DETAILED)
     @Column(name = "prev_training_req")
     private Boolean prevTrainingRequired = null;
-
+//
     @Monitored(name="Offer other requirements", level = MonitoringLevel.DETAILED)
     @Column(name = "other_requirements", length = 4000)
     private String otherRequirements = null;
-
+//
     @Monitored(name="Offer minimum weeks", level = MonitoringLevel.DETAILED)
     @Column(name = "min_weeks", nullable = false)
     private Integer minimumWeeks = null;
-
+//
     @Monitored(name="Offer maximum weeks", level = MonitoringLevel.DETAILED)
     @Column(name = "max_weeks", nullable = false)
     private Integer maximumWeeks = null;
-
+//
     @Monitored(name="Offer first from date", level = MonitoringLevel.DETAILED)
     @Temporal(TemporalType.DATE)
-    @Column(name = "from_date", nullable = false)
+    @Column(name = "from_date", nullable = false)//
     private Date fromDate = null;
-
+//
     @Monitored(name="Offer first too date", level = MonitoringLevel.DETAILED)
     @Temporal(TemporalType.DATE)
-    @Column(name = "to_date", nullable = false)
+    @Column(name = "to_date", nullable = false)//
     private Date toDate = null;
-
+//
     @Monitored(name="Offer second from date", level = MonitoringLevel.DETAILED)
     @Temporal(TemporalType.DATE)
     @Column(name = "from_date_2")
     private Date fromDate2 = null;
-
+//
     @Monitored(name="Offer second too date", level = MonitoringLevel.DETAILED)
     @Temporal(TemporalType.DATE)
     @Column(name = "to_date_2")
     private Date toDate2 = null;
-
+//
     @Monitored(name="Offer unavailable from date", level = MonitoringLevel.DETAILED)
     @Temporal(TemporalType.DATE)
-    @Column(name = "unavailable_from")
+    @Column(name = "unavailable_from")//
     private Date unavailableFrom = null;
-
+//
     @Monitored(name="Offer unavailable to date", level = MonitoringLevel.DETAILED)
     @Temporal(TemporalType.DATE)
-    @Column(name = "unavailable_to")
+    @Column(name = "unavailable_to")//
     private Date unavailableTo = null;
-
+//
     @Monitored(name="Offer language skill 1", level = MonitoringLevel.DETAILED)
     @Enumerated(EnumType.STRING)
     @Column(name = "language_1", length = 255, nullable = false)
@@ -275,11 +259,11 @@ public final class OfferEntity extends AbstractUpdateable<OfferEntity> implement
     @Enumerated(EnumType.STRING)
     @Column(name = "language_3", length = 255)
     private Language language3 = null;
-
+//
     @Enumerated(EnumType.STRING)
     @Column(name = "language_3_level", length = 1)
     private LanguageLevel language3Level = null;
-
+//
     /**
      * need big numbers, e.g. 1 EUR = 26.435,00 VND
      */
@@ -291,7 +275,7 @@ public final class OfferEntity extends AbstractUpdateable<OfferEntity> implement
     @Enumerated(EnumType.STRING)
     @Column(name = "payment_frequency", length = 10)
     private PaymentFrequency paymentFrequency = null;
-
+//
     @Monitored(name="Offer payment currency", level = MonitoringLevel.DETAILED)
     @Enumerated(EnumType.STRING)
     @Column(name = "currency", length = 3)
@@ -300,7 +284,7 @@ public final class OfferEntity extends AbstractUpdateable<OfferEntity> implement
     @Monitored(name="Offer payment deduction", level = MonitoringLevel.DETAILED)
     @Column(name = "deduction", length = 20)
     private String deduction = null;
-
+//
     @Monitored(name="Offer living cost", level = MonitoringLevel.DETAILED)
     @Column(name = "living_cost")
     private BigDecimal livingCost = null;
@@ -313,11 +297,11 @@ public final class OfferEntity extends AbstractUpdateable<OfferEntity> implement
     @Monitored(name="Offer lodging by", level = MonitoringLevel.DETAILED)
     @Column(name = "lodging_by", length = 255)
     private String lodgingBy = null;
-
+//
     @Monitored(name="Offer lodging cost", level = MonitoringLevel.DETAILED)
     @Column(name = "lodging_cost")
     private BigDecimal lodgingCost = null;
-
+//
     @Monitored(name="Offer lodging cost frequency", level = MonitoringLevel.DETAILED)
     @Enumerated(EnumType.STRING)
     @Column(name = "lodging_cost_frequency", length = 10)
@@ -345,14 +329,14 @@ public final class OfferEntity extends AbstractUpdateable<OfferEntity> implement
     @Column(name = "status", length = 25)
     private OfferState status = OfferState.NEW;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "modified", nullable = false)
-    private Date modified = new Date();
-
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "created", nullable = false)
-    private Date created = new Date();
-
+//    @Temporal(TemporalType.TIMESTAMP)
+//    @Column(name = "modified", nullable = false)
+//    private Date modified = new Date();
+//
+//    @Temporal(TemporalType.TIMESTAMP)
+//    @Column(name = "created", nullable = false)
+//    private Date created = new Date();
+//
     // =========================================================================
     // Entity Setters & Getters
     // =========================================================================
@@ -534,7 +518,7 @@ public final class OfferEntity extends AbstractUpdateable<OfferEntity> implement
     }
 
     public void setFromDate(final Date fromDate) {
-        this.fromDate = fromDate;
+//        this.fromDate = fromDate;
     }
 
     public Date getFromDate() {
@@ -644,11 +628,11 @@ public final class OfferEntity extends AbstractUpdateable<OfferEntity> implement
     public LanguageLevel getLanguage3Level() {
         return language3Level;
     }
-
+//
     public void setPayment(final BigDecimal payment) {
         this.payment = payment;
     }
-
+//
     public BigDecimal getPayment() {
         return payment;
     }
@@ -660,19 +644,19 @@ public final class OfferEntity extends AbstractUpdateable<OfferEntity> implement
     public PaymentFrequency getPaymentFrequency() {
         return paymentFrequency;
     }
-
+//
     public void setCurrency(final Currency currency) {
         this.currency = currency;
     }
-
+//
     public Currency getCurrency() {
         return currency;
     }
-
+//
     public void setDeduction(final String deduction) {
         this.deduction = deduction;
     }
-
+//
     public String getDeduction() {
         return deduction;
     }
@@ -680,59 +664,59 @@ public final class OfferEntity extends AbstractUpdateable<OfferEntity> implement
     public void setLivingCost(final BigDecimal livingCost) {
         this.livingCost = livingCost;
     }
-
+//
     public BigDecimal getLivingCost() {
         return livingCost;
     }
-
+//
     public void setLivingCostFrequency(final PaymentFrequency livingCostFrequency) {
         this.livingCostFrequency = livingCostFrequency;
     }
-
+//
     public PaymentFrequency getLivingCostFrequency() {
         return livingCostFrequency;
     }
-
+//
     public void setLodgingBy(final String lodgingBy) {
         this.lodgingBy = lodgingBy;
     }
-
+//
     public String getLodgingBy() {
         return lodgingBy;
     }
-
+//
     public void setLodgingCost(final BigDecimal lodgingCost) {
         this.lodgingCost = lodgingCost;
     }
-
+//
     public BigDecimal getLodgingCost() {
         return lodgingCost;
     }
-
+//
     public void setLodgingCostFrequency(final PaymentFrequency lodgingCostFrequency) {
         this.lodgingCostFrequency = lodgingCostFrequency;
     }
-
+//
     public PaymentFrequency getLodgingCostFrequency() {
         return lodgingCostFrequency;
     }
-
+//
     public void setNominationDeadline(final Date nominationDeadline) {
         this.nominationDeadline = nominationDeadline;
     }
-
+//
     public Date getNominationDeadline() {
         return nominationDeadline;
     }
-
+//
     public void setNumberOfHardCopies(final Integer numberOfHardCopies) {
         this.numberOfHardCopies = numberOfHardCopies;
     }
-
+//
     public Integer getNumberOfHardCopies() {
         return numberOfHardCopies;
     }
-
+//
     public void setAdditionalInformation(final String additionalInformation) {
         this.additionalInformation = additionalInformation;
     }
@@ -757,38 +741,38 @@ public final class OfferEntity extends AbstractUpdateable<OfferEntity> implement
         return status;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setModified(final Date modified) {
-        this.modified = modified;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Date getModified() {
-        return modified;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setCreated(final Date created) {
-        this.created = created;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Date getCreated() {
-        return created;
-    }
-
+//    /**
+//     * {@inheritDoc}
+//     */
+//    @Override
+//    public void setModified(final Date modified) {
+//        this.modified = modified;
+//    }
+//
+//    /**
+//     * {@inheritDoc}
+//     */
+//    @Override
+//    public Date getModified() {
+//        return modified;
+//    }
+//
+//    /**
+//     * {@inheritDoc}
+//     */
+//    @Override
+//    public void setCreated(final Date created) {
+//        this.created = created;
+//    }
+//
+//    /**
+//     * {@inheritDoc}
+//     */
+//    @Override
+//    public Date getCreated() {
+//        return created;
+//    }
+//
     // =========================================================================
     // Other Methods required for this Entity
     // =========================================================================
@@ -801,8 +785,8 @@ public final class OfferEntity extends AbstractUpdateable<OfferEntity> implement
         // Until properly implemented, better return true to avoid that we're
         // missing updates!
         return true;
-    }
-
+    }//
+//
     /**
      * {@inheritDoc}
      */
@@ -810,7 +794,7 @@ public final class OfferEntity extends AbstractUpdateable<OfferEntity> implement
     public void merge(final OfferEntity obj) {
         if (canMerge(obj)) {
             // Note, Id, ExternalId & refNo are *not* allowed to be updated!
-            // Also note, oldOfferId and oldRefNo are *not* allowed to be updated!
+            ////// Also note, oldOfferId and oldRefNo are *not* allowed to be updated!
             offerType = which(offerType, obj.offerType);
             exchangeType = which(exchangeType, obj.exchangeType);
 
@@ -866,8 +850,8 @@ public final class OfferEntity extends AbstractUpdateable<OfferEntity> implement
             // Omitting the Offer Status from the merge. The Status should never
             // be controlled externally, but rather internally as part of the
             // Exchange Process.
-        }
-    }
+        }//
+    }//
 
     /**
      * {@inheritDoc}
@@ -876,4 +860,4 @@ public final class OfferEntity extends AbstractUpdateable<OfferEntity> implement
     public EnumMap<NotificationField, String> prepareNotifiableFields(final NotificationType type) {
         return new EnumMap<>(NotificationField.class);
     }
-}
+}//

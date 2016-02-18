@@ -194,18 +194,10 @@ public final class ApplicationEntity extends AbstractUpdateable<ApplicationEntit
     @Column(name = "reject_internal_comment", length = 1000)
     private String rejectInternalComment = null;
 
-//    @OneToOne(targetEntity = StudentAcceptanceEntity.class)
-//    @JoinColumn(name = "acceptance", nullable = true)
-//    private StudentAcceptanceEntity acceptance = null;
-
-//    @OneToOne(targetEntity = StudentAcceptanceConfirmationEntity.class)
-//    @JoinColumn(name = "travel_information", nullable = true)
-//    private StudentAcceptanceConfirmationEntity travelInformation = null;
-
-    @Temporal(TemporalType.DATE)
-    @Column(name = "nominated_at", nullable = true)
-    private Date nominatedAt = null;
-
+//    @Temporal(TemporalType.DATE)
+//    @Column(name = "nominated_at", nullable = true)
+//    private Date nominatedAt = null;
+//
     /**
      * Last time the Entity was modified.
      */
@@ -504,14 +496,14 @@ public final class ApplicationEntity extends AbstractUpdateable<ApplicationEntit
         return rejectInternalComment;
     }
 
-    public void setNominatedAt(final Date nominatedAt) {
-        this.nominatedAt = nominatedAt;
-    }
-
-    public Date getNominatedAt() {
-        return nominatedAt;
-    }
-
+//    public void setNominatedAt(final Date nominatedAt) {
+//        this.nominatedAt = nominatedAt;
+//    }
+//
+//    public Date getNominatedAt() {
+//        return nominatedAt;
+//    }
+//
     /**
      * {@inheritDoc}
      */

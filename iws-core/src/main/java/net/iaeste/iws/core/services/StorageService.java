@@ -79,7 +79,7 @@ public final class StorageService extends CommonService<AccessDao> {
     //   Note; JPA Prefers Named Queries over Dynamic Queries - since Named
     // Queries can be better Cached. Criteria Queries is a more type-safe way to
     // do things, but it makes the code loads harder to read and understand - so
-    // we're discouraging the usage thereof. Also because modern IDE's like
+    // we're discouraging the usage thereof. Also because modern IDEs like
     // IntelliJ is capable at parsing and reading the Named and Dynamic Queries
     // and thus ensuring that they're not containing mistakes.
     private final EntityManager entityManager;
@@ -233,10 +233,14 @@ public final class StorageService extends CommonService<AccessDao> {
         response.setFolder(folder);
 
         // Read and set the sub Folders
-        folder.setFolders(StorageTransformer.transformFolders(readFolders(authentication, folderEntity)));
+        final List<FolderEntity> folderEntitiess = readFolders(authentication, folderEntity);
+        final List<Folder> folders = StorageTransformer.transformFolders(folderEntitiess);
+        folder.setFolders(folders);
 
         // Read and set the Files belonging to the Folder
-        folder.setFiles(StorageTransformer.transformFiles(readFiles(authentication, folderEntity)));
+        final List<FileEntity> fileEntities = readFiles(authentication, folderEntity);
+        final List<File> files = StorageTransformer.transformFiles(fileEntities);
+        folder.setFiles(files);
 
         // That's it - we're done
         return response;
@@ -246,7 +250,7 @@ public final class StorageService extends CommonService<AccessDao> {
         // Next step, we're retrieving the Folder hierarchy from the Database,
         // based on the Folder Id from the Request, or if none were set in the
         // Request, we're just using the Root folder Id
-        final String folderId = externalFolderId == null ? ROOT_FOLDER_EID : externalFolderId;
+        final String folderId = (externalFolderId == null) ? ROOT_FOLDER_EID : externalFolderId;
         LOG.debug(formatLogMessage(authentication, "Reading the Folder with Id {}.", folderId));
 
         // Before continuing, we have to verify that the User is permitted to
@@ -262,7 +266,7 @@ public final class StorageService extends CommonService<AccessDao> {
         // User is permitted to read the Folder.
         if (folders.isEmpty()) {
             // Simple error case, the User have requested a not existing Folder.
-            throw new IdentificationException("No Folders were found, matching the Id " + externalFolderId + ".");
+            throw new IdentificationException("No Folders were found, matching the Id " + externalFolderId + '.');
         } else if (!ROOT_FOLDER_EID.equals(folders.get(folders.size() - 1).getExternalId())) {
             // Very strange error case. The last Folder in the Structure should
             // be the Root folder, if not - then it is an error case, since we
@@ -286,9 +290,7 @@ public final class StorageService extends CommonService<AccessDao> {
         // in comparison. So we start by checking if the Folder is Public
         // and that all Folders in the tree are also Public. If that is the case,
         // then we don't need to make any further checks.
-        boolean isGroupPublic = isFolderPublic(folders);
-
-        if (!isGroupPublic) {
+        if (isFolderPrivate(folders)) {
             // If the Folder is not Public, then we need to check the user
             // permissions, meaning that we have to verify that the User is a
             // member of the Group, which the Folder belongs to.
@@ -298,7 +300,7 @@ public final class StorageService extends CommonService<AccessDao> {
         }
     }
 
-    private static boolean isFolderPublic(final List<FolderEntity> folders) {
+    private static boolean isFolderPrivate(final List<FolderEntity> folders) {
         boolean isGroupPublic = true;
 
         for (final FolderEntity folder : folders) {
@@ -309,7 +311,7 @@ public final class StorageService extends CommonService<AccessDao> {
             }
         }
 
-        return isGroupPublic;
+        return !isGroupPublic;
     }
 
     private boolean isUserGroupMember(final Authentication authentication, final List<FolderEntity> folders) {
@@ -338,11 +340,9 @@ public final class StorageService extends CommonService<AccessDao> {
             response = new FileResponse();
         } else {
             final String folderId = request.getFile().getFolderId();
-            final FolderEntity folderEntity;
+            FolderEntity folderEntity = null;
 
-            if (folderId == null) {
-                folderEntity = null;
-            } else {
+            if (folderId != null) {
                 folderEntity = findFolders(folderId).get(0);
             }
 
@@ -356,33 +356,36 @@ public final class StorageService extends CommonService<AccessDao> {
 
     public FetchFileResponse fetchFile(final Authentication authentication, final FetchFileRequest request) {
         final String externalGroupId = request.getGroupId();
-        final StorageType type = request.getType();
         final FileEntity entity;
         final File file;
 
-        if (type == StorageType.OWNER) {
-            if (externalGroupId == null) {
-                entity = dao.findFileByUserAndExternalId(authentication.getUser(), request.getFileId());
-            } else {
-                // Check if the user is permitted to fetch files for the group, if
-                // not then the method will thrown an Exception
-                final GroupEntity group = dao.findGroupByPermission(authentication.getUser(), externalGroupId, Permission.FETCH_FILE);
+        switch (request.getType()) {
+            case OWNER:
+                if (externalGroupId == null) {
+                    entity = dao.findFileByUserAndExternalId(authentication.getUser(), request.getFileId());
+                } else {
+                    // Check if the user is permitted to fetch files for the group, if
+                    // not then the method will thrown an Exception
+                    final GroupEntity group = dao.findGroupByPermission(authentication.getUser(), externalGroupId, Permission.FETCH_FILE);
 
-                // Read the allowed file
-                entity = dao.findFileByUserGroupAndExternalId(authentication.getUser(), group, request.getFileId());
-            }
-        } else if (type == StorageType.FOLDER) {
-            FileEntity toCheck = readFile(request.getFileId());
-            final List<UserGroupEntity> u2gList = dao.findAllUserGroups(authentication.getUser());
-            entity = checkFile(authentication, toCheck, u2gList);
+                    // Read the allowed file
+                    entity = dao.findFileByUserGroupAndExternalId(authentication.getUser(), group, request.getFileId());
+                }
+                break;
+            case FOLDER:
+                final FileEntity toCheck = readFile(request.getFileId());
+                final List<UserGroupEntity> u2gList = dao.findAllUserGroups(authentication.getUser());
+                entity = checkFile(authentication, toCheck, u2gList);
 
-            // Just to ensure that the data is read out during transformation below
-            request.setReadFileData(true);
-        } else if (type == StorageType.ATTACHED_TO_APPLICATION) {
-            entity = dao.findAttachedFile(request.getFileId(), externalGroupId, type);
-        } else {
-            // Just in case...
-            throw new UnsupportedOperationException("This operation is not implemented.");
+                // Just to ensure that the data is read out during transformation below
+                request.setReadFileData(true);
+                break;
+            case ATTACHED_TO_APPLICATION:
+                entity = dao.findAttachedFile(request.getFileId(), externalGroupId, StorageType.ATTACHED_TO_APPLICATION);
+                break;
+            default:
+                // Just in case...
+                throw new UnsupportedOperationException("This operation is not implemented.");
         }
 
         file = transform(entity);
@@ -391,63 +394,6 @@ public final class StorageService extends CommonService<AccessDao> {
         }
 
         return new FetchFileResponse(file);
-    }
-
-    // =========================================================================
-    //  Internal Helper Methods
-    // =========================================================================
-
-    /**
-     * Reads out a list of Sub-folders for a given Folder. All folders belonging
-     * to the current User can be read, as can all folders which belong Groups
-     * with Public folders.
-     *
-     * @param authentication User Authentication information
-     * @param folder  Parent Folder to find sub folders for
-     * @return Folder List
-     */
-    private List<FolderEntity> readFolders(final Authentication authentication, final FolderEntity folder) {
-        final String jql =
-                "select f FROM FolderEntity f " +
-                "where f.parentId = :pid" +
-                "  and ((f.group.groupType.folderType = '" + GroupType.FolderType.Public + "'" +
-                "    and f.privacy = '" + Privacy.PUBLIC + "')" +
-                "  or (f.group.id in (" +
-                "      select u2g.group.id" +
-                "      from UserGroupEntity u2g" +
-                "      where u2g.user.id = :uid)))";
-        final Query query = entityManager.createQuery(jql);
-        query.setParameter("uid", authentication.getUser().getId());
-        query.setParameter("pid", folder.getId());
-
-        return query.getResultList();
-    }
-
-    /**
-     * Reads out the list of Files for a given Folder. The method is making the
-     * assumption that the folder is one that the user is allowed to read. I.e.
-     * that it is either a public folder (via GroupType) or a folder belonging
-     * to a Group, which the user is a member of.
-     *
-     * @param authentication User Authentication Information
-     * @param folder         Folder to read the content of
-     * @return List of Files to be shown
-     */
-    private List<FileEntity> readFiles(final Authentication authentication, final FolderEntity folder) {
-        final String jql =
-                "select f FROM FileEntity f " +
-                "where f.folder.id = :fid" +
-                "  and ((f.group.groupType.folderType = '" + GroupType.FolderType.Public + "'" +
-                "    and f.privacy = '" + Privacy.PUBLIC + "')" +
-                "  or (f.group.id in (" +
-                "      select u2g.group.id" +
-                "      from UserGroupEntity u2g" +
-                "      where u2g.user.id = :uid)))";
-        final Query query = entityManager.createQuery(jql);
-        query.setParameter("uid", authentication.getUser().getId());
-        query.setParameter("fid", folder.getId());
-
-        return query.getResultList();
     }
 
     /**
@@ -479,7 +425,7 @@ public final class StorageService extends CommonService<AccessDao> {
      * @param u2gList        User Group Relations
      * @return Found file or null
      */
-    private FileEntity checkFile(final Authentication authentication, final FileEntity entity, final List<UserGroupEntity> u2gList) {
+    private static FileEntity checkFile(final Authentication authentication, final FileEntity entity, final List<UserGroupEntity> u2gList) {
         FileEntity file = null;
 
         if (entity != null) {
@@ -513,7 +459,7 @@ public final class StorageService extends CommonService<AccessDao> {
                     if (entity.getFolder() != null) {
                         // check that the file belongs to a Group with a public Folder.
                         final GroupType.FolderType folderType = entity.getFolder().getGroup().getGroupType().getFolderType();
-                        if (folderType == GroupType.FolderType.Public) {
+                        if (folderType == GroupType.FolderType.PUBLIC) {
                             file = entity;
                         }
                     }
@@ -541,6 +487,62 @@ public final class StorageService extends CommonService<AccessDao> {
         return folders;
     }
 
+    /**
+     * Reads out a list of Sub-folders for a given Folder. All folders belonging
+     * to the current User can be read, as can all folders which belong Groups
+     * with Public folders.
+     *
+     * @param authentication User Authentication information
+     * @param folder  Parent Folder to find sub folders for
+     * @return Folder List
+     */
+    private List<FolderEntity> readFolders(final Authentication authentication, final FolderEntity folder) {
+        final String jql =
+                "select f FROM FolderEntity f " +
+                "where f.parentId = :pid" +
+                "  and (" +
+                "    (f.group.groupType.folderType = :type" +
+                "      and f.privacy = :privacy)" +
+                "    or (f.group.id in (" +
+                "      select u2g.group.id" +
+                "      from UserGroupEntity u2g" +
+                "      where u2g.user.id = :uid)))";
+        final Query query = entityManager.createQuery(jql);
+        query.setParameter("type", GroupType.FolderType.PUBLIC);
+        query.setParameter("privacy", Privacy.PUBLIC);
+        query.setParameter("uid", authentication.getUser().getId());
+        query.setParameter("pid", folder.getId());
+
+        return query.getResultList();
+    }
+
+    /**
+     * Reads out the list of Files for a given Folder. The method is making the
+     * assumption that the folder is one that the user is allowed to read. I.e.
+     * that it is either a public folder (via GroupType) or a folder belonging
+     * to a Group, which the user is a member of.
+     *
+     * @param authentication User Authentication Information
+     * @param folder         Folder to read the content of
+     * @return List of Files to be shown
+     */
+    private List<FileEntity> readFiles(final Authentication authentication, final FolderEntity folder) {
+        final String jql =
+                "select f FROM FileEntity f " +
+                "where f.folder.id = :fid" +
+                "  and ((f.group.groupType.folderType = '" + GroupType.FolderType.PUBLIC + '\'' +
+                "    and f.privacy = '" + Privacy.PUBLIC + "')" +
+                "  or (f.group.id in (" +
+                "      select u2g.group.id" +
+                "      from UserGroupEntity u2g" +
+                "      where u2g.user.id = :uid)))";
+        final Query query = entityManager.createQuery(jql);
+        query.setParameter("uid", authentication.getUser().getId());
+        query.setParameter("fid", folder.getId());
+
+        return query.getResultList();
+    }
+
     private FolderEntity findRootFolder() {
         final String jql =
                 "select f from FolderEntity f " +
@@ -554,8 +556,8 @@ public final class StorageService extends CommonService<AccessDao> {
     private FolderEntity findParentFolder(final String parentId, final GroupEntity group) {
         final String jql =
                 "select f from FolderEntity f " +
-                        "where f.id = :fid" +
-                        "  and f.group.id = :gid";
+                "where f.id = :fid" +
+                "  and f.group.id = :gid";
         final Query query = entityManager.createQuery(jql);
         query.setParameter("fid", parentId);
         query.setParameter("gid", group.getId());
@@ -566,8 +568,8 @@ public final class StorageService extends CommonService<AccessDao> {
     private FolderEntity findRootFolder(final Group group) {
         final String jql =
                 "select f from FolderEntity f " +
-                        "where f.group.parentId is null" +
-                        "  and f.group.externalId = :egid";
+                "where f.group.parentId is null" +
+                "  and f.group.externalId = :egid";
         final Query query = entityManager.createQuery(jql);
         query.setParameter("egid", group.getGroupId());
 
@@ -591,7 +593,7 @@ public final class StorageService extends CommonService<AccessDao> {
         // over them to see if the user is allowed to see the folder or not
         final String jql =
                 "select f from FolderEntity f " +
-                        "where f.parentId = :pid";
+                "where f.parentId = :pid";
         final Query query = entityManager.createQuery(jql);
         query.setParameter("pid", parentFolder.getId());
 
@@ -615,7 +617,7 @@ public final class StorageService extends CommonService<AccessDao> {
     private FileEntity readFile(final String externalFileId) {
         final String jql =
                 "select f from FileEntity f " +
-                        "where f.id = :efid";
+                "where f.id = :efid";
         final Query query = entityManager.createQuery(jql);
         query.setParameter("efid", externalFileId);
 
@@ -666,7 +668,11 @@ public final class StorageService extends CommonService<AccessDao> {
         if (ids.isEmpty()) {
             folders = new ArrayList<>(0);
         } else {
-            final String jql = "select f from FolderEntity f where f.id in :ids order by f.id desc";
+            final String jql =
+                    "select f " +
+                    "from FolderEntity f " +
+                    "where f.id in :ids " +
+                    "order by f.id desc";
             final Query query = entityManager.createQuery(jql);
             query.setParameter("ids", ids);
 
@@ -716,22 +722,20 @@ public final class StorageService extends CommonService<AccessDao> {
         return toLong(nativeQuery.getResultList());
     }
 
-    private <T extends IWSEntity> T getSingleResultWithException(final Query query, final String name) {
+    private static <T extends IWSEntity> T getSingleResultWithException(final Query query, final String name) {
         final List<T> found = query.getResultList();
-        final T entity;
+        T entity = null;
 
-        if (found.isEmpty()) {
-            entity = null;
-        } else if (found.size() == 1) {
+        if (found.size() == 1) {
             entity = found.get(0);
-        } else {
+        } else if (found.size() > 1){
             throw new StorageException("Could not uniquely identify the " + name + " by its Id.");
         }
 
         return entity;
     }
 
-    private List<Long> toLong(final List<Integer> integers) {
+    private static List<Long> toLong(final List<Integer> integers) {
         final List<Long> longs = new ArrayList<>(integers.size());
 
         for (final Integer id : integers) {

@@ -14,11 +14,15 @@
  */
 package net.iaeste.iws.client;
 
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 import net.iaeste.iws.api.Storage;
+import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
+import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.dtos.File;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.enums.Action;
@@ -38,53 +42,145 @@ import java.nio.charset.Charset;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
+@Ignore
 public final class StorageTest extends AbstractTest {
 
     private final Storage storage = new StorageClient();
 
-    //--  Root EId: "afec3bc0-296b-4bf2-8a9e-c2d7b74e93a0"
-    //--    - Board Minutes PUBLIC                 EId: "6adc3bac-c85c-4dfa-b9d8-3d9b848314af"
-    //--       - AC PUBLIC                         EId: "c9bde21a-011e-42e4-8985-b1da95c0fbdf"
-    //--          - 2014 PUBLIC                    EId: "af0a0c34-7037-4153-a707-65a1ed0b380b"
-    //--       - Finances PROTECTED                EId: "b54a005d-d9cd-4456-9263-7ab3833ab303"
-    //--          - 2014 PUBLIC                    EId: "4126e3c4-2e79-4ee1-a73f-a3ab5f9e52a5"
-    //--          - 2015 PROTECTED                 EId: "9dd06a36-4e02-4a7d-9a46-da78648eaaae"
-    //--    - SID 2014 PUBLIC                      EId: "d8d6d7eb-754a-4e3b-8d4d-7657339096d1"
-    //--       - Administration PUBLIC             EId: "01749318-9f20-4369-bd05-555c18e643ad"
-    //--       - IWUG PUBLIC                       EId: "888f6c83-fcae-4e4a-9f8c-4fb02c2ec8e2"
-    //--    - SID 2015 PROTECTED                   EId: "60ba5c47-3dce-41a1-94f9-e0dafe2f717a"
-    //--       - Administration PUBLIC             EId: "a4fa7715-3a10-470f-8538-e8ee13666819"
-    //--       - IWUG PUBLIC                       EId: "f50bed53-7295-4b91-8746-78136df0a189"
-    //--    - NC Tunisia Travel Documents PUBLIC   EId: "94a6d74f-c510-4302-83fd-cd79ea8a4c9a"
-    //--       - 2015 PUBLIC                       EId: "b0ed8121-f359-4bc5-8ce8-bc5c4a7de536"
-    //--          - EU PUBLIC                      EId: "ed5e0487-0605-428d-b40c-78e88df85d8d"
-    //--          - Other PUBLIC                   EId: "0328281b-cf80-4c7a-8ad7-04721eaa45aa"
-    //--       - 2014 PROTECTED                    EId: "df7a45f5-2aed-4529-a527-488ad538e03a"
-    //--          - EU PUBLIC                      EId: "30a460be-641e-4cb9-a336-5eab00c19c3a"
-    //--          - Other PUBLIC                   EId: "bb7953a8-8b7a-43a2-84fe-dca74291abd3"
-    //--
+    // Below is a list of our test folders, with the first word describing if
+    // the folder is expected to be public, protected or mixed, meaning that
+    // the end folder is public, but there's a protected folder in the path.
+    //   The rest of the name is the name of the Folder Names with Path, where
+    // each path of the name represent a folder.
+    private static final String ROOT = null;
+    private static final String PUBLIC_BOARD = "6adc3bac-c85c-4dfa-b9d8-3d9b848314af";
+    private static final String PUBLIC_BOARD_AC = "c9bde21a-011e-42e4-8985-b1da95c0fbdf";
+    private static final String PUBLIC_BOARD_AC_2014 = "af0a0c34-7037-4153-a707-65a1ed0b380b";
+    private static final String PROTECTED_BOARD_FINANCES = "b54a005d-d9cd-4456-9263-7ab3833ab303";
+    private static final String MIXED_BOARD_FINANCES_2014 = "4126e3c4-2e79-4ee1-a73f-a3ab5f9e52a5";
+    private static final String PROTECTED_BOARD_FINANCES_2015 = "9dd06a36-4e02-4a7d-9a46-da78648eaaae";
+    private static final String PUBLIC_SID_2014 = "d8d6d7eb-754a-4e3b-8d4d-7657339096d1";
+    private static final String PUBLIC_SID_2014_ADMINISTRATION = "01749318-9f20-4369-bd05-555c18e643ad";
+    private static final String PUBLIC_SID_2014_IWUG = "888f6c83-fcae-4e4a-9f8c-4fb02c2ec8e2";
+    private static final String PROTECTED_SID_2015 = "60ba5c47-3dce-41a1-94f9-e0dafe2f717a";
+    private static final String MIXED_SID_2015_ADMINISTRATION = "a4fa7715-3a10-470f-8538-e8ee13666819";
+    private static final String MIXED_SID_2015_IWUG = "f50bed53-7295-4b91-8746-78136df0a189";
+    private static final String PUBLIC_TUNISIA = "94a6d74f-c510-4302-83fd-cd79ea8a4c9a";
+    private static final String PUBLIC_TUNISIA_2015 = "b0ed8121-f359-4bc5-8ce8-bc5c4a7de536";
+    private static final String PUBLIC_TUNISIA_2015_EU = "ed5e0487-0605-428d-b40c-78e88df85d8d";
+    private static final String PUBLIC_TUNISIA_2015_OTHER = "0328281b-cf80-4c7a-8ad7-04721eaa45aa";
+    private static final String PROTECTED_TUNISIA_2014 = "df7a45f5-2aed-4529-a527-488ad538e03a";
+    private static final String MIXED_TUNISIA_2014_EU = "30a460be-641e-4cb9-a336-5eab00c19c3a";
+    private static final String MIXED_TUNISIA_2014_OTHER = "bb7953a8-8b7a-43a2-84fe-dca74291abd3";
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setup() {
-        token = login("finland@iaeste.fi", "finland");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void tearDown() {
         logout(token);
     }
 
+    // =========================================================================
+    // The actual Storage tests
+    // =========================================================================
+
+    /**
+     * <p>First simple test, try to read the Root folder, i.e. no folder given.
+     * As an arbitrary member, which should only reveal all the public folders
+     * shared there.</p>
+     *
+     * <p>IAESTE Tunisia have both a published and protected folder, and as a
+     * non-Tunisian member, we should only be able to read the published
+     * folder.</p>
+     */
     @Test
-    public void testReadingFolders() {
-        final FetchFolderRequest request = new FetchFolderRequest();
+    public void testReadingRootFolder() {
+        token = login("finland@iaeste.fi", "finland");
+        final FetchFolderRequest request = new FetchFolderRequest(ROOT);
         final FetchFolderResponse response = storage.fetchFolder(token, request);
+
+        // Standard check, we assume that everything is ok.
         assertThat(response.isOk(), is(true));
-        assertThat(response.getFolder().getFolders().size(), is(2));
+        assertThat(response.getError(), is(IWSErrors.SUCCESS));
+        assertThat(response.getMessage(), is(IWSConstants.SUCCESS));
+
+        // Now, let's check that we have a folder with content
+        assertThat(response.getFolder(), is(not(nullValue())));
+        assertThat(response.getFolder().getFolders().size(), is(3));
+        assertThat(response.getFolder().getFiles().size(), is(0));
+    }
+
+    /**
+     * <p>This is the second test to read the root folder, this time as a
+     * member of IAESTE Tunisia, who have a protected folder. So we expect
+     * that the list of Folders will also contain this.</p>
+     */
+    @Test
+    public void testReadingRootFolderAsSharingNS() {
+        token = login("tunisia@iaeste.tn", "tunisia");
+        final FetchFolderRequest request = new FetchFolderRequest(ROOT);
+        final FetchFolderResponse response = storage.fetchFolder(token, request);
+
+        // Standard check, we assume that everything is ok.
+        assertThat(response.isOk(), is(true));
+        assertThat(response.getError(), is(IWSErrors.SUCCESS));
+        assertThat(response.getMessage(), is(IWSConstants.SUCCESS));
+
+        // Now, let's check that we have a folder with content
+        assertThat(response.getFolder(), is(not(nullValue())));
+        assertThat(response.getFolder().getFolders().size(), is(4));
+        assertThat(response.getFolder().getFiles().size(), is(0));
+    }
+
+    /**
+     * <p>The Board have a published folder, which contain both minutes and
+     * finance data. The finance data is protected, so reading the published
+     * Board folder as a non-Board member should only give a single folder
+     * back.</p>
+     */
+    @Test
+    public void testReadingBoardFolder() {
+        token = login("finland@iaeste.fi", "finland");
+        final FetchFolderRequest request = new FetchFolderRequest(PUBLIC_BOARD);
+        final FetchFolderResponse response = storage.fetchFolder(token, request);
+
+        // Standard check, we assume that everything is ok.
+        assertThat(response.isOk(), is(true));
+        assertThat(response.getError(), is(IWSErrors.SUCCESS));
+        assertThat(response.getMessage(), is(IWSConstants.SUCCESS));
+
+        // Now, let's check that we have a folder with content
+        assertThat(response.getFolder(), is(not(nullValue())));
+        assertThat(response.getFolder().getFolders().size(), is(1));
         assertThat(response.getFolder().getFiles().size(), is(0));
     }
 
     @Test
-    @Ignore
+    public void testReadingBoardFolderAsBoardMember() {
+        token = login("australia@iaeste.au", "australia");
+        final FetchFolderRequest request = new FetchFolderRequest(PUBLIC_BOARD);
+        final FetchFolderResponse response = storage.fetchFolder(token, request);
+
+        // Standard check, we assume that everything is ok.
+        assertThat(response.isOk(), is(true));
+        assertThat(response.getError(), is(IWSErrors.SUCCESS));
+        assertThat(response.getMessage(), is(IWSConstants.SUCCESS));
+
+        // Now, let's check that we have a folder with content
+        assertThat(response.getFolder(), is(not(nullValue())));
+        assertThat(response.getFolder().getFolders().size(), is(3));
+        assertThat(response.getFolder().getFiles().size(), is(0));
+    }
+
+    @Test
     public void testReadingIWUGFolder() {
         // The SID IWUG Folder have Id: 888f6c83-fcae-4e4a-9f8c-4fb02c2ec8e2
         // Contain zero sub folders and 1 file
@@ -98,6 +194,26 @@ public final class StorageTest extends AbstractTest {
     }
 
     @Test
+    public void testReadingRootFolderAsBoard() {
+        final AuthenticationToken tunisia = login("tunisia@iaeste.tn", "tunisia");
+        final FetchFolderRequest request = new FetchFolderRequest(ROOT);
+        final FetchFolderResponse response = storage.fetchFolder(tunisia, request);
+
+        // Standard check, we assume that everything is ok.
+        assertThat(response.isOk(), is(true));
+        assertThat(response.getError(), is(IWSErrors.SUCCESS));
+        assertThat(response.getMessage(), is(IWSConstants.SUCCESS));
+
+        // Now, let's check that we have a folder with content
+        assertThat(response.getFolder(), is(not(nullValue())));
+        assertThat(response.getFolder().getFolders().size(), is(4));
+        assertThat(response.getFolder().getFiles().size(), is(0));
+
+        logout(tunisia);
+    }
+
+    @Test
+    @Ignore
     public void testStoreFetchUpdateDeleteFile() {
         // First generate a primitive file to store.
         final byte[] testData1 = { (byte) 1, (byte) 2, (byte) 3, (byte) 4, (byte) 5,

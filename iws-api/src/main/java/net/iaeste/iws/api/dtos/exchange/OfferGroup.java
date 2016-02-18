@@ -15,7 +15,7 @@
 package net.iaeste.iws.api.dtos.exchange;
 
 import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.api.enums.exchange.OfferState;//
+import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.api.util.AbstractVerification;
 import net.iaeste.iws.api.util.DateTime;
 
@@ -120,12 +120,12 @@ public final class OfferGroup extends AbstractVerification {
     public void setStatus(final OfferState status) throws IllegalArgumentException {
         ensureNotNull("status", status);
         this.status = status;
-    }//
-//
+    }
+
     public OfferState getStatus() {
         return status;
-    }//
-//
+    }
+
     public void setComment(final String comment) {
         ensureNotTooLong("comment", comment, 500);
         this.comment = comment;

@@ -17,7 +17,7 @@ package net.iaeste.iws.api.dtos.exchange;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.util.AbstractVerification;
 import net.iaeste.iws.api.util.Date;
-import net.iaeste.iws.api.util.DatePeriod;//
+import net.iaeste.iws.api.util.DatePeriod;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -75,8 +75,8 @@ public final class StudentAcceptance extends AbstractVerification {
             workingPlace = studentAcceptance.workingPlace;
             contactPerson = studentAcceptance.contactPerson;
             contactPersonEmail = studentAcceptance.contactPersonEmail;
-            contactPersonPhone = studentAcceptance.contactPersonPhone;//
-            confirmedPeriod = studentAcceptance.confirmedPeriod;//
+            contactPersonPhone = studentAcceptance.contactPersonPhone;
+            confirmedPeriod = studentAcceptance.confirmedPeriod;
             additionalInformation = studentAcceptance.additionalInformation;
         }
     }
@@ -138,22 +138,22 @@ public final class StudentAcceptance extends AbstractVerification {
         return contactPersonEmail;
     }
 
-    public void setContactPersonPhone(final String contactPersonPhone) {//
-        this.contactPersonPhone = contactPersonPhone;//
-    }//
-//
-    public String getContactPersonPhone() {//
-        return contactPersonPhone;//
-    }//
-//
-    public void setConfirmedPeriod(final DatePeriod confirmedPeriod) {//
-        this.confirmedPeriod = new DatePeriod(confirmedPeriod);//
-    }///
-//
-    public DatePeriod getConfirmedPeriod() {//
-        return new DatePeriod(confirmedPeriod);//
-    }//
-//
+    public void setContactPersonPhone(final String contactPersonPhone) {
+        this.contactPersonPhone = contactPersonPhone;
+    }
+
+    public String getContactPersonPhone() {
+        return contactPersonPhone;
+    }
+
+    public void setConfirmedPeriod(final DatePeriod confirmedPeriod) {
+        this.confirmedPeriod = new DatePeriod(confirmedPeriod);
+    }
+
+    public DatePeriod getConfirmedPeriod() {
+        return new DatePeriod(confirmedPeriod);
+    }
+
     public void setAdditionalInformation(final String additionalInformation) {
         this.additionalInformation = additionalInformation;
     }

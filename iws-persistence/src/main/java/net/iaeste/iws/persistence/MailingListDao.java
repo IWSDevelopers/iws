@@ -147,6 +147,8 @@ public interface MailingListDao extends BasicDao {
 
     int activatePrivateMailinglistSubscriptions();
     int activatePublicMailinglistSubscriptions();
+    int addWritePermission();
+    int removeWritePermission();
     int suspendPrivateMailinglistSubscriptions();
     int suspendPublicMailinglistSubscriptions();
     int deleteDeprecatedMailinglistSubscriptions();

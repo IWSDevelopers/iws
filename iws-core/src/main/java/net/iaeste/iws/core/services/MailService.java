@@ -178,9 +178,12 @@ public final class MailService extends CommonService<MailingListDao> {
         final int activatedPublicSubscriptions = dao.activatePublicMailinglistSubscriptions();
         final int suspendedPublicSubscriptions = dao.suspendPublicMailinglistSubscriptions();
         final int suspendedPrivateSubscriptions = dao.suspendPrivateMailinglistSubscriptions();
+        final int addedWritingRights = dao.addWritePermission();
+        final int removedWritingRights = dao.removeWritePermission();
+
         final int activatedSubscriptions = activatedPrivateSubscriptions + activatedPublicSubscriptions;
         final int suspendedSubscriptions = suspendedPrivateSubscriptions + suspendedPublicSubscriptions;
-        LOG.info("Update Mailing List Subscriptions; Activated {}, Suspended {} and Deleted {}.", activatedSubscriptions, suspendedSubscriptions, deletedSubscriptions);
+        LOG.info("Update Mailing List Subscriptions; Activated {}, Write {}, Read {}, Suspended {} and Deleted {}.", activatedSubscriptions, addedWritingRights, removedWritingRights, suspendedSubscriptions, deletedSubscriptions);
 
         final int updatedAddress = dao.updateSubscribedAddress();
         LOG.info("Updated {} Subscriptions, where the username was changed.", updatedAddress);

@@ -365,6 +365,48 @@ public final class MailingListJpaDao extends BasicJpaDao implements MailingListD
      * {@inheritDoc}
      */
     @Override
+    public int addWritePermission() {
+        final String jql =
+                "update UserMailinglistEntity set" +
+                "   mayWrite = true," +
+                "   modified = current_timestamp " +
+                "where userGroup.id in (" +
+                "    select s.userGroup.id" +
+                "    from UserMailinglistEntity s" +
+                "    where s.mailinglist.listType = :type" +
+                "      and s.mayWrite = false" +
+                "      and s.userGroup.writeToPrivateList = true)";
+        final Query query = entityManager.createQuery(jql);
+        query.setParameter("type", MailinglistType.PRIVATE_LIST);
+
+        return query.executeUpdate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int removeWritePermission() {
+        final String jql =
+                "update UserMailinglistEntity set" +
+                "   mayWrite = false," +
+                "   modified = current_timestamp " +
+                "where userGroup.id in (" +
+                "    select s.userGroup.id" +
+                "    from UserMailinglistEntity s" +
+                "    where s.mailinglist.listType = :type" +
+                "      and s.mayWrite = true" +
+                "      and s.userGroup.writeToPrivateList = false)";
+        final Query query = entityManager.createQuery(jql);
+        query.setParameter("type", MailinglistType.PRIVATE_LIST);
+
+        return query.executeUpdate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public int suspendPrivateMailinglistSubscriptions() {
         final String jql =
                 "update UserMailinglistEntity set" +

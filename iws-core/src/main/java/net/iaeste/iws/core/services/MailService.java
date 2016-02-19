@@ -114,7 +114,8 @@ public final class MailService extends CommonService<MailingListDao> {
         final List<AliasEntity> aliases = dao.findAliases();
 
         for (final AliasEntity alias : aliases) {
-            final MailinglistEntity found = dao.findMailingList(alias.getAliasAddress());
+            final String address = alias.getAliasAddress() + '@' + settings.getPublicMailAddress();
+            final MailinglistEntity found = dao.findMailingList(address);
 
             if ((alias.getExpires() != null) && alias.getExpires().after(new Date())) {
                 if (found != null) {
@@ -129,11 +130,11 @@ public final class MailService extends CommonService<MailingListDao> {
                     entity.setMailReply(MailReply.REPLY_TO_SENDER);
                     entity.setStatus(GroupStatus.ACTIVE);
                     entity.setGroup(alias.getGroup());
-                    entity.setListAddress(alias.getAliasAddress() + '@' + settings.getPublicMailAddress());
+                    entity.setListAddress(address);
                     entity.setSubjectPrefix(alias.getGroup().getGroupName());
 
                     dao.persist(authentication, entity);
-                    LOG.info("Alias {} created for {}.", alias.getAliasAddress(), alias.getGroup());
+                    LOG.info("Alias {} created for {}.", address, alias.getGroup());
                 }
             }
         }

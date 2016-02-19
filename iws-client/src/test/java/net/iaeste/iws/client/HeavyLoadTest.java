@@ -52,7 +52,7 @@ import java.util.concurrent.Future;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
-@Ignore("The test is very heavy, and is designed to run against a Migated PostgreSQL database.")
+@Ignore("Test is ignored as it is heavy and only used for performance testing.")
 public final class HeavyLoadTest {
 
     private static final Logger LOG = LoggerFactory.getLogger(HeavyLoadTest.class);

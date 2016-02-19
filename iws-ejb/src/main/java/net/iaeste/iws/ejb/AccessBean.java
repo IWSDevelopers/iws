@@ -131,6 +131,7 @@ public class AccessBean implements Access {
 
         try {
             response = controller.generateSession(request);
+            LOG.info(session.generateLog("generateSession", start, response));
         } catch (RuntimeException e) {
             LOG.error(session.generateLog("generateSession", start, e));
             response = new AuthenticationResponse(IWSErrors.ERROR, e.getMessage());

@@ -1,6 +1,6 @@
-Apache Commons CSV
-Copyright [2014-2015] The Apache Software Foundation
-http://commons.apache.org/proper/commons-csv/
+IWS, IntraWeb Services
+
+Copyright [2012-2016] By the individuals who are listed in the AUTHORS file
 
 This product includes software developed at
 The Apache Software Foundation (http://www.apache.org/).

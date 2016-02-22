@@ -59,14 +59,14 @@ public final class UserMailinglistEntity extends AbstractUpdateable<UserMailingl
     @JoinColumn(name = "user_to_group_id", referencedColumnName = "id", nullable = false, updatable = false)
     private UserGroupEntity userGroup = null;
 
-    @Column(name = "member", length = 100, nullable = false, updatable = false)
+    @Column(name = "member", length = 100, nullable = false)
     private String member = null;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", length = 25, nullable = false)
     private UserStatus status = UserStatus.ACTIVE;
 
-    @Column(name = "may_write", nullable = false, updatable = false)
+    @Column(name = "may_write", nullable = false)
     private Boolean mayWrite = true;
 
     /**

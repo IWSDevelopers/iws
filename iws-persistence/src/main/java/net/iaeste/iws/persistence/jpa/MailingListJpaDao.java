@@ -23,8 +23,11 @@ import net.iaeste.iws.persistence.MailingListDao;
 import net.iaeste.iws.persistence.entities.AliasEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.MailinglistEntity;
+import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.UserGroupEntity;
 import net.iaeste.iws.persistence.entities.UserMailinglistEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -37,6 +40,8 @@ import java.util.List;
  * @since   IWS 1.0
  */
 public final class MailingListJpaDao extends BasicJpaDao implements MailingListDao {
+
+    private static final Logger LOG = LoggerFactory.getLogger(MailingListJpaDao.class);
 
     private final Settings settings;
 
@@ -231,7 +236,13 @@ public final class MailingListJpaDao extends BasicJpaDao implements MailingListD
         final List<UserMailinglistEntity> subscribers = query.getResultList();
 
         for (final UserMailinglistEntity subscriber : subscribers) {
-            subscriber.setMember(subscriber.getUserGroup().getUser().getUsername());
+            final UserEntity user = subscriber.getUserGroup().getUser();
+            final String current = subscriber.getMember();
+            final String updated = user.getUsername();
+            final String name = user.getFirstname() + ' ' + user.getLastname();
+            LOG.info("Updating Username for {} from '{}' to '{}'.", name, current, updated);
+
+            subscriber.setMember(updated);
             persist(subscriber);
         }
 

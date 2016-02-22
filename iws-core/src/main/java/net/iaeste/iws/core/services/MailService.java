@@ -74,8 +74,9 @@ public final class MailService extends CommonService<MailingListDao> {
      * more information about what kind of Mailing Lists a Group can have.
      *
      * @param authentication User Authentication information
+     * @return Number of changes
      */
-    public void processMissingMailingLists(final Authentication authentication) {
+    public int processMissingMailingLists(final Authentication authentication) {
         final List<GroupEntity> groups = dao.findUnprocessedGroups();
 
         if (!groups.isEmpty()) {
@@ -86,8 +87,10 @@ public final class MailService extends CommonService<MailingListDao> {
                 LOG.info("Created Mailing list(s) for {}.", group);
             }
         } else {
-            LOG.info("No Groups found with missing mailing lists.");
+            LOG.debug("No Groups found with missing mailing lists.");
         }
+
+        return groups.size();
     }
 
     /**
@@ -109,9 +112,11 @@ public final class MailService extends CommonService<MailingListDao> {
      *  treated just as any other public mailing list.</p>
      *
      * @param authentication User Authentication information
+     * @return Number of changes
      */
-    public void processAliases(final Authentication authentication) {
+    public int processAliases(final Authentication authentication) {
         final List<AliasEntity> aliases = dao.findAliases();
+        int changes = 0;
 
         for (final AliasEntity alias : aliases) {
             final String address = alias.getAliasAddress() + '@' + settings.getPublicMailAddress();
@@ -121,6 +126,7 @@ public final class MailService extends CommonService<MailingListDao> {
                 if (found != null) {
                     dao.deleteMailinglistSubscriptions(found);
                     dao.delete(found);
+                    changes++;
                 }
             } else {
                 if (found == null) {
@@ -135,9 +141,12 @@ public final class MailService extends CommonService<MailingListDao> {
 
                     dao.persist(authentication, entity);
                     LOG.info("Alias {} created for {}.", address, alias.getGroup());
+                    changes++;
                 }
             }
         }
+
+        return changes;
     }
 
     /**
@@ -150,13 +159,17 @@ public final class MailService extends CommonService<MailingListDao> {
      * is allowed to receive and write to a list, will the state allow it.
      *
      * @param authentication User Authentication information
+     * @return Number of changes
      */
-    public void processMissingMailingListSubscriptions(final Authentication authentication) {
+    public int processMissingMailingListSubscriptions(final Authentication authentication) {
         final List<UserGroupEntity> userGroups = dao.findUnprocessedSubscriptions();
+        int changes = 0;
 
         for (final UserGroupEntity userGroup : userGroups) {
-            processListSubscriptions(authentication, userGroup);
+            changes += processListSubscriptions(authentication, userGroup);
         }
+
+        return changes;
     }
 
     /**
@@ -166,27 +179,39 @@ public final class MailService extends CommonService<MailingListDao> {
      * <p>If a Group has been deleted, then the mailing list will also be
      * deleted. If Groups or Users change status from Active to Suspended or
      * reverse, then the lists will be updated accordingly.</p>
+     *
+     * @return Number of changes
      */
-    public void synchronizeMailStates() {
+    public int synchronizeMailStates() {
         final int deletedLists = dao.deleteDeprecatedMailinglists();
         final int activatedLists = dao.activateMailinglists();
         final int suspendedLists = dao.suspendMailinglists();
-        LOG.info("Updated Mailing Lists; Activated {}, Suspended {} and Deleted {}.", activatedLists, suspendedLists, deletedLists);
+        if ((deletedLists + activatedLists + suspendedLists) > 0) {
+            LOG.info("Updated Mailing Lists; Activated {}, Suspended {} and Deleted {}.", activatedLists, suspendedLists, deletedLists);
+        }
 
         final int deletedSubscriptions = dao.deleteDeprecatedMailinglistSubscriptions();
         final int activatedPrivateSubscriptions = dao.activatePrivateMailinglistSubscriptions();
         final int activatedPublicSubscriptions = dao.activatePublicMailinglistSubscriptions();
-        final int suspendedPublicSubscriptions = dao.suspendPublicMailinglistSubscriptions();
         final int suspendedPrivateSubscriptions = dao.suspendPrivateMailinglistSubscriptions();
+        final int suspendedPublicSubscriptions = dao.suspendPublicMailinglistSubscriptions();
         final int addedWritingRights = dao.addWritePermission();
         final int removedWritingRights = dao.removeWritePermission();
 
         final int activatedSubscriptions = activatedPrivateSubscriptions + activatedPublicSubscriptions;
         final int suspendedSubscriptions = suspendedPrivateSubscriptions + suspendedPublicSubscriptions;
-        LOG.info("Update Mailing List Subscriptions; Activated {}, Write {}, Read {}, Suspended {} and Deleted {}.", activatedSubscriptions, addedWritingRights, removedWritingRights, suspendedSubscriptions, deletedSubscriptions);
+        if ((activatedSubscriptions + addedWritingRights + removedWritingRights + suspendedSubscriptions + deletedSubscriptions) > 0) {
+            LOG.info("Update Mailing List Subscriptions; Activated {}, Write {}, Read {}, Suspended {} and Deleted {}.", activatedSubscriptions, addedWritingRights, removedWritingRights, suspendedSubscriptions, deletedSubscriptions);
+        }
 
         final int updatedAddress = dao.updateSubscribedAddress();
-        LOG.info("Updated {} Subscriptions, where the username was changed.", updatedAddress);
+        if (updatedAddress > 0) {
+            LOG.info("Updated {} Subscriptions, where the username was changed.", updatedAddress);
+        }
+
+        return activatedLists + suspendedLists + deletedLists +
+                activatedSubscriptions + addedWritingRights + removedWritingRights +
+                suspendedSubscriptions + deletedSubscriptions + updatedAddress;
     }
 
     /**
@@ -206,22 +231,29 @@ public final class MailService extends CommonService<MailingListDao> {
      * adjusted accordingly.</p>
      *
      * @param authentication User Authentication information
+     * @return Number of changes
      */
-    public void synchronizeVirtualLists(final Authentication authentication) {
+    public int synchronizeVirtualLists(final Authentication authentication) {
         final String privateList = '@' + settings.getPrivateMailAddress();
         final String ncsListAddress = settings.getNcsList() + privateList;
         final MailinglistEntity ncsList = dao.findMailingList(ncsListAddress);
+        int changes = 0;
 
         final List<UserGroupEntity> ncsListSubscribers = dao.findMissingNcsSubscribers();
         if (!ncsListSubscribers.isEmpty()) {
             addSubscribers(authentication, ncsList, ncsListSubscribers);
+            changes += ncsListSubscribers.size();
         }
 
         final List<UserGroupEntity> ncsListUnsubscribers = dao.findDeprecatedNcsSubscribers();
         if (!ncsListUnsubscribers.isEmpty()) {
             removeSubscribers(ncsList, ncsListUnsubscribers);
+            changes += ncsListUnsubscribers.size();
         }
-        LOG.info("NC's Mailing List; Added {} and removed {} Subscribers.",  ncsListSubscribers.size(), ncsListUnsubscribers.size());
+
+        if (changes > 0) {
+            LOG.info("NC's Mailing List; Added {} and removed {} Subscribers.", ncsListSubscribers.size(), ncsListUnsubscribers.size());
+        }
 
         // TODO Correct the logic, so the members will follow the subscription rules regarding who may write to it
         //final List<UserGroupEntity> announceListSubscribers = dao.findMissingAnnounceSubscribers();
@@ -229,7 +261,10 @@ public final class MailService extends CommonService<MailingListDao> {
         //    final String announceList = settings.getAnnounceList() + privateList;
         //    final MailinglistEntity list = dao.findMailingList(announceList);
         //    addSubscribers(authentication, list, announceListSubscribers);
+        //    changes += list.size();
         //}
+
+        return changes;
     }
 
     // =========================================================================
@@ -298,7 +333,7 @@ public final class MailService extends CommonService<MailingListDao> {
         }
     }
 
-    private void processListSubscriptions(final Authentication authentication, final UserGroupEntity userGroup) {
+    private int processListSubscriptions(final Authentication authentication, final UserGroupEntity userGroup) {
         final List<MailinglistEntity> lists = dao.findMailingList(userGroup.getGroup());
 
         for (final MailinglistEntity list : lists) {
@@ -306,6 +341,8 @@ public final class MailService extends CommonService<MailingListDao> {
             dao.persist(authentication, entity);
             LOG.info("Subscribed {} {} to the MailingList {}.", userGroup.getUser().getFirstname(), userGroup.getUser().getLastname(), list.getListAddress());
         }
+
+        return lists.size();
     }
 
     private void processNewLists(final Authentication authentication, final GroupEntity group) {

@@ -93,6 +93,7 @@ public class MailSynchronizer {
         LOG.info("Starting to Synchronize Mail System.");
         final long start = System.nanoTime();
         final MailService mailService = new MailService(settings, entityManager);
+        int changes = 0;
 
         // For the suspension & deleting, we need to use an Authentication
         // Object for history information. We're using the System account for
@@ -105,23 +106,28 @@ public class MailSynchronizer {
         // First part, create missing Mailing lists. The service will read a
         // list of all Groups, which currently have no Mailing List and create
         // them.
-        mailService.processMissingMailingLists(authentication);
+        changes += mailService.processMissingMailingLists(authentication);
 
         // Second step is to ensure that all the Aliases is expanded.
-        mailService.processAliases(authentication);
+        changes += mailService.processAliases(authentication);
 
         // Third step is to ensure that all Subscriptions are present.
-        mailService.processMissingMailingListSubscriptions(authentication);
+        changes += mailService.processMissingMailingListSubscriptions(authentication);
 
         // Fourth step, synchronize States between Groups & Lists as well as
         // between Users & Subscriptions
-        mailService.synchronizeMailStates();
+        changes += mailService.synchronizeMailStates();
 
         // 5. Virtual Mailing Lists
-        mailService.synchronizeVirtualLists(authentication);
+        changes += mailService.synchronizeVirtualLists(authentication);
 
         final DateFormat dateFormatter = new SimpleDateFormat(IWSConstants.DATE_TIME_FORMAT, IWSConstants.DEFAULT_LOCALE);
         final long duration = (System.nanoTime() - start) / 1000000;
-        LOG.info("Synchronizing Mail System took: {}ms, next Timeout: {}.", duration, dateFormatter.format(timer.getNextTimeout()));
+
+        if (changes > 0) {
+            LOG.info("Synchronizing Mail System, with {} changes, took: {}ms, next Timeout: {}.", changes, duration, dateFormatter.format(timer.getNextTimeout()));
+        } else {
+            LOG.info("Synchronizing Mail System, without changes, took: {}ms, next Timeout: {}.", duration, dateFormatter.format(timer.getNextTimeout()));
+        }
     }
 }

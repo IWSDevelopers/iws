@@ -14,11 +14,10 @@
  */
 package net.iaeste.iws.core.services;
 
-import static net.iaeste.iws.common.utils.HashcodeGenerator.generateHash;
+import static net.iaeste.iws.api.util.LogUtil.formatLogMessage;
 import static net.iaeste.iws.common.utils.PasswordGenerator.generatePassword;
 import static net.iaeste.iws.common.utils.StringUtils.toLower;
 import static net.iaeste.iws.core.transformers.StorageTransformer.transform;
-import static net.iaeste.iws.api.util.LogUtil.formatLogMessage;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
@@ -31,6 +30,7 @@ import net.iaeste.iws.api.enums.StorageType;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.common.exceptions.AuthorizationException;
+import net.iaeste.iws.common.utils.HashcodeGenerator;
 import net.iaeste.iws.common.utils.StringUtils;
 import net.iaeste.iws.core.exceptions.PermissionException;
 import net.iaeste.iws.core.transformers.CommonTransformer;
@@ -67,12 +67,15 @@ public class CommonService<T extends BasicDao> {
 
     private static final Logger LOG = LoggerFactory.getLogger(CommonService.class);
 
+    protected final HashcodeGenerator hashcodeGenerator;
     protected final Settings settings;
     protected final T dao;
 
     protected CommonService(final Settings settings, final T dao) {
         this.settings = settings;
         this.dao = dao;
+
+        this.hashcodeGenerator = new HashcodeGenerator(settings);
     }
 
     // =========================================================================
@@ -126,12 +129,12 @@ public class CommonService<T extends BasicDao> {
         // Now, set all the information about the user and persist the Account
         user.setUsername(username);
         user.setTemporary(thePassword);
-        user.setPassword(generateHash(thePassword, salt));
+        user.setPassword(hashcodeGenerator.generateHash(thePassword, salt));
         user.setSalt(salt);
         user.setFirstname(firstname);
         user.setLastname(lastname);
         user.setAlias(generateUserAlias(firstname, lastname, studentAccount));
-        user.setCode(generateHash(username + firstname + lastname, UUID.randomUUID().toString()));
+        user.setCode(hashcodeGenerator.generateHash(username + firstname + lastname, UUID.randomUUID().toString()));
         user.setPerson(createEmptyPerson(authentication));
         dao.persist(authentication, user);
 

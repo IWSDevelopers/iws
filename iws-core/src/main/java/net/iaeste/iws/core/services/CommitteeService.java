@@ -15,7 +15,6 @@
 package net.iaeste.iws.core.services;
 
 import static net.iaeste.iws.api.util.LogUtil.formatLogMessage;
-import static net.iaeste.iws.common.utils.HashcodeGenerator.generateHash;
 import static net.iaeste.iws.common.utils.StringUtils.toLower;
 import static net.iaeste.iws.core.transformers.CommonTransformer.transform;
 
@@ -346,7 +345,7 @@ public final class CommitteeService extends CommonService<CommitteeDao> {
         // Now, set all the information about the user and persist the Account
         user.setUsername(request.getUsername());
         user.setTemporary(password);
-        user.setPassword(generateHash(password, salt));
+        user.setPassword(hashcodeGenerator.generateHash(password, salt));
         user.setSalt(salt);
         user.setFirstname(request.getFirstname());
         user.setLastname(request.getLastname());
@@ -397,12 +396,12 @@ public final class CommitteeService extends CommonService<CommitteeDao> {
         return alias;
     }
 
-    private static String generateActivationCode(final CommitteeRequest request) {
+    private String generateActivationCode(final CommitteeRequest request) {
         final String clear = request.getUsername()
                            + request.getFirstname()
                            + request.getLastname();
 
-        return generateHash(clear, UUID.randomUUID().toString());
+        return hashcodeGenerator.generateHash(clear, UUID.randomUUID().toString());
     }
 
     private GroupEntity createAndPersistPrivateGroup(final Authentication authentication, final UserEntity user) {

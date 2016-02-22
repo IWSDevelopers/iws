@@ -21,6 +21,7 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
 import net.iaeste.iws.api.dtos.AuthenticationToken;
+import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.common.utils.HashcodeGenerator;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.jpa.AccessJpaDao;
@@ -60,12 +61,14 @@ public class SessionEntityTest {
     @Test
     @Transactional
     public void testSessionEntity() {
+        final Settings settings = new Settings();
+        final HashcodeGenerator generator = new HashcodeGenerator(settings);
         final UserEntity user = new UserEntity();
         final SessionEntity session = new SessionEntity();
-        final String key = HashcodeGenerator.generateHash("User Password, Date, IPNumber, and more", "");
+        final String key = generator.generateHash("User Password, Date, IPNumber, and more", "");
         user.setUsername("alfa");
         user.setAlias("alias");
-        user.setPassword(HashcodeGenerator.generateHash("beta", ""));
+        user.setPassword(generator.generateHash("beta", ""));
         user.setSalt(UUID.randomUUID().toString());
         user.setFirstname("Alpha");
         user.setLastname("Beta");
@@ -82,7 +85,9 @@ public class SessionEntityTest {
     @Test
     @Transactional
     public void testSessionJPAStorage() throws Exception {
-        final String key = HashcodeGenerator.generateHash("This is the test string to build the SHA Hash on.", "");
+        final Settings settings = new Settings();
+        final HashcodeGenerator generator = new HashcodeGenerator(settings);
+        final String key = generator.generateHash("This is the test string to build the SHA Hash on.", "");
         final SessionEntity entity = new SessionEntity();
         final Query userQuery = entityManager.createNamedQuery("user.findById");
         userQuery.setParameter("id", 1L);

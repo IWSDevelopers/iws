@@ -17,6 +17,7 @@ package net.iaeste.iws.common.utils;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
+import net.iaeste.iws.common.configuration.Settings;
 import org.junit.Test;
 
 /**
@@ -37,21 +38,25 @@ public final class HashcodeGeneratorTest {
      */
     @Test
     public void testGenerateSHA256() {
+        final Settings settings = new Settings();
+        settings.setPasswordSalt("Salt");
+        final HashcodeGenerator generator = new HashcodeGenerator(settings);
+
         // Preconditions for the test
         final String textWithoutDot = "The quick brown fox jumps over the lazy dog";
         final String textWithDot = "The quick brown fox jumps over the lazy dog.";
         final String textEmpty = "";
         final String textNull = null;
-        final String expectedWithoutDot = "108e5dbbef167805880a97e448257268315ed44e73e75051d0210993b331ae85";
-        final String expectedWithDot = "a5def6e4a29b92f1e8d630f0a192bcbf445091faecb3bd784301597e5ff6c0f5";
-        final String expectedEmpty = "68b441793bce5e76b08585f809043f2697040fa8f52a4cdc2039a10b6ce3d93a";
+        final String expectedWithoutDot = "4e5d8cf8f8e753b80896c63c2ab24d25b4ceca01a6803ea69723ed57089196b4";
+        final String expectedWithDot = "8f0af607d795c4c7573a6f7c6c7874f85f1932d91a883fbe548ddba949158ad4";
+        final String expectedEmpty = "150fe5514030b1434a5deaf491ece92c0e6497447d6de7bd6ba85e8cae1e00a3";
         final String expectedNull = null;
 
         // Perform the testing
-        final String resultWithoutDot = HashcodeGenerator.generateSHA256(textWithoutDot, USER_SALT);
-        final String resultWithDot = HashcodeGenerator.generateSHA256(textWithDot, USER_SALT);
-        final String resultEmpty = HashcodeGenerator.generateSHA256(textEmpty, USER_SALT);
-        final String resultNull = HashcodeGenerator.generateSHA256(textNull, USER_SALT);
+        final String resultWithoutDot = generator.generateSHA256(textWithoutDot, USER_SALT);
+        final String resultWithDot = generator.generateSHA256(textWithDot, USER_SALT);
+        final String resultEmpty = generator.generateSHA256(textEmpty, USER_SALT);
+        final String resultNull = generator.generateSHA256(textNull, USER_SALT);
 
         // Assertion checks against the responses with our predefined expectations
         assertThat(resultWithoutDot, is(expectedWithoutDot));
@@ -69,21 +74,25 @@ public final class HashcodeGeneratorTest {
      */
     @Test
     public void testGenerateSHA384() {
+        final Settings settings = new Settings();
+        settings.setPasswordSalt("salt");
+        final HashcodeGenerator generator = new HashcodeGenerator(settings);
+
         // Preconditions for the test
         final String textWithoutDot = "The quick brown fox jumps over the lazy dog";
         final String textWithDot = "The quick brown fox jumps over the lazy dog.";
         final String textEmpty = "";
         final String textNull = null;
-        final String expectedWithoutDot = "10f3e96d6414e2d9a2d02a812d27b56595f38942a35456ac02e5d305360587ee69a26e4bf5d38d6d46046fb4a4dcf962";
-        final String expectedWithDot = "06b3b3a7a0abef11260e2291795ba612d9122e286ec7ea4c6a9b18b140bf765014eed0dbcb24362e68a6ad5b87ad9f95";
-        final String expectedEmpty = "44ff5a6416d2cabffdb5e04b2f695298cd7013680e026476d0168d6bcc4e9167fccb38c20185873386205cf8acec761d";
+        final String expectedWithoutDot = "2cb059f8cc93e2c69e3c5a871392bc563422ea70de5f16896b2278c91108dc9413af716667614fc0fa546f75f487d66f";
+        final String expectedWithDot = "47ab638c781df65e3fab8f256dda21d651b1caccd71426960da97590935bc683b4ed8fab6a6c1f6ea9cdc202a18a7c6d";
+        final String expectedEmpty = "1b142cd342d1922d01e14c612493a8f8046502f204e71bf7c152011000cb4cf5567a34484cb3a4235856b3a16c646a76";
         final String expectedNull = null;
 
         // Perform the testing
-        final String resultWithoutDot = HashcodeGenerator.generateSHA384(textWithoutDot, USER_SALT);
-        final String resultWithDot = HashcodeGenerator.generateSHA384(textWithDot, USER_SALT);
-        final String resultEmpty = HashcodeGenerator.generateSHA384(textEmpty, USER_SALT);
-        final String resultNull = HashcodeGenerator.generateSHA384(textNull, USER_SALT);
+        final String resultWithoutDot = generator.generateSHA384(textWithoutDot, USER_SALT);
+        final String resultWithDot = generator.generateSHA384(textWithDot, USER_SALT);
+        final String resultEmpty = generator.generateSHA384(textEmpty, USER_SALT);
+        final String resultNull = generator.generateSHA384(textNull, USER_SALT);
 
         // Assertion checks against the responses with our predefined expectations
         assertThat(resultWithoutDot, is(expectedWithoutDot));
@@ -101,21 +110,25 @@ public final class HashcodeGeneratorTest {
      */
     @Test
     public void testGenerateSHA512() {
+        final Settings settings = new Settings();
+        settings.setPasswordSalt("salt");
+        final HashcodeGenerator generator = new HashcodeGenerator(settings);
+
         // Preconditions for the test
         final String textWithoutDot = "The quick brown fox jumps over the lazy dog";
         final String textWithDot = "The quick brown fox jumps over the lazy dog.";
         final String textEmpty = "";
         final String textNull = null;
-        final String expectedWithoutDot = "5a15481fe88d39be1c83c2f72796cc8a70e84272640d5c7209ad9aefa642db11ae8fa1945bc308c15c36d591ea1d047692530c95b68fcc309bbe63889dba363e";
-        final String expectedWithDot = "c462bcb38867623c2f4ee18b5b1147fbd9263a0ebdf9cf9098b7d30941463c1699434b722268be2d221b80359bb2b2f7e19862f1f99e205ce835e6f38d33d4a3";
-        final String expectedEmpty = "74a520c9fc7d1045edac9fd587897f6ff9f9f4896591eac8589f03a50295f7da8bb342e7dc32649bb44f2e556e179b2efb2d2fa46f5f50de63a7d6c241afe606";
+        final String expectedWithoutDot = "a055ac964024767c44b8bbd31638540826f2df8ae54191d313cc0befd4b6d1e0a914e5773bf3c0c59e64f77c10731cf8e8250b95e725598d217a5f410e0b71b0";
+        final String expectedWithDot = "d04aed7299824dbc4536516dba3b07241c3eac721ca1c10740b43a25dcc3b7ce89500abd56330c9376d6bca87f465fa866520cc23174d83f363a9bb71c5b3cc9";
+        final String expectedEmpty = "2e3fce77cf8c4c7478a96d207c1c39715892cac84a18cbec9b634f4bc22b390b48cd30a4df2e7ebbaee65c346a662c5be2d12441322f7a4bac821a382c4af091";
         final String expectedNull = null;
 
         // Perform the testing
-        final String resultWithoutDot = HashcodeGenerator.generateSHA512(textWithoutDot, USER_SALT);
-        final String resultWithDot = HashcodeGenerator.generateSHA512(textWithDot, USER_SALT);
-        final String resultEmpty = HashcodeGenerator.generateSHA512(textEmpty, USER_SALT);
-        final String resultNull = HashcodeGenerator.generateSHA512(textNull, USER_SALT);
+        final String resultWithoutDot = generator.generateSHA512(textWithoutDot, USER_SALT);
+        final String resultWithDot = generator.generateSHA512(textWithDot, USER_SALT);
+        final String resultEmpty = generator.generateSHA512(textEmpty, USER_SALT);
+        final String resultNull = generator.generateSHA512(textNull, USER_SALT);
 
         // Assertion checks against the responses with our predefined expectations
         assertThat(resultWithoutDot, is(expectedWithoutDot));

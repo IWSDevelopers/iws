@@ -22,6 +22,7 @@ import net.iaeste.iws.api.enums.Currency;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.Membership;
 import net.iaeste.iws.api.enums.UserStatus;
+import net.iaeste.iws.common.configuration.Settings;
 import org.junit.AfterClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -43,10 +44,11 @@ import java.util.UUID;
 @RunWith(Parameterized.class)
 public final class GenerateDataForTest {
 
+    private static final HashcodeGenerator HASHCODE_GENERATOR = new HashcodeGenerator(new Settings());
+
     // Control what you want to get generated
-    private static final boolean GENERATE_INITIAL_DATA = false;
-    private static final boolean GENERATE_OFFER_DATA = true;
-    private static final boolean GENERATE_MAILING_LIST_DATA = false;
+    private static final boolean GENERATE_INITIAL_DATA = true;
+    private static final boolean GENERATE_OFFER_DATA = false;
 
     private static final String FIRST_NAME = "NS";
     private static final String RESTART_SEQUENCE = "alter sequence %s restart with %d;";
@@ -59,8 +61,6 @@ public final class GenerateDataForTest {
     private static final String OFFER_INSERT = "insert into offers (ref_no, external_id, employer_id, currency, status, exchange_year, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values\n" +
             "('%s-2014-000001', '%s', %d, '%s', 'SHARED', 2014, '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + INTERVAL '0-3' YEAR TO MONTH, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');";
     private static final String SHARE_ALL_OFFER = "insert into offer_to_group (offer_id, group_id, external_id, status) select offers.id, groups.id, offers.id || 'what_ever' || groups.id, 'SHARED' from groups, offers left join employers on offers.employer_id = employers.id where groups.grouptype_id = %d and employers.group_id != groups.id;";
-    private static final String MAILING_LIST_INSERT = "insert into mailing_lists (external_id, private, list_address, active) values ('%s', '%b', '%s', '%b');";
-    private static final String SUBSCRIBE_USER_TO_LIST = "insert into mailing_list_membership (mailing_list_id, member) values ('%d', '%s');";
     private static final String USER_NOTIFICATION_INSERT = "insert into user_notifications (user_id, notification_type, frequency) values ('%d', '%s', '%s');";
 
     private static final int ROLE_OWNER = 1;
@@ -70,8 +70,6 @@ public final class GenerateDataForTest {
     private static long currentAddressId = 1;
     private static long currentEmployerId = 1;
     private static long currentOfferId = 1;
-    private static long currentMailingListId = 1;
-    private static long currentListSubscriptionId = 1;
 
     @Parameterized.Parameters
     public static Collection<Object[]> parameters() {
@@ -82,13 +80,11 @@ public final class GenerateDataForTest {
                 { "AU", "Australia",            Currency.AUD, 1996, Membership.FULL_MEMBER },
                 { "AT", "Austria",              Currency.EUR, 1960, Membership.FULL_MEMBER },
                 { "AZ", "Azerbaijan",           Currency.AZN, 2010, Membership.ASSOCIATE_MEMBER },
-                { "BD", "Bangladesh.Aviation",  Currency.BDT, 2013, Membership.COOPERATING_INSTITUTION },
-                // This script can only create a single committee for a Country
-                //{ "BD", "Bangladesh.MoyTree",   Currency.BDT, 2009, Membership.COOPERATING_INSTITUTION },
+                { "BD", "Bangladesh.CAT",       Currency.BDT, 2013, Membership.COOPERATING_INSTITUTION },
                 { "BY", "Belarus",              Currency.BYR, 2000, Membership.FULL_MEMBER },
                 { "BE", "Belgium",              Currency.EUR, 1948, Membership.FULL_MEMBER },
                 { "BO", "Bolivia",              Currency.BOB, 2013, Membership.COOPERATING_INSTITUTION },
-                { "BA", "BosniaandHerzegovina", Currency.BAM, 2000, Membership.FULL_MEMBER },
+                { "BA", "BosniaAndHerzegovina", Currency.BAM, 2000, Membership.FULL_MEMBER },
                 { "BR", "Brazil",               Currency.BRL, 1982, Membership.FULL_MEMBER },
                 { "CA", "Canada",               Currency.CAD, 1953, Membership.FULL_MEMBER },
                 { "CL", "Chile",                Currency.CLP, 2013, Membership.COOPERATING_INSTITUTION },
@@ -110,9 +106,7 @@ public final class GenerateDataForTest {
                 { "HK", "HongKong",             Currency.HKD, 1997, Membership.ASSOCIATE_MEMBER },
                 { "HU", "Hungary",              Currency.HUF, 1983, Membership.FULL_MEMBER },
                 { "IC", "Iceland",              Currency.ISK, 1951, Membership.FULL_MEMBER },
-                { "IN", "India.KU",             Currency.INR, 2001, Membership.COOPERATING_INSTITUTION },
-                // This script can only create a single committee for a Country
-                //{ "IN", "India.MIT",            Currency.INR, 2006, Membership.COOPERATING_INSTITUTION },
+                { "IN", "India",                Currency.INR, 2001, Membership.ASSOCIATE_MEMBER },
                 { "IR", "Iran",                 Currency.IRR, 2002, Membership.FULL_MEMBER },
                 { "IE", "Ireland",              Currency.EUR, 1962, Membership.FULL_MEMBER },
                 { "IL", "Israel",               Currency.ILS, 1951, Membership.FULL_MEMBER },
@@ -176,7 +170,7 @@ public final class GenerateDataForTest {
         return Arrays.asList(parameters);
     }
 
-   /**
+   /*
     * We start by printing some house-holding information, to help reset the
     * system. This way, existing data is dropped so new data can be properly
     * added.
@@ -185,7 +179,7 @@ public final class GenerateDataForTest {
         print("-- ============================================================================");
         print("-- Preparing to create test data for users.");
         print("-- ============================================================================");
-        print("\n-- First reset the existing tables & sequences, regardlessly!");
+        print("\n-- First reset the existing tables & sequences, regardless!");
         if (GENERATE_OFFER_DATA) {
             print("delete from offers;");
             print("delete from employers;");
@@ -201,11 +195,6 @@ public final class GenerateDataForTest {
             print("delete from countries;");
         }
 
-        if (GENERATE_MAILING_LIST_DATA) {
-            print("delete from mailing_lists;");
-            print("delete from mailing_list_membership;");
-        }
-
         if (GENERATE_INITIAL_DATA) {
             print(RESTART_SEQUENCE, "country_sequence", currentCountryId);
             print(RESTART_SEQUENCE, "group_sequence", currentGroupId);
@@ -216,11 +205,6 @@ public final class GenerateDataForTest {
             print(RESTART_SEQUENCE, "address_sequence", currentAddressId);
             print(RESTART_SEQUENCE, "employer_sequence", currentEmployerId);
             print(RESTART_SEQUENCE, "offer_sequence", currentOfferId);
-        }
-
-        if (GENERATE_MAILING_LIST_DATA) {
-            print(RESTART_SEQUENCE, "mailing_list_sequence", currentMailingListId);
-            print(RESTART_SEQUENCE, "mailing_list_membership_sequence", currentListSubscriptionId);
         }
     }
 
@@ -273,21 +257,6 @@ public final class GenerateDataForTest {
             print(sb, USER_NOTIFICATION_INSERT, currentUserId, "RESET_PASSWORD", "IMMEDIATELY");
             print(sb, USER_NOTIFICATION_INSERT, currentUserId, "UPDATE_USERNAME", "IMMEDIATELY");
             print(sb, USER_NOTIFICATION_INSERT, currentUserId, "RESET_SESSION", "IMMEDIATELY");
-
-            if (GENERATE_MAILING_LIST_DATA) {
-                print(sb, "\n-- Generating Mailing Test data for %s, move to Mailing SQL file", committeeName);
-                //Generate the Mailing list
-                final String memberPrivateListAddress = StringUtils.convertToAsciiMailAlias(committeeName) + '@' + IWSConstants.PRIVATE_EMAIL_ADDRESS;
-                final String nationalPublicListAddress = StringUtils.convertToAsciiMailAlias(committeeName) + '@' + IWSConstants.PUBLIC_EMAIL_ADDRESS;
-                final String nationalPrivateListAddress = StringUtils.convertToAsciiMailAlias(committeeName) + ".staff" + '@' + IWSConstants.PRIVATE_EMAIL_ADDRESS;
-                print(sb, MAILING_LIST_INSERT, memberExternalId, true, memberPrivateListAddress, true);
-                print(sb, MAILING_LIST_INSERT, nationalExternalId, false, nationalPublicListAddress, true);
-                print(sb, MAILING_LIST_INSERT, nationalExternalId, true, nationalPrivateListAddress, true);
-
-                //Subscribe the User to Group's mailing list
-                //TODO - this user probably has not working email address, subscribe anyway?
-            }
-
         }
 
         if (GENERATE_OFFER_DATA) {
@@ -305,11 +274,9 @@ public final class GenerateDataForTest {
         currentAddressId++;
         currentEmployerId++;
         currentOfferId++;
-        currentMailingListId += 3;
-        currentListSubscriptionId++;
 
         // And done :-)
-        //print("-- Completed generating test data for %s", committeeName);
+        print("-- Completed generating test data for %s", committeeName);
     }
 
     @Test
@@ -335,7 +302,7 @@ public final class GenerateDataForTest {
     }
 
     private static String generateHashedPassword(final String password, final String salt) {
-        return HashcodeGenerator.generateSHA256(password, salt);
+        return HASHCODE_GENERATOR.generateSHA256(password, salt);
     }
 
     private static String generateAlias(final String firstname, final String lastname) {

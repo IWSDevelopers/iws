@@ -15,7 +15,6 @@
 package net.iaeste.iws.core.services;
 
 import static net.iaeste.iws.api.util.LogUtil.formatLogMessage;
-import static net.iaeste.iws.common.utils.HashcodeGenerator.generateHash;
 import static net.iaeste.iws.common.utils.StringUtils.toLower;
 import static net.iaeste.iws.core.transformers.AdministrationTransformer.transform;
 
@@ -137,7 +136,7 @@ public final class AccessService extends CommonService<AccessDao> {
         final SessionEntity activeSession = dao.findActiveSession(user);
 
         if (activeSession != null) {
-            user.setCode(generateHash(UUID.randomUUID().toString(), UUID.randomUUID().toString()));
+            user.setCode(hashcodeGenerator.generateHash(UUID.randomUUID().toString(), UUID.randomUUID().toString()));
             dao.persist(user);
             final Authentication authentication = new Authentication(user, UUID.randomUUID().toString());
             notifications.notify(authentication, user, NotificationType.RESET_SESSION);
@@ -242,7 +241,7 @@ public final class AccessService extends CommonService<AccessDao> {
         final UserEntity user = dao.findActiveUserByUsername(username);
 
         if (user != null) {
-            user.setCode(generateHash(UUID.randomUUID().toString(), user.getSalt()));
+            user.setCode(hashcodeGenerator.generateHash(UUID.randomUUID().toString(), user.getSalt()));
             dao.persist(user);
             notifications.notify(user);
         } else {
@@ -263,7 +262,7 @@ public final class AccessService extends CommonService<AccessDao> {
             final String pwd = toLower(password.getNewPassword());
             final String salt = UUID.randomUUID().toString();
 
-            user.setPassword(generateHash(pwd, salt));
+            user.setPassword(hashcodeGenerator.generateHash(pwd, salt));
             user.setSalt(salt);
             user.setCode(null);
             user.setModified(new Date());
@@ -290,7 +289,7 @@ public final class AccessService extends CommonService<AccessDao> {
         final UserEntity user = authentication.getUser();
 
         if (isOldPasswordValid(user, password)) {
-            user.setPassword(generateHash(newPassword, salt));
+            user.setPassword(hashcodeGenerator.generateHash(newPassword, salt));
             user.setSalt(salt);
             user.setModified(new Date());
 
@@ -353,7 +352,7 @@ public final class AccessService extends CommonService<AccessDao> {
     private SessionEntity generateAndPersistSessionKey(final UserEntity user) {
         // Generate new Hashcode from the User Credentials, and some other entropy
         final String entropy = UUID.randomUUID() + user.getPassword();
-        final String sessionKey = generateHash(entropy, UUID.randomUUID().toString());
+        final String sessionKey = hashcodeGenerator.generateHash(entropy, UUID.randomUUID().toString());
 
         // Generate the new Session, and persist it
         final SessionEntity entity = new SessionEntity(user, sessionKey);
@@ -391,7 +390,7 @@ public final class AccessService extends CommonService<AccessDao> {
                 // cryptographic hash value for it, which we can then match
                 // directly with the stored value from the UserEntity
                 final String password = toLower(request.getPassword());
-                final String hashcode = generateHash(password, user.getSalt());
+                final String hashcode = hashcodeGenerator.generateHash(password, user.getSalt());
                 if (!hashcode.equals(user.getPassword())) {
                     // Password mismatch, throw generic error
                     throw new IWSException(IWSErrors.AUTHENTICATION_ERROR, "No account for the user '" + username + "' was found.");
@@ -409,12 +408,12 @@ public final class AccessService extends CommonService<AccessDao> {
         }
     }
 
-    private static boolean isOldPasswordValid(final UserEntity user, final Password password) {
+    private boolean isOldPasswordValid(final UserEntity user, final Password password) {
         final String oldPassword = password.getIdentification();
         final boolean result;
 
         if (oldPassword != null) {
-            final String pwd = generateHash(toLower(oldPassword), user.getSalt());
+            final String pwd = hashcodeGenerator.generateHash(toLower(oldPassword), user.getSalt());
             result = user.getPassword().equals(pwd);
         } else {
             result = false;

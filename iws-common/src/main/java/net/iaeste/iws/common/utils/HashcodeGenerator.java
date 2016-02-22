@@ -17,6 +17,7 @@ package net.iaeste.iws.common.utils;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.exceptions.IWSException;
+import net.iaeste.iws.common.configuration.Settings;
 
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
@@ -41,13 +42,6 @@ import java.security.NoSuchAlgorithmException;
  */
 public final class HashcodeGenerator {
 
-    /**
-     * Hardcoded salt value, to add to the hashing. Note, that changing this
-     * salt value, will cause all passwords, sessions and other information
-     * where a hash value is needed, to fail!
-     */
-    private static final String HARDCODED_SALT = "The quick brown fox jumps over the lazy dog <.,:;-_ 1234567890 $%&/()=?>";
-
     // The Algorithm's, which we'll support
     private static final String HASHCODE_ALGORITHM_SHA256 = "SHA-256";
     private static final String HASHCODE_ALGORITHM_SHA384 = "SHA-384";
@@ -58,10 +52,13 @@ public final class HashcodeGenerator {
     // SHA-256 HashCodes is 64 characters.
     public static final int HASHCODE_LENGTH = 64;
 
+    private final Settings settings;
+
     /**
      * Private Constructor, this is a utility class.
      */
-    private HashcodeGenerator() {
+    public HashcodeGenerator(final Settings settings) {
+        this.settings = settings;
     }
 
     /**
@@ -71,7 +68,7 @@ public final class HashcodeGenerator {
      * @param  userSalt User specific salt value
      * @return MD5 Hashcode value
      */
-    public static String generateHash(final String str, final String userSalt) {
+    public String generateHash(final String str, final String userSalt) {
         return generateSHA256(str, userSalt);
     }
 
@@ -83,7 +80,7 @@ public final class HashcodeGenerator {
      * @return SHA-2 Hashcode value
      * @see <a href="http://en.wikipedia.org/wiki/Sha-2">Wikipedia SHA-2</a>
      */
-    static String generateSHA256(final String str, final String userSalt) {
+    String generateSHA256(final String str, final String userSalt) {
         final String salt = prepareSalt(userSalt);
         return generateHashcode(HASHCODE_ALGORITHM_SHA256, str, salt);
     }
@@ -96,7 +93,7 @@ public final class HashcodeGenerator {
      * @return SHA-2 Hashcode value
      * @see <a href="http://en.wikipedia.org/wiki/Sha-2">Wikipedia SHA-2</a>
      */
-    static String generateSHA384(final String str, final String userSalt) {
+    String generateSHA384(final String str, final String userSalt) {
         final String salt = prepareSalt(userSalt);
         return generateHashcode(HASHCODE_ALGORITHM_SHA384, str, salt);
     }
@@ -109,7 +106,7 @@ public final class HashcodeGenerator {
      * @return SHA-2 Hashcode value
      * @see <a href="http://en.wikipedia.org/wiki/Sha-2">Wikipedia SHA-2</a>
      */
-    static String generateSHA512(final String str, final String userSalt) {
+    String generateSHA512(final String str, final String userSalt) {
         final String salt = prepareSalt(userSalt);
         return generateHashcode(HASHCODE_ALGORITHM_SHA512, str, salt);
     }
@@ -121,13 +118,13 @@ public final class HashcodeGenerator {
     /**
      * Prepares the combined salt for the hashcode generating. If a salt is
      * provided from the user, then this is used together with the internal
-     * hardcoded salt, otherwise only the hardcoded salt is used.
+     * hardcoded salt, otherwise only the IWS Configuration Salt is used.
      *
      * @param userSalt User specific salt (optional)
      * @return salt for the hashcode generation
      */
-    private static String prepareSalt(final String userSalt) {
-        return userSalt + HARDCODED_SALT;
+    private String prepareSalt(final String userSalt) {
+        return userSalt + settings.getPasswordSalt();
     }
 
     /**

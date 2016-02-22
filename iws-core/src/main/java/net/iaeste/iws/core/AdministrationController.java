@@ -449,6 +449,11 @@ public final class AdministrationController extends CommonController implements 
         FetchGroupResponse response;
 
         try {
+            // To avoid NullPointerExceptions, we're just checking that the
+            // given token is not invalid. Later, we're checking the permissions
+            // as well
+            verify(token, "Invalid Authentication Token provided.");
+
             // First we verify the Object, where the mandatory information is.
             // And then we can use this to extend the Token. As the request
             // Object holds the GroupId that should be used for the later

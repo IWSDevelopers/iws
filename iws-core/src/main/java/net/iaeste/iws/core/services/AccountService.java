@@ -15,7 +15,6 @@
 package net.iaeste.iws.core.services;
 
 import static net.iaeste.iws.api.util.LogUtil.formatLogMessage;
-import static net.iaeste.iws.common.utils.HashcodeGenerator.generateHash;
 import static net.iaeste.iws.common.utils.StringUtils.toLower;
 import static net.iaeste.iws.core.transformers.AdministrationTransformer.transform;
 
@@ -425,7 +424,7 @@ public final class AccountService extends CommonService<AccessDao> {
         final String newUsername = request.getNewUsername();
 
         if (newUsername != null) {
-            final String hash = generateHash(toLower(request.getPassword()), authentication.getUser().getSalt());
+            final String hash = hashcodeGenerator.generateHash(toLower(request.getPassword()), authentication.getUser().getSalt());
             if (hash.equals(authentication.getUser().getPassword())) {
                 prepareUsernameUpdate(authentication.getUser(), newUsername);
             } else {
@@ -702,7 +701,7 @@ public final class AccountService extends CommonService<AccessDao> {
         final Authentication authentication = new Authentication(user, UUID.randomUUID().toString());
 
         // Set a new code for the user to reply with, and set the new username
-        user.setCode(generateHash(UUID.randomUUID().toString(), UUID.randomUUID().toString()));
+        user.setCode(hashcodeGenerator.generateHash(UUID.randomUUID().toString(), UUID.randomUUID().toString()));
         user.setData(username);
         dao.persist(user);
 

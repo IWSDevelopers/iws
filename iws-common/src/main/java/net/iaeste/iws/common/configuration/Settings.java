@@ -35,6 +35,7 @@ public final class Settings {
     private static final String PROPERTY_MAIL_SYNCHRONIZE_TIME = "mail.synchronize.time";
     private static final String PROPERTY_STARTUP_RESET_SESSIONS = "startup.reset.sessions";
     private static final String PROPERTY_ROOT_FILE_PATH = "root.file.path";
+    private static final String PROPERTY_PASSWORD_SALT = "iws.password.salt";
     private static final String PROPERTY_MAX_ACTIVE_TOKENS = "max.active.tokens";
     private static final String PROPERTY_MAX_LOGIN_RETRIES = "max.login.retries";
     private static final String PROPERTY_MAX_IDLE_TIME_FOR_SESSIONS = "max.idle.time.for.sessions";
@@ -61,10 +62,11 @@ public final class Settings {
     public Settings() {
         this.properties = new Properties();
 
-        properties.setProperty(PROPERTY_ROOT_FILE_PATH, System.getProperty("java.io.tmpdir"));
         properties.setProperty(PROPERTY_RUN_CLEAN_TIME, InternalConstants.RUN_CLEAN_TIME);
         properties.setProperty(PROPERTY_MAIL_SYNCHRONIZE_TIME, InternalConstants.MAIL_SYNCHRONIZE_TIME);
+        properties.setProperty(PROPERTY_ROOT_FILE_PATH, System.getProperty("java.io.tmpdir"));
         properties.setProperty(PROPERTY_STARTUP_RESET_SESSIONS, InternalConstants.STARTUP_RESET_SESSIONS);
+        properties.setProperty(PROPERTY_PASSWORD_SALT, "");
         properties.setProperty(PROPERTY_MAX_ACTIVE_TOKENS, String.valueOf(InternalConstants.MAX_ACTIVE_TOKENS));
         properties.setProperty(PROPERTY_MAX_LOGIN_RETRIES, String.valueOf(InternalConstants.MAX_LOGIN_RETRIES));
         properties.setProperty(PROPERTY_MAX_IDLE_TIME_FOR_SESSIONS, String.valueOf(InternalConstants.MAX_SESSION_IDLE_PERIOD));
@@ -113,6 +115,14 @@ public final class Settings {
 
     public String getRootFilePath() {
         return properties.getProperty(PROPERTY_ROOT_FILE_PATH);
+    }
+
+    public void setPasswordSalt(final String salt) {
+        properties.setProperty(PROPERTY_PASSWORD_SALT, salt);
+    }
+
+    public String getPasswordSalt() {
+        return properties.getProperty(PROPERTY_PASSWORD_SALT);
     }
 
     public void setMaxActiveTokens(final Integer maxActiveTokens) throws IllegalArgumentException {
@@ -175,72 +185,32 @@ public final class Settings {
         return properties.getProperty(PROPERTY_ANNUAL_CONFERENCE_DEADLINE);
     }
 
-    public void setAccountUnusedRemovedDays(final Long accountUnusedRemovedDays) {
-        throwIfNull("accountUnusedRemovedDays", accountUnusedRemovedDays);
-        properties.setProperty(PROPERTY_ACCOUNT_UNUSED_REMOVED_DAYS, String.valueOf(accountUnusedRemovedDays));
-    }
-
     public Long getAccountUnusedRemovedDays() {
         return Long.valueOf(properties.getProperty(PROPERTY_ACCOUNT_UNUSED_REMOVED_DAYS));
-    }
-
-    public void setAccountInactiveDays(final Long accountInactiveDays) {
-        throwIfNull("accountInactiveDays", accountInactiveDays);
-        properties.setProperty(PROPERTY_ACCOUNT_INACTIVE_DAYS, String.valueOf(accountInactiveDays));
     }
 
     public Long getAccountInactiveDays() {
         return Long.valueOf(properties.getProperty(PROPERTY_ACCOUNT_INACTIVE_DAYS));
     }
 
-    public void setAccountSuspendedDays(final Long accountSuspendedDays) {
-        throwIfNull("accountSuspendedDays", accountSuspendedDays);
-        properties.setProperty(PROPERTY_ACCOUNT_SUSPENDED_DAYS, String.valueOf(accountSuspendedDays));
-    }
-
     public Long getAccountSuspendedDays() {
         return Long.valueOf(properties.getProperty(PROPERTY_ACCOUNT_SUSPENDED_DAYS));
-    }
-
-    public void setPublicMailAddress(final String publicMailAddress) throws IllegalArgumentException {
-        throwIfNull("publicMailAddress", publicMailAddress);
-        properties.setProperty(PROPERTY_PUBLIC_EMAIL_ADDRESS, publicMailAddress);
     }
 
     public String getPublicMailAddress() {
         return properties.getProperty(PROPERTY_PUBLIC_EMAIL_ADDRESS);
     }
 
-    public void setPrivateMailAddress(final String privateMailAddress) throws IllegalArgumentException {
-        throwIfNull("privateMailAddress", privateMailAddress);
-        properties.setProperty(PROPERTY_PRIVATE_EMAIL_ADDRESS, privateMailAddress);
-    }
-
     public String getPrivateMailAddress() {
         return properties.getProperty(PROPERTY_PRIVATE_EMAIL_ADDRESS);
-    }
-
-    public void setSendingEmailAddress(final String sendingEmailAddress) {
-        throwIfNull("sendingEmailAddress", sendingEmailAddress);
-        properties.setProperty(PROPERTY_SENDING_EMAIL_ADDRESS, sendingEmailAddress);
     }
 
     public String getSendingEmailAddress() {
         return properties.getProperty(PROPERTY_SENDING_EMAIL_ADDRESS);
     }
 
-    public void setSmtpAddress(final String smtpAddress) {
-        throwIfNull("smtpAddress", smtpAddress);
-        properties.setProperty(PROPERTY_SMTP_ADDRESS, smtpAddress);
-    }
-
     public String getSmtpAddress() {
         return properties.getProperty(PROPERTY_SMTP_ADDRESS);
-    }
-
-    public void setSmtpPort(final String smtpPort) {
-        throwIfNull("smtpPort", smtpPort);
-        properties.setProperty(PROPERTY_SMTP_PORT, smtpPort);
     }
 
     public String getSmtpPort() {
@@ -256,16 +226,8 @@ public final class Settings {
         return properties.getProperty(PROPERTY_BASE_URL);
     }
 
-    public void setNcsList(final String ncsList) {
-        properties.setProperty(PROPERTY_LIST_NCS, ncsList);
-    }
-
     public String getNcsList() {
         return properties.getProperty(PROPERTY_LIST_NCS);
-    }
-
-    public void setAnnounceList(final String annuunceList) {
-        properties.setProperty(PROPERTY_LIST_ANNOUNCE, annuunceList);
     }
 
     public String getAnnounceList() {

@@ -1,1 +1,1 @@
-The root for all IWS development.
+The IntraWeb Services Project

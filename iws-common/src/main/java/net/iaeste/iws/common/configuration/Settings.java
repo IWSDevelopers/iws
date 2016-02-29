@@ -38,11 +38,12 @@ public final class Settings {
     private static final String PROPERTY_MAIL_SYNCHRONIZE_TIME = "mail.synchronize.time";
     private static final String PROPERTY_STARTUP_RESET_SESSIONS = "startup.reset.sessions";
     private static final String PROPERTY_ROOT_FILE_PATH = "root.file.path";
-    private static final String PROPERTY_PASSWORD_SALT = "iws.password.salt";
+    private static final String PROPERTY_INSTANCE_SALT = "iws.instance.salt";
     private static final String PROPERTY_MAX_ACTIVE_TOKENS = "max.active.tokens";
     private static final String PROPERTY_MAX_LOGIN_RETRIES = "max.login.retries";
     private static final String PROPERTY_MAX_IDLE_TIME_FOR_SESSIONS = "max.idle.time.for.sessions";
     private static final String PROPERTY_LOGIN_BLOCKED_PERIOD = "login.blocked.period";
+    private static final String PROPERTY_EULA_VERSION = "latest.eula.version";
     private static final String PROPERTY_ANNUAL_CONFERENCE_START = "annual.conference.start";
     private static final String PROPERTY_ANNUAL_CONFERENCE_END = "annual.conference.end";
     private static final String PROPERTY_ANNUAL_CONFERENCE_DEADLINE = "annual.conference.nomination.deadline";
@@ -69,11 +70,12 @@ public final class Settings {
         properties.setProperty(PROPERTY_MAIL_SYNCHRONIZE_TIME, InternalConstants.MAIL_SYNCHRONIZE_TIME);
         properties.setProperty(PROPERTY_ROOT_FILE_PATH, System.getProperty("java.io.tmpdir"));
         properties.setProperty(PROPERTY_STARTUP_RESET_SESSIONS, InternalConstants.STARTUP_RESET_SESSIONS);
-        properties.setProperty(PROPERTY_PASSWORD_SALT, "");
+        properties.setProperty(PROPERTY_INSTANCE_SALT, "");
         properties.setProperty(PROPERTY_MAX_ACTIVE_TOKENS, String.valueOf(InternalConstants.MAX_ACTIVE_TOKENS));
         properties.setProperty(PROPERTY_MAX_LOGIN_RETRIES, String.valueOf(InternalConstants.MAX_LOGIN_RETRIES));
         properties.setProperty(PROPERTY_MAX_IDLE_TIME_FOR_SESSIONS, String.valueOf(InternalConstants.MAX_SESSION_IDLE_PERIOD));
         properties.setProperty(PROPERTY_LOGIN_BLOCKED_PERIOD, String.valueOf(InternalConstants.LOGIN_BLOCKING_PERIOD));
+        properties.setProperty(PROPERTY_EULA_VERSION, String.valueOf(InternalConstants.INITIAL_EULA_VERSION));
         properties.setProperty(PROPERTY_ANNUAL_CONFERENCE_START, InternalConstants.AC_START);
         properties.setProperty(PROPERTY_ANNUAL_CONFERENCE_END, InternalConstants.AC_END);
         properties.setProperty(PROPERTY_ANNUAL_CONFERENCE_DEADLINE, InternalConstants.AC_DEADLINE);
@@ -120,15 +122,15 @@ public final class Settings {
         return properties.getProperty(PROPERTY_ROOT_FILE_PATH);
     }
 
-    public void setPasswordSalt(final String salt) {
-        properties.setProperty(PROPERTY_PASSWORD_SALT, salt);
+    public void setinstanceSalt(final String salt) {
+        properties.setProperty(PROPERTY_INSTANCE_SALT, salt);
     }
 
-    public String getPasswordSalt() {
-        return properties.getProperty(PROPERTY_PASSWORD_SALT);
+    public String getInstanceSalt() {
+        return properties.getProperty(PROPERTY_INSTANCE_SALT);
     }
 
-    public void setMaxActiveTokens(final Integer maxActiveTokens) throws IllegalArgumentException {
+    public void setMaxActiveTokens(final Integer maxActiveTokens) {
         throwIfNull("maxActiveTokens", maxActiveTokens);
         properties.setProperty(PROPERTY_MAX_ACTIVE_TOKENS, String.valueOf(maxActiveTokens));
     }
@@ -137,7 +139,7 @@ public final class Settings {
         return Integer.valueOf(properties.getProperty(PROPERTY_MAX_ACTIVE_TOKENS));
     }
 
-    public void setMaxLoginRetries(final Integer maxLoginRetries) throws IllegalArgumentException {
+    public void setMaxLoginRetries(final Integer maxLoginRetries) {
         throwIfNull("maxLoginRetries", maxLoginRetries);
         properties.setProperty(PROPERTY_MAX_LOGIN_RETRIES, String.valueOf(maxLoginRetries));
     }
@@ -146,7 +148,7 @@ public final class Settings {
         return Integer.valueOf(properties.getProperty(PROPERTY_MAX_LOGIN_RETRIES));
     }
 
-    public void setMaxIdleTimeForSessions(final Long maxIdleTimeForSessions) throws IllegalArgumentException {
+    public void setMaxIdleTimeForSessions(final Long maxIdleTimeForSessions) {
         throwIfNull("maxIdleTimeForSessions", maxIdleTimeForSessions);
         properties.setProperty(PROPERTY_MAX_IDLE_TIME_FOR_SESSIONS, String.valueOf(maxIdleTimeForSessions));
     }
@@ -155,13 +157,25 @@ public final class Settings {
         return Long.valueOf(properties.getProperty(PROPERTY_MAX_IDLE_TIME_FOR_SESSIONS));
     }
 
-    public void setLoginBlockedTime(final Long loginBlockedTime) throws IllegalArgumentException {
+    public void setLoginBlockedTime(final Long loginBlockedTime) {
         throwIfNull("loginBlockedTime", loginBlockedTime);
         properties.setProperty(PROPERTY_LOGIN_BLOCKED_PERIOD, String.valueOf(loginBlockedTime));
     }
 
     public long getLoginBlockedTime() {
         return Long.valueOf(properties.getProperty(PROPERTY_LOGIN_BLOCKED_PERIOD));
+    }
+
+    public void setCurrentEULAVersion(final int eulaVersion) {
+        if (eulaVersion < InternalConstants.INITIAL_EULA_VERSION) {
+            throw new IllegalArgumentException("The EULA Version must be greater than " + InternalConstants.INITIAL_EULA_VERSION + '.');
+
+        }
+        properties.setProperty(PROPERTY_EULA_VERSION, String.valueOf(eulaVersion));
+    }
+
+    public long getCurrentEULAVersion() {
+        return Long.valueOf(properties.getProperty(PROPERTY_EULA_VERSION));
     }
 
     public void setAnnualConferenceStart(final String start) {

@@ -130,6 +130,11 @@ public final class InternalConstants {
      */
     public static final long LOGIN_BLOCKING_PERIOD = 1800000L; // 30 minutes
 
+    /**
+     * The initial EULA (End User License Agreement) version.
+     */
+    public static final int INITIAL_EULA_VERSION = 1;
+
     private static final Integer CURRENT_YEAR = Calendar.getInstance().get(Calendar.YEAR);
 
     /**

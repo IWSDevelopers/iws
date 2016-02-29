@@ -101,6 +101,15 @@ public final class IWSErrors {
     public static final IWSError EXCEEDED_LOGIN_ATTEMPTS = new IWSError(408, "Too many login attempts for this account.");
 
     /**
+     * Users must accept an EULA (End User License Agreement) before being
+     * allowed to access the system. The EULA comes with a version number which
+     * is listed in the IWS Properties file. If the version is outdated, then
+     * the number should be incremented in the Properties file, and thereby
+     * forcing all Users to accept the new one, before they can continue.
+     */
+    public static final IWSError DEPRECATED_EULA = new IWSError(409, "The accepted EULA is deprecated.");
+
+    /**
      * The user account has seen too many attempts at login in.
      */
     public static final IWSError DATA_SERIALIZATION_ERROR = new IWSError(420, "Serialization Error with the given Object.");

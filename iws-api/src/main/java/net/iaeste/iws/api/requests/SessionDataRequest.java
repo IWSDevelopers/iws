@@ -105,7 +105,7 @@ public final class SessionDataRequest<T extends Serializable> extends AbstractVe
      * @throws IllegalArgumentException if the Compressed Session Data exceeds 16 KB
      * @see #MAX_SIZE
      */
-    public void setSessionData(final T sessionData) throws IllegalArgumentException {
+    public void setSessionData(final T sessionData) {
         final byte[] tmp = Serializer.serialize(sessionData);
         ensureNotTooLong("sessionData", tmp, MAX_SIZE);
         this.sessionData = tmp;

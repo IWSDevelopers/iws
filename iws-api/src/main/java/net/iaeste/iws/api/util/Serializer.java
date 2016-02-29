@@ -59,7 +59,7 @@ public final class Serializer {
      * @return Serialized and Compressed Byte Array
      * @throws SerializationException if unable to write the data
      */
-    public static <T extends Serializable> byte[] serialize(final T data) throws SerializationException {
+    public static <T extends Serializable> byte[] serialize(final T data) {
         final byte[] result;
 
         if (data != null) {
@@ -102,7 +102,7 @@ public final class Serializer {
      * @return Deserialized and Decompressed IWSEntity
      * @throws SerializationException if unable to read the data
      */
-    public static <T extends Serializable> T deserialize(final byte[] bytes) throws SerializationException {
+    public static <T extends Serializable> T deserialize(final byte[] bytes) {
         final T result;
 
         if (bytes != null) {

@@ -27,6 +27,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
@@ -95,14 +96,14 @@ public final class FileRequest extends AbstractVerification implements Actionabl
      */
     @Override
     public Set<Action> allowedActions() {
-        return allowed;
+        return Collections.unmodifiableSet(allowed);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void setAction(final Action action) throws IllegalArgumentException {
+    public void setAction(final Action action) {
         ensureNotNullAndContains("action", action, allowed);
         this.action = action;
     }
@@ -126,7 +127,7 @@ public final class FileRequest extends AbstractVerification implements Actionabl
      * @param file File Object to be processed
      * @throws IllegalArgumentException if the File Object is not verifiable
      */
-    public void setFile(final File file) throws IllegalArgumentException {
+    public void setFile(final File file) {
         ensureVerifiable("file", file);
         this.file = new File(file);
     }
@@ -146,8 +147,9 @@ public final class FileRequest extends AbstractVerification implements Actionabl
      * method will throw an {@code IllegalArgumentException}.</p>
      *
      * @param type Storage Type
+     * @throws IllegalArgumentException if the Storage Type is null
      */
-    public void setType(final StorageType type) throws IllegalArgumentException {
+    public void setType(final StorageType type) {
         ensureNotNull("type", type);
         this.type = type;
     }

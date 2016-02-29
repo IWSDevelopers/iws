@@ -49,7 +49,7 @@ public final class EnumUtil {
      * @return The result of the check
      * @throws IllegalArgumentException if no match was found
      */
-    public static <E extends Enum<E> & Descriptable<E>> E valueOf(final Class<E> type, final String str) throws IllegalArgumentException {
+    public static <E extends Enum<E> & Descriptable<E>> E valueOf(final Class<E> type, final String str) {
         E value = null;
 
         if (str != null) {

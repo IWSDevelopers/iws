@@ -91,7 +91,7 @@ public final class InternationalGroupRequest extends AbstractVerification {
      * @param group Group to process
      * @throws IllegalArgumentException if Group is null or nor verifiable
      */
-    public void setGroup(final Group group) throws IllegalArgumentException {
+    public void setGroup(final Group group) {
         ensureNotNullAndVerifiable("group", group);
         this.group = group;
     }
@@ -108,7 +108,7 @@ public final class InternationalGroupRequest extends AbstractVerification {
      * @param user User to set as Coordinator (Owner)
      * @throws IllegalArgumentException if not verifiable
      */
-    public void setUser(final User user) throws IllegalArgumentException {
+    public void setUser(final User user) {
         ensureVerifiable("user", user);
         this.user = user;
     }
@@ -126,7 +126,7 @@ public final class InternationalGroupRequest extends AbstractVerification {
      * @param status New Status for the Group
      * @throws IllegalArgumentException if status is null
      */
-    public void setStatus(final GroupStatus status) throws IllegalArgumentException {
+    public void setStatus(final GroupStatus status) {
         ensureNotNull("status", status);
         this.status = status;
     }

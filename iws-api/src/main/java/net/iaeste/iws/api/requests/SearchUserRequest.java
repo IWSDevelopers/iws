@@ -78,7 +78,7 @@ public final class SearchUserRequest extends AbstractVerification {
      * @param group Member Group to search in
      * @throws IllegalArgumentException if not a valid Group
      */
-    public void setGroup(final Group group) throws IllegalArgumentException {
+    public void setGroup(final Group group) {
         ensureVerifiable("group", group);
         this.group = new Group(group);
     }
@@ -102,7 +102,7 @@ public final class SearchUserRequest extends AbstractVerification {
      * @param name Partial name to search for
      * @throws IllegalArgumentException if the name is null or empty
      */
-    public void setName(final String name) throws IllegalArgumentException {
+    public void setName(final String name) {
         ensureNotNullOrEmpty("name", name);
         this.name = name;
     }

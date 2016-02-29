@@ -127,7 +127,7 @@ public final class HashcodeGenerator {
      * @return salt for the hashcode generation
      */
     private String prepareSalt(final String userSalt) {
-        return userSalt + settings.getPasswordSalt();
+        return userSalt + settings.getInstanceSalt();
     }
 
     /**

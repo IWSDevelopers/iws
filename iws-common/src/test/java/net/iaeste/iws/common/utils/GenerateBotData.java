@@ -144,7 +144,7 @@ public final class GenerateBotData {
         // The IWS Instance salt which is set in the IWS Properties file must be
         // set to the correct value here also, otherwise the passwords will be
         // unusable. The salt can be read from the IWS Properties file.
-        settings.setPasswordSalt("Don't forget to set the correct salt!");
+        settings.setinstanceSalt("Don't forget to set the correct salt!");
         final HashcodeGenerator generator = new HashcodeGenerator(settings);
 
         System.out.println("-- This will generate the Bot accounts for all IAESTE Countries.");

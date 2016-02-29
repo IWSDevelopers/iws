@@ -42,7 +42,7 @@ public final class HashcodeGeneratorTest {
     @Test
     public void testGenerateSHA256() {
         final Settings settings = new Settings();
-        settings.setPasswordSalt("Salt");
+        settings.setinstanceSalt("Salt");
         final HashcodeGenerator generator = new HashcodeGenerator(settings);
 
         // Preconditions for the test
@@ -78,7 +78,7 @@ public final class HashcodeGeneratorTest {
     @Test
     public void testGenerateSHA384() {
         final Settings settings = new Settings();
-        settings.setPasswordSalt("salt");
+        settings.setinstanceSalt("salt");
         final HashcodeGenerator generator = new HashcodeGenerator(settings);
 
         // Preconditions for the test
@@ -114,7 +114,7 @@ public final class HashcodeGeneratorTest {
     @Test
     public void testGenerateSHA512() {
         final Settings settings = new Settings();
-        settings.setPasswordSalt("salt");
+        settings.setinstanceSalt("salt");
         final HashcodeGenerator generator = new HashcodeGenerator(settings);
 
         // Preconditions for the test

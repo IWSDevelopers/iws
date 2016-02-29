@@ -93,7 +93,7 @@ public final class UserGroupAssignmentRequest extends AbstractVerification imple
      * {@inheritDoc}
      */
     @Override
-    public void setAction(final Action action) throws IllegalArgumentException {
+    public void setAction(final Action action) {
         ensureNotNullAndContains("action", action, allowed);
         this.action = action;
     }

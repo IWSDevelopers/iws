@@ -80,7 +80,7 @@ public final class FetchInternationalGroupRequest extends AbstractVerification {
      * @param statuses Set of Status values to include in the lookup
      * @throws IllegalArgumentException if the statuses is null
      */
-    public void setStatuses(final Set<GroupStatus> statuses) throws IllegalArgumentException {
+    public void setStatuses(final Set<GroupStatus> statuses) {
         ensureNotNullAndContains("statuses", statuses, ALLOWED);
 
         this.statuses = statuses;

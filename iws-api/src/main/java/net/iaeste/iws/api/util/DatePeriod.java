@@ -93,7 +93,7 @@ public final class DatePeriod extends AbstractVerification {
      * @param fromDate Start of the Period
      * @throws IllegalArgumentException if either null or after the to date
      */
-    public void setFromDate(final Date fromDate) throws IllegalArgumentException {
+    public void setFromDate(final Date fromDate) {
         ensureNotNullAndBeforeOrAtDate("fromDate", fromDate, toDate);
 
         this.fromDate = fromDate;
@@ -112,7 +112,7 @@ public final class DatePeriod extends AbstractVerification {
      * @param toDate End of the Period
      * @throws IllegalArgumentException if either null or before the from date
      */
-    public void setToDate(final Date toDate) throws IllegalArgumentException {
+    public void setToDate(final Date toDate) {
         ensureNotNullAndAfterOrAtDate("toDate", toDate, fromDate);
 
         this.toDate = toDate;
@@ -143,7 +143,7 @@ public final class DatePeriod extends AbstractVerification {
     // Internal Methods
     // =========================================================================
 
-    private static void ensureNotNullAndBeforeOrAtDate(final String field, final Date date, final Date mustBeBefore) throws IllegalArgumentException {
+    private static void ensureNotNullAndBeforeOrAtDate(final String field, final Date date, final Date mustBeBefore) {
         ensureNotNull(field, date);
 
         if ((mustBeBefore != null) && date.isAfter(mustBeBefore)) {
@@ -151,7 +151,7 @@ public final class DatePeriod extends AbstractVerification {
         }
     }
 
-    private static void ensureNotNullAndAfterOrAtDate(final String field, final Date date, final Date mustBeAfter) throws IllegalArgumentException {
+    private static void ensureNotNullAndAfterOrAtDate(final String field, final Date date, final Date mustBeAfter) {
         ensureNotNull(field, date);
 
         if ((mustBeAfter != null) && date.isBefore(mustBeAfter)) {

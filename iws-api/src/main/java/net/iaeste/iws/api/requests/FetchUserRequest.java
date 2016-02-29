@@ -54,14 +54,14 @@ public final class FetchUserRequest extends AbstractVerification {
 
     /**
      * Setting the Id of the User to retrieve. The details of the user is
-     * depending on the permisions that the user have granted others via the
+     * depending on the permissions that the user have granted others via the
      * privacy settings. Note, the method will throw an IllegalArgument
      * Exception, if the User Id is null or not a valid Id.
      *
      * @param userId User Id
      * @throws IllegalArgumentException if null or invalid Id
      */
-    public void setUserId(final String userId) throws IllegalArgumentException {
+    public void setUserId(final String userId) {
         ensureNotNullAndValidId("userId", userId);
         this.userId = userId;
     }

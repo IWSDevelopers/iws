@@ -99,7 +99,7 @@ public final class FolderRequest extends AbstractVerification implements Actiona
      * {@inheritDoc}
      */
     @Override
-    public void setAction(final Action action) throws IllegalArgumentException {
+    public void setAction(final Action action) {
         ensureNotNullAndContains("action", action, allowed);
         this.action = action;
     }
@@ -123,7 +123,7 @@ public final class FolderRequest extends AbstractVerification implements Actiona
      * @param folder Folder Object to be processed
      * @throws IllegalArgumentException if the File Object is not verifiable
      */
-    public void setFolder(final Folder folder) throws IllegalArgumentException {
+    public void setFolder(final Folder folder) {
         ensureNotNullAndVerifiable("folder", folder);
         this.folder = new Folder(folder);
     }
@@ -132,7 +132,13 @@ public final class FolderRequest extends AbstractVerification implements Actiona
         return new Folder(folder);
     }
 
-    public void setParentId(final String parentId) throws IllegalArgumentException {
+    /**
+     * Sets the Id of the parent Folder.
+     *
+     * @param parentId Parent Folder Id
+     * @throws IllegalArgumentException if not a valid Id
+     */
+    public void setParentId(final String parentId) {
         ensureValidId("parentId", parentId);
         this.parentId = parentId;
     }

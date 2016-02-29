@@ -39,6 +39,7 @@ import javax.persistence.PersistenceContext;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -52,6 +53,13 @@ public class AccessDaoTest {
 
     @PersistenceContext
     private EntityManager entityManager;
+
+    @Test
+    public void testcreateUUID() {
+        System.out.println(UUID.randomUUID());
+        System.out.println(UUID.randomUUID());
+        System.out.println(UUID.randomUUID());
+    }
 
     @Test
     @Transactional

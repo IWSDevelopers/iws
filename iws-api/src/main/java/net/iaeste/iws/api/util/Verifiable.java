@@ -40,7 +40,7 @@ public interface Verifiable extends Serializable {
      *
      * @throws VerificationException if the data is insufficient or invalid
      */
-    void verify() throws VerificationException;
+    void verify();
 
     /**
      * <p>Validates that the required information is there for the processing to

@@ -35,7 +35,7 @@
                         <groupId>org.jacoco</groupId>
                         <artifactId>jacoco-maven-plugin</artifactId>
                         <configuration>
-                            <destFile>${project.basedir}/../iws-parent/target/jacoco.exec</destFile>
+                            <destFile>${project.basedir}/../target/jacoco.exec</destFile>
                         </configuration>
                         <executions>
                             <execution>

@@ -8,24 +8,19 @@
     <packaging>pom</packaging>
     <version>1.2-SNAPSHOT</version>
     <name>IWS</name>
-    <description>IntraWeb Services - Parent Module</description>
+    <description>IntraWeb Services</description>
 
     <modules>
-        <module>../iws-api</module>
-        <module>../iws-common</module>
-        <module>../iws-persistence</module>
-        <module>../iws-core</module>
-        <module>../iws-ejb</module>
-        <module>../iws-ws</module>
-        <module>../iws-ear</module>
-        <module>../iws-ws-client</module>
-        <module>../iws-client</module>
+        <module>iws-api</module>
+        <module>iws-common</module>
+        <module>iws-persistence</module>
+        <module>iws-core</module>
+        <module>iws-ejb</module>
+        <module>iws-ws</module>
+        <module>iws-ear</module>
+        <module>iws-ws-client</module>
+        <module>iws-client</module>
     </modules>
-
-    <organization>
-        <name>IAESTE Internet Development Team</name>
-        <url>https://www.iaeste.net/</url>
-    </organization>
 
     <developers>
         <developer>
@@ -38,17 +33,33 @@
             </roles>
         </developer>
         <developer>
-            <id>martin</id>
-            <name>Martin Eisfeld</name>
-            <email>martin.eisfeld@gmx.net</email>
+            <id>pavel</id>
+            <name>Pavel Fiala</name>
+            <email>fiala_pavel@centrum.cz</email>
             <roles>
                 <role>developer</role>
             </roles>
         </developer>
         <developer>
-            <id>pavel</id>
-            <name>Pavel Fiala</name>
-            <email>mpavel.fiala@iaeste.cz</email>
+            <id>michl</id>
+            <name>Michael Pickelbauer</name>
+            <email>michael.pickelbauer@gmail.com</email>
+            <roles>
+                <role>developer</role>
+            </roles>
+        </developer>
+        <developer>
+            <id>matej</id>
+            <name>Matej Kosco</name>
+            <email>matej.kosco@gmail.com</email>
+            <roles>
+                <role>developer</role>
+            </roles>
+        </developer>
+        <developer>
+            <id>martin</id>
+            <name>Martin Eisfeld</name>
+            <email>martin.eisfeld@gmx.net</email>
             <roles>
                 <role>developer</role>
             </roles>
@@ -68,8 +79,8 @@
              the same report, this way we get cross-module code coverage. -->
         <!-- To separate the information from the Unit & Integration testing,
              see: http://www.agile-engineering.net/2011/06/seperating-test-code-coverage-with.html -->
-        <sonar.jacoco.reportPath>${project.basedir}/../iws-parent/target/jacoco.exec</sonar.jacoco.reportPath>
-        <sonar.jacoco.itReportPath>${project.basedir}/../iws-parent/target/jacoco-it.exec</sonar.jacoco.itReportPath>
+        <sonar.jacoco.reportPath>${project.basedir}/target/jacoco.exec</sonar.jacoco.reportPath>
+        <sonar.jacoco.itReportPath>${project.basedir}/target/jacoco-it.exec</sonar.jacoco.itReportPath>
         <!-- Sonar is by default analyzing everything. But Generated Code is beyond our
              control, so having error reports from this is just annoying.
              Legend: *  - zero or more characters

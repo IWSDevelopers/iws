@@ -17,8 +17,6 @@
  */
 package net.iaeste.iws.core;
 
-import static net.iaeste.iws.api.util.LogUtil.formatLogMessage;
-
 import net.iaeste.iws.api.Administration;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.enums.Permission;
@@ -80,9 +78,6 @@ public final class AdministrationController extends CommonController implements 
      */
     @Override
     public FetchCountryResponse fetchCountries(final AuthenticationToken token, final FetchCountryRequest request) {
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Starting fetchCountries()"));
-        }
         FetchCountryResponse response;
 
         try {
@@ -103,9 +98,6 @@ public final class AdministrationController extends CommonController implements 
             response = new FetchCountryResponse(e.getError(), e.getMessage());
         }
 
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Finished fetchCountries()"));
-        }
         return response;
     }
 
@@ -114,9 +106,6 @@ public final class AdministrationController extends CommonController implements 
      */
     @Override
     public FallibleResponse processCountry(final AuthenticationToken token, final CountryRequest request) {
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Starting processCountry()"));
-        }
         FallibleResponse response;
 
         try {
@@ -136,9 +125,6 @@ public final class AdministrationController extends CommonController implements 
             response = new FetchCountryResponse(e.getError(), e.getMessage());
         }
 
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Finished processCountry()"));
-        }
         return response;
     }
 
@@ -147,9 +133,6 @@ public final class AdministrationController extends CommonController implements 
      */
     @Override
     public CreateUserResponse createUser(final AuthenticationToken token, final CreateUserRequest request) {
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Starting createUser()"));
-        }
         CreateUserResponse response;
 
         try {
@@ -168,9 +151,6 @@ public final class AdministrationController extends CommonController implements 
             response = new CreateUserResponse(e.getError(), e.getMessage());
         }
 
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Finished createUser()"));
-        }
         return response;
     }
 
@@ -179,9 +159,6 @@ public final class AdministrationController extends CommonController implements 
      */
     @Override
     public FallibleResponse activateUser(final String activationString) {
-        if (LOG.isTraceEnabled()) {
-            LOG.trace("Starting activateUser()");
-        }
         FallibleResponse response;
 
         try {
@@ -200,9 +177,6 @@ public final class AdministrationController extends CommonController implements 
             response = new FallibleResponse(e.getError(), e.getMessage());
         }
 
-        if (LOG.isTraceEnabled()) {
-            LOG.trace("Finished activateUser()");
-        }
         return response;
     }
 
@@ -211,9 +185,6 @@ public final class AdministrationController extends CommonController implements 
      */
     @Override
     public FallibleResponse updateUsername(final String updateCode) {
-        if (LOG.isTraceEnabled()) {
-            LOG.trace("Starting updateUsername()");
-        }
         FallibleResponse response;
 
         try {
@@ -232,9 +203,6 @@ public final class AdministrationController extends CommonController implements 
             response = new FallibleResponse(e.getError(), e.getMessage());
         }
 
-        if (LOG.isTraceEnabled()) {
-            LOG.trace("Finished updateUsername()");
-        }
         return response;
     }
 
@@ -243,9 +211,6 @@ public final class AdministrationController extends CommonController implements 
      */
     @Override
     public FallibleResponse controlUserAccount(final AuthenticationToken token, final UserRequest request) {
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Starting controlUserAccount()"));
-        }
         FallibleResponse response;
 
         try {
@@ -269,9 +234,6 @@ public final class AdministrationController extends CommonController implements 
             response = new FallibleResponse(e.getError(), e.getMessage());
         }
 
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Finished controlUserAccount()"));
-        }
         return response;
     }
 
@@ -280,9 +242,6 @@ public final class AdministrationController extends CommonController implements 
      */
     @Override
     public FallibleResponse changeAccountName(final AuthenticationToken token, final AccountNameRequest request) {
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Starting changeAccountName()"));
-        }
         FallibleResponse response;
 
         try {
@@ -302,9 +261,6 @@ public final class AdministrationController extends CommonController implements 
             response = new FallibleResponse(e.getError(), e.getMessage());
         }
 
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Finished changeAccountName()"));
-        }
         return response;
     }
 
@@ -313,9 +269,6 @@ public final class AdministrationController extends CommonController implements 
      */
     @Override
     public FetchUserResponse fetchUser(final AuthenticationToken token, final FetchUserRequest request) {
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Starting fetchUser()"));
-        }
         FetchUserResponse response;
 
         try {
@@ -337,9 +290,6 @@ public final class AdministrationController extends CommonController implements 
             response = new FetchUserResponse(e.getError(), e.getMessage());
         }
 
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Finished fetchUser()"));
-        }
         return response;
     }
 
@@ -348,9 +298,6 @@ public final class AdministrationController extends CommonController implements 
      */
     @Override
     public FetchRoleResponse fetchRoles(final AuthenticationToken token, final FetchRoleRequest request) {
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Starting fetchRoles()"));
-        }
         FetchRoleResponse response;
 
         try {
@@ -370,9 +317,6 @@ public final class AdministrationController extends CommonController implements 
             response = new FetchRoleResponse(e.getError(), e.getMessage());
         }
 
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Finished fetchRoles()"));
-        }
         return response;
     }
 
@@ -381,9 +325,6 @@ public final class AdministrationController extends CommonController implements 
      */
     @Override
     public ProcessGroupResponse processGroup(final AuthenticationToken token, final GroupRequest request) {
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Starting processGroup()"));
-        }
         ProcessGroupResponse response;
 
         try {
@@ -402,9 +343,6 @@ public final class AdministrationController extends CommonController implements 
             response = new ProcessGroupResponse(e.getError(), e.getMessage());
         }
 
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Finished processGroup()"));
-        }
         return response;
     }
 
@@ -413,9 +351,6 @@ public final class AdministrationController extends CommonController implements 
      */
     @Override
     public FallibleResponse deleteSubGroup(final AuthenticationToken token, final GroupRequest request) {
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Starting deleteSubGroup()"));
-        }
         FallibleResponse response;
 
         try {
@@ -435,9 +370,6 @@ public final class AdministrationController extends CommonController implements 
             response = new FallibleResponse(e.getError(), e.getMessage());
         }
 
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Finished deleteSubGroup()"));
-        }
         return response;
     }
 
@@ -446,9 +378,6 @@ public final class AdministrationController extends CommonController implements 
      */
     @Override
     public FetchGroupResponse fetchGroup(final AuthenticationToken token, final FetchGroupRequest request) {
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Starting fetchGroup()"));
-        }
         FetchGroupResponse response;
 
         try {
@@ -481,9 +410,6 @@ public final class AdministrationController extends CommonController implements 
             response = new FetchGroupResponse(e.getError(), e.getMessage());
         }
 
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Finished fetchGroup()"));
-        }
         return response;
     }
 
@@ -492,9 +418,6 @@ public final class AdministrationController extends CommonController implements 
      */
     @Override
     public FallibleResponse changeGroupOwner(final AuthenticationToken token, final OwnerRequest request) {
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Starting changeGroupOwner()"));
-        }
         FallibleResponse response;
 
         try {
@@ -515,9 +438,6 @@ public final class AdministrationController extends CommonController implements 
             response = new FetchGroupResponse(e.getError(), e.getMessage());
         }
 
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Finished changeGroupOwner()"));
-        }
         return response;
     }
 
@@ -526,9 +446,6 @@ public final class AdministrationController extends CommonController implements 
      */
     @Override
     public ProcessUserGroupResponse processUserGroupAssignment(final AuthenticationToken token, final UserGroupAssignmentRequest request) {
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Starting processUserGroupAssignment()"));
-        }
         ProcessUserGroupResponse response;
 
         try {
@@ -548,9 +465,6 @@ public final class AdministrationController extends CommonController implements 
             response = new ProcessUserGroupResponse(e.getError(), e.getMessage());
         }
 
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Finished processUserGroupAssignment()"));
-        }
         return response;
     }
 
@@ -559,9 +473,6 @@ public final class AdministrationController extends CommonController implements 
      */
     @Override
     public SearchUserResponse searchUsers(final AuthenticationToken token, final SearchUserRequest request) {
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Starting searchUsers()"));
-        }
         SearchUserResponse response;
 
         try {
@@ -580,9 +491,6 @@ public final class AdministrationController extends CommonController implements 
             response = new SearchUserResponse(e.getError(), e.getMessage());
         }
 
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Finished searchUsers()"));
-        }
         return response;
     }
 
@@ -591,9 +499,6 @@ public final class AdministrationController extends CommonController implements 
      */
     @Override
     public EmergencyListResponse fetchEmergencyList(final AuthenticationToken token) {
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Starting fetchEmergencyList()"));
-        }
         EmergencyListResponse response;
 
         try {
@@ -611,9 +516,6 @@ public final class AdministrationController extends CommonController implements 
             response = new EmergencyListResponse(e.getError(), e.getMessage());
         }
 
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Finished fetchEmergencyList()"));
-        }
         return response;
     }
 
@@ -622,9 +524,6 @@ public final class AdministrationController extends CommonController implements 
      */
     @Override
     public ContactsResponse fetchContacts(final AuthenticationToken token, final ContactsRequest request) {
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Starting fetchContacts()"));
-        }
         ContactsResponse response;
 
         try {
@@ -643,9 +542,6 @@ public final class AdministrationController extends CommonController implements 
             response = new ContactsResponse(e.getError(), e.getMessage());
         }
 
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Finished fetchContacts()"));
-        }
         return response;
     }
 }

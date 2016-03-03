@@ -17,16 +17,14 @@
  */
 package net.iaeste.iws.core;
 
-import static net.iaeste.iws.api.util.LogUtil.formatLogMessage;
-
 import net.iaeste.iws.api.Students;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.requests.CreateUserRequest;
-import net.iaeste.iws.api.requests.student.ProcessStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentsRequest;
+import net.iaeste.iws.api.requests.student.ProcessStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.StudentApplicationRequest;
 import net.iaeste.iws.api.requests.student.StudentRequest;
 import net.iaeste.iws.api.responses.CreateUserResponse;
@@ -65,9 +63,6 @@ public final class StudentController extends CommonController implements Student
      */
     @Override
     public CreateUserResponse createStudent(final AuthenticationToken token, final CreateUserRequest request) {
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Starting createStudent()"));
-        }
         CreateUserResponse response;
 
         try {
@@ -86,9 +81,6 @@ public final class StudentController extends CommonController implements Student
             response = new CreateUserResponse(e.getError(), e.getMessage());
         }
 
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Finished createStudent()"));
-        }
         return response;
     }
 
@@ -97,9 +89,6 @@ public final class StudentController extends CommonController implements Student
      */
     @Override
     public StudentResponse processStudent(final AuthenticationToken token, final StudentRequest request) {
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Starting processStudent()"));
-        }
         StudentResponse response;
 
         try {
@@ -118,9 +107,6 @@ public final class StudentController extends CommonController implements Student
             response = new StudentResponse(e.getError(), e.getMessage());
         }
 
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Finished processStudent()"));
-        }
         return response;
     }
 
@@ -129,9 +115,6 @@ public final class StudentController extends CommonController implements Student
      */
     @Override
     public FetchStudentsResponse fetchStudents(final AuthenticationToken token, final FetchStudentsRequest request) {
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Starting fetchStudents()"));
-        }
         FetchStudentsResponse response;
 
         try {
@@ -150,9 +133,6 @@ public final class StudentController extends CommonController implements Student
             response = new FetchStudentsResponse(e.getError(), e.getMessage());
         }
 
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Finished fetchStudents()"));
-        }
         return response;
     }
 
@@ -161,9 +141,6 @@ public final class StudentController extends CommonController implements Student
      */
     @Override
     public StudentApplicationResponse processStudentApplication(final AuthenticationToken token, final ProcessStudentApplicationsRequest request) {
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Starting processStudentApplication()"));
-        }
         StudentApplicationResponse response;
 
         try {
@@ -182,9 +159,6 @@ public final class StudentController extends CommonController implements Student
             response = new StudentApplicationResponse(e.getError(), e.getMessage());
         }
 
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Finished processStudentApplication()"));
-        }
         return response;
     }
 
@@ -193,9 +167,6 @@ public final class StudentController extends CommonController implements Student
      */
     @Override
     public FetchStudentApplicationsResponse fetchStudentApplications(final AuthenticationToken token, final FetchStudentApplicationsRequest request) {
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Starting fetchStudentApplications()"));
-        }
         FetchStudentApplicationsResponse response;
 
         try {
@@ -214,9 +185,6 @@ public final class StudentController extends CommonController implements Student
             response = new FetchStudentApplicationsResponse(e.getError(), e.getMessage());
         }
 
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Finished fetchStudentApplications()"));
-        }
         return response;
     }
 
@@ -225,9 +193,6 @@ public final class StudentController extends CommonController implements Student
      */
     @Override
     public StudentApplicationResponse processApplicationStatus(final AuthenticationToken token, final StudentApplicationRequest request) {
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Starting processApplicationStatus()"));
-        }
         StudentApplicationResponse response;
 
         try {
@@ -246,9 +211,6 @@ public final class StudentController extends CommonController implements Student
             response = new StudentApplicationResponse(e.getError(), e.getMessage());
         }
 
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Finished processApplicationStatus()"));
-        }
         return response;
     }
 }

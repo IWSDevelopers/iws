@@ -17,23 +17,21 @@
  */
 package net.iaeste.iws.core;
 
-import static net.iaeste.iws.api.util.LogUtil.formatLogMessage;
-
 import net.iaeste.iws.api.Committees;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.requests.CommitteeRequest;
-import net.iaeste.iws.api.requests.FetchCommitteeRequest;
-import net.iaeste.iws.api.requests.FetchInternationalGroupRequest;
-import net.iaeste.iws.api.requests.FetchCountrySurveyRequest;
-import net.iaeste.iws.api.requests.InternationalGroupRequest;
 import net.iaeste.iws.api.requests.CountrySurveyRequest;
+import net.iaeste.iws.api.requests.FetchCommitteeRequest;
+import net.iaeste.iws.api.requests.FetchCountrySurveyRequest;
+import net.iaeste.iws.api.requests.FetchInternationalGroupRequest;
+import net.iaeste.iws.api.requests.InternationalGroupRequest;
 import net.iaeste.iws.api.responses.CommitteeResponse;
 import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchCommitteeResponse;
-import net.iaeste.iws.api.responses.FetchInternationalGroupResponse;
 import net.iaeste.iws.api.responses.FetchCountrySurveyResponse;
+import net.iaeste.iws.api.responses.FetchInternationalGroupResponse;
 import net.iaeste.iws.core.services.CommitteeService;
 import net.iaeste.iws.core.services.ServiceFactory;
 import net.iaeste.iws.persistence.Authentication;
@@ -64,9 +62,6 @@ public final class CommitteeController extends CommonController implements Commi
      */
     @Override
     public FetchCommitteeResponse fetchCommittees(final AuthenticationToken token, final FetchCommitteeRequest request) {
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Starting fetchCommittees()"));
-        }
         FetchCommitteeResponse response;
 
         try {
@@ -85,9 +80,6 @@ public final class CommitteeController extends CommonController implements Commi
             response = new FetchCommitteeResponse(e.getError(), e.getMessage());
         }
 
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Finished fetchCommittees()"));
-        }
         return response;
     }
 
@@ -96,9 +88,6 @@ public final class CommitteeController extends CommonController implements Commi
      */
     @Override
     public CommitteeResponse processCommittee(final AuthenticationToken token, final CommitteeRequest request) {
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Starting processCommittee()"));
-        }
         CommitteeResponse response;
 
         try {
@@ -117,9 +106,6 @@ public final class CommitteeController extends CommonController implements Commi
             response = new CommitteeResponse(e.getError(), e.getMessage());
         }
 
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Finished processCommittee()"));
-        }
         return response;
     }
 
@@ -128,9 +114,6 @@ public final class CommitteeController extends CommonController implements Commi
      */
     @Override
     public FetchInternationalGroupResponse fetchInternationalGroups(final AuthenticationToken token, final FetchInternationalGroupRequest request) {
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Starting fetchInternationalGroups()"));
-        }
         FetchInternationalGroupResponse response;
 
         try {
@@ -149,9 +132,6 @@ public final class CommitteeController extends CommonController implements Commi
             response = new FetchInternationalGroupResponse(e.getError(), e.getMessage());
         }
 
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Finished fetchInternationalGroups()"));
-        }
         return response;
     }
 
@@ -160,9 +140,6 @@ public final class CommitteeController extends CommonController implements Commi
      */
     @Override
     public FallibleResponse processInternationalGroup(final AuthenticationToken token, final InternationalGroupRequest request) {
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Starting processInternationalGroup()"));
-        }
         FallibleResponse response;
 
         try {
@@ -182,9 +159,6 @@ public final class CommitteeController extends CommonController implements Commi
             response = new FallibleResponse(e.getError(), e.getMessage());
         }
 
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Finished processInternationalGroup()"));
-        }
         return response;
     }
 
@@ -193,9 +167,6 @@ public final class CommitteeController extends CommonController implements Commi
      */
     @Override
     public FetchCountrySurveyResponse fetchCountrySurvey(final AuthenticationToken token, final FetchCountrySurveyRequest request) {
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Starting fetchCountrySurvey()"));
-        }
         FetchCountrySurveyResponse response;
 
         try {
@@ -214,9 +185,6 @@ public final class CommitteeController extends CommonController implements Commi
             response = new FetchCountrySurveyResponse(e.getError(), e.getMessage());
         }
 
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Finished fetchCountrySurvey()"));
-        }
         return response;
     }
 
@@ -225,9 +193,6 @@ public final class CommitteeController extends CommonController implements Commi
      */
     @Override
     public FallibleResponse processCountrySurvey(final AuthenticationToken token, final CountrySurveyRequest request) {
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Starting processCountrySurvey()"));
-        }
         FallibleResponse response;
 
         try {
@@ -247,9 +212,6 @@ public final class CommitteeController extends CommonController implements Commi
             response = new FallibleResponse(e.getError(), e.getMessage());
         }
 
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Finished processCountrySurvey()"));
-        }
         return response;
     }
 }

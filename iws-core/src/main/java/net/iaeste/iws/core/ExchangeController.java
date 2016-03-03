@@ -17,8 +17,6 @@
  */
 package net.iaeste.iws.core;
 
-import static net.iaeste.iws.api.util.LogUtil.formatLogMessage;
-
 import net.iaeste.iws.api.Exchange;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.enums.Permission;
@@ -82,9 +80,6 @@ public final class ExchangeController extends CommonController implements Exchan
      */
     @Override
     public OfferStatisticsResponse fetchOfferStatistics(final AuthenticationToken token, final OfferStatisticsRequest request) {
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Starting fetchOfferStatistics()"));
-        }
         OfferStatisticsResponse response;
 
         try {
@@ -103,9 +98,6 @@ public final class ExchangeController extends CommonController implements Exchan
             response = new OfferStatisticsResponse(e.getError(), e.getMessage());
         }
 
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Finished fetchOfferStatistics()"));
-        }
         return response;
     }
 
@@ -114,9 +106,6 @@ public final class ExchangeController extends CommonController implements Exchan
      */
     @Override
     public EmployerResponse processEmployer(final AuthenticationToken token, final ProcessEmployerRequest request) {
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Starting processEmployer()"));
-        }
         EmployerResponse response;
 
         try {
@@ -135,9 +124,6 @@ public final class ExchangeController extends CommonController implements Exchan
             response = new EmployerResponse(e.getError(), e.getMessage());
         }
 
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Finished processEmployer()"));
-        }
         return response;
     }
 
@@ -146,9 +132,6 @@ public final class ExchangeController extends CommonController implements Exchan
      */
     @Override
     public FetchEmployerResponse fetchEmployers(final AuthenticationToken token, final FetchEmployerRequest request) {
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Starting fetchEmployers()"));
-        }
         FetchEmployerResponse response;
 
         try {
@@ -167,9 +150,6 @@ public final class ExchangeController extends CommonController implements Exchan
             response = new FetchEmployerResponse(e.getError(), e.getMessage());
         }
 
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Finished fetchEmployers()"));
-        }
         return response;
     }
 
@@ -178,9 +158,6 @@ public final class ExchangeController extends CommonController implements Exchan
      */
     @Override
     public OfferResponse processOffer(final AuthenticationToken token, final ProcessOfferRequest request) {
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Starting processOffer()"));
-        }
         OfferResponse response;
 
         try {
@@ -199,9 +176,6 @@ public final class ExchangeController extends CommonController implements Exchan
             response = new OfferResponse(e.getError(), e.getMessage());
         }
 
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Finished processOffer()"));
-        }
         return response;
     }
 
@@ -210,9 +184,6 @@ public final class ExchangeController extends CommonController implements Exchan
      */
     @Override
     public OfferResponse deleteOffer(final AuthenticationToken token, final DeleteOfferRequest request) {
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Starting deleteOffer()"));
-        }
         OfferResponse response;
 
         try {
@@ -232,9 +203,6 @@ public final class ExchangeController extends CommonController implements Exchan
             response = new OfferResponse(e.getError(), e.getMessage());
         }
 
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Finished processOffer()"));
-        }
         return response;
     }
 
@@ -243,9 +211,6 @@ public final class ExchangeController extends CommonController implements Exchan
      */
     @Override
     public OfferCSVUploadResponse uploadOffers(final AuthenticationToken token, final OfferCSVUploadRequest request) {
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Starting uploadOffers()"));
-        }
         OfferCSVUploadResponse response;
 
         try {
@@ -264,9 +229,6 @@ public final class ExchangeController extends CommonController implements Exchan
             response = new OfferCSVUploadResponse(e.getError(), e.getMessage());
         }
 
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Finished uploadOffers()"));
-        }
         return response;
     }
 
@@ -275,9 +237,6 @@ public final class ExchangeController extends CommonController implements Exchan
      */
     @Override
     public FetchOffersResponse fetchOffers(final AuthenticationToken token, final FetchOffersRequest request) {
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Starting fetchOffers()"));
-        }
         FetchOffersResponse response;
 
         try {
@@ -296,9 +255,6 @@ public final class ExchangeController extends CommonController implements Exchan
             response = new FetchOffersResponse(e.getError(), e.getMessage());
         }
 
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Finished fetchOffers()"));
-        }
         return response;
     }
 
@@ -307,9 +263,6 @@ public final class ExchangeController extends CommonController implements Exchan
      */
     @Override
     public OfferCSVDownloadResponse downloadOffers(final AuthenticationToken token, final OfferCSVDownloadRequest request) {
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Starting downloadOffers()"));
-        }
         OfferCSVDownloadResponse response;
 
         try {
@@ -328,9 +281,6 @@ public final class ExchangeController extends CommonController implements Exchan
             response = new OfferCSVDownloadResponse(e.getError(), e.getMessage());
         }
 
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Finished downloadOffers()"));
-        }
         return response;
     }
 
@@ -339,9 +289,6 @@ public final class ExchangeController extends CommonController implements Exchan
      */
     @Override
     public FallibleResponse processPublishingGroup(final AuthenticationToken token, final ProcessPublishingGroupRequest request) {
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Starting processPublishGroup()"));
-        }
         FallibleResponse response;
 
         try {
@@ -361,9 +308,6 @@ public final class ExchangeController extends CommonController implements Exchan
             response = new FallibleResponse(e.getError(), e.getMessage());
         }
 
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Finished processPublishGroup()"));
-        }
         return response;
     }
 
@@ -372,9 +316,6 @@ public final class ExchangeController extends CommonController implements Exchan
      */
     @Override
     public FetchPublishingGroupResponse fetchPublishingGroups(final AuthenticationToken token, final FetchPublishGroupsRequest request) {
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Starting fetchPublishGroups()"));
-        }
         FetchPublishingGroupResponse response;
 
         try {
@@ -393,9 +334,6 @@ public final class ExchangeController extends CommonController implements Exchan
             response = new FetchPublishingGroupResponse(e.getError(), e.getMessage());
         }
 
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Finished fetchPublishGroups()"));
-        }
         return response;
     }
 
@@ -406,9 +344,6 @@ public final class ExchangeController extends CommonController implements Exchan
     @Override
     @Deprecated
     public FallibleResponse deletePublishingGroup(final AuthenticationToken token, final DeletePublishingGroupRequest request) {
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Starting processPublishGroup()"));
-        }
         FallibleResponse response;
 
         try {
@@ -428,9 +363,6 @@ public final class ExchangeController extends CommonController implements Exchan
             response = new FallibleResponse(e.getError(), e.getMessage());
         }
 
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Finished processPublishGroup()"));
-        }
         return response;
     }
 
@@ -439,9 +371,6 @@ public final class ExchangeController extends CommonController implements Exchan
      */
     @Override
     public FetchGroupsForSharingResponse fetchGroupsForSharing(final AuthenticationToken token) {
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Starting fetchGroupsForSharing()"));
-        }
         FetchGroupsForSharingResponse response;
 
         try {
@@ -459,9 +388,6 @@ public final class ExchangeController extends CommonController implements Exchan
             response = new FetchGroupsForSharingResponse(e.getError(), e.getMessage());
         }
 
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Finished fetchGroupsForSharing()"));
-        }
         return response;
     }
 
@@ -470,9 +396,6 @@ public final class ExchangeController extends CommonController implements Exchan
      */
     @Override
     public PublishOfferResponse processPublishOffer(final AuthenticationToken token, final PublishOfferRequest request) {
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Starting processPublishOffer()"));
-        }
         PublishOfferResponse response;
 
         try {
@@ -492,9 +415,6 @@ public final class ExchangeController extends CommonController implements Exchan
             response = new PublishOfferResponse(e.getError(), e.getMessage());
         }
 
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Finished processPublishOffer()"));
-        }
         return response;
     }
 
@@ -503,9 +423,6 @@ public final class ExchangeController extends CommonController implements Exchan
      */
     @Override
     public FetchPublishedGroupsResponse fetchPublishedGroups(final AuthenticationToken token, final FetchPublishedGroupsRequest request) {
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Starting fetchPublishedGroups()"));
-        }
         FetchPublishedGroupsResponse response;
 
         try {
@@ -524,9 +441,6 @@ public final class ExchangeController extends CommonController implements Exchan
             response = new FetchPublishedGroupsResponse(e.getError(), e.getMessage());
         }
 
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Finished fetchPublishedGroups()"));
-        }
         return response;
     }
 
@@ -535,9 +449,6 @@ public final class ExchangeController extends CommonController implements Exchan
      */
     @Override
     public FallibleResponse processHideForeignOffers(final AuthenticationToken token, final HideForeignOffersRequest request) {
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Starting processHideForeignOffers()"));
-        }
         FallibleResponse response;
 
         try {
@@ -557,9 +468,6 @@ public final class ExchangeController extends CommonController implements Exchan
             response = new FallibleResponse(e.getError(), e.getMessage());
         }
 
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Finished processHideForeignOffers()"));
-        }
         return response;
     }
 
@@ -568,9 +476,6 @@ public final class ExchangeController extends CommonController implements Exchan
      */
     @Override
     public FallibleResponse rejectOffer(final AuthenticationToken token, final RejectOfferRequest request) {
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Starting rejectOffer()"));
-        }
         FallibleResponse response;
 
         try {
@@ -590,9 +495,6 @@ public final class ExchangeController extends CommonController implements Exchan
             response = new FallibleResponse(e.getError(), e.getMessage());
         }
 
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Finished rejectOffer()"));
-        }
         return response;
     }
 }

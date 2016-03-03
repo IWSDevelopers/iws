@@ -17,8 +17,6 @@
  */
 package net.iaeste.iws.core;
 
-import static net.iaeste.iws.api.util.LogUtil.formatLogMessage;
-
 import net.iaeste.iws.api.Storage;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.enums.Permission;
@@ -61,9 +59,6 @@ public final class StorageController extends CommonController implements Storage
      */
     @Override
     public FolderResponse processFolder(final AuthenticationToken token, final FolderRequest request) {
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Starting processFolder()"));
-        }
         FolderResponse response;
 
         try {
@@ -87,9 +82,6 @@ public final class StorageController extends CommonController implements Storage
             response = new FolderResponse(e.getError(), e.getMessage());
         }
 
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Finished processFolder()"));
-        }
         return response;
     }
 
@@ -98,9 +90,6 @@ public final class StorageController extends CommonController implements Storage
      */
     @Override
     public FetchFolderResponse fetchFolder(final AuthenticationToken token, final FetchFolderRequest request) {
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Starting fetchFolder()"));
-        }
         FetchFolderResponse response;
 
         try {
@@ -119,9 +108,6 @@ public final class StorageController extends CommonController implements Storage
             response = new FetchFolderResponse(e.getError(), e.getMessage());
         }
 
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Finished fetchFolder()"));
-        }
         return response;
     }
 
@@ -130,9 +116,6 @@ public final class StorageController extends CommonController implements Storage
      */
     @Override
     public FileResponse processFile(final AuthenticationToken token, final FileRequest request) {
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Starting processFile()"));
-        }
         FileResponse response;
 
         try {
@@ -151,9 +134,6 @@ public final class StorageController extends CommonController implements Storage
             response = new FileResponse(e.getError(), e.getMessage());
         }
 
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Finished processFile()"));
-        }
         return response;
     }
 
@@ -162,9 +142,6 @@ public final class StorageController extends CommonController implements Storage
      */
     @Override
     public FetchFileResponse fetchFile(final AuthenticationToken token, final FetchFileRequest request) {
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Starting fetchFile()"));
-        }
         FetchFileResponse response;
 
         try {
@@ -187,9 +164,6 @@ public final class StorageController extends CommonController implements Storage
             response = new FetchFileResponse(e.getError(), e.getMessage());
         }
 
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Finished fetchFile()"));
-        }
         return response;
     }
 }

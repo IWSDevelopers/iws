@@ -17,8 +17,6 @@
  */
 package net.iaeste.iws.core;
 
-import static net.iaeste.iws.api.util.LogUtil.formatLogMessage;
-
 import net.iaeste.iws.api.Access;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.dtos.Password;
@@ -71,9 +69,6 @@ public final class AccessController extends CommonController implements Access {
      */
     @Override
     public AuthenticationResponse generateSession(final AuthenticationRequest request) {
-        if (LOG.isTraceEnabled()) {
-            LOG.trace("Starting generateSession()");
-        }
         AuthenticationResponse response;
 
         try {
@@ -91,9 +86,6 @@ public final class AccessController extends CommonController implements Access {
             response = new AuthenticationResponse(e.getError(), e.getMessage());
         }
 
-        if (LOG.isTraceEnabled()) {
-            LOG.trace("Finished generateSession()");
-        }
         return response;
     }
 
@@ -102,9 +94,6 @@ public final class AccessController extends CommonController implements Access {
      */
     @Override
     public FallibleResponse requestResettingSession(final AuthenticationRequest request) {
-        if (LOG.isTraceEnabled()) {
-            LOG.trace("Starting requestResettingSession()");
-        }
         FallibleResponse response;
 
         try {
@@ -123,9 +112,6 @@ public final class AccessController extends CommonController implements Access {
             response = new AuthenticationResponse(e.getError(), e.getMessage());
         }
 
-        if (LOG.isTraceEnabled()) {
-            LOG.trace("Finished requestResettingSession()");
-        }
         return response;
     }
 
@@ -134,9 +120,6 @@ public final class AccessController extends CommonController implements Access {
      */
     @Override
     public AuthenticationResponse resetSession(final String resetSessionToken) {
-        if (LOG.isTraceEnabled()) {
-            LOG.trace("Starting resetSession()");
-        }
         AuthenticationResponse response;
 
         try {
@@ -154,9 +137,6 @@ public final class AccessController extends CommonController implements Access {
             response = new AuthenticationResponse(e.getError(), e.getMessage());
         }
 
-        if (LOG.isTraceEnabled()) {
-            LOG.trace("Finished resetSession()");
-        }
         return response;
     }
 
@@ -165,9 +145,6 @@ public final class AccessController extends CommonController implements Access {
      */
     @Override
     public <T extends Serializable> FallibleResponse saveSessionData(final AuthenticationToken token, final SessionDataRequest<T> request) {
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Starting saveSessionData()"));
-        }
         FallibleResponse response;
 
         try {
@@ -186,7 +163,6 @@ public final class AccessController extends CommonController implements Access {
             response = new FallibleResponse(e.getError(), e.getMessage());
         }
 
-        LOG.trace(formatLogMessage(token, "Finished saveSessionData()"));
         return response;
     }
 
@@ -195,9 +171,6 @@ public final class AccessController extends CommonController implements Access {
      */
     @Override
     public <T extends Serializable> SessionDataResponse<T> readSessionData(final AuthenticationToken token) {
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Starting readSessionData()"));
-        }
         SessionDataResponse<T> response;
 
         try {
@@ -215,9 +188,6 @@ public final class AccessController extends CommonController implements Access {
             response = new SessionDataResponse(e.getError(), e.getMessage());
         }
 
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Finished readSessionData()"));
-        }
         return response;
     }
 
@@ -226,9 +196,6 @@ public final class AccessController extends CommonController implements Access {
      */
     @Override
     public FallibleResponse verifySession(final AuthenticationToken token) {
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Starting verifySession()"));
-        }
         FallibleResponse response;
 
         try {
@@ -244,9 +211,6 @@ public final class AccessController extends CommonController implements Access {
             response = new FallibleResponse(e.getError(), e.getMessage());
         }
 
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Finished verifySession()"));
-        }
         return response;
     }
 
@@ -255,9 +219,6 @@ public final class AccessController extends CommonController implements Access {
      */
     @Override
     public FallibleResponse deprecateSession(final AuthenticationToken token) {
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Starting deprecateSession()"));
-        }
         FallibleResponse response;
 
         try {
@@ -276,9 +237,6 @@ public final class AccessController extends CommonController implements Access {
             response = new FallibleResponse(e.getError(), e.getMessage());
         }
 
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Finished deprecateSession()"));
-        }
         return response;
     }
 
@@ -287,9 +245,6 @@ public final class AccessController extends CommonController implements Access {
      */
     @Override
     public FallibleResponse forgotPassword(final String username) {
-        if (LOG.isTraceEnabled()) {
-            LOG.trace("Starting forgotPassword()");
-        }
         FallibleResponse response;
 
         try {
@@ -307,9 +262,6 @@ public final class AccessController extends CommonController implements Access {
             response = new FallibleResponse(e.getError(), e.getMessage());
         }
 
-        if (LOG.isTraceEnabled()) {
-            LOG.trace("Finished forgotPassword()");
-        }
         return response;
     }
 
@@ -318,9 +270,6 @@ public final class AccessController extends CommonController implements Access {
      */
     @Override
     public FallibleResponse resetPassword(final Password password) {
-        if (LOG.isTraceEnabled()) {
-            LOG.trace("Starting resetPassword()");
-        }
         FallibleResponse response;
 
         try {
@@ -339,9 +288,6 @@ public final class AccessController extends CommonController implements Access {
             response = new FallibleResponse(e.getError(), e.getMessage());
         }
 
-        if (LOG.isTraceEnabled()) {
-            LOG.trace("Finished resetPassword()");
-        }
         return response;
     }
 
@@ -350,9 +296,6 @@ public final class AccessController extends CommonController implements Access {
      */
     @Override
     public FallibleResponse updatePassword(final AuthenticationToken token, final Password password) {
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Starting updatePassword()"));
-        }
         FallibleResponse response;
 
         try {
@@ -372,9 +315,6 @@ public final class AccessController extends CommonController implements Access {
             response = new FallibleResponse(e.getError(), e.getMessage());
         }
 
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Finished updatePassword()"));
-        }
         return response;
     }
 
@@ -383,9 +323,6 @@ public final class AccessController extends CommonController implements Access {
      */
     @Override
     public FetchPermissionResponse fetchPermissions(final AuthenticationToken token) {
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Starting fetchPermissions()"));
-        }
         FetchPermissionResponse response;
 
         try {
@@ -403,9 +340,6 @@ public final class AccessController extends CommonController implements Access {
             response = new FetchPermissionResponse(e.getError(), e.getMessage());
         }
 
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(formatLogMessage(token, "Finished fetchPermissions()"));
-        }
         return response;
     }
 }

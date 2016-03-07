@@ -1,4 +1,4 @@
-# [IWS](http://dawn.dk/iws) [![Build Status](https://travis-ci.org/IWSDevelopers/iws.png)](https://travis-ci.org/IWSDevelopers/iws) [![GitHub license](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0)
+# [IWS](https://github.com/IWSDevelopers/iws/wiki) [![Build Status](https://travis-ci.org/IWSDevelopers/iws.png)](https://travis-ci.org/IWSDevelopers/iws) [![GitHub license](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0)
 
 ### The IntraWeb Services Project
 
@@ -18,9 +18,6 @@ files for [WildFly](http://wildfly.org/) has been created, and can be found in t
 * Supported Databases
   * [PostgreSQL](http://www.postgresql.org/)
   * [HyperSQL](http://hsqldb.org/)
-
-## Documentation
-https://github.com/IWSDevelopers/iws/wiki
 
 ## License
 Copyright (C) 2012-2016 Kim Jensen & others (see AUTHORS.txt)

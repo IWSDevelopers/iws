@@ -11,11 +11,13 @@ tested to run under [WildFly](http://wildfly.org/), [JBoss](http://www.redhat.co
 sources and run the Maven build command. Note that only Configuration
 files for [WildFly](http://wildfly.org/) has been created, and can be found in the iws-accessories folder.
 
-#### Works under
-[WildFly](http://wildfly.org/), [JBoss](http://www.redhat.com/en/technologies/jboss-middleware) & [Glassfish](https://glassfish.java.net/)
-
-#### Supported databases
-PostgreSQL, HyperSQL
+* Supported Application Servers
+  * [WildFly](http://wildfly.org/)
+  * [JBoss](http://www.redhat.com/en/technologies/jboss-middleware)
+  * [Glassfish](https://glassfish.java.net/)
+* Supported Databases
+  * [PostgreSQL](http://www.postgresql.org/)
+  * [HyperSQL](http://hsqldb.org/)
 
 ## Documentation
 https://github.com/IWSDevelopers/iws/wiki

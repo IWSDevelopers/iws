@@ -24,7 +24,9 @@ import net.iaeste.iws.api.exceptions.VerificationException;
 
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -123,6 +125,44 @@ public abstract class AbstractVerification implements Verifiable {
         }
 
         return sanitized;
+    }
+
+    // =========================================================================
+    // Collections Immutability Methods
+    // =========================================================================
+
+    /**
+     * Takes a given Set, and returns an immutable variant of it.
+     *
+     * @param set The Set to prepare an Immutable variant for
+     * @param <S> The Set type
+     * @return Immutable version of the Set
+     */
+    public static <S> Set<S> immutableSet(final Set<S> set) {
+        return (set != null) ? Collections.unmodifiableSet(set) : null;
+    }
+
+    /**
+     * Takes a given List, and returns an immutable variant of it.
+     *
+     * @param list The List to prepare an Immutable variant for
+     * @param <S> The List type
+     * @return Immutable version of the List
+     */
+    public static <S> List<S> immutableList(final List<S> list) {
+        return (list != null) ? Collections.unmodifiableList(list) : null;
+    }
+
+    /**
+     * Takes a given Map, and returns an immutable variant of it.
+     *
+     * @param map The Map to prepare an Immutable variant for
+     * @param <K> The Map Key type
+     * @param <V> The Map Value type
+     * @return Immutable version of the Map
+     */
+    public static <K,V> Map<K,V> immutableMap(final Map<K,V> map) {
+        return (map != null) ? Collections.unmodifiableMap(map) : null;
     }
 
     // =========================================================================

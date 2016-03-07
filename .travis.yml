@@ -5,4 +5,4 @@ language: java
 #  - openjdk7
 #  - openjdk8
 # Run the build
-mvn install -DskipTests
+#mvn install -DskipTests

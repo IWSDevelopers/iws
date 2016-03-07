@@ -107,7 +107,7 @@ public final class ContactsTest extends AbstractAdministration {
     }
 
     @Test
-    @Ignore("Ignored 2016-03-07 by Kim - Reaseon: Test is failing Travis-CI, need to investigate.")
+    @Ignore("Ignored 2016-03-07 by Kim - Reason: Test is failing Travis-CI, need to investigate.")
     public void testFindContacts() {
         final ContactsRequest requestAll = new ContactsRequest();
         final ContactsResponse responseAll = administration.fetchContacts(token, requestAll);

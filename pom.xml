@@ -151,6 +151,8 @@
                          IntelliJ's forkmode for JUnit tests.
                            Parallel supports 'classes', 'methods' or 'both' -->
                     <parallel>none</parallel>
+                    <reuseForks>true</reuseForks>
+                    <argLine>-Xmx1024m -XX:MaxPermSize=256m</argLine>
                     <threadCount>5</threadCount>
                 </configuration>
                 <goals>

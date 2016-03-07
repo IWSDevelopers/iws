@@ -2,7 +2,7 @@
 
 ### The IntraWeb Services Project
 
-The IWS was initialted in 2011 and development began in 2012.  It was designed
+The IWS was initiated in 2011 and development began in 2012. It was designed
 to replace the existing backend system for [IAESTE](http://www.iaeste.org/), and at the same time create a
 new public API, which others could use.
 

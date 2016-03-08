@@ -22,6 +22,7 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 
+import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.enums.ContactsType;
@@ -30,7 +31,6 @@ import net.iaeste.iws.api.requests.SearchUserRequest;
 import net.iaeste.iws.api.responses.ContactsResponse;
 import net.iaeste.iws.api.responses.EmergencyListResponse;
 import net.iaeste.iws.api.responses.SearchUserResponse;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.UUID;
@@ -107,7 +107,6 @@ public final class ContactsTest extends AbstractAdministration {
     }
 
     @Test
-    @Ignore("Ignored 2016-03-07 by Kim - Reason: Test is failing Travis-CI, need to investigate.")
     public void testFindContacts() {
         final ContactsRequest requestAll = new ContactsRequest();
         final ContactsResponse responseAll = administration.fetchContacts(token, requestAll);
@@ -119,7 +118,7 @@ public final class ContactsTest extends AbstractAdministration {
         final ContactsRequest requestGroup = new ContactsRequest();
         requestGroup.setGroupId(responseAll.getGroups().get(12).getGroupId());
         final ContactsResponse responseGroup = administration.fetchContacts(token, requestGroup);
-        assertThat(responseGroup.isOk(), is(true));
+        assertThat(responseGroup.getMessage(), is(IWSConstants.SUCCESS));
         assertThat(responseGroup.getType(), is(ContactsType.GROUP));
         assertThat(responseGroup.getGroups().size(), is(1));
         assertThat(responseGroup.getUsers(), is(not(nullValue())));

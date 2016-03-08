@@ -70,6 +70,10 @@ public final class DateTime implements Serializable, Comparable<DateTime> {
         timestamp = new Date(millis);
     }
 
+    public DateTime(final DateTime dateTime) {
+        this.timestamp = (dateTime != null) ? dateTime.toDate() : new Date();
+    }
+
     /**
      * Creates a new Date, based on the given {@code java.util.Date} instance.
      *

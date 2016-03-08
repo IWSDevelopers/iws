@@ -100,7 +100,7 @@ public final class StudentAcceptance extends AbstractVerification {
      *
      * @param applicationId Application Id
      */
-    public void setApplicationId(final String applicationId) throws IllegalArgumentException {
+    public void setApplicationId(final String applicationId) {
         ensureValidId("applicationId", applicationId);
         this.applicationId = applicationId;
     }
@@ -174,8 +174,6 @@ public final class StudentAcceptance extends AbstractVerification {
      */
     @Override
     public Map<String, String> validate() {
-        final Map<String, String> validation = new HashMap<>(0);
-
-        return validation;
+        return new HashMap<>(0);
     }
 }

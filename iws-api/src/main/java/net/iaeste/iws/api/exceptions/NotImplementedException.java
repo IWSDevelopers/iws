@@ -26,15 +26,10 @@ import net.iaeste.iws.api.constants.IWSErrors;
  * features which have been added to the external API, but haven't been
  * implemented yet.</p>
  *
- * <p>Class is made deprecated by default, since it helps to outline the areas
- * where we have not completed work.</p>
- *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
- * @deprecated Please implement the logic
  */
-@Deprecated
 public final class NotImplementedException extends IWSException {
 
     /** @see IWSConstants#SERIAL_VERSION_UID */
@@ -44,11 +39,9 @@ public final class NotImplementedException extends IWSException {
      * Default Constructor.
      *
      * @param message  Specific message, regarding the problem
-     * @deprecated Please implement the logic
      * @see IWSException
      * @see IWSErrors#VERIFICATION_ERROR
      */
-    @Deprecated
     public NotImplementedException(final String message) {
         super(IWSErrors.NOT_IMPLEMENTED, message);
     }

@@ -60,6 +60,12 @@ public final class Offer extends AbstractVerification {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
+    private static final String FIELD_EMPLOYER = "employer";
+    private static final String FIELD_OFFER_TYPE = "offerType";
+    private static final String FIELD_EXCHANGE_TYPE = "exchangeType";
+    private static final String FIELD_STUDY_LEVELS = "studyLevels";
+    private static final String FIELD_FIELD_OF_STUDIES = "fieldOfStudies";
+
     @XmlElement(required = true, nillable = true)  private String offerId = null;
     @XmlElement(required = true, nillable = false) private String refNo = null;
     @XmlElement(required = true, nillable = false) private OfferType offerType = OfferType.OPEN;
@@ -213,7 +219,7 @@ public final class Offer extends AbstractVerification {
      * @throws IllegalArgumentException if not valid
      * @see  AbstractVerification#UUID_FORMAT
      */
-    public void setOfferId(final String offerId) throws IllegalArgumentException {
+    public void setOfferId(final String offerId) {
         ensureValidId("offerId", offerId);
         this.offerId = offerId;
     }
@@ -234,7 +240,7 @@ public final class Offer extends AbstractVerification {
      * @throws IllegalArgumentException if not valid, i.e. null or not following the format
      * @see IWSExchangeConstants#REFNO_FORMAT
      */
-    public void setRefNo(final String refNo) throws IllegalArgumentException {
+    public void setRefNo(final String refNo) {
         ensureNotNullAndValidRefno("refNo", refNo);
         this.refNo = refNo;
     }
@@ -271,8 +277,8 @@ public final class Offer extends AbstractVerification {
      * @param offerType Type of Offer
      * @throws IllegalArgumentException in set to null
      */
-    public void setOfferType(final OfferType offerType) throws IllegalArgumentException {
-        ensureNotNull("offerType", offerType);
+    public void setOfferType(final OfferType offerType) {
+        ensureNotNull(FIELD_OFFER_TYPE, offerType);
         this.offerType = offerType;
     }
 
@@ -280,9 +286,10 @@ public final class Offer extends AbstractVerification {
         return offerType;
     }
 
-    public void setExchangeType(final ExchangeType exchangeType) throws IllegalArgumentException {
-        ensureNotNull("offerType", offerType);
-        ensureNotNullAndContains("exchangeType", exchangeType, offerType.getExchangeTypes());
+    public void setExchangeType(final ExchangeType exchangeType) {
+        // We cannot set the ExchangeType, if there is no OfferType!
+        ensureNotNull(FIELD_OFFER_TYPE, offerType);
+        ensureNotNullAndContains(FIELD_EXCHANGE_TYPE, exchangeType, offerType.getExchangeTypes());
         this.exchangeType = exchangeType;
     }
 
@@ -318,8 +325,8 @@ public final class Offer extends AbstractVerification {
      * @param employer Offer Employer
      * @throws IllegalArgumentException if not valid, i.e. null or not verifiable
      */
-    public void setEmployer(final Employer employer) throws IllegalArgumentException {
-        ensureNotNull("employer", employer);
+    public void setEmployer(final Employer employer) {
+        ensureNotNull(FIELD_EMPLOYER, employer);
         this.employer = new Employer(employer);
     }
 
@@ -337,7 +344,7 @@ public final class Offer extends AbstractVerification {
      * @throws IllegalArgumentException if the length is too long
      * @see IWSExchangeConstants#MAX_OFFER_WORK_DESCRIPTION_SIZE
      */
-    public void setWorkDescription(final String workDescription) throws IllegalArgumentException {
+    public void setWorkDescription(final String workDescription) {
         ensureNotTooLong("workDescription", workDescription, IWSExchangeConstants.MAX_OFFER_WORK_DESCRIPTION_SIZE);
         this.workDescription = sanitize(workDescription);
     }
@@ -397,15 +404,15 @@ public final class Offer extends AbstractVerification {
         return weeklyWorkDays;
     }
 
-    public void setStudyLevels(final Set<StudyLevel> studyLevels) throws IllegalArgumentException {
-        ensureNotNull("studyLevels", studyLevels);
-        ensureNotTooLong("studyLevels", studyLevels.toString(), 25);
-        ensureNotContaining("studyLevels", studyLevels, IWSExchangeConstants.SET_DELIMITER);
-        this.studyLevels = studyLevels;
+    public void setStudyLevels(final Set<StudyLevel> studyLevels) {
+        ensureNotNull(FIELD_STUDY_LEVELS, studyLevels);
+        ensureNotTooLong(FIELD_STUDY_LEVELS, studyLevels.toString(), 25);
+        ensureNotContaining(FIELD_STUDY_LEVELS, studyLevels, IWSExchangeConstants.SET_DELIMITER);
+        this.studyLevels = immutableSet(studyLevels);
     }
 
     public Set<StudyLevel> getStudyLevels() {
-        return studyLevels;
+        return immutableSet(studyLevels);
     }
 
     /**
@@ -420,14 +427,14 @@ public final class Offer extends AbstractVerification {
      * @throws IllegalArgumentException if value is invalid
      * @see IWSExchangeConstants#MAX_OFFER_FIELDS_OF_STUDY
      */
-    public void setFieldOfStudies(final Set<FieldOfStudy> fieldOfStudies) throws IllegalArgumentException {
-        ensureNotNullOrTooLong("fieldOfStudies", fieldOfStudies, IWSExchangeConstants.MAX_OFFER_FIELDS_OF_STUDY);
-        ensureNotContaining("fieldOfStudies", fieldOfStudies, IWSExchangeConstants.SET_DELIMITER);
-        this.fieldOfStudies = fieldOfStudies;
+    public void setFieldOfStudies(final Set<FieldOfStudy> fieldOfStudies) {
+        ensureNotNullOrTooLong(FIELD_FIELD_OF_STUDIES, fieldOfStudies, IWSExchangeConstants.MAX_OFFER_FIELDS_OF_STUDY);
+        ensureNotContaining(FIELD_FIELD_OF_STUDIES, fieldOfStudies, IWSExchangeConstants.SET_DELIMITER);
+        this.fieldOfStudies = immutableSet(fieldOfStudies);
     }
 
     public Set<FieldOfStudy> getFieldOfStudies() {
-        return fieldOfStudies;
+        return immutableSet(fieldOfStudies);
     }
 
     /**
@@ -442,14 +449,14 @@ public final class Offer extends AbstractVerification {
      * @throws IllegalArgumentException if value is invalid
      * @see IWSExchangeConstants#MAX_OFFER_SPECIALIZATIONS
      */
-    public void setSpecializations(final Set<String> specializations) throws IllegalArgumentException {
+    public void setSpecializations(final Set<String> specializations) {
         ensureNotNullOrTooLong("specializations", specializations, IWSExchangeConstants.MAX_OFFER_SPECIALIZATIONS);
         ensureNotContaining("specializations", specializations, IWSExchangeConstants.SET_DELIMITER);
-        this.specializations = sanitize(specializations);
+        this.specializations = immutableSet(sanitize(specializations));
     }
 
     public Set<String> getSpecializations() {
-        return specializations;
+        return immutableSet(specializations);
     }
 
     public void setPreviousTrainingRequired(final Boolean previousTrainingRequired) {
@@ -460,7 +467,7 @@ public final class Offer extends AbstractVerification {
         return previousTrainingRequired;
     }
 
-    public void setOtherRequirements(final String otherRequirements) throws IllegalArgumentException {
+    public void setOtherRequirements(final String otherRequirements) {
         ensureNotTooLong("otherRequirements", otherRequirements, IWSExchangeConstants.MAX_OFFER_OTHER_REQUIREMENTS_SIZE);
         this.otherRequirements = sanitize(otherRequirements);
     }
@@ -469,7 +476,7 @@ public final class Offer extends AbstractVerification {
         return otherRequirements;
     }
 
-    public void setMinimumWeeks(final Integer minimumWeeks) throws IllegalArgumentException {
+    public void setMinimumWeeks(final Integer minimumWeeks) {
         ensureNotNullAndMinimum("minimumWeeks", minimumWeeks, IWSExchangeConstants.MIN_OFFER_MINIMUM_WEEKS);
         this.minimumWeeks = minimumWeeks;
     }
@@ -478,7 +485,7 @@ public final class Offer extends AbstractVerification {
         return minimumWeeks;
     }
 
-    public void setMaximumWeeks(final Integer maximumWeeks) throws IllegalArgumentException {
+    public void setMaximumWeeks(final Integer maximumWeeks) {
         ensureNotNullAndMinimum("maximumWeeks", maximumWeeks, IWSExchangeConstants.MIN_OFFER_MINIMUM_WEEKS);
         this.maximumWeeks = maximumWeeks;
     }
@@ -495,7 +502,7 @@ public final class Offer extends AbstractVerification {
      * @param period1 Primary Period for this Offer
      * @throws IllegalArgumentException if value is null
      */
-    public void setPeriod1(final DatePeriod period1) throws IllegalArgumentException {
+    public void setPeriod1(final DatePeriod period1) {
         ensureNotNull("period1", period1);
         this.period1 = new DatePeriod(period1);
     }
@@ -695,7 +702,7 @@ public final class Offer extends AbstractVerification {
      * @param additionalInformation Additional Information
      * @throws IllegalArgumentException if field is longer than 3000 characters
      */
-    public void setAdditionalInformation(final String additionalInformation) throws IllegalArgumentException {
+    public void setAdditionalInformation(final String additionalInformation) {
         ensureNotTooLong("additionalInformation", additionalInformation, 3000);
         this.additionalInformation = sanitize(additionalInformation);
     }
@@ -711,7 +718,7 @@ public final class Offer extends AbstractVerification {
      * @param privateComment Private Comment
      * @throws IllegalArgumentException if field is longer than 1000 characters
      */
-    public void setPrivateComment(final String privateComment) throws IllegalArgumentException {
+    public void setPrivateComment(final String privateComment) {
         ensureNotTooLong("privateComment", privateComment, 1000);
         this.privateComment = sanitize(privateComment);
     }
@@ -822,23 +829,22 @@ public final class Offer extends AbstractVerification {
         // These checks match those from the Database, remaining are implicit
         // filled by the IWS Logic as part of the processing of the Offer
         isNotNull(validation, "refNo", refNo);
-        isNotNull(validation, "offerType", offerType);
+        isNotNull(validation, FIELD_OFFER_TYPE, offerType);
         // The Exchange Type cannot be null and we also need to verify the
         // content, however as it is dependent on the Offer Type, we must add
         // a null check here
         if (offerType != null) {
-            isNotNullAndContains(validation, "exchangeType", exchangeType, offerType.getExchangeTypes());
+            isNotNullAndContains(validation, FIELD_EXCHANGE_TYPE, exchangeType, offerType.getExchangeTypes());
         } else {
-            isNotNull(validation, "exchangeType", exchangeType);
+            isNotNull(validation, FIELD_EXCHANGE_TYPE, exchangeType);
         }
 
         // We need to ensure that the Employer is verifiable also!
-        isNotNullAndVerifiable(validation, "employer", employer);
-        isNotNull(validation, "employer", employer);
+        isNotNullAndVerifiable(validation, FIELD_EMPLOYER, employer);
         isNotNull(validation, "workDescription", workDescription);
         isNotNull(validation, "weeklyHours", weeklyHours);
-        isNotNull(validation, "studyLevels", studyLevels);
-        isNotNull(validation, "fieldOfStudies", fieldOfStudies);
+        isNotNull(validation, FIELD_STUDY_LEVELS, studyLevels);
+        isNotNull(validation, FIELD_FIELD_OF_STUDIES, fieldOfStudies);
         isNotNull(validation, "minimumWeeks", minimumWeeks);
         isNotNull(validation, "maximumWeeks", maximumWeeks);
         isNotNull(validation, "period1", period1);

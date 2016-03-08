@@ -98,7 +98,7 @@ public final class Employer extends AbstractVerification {
             setEmployeesCount(employer.employeesCount);
             setWebsite(employer.website);
             setWorkingPlace(employer.workingPlace);
-            setCanteen(employer.canteen);
+            this.canteen = employer.canteen;
             setNearestAirport(employer.nearestAirport);
             setNearestPublicTransport(employer.nearestPublicTransport);
             setOfferReferenceNumbers(employer.offerReferenceNumbers);
@@ -126,7 +126,7 @@ public final class Employer extends AbstractVerification {
      * @throws IllegalArgumentException if the Id is set but invalid
      * @see AbstractVerification#UUID_FORMAT
      */
-    public void setEmployerId(final String employerId) throws IllegalArgumentException {
+    public void setEmployerId(final String employerId) {
         ensureValidId("employerId", employerId);
         this.employerId = employerId;
     }
@@ -145,7 +145,7 @@ public final class Employer extends AbstractVerification {
      * @param group National Group, which this Employer belongs to
      * @throws IllegalArgumentException if null or not valid
      */
-    public void setGroup(final Group group) throws IllegalArgumentException {
+    public void setGroup(final Group group) {
         ensureNotNullAndVerifiable("group", group);
         this.group = new Group(group);
     }
@@ -166,7 +166,7 @@ public final class Employer extends AbstractVerification {
      * @throws IllegalArgumentException if not valid, i.e. either null or too long
      * @see #FIELD_LENGTH
      */
-    public void setName(final String name) throws IllegalArgumentException {
+    public void setName(final String name) {
         ensureNotNullOrEmptyOrTooLong("name", name, FIELD_LENGTH);
         this.name = sanitize(name);
     }
@@ -187,7 +187,7 @@ public final class Employer extends AbstractVerification {
      * @throws IllegalArgumentException if not valid, i.e. too long
      * @see #FIELD_LENGTH
      */
-    public void setBusiness(final String business) throws IllegalArgumentException {
+    public void setBusiness(final String business) {
         ensureNotTooLong("business", business, FIELD_LENGTH);
         this.business = sanitize(business);
     }
@@ -208,7 +208,7 @@ public final class Employer extends AbstractVerification {
      * @throws IllegalArgumentException if not valid, i.e. null or too long
      * @see #FIELD_LENGTH
      */
-    public void setDepartment(final String department) throws IllegalArgumentException {
+    public void setDepartment(final String department) {
         ensureNotNullOrTooLong("department", department, FIELD_LENGTH);
         this.department = sanitize(department);
     }
@@ -227,7 +227,7 @@ public final class Employer extends AbstractVerification {
      * @param address Employer Address
      * @throws IllegalArgumentException if not valid
      */
-    public void setAddress(final Address address) throws IllegalArgumentException {
+    public void setAddress(final Address address) {
         ensureVerifiable("address", address);
         this.address = new Address(address);
     }
@@ -246,7 +246,7 @@ public final class Employer extends AbstractVerification {
      * @param employeesCount Employer Employees Count
      * @throws IllegalArgumentException if the field is longer than 25 characters
      */
-    public void setEmployeesCount(final String employeesCount) throws IllegalArgumentException {
+    public void setEmployeesCount(final String employeesCount) {
         ensureNotTooLong("employeesCount", employeesCount, 25);
         this.employeesCount = sanitize(employeesCount);
     }
@@ -267,7 +267,7 @@ public final class Employer extends AbstractVerification {
      * @throws IllegalArgumentException if not valid, i.e. too long
      * @see #FIELD_LENGTH
      */
-    public void setWebsite(final String website) throws IllegalArgumentException {
+    public void setWebsite(final String website) {
         ensureNotTooLong("website", website, FIELD_LENGTH);
         this.website = sanitize(website);
     }
@@ -288,7 +288,7 @@ public final class Employer extends AbstractVerification {
      * @throws IllegalArgumentException if not valid, i.e. null or too long
      * @see #FIELD_LENGTH
      */
-    public void setWorkingPlace(final String workingPlace) throws IllegalArgumentException {
+    public void setWorkingPlace(final String workingPlace) {
         ensureNotNullOrTooLong("workingPlace", workingPlace, FIELD_LENGTH);
         this.workingPlace = sanitize(workingPlace);
     }
@@ -323,7 +323,7 @@ public final class Employer extends AbstractVerification {
      * @throws IllegalArgumentException if not valid, i.e. too long
      * @see #FIELD_LENGTH
      */
-    public void setNearestAirport(final String nearestAirport) throws IllegalArgumentException {
+    public void setNearestAirport(final String nearestAirport) {
         ensureNotTooLong("nearestAirport", nearestAirport, FIELD_LENGTH);
         this.nearestAirport = sanitize(nearestAirport);
     }
@@ -344,7 +344,7 @@ public final class Employer extends AbstractVerification {
      * @throws IllegalArgumentException if not valid, i.e. too long
      * @see #FIELD_LENGTH
      */
-    public void setNearestPublicTransport(final String nearestPublicTransport) throws IllegalArgumentException {
+    public void setNearestPublicTransport(final String nearestPublicTransport) {
         ensureNotTooLong("nearestPublicTransport", nearestPublicTransport, FIELD_LENGTH);
         this.nearestPublicTransport = sanitize(nearestPublicTransport);
     }
@@ -364,11 +364,11 @@ public final class Employer extends AbstractVerification {
      * @param offerReferenceNumbers List of Offer Reference Numbers
      */
     public void setOfferReferenceNumbers(final List<String> offerReferenceNumbers) {
-        this.offerReferenceNumbers = offerReferenceNumbers;
+        this.offerReferenceNumbers = immutableList(offerReferenceNumbers);
     }
 
     public List<String> getOfferReferenceNumbers() {
-        return offerReferenceNumbers;
+        return immutableList(offerReferenceNumbers);
     }
 
     /**
@@ -378,7 +378,7 @@ public final class Employer extends AbstractVerification {
      * @param modified DateTime of latest modification
      */
     public void setModified(final DateTime modified) {
-        this.modified = modified;
+        this.modified = new DateTime(modified);
     }
 
     public DateTime getModified() {
@@ -392,7 +392,7 @@ public final class Employer extends AbstractVerification {
      * @param created Employer Creation DateTime
      */
     public void setCreated(final DateTime created) {
-        this.created = created;
+        this.created = new DateTime(created);
     }
 
     public DateTime getCreated() {

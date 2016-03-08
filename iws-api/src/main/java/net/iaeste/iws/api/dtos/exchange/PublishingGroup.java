@@ -170,11 +170,11 @@ public final class PublishingGroup extends AbstractVerification {
      */
     public void setGroups(final List<Group> groups) {
         ensureNotNull("groups", groups);
-        this.groups = groups;
+        this.groups = immutableList(groups);
     }
 
     public List<Group> getGroups() {
-        return groups;
+        return immutableList(groups);
     }
 
     // =========================================================================

@@ -17,6 +17,8 @@
  */
 package net.iaeste.iws.api.dtos.exchange;
 
+import static net.iaeste.iws.api.util.AbstractVerification.immutableMap;
+
 import net.iaeste.iws.api.constants.IWSConstants;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -34,7 +36,7 @@ import java.util.Set;
  * @since   IWS 1.1
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "csvProcessingErrors", propOrder = { "csvErrors" })
+@XmlType(name = "csvProcessingErrors", propOrder = "csvErrors")
 public final class CSVProcessingErrors implements Serializable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
@@ -61,7 +63,7 @@ public final class CSVProcessingErrors implements Serializable {
      * @param csvErrors Map of CSV Errors for a specific Offer
      */
     public CSVProcessingErrors(final Map<String, String> csvErrors) {
-        this.csvErrors = csvErrors;
+        setCsvErrors(csvErrors);
     }
 
     // =========================================================================
@@ -69,11 +71,11 @@ public final class CSVProcessingErrors implements Serializable {
     // =========================================================================
 
     public void setCsvErrors(final Map<String, String> csvErrors) {
-        this.csvErrors = csvErrors;
+        this.csvErrors = immutableMap(csvErrors);
     }
 
     public Map<String, String> getCsvErrors() {
-        return csvErrors;
+        return immutableMap(csvErrors);
     }
 
     // =========================================================================

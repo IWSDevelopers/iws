@@ -84,7 +84,7 @@ public final class OfferGroup extends AbstractVerification {
      * @param offerRefNo Offer Reference Number.
      * @throws IllegalArgumentException if value is either null or invalid
      */
-    public void setOfferRefNo(final String offerRefNo) throws IllegalArgumentException {
+    public void setOfferRefNo(final String offerRefNo) {
         ensureNotNullAndValidRefno("offerRefNo", offerRefNo);
         this.offerRefNo = offerRefNo;
     }
@@ -95,13 +95,13 @@ public final class OfferGroup extends AbstractVerification {
 
     /**
      * Sets the Id of the Group that is granted access to an Offer. The GroupId
-     * must be valid, otherwise the method will thrown an
+     * must be valid, otherwise the method will throw an
      * {@code IllegalArgumentException}.
      *
      * @param groupId Group Id
      * @throws IllegalArgumentException if value is null or invalid
      */
-    public void setGroupId(final String groupId) throws IllegalArgumentException {
+    public void setGroupId(final String groupId) {
         ensureNotNullAndValidId("groupId", groupId);
         this.groupId = groupId;
     }
@@ -120,7 +120,7 @@ public final class OfferGroup extends AbstractVerification {
      * @param status Offer Status
      * @throws IllegalArgumentException if the value is null
      */
-    public void setStatus(final OfferState status) throws IllegalArgumentException {
+    public void setStatus(final OfferState status) {
         ensureNotNull("status", status);
         this.status = status;
     }

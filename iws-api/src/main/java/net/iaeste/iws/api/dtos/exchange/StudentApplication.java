@@ -109,19 +109,6 @@ public final class StudentApplication extends AbstractVerification {
     @XmlElement(required = true, nillable = true) private Set<FieldOfStudy> fieldOfStudies = EnumSet.noneOf(FieldOfStudy.class);
     @XmlElement(required = true, nillable = true) private List<String> specializations = new ArrayList<>(0);
 
-    // TODO Critical information, what is the procedure to deal with this ?
-    //   The problem is that certain countries have very strict rules regarding
-    // private data, and Passport information can, together with name and
-    // birthday, be used to steal identities!
-    //   Suggestions, we use the RSA algorithm, where the receiving country &
-    // student both provide the public keys, and we store the public keys
-    // together with the encrypted values. We can also perform the actual
-    // encryption/decryption operations, but under the notion that the
-    // information is only provided over an encrypted channel, and that none of
-    // the information is logged anywhere. Since we're talking encryption, and
-    // critical information, it would be even better, if the operations were
-    // performed client-side in a JavaScript. So all we store is the public keys
-    // and the encrypted container.
     @XmlElement(required = true, nillable = true) private String passportNumber = null;
     @XmlElement(required = true, nillable = true) private String passportPlaceOfIssue = null;
     @XmlElement(required = true, nillable = true) private String passportValidUntil = null;
@@ -204,13 +191,11 @@ public final class StudentApplication extends AbstractVerification {
         }
     }
 
-    // TODO add a copy of student data
-
     // =========================================================================
     // Standard Setters & Getters
     // =========================================================================
 
-    public void setApplicationId(final String applicationId) throws IllegalArgumentException {
+    public void setApplicationId(final String applicationId) {
         ensureValidId("applicationId", applicationId);
         this.applicationId = applicationId;
     }
@@ -219,7 +204,7 @@ public final class StudentApplication extends AbstractVerification {
         return applicationId;
     }
 
-    public void setOfferId(final String offerId) throws IllegalArgumentException {
+    public void setOfferId(final String offerId) {
         ensureNotNullAndValidId("offerId", offerId);
         this.offerId = offerId;
     }
@@ -236,7 +221,7 @@ public final class StudentApplication extends AbstractVerification {
         return offerState;
     }
 
-    public void setStudent(final Student student) throws IllegalArgumentException {
+    public void setStudent(final Student student) {
         ensureNotNullAndVerifiable("student", student);
         this.student = new Student(student);
     }
@@ -245,7 +230,7 @@ public final class StudentApplication extends AbstractVerification {
         return new Student(student);
     }
 
-    public void setStatus(final ApplicationStatus status) throws IllegalArgumentException {
+    public void setStatus(final ApplicationStatus status) {
         ensureNotNull("status", status);
         this.status = status;
     }
@@ -254,7 +239,7 @@ public final class StudentApplication extends AbstractVerification {
         return status;
     }
 
-    public void setHomeAddress(final Address homeAddress) throws IllegalArgumentException {
+    public void setHomeAddress(final Address homeAddress) {
         ensureVerifiable("homeAddress", homeAddress);
         this.homeAddress = new Address(homeAddress);
     }
@@ -263,7 +248,7 @@ public final class StudentApplication extends AbstractVerification {
         return new Address(homeAddress);
     }
 
-    public void setEmail(final String email) throws IllegalArgumentException {
+    public void setEmail(final String email) {
         ensureNotTooLong("email", email, FIELD_LENGTH);
         this.email = email;
     }
@@ -272,7 +257,7 @@ public final class StudentApplication extends AbstractVerification {
         return email;
     }
 
-    public void setPhoneNumber(final String phoneNumber) throws IllegalArgumentException {
+    public void setPhoneNumber(final String phoneNumber) {
         ensureNotTooLong("phoneNumber", phoneNumber, 25);
         this.phoneNumber = phoneNumber;
     }
@@ -281,7 +266,7 @@ public final class StudentApplication extends AbstractVerification {
         return phoneNumber;
     }
 
-    public void setAddressDuringTerms(final Address addressDuringTerms) throws IllegalArgumentException {
+    public void setAddressDuringTerms(final Address addressDuringTerms) {
         // The Address during term should not be mandatory, since there are
         // people who stay "at home" during term.
         ensureVerifiable("addressDuringTerms", addressDuringTerms);
@@ -300,7 +285,7 @@ public final class StudentApplication extends AbstractVerification {
         return dateOfBirth;
     }
 
-    public void setUniversity(final String university) throws IllegalArgumentException {
+    public void setUniversity(final String university) {
         ensureNotTooLong("university", university, FIELD_LENGTH);
         this.university = university;
     }
@@ -309,7 +294,7 @@ public final class StudentApplication extends AbstractVerification {
         return university;
     }
 
-    public void setPlaceOfBirth(final String placeOfBirth) throws IllegalArgumentException {
+    public void setPlaceOfBirth(final String placeOfBirth) {
         ensureNotTooLong("placeOfBirth", placeOfBirth, FIELD_LENGTH);
         this.placeOfBirth = placeOfBirth;
     }
@@ -327,7 +312,7 @@ public final class StudentApplication extends AbstractVerification {
      * @param nationality Student Nationality
      * @throws IllegalArgumentException if not verifiable
      */
-    public void setNationality(final Country nationality) throws IllegalArgumentException {
+    public void setNationality(final Country nationality) {
         ensureVerifiable("nationality", nationality);
         this.nationality = nationality;
     }
@@ -424,25 +409,25 @@ public final class StudentApplication extends AbstractVerification {
         return available;
     }
 
-    public void setFieldOfStudies(final Set<FieldOfStudy> fieldOfStudies) throws IllegalArgumentException {
+    public void setFieldOfStudies(final Set<FieldOfStudy> fieldOfStudies) {
         ensureNotTooLong("fieldOfStudies", fieldOfStudies, IWSExchangeConstants.MAX_OFFER_FIELDS_OF_STUDY);
-        this.fieldOfStudies = fieldOfStudies;
+        this.fieldOfStudies = immutableSet(fieldOfStudies);
     }
 
     public Set<FieldOfStudy> getFieldOfStudies() {
-        return fieldOfStudies;
+        return immutableSet(fieldOfStudies);
     }
 
-    public void setSpecializations(final List<String> specializations) throws IllegalArgumentException {
+    public void setSpecializations(final List<String> specializations) {
         ensureNotNullOrTooLong("specializations", specializations, IWSExchangeConstants.MAX_OFFER_SPECIALIZATIONS);
-        this.specializations = specializations;
+        this.specializations = immutableList(specializations);
     }
 
     public List<String> getSpecializations() {
-        return specializations;
+        return immutableList(specializations);
     }
 
-    public void setPassportNumber(final String passportNumber) throws IllegalArgumentException {
+    public void setPassportNumber(final String passportNumber) {
         ensureNotTooLong("passportNumber", passportNumber, FIELD_LENGTH);
         this.passportNumber = passportNumber;
     }
@@ -451,7 +436,7 @@ public final class StudentApplication extends AbstractVerification {
         return passportNumber;
     }
 
-    public void setPassportPlaceOfIssue(final String passportPlaceOfIssue) throws IllegalArgumentException {
+    public void setPassportPlaceOfIssue(final String passportPlaceOfIssue) {
         ensureNotTooLong("passportPlaceOfIssue", passportPlaceOfIssue, FIELD_LENGTH);
         this.passportPlaceOfIssue = passportPlaceOfIssue;
     }
@@ -460,7 +445,7 @@ public final class StudentApplication extends AbstractVerification {
         return passportPlaceOfIssue;
     }
 
-    public void setPassportValidUntil(final String passportValidUntil) throws IllegalArgumentException {
+    public void setPassportValidUntil(final String passportValidUntil) {
         ensureNotTooLong("passportValidUntil", passportValidUntil, FIELD_LENGTH);
         this.passportValidUntil = passportValidUntil;
     }
@@ -524,13 +509,13 @@ public final class StudentApplication extends AbstractVerification {
      * @param attachments Attachments
      * @throws IllegalArgumentException if the attachments are null
      */
-    public void setAttachments(final List<File> attachments) throws IllegalArgumentException {
+    public void setAttachments(final List<File> attachments) {
         ensureNotNull("attachments", attachments);
-        this.attachments = attachments;
+        this.attachments = immutableList(attachments);
     }
 
     public List<File> getAttachments() {
-        return attachments;
+        return immutableList(attachments);
     }
 
     public void setModified(final DateTime modified) {

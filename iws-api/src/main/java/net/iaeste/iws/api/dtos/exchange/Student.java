@@ -124,10 +124,10 @@ public final class Student extends AbstractVerification {
      * @return Student (User) Id
      */
     public String getStudentId() {
-        return user != null ? user.getUserId() : null;
+        return (user != null) ? user.getUserId() : null;
     }
 
-    public void setUser(final User user) throws IllegalArgumentException {
+    public void setUser(final User user) {
         ensureVerifiable("user", user);
         this.user = new User(user);
     }
@@ -136,7 +136,7 @@ public final class Student extends AbstractVerification {
         return new User(user);
     }
 
-    public void setStudyLevel(final StudyLevel studyLevel) throws IllegalArgumentException {
+    public void setStudyLevel(final StudyLevel studyLevel) {
         this.studyLevel = studyLevel;
     }
 
@@ -144,22 +144,22 @@ public final class Student extends AbstractVerification {
         return studyLevel;
     }
 
-    public void setFieldOfStudies(final Set<FieldOfStudy> fieldOfStudies) throws IllegalArgumentException {
+    public void setFieldOfStudies(final Set<FieldOfStudy> fieldOfStudies) {
         ensureNotTooLong("fieldOfStudies", fieldOfStudies, IWSExchangeConstants.MAX_OFFER_FIELDS_OF_STUDY);
-        this.fieldOfStudies = fieldOfStudies;
+        this.fieldOfStudies = immutableSet(fieldOfStudies);
     }
 
     public Set<FieldOfStudy> getFieldOfStudies() {
-        return fieldOfStudies;
+        return immutableSet(fieldOfStudies);
     }
 
-    public void setSpecializations(final Set<Specialization> specializations) throws IllegalArgumentException {
+    public void setSpecializations(final Set<Specialization> specializations) {
         ensureNotTooLong("specializations", specializations, IWSExchangeConstants.MAX_OFFER_SPECIALIZATIONS);
-        this.specializations = specializations;
+        this.specializations = immutableSet(specializations);
     }
 
     public Set<Specialization> getSpecializations() {
-        return specializations;
+        return immutableSet(specializations);
     }
 
     public void setAvailable(final DatePeriod available) {

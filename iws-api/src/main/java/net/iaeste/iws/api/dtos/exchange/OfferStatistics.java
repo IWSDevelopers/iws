@@ -17,6 +17,8 @@
  */
 package net.iaeste.iws.api.dtos.exchange;
 
+import static net.iaeste.iws.api.util.AbstractVerification.immutableMap;
+
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.exchange.OfferState;
 
@@ -62,7 +64,7 @@ public final class OfferStatistics implements Serializable {
      * @param exchangeYear Exchange Year
      */
     public OfferStatistics(final Map<OfferState, Integer> statistics, final Integer exchangeYear) {
-        this.statistics = statistics;
+        setStatistics(statistics);
         this.exchangeYear = exchangeYear;
     }
 
@@ -71,15 +73,11 @@ public final class OfferStatistics implements Serializable {
     // =========================================================================
 
     public void setStatistics(final Map<OfferState, Integer> statistics) {
-        // Since the result is a pure read-only from the IWS, it is safe to
-        // return it without a defensive copying first
-        this.statistics = statistics;
+        this.statistics = immutableMap(statistics);
     }
 
     public Map<OfferState, Integer> getStatistics() {
-        // Since the result is a pure read-only from the IWS, it is safe to
-        // return it without a defensive copying first
-        return statistics;
+        return immutableMap(statistics);
     }
 
     public void setExchangeYear(final Integer exchangeYear) {

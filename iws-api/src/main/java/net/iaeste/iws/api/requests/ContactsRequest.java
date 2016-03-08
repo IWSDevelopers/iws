@@ -40,13 +40,12 @@ public final class ContactsRequest extends AbstractVerification {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
+    private static final String FIELD_USERID = "userId";
+    private static final String FIELD_GROUPID = "groupId";
+
     @XmlElement(required = true, nillable = true) private String userId = null;
     @XmlElement(required = true, nillable = true) private String groupId = null;
     @XmlElement(required = true, nillable = true) private ContactsType type = ContactsType.OTHER;
-
-    // =========================================================================
-    // Object Constructors
-    // =========================================================================
 
     // =========================================================================
     // Standard Setters & Getters
@@ -62,8 +61,8 @@ public final class ContactsRequest extends AbstractVerification {
      * @param userId Id of the User to fetch details for
      * @throws IllegalArgumentException if the UserId is invalid
      */
-    public void setUserId(final String userId) throws IllegalArgumentException {
-        ensureNotNullAndValidId("userId", userId);
+    public void setUserId(final String userId) {
+        ensureNotNullAndValidId(FIELD_USERID, userId);
         this.type = ContactsType.USER;
         this.userId = userId;
     }
@@ -82,8 +81,8 @@ public final class ContactsRequest extends AbstractVerification {
      * @param groupId Id of the Group to fetch details for
      * @throws IllegalArgumentException if the GroupId is invalid
      */
-    public void setGroupId(final String groupId) throws IllegalArgumentException {
-        ensureNotNullAndValidId("groupId", groupId);
+    public void setGroupId(final String groupId) {
+        ensureNotNullAndValidId(FIELD_GROUPID, groupId);
         this.type = ContactsType.GROUP;
         this.groupId = groupId;
     }
@@ -108,9 +107,9 @@ public final class ContactsRequest extends AbstractVerification {
         final Map<String, String> validation = new HashMap<>(0);
 
         if ((type == ContactsType.USER) && (userId == null)) {
-            validation.put("userId", "Invalid User Request, userId is null.");
+            validation.put(FIELD_USERID, "Invalid User Request, " + FIELD_USERID + " is null.");
         } else if ((type == ContactsType.GROUP) && (groupId == null)) {
-            validation.put("userId", "Invalid Group Request, groupID is null.");
+            validation.put(FIELD_GROUPID, "Invalid Group Request, " + FIELD_GROUPID + " is null.");
         }
 
         return validation;

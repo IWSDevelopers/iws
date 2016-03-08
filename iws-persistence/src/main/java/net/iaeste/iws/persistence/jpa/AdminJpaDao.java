@@ -18,12 +18,15 @@
 package net.iaeste.iws.persistence.jpa;
 
 import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.api.enums.GroupStatus;
+import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.persistence.AdminDao;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.UserGroupEntity;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import java.util.EnumSet;
 import java.util.List;
 
 /**
@@ -113,7 +116,14 @@ public final class AdminJpaDao extends BasicJpaDao implements AdminDao {
      */
     @Override
     public List<GroupEntity> findGroupsForContacts() {
-        final Query query = entityManager.createNamedQuery("group.findAllForContacts");
+        final String jql =
+                "select g from GroupEntity g " +
+                "where g.status = :status" +
+                "  and g.groupType.grouptype not in :types " +
+                "order by g.groupType.grouptype asc, g.groupName asc";
+        final Query query = entityManager.createQuery(jql);
+        query.setParameter("status", GroupStatus.ACTIVE);
+        query.setParameter("types", EnumSet.of(GroupType.PRIVATE, GroupType.STUDENT));
 
         return query.getResultList();
     }

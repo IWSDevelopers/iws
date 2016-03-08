@@ -28,7 +28,7 @@ package net.iaeste.iws.api.enums;
  */
 public enum ContactsType implements Descriptable<ContactsType> {
 
-    USER("Viewing User Detauls"),
+    USER("Viewing User Details"),
     GROUP("Viewing Group Details"),
     OTHER("Viewing Member & International Groups");
 

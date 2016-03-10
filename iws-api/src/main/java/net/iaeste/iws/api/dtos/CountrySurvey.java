@@ -50,8 +50,6 @@ public final class CountrySurvey extends AbstractVerification {
      */
     @Override
     public Map<String, String> validate() {
-        final Map<String, String> validation = new HashMap<>(0);
-
-        return validation;
+        return new HashMap<>(0);
     }
 }

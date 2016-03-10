@@ -113,7 +113,7 @@ public final class Country extends AbstractVerification {
      * @throws IllegalArgumentException If either null or not two characters long
      * @see <a href="https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2">ISO-3166-1 alpha-2</a>
      */
-    public void setCountryCode(final String countryCode) throws IllegalArgumentException {
+    public void setCountryCode(final String countryCode) {
         ensureNotNullAndExactLength("countryCode", countryCode, 2);
         this.countryCode = countryCode;
     }
@@ -133,7 +133,7 @@ public final class Country extends AbstractVerification {
      * @param countryName English name of the Country
      * @throws IllegalArgumentException if either null or too long
      */
-    public void setCountryName(final String countryName) throws IllegalArgumentException {
+    public void setCountryName(final String countryName) {
         ensureNotNullOrTooLong("countryName", countryName, 100);
         this.countryName = countryName;
     }
@@ -153,7 +153,7 @@ public final class Country extends AbstractVerification {
      * @param countryNameFull Full Country Name
      * @throws IllegalArgumentException if either null or too long
      */
-    public void setCountryNameFull(final String countryNameFull) throws IllegalArgumentException {
+    public void setCountryNameFull(final String countryNameFull) {
         ensureNotTooLong("countryNameFull", countryNameFull, 100);
         this.countryNameFull = countryNameFull;
     }
@@ -173,7 +173,7 @@ public final class Country extends AbstractVerification {
      * @param countryNameNative Native Country Name
      * @throws IllegalArgumentException if the native name is too long
      */
-    public void setCountryNameNative(final String countryNameNative) throws IllegalArgumentException {
+    public void setCountryNameNative(final String countryNameNative) {
         ensureNotTooLong("countryNameNative", countryNameNative, 100);
         this.countryNameNative = countryNameNative;
     }
@@ -193,7 +193,7 @@ public final class Country extends AbstractVerification {
      * @param nationality The Nationality of the Citizens
      * @throws IllegalArgumentException if the given value is too long
      */
-    public void setNationality(final String nationality) throws IllegalArgumentException {
+    public void setNationality(final String nationality) {
         ensureNotTooLong("nationality", nationality, 100);
         this.nationality = nationality;
     }
@@ -213,7 +213,7 @@ public final class Country extends AbstractVerification {
      * @param citizens The name of the Citizens of the Country
      * @throws IllegalArgumentException if the given value is too long
      */
-    public void setCitizens(final String citizens) throws IllegalArgumentException {
+    public void setCitizens(final String citizens) {
         ensureNotTooLong("citizens", citizens, 100);
         this.citizens = citizens;
     }
@@ -232,7 +232,7 @@ public final class Country extends AbstractVerification {
      * @param phonecode The official phone code of the country (+xxx)
      * @throws IllegalArgumentException if the given value is null
      */
-    public void setPhonecode(final String phonecode) throws IllegalArgumentException {
+    public void setPhonecode(final String phonecode) {
         ensureNotTooLong("phonecode", phonecode, 5);
         this.phonecode = phonecode;
     }
@@ -251,7 +251,7 @@ public final class Country extends AbstractVerification {
      * @param currency Official Currency of the Country
      * @throws IllegalArgumentException if the value is null
      */
-    public void setCurrency(final Currency currency) throws IllegalArgumentException {
+    public void setCurrency(final Currency currency) {
         ensureNotNull("currency", currency);
         this.currency = currency;
     }
@@ -271,7 +271,7 @@ public final class Country extends AbstractVerification {
      * @param languages Officially spoken language(s) of the Country
      * @throws IllegalArgumentException if the given value is null
      */
-    public void setLanguages(final String languages) throws IllegalArgumentException {
+    public void setLanguages(final String languages) {
         ensureNotTooLong("languages", languages, 100);
         this.languages = languages;
     }
@@ -292,7 +292,7 @@ public final class Country extends AbstractVerification {
      * @param membership Type of IAESTE Membership
      * @throws IllegalArgumentException if the given value is null
      */
-    public void setMembership(final Membership membership) throws IllegalArgumentException {
+    public void setMembership(final Membership membership) {
         ensureNotNull("membership", membership);
         this.membership = membership;
     }
@@ -314,7 +314,7 @@ public final class Country extends AbstractVerification {
      * @throws IllegalArgumentException if the value is invalid
      * @see IWSConstants#FOUNDING_YEAR
      */
-    public void setMemberSince(final Integer memberSince) throws IllegalArgumentException {
+    public void setMemberSince(final Integer memberSince) {
         final int currentYear = new Date().getCurrentYear();
         ensureWithinLimits("memberSince", memberSince, IWSConstants.FOUNDING_YEAR, currentYear);
         this.memberSince = memberSince;

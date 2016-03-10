@@ -33,7 +33,7 @@ import java.io.Serializable;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "authorization", propOrder = { "userGroup" })
+@XmlType(name = "authorization", propOrder = "userGroup")
 public final class Authorization implements Serializable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
@@ -86,27 +86,5 @@ public final class Authorization implements Serializable {
 
     public UserGroup getUserGroup() {
         return new UserGroup(userGroup);
-    }
-
-    /**
-     * Please use the #getUserGroup method.
-     *
-     * @return Group from the UserGroup Object
-     * @deprecated please use the userGroup Object instead
-     */
-    @Deprecated
-    public Group getGroup() {
-        return new Group(userGroup.getGroup());
-    }
-
-    /**
-     * Please use the #getUserGroup method.
-     *
-     * @return Role from the UserGroup Object
-     * @deprecated please use the userGroup Object instead
-     */
-    @Deprecated
-    public Role getRole() {
-        return new Role(userGroup.getRole());
     }
 }

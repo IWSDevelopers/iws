@@ -107,7 +107,7 @@ public final class Address extends AbstractVerification {
      * @throws IllegalArgumentException if the value exceeds the maximum length
      * @see #FIELD_LENGTH
      */
-    public void setStreet1(final String street1) throws IllegalArgumentException {
+    public void setStreet1(final String street1) {
         ensureNotTooLong("street1", street1, FIELD_LENGTH);
         this.street1 = sanitize(street1);
     }
@@ -127,7 +127,7 @@ public final class Address extends AbstractVerification {
      * @throws IllegalArgumentException if the value exceeds the maximum length
      * @see #FIELD_LENGTH
      */
-    public void setStreet2(final String street2) throws IllegalArgumentException {
+    public void setStreet2(final String street2) {
         ensureNotTooLong("street2", street2, FIELD_LENGTH);
         this.street2 = sanitize(street2);
     }
@@ -147,7 +147,7 @@ public final class Address extends AbstractVerification {
      * @throws IllegalArgumentException if the value exceeds the maximum length
      * @see #POSTAL_CODE_LENGTH
      */
-    public void setPostalCode(final String postalCode) throws IllegalArgumentException {
+    public void setPostalCode(final String postalCode) {
         ensureNotTooLong("postalCode", postalCode, POSTAL_CODE_LENGTH);
         this.postalCode = sanitize(postalCode);
     }
@@ -167,7 +167,7 @@ public final class Address extends AbstractVerification {
      * @throws IllegalArgumentException if the value exceeds the maximum length
      * @see #FIELD_LENGTH
      */
-    public void setCity(final String city) throws IllegalArgumentException {
+    public void setCity(final String city) {
         ensureNotTooLong("city", city, FIELD_LENGTH);
         this.city = sanitize(city);
     }
@@ -187,7 +187,7 @@ public final class Address extends AbstractVerification {
      * @throws IllegalArgumentException if the value exceeds the maximum length
      * @see #FIELD_LENGTH
      */
-    public void setState(final String state) throws IllegalArgumentException {
+    public void setState(final String state) {
         ensureNotTooLong("state", state, FIELD_LENGTH);
         this.state = sanitize(state);
     }
@@ -207,7 +207,7 @@ public final class Address extends AbstractVerification {
      * @throws IllegalArgumentException if the value exceeds the maximum length
      * @see #FIELD_LENGTH
      */
-    public void setPobox(final String pobox) throws IllegalArgumentException {
+    public void setPobox(final String pobox) {
         ensureNotTooLong("pobox", pobox, FIELD_LENGTH);
         this.pobox = sanitize(pobox);
     }
@@ -226,7 +226,7 @@ public final class Address extends AbstractVerification {
      * @param country Country Object
      * @throws IllegalArgumentException if the value is invalid
      */
-    public void setCountry(final Country country) throws IllegalArgumentException {
+    public void setCountry(final Country country) {
         ensureVerifiable("country", country);
         this.country = new Country(country);
     }

@@ -44,6 +44,8 @@ public final class AuthenticationToken extends AbstractVerification implements T
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
+    private static final String FIELD_TOKEN = "token";
+
     // The length of the supported Hashcode algorithms
     private static final int LENGTH_SHA2_512 = 128;
     private static final int LENGTH_SHA2_384 = 96;
@@ -75,7 +77,7 @@ public final class AuthenticationToken extends AbstractVerification implements T
      * @param  token  The Token, i.e. currently active Cryptographic Checksum
      * @throws IllegalArgumentException if the token is invalid
      */
-    public AuthenticationToken(final String token) throws IllegalArgumentException {
+    public AuthenticationToken(final String token) {
         setToken(token);
     }
 
@@ -87,7 +89,7 @@ public final class AuthenticationToken extends AbstractVerification implements T
      * @param groupId GroupId for the Authorization check
      * @throws IllegalArgumentException if the token is invalid
      */
-    public AuthenticationToken(final String token, final String groupId) throws IllegalArgumentException {
+    public AuthenticationToken(final String token, final String groupId) {
         // We use the setters to set the value, since they can properly handle
         // all validation checks
         setToken(token);
@@ -100,9 +102,9 @@ public final class AuthenticationToken extends AbstractVerification implements T
      * @param token  AuthenticationToken Object to copy
      * @throws IllegalArgumentException if the token is invalid
      */
-    public AuthenticationToken(final AuthenticationToken token) throws IllegalArgumentException {
+    public AuthenticationToken(final AuthenticationToken token) {
         // Check the given Object first
-        ensureNotNull("token", token);
+        ensureNotNull(FIELD_TOKEN, token);
 
         // Since the purpose of the Copy Constructor, is to create an identical
         // Object, we're not going to invoke the setters here.
@@ -123,8 +125,8 @@ public final class AuthenticationToken extends AbstractVerification implements T
      * @param  token  Cryptographic Authentication Token
      * @throws IllegalArgumentException if the token is invalid
      */
-    public void setToken(final String token) throws IllegalArgumentException {
-        ensureNotNull("token", token);
+    public void setToken(final String token) {
+        ensureNotNull(FIELD_TOKEN, token);
 
         // The token should have a length, matching one of the allowed hashing
         // algorithms. If not, then we'll throw an exception.
@@ -135,7 +137,7 @@ public final class AuthenticationToken extends AbstractVerification implements T
                 this.token = token;
                 break;
             default:
-                throwIllegalArgumentException("token");
+                throwIllegalArgumentException(FIELD_TOKEN);
         }
     }
 
@@ -196,7 +198,7 @@ public final class AuthenticationToken extends AbstractVerification implements T
 
         // As the Setters are verifying all given values, we only
         // need to run checks against nonnull fields here
-        isNotNull(validation, "token", token);
+        isNotNull(validation, FIELD_TOKEN, token);
 
         return validation;
     }

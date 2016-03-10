@@ -17,6 +17,8 @@
  */
 package net.iaeste.iws.api.dtos;
 
+import static net.iaeste.iws.api.util.AbstractVerification.immutableList;
+
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.util.ReflectiveStandardMethods;
 
@@ -76,7 +78,7 @@ public final class Change implements Serializable {
     public Change(final User user, final Group group, final List<Field> fields, final Date changed) {
         this.user = user;
         this.group = group;
-        this.fields = fields;
+        setFields(fields);
         this.changed = changed;
     }
 
@@ -130,11 +132,11 @@ public final class Change implements Serializable {
      * @param fields Changed Fields
      */
     public void setFields(final List<Field> fields) {
-        this.fields = fields;
+        this.fields = immutableList(fields);
     }
 
     public List<Field> getFields() {
-        return fields;
+        return immutableList(fields);
     }
 
     /**

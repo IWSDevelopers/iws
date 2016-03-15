@@ -32,7 +32,6 @@ import net.iaeste.iws.api.enums.exchange.OfferType;
 import net.iaeste.iws.api.enums.exchange.PaymentFrequency;
 import net.iaeste.iws.api.enums.exchange.TypeOfWork;
 import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
-import net.iaeste.iws.api.requests.exchange.DeletePublishingGroupRequest;
 import net.iaeste.iws.api.requests.exchange.FetchEmployerRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishGroupsRequest;
@@ -352,18 +351,6 @@ public final class ExchangeMapper extends CommonMapper {
         return api;
     }
 
-    public static net.iaeste.iws.ws.DeletePublishingGroupRequest map(final DeletePublishingGroupRequest api) {
-        net.iaeste.iws.ws.DeletePublishingGroupRequest ws = null;
-
-        if (api != null) {
-            ws = new net.iaeste.iws.ws.DeletePublishingGroupRequest();
-
-            ws.setPublishingGroupId(api.getPublishingGroupId());
-        }
-
-        return ws;
-    }
-
     public static net.iaeste.iws.ws.FetchPublishedGroupsRequest map(final FetchPublishedGroupsRequest api) {
         net.iaeste.iws.ws.FetchPublishedGroupsRequest ws = null;
 
@@ -496,7 +483,7 @@ public final class ExchangeMapper extends CommonMapper {
         if (ws != null) {
             api = new HashMap<>();
 
-            for (net.iaeste.iws.ws.OfferCSVUploadResponse.Errors.Entry entry : ws.getEntry()) {
+            for (final net.iaeste.iws.ws.OfferCSVUploadResponse.Errors.Entry entry : ws.getEntry()) {
                 api.put(entry.getKey(), map(entry.getValue()));
             }
         }
@@ -742,58 +729,58 @@ public final class ExchangeMapper extends CommonMapper {
     }
 
     private static FieldDelimiter map(final OfferCSVUploadRequest.FieldDelimiter api) {
-        return api != null ? FieldDelimiter.valueOf(api.name()) : null;
+        return (api != null) ? FieldDelimiter.valueOf(api.name()) : null;
     }
 
     private static OfferCSVUploadResponse.ProcessingResult map(final ProcessingResult ws) {
-        return ws != null ? OfferCSVUploadResponse.ProcessingResult.valueOf(ws.value()) : null;
+        return (ws != null) ? OfferCSVUploadResponse.ProcessingResult.valueOf(ws.value()) : null;
     }
 
     private static net.iaeste.iws.ws.EmployerFetchType map(final EmployerFetchType api) {
-        return api != null ? net.iaeste.iws.ws.EmployerFetchType.valueOf(api.name()) : null;
+        return (api != null) ? net.iaeste.iws.ws.EmployerFetchType.valueOf(api.name()) : null;
     }
 
     private static net.iaeste.iws.ws.FetchType map(final FetchType api) {
-        return api != null ? net.iaeste.iws.ws.FetchType.valueOf(api.name()) : null;
+        return (api != null) ? net.iaeste.iws.ws.FetchType.valueOf(api.name()) : null;
     }
 
     private static LanguageOperator map(final net.iaeste.iws.ws.LanguageOperator ws) {
-        return ws != null ? LanguageOperator.valueOf(ws.value()) : null;
+        return (ws != null) ? LanguageOperator.valueOf(ws.value()) : null;
     }
 
     private static net.iaeste.iws.ws.LanguageOperator map(final LanguageOperator api) {
-        return api != null ? net.iaeste.iws.ws.LanguageOperator.valueOf(api.name()) : null;
+        return (api != null) ? net.iaeste.iws.ws.LanguageOperator.valueOf(api.name()) : null;
     }
 
     private static OfferType map(final net.iaeste.iws.ws.OfferType ws) {
-        return ws != null ? OfferType.valueOf(ws.value()) : null;
+        return (ws != null) ? OfferType.valueOf(ws.value()) : null;
     }
 
     private static net.iaeste.iws.ws.OfferType map(final OfferType api) {
-        return api != null ? net.iaeste.iws.ws.OfferType.valueOf(api.name()) : null;
+        return (api != null) ? net.iaeste.iws.ws.OfferType.valueOf(api.name()) : null;
     }
 
     private static ExchangeType map(final net.iaeste.iws.ws.ExchangeType ws) {
-        return ws != null ? ExchangeType.valueOf(ws.value()) : null;
+        return (ws != null) ? ExchangeType.valueOf(ws.value()) : null;
     }
 
     private static net.iaeste.iws.ws.ExchangeType map(final ExchangeType api) {
-        return api != null ? net.iaeste.iws.ws.ExchangeType.valueOf(api.name()) : null;
+        return (api != null) ? net.iaeste.iws.ws.ExchangeType.valueOf(api.name()) : null;
     }
 
     private static TypeOfWork map(final net.iaeste.iws.ws.TypeOfWork ws) {
-        return ws != null ? TypeOfWork.valueOf(ws.value()) : null;
+        return (ws != null) ? TypeOfWork.valueOf(ws.value()) : null;
     }
 
     private static net.iaeste.iws.ws.TypeOfWork map(final TypeOfWork api) {
-        return api != null ? net.iaeste.iws.ws.TypeOfWork.valueOf(api.name()) : null;
+        return (api != null) ? net.iaeste.iws.ws.TypeOfWork.valueOf(api.name()) : null;
     }
 
     private static PaymentFrequency map(final net.iaeste.iws.ws.PaymentFrequency ws) {
-        return ws != null ? PaymentFrequency.valueOf(ws.value()) : null;
+        return (ws != null) ? PaymentFrequency.valueOf(ws.value()) : null;
     }
 
     private static net.iaeste.iws.ws.PaymentFrequency map(final PaymentFrequency api) {
-        return api != null ? net.iaeste.iws.ws.PaymentFrequency.valueOf(api.name()) : null;
+        return (api != null) ? net.iaeste.iws.ws.PaymentFrequency.valueOf(api.name()) : null;
     }
 }

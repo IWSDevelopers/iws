@@ -22,7 +22,6 @@ import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
-import net.iaeste.iws.api.requests.exchange.DeletePublishingGroupRequest;
 import net.iaeste.iws.api.requests.exchange.FetchEmployerRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishGroupsRequest;
@@ -332,35 +331,6 @@ public final class ExchangeController extends CommonController implements Exchan
             // here as a debug message
             LOG.debug(e.getMessage(), e);
             response = new FetchPublishingGroupResponse(e.getError(), e.getMessage());
-        }
-
-        return response;
-    }
-
-    /**
-     * {@inheritDoc}
-     * @deprecated
-     */
-    @Override
-    @Deprecated
-    public FallibleResponse deletePublishingGroup(final AuthenticationToken token, final DeletePublishingGroupRequest request) {
-        FallibleResponse response;
-
-        try {
-            verify(request);
-            final Authentication authentication = verifyAccess(token, Permission.PROCESS_PUBLISH_OFFER);
-
-            final ExchangeService service = factory.prepareExchangeService();
-            service.deletePublishingGroup(authentication, request);
-            response = new FallibleResponse();
-        } catch (IWSException e) {
-            // Generally, Exceptions should always be either logged or rethrown.
-            // In our case, we're transforming the Exception into an Error
-            // Object which can be returned to the User. However, to ensure
-            // that we're not loosing anything - the Exception is also LOG.ed
-            // here as a debug message
-            LOG.debug(e.getMessage(), e);
-            response = new FallibleResponse(e.getError(), e.getMessage());
         }
 
         return response;

@@ -19,7 +19,6 @@ package net.iaeste.iws.api;
 
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
-import net.iaeste.iws.api.requests.exchange.DeletePublishingGroupRequest;
 import net.iaeste.iws.api.requests.exchange.FetchEmployerRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishGroupsRequest;
@@ -191,16 +190,6 @@ g     * <dl>
      * @return Response Object with National group's Publishing Groups
      */
     FetchPublishingGroupResponse fetchPublishingGroups(AuthenticationToken token, FetchPublishGroupsRequest request);
-
-    /**
-     *
-     * @param token   User Authentication Token
-     * @param request contains name of the Publishing Group and list of Groups the Publishing Group consists of
-     * @return Standard Error Object
-     * @deprecated please use the delete flag for the processPublishingGroup request
-     */
-    @Deprecated
-    FallibleResponse deletePublishingGroup(AuthenticationToken token, DeletePublishingGroupRequest request);
 
     /**
      * <p>Retrieves the list of groups to which offers are shared to. A list of

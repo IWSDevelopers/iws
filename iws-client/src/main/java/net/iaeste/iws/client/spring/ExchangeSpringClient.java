@@ -20,7 +20,6 @@ package net.iaeste.iws.client.spring;
 import net.iaeste.iws.api.Exchange;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
-import net.iaeste.iws.api.requests.exchange.DeletePublishingGroupRequest;
 import net.iaeste.iws.api.requests.exchange.FetchEmployerRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishGroupsRequest;
@@ -192,16 +191,6 @@ public final class ExchangeSpringClient implements Exchange {
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public FetchPublishingGroupResponse fetchPublishingGroups(final AuthenticationToken token, final FetchPublishGroupsRequest request) {
         return client.fetchPublishingGroups(token, request);
-    }
-
-    /**
-     * {@inheritDoc}
-     * @deprecated
-     */
-    @Override
-    @Deprecated
-    public FallibleResponse deletePublishingGroup(final AuthenticationToken token, final DeletePublishingGroupRequest request) {
-        return client.deletePublishingGroup(token, request);
     }
 
     /**

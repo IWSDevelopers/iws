@@ -30,7 +30,6 @@ import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
-import net.iaeste.iws.api.requests.exchange.DeletePublishingGroupRequest;
 import net.iaeste.iws.api.requests.exchange.HideForeignOffersRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessEmployerRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
@@ -324,14 +323,6 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
 
                 dao.persist(authentication, existingEntity, newEntity);
             }
-        }
-    }
-
-    public void deletePublishingGroup(final Authentication authentication, final DeletePublishingGroupRequest request) {
-        final PublishingGroupEntity existingEntity = dao.getSharingListByExternalIdAndOwnerId(request.getPublishingGroupId(), authentication.getGroup().getId());
-
-        if (existingEntity != null) {
-            dao.delete(existingEntity);
         }
     }
 

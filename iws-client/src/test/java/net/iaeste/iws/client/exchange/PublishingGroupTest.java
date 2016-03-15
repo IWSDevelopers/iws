@@ -27,7 +27,6 @@ import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.exchange.PublishingGroup;
-import net.iaeste.iws.api.requests.exchange.DeletePublishingGroupRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessPublishingGroupRequest;
 import net.iaeste.iws.api.responses.exchange.FetchPublishingGroupResponse;
@@ -139,9 +138,10 @@ public final class PublishingGroupTest extends AbstractTest {
         PublishingGroup fetchedList = findPublishingGroupFromResponse(listName, fetchResponse);
         assertThat(fetchedList.getGroups().size(), is(groups.size()));
 
-        final DeletePublishingGroupRequest deleteRequest = new DeletePublishingGroupRequest();
-        deleteRequest.setPublishingGroupId(fetchedList.getPublishingGroupId());
-        final Fallible deleteResponse = exchange.deletePublishingGroup(token, deleteRequest);
+        final ProcessPublishingGroupRequest deleteRequest = new ProcessPublishingGroupRequest();
+        deleteRequest.setPublishingGroup(fetchedList);
+        deleteRequest.setDeletePublishingGroup(true);
+        final Fallible deleteResponse = exchange.processPublishingGroup(token, deleteRequest);
         assertThat(deleteResponse.isOk(), is(true));
         fetchResponse = exchange.fetchPublishingGroups(token, fetchRequest);
         fetchedList = findPublishingGroupFromResponse(listName, fetchResponse);

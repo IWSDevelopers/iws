@@ -1,9 +1,4 @@
 <?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://ws.iws.iaeste.net/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="exchangeWSService" targetNamespace="http://ws.iws.iaeste.net/">
-  <wsdl:documentation>
-      Service: IWS Exchange Service
-      Version: 1.1.20151026
-      Owner: IAESTE A.s.b.l.
-  </wsdl:documentation>
   <wsdl:types>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://ws.iws.iaeste.net/" targetNamespace="http://ws.iws.iaeste.net/" version="1.0">
 
@@ -20,30 +15,6 @@
 
   <xs:complexType abstract="true" name="abstractVerification">
     <xs:sequence/>
-  </xs:complexType>
-
-  <xs:complexType final="extension restriction" name="deletePublishingGroupRequest">
-    <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
-        <xs:sequence>
-          <xs:element name="publishingGroupId" type="xs:string"/>
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
-  <xs:complexType name="fallibleResponse">
-    <xs:sequence>
-      <xs:element name="error" type="tns:iwsError"/>
-      <xs:element name="message" type="xs:string"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType final="extension restriction" name="iwsError">
-    <xs:sequence>
-      <xs:element name="error" type="xs:int"/>
-      <xs:element name="description" type="xs:string"/>
-    </xs:sequence>
   </xs:complexType>
 
   <xs:complexType final="extension restriction" name="offerCSVUploadRequest">
@@ -67,7 +38,7 @@
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType name="page">
+  <xs:complexType final="extension restriction" name="page">
     <xs:sequence>
       <xs:element name="pageNumber" type="xs:int"/>
       <xs:element name="pageSize" type="xs:int"/>
@@ -113,6 +84,13 @@
     </xs:complexContent>
   </xs:complexType>
 
+  <xs:complexType name="fallibleResponse">
+    <xs:sequence>
+      <xs:element name="error" type="tns:iwsError"/>
+      <xs:element name="message" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
   <xs:complexType final="extension restriction" name="csvProcessingErrors">
     <xs:sequence>
       <xs:element name="csvErrors">
@@ -129,6 +107,13 @@
           </xs:sequence>
         </xs:complexType>
       </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="iwsError">
+    <xs:sequence>
+      <xs:element name="error" type="xs:int"/>
+      <xs:element name="description" type="xs:string"/>
     </xs:sequence>
   </xs:complexType>
 
@@ -496,7 +481,7 @@
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType name="groupList">
+  <xs:complexType final="extension restriction" name="groupList">
     <xs:sequence>
       <xs:element maxOccurs="unbounded" name="groups" nillable="true" type="tns:group"/>
     </xs:sequence>
@@ -1194,12 +1179,6 @@
 
 </xs:schema>
   </wsdl:types>
-  <wsdl:message name="deletePublishingGroup">
-    <wsdl:part name="token" type="tns:authenticationToken">
-    </wsdl:part>
-    <wsdl:part name="request" type="tns:deletePublishingGroupRequest">
-    </wsdl:part>
-  </wsdl:message>
   <wsdl:message name="downloadOffersResponse">
     <wsdl:part name="response" type="tns:offerCSVDownloadResponse">
     </wsdl:part>
@@ -1348,18 +1327,7 @@
     <wsdl:part name="request" type="tns:processOfferRequest">
     </wsdl:part>
   </wsdl:message>
-  <wsdl:message name="deletePublishingGroupResponse">
-    <wsdl:part name="response" type="tns:fallibleResponse">
-    </wsdl:part>
-  </wsdl:message>
   <wsdl:portType name="exchangeWS">
-    <wsdl:documentation>IAESTE A.s.b.l. Exchange WebService</wsdl:documentation>
-    <wsdl:operation name="deletePublishingGroup">
-      <wsdl:input message="tns:deletePublishingGroup" name="deletePublishingGroup">
-    </wsdl:input>
-      <wsdl:output message="tns:deletePublishingGroupResponse" name="deletePublishingGroupResponse">
-    </wsdl:output>
-    </wsdl:operation>
     <wsdl:operation name="uploadOffers">
       <wsdl:input message="tns:uploadOffers" name="uploadOffers">
     </wsdl:input>
@@ -1453,15 +1421,6 @@
   </wsdl:portType>
   <wsdl:binding name="exchangeWSServiceSoapBinding" type="tns:exchangeWS">
     <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
-    <wsdl:operation name="deletePublishingGroup">
-      <soap:operation soapAction="" style="rpc"/>
-      <wsdl:input name="deletePublishingGroup">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
-      </wsdl:input>
-      <wsdl:output name="deletePublishingGroupResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
-      </wsdl:output>
-    </wsdl:operation>
     <wsdl:operation name="uploadOffers">
       <soap:operation soapAction="" style="rpc"/>
       <wsdl:input name="uploadOffers">

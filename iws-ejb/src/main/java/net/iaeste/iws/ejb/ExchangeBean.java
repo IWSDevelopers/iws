@@ -21,7 +21,6 @@ import net.iaeste.iws.api.Exchange;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
-import net.iaeste.iws.api.requests.exchange.DeletePublishingGroupRequest;
 import net.iaeste.iws.api.requests.exchange.FetchEmployerRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishGroupsRequest;
@@ -361,27 +360,6 @@ public class ExchangeBean implements Exchange {
         } catch (RuntimeException e) {
             LOG.error(session.generateLogAndSaveRequest("fetchPublishingGroups", start, e, token, request), e);
             response = new FetchPublishingGroupResponse(IWSErrors.ERROR, e.getMessage());
-        }
-
-        return response;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @Deprecated
-    @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public FallibleResponse deletePublishingGroup(final AuthenticationToken token, final DeletePublishingGroupRequest request) {
-        final long start = System.nanoTime();
-        FallibleResponse response;
-
-        try {
-            response = controller.deletePublishingGroup(token, request);
-            LOG.info(session.generateLogAndUpdateSession("deletePublishingGroup", start, response, token));
-        } catch (RuntimeException e) {
-            LOG.error(session.generateLogAndSaveRequest("deletePublishingGroup", start, e, token, request), e);
-            response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
         return response;

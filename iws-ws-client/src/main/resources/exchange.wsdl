@@ -1,5 +1,10 @@
 <?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://ws.iws.iaeste.net/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="exchangeWSService" targetNamespace="http://ws.iws.iaeste.net/">
   <wsdl:types>
+    <wsdl:documentation>
+        Service: IWS Exchange Service
+        Version: 1.2.20160316
+        Owner:   Kim Jensen
+    </wsdl:documentation>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://ws.iws.iaeste.net/" targetNamespace="http://ws.iws.iaeste.net/" version="1.0">
 
   <xs:complexType final="extension restriction" name="authenticationToken">
@@ -1328,6 +1333,7 @@
     </wsdl:part>
   </wsdl:message>
   <wsdl:portType name="exchangeWS">
+    <wsdl:documentation>IWS Exchange WebService</wsdl:documentation>
     <wsdl:operation name="uploadOffers">
       <wsdl:input message="tns:uploadOffers" name="uploadOffers">
     </wsdl:input>

@@ -2,7 +2,7 @@
   <wsdl:types>
     <wsdl:documentation>
         Service: IWS Exchange Service
-        Version: 1.2.20160316
+        Version: 1.2.20160320
         Owner:   Kim Jensen
     </wsdl:documentation>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://ws.iws.iaeste.net/" targetNamespace="http://ws.iws.iaeste.net/" version="1.0">
@@ -359,7 +359,7 @@
           <xs:element name="oldRefNo" nillable="true" type="xs:string"/>
           <xs:element name="employer" type="tns:employer"/>
           <xs:element name="workDescription" type="xs:string"/>
-          <xs:element name="typeOfWork" nillable="true" type="tns:typeOfWork"/>
+          <xs:element name="typeOfWork" type="tns:typeOfWork"/>
           <xs:element name="weeklyHours" type="xs:float"/>
           <xs:element name="dailyHours" nillable="true" type="xs:float"/>
           <xs:element name="weeklyWorkDays" nillable="true" type="xs:float"/>

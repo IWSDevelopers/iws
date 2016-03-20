@@ -146,6 +146,7 @@ public final class TestData {
         offer.setEmployer(prepareEmployer(employerName, countryCode));
         offer.setWeeklyHours(OFFER_WEEKLY_HOURS);
         offer.setWorkDescription(OFFER_WORK_DESCRIPTION);
+        offer.setTypeOfWork(OFFER_TYPE_OF_WORK);
         offer.setStudyLevels(OFFER_STUDY_LEVELS);
         offer.setFieldOfStudies(OFFER_FIELD_OF_STUDY);
         offer.setMinimumWeeks(OFFER_MINIMUM_WEEKS);

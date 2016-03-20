@@ -1,10 +1,98 @@
 -- Before being able to update, we need to know who to grant ownership of the
 -- database views, i.e. the primary IWS user.
 
--- This is the 1.1.18 release script to update the database to newest state.
+-- This is the 1.2.0 release script to update the database to newest state.
 -- The changes makes the system incompatible with earlier versions of the IWS,
 -- so let's add the information that this is the next DB version, and the IWS
 -- version it is related to.
 -- Commented out, as the current updates will not change the data model, only
 -- correct some problems discovered with the Views & Data Content
-insert into versions (db_version, iws_version) values (9, '1.1.18');
+insert into versions (db_version, iws_version) values (9, '1.2.0');
+
+-- =============================================================================
+-- Resolving the WorkType issue for Offers
+-- =============================================================================
+-- The WorkType field for Offers was deliberately not enforced for Offers, as it
+-- was not correctly handled in IW4. However, it has to be mandatory, as it
+-- states what kind of work can be expected. It is enforced for CSV uploads, and
+-- the rule must therefore also be present for API uploads. The database has the
+-- following types defined (2016-02-29):
+--
+-- iws=# select count(id), work_type from offers group by work_type;
+--  count | work_type
+-- -------+-----------
+--   1061 |
+--   1750 | F
+--  23395 | R
+--  19072 | O
+--
+-- When the data was migrated over from IW3, a migrator was written, which is
+-- pasted in below:
+--
+-- /**
+--  * IW3 contains several fields where the information about work type is
+--  * divided. In IWS, there's a single entry. So the question is how to map it
+--  * over, since there can be several types marked for the IW3 records.<br />
+--  *   The following query will yield the result from below, using the
+--  * Mid-November snapshot of the IW3 database, that Henrik made.
+--  * <pre>
+--  *   select
+--  *     count(offerid) as records,
+--  *     worktype,
+--  *     worktype_n,
+--  *     worktype_p,
+--  *     worktype_r,
+--  *     worktype_w
+--  *   from offers
+--  *   group by
+--  *     worktype,
+--  *     worktype_n,
+--  *     worktype_p,
+--  *     worktype_r,
+--  *     worktype_w;
+--  * </pre>
+--  * <br />
+--  * <pre>
+--  * records   worktype   worktype_n   worktype_p   worktype_r   worktype_w
+--  *    9311          x     false        true         false        false
+--  *       5          x     true         true         true         true
+--  *    1260          x     false        true         true         false
+--  *       4          x     true         true         false        true
+--  *     780          x     false        false        false        false
+--  *   12022          x     false        false        true         false
+--  *      11          x     true         false        false        true
+--  *     581          x     false        true         false        true
+--  *       5          x     true         true         true         false
+--  *      93          x     false        true         true         true
+--  *      10          x     true         true         false        false
+--  *     679          x     false        false        false        true
+--  *       7          x     true         false        true         false
+--  *     335          x     true         false        false        false
+--  *     232          x     false        false        true         true
+--  * </pre>
+--  *
+--  * @param oldOffer IW3 Offer
+--  * @return Type of Work
+--  */
+-- private static TypeOfWork convertTypeOfWork(final IW3OffersEntity oldOffer) {
+--     final TypeOfWork result;
+--
+--     if (oldOffer.getWorktypeR()) {
+--         result = TypeOfWork.R;
+--     } else if (oldOffer.getWorktypeP()) {
+--         result = TypeOfWork.O;
+--     } else if (oldOffer.getWorktypeW()) {
+--         result = TypeOfWork.F;
+--     } else {
+--         result = TypeOfWork.O;
+--     }
+--
+--     return result;
+-- }
+--
+-- It is clear that the Offers lacking the WorkType must have it set, but what
+-- is not clear is to what. For the IW3 migrator, we used 'O' (Office Work) as
+-- the default, and unless a different value is preferred, the same will be used
+-- for IWS.
+update offers set work_type = 'O' where work_type is null;
+-- =============================================================================

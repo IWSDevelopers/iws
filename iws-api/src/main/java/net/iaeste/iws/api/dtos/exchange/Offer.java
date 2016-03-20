@@ -77,7 +77,7 @@ public final class Offer extends AbstractVerification {
     // General Work Description
     @XmlElement(required = true, nillable = false) private Employer employer = null;
     @XmlElement(required = true, nillable = false) private String workDescription = null;
-    @XmlElement(required = true, nillable = true)  private TypeOfWork typeOfWork = null;
+    @XmlElement(required = true, nillable = false) private TypeOfWork typeOfWork = null;
     @XmlElement(required = true, nillable = false) private Float weeklyHours = null;
     @XmlElement(required = true, nillable = true)  private Float dailyHours = null;
     @XmlElement(required = true, nillable = true)  private Float weeklyWorkDays = null;
@@ -353,7 +353,16 @@ public final class Offer extends AbstractVerification {
         return workDescription;
     }
 
+    /**
+     * Sets the Offer Type of Work, which classifies what the applicant will be
+     * primarily doing as part of undertaking the Offer. The field is enforced,
+     * and if it undefined an  {@code IllegalArgumentException} will be thrown.
+     *
+     * @param typeOfWork Offer Type of Work
+     * @throws IllegalArgumentException if the value is undefined
+     */
     public void setTypeOfWork(final TypeOfWork typeOfWork) {
+        ensureNotNull("typeOfWork", typeOfWork);
         this.typeOfWork = typeOfWork;
     }
 
@@ -842,6 +851,7 @@ public final class Offer extends AbstractVerification {
         // We need to ensure that the Employer is verifiable also!
         isNotNullAndVerifiable(validation, FIELD_EMPLOYER, employer);
         isNotNull(validation, "workDescription", workDescription);
+        isNotNull(validation, "typeOfWork", typeOfWork);
         isNotNull(validation, "weeklyHours", weeklyHours);
         isNotNull(validation, FIELD_STUDY_LEVELS, studyLevels);
         isNotNull(validation, FIELD_FIELD_OF_STUDIES, fieldOfStudies);

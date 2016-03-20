@@ -4,6 +4,8 @@
 # Statistics Script
 # -----------------------------------------------------------------------------
 # History:
+#   Version 1.02 - 2016-03-20, Kim Jensen <Kim.Jensen@dawn.dk>
+#     o Corrected "zaker" Author information
 #   Version 1.01 - 2016-02-04, Kim Jensen <Kim.Jensen@dawn.dk>
 #     o Added Blame
 #   Version 1.00 - 2015-01-06, Kim Jensen <Kim.Jensen@dawn.dk>
@@ -26,7 +28,7 @@ projectRoot="${HOME}/projects/Private/IDT"
 # Git setup initially.
 mergeJensen="-c merge_authors=\"kim,Kim Jensen\""
 mergeKnapik1="-c merge_authors=\"Michał Knapik,Michal Knapik\""
-mergeKnapik2="-c merge_authors=\"zaker,Michal Knapik\""
+mergeKnapik2="-c merge_authors=\"zaker,Sondre Naustdal\""
 mergePickelbauer="-c merge_authors=\"Jenkins,Michael Pickelbauer\""
 mergePecan="-c merge_authors=\"Matjaž Pečan,Matjaz Pecan\""
 options="${mergeJensen} ${mergeKnapik1} ${mergeKnapik2} ${mergePickelbauer} ${mergePecan}"
@@ -36,7 +38,7 @@ readonly scriptLockFD="200"
 readonly scriptLock="/tmp/.`basename $0`.lock"
 
 # Script specific information, should only be altered, if logic is updated
-readonly scriptVersion="1.01"
+readonly scriptVersion="1.02"
 readonly scriptAuthor="Kim Jensen"
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 

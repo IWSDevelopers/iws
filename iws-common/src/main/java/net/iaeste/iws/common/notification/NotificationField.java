@@ -101,7 +101,7 @@ public enum NotificationField {
     ON_PRIVATE_LIST,
 
     /**
-     * If a user may send messages to the privage mailing list or not.
+     * If a user may send messages to the private mailing list or not.
      */
     WRITE_PRIVATE_LIST,
 

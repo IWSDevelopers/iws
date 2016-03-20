@@ -31,7 +31,7 @@ public interface Observable {
      * Adds the Observer object to the list of observers to be notified by the
      * subject.
      *
-     * @param observer Observer object to be nofified by the subject
+     * @param observer Observer object to be notified by the subject
      */
     void addObserver(Observer observer);
 

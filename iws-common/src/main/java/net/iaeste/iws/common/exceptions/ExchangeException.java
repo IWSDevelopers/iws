@@ -19,7 +19,6 @@ package net.iaeste.iws.common.exceptions;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
-import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.exceptions.IWSException;
 
 /**
@@ -33,17 +32,6 @@ public class ExchangeException extends IWSException {
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     /**
-     * Default Constructor, for the case where a general error in the Exchange
-     * module has arisen, and the only information available is the message
-     * describing the error.
-     *
-     * @param message  Specific message, regarding the problem
-     */
-    public ExchangeException(final String message) {
-        super(IWSErrors.GENERAL_EXCHANGE_ERROR, message);
-    }
-
-    /**
      * Default Constructor, for the case where an error condition has arisen,
      * and the only information available is the type of error, and a message
      * describing the error.
@@ -53,16 +41,5 @@ public class ExchangeException extends IWSException {
      */
     public ExchangeException(final IWSError error, final String message) {
         super(error, message);
-    }
-
-    /**
-     * Default Constructor, for the case where a general error in the Exchange
-     * module has arisen, and the only information available is the causing
-     * error.
-     *
-     * @param cause    The specific cause of the problem
-     */
-    public ExchangeException(final Throwable cause) {
-        super(IWSErrors.GENERAL_EXCHANGE_ERROR, cause);
     }
 }

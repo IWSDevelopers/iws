@@ -96,7 +96,7 @@ public interface Committees {
      *   Result:
      *     <pre>
      *     Staff: Elbonia, ST
-     *     Fullname: Elbonia, Super Tech
+     *     FullName: Elbonia, Super Tech
      *     Mail: Elbonia_ST@iaeste.org
      *     </pre>
      *   Note; Attempting to add a Cooperating Institution to a Country which is

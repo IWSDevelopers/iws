@@ -82,7 +82,7 @@ public enum NotificationType {
 
     /**
      * Whenever there is a change in the membership of a Group, then the system
-     * must be informed about it, so the mailinglists can be updated.
+     * must be informed about it, so the mailing lists can be updated.
      */
     CHANGE_IN_GROUP_MEMBERS,
 

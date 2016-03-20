@@ -90,7 +90,7 @@ public final class CommitteeRequest extends AbstractVerification implements Acti
      * @param action Action to perform
      * @throws IllegalArgumentException if the action is null or not allowed
      */
-    public CommitteeRequest(final Action action) throws IllegalArgumentException {
+    public CommitteeRequest(final Action action) {
         setAction(action);
     }
 
@@ -110,7 +110,7 @@ public final class CommitteeRequest extends AbstractVerification implements Acti
      * {@inheritDoc}
      */
     @Override
-    public void setAction(final Action action) throws IllegalArgumentException {
+    public void setAction(final Action action) {
         ensureNotNullAndContains("action", action, ALLOWED);
         this.action = action;
     }
@@ -134,7 +134,7 @@ public final class CommitteeRequest extends AbstractVerification implements Acti
      * @param countryCode Two-letter Country Code
      * @throws IllegalArgumentException if null or not exactly 2 characters long
      */
-    public void setCountryCode(final String countryCode) throws IllegalArgumentException {
+    public void setCountryCode(final String countryCode) {
         ensureNotNullAndExactLength("countryCode", countryCode, 2);
         this.countryCode = countryCode;
     }
@@ -155,7 +155,7 @@ public final class CommitteeRequest extends AbstractVerification implements Acti
      * @param institutionName The Institution Name
      * @throws IllegalArgumentException if not valid, i.e. null, empty or longer than 50 characters
      */
-    public void setInstitutionName(final String institutionName) throws IllegalArgumentException {
+    public void setInstitutionName(final String institutionName) {
         ensureNotNullOrEmptyOrTooLong("institutionName", institutionName, 50);
         this.institutionName = institutionName;
     }
@@ -173,7 +173,7 @@ public final class CommitteeRequest extends AbstractVerification implements Acti
      * @param institutionAbbreviation Institution Abbreviation
      * @throws IllegalArgumentException if null, empty or longer than 5 characters
      */
-    public void setInstitutionAbbreviation(final String institutionAbbreviation) throws IllegalArgumentException {
+    public void setInstitutionAbbreviation(final String institutionAbbreviation) {
         ensureNotNullOrEmptyOrTooLong("institutionAbbreviation", institutionAbbreviation, 5);
         this.institutionAbbreviation = institutionAbbreviation;
     }
@@ -182,7 +182,7 @@ public final class CommitteeRequest extends AbstractVerification implements Acti
         return institutionAbbreviation;
     }
 
-    public void setFirstname(final String firstname) throws IllegalArgumentException {
+    public void setFirstname(final String firstname) {
         ensureNotNullOrEmptyOrTooLong("firstname", firstname, CreateUserRequest.USER_MAXIMUM_FIRSTNAME);
         this.firstname = firstname;
     }
@@ -196,7 +196,7 @@ public final class CommitteeRequest extends AbstractVerification implements Acti
      * @param lastname Lastname or Family name of the new National Secretary
      * @throws IllegalArgumentException in value is invalid
      */
-    public void setLastname(final String lastname) throws IllegalArgumentException {
+    public void setLastname(final String lastname) {
         ensureNotNullOrEmptyOrTooLong("lastname", lastname, CreateUserRequest.USER_MAXIMUM_LASTNAME);
         this.lastname = lastname;
     }
@@ -216,7 +216,7 @@ public final class CommitteeRequest extends AbstractVerification implements Acti
      * @param username National Secretary Username
      * @throws IllegalArgumentException if not a valid e-mail address
      */
-    public void setUsername(final String username) throws IllegalArgumentException {
+    public void setUsername(final String username) {
         ensureNotNullAndValidEmail("username", username);
         ensureNotTooLong("username", username, CreateUserRequest.USER_MAXIMUM_USERNAME);
         this.username = username;
@@ -226,7 +226,7 @@ public final class CommitteeRequest extends AbstractVerification implements Acti
         return username;
     }
 
-    public void setNationalCommittee(final Group nationalCommittee) throws IllegalArgumentException {
+    public void setNationalCommittee(final Group nationalCommittee) {
         ensureNotNullAndVerifiable("nationalCommittee", nationalCommittee);
         if (nationalCommittee.getGroupType() != GroupType.NATIONAL) {
             throw new IllegalArgumentException("Cannot process a Committee which is not having type " + GroupType.NATIONAL.getDescription());
@@ -238,7 +238,7 @@ public final class CommitteeRequest extends AbstractVerification implements Acti
         return nationalCommittee;
     }
 
-    public void setNationalSecretary(final User nationalSecretary) throws IllegalArgumentException {
+    public void setNationalSecretary(final User nationalSecretary) {
         ensureNotNullAndVerifiable("nationalSecretary", nationalSecretary);
         this.nationalSecretary = nationalSecretary;
     }

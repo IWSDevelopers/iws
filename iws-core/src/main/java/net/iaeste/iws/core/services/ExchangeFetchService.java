@@ -213,7 +213,7 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
 
         for (final OfferView view : found) {
             if (applyIdentifiers(request.getIdentifiers(), view.getOffer())) {
-                final Offer offer = transform(view);
+                final Offer offer = cleanOfferLanguage(transform(view));
                 // do not expose private comment to foreign offers
                 if (!view.getGroupId().equals(authentication.getGroup().getId())) {
                     offer.setPrivateComment(null);
@@ -231,7 +231,7 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
 
         for (final SharedOfferView view : found) {
             if (applyIdentifiers(request.getIdentifiers(), view.getOffer())) {
-                result.add(transform(view));
+                result.add(cleanOfferLanguage(transform(view)));
             }
         }
 

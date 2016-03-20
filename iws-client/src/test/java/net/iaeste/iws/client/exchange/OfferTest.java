@@ -39,7 +39,10 @@ import net.iaeste.iws.api.dtos.exchange.Employer;
 import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.enums.FetchType;
 import net.iaeste.iws.api.enums.GroupType;
+import net.iaeste.iws.api.enums.Language;
 import net.iaeste.iws.api.enums.exchange.ExchangeType;
+import net.iaeste.iws.api.enums.exchange.LanguageLevel;
+import net.iaeste.iws.api.enums.exchange.LanguageOperator;
 import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.api.enums.exchange.OfferType;
 import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
@@ -1500,6 +1503,144 @@ public final class OfferTest extends AbstractTest {
         final ProcessOfferRequest request = new ProcessOfferRequest(offer);
         final OfferResponse response = exchange.processOffer(token, request);
         assertThat(response.isOk(), is(true));
+    }
+
+    /**
+     * Simple test to verify that Offers are corrected by the IWS, so missing
+     * Language information is presented.
+     */
+    @Test
+    public void testLanguageFieldsMissing() {
+        final Offer offer = TestData.prepareMinimalOffer(PL_YEAR + "-LANG01", "Language Employer");
+        offer.setLanguage1Operator(null);
+        offer.setLanguage2(Language.BELARUSIAN);
+        offer.setLanguage2Level(null);
+        offer.setLanguage2Operator(null);
+        offer.setLanguage3(Language.LATVIAN);
+        offer.setLanguage3Level(null);
+
+        final ProcessOfferRequest request = new ProcessOfferRequest(offer);
+        final OfferResponse response = exchange.processOffer(token, request);
+        assertThat(response.getMessage(), is(IWSConstants.SUCCESS));
+        final Offer saved = response.getOffer();
+        assertThat(saved.getLanguage1(), is(Language.ENGLISH));
+        assertThat(saved.getLanguage1Level(), is(LanguageLevel.E));
+        assertThat(saved.getLanguage1Operator(), is(LanguageOperator.A));
+        assertThat(saved.getLanguage2(), is(Language.BELARUSIAN));
+        assertThat(saved.getLanguage2Level(), is(LanguageLevel.G));
+        assertThat(saved.getLanguage2Operator(), is(LanguageOperator.A));
+        assertThat(saved.getLanguage3(), is(Language.LATVIAN));
+        assertThat(saved.getLanguage3Level(), is(LanguageLevel.G));
+
+        final FetchOffersRequest fetchRequest = new FetchOffersRequest();
+        final List<String> offerIds = new ArrayList<>();
+        offerIds.add(offer.getRefNo());;
+        fetchRequest.setIdentifiers(offerIds);
+        fetchRequest.setFetchType(FetchType.DOMESTIC);
+        final FetchOffersResponse fetchResponse = exchange.fetchOffers(token, fetchRequest);
+        assertThat(fetchResponse.getMessage(), is(IWSConstants.SUCCESS));
+        assertThat(fetchResponse.getOffers().size(), is(1));
+        final Offer found = fetchResponse.getOffers().get(0);
+        assertThat(found.getLanguage1(), is(Language.ENGLISH));
+        assertThat(found.getLanguage1Level(), is(LanguageLevel.E));
+        assertThat(found.getLanguage1Operator(), is(LanguageOperator.A));
+        assertThat(found.getLanguage2(), is(Language.BELARUSIAN));
+        assertThat(found.getLanguage2Level(), is(LanguageLevel.G));
+        assertThat(found.getLanguage2Operator(), is(LanguageOperator.A));
+        assertThat(found.getLanguage3(), is(Language.LATVIAN));
+        assertThat(found.getLanguage3Level(), is(LanguageLevel.G));
+    }
+
+    /**
+     * Simple test to verify that Offers are corrected by the IWS, so invalid
+     * Language information is no longer presented.
+     */
+    @Test
+    public void testLanguage2Missing() {
+        final Offer offer = TestData.prepareMinimalOffer(PL_YEAR + "-LANG02", "Language Employer");
+        offer.setLanguage1Operator(LanguageOperator.A);
+        offer.setLanguage2(null);
+        offer.setLanguage2Level(LanguageLevel.E);
+        offer.setLanguage2Operator(LanguageOperator.A);
+        offer.setLanguage3(Language.LATVIAN);
+        offer.setLanguage3Level(LanguageLevel.E);
+
+        final ProcessOfferRequest request = new ProcessOfferRequest(offer);
+        final OfferResponse response = exchange.processOffer(token, request);
+        assertThat(response.getMessage(), is(IWSConstants.SUCCESS));
+        final Offer saved = response.getOffer();
+        assertThat(saved.getLanguage1(), is(Language.ENGLISH));
+        assertThat(saved.getLanguage1Level(), is(LanguageLevel.E));
+        assertThat(saved.getLanguage1Operator(), is(nullValue()));
+        assertThat(saved.getLanguage2(), is(nullValue()));
+        assertThat(saved.getLanguage2Level(), is(nullValue()));
+        assertThat(saved.getLanguage2Operator(), is(nullValue()));
+        assertThat(saved.getLanguage3(), is(nullValue()));
+        assertThat(saved.getLanguage3Level(), is(nullValue()));
+
+        final FetchOffersRequest fetchRequest = new FetchOffersRequest();
+        final List<String> offerIds = new ArrayList<>();
+        offerIds.add(offer.getRefNo());;
+        fetchRequest.setIdentifiers(offerIds);
+        fetchRequest.setFetchType(FetchType.DOMESTIC);
+        final FetchOffersResponse fetchResponse = exchange.fetchOffers(token, fetchRequest);
+        assertThat(fetchResponse.getMessage(), is(IWSConstants.SUCCESS));
+        assertThat(fetchResponse.getOffers().size(), is(1));
+        final Offer found = fetchResponse.getOffers().get(0);
+        assertThat(found.getLanguage1(), is(Language.ENGLISH));
+        assertThat(found.getLanguage1Level(), is(LanguageLevel.E));
+        assertThat(found.getLanguage1Operator(), is(nullValue()));
+        assertThat(found.getLanguage2(), is(nullValue()));
+        assertThat(found.getLanguage2Level(), is(nullValue()));
+        assertThat(found.getLanguage2Operator(), is(nullValue()));
+        assertThat(found.getLanguage3(), is(nullValue()));
+        assertThat(found.getLanguage3Level(), is(nullValue()));
+    }
+
+    /**
+     * Simple test to verify that Offers are corrected by the IWS, so invalid
+     * Language information is no longer presented.
+     */
+    @Test
+    public void testLanguage3Missing() {
+        final Offer offer = TestData.prepareMinimalOffer(PL_YEAR + "-LANG03", "Language Employer");
+        offer.setLanguage1Operator(LanguageOperator.A);
+        offer.setLanguage2(Language.BELARUSIAN);
+        offer.setLanguage2Level(LanguageLevel.E);
+        offer.setLanguage2Operator(LanguageOperator.A);
+        offer.setLanguage3(null);
+        offer.setLanguage3Level(LanguageLevel.E);
+
+        final ProcessOfferRequest request = new ProcessOfferRequest(offer);
+        final OfferResponse response = exchange.processOffer(token, request);
+        assertThat(response.getMessage(), is(IWSConstants.SUCCESS));
+        final Offer saved = response.getOffer();
+        assertThat(saved.getLanguage1(), is(Language.ENGLISH));
+        assertThat(saved.getLanguage1Level(), is(LanguageLevel.E));
+        assertThat(saved.getLanguage1Operator(), is(LanguageOperator.A));
+        assertThat(saved.getLanguage2(), is(Language.BELARUSIAN));
+        assertThat(saved.getLanguage2Level(), is(LanguageLevel.E));
+        assertThat(saved.getLanguage2Operator(), is(nullValue()));
+        assertThat(saved.getLanguage3(), is(nullValue()));
+        assertThat(saved.getLanguage3Level(), is(nullValue()));
+
+        final FetchOffersRequest fetchRequest = new FetchOffersRequest();
+        final List<String> offerIds = new ArrayList<>();
+        offerIds.add(offer.getRefNo());;
+        fetchRequest.setIdentifiers(offerIds);
+        fetchRequest.setFetchType(FetchType.DOMESTIC);
+        final FetchOffersResponse fetchResponse = exchange.fetchOffers(token, fetchRequest);
+        assertThat(fetchResponse.getMessage(), is(IWSConstants.SUCCESS));
+        assertThat(fetchResponse.getOffers().size(), is(1));
+        final Offer found = fetchResponse.getOffers().get(0);
+        assertThat(found.getLanguage1(), is(Language.ENGLISH));
+        assertThat(found.getLanguage1Level(), is(LanguageLevel.E));
+        assertThat(found.getLanguage1Operator(), is(LanguageOperator.A));
+        assertThat(found.getLanguage2(), is(Language.BELARUSIAN));
+        assertThat(found.getLanguage2Level(), is(LanguageLevel.E));
+        assertThat(found.getLanguage2Operator(), is(nullValue()));
+        assertThat(found.getLanguage3(), is(nullValue()));
+        assertThat(found.getLanguage3Level(), is(nullValue()));
     }
 
     private static Offer findOfferFromResponse(final String refno, final FetchOffersResponse response) {

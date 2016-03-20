@@ -10,7 +10,56 @@
 insert into versions (db_version, iws_version) values (9, '1.2.0');
 
 -- =============================================================================
--- Resolving the WorkType issue for Offers
+-- Issue #18: Resolving Language & Language Level information
+-- =============================================================================
+-- There is a problem with some of the Language information for Offers in the
+-- Database, below is the example of Offers where the information is set for the
+-- third but not second, which must be corrected:
+-- iws=> select ref_no, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level from offers where language_2 is null and language_3 is not null;
+--      ref_no     | language_1 | language_1_level | language_1_op | language_2 | language_2_level | language_2_op | language_3 | language_3_level
+-- ----------------+------------+------------------+---------------+------------+------------------+---------------+------------+------------------
+--  SI-2010-A00001 | ENGLISH    | E                | A             |            | F                | A             | ENGLISH    | F
+--  CZ-2010-A00085 | ENGLISH    | G                | O             |            | F                | A             | ENGLISH    | E
+--  CZ-2011-A00027 | ENGLISH    | G                | O             |            | F                | A             | ENGLISH    | E
+--  KZ-2009-A00001 | ENGLISH    | E                | A             |            | G                | A             | ENGLISH    | F
+--  KZ-2014-A00143 | ENGLISH    | G                | A             |            | F                | A             | ENGLISH    | F
+--  TN-2014-A00625 | ENGLISH    | G                | A             |            |                  | A             | ENGLISH    | G
+--  DE-2012-A03544 | ENGLISH    | G                | A             |            | G                | O             | ENGLISH    | G
+--  DE-2012-A03545 | ENGLISH    | G                | A             |            | G                | O             | ENGLISH    | G
+--  SI-2010-A00016 | ENGLISH    | E                | A             |            | F                | A             | ENGLISH    | E
+--  CZ-2013-A00283 | ENGLISH    | G                | A             |            |                  | A             | ENGLISH    | G
+--  SI-2010-A00015 | ENGLISH    | E                | A             |            | F                | A             | ENGLISH    | E
+--  CZ-2010-A00060 | ENGLISH    | G                | O             |            | F                | A             | ENGLISH    | G
+--  CZ-2010-A00108 | ENGLISH    | G                | A             |            | F                | A             | ENGLISH    | E
+--  CZ-2011-A00097 | ENGLISH    | G                | O             |            | F                | A             | ENGLISH    | G
+--  CZ-2011-A00084 | ENGLISH    | G                | O             |            | F                | A             | ENGLISH    | F
+--  CZ-2012-A00189 | ENGLISH    | G                | O             |            | F                | A             | ENGLISH    | E
+update offers set
+  language_1_op = null,
+  language_2 = null,
+  language_2_level = null,
+  language_2_op = null,
+  language_3 = null,
+  language_3_level = null
+where language_2 is null and language_3 is not null;
+update offers set language_1_level = 'E' where ref_no in ('CZ-2010-A00085', 'CZ-2011-A00027', 'CZ-2010-A00108', 'CZ-2012-A00189');
+
+-- Now to correct the general errors, according to the database (2016-02-29),
+-- we have around 25.000 Offers where the Language 2 & 3 flags have been set
+-- but the Language is missing:
+-- iws=> select count(id) from offers where language_2_level is not null and language_2 is null;
+-- => 24877
+-- iws=> select count(id) from offers where language_3_level is not null and language_3 is null;
+-- => 25239
+update offers set language_1_op = null, language_2_level = null where language_2 is null;
+update offers set language_2_op = null, language_3_level = null where language_3 is null;
+
+-- With the above corrections, the data in the database should no longer contain
+-- invalid information.
+-- =============================================================================
+
+-- =============================================================================
+-- Issue #19: Resolving the WorkType issue for Offers
 -- =============================================================================
 -- The WorkType field for Offers was deliberately not enforced for Offers, as it
 -- was not correctly handled in IW4. However, it has to be mandatory, as it

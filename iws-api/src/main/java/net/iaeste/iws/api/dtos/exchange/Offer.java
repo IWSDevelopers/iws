@@ -536,7 +536,16 @@ public final class Offer extends AbstractVerification {
         return new DatePeriod(unavailable);
     }
 
+    /**
+     * Sets the primary Language, which is mandatory. If not set or set to an
+     * invalid value, then the method will throw an
+     * {@code IllegalArgumentException}.
+     *
+     * @param language1 The primary Language required for this Offer
+     * @throws IllegalArgumentException if set to an undefined value
+     */
     public void setLanguage1(final Language language1) {
+        ensureNotNull("language1", language1);
         this.language1 = language1;
     }
 
@@ -544,7 +553,16 @@ public final class Offer extends AbstractVerification {
         return language1;
     }
 
+    /**
+     * Sets the Language Level for the primary Language, as it must be present.
+     * If not set or set to an invalid value, the method will throw an
+     * {@code IllegalArgumentException}.
+     *
+     * @param language1Level The Language Level for the primary Language
+     * @throws IllegalArgumentException if set to an undefined value
+     */
     public void setLanguage1Level(final LanguageLevel language1Level) {
+        ensureNotNull("language1Level", language1Level);
         this.language1Level = language1Level;
     }
 

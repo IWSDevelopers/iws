@@ -27,9 +27,12 @@ import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.Address;
 import net.iaeste.iws.api.dtos.File;
 import net.iaeste.iws.api.dtos.Person;
+import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.MailReply;
 import net.iaeste.iws.api.enums.StorageType;
+import net.iaeste.iws.api.enums.exchange.LanguageLevel;
+import net.iaeste.iws.api.enums.exchange.LanguageOperator;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.common.exceptions.AuthorizationException;
@@ -346,6 +349,79 @@ public class CommonService<T extends BasicDao> {
         }
 
         return entity;
+    }
+
+    // =========================================================================
+    // Common Offer Methods
+    // =========================================================================
+
+    /**
+     * <p>Some of the Offers in the database have Language information set,
+     * which makes no sense, like the LanguageLevel although the Language is
+     * missing. The goal of this method is simply to take the Offer and clean
+     * it up. See GitHub
+     * <a href="https://github.com/IWSDevelopers/iws/issues/18">Issue #18</a>
+     * for more details.</p>
+     *
+     * @param originalOffer Offer to Cleanup
+     * @return Cleaned Offer
+     */
+    public static Offer cleanOfferLanguage(final Offer originalOffer) {
+        final Offer offer = new Offer(originalOffer);
+
+        // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+        // Part 1: Removing data that makes no sense:
+        // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+        // If the language2 is missing, then language3 cannot be set and neither
+        // can any of the other fields.
+        if (offer.getLanguage2() == null) {
+            offer.setLanguage1Operator(null);
+            offer.setLanguage2Level(null);
+            offer.setLanguage2Operator(null);
+            offer.setLanguage3(null);
+            offer.setLanguage3Level(null);
+        }
+
+        // If the language3 is missing, then the Language Level cannot be set
+        if (offer.getLanguage3() == null) {
+            offer.setLanguage2Operator(null);
+            offer.setLanguage3Level(null);
+        }
+
+        // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+        // Part 2: Filling missing data to complete Offer:
+        // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+        // If the second Language is present, but the Language Operator is not,
+        // then we have to define it - by default we're assuming that both are
+        // required.
+        if ((offer.getLanguage2() != null) && (offer.getLanguage1Operator() == null)) {
+            offer.setLanguage1Operator(LanguageOperator.A);
+        }
+
+        // If the third Language is present, but the Language Operator is not,
+        // then we have to define it - by default we're assuming that both are
+        // required.
+        if ((offer.getLanguage3() != null) && (offer.getLanguage2Operator() == null)) {
+            offer.setLanguage2Operator(LanguageOperator.A);
+        }
+
+        // If the second Language is set, but the Language Level is not, then
+        // we have to set it to a value, we're assuming that "Good" will
+        // suffice.
+        if ((offer.getLanguage2() != null) && (offer.getLanguage2Level() == null)) {
+            offer.setLanguage2Level(LanguageLevel.G);
+        }
+
+        // If the third Language is set, but the Language Level is not, then
+        // we have to set it to a value, we're assuming that "Good" will
+        // suffice.
+        if ((offer.getLanguage3() != null) && (offer.getLanguage3Level() == null)) {
+            offer.setLanguage3Level(LanguageLevel.G);
+        }
+
+        return offer;
     }
 
     // =========================================================================

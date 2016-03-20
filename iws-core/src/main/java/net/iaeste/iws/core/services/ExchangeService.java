@@ -211,7 +211,7 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
         offer.setNsFirstname(nationalSecretary.getFirstname());
         offer.setNsLastname(nationalSecretary.getLastname());
 
-        return new OfferResponse(offer);
+        return new OfferResponse(cleanOfferLanguage(offer));
     }
 
     /**

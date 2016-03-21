@@ -31,7 +31,7 @@ import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.enums.Privacy;
 import net.iaeste.iws.api.enums.UserStatus;
 import net.iaeste.iws.api.exceptions.IWSException;
-import net.iaeste.iws.api.exceptions.VerificationException;
+import net.iaeste.iws.common.exceptions.VerificationException;
 import net.iaeste.iws.api.requests.AccountNameRequest;
 import net.iaeste.iws.api.requests.CreateUserRequest;
 import net.iaeste.iws.api.requests.FetchUserRequest;

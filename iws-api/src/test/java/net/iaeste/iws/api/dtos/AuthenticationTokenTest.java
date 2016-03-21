@@ -22,7 +22,6 @@ import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
 
 import com.gargoylesoftware.base.testing.EqualsTester;
-import net.iaeste.iws.api.exceptions.VerificationException;
 import org.junit.Test;
 
 /**
@@ -40,7 +39,6 @@ public final class AuthenticationTokenTest {
         final AuthenticationToken token = new AuthenticationToken();
         token.setToken(key);
         token.setGroupId(groupId);
-        token.verify();
 
         assertThat(token.getToken(), is(key));
         assertThat(token.getGroupId(), is(groupId));
@@ -64,7 +62,6 @@ public final class AuthenticationTokenTest {
         final AuthenticationToken diff2 = new AuthenticationToken(diffValue, groupId);
         same.setToken(mainValue);
 
-        result.verify();
         assertThat(result, is(same));
         assertThat(result, is(not(diff1)));
         assertThat(result.getToken(), is(mainValue));
@@ -77,12 +74,6 @@ public final class AuthenticationTokenTest {
 
         new EqualsTester(result, same, diff1, null);
         new EqualsTester(result, same, diff2, null);
-    }
-
-    @Test(expected = VerificationException.class)
-    public void testEmptyConstructor() {
-        final AuthenticationToken token = new AuthenticationToken();
-        token.verify();
     }
 
     @Test

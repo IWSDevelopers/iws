@@ -35,19 +35,6 @@ public final class SerializationException extends IWSException {
 
     /**
      * Default Constructor, for the case where an error condition has arisen,
-     * and the only information available is the type of error, and a message
-     * describing the error.
-     *
-     * @param message  Specific message, regarding the problem
-     * @see IWSException
-     * @see IWSErrors#VERIFICATION_ERROR
-     */
-    public SerializationException(final String message) {
-        super(IWSErrors.DATA_SERIALIZATION_ERROR, message);
-    }
-
-    /**
-     * Default Constructor, for the case where an error condition has arisen,
      * caused by an underlying Exception. In this case, this Exception serves
      * as a wrapper around the underlying Exception, to avoid that higher
      * layers has to deal with more specific problems.

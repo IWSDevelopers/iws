@@ -21,7 +21,7 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.enums.Permission;
-import net.iaeste.iws.api.exceptions.VerificationException;
+import net.iaeste.iws.common.exceptions.VerificationException;
 import net.iaeste.iws.api.util.Verifiable;
 import net.iaeste.iws.common.utils.HashcodeGenerator;
 import net.iaeste.iws.core.exceptions.SessionException;
@@ -34,6 +34,8 @@ import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.exceptions.PersistenceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Map;
 
 /**
  * Common Controller, handles the default checks.
@@ -171,9 +173,12 @@ class CommonController {
             throw new VerificationException(text + NULL_REQUEST);
         }
 
-        verifiable.verify();
-    }
+        final Map<String, String> validationResult = verifiable.validate();
 
+        if (!validationResult.isEmpty()) {
+            throw new VerificationException("Validation failed: " + validationResult);
+        }
+    }
     /**
      * Internal method to verify the validity of a given e-mail address. If the
      * address does not match what the IWS allows, then a

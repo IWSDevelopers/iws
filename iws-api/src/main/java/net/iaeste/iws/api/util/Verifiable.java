@@ -17,8 +17,6 @@
  */
 package net.iaeste.iws.api.util;
 
-import net.iaeste.iws.api.exceptions.VerificationException;
-
 import java.io.Serializable;
 import java.util.Map;
 
@@ -32,15 +30,6 @@ import java.util.Map;
  * @since   IWS 1.0
  */
 public interface Verifiable extends Serializable {
-
-    /**
-     * Checks the data in the object, to see if they are valid, i.e. sufficient
-     * to complete a request. If not valid, then a {@code VerificationException}
-     * is thrown.
-     *
-     * @throws VerificationException if the data is insufficient or invalid
-     */
-    void verify();
 
     /**
      * <p>Validates that the required information is there for the processing to

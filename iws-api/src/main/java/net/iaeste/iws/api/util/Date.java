@@ -21,7 +21,6 @@ import static net.iaeste.iws.api.constants.IWSConstants.DATE_FORMAT;
 import static net.iaeste.iws.api.constants.IWSConstants.DEFAULT_LOCALE;
 
 import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.api.exceptions.VerificationException;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -255,7 +254,7 @@ public final class Date implements Serializable, Comparable<Date> {
         try {
             return formatter.parse(date);
         } catch (ParseException e) {
-            throw new VerificationException(e);
+            throw new IllegalArgumentException(e);
         }
     }
 }

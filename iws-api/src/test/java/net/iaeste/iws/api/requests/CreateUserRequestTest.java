@@ -39,7 +39,6 @@ public final class CreateUserRequestTest {
         final String lastname = "abl";
         final String password = "abc123";
         final CreateUserRequest request = new CreateUserRequest(username, password, firstname, lastname);
-        request.verify();
 
         assertThat(request.getUsername(), is(username));
         assertThat(request.getPassword(), is(password));
@@ -65,7 +64,6 @@ public final class CreateUserRequestTest {
         final String firstname = "bla";
         final String lastname = "abl";
         final CreateUserRequest request = new CreateUserRequest(username, firstname, lastname);
-        request.verify();
 
         assertThat(request.getUsername(), is(username));
         assertThat(request.getPassword(), is(nullValue()));

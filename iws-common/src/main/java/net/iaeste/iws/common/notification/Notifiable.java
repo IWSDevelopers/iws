@@ -17,7 +17,8 @@
  */
 package net.iaeste.iws.common.notification;
 
-import java.util.Map;
+import java.io.Serializable;
+import java.util.EnumMap;
 
 /**
  * Please note, that the current information here is very much incomplete. A
@@ -31,7 +32,7 @@ import java.util.Map;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
-public interface Notifiable {
+public interface Notifiable extends Serializable {
 
     /**
      * Notifications are templates that needs processing before being sent of.
@@ -43,5 +44,5 @@ public interface Notifiable {
      * @param type Notification Type
      * @return Map with required fields for the given Notification Type
      */
-    Map<NotificationField, String> prepareNotifiableFields(NotificationType type);
+    EnumMap<NotificationField, String> prepareNotifiableFields(NotificationType type);
 }

@@ -281,8 +281,9 @@ public final class ExchangeMapper extends CommonMapper {
         if (api != null) {
             ws = new net.iaeste.iws.ws.ProcessPublishingGroupRequest();
 
-            ws.setDeletePublishingGroup(api.getDeletePublishingGroup());
             ws.setPublishingGroup(map(api.getPublishingGroup()));
+            ws.setPublishingGroupId(api.getPublishingGroupId());
+            ws.setAction(map(api.getAction()));
         }
 
         return ws;

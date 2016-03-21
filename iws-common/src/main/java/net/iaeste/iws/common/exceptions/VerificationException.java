@@ -15,10 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.iaeste.iws.api.exceptions;
+package net.iaeste.iws.common.exceptions;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
+import net.iaeste.iws.api.exceptions.IWSException;
 
 /**
  * Objects, which are used as input parameters, all implements the Verifiable

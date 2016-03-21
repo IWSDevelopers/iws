@@ -20,7 +20,6 @@ package net.iaeste.iws.api.util;
 import static net.iaeste.iws.api.constants.exchange.IWSExchangeConstants.REFNO_PATTERN;
 
 import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.api.exceptions.VerificationException;
 
 import java.util.Calendar;
 import java.util.Collection;
@@ -70,18 +69,6 @@ public abstract class AbstractVerification implements Verifiable {
     // Our internal constants to verify the Id
     private static final String UUID_FORMAT = "[\\da-z]{8}-[\\da-z]{4}-[\\da-z]{4}-[\\da-z]{4}-[\\da-z]{12}";
     private static final Pattern UUID_PATTERN = Pattern.compile(UUID_FORMAT);
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public final void verify() throws VerificationException {
-        final Map<String, String> validationResult = validate();
-
-        if (!validationResult.isEmpty()) {
-            throw new VerificationException("Validation failed: " + validationResult);
-        }
-    }
 
     /**
      * To ensure that the data is not causing problems when being accessed via

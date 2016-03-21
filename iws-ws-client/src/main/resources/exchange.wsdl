@@ -2,7 +2,7 @@
   <wsdl:types>
     <wsdl:documentation>
         Service: IWS Exchange Service
-        Version: 1.2.20160320
+        Version: 1.2.20160321
         Owner:   Kim Jensen
     </wsdl:documentation>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://ws.iws.iaeste.net/" targetNamespace="http://ws.iws.iaeste.net/" version="1.0">
@@ -445,8 +445,9 @@
     <xs:complexContent>
       <xs:extension base="tns:abstractVerification">
         <xs:sequence>
-          <xs:element name="publishingGroup" type="tns:publishingGroup"/>
-          <xs:element name="deletePublishingGroup" type="xs:boolean"/>
+          <xs:element name="publishingGroup" nillable="true" type="tns:publishingGroup"/>
+          <xs:element name="publishingGroupId" nillable="true" type="xs:string"/>
+          <xs:element name="action" type="tns:action"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -1179,6 +1180,21 @@
     <xs:restriction base="xs:string">
       <xs:enumeration value="DOMESTIC"/>
       <xs:enumeration value="SHARED"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="action">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="CREATE"/>
+      <xs:enumeration value="UPDATE"/>
+      <xs:enumeration value="UPGRADE"/>
+      <xs:enumeration value="PROCESS"/>
+      <xs:enumeration value="MOVE"/>
+      <xs:enumeration value="CHANGE_NS"/>
+      <xs:enumeration value="MERGE"/>
+      <xs:enumeration value="ACTIVATE"/>
+      <xs:enumeration value="SUSPEND"/>
+      <xs:enumeration value="DELETE"/>
     </xs:restriction>
   </xs:simpleType>
 

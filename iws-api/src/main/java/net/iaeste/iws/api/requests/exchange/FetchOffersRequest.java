@@ -21,7 +21,6 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.FetchType;
 import net.iaeste.iws.api.enums.SortingField;
 import net.iaeste.iws.api.enums.exchange.OfferState;
-import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.api.util.AbstractPaginatable;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -162,11 +161,12 @@ public final class FetchOffersRequest extends AbstractPaginatable {
      * Exchange year counts.</p>
      *
      * <p>This value is mandatory. If set to null, then a
-     * {$code VerificationException} is thrown.</p>
+     * {$code IllegalArgumentException} is thrown.</p>
      *
      * @param retrieveCurrentAndNextExchangeYear True if both shall be retrieved
+     * @throws IllegalArgumentException if the value is undefined, i.e. null
      */
-    public void setRetrieveCurrentAndNextExchangeYear(final boolean retrieveCurrentAndNextExchangeYear) throws VerificationException {
+    public void setRetrieveCurrentAndNextExchangeYear(final boolean retrieveCurrentAndNextExchangeYear) {
         ensureNotNull("retrieveCurrentAndNextExchangeYear", retrieveCurrentAndNextExchangeYear);
         this.retrieveCurrentAndNextExchangeYear = retrieveCurrentAndNextExchangeYear;
     }

@@ -39,7 +39,6 @@ public final class FetchCountryRequestTest {
         final Membership membership = Membership.FULL_MEMBER;
 
         final FetchCountryRequest request = new FetchCountryRequest(membership);
-        request.verify();
 
         assertThat(request.getCountryIds(), is(nullValue()));
         assertThat(request.getMembership(), is(membership));
@@ -52,7 +51,6 @@ public final class FetchCountryRequestTest {
         countryIds.add("FR");
 
         final FetchCountryRequest request = new FetchCountryRequest(countryIds);
-        request.verify();
 
         assertThat(request.getCountryIds(), is(countryIds));
         assertThat(request.getMembership(), is(nullValue()));

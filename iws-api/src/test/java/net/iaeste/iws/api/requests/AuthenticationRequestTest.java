@@ -22,7 +22,6 @@ import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
 
 import com.gargoylesoftware.base.testing.EqualsTester;
-import net.iaeste.iws.api.exceptions.VerificationException;
 import org.junit.Test;
 
 /**
@@ -48,7 +47,6 @@ public final class AuthenticationRequestTest {
         same.setPassword(password);
 
         // Assertion Checks
-        result.verify();
         assertThat(result, is(same));
         assertThat(result, is(not(diff)));
         assertThat(result.getUsername(), is(username));
@@ -61,41 +59,5 @@ public final class AuthenticationRequestTest {
         assertThat(result.hashCode(), is(not(diff.hashCode())));
 
         new EqualsTester(result, same, diff, null);
-    }
-
-    @Test(expected = VerificationException.class)
-    public void testVerificationEmptyPassword() {
-        final AuthenticationRequest request = new AuthenticationRequest("username", "");
-        request.verify();
-    }
-
-    @Test(expected = VerificationException.class)
-    public void testVerificationNullPassword() {
-        final AuthenticationRequest request = new AuthenticationRequest("username", null);
-        request.verify();
-    }
-
-    @Test(expected = VerificationException.class)
-    public void testVerificationEmptyUsername() {
-        final AuthenticationRequest request = new AuthenticationRequest("", "password");
-        request.verify();
-    }
-
-    @Test(expected = VerificationException.class)
-    public void testVerificationNullUserName() {
-        final AuthenticationRequest request = new AuthenticationRequest(null, "");
-        request.verify();
-    }
-
-    @Test(expected = VerificationException.class)
-    public void testVerificationEmpty() {
-        final AuthenticationRequest request = new AuthenticationRequest("", "");
-        request.verify();
-    }
-
-    @Test(expected = VerificationException.class)
-    public void testVerificationnull() {
-        final AuthenticationRequest request = new AuthenticationRequest(null, null);
-        request.verify();
     }
 }

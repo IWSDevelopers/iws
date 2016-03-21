@@ -103,7 +103,7 @@ public final class CommitteeRequest extends AbstractVerification implements Acti
      */
     @Override
     public Set<Action> allowedActions() {
-        return ALLOWED;
+        return immutableSet(ALLOWED);
     }
 
     /**

@@ -19,7 +19,6 @@ package net.iaeste.iws.api.util;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.SortingField;
-import net.iaeste.iws.api.exceptions.VerificationException;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -46,14 +45,14 @@ public abstract class AbstractPaginatable extends AbstractVerification {
     /**
      * Sets the Current Page Number to be retrieved. If the Page Number is not
      * allowed, i.e. invalid - then the method throws a
-     * {@code VerificationException}.
+     * {@code IllegalArgumentException}.
      *
      * @param pageNumber Current Page Number
      * @see Paginatable#FIRST_PAGE
      */
     public final void setPageNumber(final int pageNumber) {
         if (pageNumber < Paginatable.FIRST_PAGE) {
-            throw new VerificationException("Invalid Page number.");
+            throw new IllegalArgumentException("Invalid Page number.");
         }
 
         page.setPageNumber(pageNumber);
@@ -62,14 +61,14 @@ public abstract class AbstractPaginatable extends AbstractVerification {
     /**
      * Sets the Current Page Size, meaning the (maximum) number of records to
      * be retrieved from the IWS. If the given Page Size is outside of the
-     * allowed range, then a {@code VerificationException} is thrown.
+     * allowed range, then a {@code IllegalArgumentException} is thrown.
      *
      * @param pageSize Current Page Size
      * @see Paginatable#MAX_PAGE_SIZE
      */
     public final void setPageSize(final int pageSize) {
         if ((pageSize <= 0) || (pageSize > Paginatable.MAX_PAGE_SIZE)) {
-            throw new VerificationException("Invalid Page Size.");
+            throw new IllegalArgumentException("Invalid Page Size.");
         }
 
         page.setPageSize(pageSize);

@@ -60,7 +60,7 @@ public final class Serializer {
      * @throws SerializationException if unable to write the data
      */
     public static <T extends Serializable> byte[] serialize(final T data) {
-        final byte[] result;
+        byte[] result = null;
 
         if (data != null) {
             try (final ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
@@ -74,8 +74,6 @@ public final class Serializer {
             } catch (IOException e) {
                 throw new SerializationException(e);
             }
-        } else {
-            result = null;
         }
 
         return result;
@@ -103,7 +101,7 @@ public final class Serializer {
      * @throws SerializationException if unable to read the data
      */
     public static <T extends Serializable> T deserialize(final byte[] bytes) {
-        final T result;
+        T result = null;
 
         if (bytes != null) {
             try (final ByteArrayInputStream byteStream = new ByteArrayInputStream(bytes);
@@ -114,8 +112,6 @@ public final class Serializer {
             } catch (IOException | ClassNotFoundException e) {
                 throw new SerializationException(e);
             }
-        } else  {
-            result = null;
         }
 
         return result;

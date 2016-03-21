@@ -51,11 +51,6 @@ public final class PublishingGroupTest {
         empty.setName(name);
         empty.setGroups(groups);
 
-        // Verify that the Objects are correct
-        unknown.verify();
-        filled.verify();
-        empty.verify();
-
         // Assertion checks against the fields
         assertThat(unknown.getName(), is(name));
         assertThat(unknown.getGroups(), is(groups));

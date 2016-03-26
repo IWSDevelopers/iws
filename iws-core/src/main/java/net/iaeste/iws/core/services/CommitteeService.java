@@ -60,6 +60,7 @@ import net.iaeste.iws.persistence.exceptions.PersistenceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -187,6 +188,7 @@ public final class CommitteeService extends CommonService<CommitteeDao> {
                 // we'll create the first new one for it
                 nsStaff = doCreateCommittee(authentication, request, country, groupName);
                 country.setMembership(Membership.COOPERATING_INSTITUTION);
+                country.setMemberSince(Calendar.getInstance().get(Calendar.YEAR));
                 dao.persist(authentication, country);
             }
         } else {

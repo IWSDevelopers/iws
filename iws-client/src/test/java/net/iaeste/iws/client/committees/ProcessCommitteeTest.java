@@ -50,6 +50,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
 
@@ -107,6 +108,8 @@ public final class ProcessCommitteeTest extends AbstractTest {
         // First create a new Committee and verify it was done correctly
         final CommitteeResponse createResponse = createCommittee("AA", "Donald", "Duck", "DD");
         assertThat(createResponse.isOk(), is(true));
+        assertThat(createResponse.getCommittee().getGroup().getCountry().getMembership(), is(Membership.COOPERATING_INSTITUTION));
+        assertThat(createResponse.getCommittee().getGroup().getCountry().getMemberSince(), is(Calendar.getInstance().get(Calendar.YEAR)));
 
         // Now, we're repeating the same request, expecting an error!
         final Fallible failedCreateResponse = createCommittee("AA", "Donald", "Duck", "DD");

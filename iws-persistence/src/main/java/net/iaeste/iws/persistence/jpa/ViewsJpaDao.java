@@ -18,6 +18,7 @@
 package net.iaeste.iws.persistence.jpa;
 
 import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.api.dtos.exchange.Employer;
 import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.api.util.Paginatable;
@@ -196,6 +197,26 @@ public final class ViewsJpaDao extends BasicJpaDao implements ViewsDao {
         query.setParameter("parentId", groupId);
 
         return fetchList(query, page);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<String> findOfferRefNoForEmployers(final List<Employer> employers) {
+        final List<String> externalEmployerIds = new ArrayList<>(employers.size());
+        for (final Employer employer : employers) {
+            externalEmployerIds.add(employer.getEmployerId());
+        }
+
+        final String jql =
+                "select o.refNo " +
+                "from OfferEntity o " +
+                "where o.employer.externalId in (:eoids)";
+        final Query query = entityManager.createQuery(jql);
+        query.setParameter("eoids", externalEmployerIds);
+
+        return query.getResultList();
     }
 
     // =========================================================================

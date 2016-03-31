@@ -136,12 +136,17 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
     }
 
     public FetchEmployerResponse fetchEmployers(final Authentication authentication, final FetchEmployerRequest request) {
+        final FetchEmployerResponse response = new FetchEmployerResponse();
         final Long groupId = authentication.getGroup().getId();
         final List<Employer> list;
 
         switch (request.getFetchType()) {
             case ID:
                 list = findEmployerById(groupId, request.getFetchField());
+                if (!list.isEmpty() && request.getFetchOfferReferenceNumbers()) {
+                    final List<String> refnos = viewsDao.findOfferRefNoForEmployers(list);
+                    response.setOfferRefNos(refnos);
+               }
                 break;
             case NAME:
                 list = findEmployerByName(groupId, request.getPagingInformation(), request.getFetchField());
@@ -149,8 +154,9 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
             default:
                 list = findAllEmployers(groupId, request.getPagingInformation());
         }
+        response.setEmployers(list);
 
-        return new FetchEmployerResponse(list);
+        return response;
     }
 
     private List<Employer> findEmployerById(final Long groupId, final String externalId) {

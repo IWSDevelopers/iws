@@ -21,11 +21,13 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.dtos.exchange.Employer;
 import net.iaeste.iws.api.responses.FallibleResponse;
+import net.iaeste.iws.api.util.AbstractVerification;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,14 +36,14 @@ import java.util.List;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "fetchEmployerResponse", propOrder = { "employers" })
+@XmlType(name = "fetchEmployerResponse", propOrder = { "employers", "offerRefNos" })
 public final class FetchEmployerResponse extends FallibleResponse {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    @XmlElement(required = true, nillable = true)
-    private List<Employer> employers = null;
+    @XmlElement(required = true) private final List<Employer> employers = new ArrayList<>();
+    @XmlElement(required = true) private final List<String> offerRefNos = new ArrayList<>(0);
 
     // =========================================================================
     // Object Constructors
@@ -53,16 +55,6 @@ public final class FetchEmployerResponse extends FallibleResponse {
      */
     public FetchEmployerResponse() {
         // Required for WebServices to work. Comment added to please Sonar.
-    }
-
-    /**
-     * Default Constructor, for creating new instances with the list of
-     * Employers.
-     *
-     * @param employers List of Employers found
-     */
-    public FetchEmployerResponse(final List<Employer> employers) {
-        this.employers = employers;
     }
 
     /**
@@ -80,10 +72,18 @@ public final class FetchEmployerResponse extends FallibleResponse {
     // =========================================================================
 
     public void setEmployers(final List<Employer> employers) {
-        this.employers = employers;
+        this.employers.addAll(employers);
     }
 
     public List<Employer> getEmployers() {
-        return employers;
+        return AbstractVerification.immutableList(employers);
+    }
+
+    public void setOfferRefNos(final List<String> offerRefNos) {
+        this.offerRefNos.addAll(offerRefNos);
+    }
+
+    public List<String> getOfferRefNos() {
+        return AbstractVerification.immutableList(offerRefNos);
     }
 }

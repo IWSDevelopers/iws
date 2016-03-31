@@ -17,6 +17,7 @@
  */
 package net.iaeste.iws.persistence;
 
+import net.iaeste.iws.api.dtos.exchange.Employer;
 import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.api.util.Paginatable;
 import net.iaeste.iws.persistence.entities.GroupEntity;
@@ -63,4 +64,6 @@ public interface ViewsDao {
     List<OfferSharedToGroupView> findSharedToGroup(Long parentId, Integer exchangeYear, List<String> externalOfferIds);
 
     List<StudentView> findStudentsForMemberGroup(Long groupId, Paginatable page);
+
+    List<String> findOfferRefNoForEmployers(List<Employer> employers);
 }

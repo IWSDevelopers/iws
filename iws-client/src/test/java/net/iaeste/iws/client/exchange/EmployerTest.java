@@ -17,24 +17,30 @@
  */
 package net.iaeste.iws.client.exchange;
 
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
 
 import net.iaeste.iws.api.Exchange;
+import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.Address;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.dtos.Country;
 import net.iaeste.iws.api.dtos.TestData;
 import net.iaeste.iws.api.dtos.exchange.Employer;
+import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.requests.FetchCountryRequest;
 import net.iaeste.iws.api.requests.exchange.FetchEmployerRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessEmployerRequest;
+import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
 import net.iaeste.iws.api.responses.FetchCountryResponse;
 import net.iaeste.iws.api.responses.exchange.EmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchEmployerResponse;
+import net.iaeste.iws.api.responses.exchange.OfferResponse;
+import net.iaeste.iws.api.util.AbstractVerification;
 import net.iaeste.iws.client.AbstractTest;
 import net.iaeste.iws.client.ExchangeClient;
 import org.junit.After;
@@ -220,6 +226,27 @@ public final class EmployerTest extends AbstractTest {
         assertThat(response.isOk(), is(false));
         assertThat(response.getError(), is(IWSErrors.OBJECT_IDENTIFICATION_ERROR));
         assertThat(response.getMessage(), is("Processing failed, as this Employer already exist with a different Id than provided."));
+    }
+
+    @Test
+    public void testReadingOfferRefNo() {
+        final Exchange exchange = new ExchangeClient();
+        final String employer = "Vietnam Inc.";
+        final String refno = "VN-" + AbstractVerification.calculateExchangeYear() + "-554331";
+        final Offer offer = TestData.prepareFullOffer(refno, employer);
+        final ProcessOfferRequest offerRequest = new ProcessOfferRequest();
+        offerRequest.setOffer(offer);
+        final OfferResponse offerResponse = exchange.processOffer(token, offerRequest);
+        assertThat(offerResponse.getMessage(), is(IWSConstants.SUCCESS));
+
+        final FetchEmployerRequest request = new FetchEmployerRequest();
+        request.setFetchById(offerResponse.getOffer().getEmployer().getEmployerId());
+        request.setFetchOfferReferenceNumbers(true);
+        final FetchEmployerResponse response = exchange.fetchEmployers(token, request);
+        assertThat(response.getMessage(), is(IWSConstants.SUCCESS));
+        assertThat(response.getEmployers().size(), is(greaterThanOrEqualTo(1)));
+        assertThat(response.getOfferRefNos().size(), is(1));
+        assertThat(response.getOfferRefNos().get(0), is(refno));
     }
 
     // =========================================================================

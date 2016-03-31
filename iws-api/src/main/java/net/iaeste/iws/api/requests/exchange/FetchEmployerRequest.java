@@ -41,7 +41,7 @@ public final class FetchEmployerRequest extends AbstractPaginatable {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    @XmlElement(required = true, nillable = false) private EmployerFetchType type = EmployerFetchType.ALL;
+    @XmlElement(required = true)                   private EmployerFetchType type = EmployerFetchType.ALL;
     @XmlElement(required = true, nillable = true)  private String field = null;
     @XmlElement(required = true, nillable = true)  private Boolean fetchOfferReferenceNumbers = false;
 
@@ -73,9 +73,12 @@ public final class FetchEmployerRequest extends AbstractPaginatable {
     }
 
     /**
-     * If the list of Offer Reference Numbers which is currently using a given
+     * <p>If the list of Offer Reference Numbers which is currently using a given
      * Employer should also be fetched. The result is stored together with the
-     * Employer Object.
+     * Employer Object.</p>
+     *
+     * <p>Note, that fetching the Offer Reference Numbers is only allowed, when
+     * fetching a single Employer.</p>
      *
      * @param fetchOfferReferenceNumbers If Offer Reference Numbers should be fetched
      */
@@ -84,7 +87,7 @@ public final class FetchEmployerRequest extends AbstractPaginatable {
     }
 
     public Boolean getFetchOfferReferenceNumbers() {
-        return fetchOfferReferenceNumbers == null ? false : fetchOfferReferenceNumbers;
+        return (fetchOfferReferenceNumbers == null) ? false : fetchOfferReferenceNumbers;
     }
 
     // =========================================================================

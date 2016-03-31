@@ -2,7 +2,7 @@
   <wsdl:types>
     <wsdl:documentation>
         Service: IWS Exchange Service
-        Version: 1.2.20160321
+        Version: 1.2.20160331
         Owner:   Kim Jensen
     </wsdl:documentation>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://ws.iws.iaeste.net/" targetNamespace="http://ws.iws.iaeste.net/" version="1.0">
@@ -220,7 +220,8 @@
     <xs:complexContent>
       <xs:extension base="tns:fallibleResponse">
         <xs:sequence>
-          <xs:element maxOccurs="unbounded" name="employers" nillable="true" type="tns:employer"/>
+          <xs:element maxOccurs="unbounded" name="employers" type="tns:employer"/>
+          <xs:element maxOccurs="unbounded" name="offerRefNos" type="xs:string"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>

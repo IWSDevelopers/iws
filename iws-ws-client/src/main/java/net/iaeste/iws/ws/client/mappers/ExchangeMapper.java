@@ -165,6 +165,7 @@ public final class ExchangeMapper extends CommonMapper {
                 employers.add(map(employer));
             }
             api.setEmployers(employers);
+            api.setOfferRefNos(mapStringCollection(ws.getOfferRefNos()));
         }
 
         return api;

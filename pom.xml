@@ -152,7 +152,7 @@
                            Parallel supports 'classes', 'methods' or 'both' -->
                     <parallel>none</parallel>
                     <reuseForks>true</reuseForks>
-                    <argLine>-Xmx1024m -XX:MaxPermSize=256m</argLine>
+                    <argLine>-Xmx1024m</argLine>
                     <threadCount>5</threadCount>
                 </configuration>
                 <goals>
@@ -177,7 +177,6 @@
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.7.6.201602180812</version>
-                <!--<version>0.7.5.201505241946</version>-->
                 <configuration>
                     <includes>
                         <include>net.iaeste.iws.*</include>
@@ -289,12 +288,12 @@
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
-                <version>1.7.14</version>
+                <version>1.7.20</version>
             </dependency>
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-simple</artifactId>
-                <version>1.7.14</version>
+                <version>1.7.20</version>
                 <scope>test</scope>
             </dependency>
             <!-- Some of the third-part libraries needed for the Client tests,
@@ -303,7 +302,7 @@
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-log4j12</artifactId>
-                <version>1.7.10</version>
+                <version>1.7.20</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
@@ -313,14 +312,9 @@
                 <scope>test</scope>
             </dependency>
             <dependency>
-                <groupId>org.hibernate.javax.persistence</groupId>
-                <artifactId>hibernate-jpa-2.1-api</artifactId>
-                <version>1.0.0.Final</version>
-            </dependency>
-            <dependency>
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-validator</artifactId>
-                <version>5.2.2.Final</version>
+                <version>5.2.4.Final</version>
             </dependency>
             <dependency>
                 <groupId>org.hibernate</groupId>
@@ -337,69 +331,67 @@
                      causing the problems, we're going to stay with these
                      versions, after all - it is not affecting production
                      code. -->
-                <!--<version>5.0.5.Final</version>-->
+                <!--<version>5.1.0.Final</version>-->
                 <version>4.1.6.Final</version>
             </dependency>
             <dependency>
                 <groupId>org.postgresql</groupId>
                 <artifactId>postgresql</artifactId>
-                <version>9.3-1102-jdbc41</version>
+                <version>9.4.1208.jre7</version>
             </dependency>
             <dependency>
                 <!-- For our in-memory testing, we're using HSQLDB -->
                 <groupId>org.hsqldb</groupId>
                 <artifactId>hsqldb</artifactId>
-                <!-- The IWS Storage functionality requires support for Common
-                     Table Expression, CTE, and HyperSQL is only supporting
-                     this as of version 2.3.3. -->
                 <version>2.3.3</version>
             </dependency>
             <dependency>
                 <groupId>cglib</groupId>
                 <artifactId>cglib</artifactId>
-                <version>2.2.2</version>
+                <version>3.2.1</version>
+                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-context</artifactId>
                 <version>3.2.15.RELEASE</version>
                 <!-- Plese don't upgrade from 3.2.x; it leads to test problems. -->
-                <!--<version>4.2.3.RELEASE</version>-->
+                <!--<version>4.2.5.RELEASE</version>-->
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-beans</artifactId>
                 <version>3.2.15.RELEASE</version>
                 <!-- Plese don't upgrade from 3.2.x; it leads to test problems. -->
-                <!--<version>4.2.3.RELEASE</version>-->
+                <!--<version>4.2.5.RELEASE</version>-->
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-tx</artifactId>
                 <version>3.2.15.RELEASE</version>
                 <!-- Plese don't upgrade from 3.2.x; it leads to test problems. -->
-                <!--<version>4.2.3.RELEASE</version>-->
+                <!--<version>4.2.5.RELEASE</version>-->
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-orm</artifactId>
                 <version>3.2.15.RELEASE</version>
                 <!-- Plese don't upgrade from 3.2.x; it leads to test problems. -->
-                <!--<version>4.2.3.RELEASE</version>-->
+                <!--<version>4.2.5.RELEASE</version>-->
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-jdbc</artifactId>
                 <version>3.2.15.RELEASE</version>
                 <!-- Plese don't upgrade from 3.2.x; it leads to test problems. -->
-                <!--<version>4.2.3.RELEASE</version>-->
+                <!--<version>4.2.5.RELEASE</version>-->
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-test</artifactId>
                 <version>3.2.15.RELEASE</version>
                 <!-- Plese don't upgrade from 3.2.x; it leads to test problems. -->
-                <!--<version>4.2.3.RELEASE</version>-->
+                <!--<version>4.2.5.RELEASE</version>-->
             </dependency>
             <dependency>
                 <groupId>junit</groupId>
@@ -416,12 +408,6 @@
             <dependency>
                 <groupId>org.hamcrest</groupId>
                 <artifactId>hamcrest-library</artifactId>
-                <version>1.3</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.hamcrest</groupId>
-                <artifactId>hamcrest-core</artifactId>
                 <version>1.3</version>
                 <scope>test</scope>
             </dependency>

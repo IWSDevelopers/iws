@@ -363,10 +363,10 @@
                     <param name="direct-deliver" value="false"/>
                 </http-acceptor>
                 <in-vm-acceptor name="in-vm" server-id="0"/>
-                <jms-queue name="iwsEmailQueue" entries="java:/jms/queue/iwsEmailQueue java:jboss/exported/jms/queue/iwsEmailQueue"/>
+                <jms-queue name="iwsEmailQueue" entries="java:/jms/queue/iwsEmailQueue"/>
                 <jms-queue name="ExpiryQueue" entries="java:/jms/queue/ExpiryQueue"/>
                 <jms-queue name="DLQ" entries="java:/jms/queue/DLQ"/>
-                <connection-factory name="iwsQueueConnectionFactory" connectors="in-vm" entries="java:/iwsQueueConnectionFactory java:jboss/exported/jms/factory/iwsQueueConnectionFactory"/>
+                <connection-factory name="iwsQueueConnectionFactory" connectors="in-vm" entries="java:/jms/factory/iwsQueueConnectionFactory"/>
                 <connection-factory name="InVmConnectionFactory" connectors="in-vm" entries="java:/ConnectionFactory"/>
                 <connection-factory name="RemoteConnectionFactory" connectors="http-connector" entries="java:jboss/exported/jms/RemoteConnectionFactory"/>
                 <pooled-connection-factory name="activemq-ra" transaction="xa" connectors="in-vm" entries="java:/JmsXA java:jboss/DefaultJMSConnectionFactory"/>

@@ -46,7 +46,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -112,9 +111,7 @@ public final class OfferEntity extends AbstractUpdateable<OfferEntity> implement
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    @Id
-    @SequenceGenerator(name = "pk_sequence", sequenceName = "offer_sequence")
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "pk_sequence")
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true, nullable = false, updatable = false)
     private Long id = null;
 

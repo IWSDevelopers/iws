@@ -20,9 +20,9 @@ package net.iaeste.iws.persistence.entities;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.Currency;
 import net.iaeste.iws.api.enums.Membership;
-import net.iaeste.iws.persistence.monitoring.Monitored;
 import net.iaeste.iws.api.enums.MonitoringLevel;
 import net.iaeste.iws.persistence.Externable;
+import net.iaeste.iws.persistence.monitoring.Monitored;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -33,7 +33,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -68,9 +67,7 @@ public final class CountryEntity extends AbstractUpdateable<CountryEntity> imple
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    @Id
-    @SequenceGenerator(name = "pk_sequence", sequenceName = "country_sequence")
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "pk_sequence")
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true, nullable = false, updatable = false)
     private Long id = null;
 

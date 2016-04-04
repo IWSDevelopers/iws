@@ -10,6 +10,25 @@
 insert into versions (db_version, iws_version) values (9, '1.2.0');
 
 -- =============================================================================
+-- Issue #11 Sequence Correction for Student Applications
+-- =============================================================================
+-- The Student Application Entity was incorrectly set to use the Offer Sequence,
+-- which means that the changes to trust the DB identity generation will cause
+-- a problem for the existing sequence as it was never used.
+--   The following correction cannot be applied directly, but must be checked
+-- against the latest information from the database, as an alter sequence
+-- doesn't allow sub queries.
+
+-- First the query to read the latest value to be used.
+select max(id) + 1 as restart_value from student_applications;
+
+-- The input from this, must be taken and used in the following, the default is
+-- the value which was present at the latest available snapshot (2016-02-29):
+alter sequence student_application_sequence restart with 52553;
+-- =============================================================================
+
+
+-- =============================================================================
 -- Issue #18: Resolving Language & Language Level information
 -- =============================================================================
 -- There is a problem with some of the Language information for Offers in the
@@ -57,6 +76,7 @@ update offers set language_2_op = null, language_3_level = null where language_3
 -- With the above corrections, the data in the database should no longer contain
 -- invalid information.
 -- =============================================================================
+
 
 -- =============================================================================
 -- Issue #19: Resolving the WorkType issue for Offers

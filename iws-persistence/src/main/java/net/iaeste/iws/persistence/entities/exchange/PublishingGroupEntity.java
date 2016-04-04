@@ -18,11 +18,11 @@
 package net.iaeste.iws.persistence.entities.exchange;
 
 import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.persistence.monitoring.Monitored;
 import net.iaeste.iws.api.enums.MonitoringLevel;
 import net.iaeste.iws.persistence.Externable;
 import net.iaeste.iws.persistence.entities.AbstractUpdateable;
 import net.iaeste.iws.persistence.entities.GroupEntity;
+import net.iaeste.iws.persistence.monitoring.Monitored;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -36,7 +36,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -67,9 +66,7 @@ public final class PublishingGroupEntity extends AbstractUpdateable<PublishingGr
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    @Id
-    @SequenceGenerator(name = "pk_sequence", sequenceName = "publishing_group_sequence")
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "pk_sequence")
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true, nullable = false, updatable = false)
     private Long id = null;
 

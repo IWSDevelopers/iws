@@ -83,13 +83,17 @@
              the same report, this way we get cross-module code coverage. -->
         <!-- To separate the information from the Unit & Integration testing,
              see: http://www.agile-engineering.net/2011/06/seperating-test-code-coverage-with.html -->
-        <sonar.jacoco.reportPath>${project.basedir}/target/jacoco.exec</sonar.jacoco.reportPath>
-        <sonar.jacoco.itReportPath>${project.basedir}/target/jacoco-it.exec</sonar.jacoco.itReportPath>
+        <sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
+        <destFile>${project.basedir}/../target/jacoco.exec</destFile>
         <!-- Sonar is by default analyzing everything. But Generated Code is beyond our
              control, so having error reports from this is just annoying.
              Legend: *  - zero or more characters
                      ** - zero or more directories -->
         <sonar.exclusions>file:**/generated*/**</sonar.exclusions>
+        <!-- To ensure that the SureFire & JaCoCo plugin can play nice together,
+             we have to pass the argLine information through them both. To
+             ensure that it works, we're setting this empty property value. -->
+        <argLine/>
     </properties>
 
     <build>
@@ -99,6 +103,11 @@
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>sonar-maven-plugin</artifactId>
                     <version>2.6</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>0.7.6.201602180812</version>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -114,7 +123,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.3.2</version>
+                <version>3.5.1</version>
                 <configuration>
                     <showDeprecation>true</showDeprecation>
                     <showWarnings>true</showWarnings>
@@ -124,41 +133,45 @@
                     <target>1.7</target>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.15</version>
-                <configuration>
-                    <!-- The surefire plugin supports running the execution of
-                         the JUnit tests in parallel, and with various options
-                         set. Although the "advertized" advantage is to speed up
-                         the test suite, is more or less crap, there is another
-                         advantage to running things in parallel. And that is
-                         to see how the system handles multiple threads that
-                         accesses it at the same time - in other words, how
-                         thread-safe is the system.
-                           Since each thread needs to build the Spring beans
-                         required by the tests, it means that the overall
-                         testing takes significantly longer and will eat more
-                         memory. If it makes the system too slow, please reduce
-                         the number of threads in the threadCount below. But
-                         note, that those changes should not be committed.
-                           Spring seems to have a problem with the in-memory
-                         database and running tests in parallel. Hence, these
-                         tests are not enabled by default. The setting is here
-                         merely to show how to configure it. An alternative to
-                         running the tests in parallel using Maven, is to use
-                         IntelliJ's forkmode for JUnit tests.
-                           Parallel supports 'classes', 'methods' or 'both' -->
-                    <parallel>none</parallel>
-                    <reuseForks>true</reuseForks>
-                    <argLine>-Xmx1024m</argLine>
-                    <threadCount>5</threadCount>
-                </configuration>
-                <goals>
-                    <goal>test</goal>
-                </goals>
-            </plugin>
+            <!--<plugin>-->
+                <!--<groupId>org.apache.maven.plugins</groupId>-->
+                <!--<artifactId>maven-surefire-plugin</artifactId>-->
+                <!--<version>2.18.1</version>-->
+                <!--<configuration>-->
+                    <!--&lt;!&ndash; The surefire plugin supports running the execution of-->
+                         <!--the JUnit tests in parallel, and with various options-->
+                         <!--set. Although the "advertized" advantage is to speed up-->
+                         <!--the test suite, is more or less crap, there is another-->
+                         <!--advantage to running things in parallel. And that is-->
+                         <!--to see how the system handles multiple threads that-->
+                         <!--accesses it at the same time - in other words, how-->
+                         <!--thread-safe is the system.-->
+                           <!--Since each thread needs to build the Spring beans-->
+                         <!--required by the tests, it means that the overall-->
+                         <!--testing takes significantly longer and will eat more-->
+                         <!--memory. If it makes the system too slow, please reduce-->
+                         <!--the number of threads in the threadCount below. But-->
+                         <!--note, that those changes should not be committed.-->
+                           <!--Spring seems to have a problem with the in-memory-->
+                         <!--database and running tests in parallel. Hence, these-->
+                         <!--tests are not enabled by default. The setting is here-->
+                         <!--merely to show how to configure it. An alternative to-->
+                         <!--running the tests in parallel using Maven, is to use-->
+                         <!--IntelliJ's forkmode for JUnit tests.-->
+                           <!--One major problem with the SureFire plugin is, that-->
+                         <!--it uses the argLine to set information, which clashes-->
+                         <!--with JaCoCo which also uses the argLine, and getting-->
+                         <!--both to play nice together is problematic!-->
+                           <!--Parallel supports 'classes', 'methods' or 'both' &ndash;&gt;-->
+                    <!--<parallel>none</parallel>-->
+                    <!--<reuseForks>true</reuseForks>-->
+                    <!--<argLine>-Xmx1024m ${argLine}</argLine>-->
+                    <!--<threadCount>5</threadCount>-->
+                <!--</configuration>-->
+                <!--<goals>-->
+                    <!--<goal>test</goal>-->
+                <!--</goals>-->
+            <!--</plugin>-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
@@ -176,24 +189,15 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.7.6.201602180812</version>
                 <configuration>
-                    <includes>
-                        <include>net.iaeste.iws.*</include>
-                    </includes>
+                    <destFile>${project.basedir}/../target/jacoco.exec </destFile>
+                    <append>true</append>
                 </configuration>
                 <executions>
                     <execution>
-                        <id>pre-test</id>
+                        <id>agent-for-ut</id>
                         <goals>
                             <goal>prepare-agent</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>post-test</id>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>report</goal>
                         </goals>
                     </execution>
                 </executions>

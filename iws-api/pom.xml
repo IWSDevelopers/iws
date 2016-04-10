@@ -54,39 +54,6 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.15</version>
-                <configuration>
-                    <!-- The surefire plugin supports running the execution of
-                         the JUnit tests in parallel, and with various options
-                         set. Although the "advertised" advantage is to speed up
-                         the test suite, is more or less crap, there is another
-                         advantage to running things in parallel. And that is
-                         to see how the system handles multiple threads that
-                         accesses it at the same time - in other words, how
-                         thread-safe is the system.
-                           Since each thread needs to build the Spring beans
-                         required by the tests, it means that the overall
-                         testing takes significantly longer and will eat more
-                         memory. If it makes the system too slow, please reduce
-                         the number of threads in the threadCount below. But
-                         note, that those changes should not be committed.
-                           Spring seems to have a problem with the in-memory
-                         database and running tests in parallel. Hence, these
-                         tests are not enabled by default. The setting is here
-                         merely to show how to configure it. An alternative to
-                         running the tests in parallel using Maven, is to use
-                         IntelliJ's forkmode for JUnit tests.
-                           Parallel supports 'classes', 'methods' or 'both' -->
-                    <parallel>both</parallel>
-                    <threadCount>10</threadCount>
-                </configuration>
-                <goals>
-                    <goal>test</goal>
-                </goals>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>2.5</version>
                 <executions>
@@ -100,36 +67,6 @@
             </plugin>
         </plugins>
     </build>
-
-    <profiles>
-        <profile>
-            <id>coverage</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.jacoco</groupId>
-                        <artifactId>jacoco-maven-plugin</artifactId>
-                        <configuration>
-                            <destFile>${project.basedir}/../target/jacoco.exec</destFile>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <id>post-test</id>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <version>2.15</version>
-                        <configuration>
-                            <parallel>none</parallel>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
 
     <dependencies>
         <dependency>

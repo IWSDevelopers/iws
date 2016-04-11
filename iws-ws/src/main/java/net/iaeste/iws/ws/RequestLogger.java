@@ -17,32 +17,68 @@
  */
 package net.iaeste.iws.ws;
 
+import net.iaeste.iws.api.constants.IWSError;
+import net.iaeste.iws.api.constants.IWSErrors;
+import net.iaeste.iws.api.responses.FallibleResponse;
+import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.api.util.LogUtil;
 import net.iaeste.iws.api.util.Traceable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletRequest;
 import javax.xml.ws.WebServiceContext;
 import javax.xml.ws.handler.MessageContext;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.1
  */
-public final class RequestLogger {
+final class RequestLogger {
+
+    private static final Logger LOG = LoggerFactory.getLogger(RequestLogger.class);
 
     private final WebServiceContext context;
 
-    public RequestLogger(final WebServiceContext context) {
+    RequestLogger(final WebServiceContext context) {
         this.context = context;
     }
 
-    public String prepareLogMessage(final Traceable trace, final String method) {
+    String prepareLogMessage(final Traceable trace, final String method) {
         return LogUtil.formatLogMessage(trace, "WebService Request: '" + method + "' from '" + readClientIp() + '\'');
     }
 
-    public String prepareLogMessage(final String method) {
+    String prepareLogMessage(final String method) {
         return LogUtil.formatLogMessage(null, "WebService Request: '" + method + "' from '" + readClientIp() + '\'');
+    }
+
+    /**
+     * <p>All WebService methods have the same basic error handling, and as the
+     * cause of the problems at this point can only be from a non-controllable
+     * source which is either Database issue or other critical things - we
+     * simply have a common way of dealing with this error.</p>
+     *
+     * @param cause  The Exception caught with the information about the cause
+     * @param clazz  The actual Fallible derived Class to use
+     * @param <F>    Response must be derived from the IWS Fallible Object
+     * @return Response Object instantiated with error information
+     */
+    static <F extends Fallible> F handleError(final Throwable cause, final Class<F> clazz) {
+        LOG.error("External Problem: {}", cause.getMessage(), cause);
+        F response;
+
+        try {
+            final Constructor<F> constructor = clazz.getConstructor(IWSError.class, String.class);
+            response = constructor.newInstance(IWSErrors.FATAL, "Internal error occurred while handling the request.");
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            LOG.error("Panic: {}", e.getMessage(), e);
+            response = (F) new FallibleResponse(IWSErrors.FATAL, "IWS Panic - please consult the IWS Developers immediately.");
+        }
+
+        return response;
     }
 
     // =========================================================================
@@ -63,7 +99,7 @@ public final class RequestLogger {
             final String servlet = MessageContext.SERVLET_REQUEST;
             final Object request = context.getMessageContext().get(servlet);
 
-            return ((ServletRequest) request).getRemoteAddr();
+            ip = ((ServletRequest) request).getRemoteAddr();
         } else {
             ip = "127.0.0.1";
         }

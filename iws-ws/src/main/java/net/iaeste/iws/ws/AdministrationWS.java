@@ -18,7 +18,6 @@
 package net.iaeste.iws.ws;
 
 import net.iaeste.iws.api.Administration;
-import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.AccountNameRequest;
 import net.iaeste.iws.api.requests.ContactsRequest;
@@ -57,6 +56,7 @@ import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
+import javax.xml.ws.BindingType;
 import javax.xml.ws.WebServiceContext;
 
 /**
@@ -65,7 +65,7 @@ import javax.xml.ws.WebServiceContext;
  * @since   IWS 1.1
  */
 @SOAPBinding(style = SOAPBinding.Style.RPC)
-//@BindingType(javax.xml.ws.soap.SOAPBinding.SOAP12HTTP_BINDING)
+@BindingType(javax.xml.ws.soap.SOAPBinding.SOAP11HTTP_MTOM_BINDING)
 @WebService(name = "administrationWS", serviceName = "administrationWSService", portName = "administrationWS", targetNamespace = "http://ws.iws.iaeste.net/")
 public class AdministrationWS implements Administration {
 
@@ -117,20 +117,17 @@ public class AdministrationWS implements Administration {
      */
     @Override
     @WebMethod
-    @WebResult(name = "response")
+    @WebResult(name = "fallibleResponse")
     public FallibleResponse processCountry(
-            @WebParam(name = "token") final AuthenticationToken token,
-            @WebParam(name = "request") final CountryRequest request) {
+            @WebParam(name = "authenticationToken") final AuthenticationToken token,
+            @WebParam(name = "countryRequest") final CountryRequest request) {
         LOG.info(requestLogger.prepareLogMessage(token, "processCountry"));
         FallibleResponse response;
 
         try {
             response = bean.processCountry(token, request);
         } catch (RuntimeException e) {
-            // The EJB's are all annotated with Transactional Logic, so if an
-            // error is flying by - then it is caught here.
-            LOG.error("Transactional Problem: " + e.getMessage(), e);
-            response = new FallibleResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
+            response = RequestLogger.handleError(e, FallibleResponse.class);
         }
 
         return response;
@@ -141,20 +138,17 @@ public class AdministrationWS implements Administration {
      */
     @Override
     @WebMethod
-    @WebResult(name = "response")
+    @WebResult(name = "fetchCountryResponse")
     public FetchCountryResponse fetchCountries(
-            @WebParam(name = "token") final AuthenticationToken token,
-            @WebParam(name = "request") final FetchCountryRequest request) {
+            @WebParam(name = "authenticationToken") final AuthenticationToken token,
+            @WebParam(name = "fetchCountryRequest") final FetchCountryRequest request) {
         LOG.info(requestLogger.prepareLogMessage(token, "fetchCountries"));
         FetchCountryResponse response;
 
         try {
             response = bean.fetchCountries(token, request);
         } catch (RuntimeException e) {
-            // The EJB's are all annotated with Transactional Logic, so if an
-            // error is flying by - then it is caught here.
-            LOG.error("Transactional Problem: " + e.getMessage(), e);
-            response = new FetchCountryResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
+            response = RequestLogger.handleError(e, FetchCountryResponse.class);
         }
 
         return response;
@@ -165,20 +159,17 @@ public class AdministrationWS implements Administration {
      */
     @Override
     @WebMethod
-    @WebResult(name = "response")
+    @WebResult(name = "createUserResponse")
     public CreateUserResponse createUser(
-            @WebParam(name = "token") final AuthenticationToken token,
-            @WebParam(name = "request") final CreateUserRequest request) {
+            @WebParam(name = "authenticationToken") final AuthenticationToken token,
+            @WebParam(name = "createUserRequest") final CreateUserRequest request) {
         LOG.info(requestLogger.prepareLogMessage(token, "createUser"));
         CreateUserResponse response;
 
         try {
             response = bean.createUser(token, request);
         } catch (RuntimeException e) {
-            // The EJB's are all annotated with Transactional Logic, so if an
-            // error is flying by - then it is caught here.
-            LOG.error("Transactional Problem: " + e.getMessage(), e);
-            response = new CreateUserResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
+            response = RequestLogger.handleError(e, CreateUserResponse.class);
         }
 
         return response;
@@ -189,20 +180,17 @@ public class AdministrationWS implements Administration {
      */
     @Override
     @WebMethod
-    @WebResult(name = "response")
+    @WebResult(name = "fallibleResponse")
     public FallibleResponse controlUserAccount(
-            @WebParam(name = "token") final AuthenticationToken token,
-            @WebParam(name = "request") final UserRequest request) {
+            @WebParam(name = "authenticationToken") final AuthenticationToken token,
+            @WebParam(name = "userRequest") final UserRequest request) {
         LOG.info(requestLogger.prepareLogMessage(token, "controlUserAccount"));
         FallibleResponse response;
 
         try {
             response = bean.controlUserAccount(token, request);
         } catch (RuntimeException e) {
-            // The EJB's are all annotated with Transactional Logic, so if an
-            // error is flying by - then it is caught here.
-            LOG.error("Transactional Problem: " + e.getMessage(), e);
-            response = new FallibleResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
+            response = RequestLogger.handleError(e, FallibleResponse.class);
         }
 
         return response;
@@ -213,7 +201,7 @@ public class AdministrationWS implements Administration {
      */
     @Override
     @WebMethod
-    @WebResult(name = "response")
+    @WebResult(name = "fallibleResponse")
     public FallibleResponse activateUser(
             @WebParam(name = "activationString") final String activationString) {
         LOG.info(requestLogger.prepareLogMessage("activateUser"));
@@ -222,10 +210,7 @@ public class AdministrationWS implements Administration {
         try {
             response = bean.activateUser(activationString);
         } catch (RuntimeException e) {
-            // The EJB's are all annotated with Transactional Logic, so if an
-            // error is flying by - then it is caught here.
-            LOG.error("Transactional Problem: " + e.getMessage(), e);
-            response = new FallibleResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
+            response = RequestLogger.handleError(e, FallibleResponse.class);
         }
 
         return response;
@@ -236,7 +221,7 @@ public class AdministrationWS implements Administration {
      */
     @Override
     @WebMethod
-    @WebResult(name = "response")
+    @WebResult(name = "fallibleResponse")
     public FallibleResponse updateUsername(
             @WebParam(name = "updateCode") final String updateCode) {
         LOG.info(requestLogger.prepareLogMessage("updateUsername"));
@@ -245,10 +230,7 @@ public class AdministrationWS implements Administration {
         try {
             response = bean.updateUsername(updateCode);
         } catch (RuntimeException e) {
-            // The EJB's are all annotated with Transactional Logic, so if an
-            // error is flying by - then it is caught here.
-            LOG.error("Transactional Problem: " + e.getMessage(), e);
-            response = new FallibleResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
+            response = RequestLogger.handleError(e, FallibleResponse.class);
         }
 
         return response;
@@ -259,20 +241,17 @@ public class AdministrationWS implements Administration {
      */
     @Override
     @WebMethod
-    @WebResult(name = "response")
+    @WebResult(name = "fallibleResponse")
     public FallibleResponse changeAccountName(
-            @WebParam(name = "token") final AuthenticationToken token,
-            @WebParam(name = "request") final AccountNameRequest request) {
+            @WebParam(name = "authenticationToken") final AuthenticationToken token,
+            @WebParam(name = "accountNameRequest") final AccountNameRequest request) {
         LOG.info(requestLogger.prepareLogMessage(token, "changeAccountName"));
         FallibleResponse response;
 
         try {
             response = bean.changeAccountName(token, request);
         } catch (RuntimeException e) {
-            // The EJB's are all annotated with Transactional Logic, so if an
-            // error is flying by - then it is caught here.
-            LOG.error("Transactional Problem: " + e.getMessage(), e);
-            response = new FallibleResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
+            response = RequestLogger.handleError(e, FallibleResponse.class);
         }
 
         return response;
@@ -283,20 +262,17 @@ public class AdministrationWS implements Administration {
      */
     @Override
     @WebMethod
-    @WebResult(name = "response")
+    @WebResult(name = "fetchUserResponse")
     public FetchUserResponse fetchUser(
-            @WebParam(name = "token") final AuthenticationToken token,
-            @WebParam(name = "request") final FetchUserRequest request) {
+            @WebParam(name = "authenticationToken") final AuthenticationToken token,
+            @WebParam(name = "fetchUserRequest") final FetchUserRequest request) {
         LOG.info(requestLogger.prepareLogMessage(token, "fetchUser"));
         FetchUserResponse response;
 
         try {
             response = bean.fetchUser(token, request);
         } catch (RuntimeException e) {
-            // The EJB's are all annotated with Transactional Logic, so if an
-            // error is flying by - then it is caught here.
-            LOG.error("Transactional Problem: " + e.getMessage(), e);
-            response = new FetchUserResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
+            response = RequestLogger.handleError(e, FetchUserResponse.class);
         }
 
         return response;
@@ -307,20 +283,17 @@ public class AdministrationWS implements Administration {
      */
     @Override
     @WebMethod
-    @WebResult(name = "response")
+    @WebResult(name = "fetchRoleResponse")
     public FetchRoleResponse fetchRoles(
-            @WebParam(name = "token") final AuthenticationToken token,
-            @WebParam(name = "request") final FetchRoleRequest request) {
+            @WebParam(name = "authenticationToken") final AuthenticationToken token,
+            @WebParam(name = "fetchRoleRequest") final FetchRoleRequest request) {
         LOG.info(requestLogger.prepareLogMessage(token, "fetchRoles"));
         FetchRoleResponse response;
 
         try {
             response = bean.fetchRoles(token, request);
         } catch (RuntimeException e) {
-            // The EJB's are all annotated with Transactional Logic, so if an
-            // error is flying by - then it is caught here.
-            LOG.error("Transactional Problem: " + e.getMessage(), e);
-            response = new FetchRoleResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
+            response = RequestLogger.handleError(e, FetchRoleResponse.class);
         }
 
         return response;
@@ -331,20 +304,17 @@ public class AdministrationWS implements Administration {
      */
     @Override
     @WebMethod
-    @WebResult(name = "response")
+    @WebResult(name = "processGroupResponse")
     public ProcessGroupResponse processGroup(
-            @WebParam(name = "token") final AuthenticationToken token,
-            @WebParam(name = "request") final GroupRequest request) {
+            @WebParam(name = "authenticationToken") final AuthenticationToken token,
+            @WebParam(name = "groupRequest") final GroupRequest request) {
         LOG.info(requestLogger.prepareLogMessage(token, "processGroup"));
         ProcessGroupResponse response;
 
         try {
             response = bean.processGroup(token, request);
         } catch (RuntimeException e) {
-            // The EJB's are all annotated with Transactional Logic, so if an
-            // error is flying by - then it is caught here.
-            LOG.error("Transactional Problem: " + e.getMessage(), e);
-            response = new ProcessGroupResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
+            response = RequestLogger.handleError(e, ProcessGroupResponse.class);
         }
 
         return response;
@@ -355,20 +325,17 @@ public class AdministrationWS implements Administration {
      */
     @Override
     @WebMethod
-    @WebResult(name = "response")
+    @WebResult(name = "fallibleResponse")
     public FallibleResponse deleteSubGroup(
-            @WebParam(name = "token") final AuthenticationToken token,
-            @WebParam(name = "request") final GroupRequest request) {
+            @WebParam(name = "authenticationToken") final AuthenticationToken token,
+            @WebParam(name = "groupRequest") final GroupRequest request) {
         LOG.info(requestLogger.prepareLogMessage(token, "deleteSubGroup"));
         FallibleResponse response;
 
         try {
             response = bean.deleteSubGroup(token, request);
         } catch (RuntimeException e) {
-            // The EJB's are all annotated with Transactional Logic, so if an
-            // error is flying by - then it is caught here.
-            LOG.error("Transactional Problem: " + e.getMessage(), e);
-            response = new FallibleResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
+            response = RequestLogger.handleError(e, FallibleResponse.class);
         }
 
         return response;
@@ -379,20 +346,17 @@ public class AdministrationWS implements Administration {
      */
     @Override
     @WebMethod
-    @WebResult(name = "response")
+    @WebResult(name = "fetchGroupResponse")
     public FetchGroupResponse fetchGroup(
-            @WebParam(name = "token") final AuthenticationToken token,
-            @WebParam(name = "request") final FetchGroupRequest request) {
+            @WebParam(name = "authenticationToken") final AuthenticationToken token,
+            @WebParam(name = "fetchGroupRequest") final FetchGroupRequest request) {
         LOG.info(requestLogger.prepareLogMessage(token, "fetchGroup"));
         FetchGroupResponse response;
 
         try {
             response = bean.fetchGroup(token, request);
         } catch (RuntimeException e) {
-            // The EJB's are all annotated with Transactional Logic, so if an
-            // error is flying by - then it is caught here.
-            LOG.error("Transactional Problem: " + e.getMessage(), e);
-            response = new FetchGroupResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
+            response = RequestLogger.handleError(e, FetchGroupResponse.class);
         }
 
         return response;
@@ -403,20 +367,17 @@ public class AdministrationWS implements Administration {
      */
     @Override
     @WebMethod
-    @WebResult(name = "response")
+    @WebResult(name = "fallibleResponse")
     public FallibleResponse changeGroupOwner(
-            @WebParam(name = "token") final AuthenticationToken token,
-            @WebParam(name = "request") final OwnerRequest request) {
+            @WebParam(name = "authenticationToken") final AuthenticationToken token,
+            @WebParam(name = "ownerRequest") final OwnerRequest request) {
         LOG.info(requestLogger.prepareLogMessage(token, "changeGroupOwner"));
         FallibleResponse response;
 
         try {
             response = bean.changeGroupOwner(token, request);
         } catch (RuntimeException e) {
-            // The EJB's are all annotated with Transactional Logic, so if an
-            // error is flying by - then it is caught here.
-            LOG.error("Transactional Problem: " + e.getMessage(), e);
-            response = new FallibleResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
+            response = RequestLogger.handleError(e, FallibleResponse.class);
         }
 
         return response;
@@ -427,20 +388,17 @@ public class AdministrationWS implements Administration {
      */
     @Override
     @WebMethod
-    @WebResult(name = "response")
+    @WebResult(name = "processUserGroupResponse")
     public ProcessUserGroupResponse processUserGroupAssignment(
-            @WebParam(name = "token") final AuthenticationToken token,
-            @WebParam(name = "request") final UserGroupAssignmentRequest request) {
+            @WebParam(name = "authenticationToken") final AuthenticationToken token,
+            @WebParam(name = "userGroupAssignmentRequest") final UserGroupAssignmentRequest request) {
         LOG.info(requestLogger.prepareLogMessage(token, "processUserGroupAssignment"));
         ProcessUserGroupResponse response;
 
         try {
             response = bean.processUserGroupAssignment(token, request);
         } catch (RuntimeException e) {
-            // The EJB's are all annotated with Transactional Logic, so if an
-            // error is flying by - then it is caught here.
-            LOG.error("Transactional Problem: " + e.getMessage(), e);
-            response = new ProcessUserGroupResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
+            response = RequestLogger.handleError(e, ProcessUserGroupResponse.class);
         }
 
         return response;
@@ -451,20 +409,17 @@ public class AdministrationWS implements Administration {
      */
     @Override
     @WebMethod
-    @WebResult(name = "response")
+    @WebResult(name = "searchUserResponse")
     public SearchUserResponse searchUsers(
-            @WebParam(name = "token") final AuthenticationToken token,
-            @WebParam(name = "request") final SearchUserRequest request) {
+            @WebParam(name = "authenticationToken") final AuthenticationToken token,
+            @WebParam(name = "searchUserRequest") final SearchUserRequest request) {
         LOG.info(requestLogger.prepareLogMessage(token, "searchUsers"));
         SearchUserResponse response;
 
         try {
             response = bean.searchUsers(token, request);
         } catch (RuntimeException e) {
-            // The EJB's are all annotated with Transactional Logic, so if an
-            // error is flying by - then it is caught here.
-            LOG.error("Transactional Problem: " + e.getMessage(), e);
-            response = new SearchUserResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
+            response = RequestLogger.handleError(e, SearchUserResponse.class);
         }
 
         return response;
@@ -475,19 +430,16 @@ public class AdministrationWS implements Administration {
      */
     @Override
     @WebMethod
-    @WebResult(name = "response")
+    @WebResult(name = "emergencyListResponse")
     public EmergencyListResponse fetchEmergencyList(
-            @WebParam(name = "token") final AuthenticationToken token) {
+            @WebParam(name = "authenticationToken") final AuthenticationToken token) {
         LOG.info(requestLogger.prepareLogMessage(token, "fetchEmergencyList"));
         EmergencyListResponse response;
 
         try {
             response = bean.fetchEmergencyList(token);
         } catch (RuntimeException e) {
-            // The EJB's are all annotated with Transactional Logic, so if an
-            // error is flying by - then it is caught here.
-            LOG.error("Transactional Problem: " + e.getMessage(), e);
-            response = new EmergencyListResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
+            response = RequestLogger.handleError(e, EmergencyListResponse.class);
         }
 
         return response;
@@ -498,20 +450,17 @@ public class AdministrationWS implements Administration {
      */
     @Override
     @WebMethod
-    @WebResult(name = "response")
+    @WebResult(name = "contactsResponse")
     public ContactsResponse fetchContacts(
-            @WebParam(name = "token") final AuthenticationToken token,
-            @WebParam(name = "request") final ContactsRequest request) {
+            @WebParam(name = "authenticationToken") final AuthenticationToken token,
+            @WebParam(name = "contactsRequest") final ContactsRequest request) {
         LOG.info(requestLogger.prepareLogMessage(token, "fetchContacts"));
         ContactsResponse response;
 
         try {
             response = bean.fetchContacts(token, request);
         } catch (RuntimeException e) {
-            // The EJB's are all annotated with Transactional Logic, so if an
-            // error is flying by - then it is caught here.
-            LOG.error("Transactional Problem: " + e.getMessage(), e);
-            response = new ContactsResponse(IWSErrors.FATAL, "Internal error occurred while handling the request.");
+            response = RequestLogger.handleError(e, ContactsResponse.class);
         }
 
         return response;

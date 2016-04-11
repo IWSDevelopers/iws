@@ -35,6 +35,7 @@ import net.iaeste.iws.api.requests.exchange.ProcessPublishingGroupRequest;
 import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
 import net.iaeste.iws.api.requests.exchange.RejectOfferRequest;
 import net.iaeste.iws.api.responses.FallibleResponse;
+import net.iaeste.iws.api.responses.FetchFileResponse;
 import net.iaeste.iws.api.responses.exchange.EmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchEmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchGroupsForSharingResponse;
@@ -68,7 +69,7 @@ import javax.xml.ws.WebServiceContext;
  * @since   IWS 1.1
  */
 @SOAPBinding(style = SOAPBinding.Style.RPC)
-//@BindingType(javax.xml.ws.soap.SOAPBinding.SOAP12HTTP_BINDING)
+@BindingType(javax.xml.ws.soap.SOAPBinding.SOAP11HTTP_MTOM_BINDING)
 @WebService(name = "exchangeWS", serviceName = "exchangeWSService", portName = "exchangeWS", targetNamespace = "http://ws.iws.iaeste.net/")
 public class ExchangeWS implements Exchange {
 
@@ -134,10 +135,7 @@ public class ExchangeWS implements Exchange {
         try {
             response = bean.fetchOfferStatistics(token, request);
         } catch (RuntimeException e) {
-            // The EJB's are all annotated with Transactional Logic, so if an
-            // error is flying by - then it is caught here.
-            LOG.error(LOG_MESSAGE, e.getMessage(), e);
-            response = new OfferStatisticsResponse(IWSErrors.FATAL, RESPONSE_MESSAGE);
+            response = RequestLogger.handleError(e, OfferStatisticsResponse.class);
         }
 
         return response;
@@ -158,10 +156,7 @@ public class ExchangeWS implements Exchange {
         try {
             response = bean.processEmployer(token, request);
         } catch (RuntimeException e) {
-            // The EJB's are all annotated with Transactional Logic, so if an
-            // error is flying by - then it is caught here.
-            LOG.error(LOG_MESSAGE, e.getMessage(), e);
-            response = new EmployerResponse(IWSErrors.FATAL, RESPONSE_MESSAGE);
+            response = RequestLogger.handleError(e, EmployerResponse.class);
         }
 
         return response;
@@ -182,10 +177,7 @@ public class ExchangeWS implements Exchange {
         try {
             response = bean.fetchEmployers(token, request);
         } catch (RuntimeException e) {
-            // The EJB's are all annotated with Transactional Logic, so if an
-            // error is flying by - then it is caught here.
-            LOG.error(LOG_MESSAGE, e.getMessage(), e);
-            response = new FetchEmployerResponse(IWSErrors.FATAL, RESPONSE_MESSAGE);
+            response = RequestLogger.handleError(e, FetchEmployerResponse.class);
         }
 
         return response;
@@ -206,10 +198,7 @@ public class ExchangeWS implements Exchange {
         try {
             response = bean.processOffer(token, request);
         } catch (RuntimeException e) {
-            // The EJB's are all annotated with Transactional Logic, so if an
-            // error is flying by - then it is caught here.
-            LOG.error(LOG_MESSAGE, e.getMessage(), e);
-            response = new OfferResponse(IWSErrors.FATAL, RESPONSE_MESSAGE);
+            response = RequestLogger.handleError(e, OfferResponse.class);
         }
 
         return response;
@@ -230,10 +219,7 @@ public class ExchangeWS implements Exchange {
         try {
             response = bean.deleteOffer(token, request);
         } catch (RuntimeException e) {
-            // The EJB's are all annotated with Transactional Logic, so if an
-            // error is flying by - then it is caught here.
-            LOG.error(LOG_MESSAGE, e.getMessage(), e);
-            response = new OfferResponse(IWSErrors.FATAL, RESPONSE_MESSAGE);
+            response = RequestLogger.handleError(e, OfferResponse.class);
         }
 
         return response;
@@ -254,10 +240,7 @@ public class ExchangeWS implements Exchange {
         try {
             response = bean.uploadOffers(token, request);
         } catch (RuntimeException e) {
-            // The EJB's are all annotated with Transactional Logic, so if an
-            // error is flying by - then it is caught here.
-            LOG.error(LOG_MESSAGE, e.getMessage(), e);
-            response = new OfferCSVUploadResponse(IWSErrors.FATAL, RESPONSE_MESSAGE);
+            response = RequestLogger.handleError(e, OfferCSVUploadResponse.class);
         }
 
         return response;
@@ -278,10 +261,7 @@ public class ExchangeWS implements Exchange {
         try {
             response = bean.fetchOffers(token, request);
         } catch (RuntimeException e) {
-            // The EJB's are all annotated with Transactional Logic, so if an
-            // error is flying by - then it is caught here.
-            LOG.error(LOG_MESSAGE, e.getMessage(), e);
-            response = new FetchOffersResponse(IWSErrors.FATAL, RESPONSE_MESSAGE);
+            response = RequestLogger.handleError(e, FetchOffersResponse.class);
         }
 
         return response;
@@ -302,10 +282,7 @@ public class ExchangeWS implements Exchange {
         try {
             response = bean.downloadOffers(token, request);
         } catch (RuntimeException e) {
-            // The EJB's are all annotated with Transactional Logic, so if an
-            // error is flying by - then it is caught here.
-            LOG.error(LOG_MESSAGE, e.getMessage(), e);
-            response = new OfferCSVDownloadResponse(IWSErrors.FATAL, RESPONSE_MESSAGE);
+            response = RequestLogger.handleError(e, OfferCSVDownloadResponse.class);
         }
 
         return response;
@@ -325,10 +302,7 @@ public class ExchangeWS implements Exchange {
         try {
             response = bean.fetchGroupsForSharing(token);
         } catch (RuntimeException e) {
-            // The EJB's are all annotated with Transactional Logic, so if an
-            // error is flying by - then it is caught here.
-            LOG.error(LOG_MESSAGE, e.getMessage(), e);
-            response = new FetchGroupsForSharingResponse(IWSErrors.FATAL, RESPONSE_MESSAGE);
+            response = RequestLogger.handleError(e, FetchGroupsForSharingResponse.class);
         }
 
         return response;
@@ -349,10 +323,7 @@ public class ExchangeWS implements Exchange {
         try {
             response = bean.processPublishingGroup(token, request);
         } catch (RuntimeException e) {
-            // The EJB's are all annotated with Transactional Logic, so if an
-            // error is flying by - then it is caught here.
-            LOG.error(LOG_MESSAGE, e.getMessage(), e);
-            response = new FallibleResponse(IWSErrors.FATAL, RESPONSE_MESSAGE);
+            response = RequestLogger.handleError(e, FallibleResponse.class);
         }
 
         return response;
@@ -373,10 +344,7 @@ public class ExchangeWS implements Exchange {
         try {
             response = bean.fetchPublishingGroups(token, request);
         } catch (RuntimeException e) {
-            // The EJB's are all annotated with Transactional Logic, so if an
-            // error is flying by - then it is caught here.
-            LOG.error(LOG_MESSAGE, e.getMessage(), e);
-            response = new FetchPublishingGroupResponse(IWSErrors.FATAL, RESPONSE_MESSAGE);
+            response = RequestLogger.handleError(e, FetchPublishingGroupResponse.class);
         }
 
         return response;
@@ -397,10 +365,7 @@ public class ExchangeWS implements Exchange {
         try {
             response = bean.processPublishOffer(token, request);
         } catch (RuntimeException e) {
-            // The EJB's are all annotated with Transactional Logic, so if an
-            // error is flying by - then it is caught here.
-            LOG.error(LOG_MESSAGE, e.getMessage(), e);
-            response = new PublishOfferResponse(IWSErrors.FATAL, RESPONSE_MESSAGE);
+            response = RequestLogger.handleError(e, PublishOfferResponse.class);
         }
 
         return response;
@@ -421,10 +386,7 @@ public class ExchangeWS implements Exchange {
         try {
             response = bean.fetchPublishedGroups(token, request);
         } catch (RuntimeException e) {
-            // The EJB's are all annotated with Transactional Logic, so if an
-            // error is flying by - then it is caught here.
-            LOG.error(LOG_MESSAGE, e.getMessage(), e);
-            response = new FetchPublishedGroupsResponse(IWSErrors.FATAL, RESPONSE_MESSAGE);
+            response = RequestLogger.handleError(e, FetchPublishedGroupsResponse.class);
         }
 
         return response;
@@ -445,10 +407,7 @@ public class ExchangeWS implements Exchange {
         try {
             response = bean.processHideForeignOffers(token, request);
         } catch (RuntimeException e) {
-            // The EJB's are all annotated with Transactional Logic, so if an
-            // error is flying by - then it is caught here.
-            LOG.error(LOG_MESSAGE, e.getMessage(), e);
-            response = new FallibleResponse(IWSErrors.FATAL, RESPONSE_MESSAGE);
+            response = RequestLogger.handleError(e, FallibleResponse.class);
         }
 
         return response;
@@ -469,10 +428,7 @@ public class ExchangeWS implements Exchange {
         try {
             response = bean.rejectOffer(token, request);
         } catch (RuntimeException e) {
-            // The EJB's are all annotated with Transactional Logic, so if an
-            // error is flying by - then it is caught here.
-            LOG.error(LOG_MESSAGE, e.getMessage(), e);
-            response = new FallibleResponse(IWSErrors.FATAL, RESPONSE_MESSAGE);
+            response = RequestLogger.handleError(e, FallibleResponse.class);
         }
 
         return response;

@@ -73,32 +73,21 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-
-        <!-- SonarQube Settings -->
-        <sonar.host.url>http://localhost:9000</sonar.host.url>
-        <sonar.language>java</sonar.language>
-        <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
-        <!-- The destination file for the code coverage report has to be set to the same value
-             in the parent pom and in each module pom. Then JaCoCo will add up information in
-             the same report, this way we get cross-module code coverage. -->
-        <!-- To separate the information from the Unit & Integration testing,
-             see: http://www.agile-engineering.net/2011/06/seperating-test-code-coverage-with.html -->
-        <sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
-        <destFile>${project.basedir}/../target/jacoco.exec</destFile>
-        <!-- Sonar is by default analyzing everything. But Generated Code is beyond our
-             control, so having error reports from this is just annoying.
-             Legend: *  - zero or more characters
-                     ** - zero or more directories -->
-        <sonar.exclusions>file:**/generated*/**</sonar.exclusions>
-        <!-- To ensure that the SureFire & JaCoCo plugin can play nice together,
-             we have to pass the argLine information through them both. To
-             ensure that it works, we're setting this empty property value. -->
-        <argLine/>
     </properties>
 
     <build>
         <pluginManagement>
             <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.5.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>2.19.1</version>
+                </plugin>
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>sonar-maven-plugin</artifactId>
@@ -109,26 +98,27 @@
                     <artifactId>jacoco-maven-plugin</artifactId>
                     <version>0.7.6.201602180812</version>
                 </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>2.4</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>2.5</version>
+                </plugin>
             </plugins>
         </pluginManagement>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>2.4</version>
-                <goals>
-                    <goal>test-jar</goal>
-                </goals>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.5.1</version>
                 <configuration>
                     <showDeprecation>true</showDeprecation>
                     <showWarnings>true</showWarnings>
                     <debug>false</debug>
-                    <encoding>UTF-8</encoding>
+                    <encoding>${project.build.sourceEncoding}</encoding>
                     <source>1.7</source>
                     <target>1.7</target>
                 </configuration>
@@ -136,7 +126,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.18.1</version>
                 <configuration>
                     <!-- The surefire plugin supports running the execution of
                          the JUnit tests in parallel, and with various options
@@ -164,9 +153,12 @@
                          both to play nice together is problematic!
                            Parallel supports 'classes', 'methods' or 'both' -->
                     <parallel>none</parallel>
-                    <reuseForks>true</reuseForks>
-                    <argLine>-Xmx1024m ${argLine}</argLine>
                     <threadCount>5</threadCount>
+                    <!-- The ${argLine} is important to have here, as we
+                         otherwise cannot pass the JaCoCo Agent settings
+                         through. Note, that setting argLine as a property will
+                         cause other SureFire JaCoCo conflicts. -->
+                    <argLine>-Xmx1024m ${argLine}</argLine>
                 </configuration>
                 <goals>
                     <goal>test</goal>
@@ -174,8 +166,14 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <goals>
+                    <goal>test-jar</goal>
+                </goals>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.5</version>
                 <executions>
                     <execution>
                         <id>jar</id>
@@ -186,51 +184,50 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <configuration>
-                    <destFile>${project.basedir}/../target/jacoco.exec </destFile>
-                    <append>true</append>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>agent-for-ut</id>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
     </build>
 
     <profiles>
         <profile>
             <id>coverage</id>
+            <properties>
+                <sonar.host.url>http://localhost:9000</sonar.host.url>
+                <sonar.language>java</sonar.language>
+                <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
+
+                <!-- To ensure that we have a combined report for all modules, we need
+                     to tell JaCoCo, to use a common file. -->
+                <sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
+                <sonar.jacoco.itReportPath>${project.basedir}/../target/jacoco-it.exec</sonar.jacoco.itReportPath>
+                <!-- Sonar is by default analyzing everything. But Generated Code is beyond our
+                     control, so having error reports from this is just annoying.
+                     Legend: *  - zero or more characters
+                             ** - zero or more directories -->
+                <sonar.exclusions>file:**/generated*/**</sonar.exclusions>
+            </properties>
             <build>
                 <plugins>
                     <plugin>
                         <groupId>org.jacoco</groupId>
                         <artifactId>jacoco-maven-plugin</artifactId>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-surefire-plugin</artifactId>
                         <configuration>
-                            <parallel>none</parallel>
+                            <includes>
+                                <include>net.iaeste.iws.*</include>
+                            </includes>
+                            <destFile>${project.basedir}/../target/jacoco.exec</destFile>
+                            <append>true</append>
                         </configuration>
+                        <executions>
+                            <execution>
+                                <id>agent-for-ut</id>
+                                <goals>
+                                    <goal>prepare-agent</goal>
+                                </goals>
+                            </execution>
+                        </executions>
                     </plugin>
                 </plugins>
             </build>
-            <reporting>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-surefire-report-plugin</artifactId>
-                    </plugin>
-                </plugins>
-            </reporting>
         </profile>
     </profiles>
 

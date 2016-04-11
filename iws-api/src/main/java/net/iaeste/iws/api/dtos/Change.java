@@ -17,7 +17,7 @@
  */
 package net.iaeste.iws.api.dtos;
 
-import static net.iaeste.iws.api.util.AbstractVerification.immutableList;
+import static net.iaeste.iws.api.util.Verifications.immutableList;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.util.ReflectiveStandardMethods;

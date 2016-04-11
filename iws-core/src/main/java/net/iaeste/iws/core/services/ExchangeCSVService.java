@@ -33,7 +33,7 @@ import net.iaeste.iws.api.requests.exchange.OfferCSVDownloadRequest;
 import net.iaeste.iws.api.requests.exchange.OfferCSVUploadRequest;
 import net.iaeste.iws.api.responses.exchange.OfferCSVDownloadResponse;
 import net.iaeste.iws.api.responses.exchange.OfferCSVUploadResponse;
-import net.iaeste.iws.api.util.AbstractVerification;
+import net.iaeste.iws.api.util.Verifications;
 import net.iaeste.iws.api.util.Paginatable;
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.core.exceptions.PermissionException;
@@ -317,7 +317,7 @@ public final class ExchangeCSVService extends CommonService<ExchangeDao> {
 
             ExchangeService.verifyRefnoValidity(newEntity);
 
-            newEntity.setExchangeYear(AbstractVerification.calculateExchangeYear());
+            newEntity.setExchangeYear(Verifications.calculateExchangeYear());
             // Add the employer to the Offer
             newEntity.setEmployer(employer);
             // Set the Offer status to New

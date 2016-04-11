@@ -20,7 +20,7 @@ package net.iaeste.iws.api.requests;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.dtos.User;
 import net.iaeste.iws.api.enums.UserStatus;
-import net.iaeste.iws.api.util.AbstractVerification;
+import net.iaeste.iws.api.util.Verifications;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -42,7 +42,7 @@ import java.util.Map;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "userRequest", propOrder = { "user", "newStatus", "newUsername", "newPassword", "password" })
-public final class UserRequest extends AbstractVerification {
+public final class UserRequest extends Verifications {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;

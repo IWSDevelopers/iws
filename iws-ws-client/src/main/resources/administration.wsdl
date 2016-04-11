@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://ws.iws.iaeste.net/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="administrationWSService" targetNamespace="http://ws.iws.iaeste.net/">
   <wsdl:documentation>
       Service: IWS Administration Service
-      Version: 1.2.20160316
+      Version: 1.2.20160411
       Owner:   Kim Jensen
   </wsdl:documentation>
   <wsdl:types>
@@ -23,7 +23,7 @@
 
   <xs:complexType final="extension restriction" name="authenticationToken">
     <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
+      <xs:extension base="tns:verifications">
         <xs:sequence>
           <xs:element name="token" type="xs:string"/>
           <xs:element name="groupId" nillable="true" type="xs:string"/>
@@ -32,13 +32,13 @@
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType abstract="true" name="abstractVerification">
+  <xs:complexType abstract="true" name="verifications">
     <xs:sequence/>
   </xs:complexType>
 
   <xs:complexType final="extension restriction" name="createUserRequest">
     <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
+      <xs:extension base="tns:verifications">
         <xs:sequence>
           <xs:element name="username" type="xs:string"/>
           <xs:element name="password" nillable="true" type="xs:string"/>
@@ -62,7 +62,7 @@
 
   <xs:complexType final="extension restriction" name="user">
     <xs:complexContent>
-      <xs:extension base="tns:abstractDto">
+      <xs:extension base="tns:verifications">
         <xs:sequence>
           <xs:element name="userId" nillable="true" type="xs:string"/>
           <xs:element name="username" nillable="true" type="xs:string"/>
@@ -79,17 +79,9 @@
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType abstract="true" name="abstractDto">
-    <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
-        <xs:sequence/>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
   <xs:complexType final="extension restriction" name="person">
     <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
+      <xs:extension base="tns:verifications">
         <xs:sequence>
           <xs:element name="nationality" nillable="true" type="tns:country"/>
           <xs:element name="address" nillable="true" type="tns:address"/>
@@ -108,7 +100,7 @@
 
   <xs:complexType final="extension restriction" name="country">
     <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
+      <xs:extension base="tns:verifications">
         <xs:sequence>
           <xs:element name="countryCode" type="xs:string"/>
           <xs:element name="countryName" type="xs:string"/>
@@ -120,7 +112,7 @@
           <xs:element name="currency" type="tns:currency"/>
           <xs:element name="languages" nillable="true" type="xs:string"/>
           <xs:element name="membership" nillable="true" type="tns:membership"/>
-          <xs:element name="memberSince" nillable="true" type="xs:int"/>
+          <xs:element name="memberSince" nillable="true" type="xs:string"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -128,7 +120,7 @@
 
   <xs:complexType final="extension restriction" name="address">
     <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
+      <xs:extension base="tns:verifications">
         <xs:sequence>
           <xs:element name="street1" nillable="true" type="xs:string"/>
           <xs:element name="street2" nillable="true" type="xs:string"/>
@@ -150,7 +142,7 @@
 
   <xs:complexType final="extension restriction" name="fetchUserRequest">
     <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
+      <xs:extension base="tns:verifications">
         <xs:sequence>
           <xs:element name="userId" type="xs:string"/>
         </xs:sequence>
@@ -170,7 +162,7 @@
 
   <xs:complexType final="extension restriction" name="ownerRequest">
     <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
+      <xs:extension base="tns:verifications">
         <xs:sequence>
           <xs:element name="group" type="tns:group"/>
           <xs:element name="user" type="tns:user"/>
@@ -182,7 +174,7 @@
 
   <xs:complexType final="extension restriction" name="group">
     <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
+      <xs:extension base="tns:verifications">
         <xs:sequence>
           <xs:element name="groupId" nillable="true" type="xs:string"/>
           <xs:element name="parentId" nillable="true" type="xs:string"/>
@@ -216,7 +208,7 @@
 
   <xs:complexType abstract="true" name="abstractPaginatable">
     <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
+      <xs:extension base="tns:verifications">
         <xs:sequence>
           <xs:element name="page" type="tns:page"/>
         </xs:sequence>
@@ -224,7 +216,7 @@
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType name="page">
+  <xs:complexType final="extension restriction" name="page">
     <xs:sequence>
       <xs:element name="pageNumber" type="xs:int"/>
       <xs:element name="pageSize" type="xs:int"/>
@@ -245,7 +237,7 @@
 
   <xs:complexType final="extension restriction" name="accountNameRequest">
     <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
+      <xs:extension base="tns:verifications">
         <xs:sequence>
           <xs:element name="user" type="tns:user"/>
           <xs:element name="firstname" nillable="true" type="xs:string"/>
@@ -257,7 +249,7 @@
 
   <xs:complexType final="extension restriction" name="groupRequest">
     <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
+      <xs:extension base="tns:verifications">
         <xs:sequence>
           <xs:element name="group" type="tns:group"/>
           <xs:element name="user" nillable="true" type="tns:user"/>
@@ -268,7 +260,7 @@
 
   <xs:complexType final="extension restriction" name="contactsRequest">
     <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
+      <xs:extension base="tns:verifications">
         <xs:sequence>
           <xs:element name="userId" nillable="true" type="xs:string"/>
           <xs:element name="groupId" nillable="true" type="xs:string"/>
@@ -292,7 +284,7 @@
 
   <xs:complexType final="extension restriction" name="userRequest">
     <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
+      <xs:extension base="tns:verifications">
         <xs:sequence>
           <xs:element name="user" type="tns:user"/>
           <xs:element name="newStatus" nillable="true" type="tns:userStatus"/>
@@ -316,7 +308,7 @@
 
   <xs:complexType final="extension restriction" name="userGroup">
     <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
+      <xs:extension base="tns:verifications">
         <xs:sequence>
           <xs:element name="userGroupId" nillable="true" type="xs:string"/>
           <xs:element name="user" type="tns:user"/>
@@ -334,7 +326,7 @@
 
   <xs:complexType final="extension restriction" name="role">
     <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
+      <xs:extension base="tns:verifications">
         <xs:sequence>
           <xs:element name="roleId" nillable="true" type="xs:string"/>
           <xs:element name="roleName" type="xs:string"/>
@@ -356,7 +348,7 @@
 
   <xs:complexType final="extension restriction" name="userGroupAssignmentRequest">
     <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
+      <xs:extension base="tns:verifications">
         <xs:sequence>
           <xs:element name="userGroup" type="tns:userGroup"/>
           <xs:element name="action" type="tns:action"/>
@@ -377,7 +369,7 @@
 
   <xs:complexType final="extension restriction" name="searchUserRequest">
     <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
+      <xs:extension base="tns:verifications">
         <xs:sequence>
           <xs:element name="group" nillable="true" type="tns:group"/>
           <xs:element name="name" type="xs:string"/>
@@ -398,7 +390,7 @@
 
   <xs:complexType final="extension restriction" name="fetchGroupRequest">
     <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
+      <xs:extension base="tns:verifications">
         <xs:sequence>
           <xs:element name="groupId" nillable="true" type="xs:string"/>
           <xs:element name="groupType" nillable="true" type="tns:groupType"/>
@@ -425,7 +417,7 @@
 
   <xs:complexType final="extension restriction" name="fetchRoleRequest">
     <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
+      <xs:extension base="tns:verifications">
         <xs:sequence>
           <xs:element name="groupId" type="xs:string"/>
         </xs:sequence>
@@ -445,7 +437,7 @@
 
   <xs:complexType final="extension restriction" name="countryRequest">
     <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
+      <xs:extension base="tns:verifications">
         <xs:sequence>
           <xs:element name="country" type="tns:country"/>
         </xs:sequence>
@@ -799,117 +791,117 @@
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="createUser">
-    <wsdl:part name="token" type="tns:authenticationToken">
+    <wsdl:part name="authenticationToken" type="tns:authenticationToken">
     </wsdl:part>
-    <wsdl:part name="request" type="tns:createUserRequest">
+    <wsdl:part name="createUserRequest" type="tns:createUserRequest">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="updateUsernameResponse">
-    <wsdl:part name="response" type="tns:fallibleResponse">
+    <wsdl:part name="fallibleResponse" type="tns:fallibleResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="changeGroupOwner">
-    <wsdl:part name="token" type="tns:authenticationToken">
+    <wsdl:part name="authenticationToken" type="tns:authenticationToken">
     </wsdl:part>
-    <wsdl:part name="request" type="tns:ownerRequest">
+    <wsdl:part name="ownerRequest" type="tns:ownerRequest">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="fetchCountries">
-    <wsdl:part name="token" type="tns:authenticationToken">
+    <wsdl:part name="authenticationToken" type="tns:authenticationToken">
     </wsdl:part>
-    <wsdl:part name="request" type="tns:fetchCountryRequest">
+    <wsdl:part name="fetchCountryRequest" type="tns:fetchCountryRequest">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="processGroupResponse">
-    <wsdl:part name="response" type="tns:processGroupResponse">
+    <wsdl:part name="processGroupResponse" type="tns:processGroupResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="fetchEmergencyListResponse">
-    <wsdl:part name="response" type="tns:emergencyListResponse">
+    <wsdl:part name="emergencyListResponse" type="tns:emergencyListResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="changeAccountName">
-    <wsdl:part name="token" type="tns:authenticationToken">
+    <wsdl:part name="authenticationToken" type="tns:authenticationToken">
     </wsdl:part>
-    <wsdl:part name="request" type="tns:accountNameRequest">
+    <wsdl:part name="accountNameRequest" type="tns:accountNameRequest">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="fetchRolesResponse">
-    <wsdl:part name="response" type="tns:fetchRoleResponse">
+    <wsdl:part name="fetchRoleResponse" type="tns:fetchRoleResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="deleteSubGroup">
-    <wsdl:part name="token" type="tns:authenticationToken">
+    <wsdl:part name="authenticationToken" type="tns:authenticationToken">
     </wsdl:part>
-    <wsdl:part name="request" type="tns:groupRequest">
+    <wsdl:part name="groupRequest" type="tns:groupRequest">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="fetchContactsResponse">
-    <wsdl:part name="response" type="tns:contactsResponse">
+    <wsdl:part name="contactsResponse" type="tns:contactsResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="processUserGroupAssignmentResponse">
-    <wsdl:part name="response" type="tns:processUserGroupResponse">
+    <wsdl:part name="processUserGroupResponse" type="tns:processUserGroupResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="activateUserResponse">
-    <wsdl:part name="response" type="tns:fallibleResponse">
+    <wsdl:part name="fallibleResponse" type="tns:fallibleResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="controlUserAccount">
-    <wsdl:part name="token" type="tns:authenticationToken">
+    <wsdl:part name="authenticationToken" type="tns:authenticationToken">
     </wsdl:part>
-    <wsdl:part name="request" type="tns:userRequest">
+    <wsdl:part name="userRequest" type="tns:userRequest">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="fetchEmergencyList">
-    <wsdl:part name="token" type="tns:authenticationToken">
+    <wsdl:part name="authenticationToken" type="tns:authenticationToken">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="processGroup">
-    <wsdl:part name="token" type="tns:authenticationToken">
+    <wsdl:part name="authenticationToken" type="tns:authenticationToken">
     </wsdl:part>
-    <wsdl:part name="request" type="tns:groupRequest">
+    <wsdl:part name="groupRequest" type="tns:groupRequest">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="processUserGroupAssignment">
-    <wsdl:part name="token" type="tns:authenticationToken">
+    <wsdl:part name="authenticationToken" type="tns:authenticationToken">
     </wsdl:part>
-    <wsdl:part name="request" type="tns:userGroupAssignmentRequest">
+    <wsdl:part name="userGroupAssignmentRequest" type="tns:userGroupAssignmentRequest">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="fetchRoles">
-    <wsdl:part name="token" type="tns:authenticationToken">
+    <wsdl:part name="authenticationToken" type="tns:authenticationToken">
     </wsdl:part>
-    <wsdl:part name="request" type="tns:fetchRoleRequest">
+    <wsdl:part name="fetchRoleRequest" type="tns:fetchRoleRequest">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="processCountry">
-    <wsdl:part name="token" type="tns:authenticationToken">
+    <wsdl:part name="authenticationToken" type="tns:authenticationToken">
     </wsdl:part>
-    <wsdl:part name="request" type="tns:countryRequest">
+    <wsdl:part name="countryRequest" type="tns:countryRequest">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="createUserResponse">
-    <wsdl:part name="response" type="tns:createUserResponse">
+    <wsdl:part name="createUserResponse" type="tns:createUserResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="fetchUserResponse">
-    <wsdl:part name="response" type="tns:fetchUserResponse">
+    <wsdl:part name="fetchUserResponse" type="tns:fetchUserResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="fetchGroupResponse">
-    <wsdl:part name="response" type="tns:fetchGroupResponse">
+    <wsdl:part name="fetchGroupResponse" type="tns:fetchGroupResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="fetchUser">
-    <wsdl:part name="token" type="tns:authenticationToken">
+    <wsdl:part name="authenticationToken" type="tns:authenticationToken">
     </wsdl:part>
-    <wsdl:part name="request" type="tns:fetchUserRequest">
+    <wsdl:part name="fetchUserRequest" type="tns:fetchUserRequest">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="changeGroupOwnerResponse">
-    <wsdl:part name="response" type="tns:fallibleResponse">
+    <wsdl:part name="fallibleResponse" type="tns:fallibleResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="activateUser">
@@ -917,45 +909,45 @@
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="deleteSubGroupResponse">
-    <wsdl:part name="response" type="tns:fallibleResponse">
+    <wsdl:part name="fallibleResponse" type="tns:fallibleResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="controlUserAccountResponse">
-    <wsdl:part name="response" type="tns:fallibleResponse">
+    <wsdl:part name="fallibleResponse" type="tns:fallibleResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="processCountryResponse">
-    <wsdl:part name="response" type="tns:fallibleResponse">
+    <wsdl:part name="fallibleResponse" type="tns:fallibleResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="fetchContacts">
-    <wsdl:part name="token" type="tns:authenticationToken">
+    <wsdl:part name="authenticationToken" type="tns:authenticationToken">
     </wsdl:part>
-    <wsdl:part name="request" type="tns:contactsRequest">
+    <wsdl:part name="contactsRequest" type="tns:contactsRequest">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="searchUsersResponse">
-    <wsdl:part name="response" type="tns:searchUserResponse">
+    <wsdl:part name="searchUserResponse" type="tns:searchUserResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="fetchCountriesResponse">
-    <wsdl:part name="response" type="tns:fetchCountryResponse">
+    <wsdl:part name="fetchCountryResponse" type="tns:fetchCountryResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="changeAccountNameResponse">
-    <wsdl:part name="response" type="tns:fallibleResponse">
+    <wsdl:part name="fallibleResponse" type="tns:fallibleResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="searchUsers">
-    <wsdl:part name="token" type="tns:authenticationToken">
+    <wsdl:part name="authenticationToken" type="tns:authenticationToken">
     </wsdl:part>
-    <wsdl:part name="request" type="tns:searchUserRequest">
+    <wsdl:part name="searchUserRequest" type="tns:searchUserRequest">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="fetchGroup">
-    <wsdl:part name="token" type="tns:authenticationToken">
+    <wsdl:part name="authenticationToken" type="tns:authenticationToken">
     </wsdl:part>
-    <wsdl:part name="request" type="tns:fetchGroupRequest">
+    <wsdl:part name="fetchGroupRequest" type="tns:fetchGroupRequest">
     </wsdl:part>
   </wsdl:message>
   <wsdl:portType name="administrationWS">

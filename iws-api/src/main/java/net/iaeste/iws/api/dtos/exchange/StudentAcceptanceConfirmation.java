@@ -19,7 +19,7 @@ package net.iaeste.iws.api.dtos.exchange;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.exchange.TransportationType;
-import net.iaeste.iws.api.util.AbstractVerification;
+import net.iaeste.iws.api.util.Verifications;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.api.util.DateTime;
 
@@ -39,7 +39,7 @@ import java.util.Map;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "studentAcceptanceConfirmation", propOrder = { "applicationId", "departure", "transportationType", "departureFrom", "transportNumber", "arrivalDateTime", "phoneNumberDuringTravel", "lodgingRequiredFrom", "lodgingRequiredTo", "otherInformation", "insuranceCompany", "insuranceReceiptNumber" })
-public final class StudentAcceptanceConfirmation extends AbstractVerification {
+public final class StudentAcceptanceConfirmation extends Verifications {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;

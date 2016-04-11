@@ -63,7 +63,7 @@ import net.iaeste.iws.api.responses.exchange.OfferCSVUploadResponse;
 import net.iaeste.iws.api.responses.exchange.OfferResponse;
 import net.iaeste.iws.api.responses.exchange.OfferStatisticsResponse;
 import net.iaeste.iws.api.responses.exchange.PublishOfferResponse;
-import net.iaeste.iws.api.util.AbstractVerification;
+import net.iaeste.iws.api.util.Verifications;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.client.AbstractTest;
@@ -86,7 +86,7 @@ import java.util.Set;
  */
 public final class OfferTest extends AbstractTest {
 
-    private static final int exchangeYear = AbstractVerification.calculateExchangeYear();
+    private static final int exchangeYear = Verifications.calculateExchangeYear();
     private static final String PL_YEAR = "PL-" + exchangeYear;
     private static final String AT_YEAR = "AT-" + exchangeYear;
 
@@ -178,7 +178,7 @@ public final class OfferTest extends AbstractTest {
 
     @Test
     public void testChangingOfferAndExchangeType() {
-        final String refno = "PL-" + AbstractVerification.calculateExchangeYear() + "-00634743";
+        final String refno = "PL-" + Verifications.calculateExchangeYear() + "-00634743";
         final Offer initialOffer = TestData.prepareFullOffer(refno, "Poland A/S");
 
         // Save our offer.
@@ -1362,13 +1362,13 @@ public final class OfferTest extends AbstractTest {
         assertThat(publishResponse.getError(), is(IWSErrors.SUCCESS));
         assertThat(publishResponse.isOk(), is(true));
 
-        final OfferCSVDownloadRequest outboxCsvRequest = new OfferCSVDownloadRequest(FetchType.DOMESTIC, new ArrayList<String>(0), AbstractVerification.calculateExchangeYear());
+        final OfferCSVDownloadRequest outboxCsvRequest = new OfferCSVDownloadRequest(FetchType.DOMESTIC, new ArrayList<String>(0), Verifications.calculateExchangeYear());
         final OfferCSVDownloadResponse outboxCsvResponse = exchange.downloadOffers(austriaTokenWithNationalGroup, outboxCsvRequest);
 
         assertThat(outboxCsvResponse.isOk(), is(true));
         assertThat(outboxCsvResponse.getData(), is(not(nullValue())));
 
-        final OfferCSVDownloadRequest inboxCsvRequest = new OfferCSVDownloadRequest(FetchType.SHARED, new ArrayList<String>(0), AbstractVerification.calculateExchangeYear());
+        final OfferCSVDownloadRequest inboxCsvRequest = new OfferCSVDownloadRequest(FetchType.SHARED, new ArrayList<String>(0), Verifications.calculateExchangeYear());
         final OfferCSVDownloadResponse inboxCsvResponse = exchange.downloadOffers(croatiaToken, inboxCsvRequest);
 
         assertThat(inboxCsvResponse.isOk(), is(true));
@@ -1394,7 +1394,7 @@ public final class OfferTest extends AbstractTest {
         // First, we need a valid offer which we can download as CSV and change
         // to a new, different Offer
         final AuthenticationToken germany = login("germany@iaeste.de", "germany");
-        final String refno = "DE-" + AbstractVerification.calculateExchangeYear() + "-00123456";
+        final String refno = "DE-" + Verifications.calculateExchangeYear() + "-00123456";
         final String invalidRefno = refno + "123";
         final Offer initialOffer = TestData.prepareFullOffer(refno, "Germany A/S");
 
@@ -1443,7 +1443,7 @@ public final class OfferTest extends AbstractTest {
         // First, we need a valid offer which we can download as CSV and change
         // to a new, different Offer
         final AuthenticationToken germany = login("germany@iaeste.de", "germany");
-        final String refno = "DE-" + AbstractVerification.calculateExchangeYear() + "-00123457";
+        final String refno = "DE-" + Verifications.calculateExchangeYear() + "-00123457";
         final Offer initialOffer = TestData.prepareFullOffer(refno, "Germany A/S");
 
         final ProcessOfferRequest processRequest = new ProcessOfferRequest();

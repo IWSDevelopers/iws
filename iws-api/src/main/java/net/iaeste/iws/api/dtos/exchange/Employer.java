@@ -20,7 +20,7 @@ package net.iaeste.iws.api.dtos.exchange;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.dtos.Address;
 import net.iaeste.iws.api.dtos.Group;
-import net.iaeste.iws.api.util.AbstractVerification;
+import net.iaeste.iws.api.util.Verifications;
 import net.iaeste.iws.api.util.DateTime;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -41,7 +41,7 @@ import java.util.Map;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "employer", propOrder = { "employerId", "group", "name", "department", "business", "address", "employeesCount", "website", "workingPlace", "canteen", "nearestAirport", "nearestPublicTransport", "offerReferenceNumbers", "modified", "created" })
-public final class Employer extends AbstractVerification {
+public final class Employer extends Verifications {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -124,7 +124,7 @@ public final class Employer extends AbstractVerification {
      *
      * @param employerId Employer Id
      * @throws IllegalArgumentException if the Id is set but invalid
-     * @see AbstractVerification#UUID_FORMAT
+     * @see Verifications#UUID_FORMAT
      */
     public void setEmployerId(final String employerId) {
         ensureValidId("employerId", employerId);

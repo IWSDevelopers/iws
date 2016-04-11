@@ -42,7 +42,7 @@ import java.util.regex.Pattern;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
-public abstract class AbstractVerification implements Verifiable {
+public abstract class Verifications implements Verifiable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;

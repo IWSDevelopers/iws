@@ -18,7 +18,7 @@
 package net.iaeste.iws.api.requests;
 
 import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.api.util.AbstractVerification;
+import net.iaeste.iws.api.util.Verifications;
 import net.iaeste.iws.api.util.StandardMethods;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -35,7 +35,7 @@ import java.util.Map;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "authenticationRequest", propOrder = { "username", "password" })
-public final class AuthenticationRequest extends AbstractVerification {
+public final class AuthenticationRequest extends Verifications {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;

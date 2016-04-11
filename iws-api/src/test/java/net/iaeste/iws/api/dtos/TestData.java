@@ -34,7 +34,7 @@ import net.iaeste.iws.api.enums.exchange.Specialization;
 import net.iaeste.iws.api.enums.exchange.StudyLevel;
 import net.iaeste.iws.api.enums.exchange.TypeOfWork;
 import net.iaeste.iws.api.exceptions.IWSException;
-import net.iaeste.iws.api.util.AbstractVerification;
+import net.iaeste.iws.api.util.Verifications;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.api.util.DatePeriod;
 
@@ -125,11 +125,11 @@ public final class TestData {
     // =========================================================================
 
     /**
-     * @see AbstractVerification#calculateExchangeYear()
+     * @see Verifications#calculateExchangeYear()
      * @return Current Exchange Year
      */
     public static Integer calculateExchangeYear() {
-        return AbstractVerification.calculateExchangeYear();
+        return Verifications.calculateExchangeYear();
     }
 
     public static Offer prepareMinimalOffer(final String refNo, final String employerName) {

@@ -18,7 +18,7 @@
 package net.iaeste.iws.api.dtos;
 
 import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.api.util.AbstractVerification;
+import net.iaeste.iws.api.util.Verifications;
 import net.iaeste.iws.api.util.Date;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -42,7 +42,7 @@ import java.util.Map;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "userGroup", propOrder = { "userGroupId", "user", "group", "role", "title", "onPublicList", "onPrivateList", "writeToPrivateList", "memberSince" })
-public final class UserGroup extends AbstractVerification {
+public final class UserGroup extends Verifications {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -105,7 +105,7 @@ public final class UserGroup extends AbstractVerification {
      *
      * @param userGroupId UserGroup Id
      * @throws IllegalArgumentException if the Id is set but invalid
-     * @see AbstractVerification#UUID_FORMAT
+     * @see Verifications#UUID_FORMAT
      */
     public void setUserGroupId(final String userGroupId) throws IllegalArgumentException {
         ensureValidId("userGroupId", userGroupId);

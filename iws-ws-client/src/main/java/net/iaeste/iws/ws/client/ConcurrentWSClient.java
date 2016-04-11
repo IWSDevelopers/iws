@@ -35,7 +35,7 @@ import net.iaeste.iws.api.responses.FetchPermissionResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
 import net.iaeste.iws.api.responses.exchange.OfferCSVDownloadResponse;
 import net.iaeste.iws.api.responses.exchange.OfferResponse;
-import net.iaeste.iws.api.util.AbstractVerification;
+import net.iaeste.iws.api.util.Verifications;
 import net.iaeste.iws.ws.client.clients.AccessWSClient;
 import net.iaeste.iws.ws.client.clients.ExchangeWSClient;
 import net.iaeste.iws.ws.client.exceptions.WebServiceException;
@@ -95,7 +95,7 @@ public final class ConcurrentWSClient implements Runnable {
      * <p>The last Exchange Year to use, by default it is set to the
      * current, using the API Exchange Year Calculator.</p>
      */
-    private static final int endYear = AbstractVerification.calculateExchangeYear();
+    private static final int endYear = Verifications.calculateExchangeYear();
 
     /**
      * <p>This is a list of All National Secretaries order by the number of

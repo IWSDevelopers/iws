@@ -40,7 +40,7 @@ import net.iaeste.iws.api.responses.FetchCountryResponse;
 import net.iaeste.iws.api.responses.exchange.EmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchEmployerResponse;
 import net.iaeste.iws.api.responses.exchange.OfferResponse;
-import net.iaeste.iws.api.util.AbstractVerification;
+import net.iaeste.iws.api.util.Verifications;
 import net.iaeste.iws.client.AbstractTest;
 import net.iaeste.iws.client.ExchangeClient;
 import org.junit.After;
@@ -232,7 +232,7 @@ public final class EmployerTest extends AbstractTest {
     public void testReadingOfferRefNo() {
         final Exchange exchange = new ExchangeClient();
         final String employer = "Vietnam Inc.";
-        final String refno = "VN-" + AbstractVerification.calculateExchangeYear() + "-554331";
+        final String refno = "VN-" + Verifications.calculateExchangeYear() + "-554331";
         final Offer offer = TestData.prepareFullOffer(refno, employer);
         final ProcessOfferRequest offerRequest = new ProcessOfferRequest();
         offerRequest.setOffer(offer);

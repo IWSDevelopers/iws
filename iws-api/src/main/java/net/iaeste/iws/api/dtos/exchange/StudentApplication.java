@@ -28,7 +28,7 @@ import net.iaeste.iws.api.enums.exchange.ApplicationStatus;
 import net.iaeste.iws.api.enums.exchange.FieldOfStudy;
 import net.iaeste.iws.api.enums.exchange.LanguageLevel;
 import net.iaeste.iws.api.enums.exchange.OfferState;
-import net.iaeste.iws.api.util.AbstractVerification;
+import net.iaeste.iws.api.util.Verifications;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.api.util.DatePeriod;
 import net.iaeste.iws.api.util.DateTime;
@@ -57,7 +57,7 @@ import java.util.Set;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "studentApplication", propOrder = { "applicationId", "offerId", "offerState", "student", "status", "homeAddress", "email", "phoneNumber", "addressDuringTerms", "dateOfBirth", "university", "placeOfBirth", "nationality", "gender", "completedYearsOfStudy", "totalYearsOfStudy", "lodgingByIaeste", "language1", "language1Level", "language2", "language2Level", "language3", "language3Level", "available", "fieldOfStudies", "specializations", "passportNumber", "passportPlaceOfIssue", "passportValidUntil", "rejectByEmployerReason", "rejectDescription", "rejectInternalComment", "acceptance", "travelInformation", "nominatedAt", "attachments", "modified", "created" })
-public final class StudentApplication extends AbstractVerification {
+public final class StudentApplication extends Verifications {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;

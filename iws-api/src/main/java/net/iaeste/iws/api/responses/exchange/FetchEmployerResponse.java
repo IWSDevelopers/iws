@@ -21,7 +21,7 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.dtos.exchange.Employer;
 import net.iaeste.iws.api.responses.FallibleResponse;
-import net.iaeste.iws.api.util.AbstractVerification;
+import net.iaeste.iws.api.util.Verifications;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -76,7 +76,7 @@ public final class FetchEmployerResponse extends FallibleResponse {
     }
 
     public List<Employer> getEmployers() {
-        return AbstractVerification.immutableList(employers);
+        return Verifications.immutableList(employers);
     }
 
     public void setOfferRefNos(final List<String> offerRefNos) {
@@ -84,6 +84,6 @@ public final class FetchEmployerResponse extends FallibleResponse {
     }
 
     public List<String> getOfferRefNos() {
-        return AbstractVerification.immutableList(offerRefNos);
+        return Verifications.immutableList(offerRefNos);
     }
 }

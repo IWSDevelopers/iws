@@ -19,7 +19,7 @@ package net.iaeste.iws.api.requests.student;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.exchange.ApplicationStatus;
-import net.iaeste.iws.api.util.AbstractVerification;
+import net.iaeste.iws.api.util.Verifications;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -40,7 +40,7 @@ import java.util.Map;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "studentApplicationRequest", propOrder = { "applicationId", "status", "rejectByEmployerReason", "rejectDescription", "rejectInternalComment" })
-public final class StudentApplicationRequest extends AbstractVerification {
+public final class StudentApplicationRequest extends Verifications {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;

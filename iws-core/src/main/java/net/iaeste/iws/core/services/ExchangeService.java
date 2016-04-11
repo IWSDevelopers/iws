@@ -17,7 +17,7 @@
  */
 package net.iaeste.iws.core.services;
 
-import static net.iaeste.iws.api.util.AbstractVerification.calculateExchangeYear;
+import static net.iaeste.iws.api.util.Verifications.calculateExchangeYear;
 import static net.iaeste.iws.api.util.LogUtil.formatLogMessage;
 import static net.iaeste.iws.common.utils.StringUtils.toUpper;
 import static net.iaeste.iws.core.transformers.ExchangeTransformer.transform;

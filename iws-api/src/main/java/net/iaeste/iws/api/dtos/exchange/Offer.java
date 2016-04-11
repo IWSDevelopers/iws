@@ -30,7 +30,7 @@ import net.iaeste.iws.api.enums.exchange.OfferType;
 import net.iaeste.iws.api.enums.exchange.PaymentFrequency;
 import net.iaeste.iws.api.enums.exchange.StudyLevel;
 import net.iaeste.iws.api.enums.exchange.TypeOfWork;
-import net.iaeste.iws.api.util.AbstractVerification;
+import net.iaeste.iws.api.util.Verifications;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.api.util.DatePeriod;
 import net.iaeste.iws.api.util.DateTime;
@@ -55,7 +55,7 @@ import java.util.Set;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "offer", propOrder = { "offerId", "refNo", "offerType", "exchangeType", "oldRefNo", "employer", "workDescription", "typeOfWork", "weeklyHours", "dailyHours", "weeklyWorkDays", "studyLevels", "fieldOfStudies", "specializations", "previousTrainingRequired", "otherRequirements", "minimumWeeks", "maximumWeeks", "period1", "period2", "unavailable", "language1", "language1Level", "language1Operator", "language2", "language2Level", "language2Operator", "language3", "language3Level", "payment", "paymentFrequency", "currency", "deduction", "livingCost", "livingCostFrequency", "lodgingBy", "lodgingCost", "lodgingCostFrequency", "nominationDeadline", "numberOfHardCopies", "additionalInformation", "privateComment", "status", "modified", "created", "nsFirstname", "nsLastname", "shared", "hidden" })
-public final class Offer extends AbstractVerification {
+public final class Offer extends Verifications {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -217,7 +217,7 @@ public final class Offer extends AbstractVerification {
      *
      * @param offerId Offer Id
      * @throws IllegalArgumentException if not valid
-     * @see  AbstractVerification#UUID_FORMAT
+     * @see  Verifications#UUID_FORMAT
      */
     public void setOfferId(final String offerId) {
         ensureValidId("offerId", offerId);

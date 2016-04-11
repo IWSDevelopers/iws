@@ -22,7 +22,7 @@ import net.iaeste.iws.api.enums.NotificationFrequency;
 import net.iaeste.iws.api.enums.Privacy;
 import net.iaeste.iws.api.enums.UserStatus;
 import net.iaeste.iws.api.enums.UserType;
-import net.iaeste.iws.api.util.AbstractVerification;
+import net.iaeste.iws.api.util.Verifications;
 import net.iaeste.iws.api.util.StandardMethods;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -53,7 +53,7 @@ import java.util.Map;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "user", propOrder = { "userId", "username", "alias", "firstname", "lastname", "person", "status", "type", "privacy", "notifications" })
-public final class User extends AbstractVerification {
+public final class User extends Verifications {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -156,7 +156,7 @@ public final class User extends AbstractVerification {
      *
      * @param userId User Id
      * @throws IllegalArgumentException if the Id is invalid
-     * @see AbstractVerification#UUID_FORMAT
+     * @see Verifications#UUID_FORMAT
      */
     public void setUserId(final String userId) throws IllegalArgumentException {
         ensureValidId("userId", userId);

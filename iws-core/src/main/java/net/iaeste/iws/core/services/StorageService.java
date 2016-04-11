@@ -38,7 +38,7 @@ import net.iaeste.iws.api.responses.FetchFileResponse;
 import net.iaeste.iws.api.responses.FetchFolderResponse;
 import net.iaeste.iws.api.responses.FileResponse;
 import net.iaeste.iws.api.responses.FolderResponse;
-import net.iaeste.iws.api.util.AbstractVerification;
+import net.iaeste.iws.api.util.Verifications;
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.core.exceptions.StorageException;
 import net.iaeste.iws.core.exceptions.UnsupportedOperationException;
@@ -698,7 +698,7 @@ public final class StorageService extends CommonService<AccessDao> {
         // coming so deep in, there may be other ways to invoke this
         // functionality. So we're enforcing a check on the Id before using
         // it in the Native Query.
-        AbstractVerification.ensureValidId("Folder Id", externalId);
+        Verifications.ensureValidId("Folder Id", externalId);
 
         // Native Query to retrieve the Id's for the Tree starting with the
         // deepest (requested Id) and going up to the root. Query utilizes

@@ -37,7 +37,7 @@ import java.util.Map;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "datePeriod", propOrder = { "fromDate", "toDate" })
-public final class DatePeriod extends AbstractVerification {
+public final class DatePeriod extends Verifications {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;

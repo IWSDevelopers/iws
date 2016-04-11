@@ -21,7 +21,7 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.MailReply;
 import net.iaeste.iws.api.enums.MonitoringLevel;
-import net.iaeste.iws.api.util.AbstractVerification;
+import net.iaeste.iws.api.util.Verifications;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -38,7 +38,7 @@ import java.util.regex.Pattern;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "group", propOrder = { "groupId", "parentId", "groupName", "fullName", "listName", "privateList", "privateListReplyTo", "publicList", "publicListReplyTo", "groupType", "description", "monitoringLevel", "country" })
-public final class Group extends AbstractVerification {
+public final class Group extends Verifications {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -110,7 +110,7 @@ public final class Group extends AbstractVerification {
      *
      * @param groupId Group Id
      * @throws IllegalArgumentException if the Id is set but invalid
-     * @see AbstractVerification#UUID_FORMAT
+     * @see Verifications#UUID_FORMAT
      */
     public void setGroupId(final String groupId) throws IllegalArgumentException {
         ensureValidId("groupId", groupId);

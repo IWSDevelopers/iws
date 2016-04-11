@@ -157,7 +157,7 @@ public class CommonMapper {
             api.setCurrency(map(ws.getCurrency()));
             api.setLanguages(ws.getLanguages());
             api.setMembership(map(ws.getMembership()));
-            api.setMemberSince(ws.getMemberSince());
+            api.setMemberSince(mapStringToInteger(ws.getMemberSince()));
         }
 
         return api;
@@ -179,7 +179,7 @@ public class CommonMapper {
             ws.setCurrency(map(api.getCurrency()));
             ws.setLanguages(api.getLanguages());
             ws.setMembership(map(api.getMembership()));
-            ws.setMemberSince(api.getMemberSince());
+            ws.setMemberSince(mapIntegerToString(api.getMemberSince()));
         }
 
         return ws;
@@ -471,7 +471,7 @@ public class CommonMapper {
             api.setFolderId(ws.getFolderId());
             api.setFilename(ws.getFilename());
             api.setFiledata(ws.getFiledata());
-            api.setFilesize(ws.getFilesize());
+            api.setFilesize(mapStringToInteger(ws.getFilesize()));
             api.setMimetype(ws.getMimetype());
             api.setDescription(ws.getDescription());
             api.setKeywords(ws.getKeywords());
@@ -496,7 +496,7 @@ public class CommonMapper {
             ws.setFolderId(api.getFolderId());
             ws.setFilename(api.getFilename());
             ws.setFiledata(api.getFiledata());
-            ws.setFilesize(api.getFilesize());
+            ws.setFilesize(mapIntegerToString(api.getFilesize()));
             ws.setMimetype(api.getMimetype());
             ws.setDescription(api.getDescription());
             ws.setKeywords(api.getKeywords());
@@ -863,6 +863,22 @@ public class CommonMapper {
     // =========================================================================
     // Internal Conversion of some WebService specific things
     // =========================================================================
+
+    private static String mapIntegerToString(final Integer value) {
+        return String.valueOf(value);
+    }
+
+    private static Integer mapStringToInteger(final String str) {
+        Integer value;
+
+        try {
+            value = Integer.valueOf(str);
+        } catch (NumberFormatException ignore) {
+            value = null;
+        }
+
+        return value;
+    }
 
     private static java.util.Date map(final XMLGregorianCalendar calendar) {
         java.util.Date converted = null;

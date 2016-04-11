@@ -56,7 +56,7 @@ import net.iaeste.iws.api.responses.student.FetchStudentApplicationsResponse;
 import net.iaeste.iws.api.responses.student.FetchStudentsResponse;
 import net.iaeste.iws.api.responses.student.StudentApplicationResponse;
 import net.iaeste.iws.api.responses.student.StudentResponse;
-import net.iaeste.iws.api.util.AbstractVerification;
+import net.iaeste.iws.api.util.Verifications;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.api.util.DatePeriod;
 import net.iaeste.iws.client.AbstractTest;
@@ -76,7 +76,7 @@ import java.util.Set;
  */
 public final class StudentTest extends AbstractTest {
 
-    private static final int exchangeYear = AbstractVerification.calculateExchangeYear();
+    private static final int exchangeYear = Verifications.calculateExchangeYear();
     private final Exchange exchange = new ExchangeClient();
     private final Students students = new StudentClient();
     private AuthenticationToken austriaToken = null;

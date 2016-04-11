@@ -19,7 +19,7 @@ package net.iaeste.iws.api.dtos;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.Permission;
-import net.iaeste.iws.api.util.AbstractVerification;
+import net.iaeste.iws.api.util.Verifications;
 import net.iaeste.iws.api.util.StandardMethods;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -44,7 +44,7 @@ import java.util.Set;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "role", propOrder = { "roleId", "roleName", "permissions" })
-public final class Role extends AbstractVerification {
+public final class Role extends Verifications {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -112,7 +112,7 @@ public final class Role extends AbstractVerification {
      *
      * @param roleId Role Id
      * @throws IllegalArgumentException if the Id is set but invalid
-     * @see AbstractVerification#UUID_FORMAT
+     * @see Verifications#UUID_FORMAT
      */
     public void setRoleId(final String roleId) throws IllegalArgumentException {
         ensureValidId("roleId", roleId);

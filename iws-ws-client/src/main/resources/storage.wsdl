@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://ws.iws.iaeste.net/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="storageWSService" targetNamespace="http://ws.iws.iaeste.net/">
   <wsdl:documentation>
       Service: IWS Storage Service
-      Version: 1.2.20160316
+      Version: 1.2.20160411
       Owner:   Kim Jensen
   </wsdl:documentation>
   <wsdl:types>
@@ -9,7 +9,7 @@
 
   <xs:complexType final="extension restriction" name="authenticationToken">
     <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
+      <xs:extension base="tns:verifications">
         <xs:sequence>
           <xs:element name="token" type="xs:string"/>
           <xs:element name="groupId" nillable="true" type="xs:string"/>
@@ -18,13 +18,13 @@
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType abstract="true" name="abstractVerification">
+  <xs:complexType abstract="true" name="verifications">
     <xs:sequence/>
   </xs:complexType>
 
   <xs:complexType final="extension restriction" name="fileRequest">
     <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
+      <xs:extension base="tns:verifications">
         <xs:sequence>
           <xs:element name="action" type="tns:action"/>
           <xs:element name="file" type="tns:file"/>
@@ -36,7 +36,7 @@
 
   <xs:complexType final="extension restriction" name="file">
     <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
+      <xs:extension base="tns:verifications">
         <xs:sequence>
           <xs:element name="fileId" nillable="true" type="xs:string"/>
           <xs:element name="privacy" type="tns:privacy"/>
@@ -45,7 +45,7 @@
           <xs:element name="folderId" nillable="true" type="xs:string"/>
           <xs:element name="filename" type="xs:string"/>
           <xs:element name="filedata" nillable="true" type="xs:base64Binary"/>
-          <xs:element name="filesize" nillable="true" type="xs:int"/>
+          <xs:element name="filesize" nillable="true" type="xs:string"/>
           <xs:element name="mimetype" nillable="true" type="xs:string"/>
           <xs:element name="description" nillable="true" type="xs:string"/>
           <xs:element name="keywords" nillable="true" type="xs:string"/>
@@ -59,7 +59,7 @@
 
   <xs:complexType final="extension restriction" name="group">
     <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
+      <xs:extension base="tns:verifications">
         <xs:sequence>
           <xs:element name="groupId" nillable="true" type="xs:string"/>
           <xs:element name="parentId" nillable="true" type="xs:string"/>
@@ -81,7 +81,7 @@
 
   <xs:complexType final="extension restriction" name="country">
     <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
+      <xs:extension base="tns:verifications">
         <xs:sequence>
           <xs:element name="countryCode" type="xs:string"/>
           <xs:element name="countryName" type="xs:string"/>
@@ -93,7 +93,7 @@
           <xs:element name="currency" type="tns:currency"/>
           <xs:element name="languages" nillable="true" type="xs:string"/>
           <xs:element name="membership" nillable="true" type="tns:membership"/>
-          <xs:element name="memberSince" nillable="true" type="xs:int"/>
+          <xs:element name="memberSince" nillable="true" type="xs:string"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -101,7 +101,7 @@
 
   <xs:complexType final="extension restriction" name="user">
     <xs:complexContent>
-      <xs:extension base="tns:abstractDto">
+      <xs:extension base="tns:verifications">
         <xs:sequence>
           <xs:element name="userId" nillable="true" type="xs:string"/>
           <xs:element name="username" nillable="true" type="xs:string"/>
@@ -118,17 +118,9 @@
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType abstract="true" name="abstractDto">
-    <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
-        <xs:sequence/>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
   <xs:complexType final="extension restriction" name="person">
     <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
+      <xs:extension base="tns:verifications">
         <xs:sequence>
           <xs:element name="nationality" nillable="true" type="tns:country"/>
           <xs:element name="address" nillable="true" type="tns:address"/>
@@ -147,7 +139,7 @@
 
   <xs:complexType final="extension restriction" name="address">
     <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
+      <xs:extension base="tns:verifications">
         <xs:sequence>
           <xs:element name="street1" nillable="true" type="xs:string"/>
           <xs:element name="street2" nillable="true" type="xs:string"/>
@@ -193,7 +185,7 @@
 
   <xs:complexType final="extension restriction" name="fetchFolderRequest">
     <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
+      <xs:extension base="tns:verifications">
         <xs:sequence>
           <xs:element name="folderId" nillable="true" type="xs:string"/>
         </xs:sequence>
@@ -213,7 +205,7 @@
 
   <xs:complexType final="extension restriction" name="folder">
     <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
+      <xs:extension base="tns:verifications">
         <xs:sequence>
           <xs:element name="folderId" nillable="true" type="xs:string"/>
           <xs:element name="parentId" nillable="true" type="xs:string"/>
@@ -231,7 +223,7 @@
 
   <xs:complexType final="extension restriction" name="folderRequest">
     <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
+      <xs:extension base="tns:verifications">
         <xs:sequence>
           <xs:element name="action" type="tns:action"/>
           <xs:element name="parentId" nillable="true" type="xs:string"/>
@@ -253,7 +245,7 @@
 
   <xs:complexType final="extension restriction" name="fetchFileRequest">
     <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
+      <xs:extension base="tns:verifications">
         <xs:sequence>
           <xs:element name="fileId" type="xs:string"/>
           <xs:element name="groupId" nillable="true" type="xs:string"/>

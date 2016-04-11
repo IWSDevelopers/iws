@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://ws.iws.iaeste.net/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="committeeWSService" targetNamespace="http://ws.iws.iaeste.net/">
   <wsdl:documentation>
       Service: IWS Committee Service
-      Version: 1.2.20160316
+      Version: 1.2.20160411
       Owner:   Kim Jensen
   </wsdl:documentation>
   <wsdl:types>
@@ -9,7 +9,7 @@
 
   <xs:complexType final="extension restriction" name="authenticationToken">
     <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
+      <xs:extension base="tns:verifications">
         <xs:sequence>
           <xs:element name="token" type="xs:string"/>
           <xs:element name="groupId" nillable="true" type="xs:string"/>
@@ -18,7 +18,7 @@
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType abstract="true" name="abstractVerification">
+  <xs:complexType abstract="true" name="verifications">
     <xs:sequence/>
   </xs:complexType>
 
@@ -36,7 +36,7 @@
 
   <xs:complexType abstract="true" name="abstractPaginatable">
     <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
+      <xs:extension base="tns:verifications">
         <xs:sequence>
           <xs:element name="page" type="tns:page"/>
         </xs:sequence>
@@ -44,7 +44,7 @@
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType name="page">
+  <xs:complexType final="extension restriction" name="page">
     <xs:sequence>
       <xs:element name="pageNumber" type="xs:int"/>
       <xs:element name="pageSize" type="xs:int"/>
@@ -72,7 +72,7 @@
 
   <xs:complexType final="extension restriction" name="userGroup">
     <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
+      <xs:extension base="tns:verifications">
         <xs:sequence>
           <xs:element name="userGroupId" nillable="true" type="xs:string"/>
           <xs:element name="user" type="tns:user"/>
@@ -90,7 +90,7 @@
 
   <xs:complexType final="extension restriction" name="user">
     <xs:complexContent>
-      <xs:extension base="tns:abstractDto">
+      <xs:extension base="tns:verifications">
         <xs:sequence>
           <xs:element name="userId" nillable="true" type="xs:string"/>
           <xs:element name="username" nillable="true" type="xs:string"/>
@@ -107,17 +107,9 @@
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType abstract="true" name="abstractDto">
-    <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
-        <xs:sequence/>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
   <xs:complexType final="extension restriction" name="person">
     <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
+      <xs:extension base="tns:verifications">
         <xs:sequence>
           <xs:element name="nationality" nillable="true" type="tns:country"/>
           <xs:element name="address" nillable="true" type="tns:address"/>
@@ -136,7 +128,7 @@
 
   <xs:complexType final="extension restriction" name="country">
     <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
+      <xs:extension base="tns:verifications">
         <xs:sequence>
           <xs:element name="countryCode" type="xs:string"/>
           <xs:element name="countryName" type="xs:string"/>
@@ -148,7 +140,7 @@
           <xs:element name="currency" type="tns:currency"/>
           <xs:element name="languages" nillable="true" type="xs:string"/>
           <xs:element name="membership" nillable="true" type="tns:membership"/>
-          <xs:element name="memberSince" nillable="true" type="xs:int"/>
+          <xs:element name="memberSince" nillable="true" type="xs:string"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -156,7 +148,7 @@
 
   <xs:complexType final="extension restriction" name="address">
     <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
+      <xs:extension base="tns:verifications">
         <xs:sequence>
           <xs:element name="street1" nillable="true" type="xs:string"/>
           <xs:element name="street2" nillable="true" type="xs:string"/>
@@ -178,7 +170,7 @@
 
   <xs:complexType final="extension restriction" name="group">
     <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
+      <xs:extension base="tns:verifications">
         <xs:sequence>
           <xs:element name="groupId" nillable="true" type="xs:string"/>
           <xs:element name="parentId" nillable="true" type="xs:string"/>
@@ -200,7 +192,7 @@
 
   <xs:complexType final="extension restriction" name="role">
     <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
+      <xs:extension base="tns:verifications">
         <xs:sequence>
           <xs:element name="roleId" nillable="true" type="xs:string"/>
           <xs:element name="roleName" type="xs:string"/>
@@ -219,7 +211,7 @@
 
   <xs:complexType final="extension restriction" name="fetchInternationalGroupRequest">
     <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
+      <xs:extension base="tns:verifications">
         <xs:sequence>
           <xs:element maxOccurs="unbounded" name="statuses" type="tns:groupStatus"/>
         </xs:sequence>
@@ -239,7 +231,7 @@
 
   <xs:complexType final="extension restriction" name="fetchCountrySurveyRequest">
     <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
+      <xs:extension base="tns:verifications">
         <xs:sequence>
           <xs:element name="groupId" type="xs:string"/>
         </xs:sequence>
@@ -259,7 +251,7 @@
 
   <xs:complexType final="extension restriction" name="countrySurvey">
     <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
+      <xs:extension base="tns:verifications">
         <xs:sequence/>
       </xs:extension>
     </xs:complexContent>
@@ -267,7 +259,7 @@
 
   <xs:complexType final="extension restriction" name="committeeRequest">
     <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
+      <xs:extension base="tns:verifications">
         <xs:sequence>
           <xs:element name="countryCode" nillable="true" type="xs:string"/>
           <xs:element name="institutionName" nillable="true" type="xs:string"/>
@@ -295,7 +287,7 @@
 
   <xs:complexType final="extension restriction" name="internationalGroupRequest">
     <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
+      <xs:extension base="tns:verifications">
         <xs:sequence>
           <xs:element name="group" type="tns:group"/>
           <xs:element name="user" type="tns:user"/>
@@ -307,7 +299,7 @@
 
   <xs:complexType final="extension restriction" name="countrySurveyRequest">
     <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
+      <xs:extension base="tns:verifications">
         <xs:sequence>
           <xs:element name="survey" type="tns:countrySurvey"/>
         </xs:sequence>

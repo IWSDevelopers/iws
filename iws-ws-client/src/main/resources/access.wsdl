@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://ws.iws.iaeste.net/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="accessWSService" targetNamespace="http://ws.iws.iaeste.net/">
   <wsdl:documentation>
       Service: IWS Access Service
-      Version: 1.2.20160316
+      Version: 1.2.20160411
       Owner:   Kim Jensen
   </wsdl:documentation>
   <wsdl:types>
@@ -9,7 +9,7 @@
 
   <xs:complexType final="extension restriction" name="authenticationRequest">
     <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
+      <xs:extension base="tns:verifications">
         <xs:sequence>
           <xs:element name="username" type="xs:string"/>
           <xs:element name="password" type="xs:string"/>
@@ -18,7 +18,7 @@
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType abstract="true" name="abstractVerification">
+  <xs:complexType abstract="true" name="verifications">
     <xs:sequence/>
   </xs:complexType>
 
@@ -41,7 +41,7 @@
 
   <xs:complexType final="extension restriction" name="authenticationToken">
     <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
+      <xs:extension base="tns:verifications">
         <xs:sequence>
           <xs:element name="token" type="xs:string"/>
           <xs:element name="groupId" nillable="true" type="xs:string"/>
@@ -76,7 +76,7 @@
 
   <xs:complexType final="extension restriction" name="userGroup">
     <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
+      <xs:extension base="tns:verifications">
         <xs:sequence>
           <xs:element name="userGroupId" nillable="true" type="xs:string"/>
           <xs:element name="user" type="tns:user"/>
@@ -94,7 +94,7 @@
 
   <xs:complexType final="extension restriction" name="user">
     <xs:complexContent>
-      <xs:extension base="tns:abstractDto">
+      <xs:extension base="tns:verifications">
         <xs:sequence>
           <xs:element name="userId" nillable="true" type="xs:string"/>
           <xs:element name="username" nillable="true" type="xs:string"/>
@@ -111,17 +111,9 @@
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType abstract="true" name="abstractDto">
-    <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
-        <xs:sequence/>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
   <xs:complexType final="extension restriction" name="person">
     <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
+      <xs:extension base="tns:verifications">
         <xs:sequence>
           <xs:element name="nationality" nillable="true" type="tns:country"/>
           <xs:element name="address" nillable="true" type="tns:address"/>
@@ -140,7 +132,7 @@
 
   <xs:complexType final="extension restriction" name="country">
     <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
+      <xs:extension base="tns:verifications">
         <xs:sequence>
           <xs:element name="countryCode" type="xs:string"/>
           <xs:element name="countryName" type="xs:string"/>
@@ -152,7 +144,7 @@
           <xs:element name="currency" type="tns:currency"/>
           <xs:element name="languages" nillable="true" type="xs:string"/>
           <xs:element name="membership" nillable="true" type="tns:membership"/>
-          <xs:element name="memberSince" nillable="true" type="xs:int"/>
+          <xs:element name="memberSince" nillable="true" type="xs:string"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -160,7 +152,7 @@
 
   <xs:complexType final="extension restriction" name="address">
     <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
+      <xs:extension base="tns:verifications">
         <xs:sequence>
           <xs:element name="street1" nillable="true" type="xs:string"/>
           <xs:element name="street2" nillable="true" type="xs:string"/>
@@ -182,7 +174,7 @@
 
   <xs:complexType final="extension restriction" name="group">
     <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
+      <xs:extension base="tns:verifications">
         <xs:sequence>
           <xs:element name="groupId" nillable="true" type="xs:string"/>
           <xs:element name="parentId" nillable="true" type="xs:string"/>
@@ -204,7 +196,7 @@
 
   <xs:complexType final="extension restriction" name="role">
     <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
+      <xs:extension base="tns:verifications">
         <xs:sequence>
           <xs:element name="roleId" nillable="true" type="xs:string"/>
           <xs:element name="roleName" type="xs:string"/>
@@ -234,7 +226,7 @@
 
   <xs:complexType final="extension restriction" name="password">
     <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
+      <xs:extension base="tns:verifications">
         <xs:sequence>
           <xs:element name="newPassword" type="xs:string"/>
           <xs:element name="identification" type="xs:string"/>
@@ -245,7 +237,7 @@
 
   <xs:complexType final="extension restriction" name="sessionDataRequest">
     <xs:complexContent>
-      <xs:extension base="tns:abstractVerification">
+      <xs:extension base="tns:verifications">
         <xs:sequence>
           <xs:element name="sessionData" nillable="true" type="xs:base64Binary"/>
         </xs:sequence>
@@ -550,23 +542,23 @@
 </xs:schema>
   </wsdl:types>
   <wsdl:message name="forgotPasswordResponse">
-    <wsdl:part name="response" type="tns:fallibleResponse">
+    <wsdl:part name="fallibleResponse" type="tns:fallibleResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="generateSession">
-    <wsdl:part name="request" type="tns:authenticationRequest">
+    <wsdl:part name="authenticationRequest" type="tns:authenticationRequest">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="requestResettingSession">
-    <wsdl:part name="request" type="tns:authenticationRequest">
+    <wsdl:part name="authenticationRequest" type="tns:authenticationRequest">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="verifySession">
-    <wsdl:part name="token" type="tns:authenticationToken">
+    <wsdl:part name="authenticationToken" type="tns:authenticationToken">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="readSessionDataResponse">
-    <wsdl:part name="response" type="tns:sessionDataResponse">
+    <wsdl:part name="sessionDataResponse" type="tns:sessionDataResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="forgotPassword">
@@ -574,31 +566,31 @@
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="resetSessionResponse">
-    <wsdl:part name="response" type="tns:authenticationResponse">
+    <wsdl:part name="authenticationResponse" type="tns:authenticationResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="fetchPermissionsResponse">
-    <wsdl:part name="response" type="tns:fetchPermissionResponse">
+    <wsdl:part name="fetchPermissionResponse" type="tns:fetchPermissionResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="resetPasswordResponse">
-    <wsdl:part name="response" type="tns:fallibleResponse">
+    <wsdl:part name="fallibleResponse" type="tns:fallibleResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="fetchPermissions">
-    <wsdl:part name="token" type="tns:authenticationToken">
+    <wsdl:part name="authenticationToken" type="tns:authenticationToken">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="deprecateSession">
-    <wsdl:part name="token" type="tns:authenticationToken">
+    <wsdl:part name="authenticationToken" type="tns:authenticationToken">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="requestResettingSessionResponse">
-    <wsdl:part name="response" type="tns:fallibleResponse">
+    <wsdl:part name="fallibleResponse" type="tns:fallibleResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="readSessionData">
-    <wsdl:part name="token" type="tns:authenticationToken">
+    <wsdl:part name="authenticationToken" type="tns:authenticationToken">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="resetPassword">
@@ -606,11 +598,11 @@
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="updatePasswordResponse">
-    <wsdl:part name="response" type="tns:fallibleResponse">
+    <wsdl:part name="fallibleResponse" type="tns:fallibleResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="verifySessionResponse">
-    <wsdl:part name="response" type="tns:fallibleResponse">
+    <wsdl:part name="fallibleResponse" type="tns:fallibleResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="resetSession">
@@ -618,27 +610,27 @@
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="generateSessionResponse">
-    <wsdl:part name="response" type="tns:authenticationResponse">
+    <wsdl:part name="authenticationResponse" type="tns:authenticationResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="saveSessionData">
-    <wsdl:part name="token" type="tns:authenticationToken">
+    <wsdl:part name="authenticationToken" type="tns:authenticationToken">
     </wsdl:part>
-    <wsdl:part name="request" type="tns:sessionDataRequest">
+    <wsdl:part name="sessionDataRequest" type="tns:sessionDataRequest">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="updatePassword">
-    <wsdl:part name="token" type="tns:authenticationToken">
+    <wsdl:part name="authenticationToken" type="tns:authenticationToken">
     </wsdl:part>
     <wsdl:part name="password" type="tns:password">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="deprecateSessionResponse">
-    <wsdl:part name="response" type="tns:fallibleResponse">
+    <wsdl:part name="fallibleResponse" type="tns:fallibleResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="saveSessionDataResponse">
-    <wsdl:part name="response" type="tns:fallibleResponse">
+    <wsdl:part name="fallibleResponse" type="tns:fallibleResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:portType name="accessWS">

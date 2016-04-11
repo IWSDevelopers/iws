@@ -133,45 +133,45 @@
                     <target>1.7</target>
                 </configuration>
             </plugin>
-            <!--<plugin>-->
-                <!--<groupId>org.apache.maven.plugins</groupId>-->
-                <!--<artifactId>maven-surefire-plugin</artifactId>-->
-                <!--<version>2.18.1</version>-->
-                <!--<configuration>-->
-                    <!--&lt;!&ndash; The surefire plugin supports running the execution of-->
-                         <!--the JUnit tests in parallel, and with various options-->
-                         <!--set. Although the "advertized" advantage is to speed up-->
-                         <!--the test suite, is more or less crap, there is another-->
-                         <!--advantage to running things in parallel. And that is-->
-                         <!--to see how the system handles multiple threads that-->
-                         <!--accesses it at the same time - in other words, how-->
-                         <!--thread-safe is the system.-->
-                           <!--Since each thread needs to build the Spring beans-->
-                         <!--required by the tests, it means that the overall-->
-                         <!--testing takes significantly longer and will eat more-->
-                         <!--memory. If it makes the system too slow, please reduce-->
-                         <!--the number of threads in the threadCount below. But-->
-                         <!--note, that those changes should not be committed.-->
-                           <!--Spring seems to have a problem with the in-memory-->
-                         <!--database and running tests in parallel. Hence, these-->
-                         <!--tests are not enabled by default. The setting is here-->
-                         <!--merely to show how to configure it. An alternative to-->
-                         <!--running the tests in parallel using Maven, is to use-->
-                         <!--IntelliJ's forkmode for JUnit tests.-->
-                           <!--One major problem with the SureFire plugin is, that-->
-                         <!--it uses the argLine to set information, which clashes-->
-                         <!--with JaCoCo which also uses the argLine, and getting-->
-                         <!--both to play nice together is problematic!-->
-                           <!--Parallel supports 'classes', 'methods' or 'both' &ndash;&gt;-->
-                    <!--<parallel>none</parallel>-->
-                    <!--<reuseForks>true</reuseForks>-->
-                    <!--<argLine>-Xmx1024m ${argLine}</argLine>-->
-                    <!--<threadCount>5</threadCount>-->
-                <!--</configuration>-->
-                <!--<goals>-->
-                    <!--<goal>test</goal>-->
-                <!--</goals>-->
-            <!--</plugin>-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.18.1</version>
+                <configuration>
+                    <!-- The surefire plugin supports running the execution of
+                         the JUnit tests in parallel, and with various options
+                         set. Although the "advertized" advantage is to speed up
+                         the test suite, is more or less crap, there is another
+                         advantage to running things in parallel. And that is
+                         to see how the system handles multiple threads that
+                         accesses it at the same time - in other words, how
+                         thread-safe is the system.
+                           Since each thread needs to build the Spring beans
+                         required by the tests, it means that the overall
+                         testing takes significantly longer and will eat more
+                         memory. If it makes the system too slow, please reduce
+                         the number of threads in the threadCount below. But
+                         note, that those changes should not be committed.
+                           Spring seems to have a problem with the in-memory
+                         database and running tests in parallel. Hence, these
+                         tests are not enabled by default. The setting is here
+                         merely to show how to configure it. An alternative to
+                         running the tests in parallel using Maven, is to use
+                         IntelliJ's forkmode for JUnit tests.
+                           One major problem with the SureFire plugin is, that
+                         it uses the argLine to set information, which clashes
+                         with JaCoCo which also uses the argLine, and getting
+                         both to play nice together is problematic!
+                           Parallel supports 'classes', 'methods' or 'both' -->
+                    <parallel>none</parallel>
+                    <reuseForks>true</reuseForks>
+                    <argLine>-Xmx1024m ${argLine}</argLine>
+                    <threadCount>5</threadCount>
+                </configuration>
+                <goals>
+                    <goal>test</goal>
+                </goals>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>

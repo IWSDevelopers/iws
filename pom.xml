@@ -287,12 +287,12 @@
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
-                <version>1.7.20</version>
+                <version>1.7.21</version>
             </dependency>
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-simple</artifactId>
-                <version>1.7.20</version>
+                <version>1.7.21</version>
                 <scope>test</scope>
             </dependency>
             <!-- Some of the third-part libraries needed for the Client tests,
@@ -347,7 +347,7 @@
             <dependency>
                 <groupId>cglib</groupId>
                 <artifactId>cglib</artifactId>
-                <version>3.2.1</version>
+                <version>3.2.2</version>
                 <scope>test</scope>
             </dependency>
             <dependency>

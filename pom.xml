@@ -73,6 +73,9 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <!-- The ${argLine} is important to have here, as we otherwise cannot
+             pass the JaCoCo Agent settings through SureFire. -->
+        <argLine>-Xmx1024m</argLine>
     </properties>
 
     <build>
@@ -154,11 +157,6 @@
                            Parallel supports 'classes', 'methods' or 'both' -->
                     <parallel>none</parallel>
                     <threadCount>5</threadCount>
-                    <!-- The ${argLine} is important to have here, as we
-                         otherwise cannot pass the JaCoCo Agent settings
-                         through. Note, that setting argLine as a property will
-                         cause other SureFire JaCoCo conflicts. -->
-                    <argLine>-Xmx1024m ${argLine}</argLine>
                 </configuration>
                 <goals>
                     <goal>test</goal>

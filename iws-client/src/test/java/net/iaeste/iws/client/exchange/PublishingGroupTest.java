@@ -52,7 +52,7 @@ public final class PublishingGroupTest extends AbstractTest {
     private AuthenticationToken croatiaToken = null;
 
     @Override
-    public void setup() {
+    public void setUp() {
         token = login("poland@iaeste.pl", "poland");
         austriaToken = login("austria@iaeste.at", "austria");
         croatiaToken = login("croatia@iaeste.hr", "croatia");

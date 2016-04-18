@@ -50,7 +50,7 @@ public final class FetchInternationalGroupsTest extends AbstractTest {
      */
     @Before
     @Override
-    public void setup() {
+    public void setUp() {
         token = login("australia@iaeste.au", "australia");
     }
 

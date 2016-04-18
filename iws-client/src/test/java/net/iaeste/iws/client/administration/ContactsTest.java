@@ -46,7 +46,7 @@ public final class ContactsTest extends AbstractAdministration {
      * {@inheritDoc}
      */
     @Override
-    public void setup() {
+    public void setUp() {
         token = login("spain@iaeste.es", "spain");
     }
 

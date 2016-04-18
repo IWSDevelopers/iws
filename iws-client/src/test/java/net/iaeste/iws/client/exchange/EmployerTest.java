@@ -65,7 +65,7 @@ public final class EmployerTest extends AbstractTest {
 
     @Before
     @Override
-    public void setup() {
+    public void setUp() {
         final AuthenticationRequest authenticationRequest = new AuthenticationRequest(USERNAME, PASSWORD);
         token = access.generateSession(authenticationRequest).getToken();
         final String groupId = findNationalGroup(token).getGroupId();

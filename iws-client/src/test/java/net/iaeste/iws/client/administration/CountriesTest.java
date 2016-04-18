@@ -40,7 +40,7 @@ public final class CountriesTest extends AbstractAdministration {
      * {@inheritDoc}
      */
     @Override
-    public void setup() {
+    public void setUp() {
         token = login("canada@iaeste.ca", "canada");
     }
 

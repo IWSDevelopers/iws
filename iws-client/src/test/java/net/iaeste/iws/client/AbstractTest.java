@@ -56,7 +56,7 @@ public abstract class AbstractTest {
      * the Spy.
      */
     @Before
-    public abstract void setup();
+    public abstract void setUp();
 
     /**
      * The After method must be defined, to ensure that we have properly cleaned

@@ -50,7 +50,7 @@ import org.junit.Test;
 public final class AccessClientTest extends AbstractTest {
 
     @Override
-    public void setup() {
+    public void setUp() {
     }
 
     @Override

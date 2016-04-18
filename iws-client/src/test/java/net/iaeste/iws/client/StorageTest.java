@@ -80,7 +80,7 @@ public final class StorageTest extends AbstractTest {
      * {@inheritDoc}
      */
     @Override
-    public void setup() {
+    public void setUp() {
     }
 
     /**

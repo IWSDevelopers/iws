@@ -85,7 +85,7 @@ public final class StudentTest extends AbstractTest {
     private Group austriaTokenNationallGroup = null;
 
     @Override
-    public void setup() {
+    public void setUp() {
         token = login("poland@iaeste.pl", "poland");
         austriaToken = login("austria@iaeste.at", "austria");
         croatiaToken = login("croatia@iaeste.hr", "croatia");

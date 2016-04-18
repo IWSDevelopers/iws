@@ -44,6 +44,8 @@ public final class ProcessPublishingGroupRequest extends Verifications implement
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
+    private static final String ACTION_FIELD = "action";
+
     /** Default allowed Actions for the Committee Request. */
     private static final Set<Action> ALLOWED = EnumSet.of(Action.PROCESS, Action.DELETE);
 
@@ -54,7 +56,7 @@ public final class ProcessPublishingGroupRequest extends Verifications implement
      * <p>Action to perform on a PublishingGroup, by default we're assuming that
      * it must be processed, i.e. either saved or updated.</p>
      */
-    @XmlElement(required = true, nillable = false) private Action action = Action.PROCESS;
+    @XmlElement(required = true) private Action action = Action.PROCESS;
 
     // =========================================================================
     // Object Constructors
@@ -83,8 +85,11 @@ public final class ProcessPublishingGroupRequest extends Verifications implement
     }
 
     /**
+     * Sets the Publishing Group Id, i.e. the Id of the Group which is used to
+     * publish an Offer to multiple countries.
      *
-     * @param publishingGroupId
+     * @param publishingGroupId Publishing Group Id
+     * @throws IllegalArgumentException if not a valid Id
      */
     public void setPublishingGroupId(final String publishingGroupId) {
         ensureValidId("publishingGroupId", publishingGroupId);
@@ -100,7 +105,7 @@ public final class ProcessPublishingGroupRequest extends Verifications implement
      */
     @Override
     public void setAction(final Action action) {
-        ensureNotNullAndContains("action", action, ALLOWED);
+        ensureNotNullAndContains(ACTION_FIELD, action, ALLOWED);
         this.action = action;
     }
 
@@ -131,7 +136,7 @@ public final class ProcessPublishingGroupRequest extends Verifications implement
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(0);
 
-        isNotNull(validation, "action", action);
+        isNotNull(validation, ACTION_FIELD, action);
         if (action != null) {
             switch (action) {
                 case PROCESS:
@@ -144,7 +149,7 @@ public final class ProcessPublishingGroupRequest extends Verifications implement
                     isNotNull(validation, "publishingGroupId", publishingGroupId);
                     break;
                 default:
-                    validation.put("action", "The Action '" + action + "' is not allowed");
+                    validation.put(ACTION_FIELD, "The Action '" + action + "' is not allowed");
             }
         }
 

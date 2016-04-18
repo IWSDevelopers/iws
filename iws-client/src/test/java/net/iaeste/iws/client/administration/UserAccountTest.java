@@ -66,7 +66,7 @@ import java.util.List;
 public final class UserAccountTest extends AbstractAdministration {
 
     @Override
-    public void setup() {
+    public void setUp() {
         token = login("austria@iaeste.at", "austria");
         spy.clear();
     }

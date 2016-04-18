@@ -69,7 +69,7 @@ public final class ProcessCommitteeTest extends AbstractTest {
      */
     @Before
     @Override
-    public void setup() {
+    public void setUp() {
         // We have configured Australia as a member of the Board
         token = login("australia@iaeste.au", "australia");
         spy.clear();

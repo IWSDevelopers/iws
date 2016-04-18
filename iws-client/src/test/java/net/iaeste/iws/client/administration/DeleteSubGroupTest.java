@@ -42,7 +42,7 @@ public final class DeleteSubGroupTest extends AbstractAdministration {
      * {@inheritDoc}
      */
     @Override
-    public void setup() {
+    public void setUp() {
         token = login("denmark@iaeste.dk", "denmark");
     }
 

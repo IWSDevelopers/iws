@@ -34,7 +34,6 @@ import net.iaeste.iws.api.enums.exchange.Specialization;
 import net.iaeste.iws.api.enums.exchange.StudyLevel;
 import net.iaeste.iws.api.enums.exchange.TypeOfWork;
 import net.iaeste.iws.api.exceptions.IWSException;
-import net.iaeste.iws.api.util.Verifications;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.api.util.DatePeriod;
 
@@ -51,67 +50,61 @@ import java.util.Set;
  */
 public final class TestData {
 
-    /**
-     * Private Constructor, this is a Utility Class.
-     */
-    private TestData() {
-    }
-
     // =========================================================================
     // Default Test data values
     // =========================================================================
 
     // Default data for filling in our test Address Object, only thing missing
     // is the Country Code, which must be provided
-    public static final String ADDRESS_STREET1 = "MyStreet 1";
-    public static final String ADDRESS_STREET2 = "MyStreet 2";
-    public static final String ADDRESS_ZIP = "123456789012";
-    public static final String ADDRESS_CITY = "MyCity";
-    public static final String ADDRESS_STATE = "MyState";
+    private static final String ADDRESS_STREET1 = "MyStreet 1";
+    private static final String ADDRESS_STREET2 = "MyStreet 2";
+    private static final String ADDRESS_ZIP = "123456789012";
+    private static final String ADDRESS_CITY = "MyCity";
+    private static final String ADDRESS_STATE = "MyState";
 
     // Default data for filling in our test Employer Object. Lacking, is the
     // Name of the Employer, which must be provided
-    public static final String EMPLOYER_DEPARTMENT = "Employer Department";
-    public static final String EMPLOYER_BUSINESS = "Employer Business";
-    public static final String EMPLOYER_EMPLOYEES_COUNT = "Ca. 10";
-    public static final String EMPLOYER_WEBSITE = "www.iaeste.org";
-    public static final String EMPLOYER_WORKING_PLACE = "Employer Working Place";
-    public static final Boolean EMPLOYER_CANTEEN = Boolean.TRUE;
-    public static final String EMPLOYER_NEAREAST_AIRPORT = "";
-    public static final String EMPLOYER_NEAREST_PUBLIC_TRANSPORT = "";
+    private static final String EMPLOYER_DEPARTMENT = "Employer Department";
+    private static final String EMPLOYER_BUSINESS = "Employer Business";
+    private static final String EMPLOYER_EMPLOYEES_COUNT = "Ca. 10";
+    private static final String EMPLOYER_WEBSITE = "www.iaeste.org";
+    private static final String EMPLOYER_WORKING_PLACE = "Employer Working Place";
+    private static final Boolean EMPLOYER_CANTEEN = Boolean.TRUE;
+    private static final String EMPLOYER_NEAREAST_AIRPORT = "";
+    private static final String EMPLOYER_NEAREST_PUBLIC_TRANSPORT = "";
 
     // Default data for filling our test Offer Object. Lacking is the refNo,
     // which must be provided
     private static final Date INITIAL_DATE = new Date().plusDays(90);
     public static final OfferType OFFER_TYPE = OfferType.OPEN;
     public static final ExchangeType OFFER_EXCHANGE_TYPE = ExchangeType.COBE;
-    public static final String OFFER_WORK_DESCRIPTION = "Work Description";
-    public static final Float OFFER_WEEKLY_HOURS = 37.5f;
-    public static final Float OFFER_DAILY_HOURS = 7.5f;
-    public static final Float OFFER_WEEKLY_WORK_DAYS = 5.0f;
-    public static final TypeOfWork OFFER_TYPE_OF_WORK = TypeOfWork.R;
-    public static final Set<StudyLevel> OFFER_STUDY_LEVELS = Collections.unmodifiableSet(EnumSet.of(StudyLevel.E, StudyLevel.M));
-    public static final Set<FieldOfStudy> OFFER_FIELD_OF_STUDY = Collections.unmodifiableSet(EnumSet.of(FieldOfStudy.IT, FieldOfStudy.AGRICULTURE));
-    public static final Set<String> OFFER_SPECIALIZATIONS;
-    public static final Boolean OFFER_PREVIOUS_TRAINING_REQURED = Boolean.FALSE;
-    public static final String OFFER_OTHER_REQUIREMENTS = "Other Requirements";
-    public static final Integer OFFER_MINIMUM_WEEKS = 4;
-    public static final Integer OFFER_MAXIMUM_WEEKS = 13;
-    public static final DatePeriod OFFER_PERIOD1 = new DatePeriod(INITIAL_DATE, INITIAL_DATE.plusDays(90));
-    public static final DatePeriod OFFER_PERIOD2 = new DatePeriod(INITIAL_DATE.plusDays(180), INITIAL_DATE.plusDays(270));
-    public static final DatePeriod OFFER_UNAVAILABLE = new DatePeriod(INITIAL_DATE.plusDays(90), INITIAL_DATE.plusDays(180));
-    public static final Language OFFER_LANGUAGE1 = Language.ENGLISH;
-    public static final LanguageLevel OFFER_LANGUAGE1_LEVEL = LanguageLevel.E;
-    public static final BigDecimal OFFER_PAYMENT = new BigDecimal(700);
-    public static final PaymentFrequency OFFER_PAYMENT_FREQUENCY = PaymentFrequency.MONTHLY;
-    public static final String OFFER_DEDUCTION = "20%";
-    public static final BigDecimal OFFER_LIVING_COST = new BigDecimal(300);
-    public static final PaymentFrequency OFFER_LIVING_COST_FREQUENCY = PaymentFrequency.DAILY;
-    public static final String OFFER_LODGING_BY = "IAESTE";
-    public static final BigDecimal OFFER_LODGING_COST = new BigDecimal(250);
-    public static final PaymentFrequency OFFER_LODGING_COST_FREQUENCY = PaymentFrequency.WEEKLY;
-    public static final Date OFFER_NOMINATION_DEADLINE = INITIAL_DATE.plusDays(-30);
-    public static final String OFFER_ADDITIONAL_INFORMATION = "Offer Additional Information";
+    private static final String OFFER_WORK_DESCRIPTION = "Work Description";
+    private static final Float OFFER_WEEKLY_HOURS = 37.5f;
+    private static final Float OFFER_DAILY_HOURS = 7.5f;
+    private static final Float OFFER_WEEKLY_WORK_DAYS = 5.0f;
+    private static final TypeOfWork OFFER_TYPE_OF_WORK = TypeOfWork.R;
+    private static final Set<StudyLevel> OFFER_STUDY_LEVELS = Collections.unmodifiableSet(EnumSet.of(StudyLevel.E, StudyLevel.M));
+    private static final Set<FieldOfStudy> OFFER_FIELD_OF_STUDY = Collections.unmodifiableSet(EnumSet.of(FieldOfStudy.IT, FieldOfStudy.AGRICULTURE));
+    private static final Set<String> OFFER_SPECIALIZATIONS;
+    private static final Boolean OFFER_PREVIOUS_TRAINING_REQURED = Boolean.FALSE;
+    private static final String OFFER_OTHER_REQUIREMENTS = "Other Requirements";
+    private static final Integer OFFER_MINIMUM_WEEKS = 4;
+    private static final Integer OFFER_MAXIMUM_WEEKS = 13;
+    private static final DatePeriod OFFER_PERIOD1 = new DatePeriod(INITIAL_DATE, INITIAL_DATE.plusDays(90));
+    private static final DatePeriod OFFER_PERIOD2 = new DatePeriod(INITIAL_DATE.plusDays(180), INITIAL_DATE.plusDays(270));
+    private static final DatePeriod OFFER_UNAVAILABLE = new DatePeriod(INITIAL_DATE.plusDays(90), INITIAL_DATE.plusDays(180));
+    private static final Language OFFER_LANGUAGE1 = Language.ENGLISH;
+    private static final LanguageLevel OFFER_LANGUAGE1_LEVEL = LanguageLevel.E;
+    private static final BigDecimal OFFER_PAYMENT = new BigDecimal(700);
+    private static final PaymentFrequency OFFER_PAYMENT_FREQUENCY = PaymentFrequency.MONTHLY;
+    private static final String OFFER_DEDUCTION = "20%";
+    private static final BigDecimal OFFER_LIVING_COST = new BigDecimal(300);
+    private static final PaymentFrequency OFFER_LIVING_COST_FREQUENCY = PaymentFrequency.DAILY;
+    private static final String OFFER_LODGING_BY = "IAESTE";
+    private static final BigDecimal OFFER_LODGING_COST = new BigDecimal(250);
+    private static final PaymentFrequency OFFER_LODGING_COST_FREQUENCY = PaymentFrequency.WEEKLY;
+    private static final Date OFFER_NOMINATION_DEADLINE = INITIAL_DATE.plusDays(-30);
+    private static final String OFFER_ADDITIONAL_INFORMATION = "Offer Additional Information";
 
     static {
         final Set<String> specializations = new HashSet<>(2);
@@ -120,17 +113,15 @@ public final class TestData {
         OFFER_SPECIALIZATIONS = Collections.unmodifiableSet(specializations);
     }
 
+    /**
+     * Private Constructor, this is a Utility Class.
+     */
+    private TestData() {
+    }
+
     // =========================================================================
     // Public methods to fill in test data Object
     // =========================================================================
-
-    /**
-     * @see Verifications#calculateExchangeYear()
-     * @return Current Exchange Year
-     */
-    public static Integer calculateExchangeYear() {
-        return Verifications.calculateExchangeYear();
-    }
 
     public static Offer prepareMinimalOffer(final String refNo, final String employerName) {
         final String countryCode = refNo.substring(0, 2).toUpperCase(IWSConstants.DEFAULT_LOCALE);
@@ -228,45 +219,34 @@ public final class TestData {
 
         switch (countryId) {
             case "AT":
-                country.setMembership(Membership.FULL_MEMBER);
-                country.setCountryName("Austria");
-                country.setCurrency(Currency.EUR);
-                country.setMemberSince(1949);
+                updateCountry(country, Membership.FULL_MEMBER, "Austria", Currency.EUR, 1949);
                 break;
             case "DE":
-                country.setMembership(Membership.FULL_MEMBER);
-                country.setCountryName("Germany");
-                country.setCurrency(Currency.EUR);
-                country.setMemberSince(1950);
+                updateCountry(country, Membership.FULL_MEMBER, "Germany", Currency.EUR, 1950);
                 break;
             case "DK":
-                country.setMembership(Membership.FULL_MEMBER);
-                country.setCountryName("Denmark");
-                country.setCurrency(Currency.DKK);
-                country.setMemberSince(1948);
+                updateCountry(country, Membership.FULL_MEMBER, "Denmark", Currency.DKK, 1948);
                 break;
             case "GB":
-                country.setMembership(Membership.FULL_MEMBER);
-                country.setCountryName("United Kingdom");
-                country.setCurrency(Currency.GBP);
-                country.setMemberSince(1948);
+                updateCountry(country, Membership.FULL_MEMBER, "United Kingdom", Currency.GBP, 1948);
                 break;
             case "PL":
-                country.setMembership(Membership.FULL_MEMBER);
-                country.setCountryName("Poland");
-                country.setCurrency(Currency.PLN);
-                country.setMemberSince(1959);
+                updateCountry(country, Membership.FULL_MEMBER, "Poland", Currency.PLN, 1959);
                 break;
             case "VN":
-                country.setMembership(Membership.FULL_MEMBER);
-                country.setCountryName("Vietnam");
-                country.setCurrency(Currency.VND);
-                country.setMemberSince(2016);
+                updateCountry(country, Membership.FULL_MEMBER, "Vietnam", Currency.VND, 2016);
                 break;
             default:
                 throw new IWSException(IWSErrors.ERROR, "Unknown Country.");
         }
 
         return country;
+    }
+
+    private static void updateCountry(final Country country, final Membership membership, final String name, final Currency currency, final Integer memberSince) {
+        country.setMembership(membership);
+        country.setCountryName(name);
+        country.setCurrency(currency);
+        country.setMemberSince(memberSince);
     }
 }

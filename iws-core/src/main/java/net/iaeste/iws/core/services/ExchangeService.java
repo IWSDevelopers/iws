@@ -17,8 +17,9 @@
  */
 package net.iaeste.iws.core.services;
 
-import static net.iaeste.iws.api.util.Verifications.calculateExchangeYear;
+import static net.iaeste.iws.api.enums.exchange.OfferState.AT_EMPLOYER;
 import static net.iaeste.iws.api.util.LogUtil.formatLogMessage;
+import static net.iaeste.iws.api.util.Verifications.calculateExchangeYear;
 import static net.iaeste.iws.common.utils.StringUtils.toUpper;
 import static net.iaeste.iws.core.transformers.ExchangeTransformer.transform;
 
@@ -29,7 +30,6 @@ import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.enums.Action;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.exchange.OfferState;
-import net.iaeste.iws.common.exceptions.VerificationException;
 import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
 import net.iaeste.iws.api.requests.exchange.HideForeignOffersRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessEmployerRequest;
@@ -38,18 +38,16 @@ import net.iaeste.iws.api.requests.exchange.ProcessPublishingGroupRequest;
 import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
 import net.iaeste.iws.api.requests.exchange.RejectOfferRequest;
 import net.iaeste.iws.api.responses.exchange.EmployerResponse;
-import net.iaeste.iws.api.responses.exchange.FetchGroupsForSharingResponse;
 import net.iaeste.iws.api.responses.exchange.OfferResponse;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.common.exceptions.ExchangeException;
+import net.iaeste.iws.common.exceptions.VerificationException;
 import net.iaeste.iws.common.notification.NotificationType;
 import net.iaeste.iws.core.notifications.Notifications;
-import net.iaeste.iws.core.transformers.AdministrationTransformer;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.ExchangeDao;
-import net.iaeste.iws.persistence.StudentDao;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.exchange.EmployerEntity;
@@ -80,7 +78,7 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
 
     private final AccessDao accessDao;
 
-    public ExchangeService(final Settings settings, final ExchangeDao dao, final AccessDao accessDao, final StudentDao studentDao, final Notifications notifications) {
+    ExchangeService(final Settings settings, final ExchangeDao dao, final AccessDao accessDao, final Notifications notifications) {
         super(settings, dao);
 
         this.notifications = notifications;
@@ -230,7 +228,7 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
      * @throws VerificationException if the Reference Number is invalid
      * @see <a href="https://trac.iaeste.net/ticket/1020">Ticket #1020</a>
      */
-    public static void verifyRefnoValidity(final OfferEntity offer) throws ExchangeException {
+    static void verifyRefnoValidity(final OfferEntity offer) {
         final String countryCode = offer.getEmployer().getGroup().getCountry().getCountryCode();
         final String refno = offer.getRefNo();
         final String[] parts = toUpper(refno).split("-");
@@ -251,7 +249,7 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
         final Date today = new Date();
         final int currentYear = today.getCurrentYear();
         final int exchangeYear = calculateExchangeYear();
-        final int foundYear = Integer.valueOf(parts[1]);
+        final int foundYear = Integer.parseInt(parts[1]);
 
         if (today.getCurrentMonth() >= Calendar.SEPTEMBER) {
             // We're looking at offers after the Exchange Year change, so we
@@ -311,8 +309,7 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
             final List<GroupEntity> countryList = getAndVerifyGroupExist(groupIds);
             newEntity.setList(countryList);
             newEntity.setGroup(authentication.getGroup());
-
-            String externalId = newEntity.getExternalId();
+            final String externalId = newEntity.getExternalId();
 
             if (externalId == null) {
                 dao.persist(authentication, newEntity);
@@ -325,12 +322,6 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
                 dao.persist(authentication, existingEntity, newEntity);
             }
         }
-    }
-
-    public FetchGroupsForSharingResponse fetchGroupsForSharing(final Authentication authentication) {
-        final List<Group> groupList = AdministrationTransformer.transform(dao.findGroupsForSharing(authentication.getGroup()));
-
-        return new FetchGroupsForSharingResponse(groupList);
     }
 
     /**
@@ -471,7 +462,7 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
         offerGroups.remove(offerGroupToReject);
 
         final EnumSet<OfferState> activeStates = EnumSet.of(OfferState.SHARED,
-                OfferState.AT_EMPLOYER,
+                AT_EMPLOYER,
                 OfferState.ACCEPTED,
                 OfferState.APPLICATIONS,
                 OfferState.COMPLETED,
@@ -507,7 +498,6 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
                 result = offerGroup.getStatus();
             }
 
-            //final Boolean keepOfferGroup = studentDao.otherDomesticApplicationsWithCertainStatus(offerGroup.getId(), EnumSet.allOf(ApplicationStatus.class));
             if (offerGroup.getHasApplication()) {
                 offerGroup.setStatus(OfferState.CLOSED);
                 dao.persist(offerGroup);
@@ -519,67 +509,101 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
     }
 
     private static Boolean isOtherCurrentOfferGroupStateHigher(final OfferState oldState, final OfferState otherState) {
-        Boolean result = false;
+        final boolean result;
+
         switch (oldState) {
             case NEW:
                 result = true;
                 break;
             case EXPIRED:
             case OPEN:
-                switch (otherState) {
-                    case SHARED:
-                    case NOMINATIONS:
-                    case AT_EMPLOYER:
-                    case ACCEPTED:
-                    case COMPLETED:
-                        result = true;
-                        break;
-                }
+                result = stateCheckForOpen(otherState);
                 break;
             case SHARED:
-                switch (otherState) {
-                    case NOMINATIONS:
-                    case AT_EMPLOYER:
-                    case ACCEPTED:
-                    case COMPLETED:
-                        result = true;
-                        break;
-                }
+                result = stateCheckForShared(otherState);
                 break;
             case NOMINATIONS:
-                switch (otherState) {
-                    case AT_EMPLOYER:
-                    case ACCEPTED:
-                    case COMPLETED:
-                        result = true;
-                        break;
-                }
+                result = stateCheckForNominations(otherState);
                 break;
             case AT_EMPLOYER:
-                switch (otherState) {
-                    case ACCEPTED:
-                    case COMPLETED:
-                        result = true;
-                        break;
-                }
+                result = stateCheckForAtEmployer(otherState);
                 break;
             case ACCEPTED:
-                switch (otherState) {
-                    case COMPLETED:
-                        result = true;
-                        break;
-                }
-                break;
-            case COMPLETED:
+                result = otherState == OfferState.COMPLETED;
                 break;
             case REJECTED:
-                switch (otherState) {
-                    case SHARED:
-                        result = true;
-                        break;
-                }
+                result = otherState == OfferState.SHARED;
                 break;
+            default:
+                result = false;
         }
+
+        return result;
+    }
+
+    private static boolean stateCheckForOpen(final OfferState newState) {
+        final boolean result;
+
+        switch (newState) {
+            case SHARED:
+            case NOMINATIONS:
+            case AT_EMPLOYER:
+            case ACCEPTED:
+            case COMPLETED:
+                result = true;
+                break;
+            default:
+                result = false;
+        }
+
+        return result;
+    }
+
+    private static boolean stateCheckForShared(final OfferState newState) {
+        final boolean result;
+
+        switch (newState) {
+            case NOMINATIONS:
+            case AT_EMPLOYER:
+            case ACCEPTED:
+            case COMPLETED:
+                result = true;
+                break;
+            default:
+                result = false;
+        }
+
+        return result;
+    }
+
+    private static boolean stateCheckForNominations(final OfferState newState) {
+        final boolean result;
+
+        switch (newState) {
+            case AT_EMPLOYER:
+            case ACCEPTED:
+            case COMPLETED:
+                result = true;
+                break;
+            default:
+                result = false;
+        }
+
+        return result;
+    }
+
+    private static boolean stateCheckForAtEmployer(final OfferState newState) {
+        final boolean result;
+
+        switch (newState) {
+            case ACCEPTED:
+            case COMPLETED:
+                result = true;
+                break;
+            default:
+                result = false;
+        }
+
         return result;
     }
 
@@ -602,7 +626,6 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
 
         for (final GroupEntity group : groupEntities) {
             if (group.getExternalId().equals(nationalGroup.getExternalId())) {
-                // TODO 20130422 by Kim; @Michal, is it really needed to throw an Exception here ? Wouldn't it be more helpful to simply omit their own Group ?
                 throw new VerificationException("Cannot publish offers to itself.");
             }
         }
@@ -659,7 +682,6 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
         dao.persist(authentication, offer);
 
         for (final OfferGroupEntity offerGroup : offerGroups) {
-            //TODO reset application states?
             offerGroup.setStatus(OfferState.SHARED);
             dao.persist(authentication, offerGroup);
             result.add(offerGroup);
@@ -676,7 +698,7 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
         return offerGroupEntity;
     }
 
-    private OfferGroupEntity findOfferGroupByGroup(final GroupEntity group, final List<OfferGroupEntity> offerGroups) {
+    private static OfferGroupEntity findOfferGroupByGroup(final GroupEntity group, final List<OfferGroupEntity> offerGroups) {
         OfferGroupEntity result = null;
 
         for (final OfferGroupEntity offerGroup : offerGroups) {

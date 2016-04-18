@@ -18,7 +18,6 @@
 package net.iaeste.iws.ws;
 
 import net.iaeste.iws.api.Exchange;
-import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
 import net.iaeste.iws.api.requests.exchange.FetchEmployerRequest;
@@ -35,7 +34,6 @@ import net.iaeste.iws.api.requests.exchange.ProcessPublishingGroupRequest;
 import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
 import net.iaeste.iws.api.requests.exchange.RejectOfferRequest;
 import net.iaeste.iws.api.responses.FallibleResponse;
-import net.iaeste.iws.api.responses.FetchFileResponse;
 import net.iaeste.iws.api.responses.exchange.EmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchEmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchGroupsForSharingResponse;
@@ -74,10 +72,6 @@ import javax.xml.ws.WebServiceContext;
 public class ExchangeWS implements Exchange {
 
     private static final Logger LOG = LoggerFactory.getLogger(ExchangeWS.class);
-
-    // Standard messages for response & logging
-    private static final String RESPONSE_MESSAGE = "Internal error occurred while handling the request.";
-    private static final String LOG_MESSAGE = "Transactional Problem: {}";
 
     /**
      * Injection of the IWS Exchange Bean Instance, which embeds the

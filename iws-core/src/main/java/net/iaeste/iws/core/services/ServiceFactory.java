@@ -104,7 +104,7 @@ public final class ServiceFactory {
     public ExchangeService prepareExchangeService() {
         final ExchangeDao dao = new ExchangeJpaDao(entityManager);
 
-        return new ExchangeService(settings, dao, accessDao, studentDao, notifications);
+        return new ExchangeService(settings, dao, accessDao, notifications);
     }
 
     public ExchangeFetchService prepareExchangeFetchService() {

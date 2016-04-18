@@ -139,8 +139,8 @@ public final class UserEntity extends AbstractUpdateable<UserEntity> implements 
     private String alias = null;
 
     /**
-     * The Password stored, is an SHA 256 bit Hashvalue of the users lowercased
-     * password.
+     * The Password stored, is an SHA 256 bit Hash value of the users lower
+     * cased password.
      */
     @Column(name = "password", length = 128, nullable = false)
     private String password = null;
@@ -152,7 +152,7 @@ public final class UserEntity extends AbstractUpdateable<UserEntity> implements 
     private String salt = null;
 
     /**
-     * The users firstname, can only be altered by the DBA's. Although the
+     * The users firstname, can only be altered by the DBAs. Although the
      * firstname is not a system value, it is stored in this Entity, rather
      * than the Person Entity, since the value should exists, also when a user
      * has been removed from the system.
@@ -162,7 +162,7 @@ public final class UserEntity extends AbstractUpdateable<UserEntity> implements 
     private String firstname = null;
 
     /**
-     * The users lastname, can only be altered by the DBA's. Although the
+     * The users lastname, can only be altered by the DBAs. Although the
      * lastname is not a system value, it is stored in this Entity, rather than
      * the Person Entity, since the value should exists, also when a user has
      * been removed from the system.
@@ -177,7 +177,7 @@ public final class UserEntity extends AbstractUpdateable<UserEntity> implements 
      * the information must be removed completely.
      */
     @Monitored(name="User Person", level = MonitoringLevel.DETAILED)
-    @OneToOne(fetch = FetchType.EAGER, optional = true)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "person_id", referencedColumnName = "id")
     private PersonEntity person = null;
 
@@ -261,31 +261,6 @@ public final class UserEntity extends AbstractUpdateable<UserEntity> implements 
      */
     @Transient
     private String temporary = null;
-
-    // =========================================================================
-    // Entity Constructors
-    // =========================================================================
-
-    /**
-     * Empty Constructor, JPA requirement.
-     */
-    public UserEntity() {
-    }
-
-    /**
-     * Default Constructor, for creating new User Accounts.
-     *
-     * @param username  User name (e-mail address)
-     * @param password  Password (hash value, not clear text)
-     * @param firstname The users firstname, can only be altered by DBA's
-     * @param lastname  The users lastname, can only be altered by DBA's
-     */
-    public UserEntity(final String username, final String password, final String firstname, final String lastname) {
-        this.username = username;
-        this.password = password;
-        this.firstname = firstname;
-        this.lastname = lastname;
-    }
 
     // =========================================================================
     // Entity Setters & Getters
@@ -543,6 +518,7 @@ public final class UserEntity extends AbstractUpdateable<UserEntity> implements 
             case PROCESS_EMAIL_ALIAS:
                 fields.put(NotificationField.EMAIL, data);
                 break;
+            default:
         }
 
         return fields;

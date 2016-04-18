@@ -12,7 +12,7 @@ addons:
     notification_email: kim@dawn.dk
     build_command_prepend: "mvn clean"
     build_command:   "mvn -DskipTests=true compile"
-    branch_pattern: coverity_scan
+    #branch_pattern: coverity_scan
 
 language: java
 #jdk:

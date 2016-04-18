@@ -26,8 +26,6 @@ import net.iaeste.iws.api.dtos.exchange.StudentApplication;
 import net.iaeste.iws.api.enums.exchange.ApplicationStatus;
 import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.api.exceptions.IWSException;
-import net.iaeste.iws.common.exceptions.NotImplementedException;
-import net.iaeste.iws.common.exceptions.VerificationException;
 import net.iaeste.iws.api.requests.student.FetchStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentsRequest;
 import net.iaeste.iws.api.requests.student.ProcessStudentApplicationsRequest;
@@ -39,6 +37,8 @@ import net.iaeste.iws.api.responses.student.StudentApplicationResponse;
 import net.iaeste.iws.api.responses.student.StudentResponse;
 import net.iaeste.iws.api.util.DateTime;
 import net.iaeste.iws.common.configuration.Settings;
+import net.iaeste.iws.common.exceptions.NotImplementedException;
+import net.iaeste.iws.common.exceptions.VerificationException;
 import net.iaeste.iws.core.transformers.StorageTransformer;
 import net.iaeste.iws.core.transformers.ViewTransformer;
 import net.iaeste.iws.persistence.AccessDao;
@@ -511,85 +511,130 @@ public final class StudentService extends CommonService<StudentDao> {
     }
 
     private static void verifyOfferAcceptNewApplicationStatus(final OfferState offerState, final ApplicationStatus applicationStatus) {
+        final boolean allowChanges;
+
         switch (offerState) {
             case COMPLETED:
-                switch (applicationStatus) {
-                    case REJECTED:
-                    case CANCELLED:
-                        break;
-                    default:
-                        throw new VerificationException("Offer with status '" + offerState + "' does not accept new application status '" + applicationStatus + '\'');
-                }
+                allowChanges = checkStateNewStateForCompleted(applicationStatus);
                 break;
             case CLOSED:
-                switch (applicationStatus) {
-                    case REJECTED_BY_SENDING_COUNTRY:
-                        break;
-                    default:
-                        throw new VerificationException("Offer with status '" + offerState + "' does not accept new application status '" + applicationStatus + '\'');
-                }
+                allowChanges = applicationStatus == ApplicationStatus.REJECTED_BY_SENDING_COUNTRY;
+                break;
+            default:
+                allowChanges = true;
+        }
+
+        if (!allowChanges) {
+            throw new VerificationException("Offer with status '" + offerState + "' does not accept new application status '" + applicationStatus + '\'');
         }
     }
 
+    private static boolean checkStateNewStateForCompleted(final ApplicationStatus applicationStatus) {
+        final boolean result;
+
+        switch (applicationStatus) {
+            case REJECTED:
+            case CANCELLED:
+                result = true;
+                break;
+            default:
+                result = false;
+        }
+
+        return result;
+    }
+
     private static void verifyApplicationStatusTransition(final ApplicationStatus oldStatus, final ApplicationStatus newStatus) {
+        final boolean allowChanges;
+
         switch (oldStatus) {
             case ACCEPTED:
-                switch (newStatus) {
-                    case CANCELLED:
-                        break;
-                    default:
-                        throw new VerificationException("Unsupported transition from '" + oldStatus + "' to " + newStatus);
-                }
+                allowChanges = newStatus == ApplicationStatus.CANCELLED;
                 break;
             case APPLIED:
-                switch (newStatus) {
-                    case CANCELLED:
-                    case NOMINATED:
-                    case REJECTED_BY_SENDING_COUNTRY:
-                        break;
-                    default:
-                        throw new VerificationException("Unsupported transition from '" + oldStatus + "' to " + newStatus);
-                }
+                allowChanges = checkStateNewStateForApplied(newStatus);
                 break;
             case FORWARDED_TO_EMPLOYER:
-                switch (newStatus) {
-                    case ACCEPTED:
-                    case CANCELLED:
-                    case REJECTED:
-                        break;
-                    default:
-                        throw new VerificationException("Unsupported transition from '" + oldStatus + "' to " + newStatus);
-                }
+                allowChanges = checkStateNewStateForForwardedToEmployer(newStatus);
                 break;
             case REJECTED:
-                switch (newStatus) {
-                    case NOMINATED:
-                        break;
-                    default:
-                        throw new VerificationException("Unsupported transition from '" + oldStatus + "' to " + newStatus);
-                }
+                allowChanges = newStatus == ApplicationStatus.NOMINATED;
                 break;
             case CANCELLED:
-                switch (newStatus) {
-                    case APPLIED:
-                    case NOMINATED:
-                        break;
-                    default:
-                        throw new VerificationException("Unsupported transition from '" + oldStatus + "' to " + newStatus);
-                }
+                allowChanges = checkStateNewStateForCancelled(newStatus);
                 break;
             case NOMINATED:
-                switch (newStatus) {
-                    case CANCELLED:
-                    case FORWARDED_TO_EMPLOYER:
-                    case REJECTED:
-                        break;
-                    default:
-                        throw new VerificationException("Unsupported transition from '" + oldStatus + "' to " + newStatus);
-                }
+                allowChanges = checkStateNewStateForNominated(newStatus);
                 break;
             default:
                 throw new VerificationException("Unsupported Status '" + oldStatus + "'.");
         }
+
+        if (!allowChanges) {
+            throw new VerificationException("Unsupported transition from '" + oldStatus + "' to " + newStatus);
+        }
+    }
+
+    private static boolean checkStateNewStateForApplied(final ApplicationStatus newStatus) {
+        final boolean result;
+
+        switch (newStatus) {
+            case CANCELLED:
+            case NOMINATED:
+            case REJECTED_BY_SENDING_COUNTRY:
+                result = true;
+                break;
+            default:
+                result = false;
+        }
+
+        return result;
+    }
+
+    private static boolean checkStateNewStateForForwardedToEmployer(final ApplicationStatus newStatus) {
+        final boolean result;
+
+        switch (newStatus) {
+            case ACCEPTED:
+            case CANCELLED:
+            case REJECTED:
+                result = true;
+                break;
+            default:
+                result = false;
+        }
+
+        return result;
+    }
+
+    private static boolean checkStateNewStateForCancelled(final ApplicationStatus newStatus) {
+        final boolean result;
+
+        switch (newStatus) {
+            case APPLIED:
+            case NOMINATED:
+                result = true;
+                break;
+            default:
+                result = false;
+        }
+
+        return result;
+    }
+
+    private static boolean checkStateNewStateForNominated(final ApplicationStatus newStatus) {
+        final boolean result;
+
+        switch (newStatus) {
+            case CANCELLED:
+            case FORWARDED_TO_EMPLOYER:
+            case REJECTED:
+                result = true;
+                break;
+            default:
+                result = false;
+        }
+
+        return result;
     }
 }

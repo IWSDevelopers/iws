@@ -117,7 +117,7 @@ public class CommonService<T extends BasicDao> {
      * @return Newly created {@code UserEntity} Object
      * @throws IWSException if unable to create the user
      */
-    protected UserEntity createAndPersistUserEntity(final Authentication authentication, final String username, final String password, final String firstname, final String lastname, final boolean studentAccount) throws IWSException {
+    UserEntity createAndPersistUserEntity(final Authentication authentication, final String username, final String password, final String firstname, final String lastname, final boolean studentAccount) {
         final UserEntity user = new UserEntity();
 
         // First, the Password. If no password is specified, then we'll generate
@@ -147,7 +147,7 @@ public class CommonService<T extends BasicDao> {
         return user;
     }
 
-    protected String generateUserAlias(final String firstname, final String lastname, final boolean studentAccount) throws IWSException {
+    String generateUserAlias(final String firstname, final String lastname, final boolean studentAccount) {
         String alias = null;
 
         if (!studentAccount) {
@@ -172,7 +172,7 @@ public class CommonService<T extends BasicDao> {
      * @param authentication User Authentication information
      * @return Empty {@code PersonEntity}
      */
-    protected PersonEntity createEmptyPerson(final Authentication authentication) {
+    PersonEntity createEmptyPerson(final Authentication authentication) {
         // Create & Persist the Person Entity
         final PersonEntity person = new PersonEntity();
         person.setAddress(createEmptyAddress(authentication));
@@ -184,7 +184,7 @@ public class CommonService<T extends BasicDao> {
         return person;
     }
 
-    protected GroupEntity createAndPersistPrivateGroup(final UserEntity user) {
+    GroupEntity createAndPersistPrivateGroup(final UserEntity user) {
         final GroupEntity group = new GroupEntity();
         final GroupType type = GroupType.PRIVATE;
 
@@ -212,7 +212,7 @@ public class CommonService<T extends BasicDao> {
      * @param persons        Optional Person information, for updates
      * @return The persists {@code PersonEntity}
      */
-    protected PersonEntity processPerson(final Authentication authentication, final PersonEntity entity, final Person... persons) {
+    PersonEntity processPerson(final Authentication authentication, final PersonEntity entity, final Person... persons) {
         final Person person = getFirstObject(persons);
         final PersonEntity newEntity = CommonTransformer.transform(person);
         PersonEntity persisted = null;
@@ -246,7 +246,7 @@ public class CommonService<T extends BasicDao> {
      *
      * @param person {@code PersonEntity} to delete
      */
-    protected void deletePerson(final PersonEntity person) {
+    void deletePerson(final PersonEntity person) {
         if (person != null) {
             deleteAddress(person.getAddress());
             dao.delete(person);
@@ -263,7 +263,7 @@ public class CommonService<T extends BasicDao> {
      * @param authentication User Authentication information
      * @return Empty {@code AddressEntity}
      */
-    protected AddressEntity createEmptyAddress(final Authentication authentication) {
+    private AddressEntity createEmptyAddress(final Authentication authentication) {
         // Create & Persist the Address Entity
         final AddressEntity address = new AddressEntity();
 
@@ -288,7 +288,7 @@ public class CommonService<T extends BasicDao> {
      * @param addresses      Optional Address information, for updates
      * @return Persisted Address Entity
      */
-    protected AddressEntity processAddress(final Authentication authentication, final AddressEntity entity, final Address... addresses) {
+    AddressEntity processAddress(final Authentication authentication, final AddressEntity entity, final Address... addresses) {
         final AddressEntity newEntity = CommonTransformer.transform(getFirstObject(addresses));
         AddressEntity persisted = null;
 
@@ -327,7 +327,7 @@ public class CommonService<T extends BasicDao> {
      *
      * @param address {@code AddressEntity} to delete
      */
-    protected void deleteAddress(final AddressEntity address) {
+    private void deleteAddress(final AddressEntity address) {
         if (address != null) {
             dao.delete(address);
         }
@@ -366,28 +366,13 @@ public class CommonService<T extends BasicDao> {
      * @param originalOffer Offer to Cleanup
      * @return Cleaned Offer
      */
-    public static Offer cleanOfferLanguage(final Offer originalOffer) {
+    static Offer cleanOfferLanguage(final Offer originalOffer) {
         final Offer offer = new Offer(originalOffer);
 
         // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
         // Part 1: Removing data that makes no sense:
         // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-
-        // If the language2 is missing, then language3 cannot be set and neither
-        // can any of the other fields.
-        if (offer.getLanguage2() == null) {
-            offer.setLanguage1Operator(null);
-            offer.setLanguage2Level(null);
-            offer.setLanguage2Operator(null);
-            offer.setLanguage3(null);
-            offer.setLanguage3Level(null);
-        }
-
-        // If the language3 is missing, then the Language Level cannot be set
-        if (offer.getLanguage3() == null) {
-            offer.setLanguage2Operator(null);
-            offer.setLanguage3Level(null);
-        }
+        removeOfferLanguageNonsense(offer);
 
         // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
         // Part 2: Filling missing data to complete Offer:
@@ -424,11 +409,29 @@ public class CommonService<T extends BasicDao> {
         return offer;
     }
 
+    private static void removeOfferLanguageNonsense(final Offer offer) {
+        // If the language2 is missing, then language3 cannot be set and neither
+        // can any of the other fields.
+        if (offer.getLanguage2() == null) {
+            offer.setLanguage1Operator(null);
+            offer.setLanguage2Level(null);
+            offer.setLanguage2Operator(null);
+            offer.setLanguage3(null);
+            offer.setLanguage3Level(null);
+        }
+
+        // If the language3 is missing, then the Language Level cannot be set
+        if (offer.getLanguage3() == null) {
+            offer.setLanguage2Operator(null);
+            offer.setLanguage3Level(null);
+        }
+    }
+
     // =========================================================================
     // Common Attachment Methods
     // =========================================================================
 
-    protected FileEntity processFile(final Authentication authentication, final File file, final FolderEntity... folder) {
+    FileEntity processFile(final Authentication authentication, final File file, final FolderEntity... folder) {
         final String externalId = file.getFileId();
         final byte[] data = file.getFiledata();
         final FileEntity entity;
@@ -472,7 +475,7 @@ public class CommonService<T extends BasicDao> {
         return entity;
     }
 
-    protected byte[] readFile(final FileEntity entity) {
+    byte[] readFile(final FileEntity entity) {
         final byte[] bytes = readFileFromSystem(entity.getStoredFilename());
 
         if (calculateChecksum(bytes) != entity.getChecksum()) {
@@ -482,7 +485,7 @@ public class CommonService<T extends BasicDao> {
         return bytes;
     }
 
-    protected void deleteFile(final Authentication authentication, final File file, final StorageType type) {
+    void deleteFile(final Authentication authentication, final File file, final StorageType type) {
         final FileEntity entity;
         if (type == StorageType.ATTACHED_TO_APPLICATION) {
             entity = dao.findAttachedFileByUserAndExternalId(authentication.getGroup(), file.getFileId());
@@ -561,7 +564,7 @@ public class CommonService<T extends BasicDao> {
 
     private void checkDirectoryExistsOrCreate(final String fileWithPartialPath) {
         final String dir = fileWithPartialPath.substring(0, fileWithPartialPath.indexOf('/'));
-        final String systemPath = settings.getRootFilePath() + '/' + dir + '/';//"/name";
+        final String systemPath = settings.getRootFilePath() + '/' + dir + '/';
         final java.io.File file = new java.io.File(systemPath);
 
         if (!file.exists()) {
@@ -597,7 +600,7 @@ public class CommonService<T extends BasicDao> {
      * @param authentication Authentication Object
      * @param group          The group to check if the user is in
      */
-    protected void permissionCheck(final Authentication authentication, final GroupEntity group) {
+    void permissionCheck(final Authentication authentication, final GroupEntity group) {
         if (!authentication.getGroup().getId().equals(group.getId())) {
             throw new PermissionException("User is not member of the group " + group.getGroupName());
         }

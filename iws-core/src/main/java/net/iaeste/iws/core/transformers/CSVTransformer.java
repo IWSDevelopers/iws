@@ -53,7 +53,7 @@ import java.util.regex.Pattern;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.1
  */
-public final class CSVTransformer {
+final class CSVTransformer {
 
     private static final Logger LOG = LoggerFactory.getLogger(CSVTransformer.class);
 
@@ -65,11 +65,11 @@ public final class CSVTransformer {
     private CSVTransformer() {
     }
 
-    public static void transformString(final Map<String, String> errors, final Verifiable obj, final OfferFields field, final CSVRecord record) {
+    static void transformString(final Map<String, String> errors, final Verifiable obj, final OfferFields field, final CSVRecord record) {
         invokeMethodOnObject(errors, obj, field, record.get(field.getField()));
     }
 
-    public static void transformBoolean(final Map<String, String> errors, final Verifiable obj, final OfferFields field, final CSVRecord record) {
+    static void transformBoolean(final Map<String, String> errors, final Verifiable obj, final OfferFields field, final CSVRecord record) {
         final String value = record.get(field.getField());
 
         if ((value != null) && !value.isEmpty()) {
@@ -77,7 +77,7 @@ public final class CSVTransformer {
         }
     }
 
-    public static void transformInteger(final Map<String, String> errors, final Verifiable obj, final OfferFields field, final CSVRecord record) {
+    static void transformInteger(final Map<String, String> errors, final Verifiable obj, final OfferFields field, final CSVRecord record) {
         final String value = record.get(field.getField());
 
         if ((value != null) && !value.isEmpty()) {
@@ -91,7 +91,7 @@ public final class CSVTransformer {
         }
     }
 
-    public static void transformBigDecimal(final Map<String, String> errors, final Verifiable obj, final OfferFields field, final CSVRecord record) {
+    static void transformBigDecimal(final Map<String, String> errors, final Verifiable obj, final OfferFields field, final CSVRecord record) {
         final String value = record.get(field.getField());
 
         if ((value != null) && !value.isEmpty()) {
@@ -105,7 +105,7 @@ public final class CSVTransformer {
         }
     }
 
-    public static void transformFloat(final Map<String, String> errors, final Verifiable obj, final OfferFields field, final CSVRecord record) {
+    static void transformFloat(final Map<String, String> errors, final Verifiable obj, final OfferFields field, final CSVRecord record) {
         final String value = record.get(field.getField());
 
         if ((value != null) && !value.isEmpty()) {
@@ -119,12 +119,12 @@ public final class CSVTransformer {
         }
     }
 
-    public static void transformDate(final Map<String, String> errors, final Verifiable obj, final OfferFields field, final CSVRecord record) {
+    static void transformDate(final Map<String, String> errors, final Verifiable obj, final OfferFields field, final CSVRecord record) {
         final Date date = convertDate(errors, field, record);
         invokeMethodOnObject(errors, obj, field, date);
     }
 
-    public static void transformDatePeriod(final Map<String, String> errors, final Verifiable obj, final OfferFields startField, final OfferFields endField, final CSVRecord record) {
+    static void transformDatePeriod(final Map<String, String> errors, final Verifiable obj, final OfferFields startField, final OfferFields endField, final CSVRecord record) {
         final Date from = convertDate(errors, startField, record);
         final Date to = convertDate(errors, endField, record);
 
@@ -139,7 +139,7 @@ public final class CSVTransformer {
         }
     }
 
-    public static <T extends Enum<T>> void transformEnum(final Map<String, String> errors, final Verifiable obj, final OfferFields field, final CSVRecord record, final Class<T> enumType) {
+    static <T extends Enum<T>> void transformEnum(final Map<String, String> errors, final Verifiable obj, final OfferFields field, final CSVRecord record, final Class<T> enumType) {
         final String value = record.get(field.getField());
 
         if ((value != null) && !value.isEmpty()) {
@@ -153,7 +153,7 @@ public final class CSVTransformer {
         }
     }
 
-    public static <E extends Enum<E> & Descriptable<E>> void transformDescriptableEnumSet(final Map<String, String> errors, final Verifiable obj, final OfferFields field, final CSVRecord record, final Class<E> enumType) {
+    static <E extends Enum<E> & Descriptable<E>> void transformDescriptableEnumSet(final Map<String, String> errors, final Verifiable obj, final OfferFields field, final CSVRecord record, final Class<E> enumType) {
         final String value = record.get(field.getField());
 
         if ((value != null) && !value.isEmpty()) {
@@ -167,7 +167,7 @@ public final class CSVTransformer {
         }
     }
 
-    public static <E extends Enum<E> & Descriptable<E>> void transformDescriptableEnum(final Map<String, String> errors, final Verifiable obj, final OfferFields field, final CSVRecord record, final Class<E> enumType) {
+    static <E extends Enum<E> & Descriptable<E>> void transformDescriptableEnum(final Map<String, String> errors, final Verifiable obj, final OfferFields field, final CSVRecord record, final Class<E> enumType) {
         final String value = record.get(field.getField());
 
         if ((value != null) && !value.isEmpty()) {
@@ -181,7 +181,7 @@ public final class CSVTransformer {
         }
     }
 
-    public static void transformStringSet(final Map<String, String> errors, final Verifiable obj, final OfferFields field, final CSVRecord record) {
+    static void transformStringSet(final Map<String, String> errors, final Verifiable obj, final OfferFields field, final CSVRecord record) {
         final String value = record.get(field.getField());
         final String parsedValue = PATTERN_UNWANTED_CHARACTERS.matcher(value).replaceAll(" ").trim();
 
@@ -189,7 +189,7 @@ public final class CSVTransformer {
         invokeMethodOnObject(errors, obj, field, set);
     }
 
-    public static void transformTypeOfWork(final Map<String, String> errors, final Verifiable obj, final OfferFields field, final CSVRecord record) {
+    static void transformTypeOfWork(final Map<String, String> errors, final Verifiable obj, final OfferFields field, final CSVRecord record) {
         final Boolean typeR = convertBoolean(record.get(OfferFields.WORK_TYPE_P.getField()));
         final Boolean typeO = convertBoolean(record.get(OfferFields.WORK_TYPE_R.getField()));
         final Boolean typeF = convertBoolean(record.get(OfferFields.WORK_TYPE_W.getField()));
@@ -217,7 +217,7 @@ public final class CSVTransformer {
         }
     }
 
-    public static void transformStudyLevels(final Map<String, String> errors, final Verifiable obj, final OfferFields field, final CSVRecord record) {
+    static void transformStudyLevels(final Map<String, String> errors, final Verifiable obj, final OfferFields field, final CSVRecord record) {
         final Set<StudyLevel> value = EnumSet.noneOf(StudyLevel.class);
         final Boolean beginning = convertBoolean(record.get(STUDY_COMPLETED_BEGINNING.getField()));
         final Boolean middle = convertBoolean(record.get(STUDY_COMPLETED_MIDDLE.getField()));
@@ -248,7 +248,7 @@ public final class CSVTransformer {
         return "yes".equals(toLower(value));
     }
 
-    private static Date convertDate(final Map<String, String> errors, final OfferFields field, final CSVRecord record) throws IllegalArgumentException {
+    private static Date convertDate(final Map<String, String> errors, final OfferFields field, final CSVRecord record) {
         final String value = record.get(field.getField());
         Date result = null;
 
@@ -279,7 +279,7 @@ public final class CSVTransformer {
      * @param args   Arguments to the Setter
      * @throws IWSException If a Reflection Error occurred.
      */
-    private static <O extends Verifiable> void invokeMethodOnObject(final Map<String, String> errors, final O obj, final OfferFields field, final Object... args) throws IWSException {
+    private static <O extends Verifiable> void invokeMethodOnObject(final Map<String, String> errors, final O obj, final OfferFields field, final Object... args) {
         if ((field.getMethod() != null) && field.useField(OfferFields.Type.DOMESTIC)) {
             try {
                 final Method implementation = obj.getClass().getMethod(field.getMethod(), field.getArgumentClasses());

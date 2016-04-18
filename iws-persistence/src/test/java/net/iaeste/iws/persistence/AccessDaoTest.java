@@ -39,7 +39,6 @@ import javax.persistence.PersistenceContext;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.UUID;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -48,18 +47,11 @@ import java.util.UUID;
  */
 @Transactional
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = { SpringConfig.class })
+@ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = SpringConfig.class)
 public class AccessDaoTest {
 
     @PersistenceContext
     private EntityManager entityManager;
-
-    @Test
-    public void testcreateUUID() {
-        System.out.println(UUID.randomUUID());
-        System.out.println(UUID.randomUUID());
-        System.out.println(UUID.randomUUID());
-    }
 
     @Test
     @Transactional
@@ -74,7 +66,7 @@ public class AccessDaoTest {
         entity.setUser(user);
         dao.persist(entity);
 
-        DateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmssSSS", IWSConstants.DEFAULT_LOCALE);
+        final DateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmssSSS", IWSConstants.DEFAULT_LOCALE);
 
         // Find the newly created Session, deprecate it, and save it again
         final SessionEntity found = dao.findActiveSession(user);

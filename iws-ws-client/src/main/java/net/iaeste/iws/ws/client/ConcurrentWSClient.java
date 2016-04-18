@@ -53,7 +53,7 @@ import java.util.concurrent.Future;
 
 /**
  * Concurrent WS Client, which will will run with requests from all Committees
- * spread over n threads.
+ * spread over n THREADS.
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -70,7 +70,7 @@ public final class ConcurrentWSClient implements Runnable {
      * <p>Default value is 5, which is a fairly low number yet - high enough
      * to keep the IWS busy.</p>
      */
-    private static final int threads = 3;
+    private static final int THREADS = 3;
 
     /**
      * <p>The IWS Host, is the server where IWS is currently running, including
@@ -81,7 +81,7 @@ public final class ConcurrentWSClient implements Runnable {
      *   <li><b>https://iws.iaeste.net:9443</b> <i>for the production IWS instance.</i></li>
      * </ul>
      */
-    private static final String iwsHost = "http://localhost:9080";
+    private static final String IWS_HOST = "http://localhost:9080";
 
     /**
      * <p>The test will iterate over a number of Exchange Years. The Exchange
@@ -89,13 +89,13 @@ public final class ConcurrentWSClient implements Runnable {
      * registered is 2005, but to reduce the test, a later year can also be
      * chosen.</p>
      */
-    private static final int startYear = 2015;
+    private static final int START_YEAR = 2015;
 
     /**
      * <p>The last Exchange Year to use, by default it is set to the
      * current, using the API Exchange Year Calculator.</p>
      */
-    private static final int endYear = Verifications.calculateExchangeYear();
+    private static final int EXCHANGE_YEAR = Verifications.calculateExchangeYear();
 
     /**
      * <p>This is a list of All National Secretaries order by the number of
@@ -128,6 +128,16 @@ public final class ConcurrentWSClient implements Runnable {
             "hafizal@usm.my", "pnavarrete@corparaucania.cl", "guramsologashvili@yahoo.co.uk"
     };
 
+    private static final Logger LOG = LoggerFactory.getLogger(ConcurrentWSClient.class);
+    private final Object lock = new Object();
+
+    private final String host;
+    private final String username;
+    private final String password;
+
+    private Access access = null;
+    private Exchange exchange = null;
+
     /**
      * <p>Concurrent main method, which will iterate over the list of users
      * provided, and for each user, retrieve offers from all registered Exchange
@@ -139,13 +149,13 @@ public final class ConcurrentWSClient implements Runnable {
      * @param args Command Line Parameters
      */
     public static void main(final String[] args) throws InterruptedException {
-        LOG.info("Starting {} threads concurrently to process the Offers for {} users from {} until {}.", threads, users.length, startYear, endYear);
+        LOG.info("Starting {} THREADS concurrently to process the Offers for {} users from {} until {}.", THREADS, users.length, START_YEAR, EXCHANGE_YEAR);
         final long startTime = System.nanoTime();
 
-        final ExecutorService executor = Executors.newFixedThreadPool(threads);
+        final ExecutorService executor = Executors.newFixedThreadPool(THREADS);
         final List<Callable<Object>> jobs = new ArrayList<>(users.length);
         for (final String username : users) {
-            final ConcurrentWSClient client = new ConcurrentWSClient(iwsHost, username, "faked");
+            final ConcurrentWSClient client = new ConcurrentWSClient(IWS_HOST, username, "faked");
             jobs.add(Executors.callable(client));
         }
         final List<Future<Object>> result = executor.invokeAll(jobs);
@@ -153,21 +163,12 @@ public final class ConcurrentWSClient implements Runnable {
 
         final DecimalFormat format = new DecimalFormat("###,###.##");
         final String duration = format.format((double) (System.nanoTime() - startTime) / 60000000000L);
-        LOG.info("Completed concurrent processing of Offers with {} threads in {} minutes.", result.size(), duration);
+        LOG.info("Completed concurrent processing of Offers with {} THREADS in {} minutes.", result.size(), duration);
     }
 
     // =========================================================================
     // Constants, Settings and Constructor
     // =========================================================================
-
-    private static final Logger LOG = LoggerFactory.getLogger(ConcurrentWSClient.class);
-    private final Object lock = new Object();
-    private final String host;
-    private final String username;
-    private final String password;
-
-    private Access access = null;
-    private Exchange exchange = null;
 
     /**
      * <p>Concurrent Constructor, takes the Host & Port for the IWS WebService,
@@ -179,7 +180,7 @@ public final class ConcurrentWSClient implements Runnable {
      * @param username Username for the User to access
      * @param password Password for the User
      */
-    public ConcurrentWSClient(final String host, final String username, final String password) {
+    private ConcurrentWSClient(final String host, final String username, final String password) {
         this.host = host;
         this.username = username;
         this.password = password;
@@ -204,7 +205,7 @@ public final class ConcurrentWSClient implements Runnable {
                 final Group member = findGroupByType(permissionResponse, GroupType.MEMBER);
 
                 // Iterate over the Exchange Years
-                for (int i = startYear; i <= endYear; i++) {
+                for (int i = START_YEAR; i <= EXCHANGE_YEAR; i++) {
                     LOG.debug("Start iterating over Exchange Year {} for Group '{}'.", i, member.getCommitteeName());
                     final FetchOffersResponse domestic = fetchOffers(token, FetchType.DOMESTIC, i);
                     final FetchOffersResponse shared = fetchOffers(token, FetchType.SHARED, i);

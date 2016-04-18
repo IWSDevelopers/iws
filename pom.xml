@@ -26,6 +26,11 @@
       <connection>scm:git:https://github.com/IWSDevelopers/iws.git</connection>
     </scm>
 
+    <issueManagement>
+        <system>GitHub Issues</system>
+        <url>https://github.com/IWSDevelopers/iws/issues</url>
+    </issueManagement>
+
     <developers>
         <developer>
             <id>kim</id>

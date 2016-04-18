@@ -185,7 +185,7 @@ public final class AccountService extends CommonService<AccessDao> {
 
         // By default, users are not allowed to be on neither the public nor
         // private mailing lists. We're therefore checking if it is a Student
-        // account we're generating and forcing an update accordling
+        // account we're generating and forcing an update accordingly
         if (isStudent) {
             userGroup.setOnPublicList(false);
             userGroup.setOnPrivateList(false);
@@ -207,7 +207,7 @@ public final class AccountService extends CommonService<AccessDao> {
      *   If everything went well, then the user can start accessing the account,
      * directly after the activation.
      *
-     * @param activationString Hashvalue of the activation String
+     * @param activationString Hash value of the activation String
      */
     public void activateUser(final String activationString) {
         final UserEntity user = dao.findNewUserByCode(activationString);
@@ -342,7 +342,7 @@ public final class AccountService extends CommonService<AccessDao> {
     public FetchUserResponse fetchUser(final Authentication authentication, final FetchUserRequest request) {
         final String externalId = authentication.getUser().getExternalId();
         final String userId = request.getUserId();
-        final User user;
+        User user = null;
 
         if (userId.equals(externalId)) {
             // The user itself
@@ -364,11 +364,8 @@ public final class AccountService extends CommonService<AccessDao> {
                 // meaning that if a user has set this, then the user's private
                 // or personal data may not be displayed
                 if (user.getPrivacy() == Privacy.PRIVATE) {
-                    //user.setNotifications(null);
                     user.setPerson(null);
                 }
-            } else {
-                user = null;
             }
         }
 
@@ -487,24 +484,32 @@ public final class AccountService extends CommonService<AccessDao> {
                     throw new IWSException(IWSErrors.PROCESSING_FAILURE, "Illegal User state change.");
                 case ACTIVE:
                 case SUSPENDED:
-                    if (current != UserStatus.DELETED) {
-                        user.setStatus(newStatus);
-                        user.setModified(new Date());
-                        dao.persist(authentication, user);
-                        notifications.notify(authentication, user, findNotificationType(newStatus));
-                        LOG.info("Changed status for {} to {}.", user, newStatus);
-                    } else {
-                        throw new IWSException(IWSErrors.PROCESSING_FAILURE, "Cannot revive a deleted user, please create a new Account.");
-                    }
+                    checkAndUpdateStatusForSuspendedUser(authentication, user, current, newStatus);
                     break;
                 case DELETED:
                     deletePrivateData(authentication, user);
                     LOG.info("Deleting private data from {}.", user);
                     break;
+                default:
+                    // Although all cases have been covered, if we ever add
+                    // more, then it should lead to an error.
+                    throw new IWSException(IWSErrors.ILLEGAL_ACTION, "Unsupported State Change.");
             }
         } else if (newStatus == UserStatus.DELETED) {
             deleteNewUser(user);
-            LOG.info("Deleting new Account for {}.", user, newStatus);
+            LOG.info("Deleting new Account for {}.", user);
+        }
+    }
+
+    private void checkAndUpdateStatusForSuspendedUser(final Authentication authentication, final UserEntity user, final UserStatus current, final UserStatus newStatus) {
+        if (current != UserStatus.DELETED) {
+            user.setStatus(newStatus);
+            user.setModified(new Date());
+            dao.persist(authentication, user);
+            notifications.notify(authentication, user, findNotificationType(newStatus));
+            LOG.info("Changed status for {} to {}.", user, newStatus);
+        } else {
+            throw new IWSException(IWSErrors.PROCESSING_FAILURE, "Cannot revive a deleted user, please create a new Account.");
         }
     }
 
@@ -558,7 +563,7 @@ public final class AccountService extends CommonService<AccessDao> {
         }
     }
 
-    private NotificationType findNotificationType(final UserStatus status) {
+    private static NotificationType findNotificationType(final UserStatus status) {
         final NotificationType type;
 
         switch (status) {
@@ -632,9 +637,9 @@ public final class AccountService extends CommonService<AccessDao> {
         user.setCode(null);
         // We remove the Username from the account as well, since it may
         // otherwise block if the user later on create a new Account. A
-        // deleted account should remaing deleted - and we do not wish to
+        // deleted account should remaining deleted - and we do not wish to
         // drop the Unique Constraint in the database.
-        user.setUsername(UUID.randomUUID() + "@iaeste.com");
+        user.setUsername(UUID.randomUUID() + "@deleted.now");
         user.setPassword(null);
         user.setSalt(null);
         user.setPerson(null);
@@ -669,13 +674,6 @@ public final class AccountService extends CommonService<AccessDao> {
         for (final UserGroupEntity entity : userGroups) {
             final GroupType type = entity.getGroup().getGroupType().getGrouptype();
             switch (type) {
-                case PRIVATE:
-                case LOCAL:
-                case WORKGROUP:
-                case STUDENT:
-                    // We allow that Users who are currently owner of any of
-                    // these type can be deleted. Hence, we break here
-                    break;
                 case ADMINISTRATION:
                 case INTERNATIONAL:
                 case NATIONAL:
@@ -683,6 +681,10 @@ public final class AccountService extends CommonService<AccessDao> {
                     if ((entity.getRole().getId() == InternalConstants.ROLE_OWNER) && (entity.getGroup().getStatus() == GroupStatus.ACTIVE)) {
                         throw new IWSException(IWSErrors.PROCESSING_FAILURE, "Users who are currently the Owner of a Group with type '" + type.getDescription() + "', cannot be deleted.");
                     }
+                    break;
+                default:
+                    // We allow that Users who are currently owner of any type
+                    // to be deleted.
             }
         }
 

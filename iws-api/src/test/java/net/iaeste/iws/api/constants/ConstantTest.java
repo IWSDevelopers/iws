@@ -82,6 +82,9 @@ public final class ConstantTest {
         assertThat(IWSConstants.EMAIL_PATTERN.matcher("Monika.KUMMEL@ensam.eu").matches(), is(true));
         // Testing e-mail change which was requested by the Board on 2014-05-19
         assertThat(IWSConstants.EMAIL_PATTERN.matcher("Lorna.O'Kane@britishcouncil.org").matches(), is(true));
+        // To protect user privacy, the e-mail address is being updated to
+        // uuid @ deleted.now.
+        assertThat(IWSConstants.EMAIL_PATTERN.matcher("someone@deleted.now").matches(), is(true));
     }
 
     /**
@@ -105,7 +108,7 @@ public final class ConstantTest {
         assertThat(IWSConstants.EMAIL_PATTERN.matcher("this is\"not\\allowed@example.com").matches(), is(false));
         // (even if escaped (preceded by a backslash), spaces, quotes, and backslashes must still be contained by quotes)
         assertThat(IWSConstants.EMAIL_PATTERN.matcher("this\\ still\\\"not\\allowed@example.com").matches(), is(false));
-        // (top-level domain following up a dot require minimum two alphabetic characters (ISO_3166-1_alpha-2 code), for Brazil e.g. it must be br according to ISO 3166-1).
+        // (top-level domains following up a dot requires minimum two alphabetic characters (ISO_3166-1_alpha-2 code), for Brazil e.g. it must be br according to ISO 3166-1).
         assertThat(IWSConstants.EMAIL_PATTERN.matcher("email@brazil.b").matches(), is(false));
     }
 }

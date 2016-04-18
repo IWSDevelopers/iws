@@ -23,6 +23,12 @@ import org.slf4j.LoggerFactory;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 /**
+ * When an Integer value which is null and is allowed to be null is coming in
+ * via a SOAP WebService request, then the default handling is throwing a
+ * {@code NumberFormatException}, which for a value that is allowed to be null
+ * is bad. This Adapter will ensure that any such information is logged and a
+ * usable value (null) is returned.
+ *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.2

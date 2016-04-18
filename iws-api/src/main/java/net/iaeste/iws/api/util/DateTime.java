@@ -56,7 +56,7 @@ public final class DateTime implements Serializable, Comparable<DateTime> {
      * a problem when it comes to WebServices, so instead the internal Date
      * representation is based on the standard Java Date Class.
      */
-    @XmlElement(required = true, nillable = false)
+    @XmlElement(required = true)
     private final java.util.Date timestamp;
 
     /**

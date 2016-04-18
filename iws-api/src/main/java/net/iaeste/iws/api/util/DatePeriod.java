@@ -42,8 +42,8 @@ public final class DatePeriod extends Verifications {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    @XmlElement(required = true, nillable = false) private Date fromDate = null;
-    @XmlElement(required = true, nillable = false) private Date toDate = null;
+    @XmlElement(required = true) private Date fromDate = null;
+    @XmlElement(required = true) private Date toDate = null;
 
     // =========================================================================
     // Object Constructors

@@ -125,7 +125,7 @@ public abstract class Verifications implements Verifiable {
      * @param <S> The Set type
      * @return Immutable version of the Set
      */
-    public static <S> Set<S> immutableSet(final Set<S> set) {
+    protected static <S> Set<S> immutableSet(final Set<S> set) {
         return (set != null) ? Collections.unmodifiableSet(set) : null;
     }
 
@@ -217,7 +217,7 @@ public abstract class Verifications implements Verifiable {
      * @param value The value for the field
      * @throws IllegalArgumentException if the value is empty
      */
-    protected static void ensureNotEmpty(final String field, final Collection<?> value) {
+    private static void ensureNotEmpty(final String field, final Collection<?> value) {
         if ((value != null) && value.isEmpty()) {
             throw new IllegalArgumentException(format(ERROR_NOT_EMPTY, field));
         }
@@ -446,7 +446,7 @@ public abstract class Verifications implements Verifiable {
      * @param length The exact length of the field
      * @throws IllegalArgumentException if the value is not the exact length
      */
-    protected static void ensureExactLength(final String field, final String value, final int length) {
+    private static void ensureExactLength(final String field, final String value, final int length) {
         if ((value != null) && (value.length() != length)) {
             throw new IllegalArgumentException(format(ERROR_NOT_EXACT_LENGTH, field, length));
         }
@@ -462,7 +462,7 @@ public abstract class Verifications implements Verifiable {
      * @param <T>     The Number type
      * @throws IllegalArgumentException if the value is too small
      */
-    protected static <T extends Number> void ensureMinimum(final String field, final T value, final T minimum) {
+    private static <T extends Number> void ensureMinimum(final String field, final T value, final T minimum) {
         if ((value != null) && (value.doubleValue() < minimum.doubleValue())) {
             throw new IllegalArgumentException(format(ERROR_MINIMUM_VALUE, field, minimum));
         }
@@ -570,7 +570,7 @@ public abstract class Verifications implements Verifiable {
      * @param value The value of the Identifier
      * @throws IllegalArgumentException if the value is not a valid identifier
      */
-    protected static void ensureValidIdentifier(final String field, final String value) {
+    private static void ensureValidIdentifier(final String field, final String value) {
         if ((value != null) && !(UUID_PATTERN.matcher(value).matches() || REFNO_PATTERN.matcher(value).matches())) {
             throw new IllegalArgumentException(format(ERROR_INVALID_IDENTIFIER, field));
         }
@@ -647,7 +647,7 @@ public abstract class Verifications implements Verifiable {
         ensureValidEmail(field, value);
     }
 
-    protected static void ensureValidRefno(final String refno) {
+    private static void ensureValidRefno(final String refno) {
         if (!REFNO_PATTERN.matcher(refno).matches()) {
             throw new IllegalArgumentException(format(ERROR_INVALID_REFNO, refno));
         }
@@ -797,7 +797,7 @@ public abstract class Verifications implements Verifiable {
      * @param field        The name of the field to add error
      * @param errorMessage The error message for the field
      */
-    protected static void addError(final Map<String, String> validation, final String field, final String errorMessage) {
+    private static void addError(final Map<String, String> validation, final String field, final String errorMessage) {
         final String message;
 
         if (validation.containsKey(field)) {

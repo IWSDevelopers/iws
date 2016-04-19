@@ -61,6 +61,8 @@ import java.util.concurrent.Future;
  */
 public final class ConcurrentWSClient implements Runnable {
 
+    private static final Logger LOG = LoggerFactory.getLogger(ConcurrentWSClient.class);
+
     /**
      * <p>The number of Threads to run with in parallel. The Job Queue will
      * contain all the National Secretaries (see below), but only n of these
@@ -70,7 +72,7 @@ public final class ConcurrentWSClient implements Runnable {
      * <p>Default value is 5, which is a fairly low number yet - high enough
      * to keep the IWS busy.</p>
      */
-    private static final int THREADS = 3;
+    private static final int THREADS = 5;
 
     /**
      * <p>The IWS Host, is the server where IWS is currently running, including
@@ -89,7 +91,7 @@ public final class ConcurrentWSClient implements Runnable {
      * registered is 2005, but to reduce the test, a later year can also be
      * chosen.</p>
      */
-    private static final int START_YEAR = 2015;
+    private static final int START_YEAR = 2005;
 
     /**
      * <p>The last Exchange Year to use, by default it is set to the
@@ -107,7 +109,7 @@ public final class ConcurrentWSClient implements Runnable {
      * <p>The list was compiled on May 1st, 2015.</p>
      */
     private static final String[] users = {
-            "mueller-graetschel@daad.de", "nationalsecretary@iaeste.in", "anna.jerzak@iaeste.pl", "pprado@abipe.org.br", "iaeste.turkiye@gmail.com",
+            "pankau@daad.de", "nationalsecretary@iaeste.in", "anna.jerzak@iaeste.pl", "pprado@abipe.org.br", "iaeste.turkiye@gmail.com",
             "sabine.lenz@office.iaeste.ch", "iaestesp@upvnet.upv.es", "lukas.schwendinger@iaeste.at", "iaeste@tmf.bg.ac.rs", "richard.wu@iaeste-china.org",
             "iaeste.tunisia@gmail.com", "wendy.waring@britishcouncil.org", "vaclav.pavlik@iaeste.cz", "annelies.vermeir@ugent.be", "valentina.jovic1@gmail.com",
             "bernardbaeyens2@gmail.com", "szirmai.pal@iaeste.hu", "shekarch@ut.ac.ir", "stamenkov.filip@gmail.com", "iaestegh@yahoo.com",
@@ -128,7 +130,6 @@ public final class ConcurrentWSClient implements Runnable {
             "hafizal@usm.my", "pnavarrete@corparaucania.cl", "guramsologashvili@yahoo.co.uk"
     };
 
-    private static final Logger LOG = LoggerFactory.getLogger(ConcurrentWSClient.class);
     private final Object lock = new Object();
 
     private final String host;
@@ -137,6 +138,22 @@ public final class ConcurrentWSClient implements Runnable {
 
     private Access access = null;
     private Exchange exchange = null;
+
+    /**
+     * <p>Concurrent Constructor, takes the Host & Port for the IWS WebService,
+     * and additionally the User Credentials, and the Start/End years for the
+     * Offers to process.</p>
+     *   Production Hostname; https://iws.iaeste.net:9443
+     *
+     * @param host     Hostname (resolvable DNS record or IPv4) for the IWS instance
+     * @param username Username for the User to access
+     * @param password Password for the User
+     */
+    private ConcurrentWSClient(final String host, final String username, final String password) {
+        this.host = host;
+        this.username = username;
+        this.password = password;
+    }
 
     /**
      * <p>Concurrent main method, which will iterate over the list of users
@@ -169,22 +186,6 @@ public final class ConcurrentWSClient implements Runnable {
     // =========================================================================
     // Constants, Settings and Constructor
     // =========================================================================
-
-    /**
-     * <p>Concurrent Constructor, takes the Host & Port for the IWS WebService,
-     * and additionally the User Credentials, and the Start/End years for the
-     * Offers to process.</p>
-     *   Production Hostname; https://iws.iaeste.net:9443
-     *
-     * @param host     Hostname (resolvable DNS record or IPv4) for the IWS instance
-     * @param username Username for the User to access
-     * @param password Password for the User
-     */
-    private ConcurrentWSClient(final String host, final String username, final String password) {
-        this.host = host;
-        this.username = username;
-        this.password = password;
-    }
 
     /**
      * Runner Method, which will iterate over the Offers for the current User.

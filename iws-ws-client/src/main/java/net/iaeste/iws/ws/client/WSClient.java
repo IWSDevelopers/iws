@@ -63,8 +63,30 @@ public final class WSClient {
 
     private static final Logger LOG = LoggerFactory.getLogger(WSClient.class);
 
-    private static final String switzerland = "incoming@office.iaeste.ch";
-    private static final String germany = "pankau@daad.de";
+    // =========================================================================
+    // Constants, Settings and Constructor
+    // =========================================================================
+
+    private static final Object lock = new Object();
+    private final String host;
+
+    private Access access = null;
+    private Administration administration = null;
+    private Exchange exchange = null;
+
+    /**
+     * <p>Default Constructor, takes the Host Address of the server where IWS is
+     * currently running. The Host address can either be a resolvable DNS name
+     * for the server, or it can be the IPv4 Number for the Server. However, a
+     * second parameter is also required, the Port number where the IWS Service
+     * is made available.</p>
+     *   Production Hostname; https://iws.iaeste.net:9443
+     *
+     * @param host Hostname (resolvable DNS record or IPv4) for the IWS instance
+     */
+    private WSClient(final String host) {
+        this.host = host;
+    }
 
     /**
      * Simple Main method to allow invocation from Command Line. To demonstrate
@@ -76,7 +98,7 @@ public final class WSClient {
         final WSClient client = new WSClient("http://localhost:9080");
 
         // Before we can do anything, we first need to log in
-        final AuthenticationResponse authResponse = client.login(germany, "faked");
+        final AuthenticationResponse authResponse = client.login("pankau@daad.de", "faked");
 
         // If the login request was successful, then we can make further things
         if (authResponse.isOk()) {
@@ -94,7 +116,6 @@ public final class WSClient {
 
                 final OfferCSVDownloadResponse downloadResponse = client.downloadOffers(token, FetchType.DOMESTIC);
                 LOG.info("Offer CSV Download: {}.", downloadResponse.getMessage());
-                //Files.write(Paths.get(System.getProperty("java.io.tmpdir") + "/offers.csv"), downloadResponse.getData());
 
                 // Exchange related requests
                 LOG.info("Offer Statistics: {}.", client.fetchOfferStatistics(token).getMessage());
@@ -117,31 +138,6 @@ public final class WSClient {
                 LOG.info("DeprecateSession: {}.", client.deprecateSession(token).getMessage());
             }
         }
-    }
-
-    // =========================================================================
-    // Constants, Settings and Constructor
-    // =========================================================================
-
-    private static final Object lock = new Object();
-    private final String host;
-
-    private Access access = null;
-    private Administration administration = null;
-    private Exchange exchange = null;
-
-    /**
-     * <p>Default Constructor, takes the Host Address of the server where IWS is
-     * currently running. The Host address can either be a resolvable DNS name
-     * for the server, or it can be the IPv4 Number for the Server. However, a
-     * second parameter is also required, the Port number where the IWS Service
-     * is made available.</p>
-     *   Production Hostname; https://iws.iaeste.net:9443
-     *
-     * @param host Hostname (resolvable DNS record or IPv4) for the IWS instance
-     */
-    public WSClient(final String host) {
-        this.host = host;
     }
 
     // =========================================================================

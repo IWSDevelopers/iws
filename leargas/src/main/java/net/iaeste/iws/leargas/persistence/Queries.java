@@ -22,10 +22,7 @@ package net.iaeste.iws.leargas.persistence;
  * @version Leargas 1.0
  * @since   Java 1.8
  */
-public final class Queries {
-
-    /** Private Constructor, this is a Constants Class. */
-    private Queries() {}
+final class Queries {
 
     private static final String RAW_FIELD_LIST =
             "  ref_no," +
@@ -94,15 +91,15 @@ public final class Queries {
             "  nsfirst_name," +
             "  nslast_name";
 
-    public static final String OFFER_FIND =
+    static final String OFFER_FIND =
             "SELECT " + RAW_FIELD_LIST + " FROM test_offer " +
             "WHERE ref_no like '%2015%'";
 
-    public static final String OFFER_INSERT =
+    static final String OFFER_INSERT =
             "INSERT INTO test_offer (" + RAW_FIELD_LIST +
             ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
-    public static final String OFFER_UPDATE =
+    static final String OFFER_UPDATE =
             "UPDATE test_offer SET" +
             "  deadline = ?," +
             "  comment = ?," +
@@ -169,4 +166,7 @@ public final class Queries {
             "  nsfirst_name = ?," +
             "  nslast_name = ?" +
             ") WHERE ref_no = ?";
+
+    /** Private Constructor, this is a Constants Class. */
+    private Queries() {}
 }

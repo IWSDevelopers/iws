@@ -89,16 +89,8 @@ public final class ApplicationEntity extends AbstractUpdateable<ApplicationEntit
     @Column(name = "status", length = 30, nullable = false)
     private ApplicationStatus status = null;
 
-//    @ManyToOne(targetEntity = UserEntity.class)
-//    @JoinColumn(name = "modified_by", nullable = false)
-//    private UserEntity modifiedBy = null;
-
-//    @ManyToOne(targetEntity = UserEntity.class)
-//    @JoinColumn(name = "created_by", nullable = false)
-//    private UserEntity createdBy = null;
-
     @ManyToOne(targetEntity = AddressEntity.class)
-    @JoinColumn(name = "home_address_id", updatable = true)
+    @JoinColumn(name = "home_address_id")
     private AddressEntity homeAddress = null;
 
     @Column(name = "email")
@@ -108,7 +100,7 @@ public final class ApplicationEntity extends AbstractUpdateable<ApplicationEntit
     private String phoneNumber = null;
 
     @ManyToOne(targetEntity = AddressEntity.class)
-    @JoinColumn(name = "address_during_terms_id", updatable = true)
+    @JoinColumn(name = "address_during_terms_id")
     private AddressEntity addressDuringTerms = null;
 
     @Temporal(TemporalType.DATE)
@@ -139,7 +131,7 @@ public final class ApplicationEntity extends AbstractUpdateable<ApplicationEntit
     private Boolean lodgingByIaeste = false;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "language_1", length = 255)
+    @Column(name = "language_1")
     private Language language1 = null;
 
     @Enumerated(EnumType.STRING)
@@ -147,7 +139,7 @@ public final class ApplicationEntity extends AbstractUpdateable<ApplicationEntit
     private LanguageLevel language1Level = null;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "language_2", length = 255)
+    @Column(name = "language_2")
     private Language language2 = null;
 
     @Enumerated(EnumType.STRING)
@@ -155,7 +147,7 @@ public final class ApplicationEntity extends AbstractUpdateable<ApplicationEntit
     private LanguageLevel language2Level = null;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "language_3", length = 255)
+    @Column(name = "language_3")
     private Language language3 = null;
 
     @Enumerated(EnumType.STRING)
@@ -195,7 +187,7 @@ public final class ApplicationEntity extends AbstractUpdateable<ApplicationEntit
     private String rejectInternalComment = null;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "nominated_at", nullable = true)
+    @Column(name = "nominated_at")
     private Date nominatedAt = null;
 
     /**

@@ -43,7 +43,6 @@ import net.iaeste.iws.persistence.entities.Updateable;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.UserGroupEntity;
 import net.iaeste.iws.persistence.exceptions.IdentificationException;
-import net.iaeste.iws.persistence.exceptions.PersistenceException;
 import net.iaeste.iws.persistence.monitoring.MonitoringProcessor;
 import net.iaeste.iws.persistence.views.IWSView;
 
@@ -73,7 +72,7 @@ public class BasicJpaDao implements BasicDao {
      *
      * @param entityManager  Entity Manager instance to use
      */
-    public BasicJpaDao(final EntityManager entityManager) throws IWSException {
+    public BasicJpaDao(final EntityManager entityManager) {
         if (entityManager == null) {
             throw new IWSException(IWSErrors.FATAL, "Cannot instantiate the DAO without a valid Entity Manager instance.");
         }
@@ -200,7 +199,6 @@ public class BasicJpaDao implements BasicDao {
     @Override
     public final List<PermissionRoleEntity> findRoles(final GroupEntity group) {
         final Query query = entityManager.createNamedQuery("permissionRole.findByRoleToGroup");
-        //final Query query = entityManager.createNamedQuery("role.findByGroup");
         final Long cid = (group.getCountry() != null) ? group.getCountry().getId() : 0;
         query.setParameter("cid", cid);
         query.setParameter("gid", group.getId());
@@ -279,7 +277,7 @@ public class BasicJpaDao implements BasicDao {
      * {@inheritDoc}
      */
     @Override
-    public final FileEntity findAttachedFileByUserAndExternalId(final GroupEntity group, final String externalId) throws PersistenceException {
+    public final FileEntity findAttachedFileByUserAndExternalId(final GroupEntity group, final String externalId) {
         final Query query = entityManager.createNamedQuery("file.findApplicationBySendingGroupAndExternalFileId");
         query.setParameter("gid", group.getId());
         query.setParameter("efid", externalId);
@@ -328,19 +326,15 @@ public class BasicJpaDao implements BasicDao {
      */
     @Override
     public final FileEntity findAttachedFile(final String externalFileId, final String externalGroupId, final StorageType type) {
-        final Query query;
+        if (type == StorageType.ATTACHED_TO_APPLICATION) {
+            final Query query = entityManager.createNamedQuery("file.findApplicationByReceivingGroupAndExternalFileId");
+            query.setParameter("egid", externalGroupId);
+            query.setParameter("efid", externalFileId);
 
-        switch (type) {
-            case ATTACHED_TO_APPLICATION:
-                query = entityManager.createNamedQuery("file.findApplicationByReceivingGroupAndExternalFileId");
-                break;
-            default:
-                throw new IWSException(IWSErrors.NOT_IMPLEMENTED, "Retrieving Attachments of type " + type.getDescription() + " is not yet supported.");
+            return findUniqueResult(query, "File");
+        } else {
+            throw new IWSException(IWSErrors.NOT_IMPLEMENTED, "Retrieving Attachments of type " + type.getDescription() + " is not yet supported.");
         }
-        query.setParameter("egid", externalGroupId);
-        query.setParameter("efid", externalFileId);
-
-        return findUniqueResult(query, "File");
     }
 
     // =========================================================================
@@ -364,7 +358,7 @@ public class BasicJpaDao implements BasicDao {
      * @param emptyValue new value to be added if the list is empty
      * @return Collection with at least 1 element
      */
-    protected final <T> Collection<T> expandEmptyCollection(final Collection<T> collection, final T emptyValue) {
+    final <T> Collection<T> expandEmptyCollection(final Collection<T> collection, final T emptyValue) {
         final Collection<T> expanded;
 
         if (collection != null) {
@@ -428,12 +422,10 @@ public class BasicJpaDao implements BasicDao {
      * @param entity Entity to check
      */
     private static void ensureUpdateableHasExternalId(final IWSEntity entity) {
-        if (entity instanceof Externable) {
-            if (((Externable<?>) entity).getExternalId() == null) {
-                ((Externable<?>) entity).setExternalId(UUID.randomUUID().toString());
-                // Just to make sure that the modification date is always set
-                ((Updateable<?>) entity).setModified(new Date());
-            }
+        if ((entity instanceof Externable) && (((Externable<?>) entity).getExternalId() == null)) {
+            ((Externable<?>) entity).setExternalId(UUID.randomUUID().toString());
+            // Just to make sure that the modification date is always set
+            ((Updateable<?>) entity).setModified(new Date());
         }
     }
 
@@ -469,7 +461,7 @@ public class BasicJpaDao implements BasicDao {
      * @param entityName Name of the entity expected, used if exception is thrown
      * @return Single Entity
      */
-    protected final <T extends IWSEntity> T findSingleResult(final Query query, final String entityName) {
+    final <T extends IWSEntity> T findSingleResult(final Query query, final String entityName) {
         final List<T> found = query.getResultList();
         T result = null;
 
@@ -482,7 +474,7 @@ public class BasicJpaDao implements BasicDao {
         return result;
     }
 
-    protected static String generateTimestamp() {
+    static String generateTimestamp() {
         // Format is: Year + Month + Date + Hour24 + Minute + Second + Millis
         // Example: 20140503193432987 -> May 3rd, 2014 at 19:34:43.987
         final String timestampFormat = "yyyyMMddHHmmssSSS";

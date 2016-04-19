@@ -24,7 +24,7 @@ import net.iaeste.iws.core.notifications.Notifications;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
-public interface NotificationManagerLocal extends Notifications {
+public interface NotificationManager extends Notifications {
 
     void setNotifications(Notifications notifications);
     Notifications getNotifications();

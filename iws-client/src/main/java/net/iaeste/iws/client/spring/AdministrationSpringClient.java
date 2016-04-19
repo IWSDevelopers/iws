@@ -46,7 +46,7 @@ import net.iaeste.iws.api.responses.SearchUserResponse;
 import net.iaeste.iws.client.notifications.NotificationSpy;
 import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.ejb.AdministrationBean;
-import net.iaeste.iws.ejb.NotificationManagerBean;
+import net.iaeste.iws.ejb.schedulers.NotificationManagerScheduler;
 import net.iaeste.iws.ejb.SessionRequestBean;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
@@ -81,7 +81,7 @@ public final class AdministrationSpringClient implements Administration {
     public void init(final EntityManager entityManager) {
         // Create the Notification Spy, and inject it
         final Notifications notitications = NotificationSpy.getInstance();
-        final NotificationManagerBean notificationBean = new NotificationManagerBean();
+        final NotificationManagerScheduler notificationBean = new NotificationManagerScheduler();
         notificationBean.setNotifications(notitications);
 
         // Create a new SessionRequestBean instance wiht out entityManager

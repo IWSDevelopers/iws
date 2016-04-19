@@ -34,19 +34,16 @@ import java.util.UUID;
  * @author  Sondre Naustdal / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
- * @noinspection ResultOfObjectAllocationIgnored
  */
 public final class PublishingGroupTest {
 
     @Test
     public void testClassflow() {
-        final String id = UUID.randomUUID().toString();
         final String name = "My Publishing Group";
         final List<Group> groups = buildGroups(4);
 
         // Fill a couple of Objects, that we can then verify
         final PublishingGroup unknown = new PublishingGroup(name, groups);
-        final PublishingGroup filled = new PublishingGroup(id, name, groups);
         final PublishingGroup empty = new PublishingGroup();
         empty.setName(name);
         empty.setGroups(groups);
@@ -54,7 +51,6 @@ public final class PublishingGroupTest {
         // Assertion checks against the fields
         assertThat(unknown.getName(), is(name));
         assertThat(unknown.getGroups(), is(groups));
-        //assertThat(unknown.getGroups(), is(not(sameInstance(groups))));
     }
 
     @Test
@@ -75,11 +71,10 @@ public final class PublishingGroupTest {
         assertThat(copy.getPublishingGroupId(), is(original.getPublishingGroupId()));
         assertThat(copy.getName(), is(original.getName()));
         assertThat(copy.getGroups(), is(original.getGroups()));
-        //assertThat(copy.getGroups(), is(not(sameInstance(original.getGroups()))));
     }
 
     /**
-     * All out DTO's must implement the "Standard Methods", meaning equals,
+     * All out DTOs must implement the "Standard Methods", meaning equals,
      * hashCode and toString. The purpose of this test, is to ensure that all
      * three is working, and not causing any strange problems, i.e. Exceptions.
      */
@@ -96,7 +91,7 @@ public final class PublishingGroupTest {
         final PublishingGroup empty = new PublishingGroup();
         final PublishingGroup diff1 = new PublishingGroup(name, groups);
         final PublishingGroup diff2 = new PublishingGroup(UUID.randomUUID().toString(), name, groups);
-        final PublishingGroup diff3 = new PublishingGroup(id, "diferent name", groups);
+        final PublishingGroup diff3 = new PublishingGroup(id, "different name", groups);
         final PublishingGroup diff4 = new PublishingGroup(id, name, buildGroups(4));
 
         // Assertion Checks
@@ -126,7 +121,7 @@ public final class PublishingGroupTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testInvalidId() {
-        final String id = "Alfa Beta Gamma 123";
+        final String id = "Alpha Beta Gamma 123";
         final String name = "name";
         final List<Group> groups = buildGroups(2);
 

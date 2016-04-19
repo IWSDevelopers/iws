@@ -153,8 +153,8 @@ public interface BasicDao {
      * @return File
      * @throws PersistenceException if a single file could not be found
      */
-    FileEntity findFileByUserAndExternalId(UserEntity user, String externalId) throws PersistenceException;
-    FileEntity findAttachedFileByUserAndExternalId(GroupEntity group, String externalId) throws PersistenceException;
+    FileEntity findFileByUserAndExternalId(UserEntity user, String externalId);
+    FileEntity findAttachedFileByUserAndExternalId(GroupEntity group, String externalId);
 
     int deleteAttachmentRecord(FileEntity file);
 

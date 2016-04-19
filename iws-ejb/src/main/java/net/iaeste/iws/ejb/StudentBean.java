@@ -96,8 +96,8 @@ public class StudentBean implements Students {
      *
      * @param notificationManager Notification Manager Bean
      */
-    @EJB(beanInterface = NotificationManagerLocal.class)
-    public void setNotificationManager(final NotificationManagerLocal notificationManager) {
+    @EJB(beanInterface = NotificationManager.class)
+    public void setNotificationManager(final NotificationManager notificationManager) {
         this.notifications = notificationManager;
     }
 

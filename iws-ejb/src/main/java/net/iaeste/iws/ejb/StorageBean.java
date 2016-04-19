@@ -90,7 +90,7 @@ public class StorageBean implements Storage {
      *
      * @param notificationManager Notification Manager Bean
      */
-    public void setNotificationManager(final NotificationManagerLocal notificationManager) {
+    public void setNotificationManager(final NotificationManager notificationManager) {
         this.notifications = notificationManager;
     }
 

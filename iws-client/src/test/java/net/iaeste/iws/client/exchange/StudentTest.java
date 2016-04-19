@@ -112,7 +112,6 @@ public final class StudentTest extends AbstractTest {
 
         final ProcessOfferRequest offerRequest = new ProcessOfferRequest(offer);
         final OfferResponse saveResponse = exchange.processOffer(token, offerRequest);
-        final String refNo = saveResponse.getOffer().getRefNo();
 
         // verify processResponse
         assertThat(saveResponse.isOk(), is(true));

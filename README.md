@@ -3,13 +3,14 @@
 ### The IntraWeb Services Project
 
 The IWS was initiated in 2011 and development began in 2012. It was designed
-to replace the existing backend system for [IAESTE](http://www.iaeste.org/), and at the same time create a
-new public API, which others could use.
+to replace the existing backend system for [IAESTE](http://www.iaeste.org/), and at the same time create
+a new public API, which others could use.
 
-IWS is designed as a pure JEE6 Application, written in Java7. It has been
-tested to run under [WildFly](http://wildfly.org/), [JBoss](http://www.redhat.com/en/technologies/jboss-middleware) & [Glassfish](https://glassfish.java.net/). To build, please check out the
-sources and run the Maven build command. Note that only Configuration
-files for [WildFly](http://wildfly.org/) has been created, and can be found in the iws-accessories folder.
+IWS is designed as a pure JEE6 Application later upgraded to JEE7, written
+in Java7. It has been tested to run under [WildFly](http://wildfly.org/), [JBoss](http://www.redhat.com/en/technologies/jboss-middleware) & [Glassfish](https://glassfish.java.net/). To build,
+please check out the sources and run the Maven build command. Note that
+only Configuration files for [WildFly](http://wildfly.org/) has been created, and can be found in the
+iws-accessories folder.
 
 * Supported Application Servers
   * [WildFly](http://wildfly.org/)
@@ -20,7 +21,7 @@ files for [WildFly](http://wildfly.org/) has been created, and can be found in t
   * [HyperSQL](http://hsqldb.org/)
 
 ## License
-Copyright (C) 2012-2016 Kim Jensen & others (see AUTHORS.txt)
+Copyright (C) 2012-2016 IWSDevelopers
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

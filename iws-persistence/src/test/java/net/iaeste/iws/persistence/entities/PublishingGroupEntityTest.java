@@ -17,6 +17,11 @@
  */
 package net.iaeste.iws.persistence.entities;
 
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.nullValue;
+import static org.junit.Assert.assertThat;
+
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
@@ -25,7 +30,6 @@ import net.iaeste.iws.persistence.entities.exchange.PublishingGroupEntity;
 import net.iaeste.iws.persistence.jpa.AccessJpaDao;
 import net.iaeste.iws.persistence.jpa.ExchangeJpaDao;
 import net.iaeste.iws.persistence.setup.SpringConfig;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,11 +44,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertThat;
-
 /**
  * Contains tests for PublishingGroupEntityTest and fetching from ExchangeDao
  *
@@ -53,7 +52,7 @@ import static org.junit.Assert.assertThat;
  * @since   IWS 1.0
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = { SpringConfig.class })
+@ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = SpringConfig.class)
 public class PublishingGroupEntityTest {
 
     private static final String SHARING_LIST_EXTERNAL_ID = "adc8dfd4-bc3a-4b27-897b-87d3950db503";
@@ -76,10 +75,6 @@ public class PublishingGroupEntityTest {
         final UserEntity user = accessDao.findActiveUserByUsername("austria@iaeste.at");
         final GroupEntity group = accessDao.findNationalGroup(user);
         authentication = new Authentication(token, user, group, UUID.randomUUID().toString());
-    }
-
-    @After
-    public void cleanUp() {
     }
 
     @Test
@@ -108,13 +103,12 @@ public class PublishingGroupEntityTest {
 
         assertThat(sharingList.getId(), is(not(nullValue())));
 
-        PublishingGroupEntity fetchedList = exchangeDao.getSharingListByExternalIdAndOwnerId(SHARING_LIST_EXTERNAL_ID, authentication.getGroup().getId());
-        assertThat(sharingList, is(fetchedList));
+        final PublishingGroupEntity fetchedList1 = exchangeDao.getSharingListByExternalIdAndOwnerId(SHARING_LIST_EXTERNAL_ID, authentication.getGroup().getId());
+        assertThat(sharingList, is(fetchedList1));
 
         groups.remove(norwayGroup);
         entityManager.merge(sharingList);
-        fetchedList = exchangeDao.getSharingListByExternalIdAndOwnerId(SHARING_LIST_EXTERNAL_ID, authentication.getGroup().getId());
-        assertThat(sharingList, is(fetchedList));
+        final PublishingGroupEntity fetchedList2 = exchangeDao.getSharingListByExternalIdAndOwnerId(SHARING_LIST_EXTERNAL_ID, authentication.getGroup().getId());
+        assertThat(sharingList, is(fetchedList2));
     }
-
 }

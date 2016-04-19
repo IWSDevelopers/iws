@@ -19,7 +19,7 @@ package net.iaeste.iws.ejb.cdi;
 
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.core.services.ServiceFactory;
-import net.iaeste.iws.ejb.NotificationManagerLocal;
+import net.iaeste.iws.ejb.NotificationManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -60,7 +60,7 @@ public class Producer {
      */
     @Produces @IWSBean
     @PersistenceContext(unitName = "iwsDatabase")
-    private EntityManager iwsEntityManager = null;
+    private EntityManager iwsEntityManager;
 
     /**
      * Producer for the IWS Settings. This will create a managed bean that can
@@ -70,8 +70,8 @@ public class Producer {
     private final Settings settings = prepareSettings();
 
     @Produces @IWSBean
-    @EJB(beanInterface = NotificationManagerLocal.class)
-    private NotificationManagerLocal notifications;
+    @EJB(beanInterface = NotificationManager.class)
+    private NotificationManager notifications;
 
     /**
      * The Service Factory is required to create the required Service classes

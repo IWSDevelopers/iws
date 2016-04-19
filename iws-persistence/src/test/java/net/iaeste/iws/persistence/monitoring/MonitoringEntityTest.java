@@ -48,7 +48,7 @@ import java.util.List;
  * @noinspection ObjectAllocationInLoop
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = { SpringConfig.class })
+@ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = SpringConfig.class)
 public class MonitoringEntityTest {
 
     @PersistenceContext
@@ -57,7 +57,6 @@ public class MonitoringEntityTest {
     @Test
     @Transactional
     public void testEntity() {
-        final MonitoringProcessor monitoring = new MonitoringProcessor();
         final ArrayList<Field> data = createMonitoringData(5);
         final MonitoringEntity entity = new MonitoringEntity();
         entity.setTableName("Offer");

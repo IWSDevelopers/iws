@@ -29,7 +29,7 @@ import net.iaeste.iws.api.responses.FileResponse;
 import net.iaeste.iws.api.responses.FolderResponse;
 import net.iaeste.iws.client.notifications.NotificationSpy;
 import net.iaeste.iws.core.notifications.Notifications;
-import net.iaeste.iws.ejb.NotificationManagerBean;
+import net.iaeste.iws.ejb.schedulers.NotificationManagerScheduler;
 import net.iaeste.iws.ejb.SessionRequestBean;
 import net.iaeste.iws.ejb.StorageBean;
 import org.springframework.stereotype.Repository;
@@ -61,7 +61,7 @@ public class StorageSpringClient implements Storage {
     public void init(final EntityManager entityManager) {
         // Create the Notification Spy, and inject it
         final Notifications notifications = NotificationSpy.getInstance();
-        final NotificationManagerBean notificationBean = new NotificationManagerBean();
+        final NotificationManagerScheduler notificationBean = new NotificationManagerScheduler();
         notificationBean.setNotifications(notifications);
 
         // Create a new SessionRequestBean instance with our entityManager

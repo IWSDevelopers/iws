@@ -59,9 +59,9 @@ import java.util.List;
  */
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 @TransactionManagement(TransactionManagementType.CONTAINER)
-public class NotificationManager implements Notifications {
+public class NotificationManagerBean implements Notifications {
 
-    private static final Logger LOG = LoggerFactory.getLogger(NotificationManager.class);
+    private static final Logger LOG = LoggerFactory.getLogger(NotificationManagerBean.class);
 
     private final List<Observer> observers = new ArrayList<>(10);
 
@@ -70,7 +70,7 @@ public class NotificationManager implements Notifications {
     private final NotificationDao dao;
     private final boolean hostedInBean;
 
-    public NotificationManager(final EntityManager entityManager, final Settings settings, final boolean hostedInBean) {
+    public NotificationManagerBean(final EntityManager entityManager, final Settings settings, final boolean hostedInBean) {
         this.entityManager = entityManager;
         this.settings = settings;
         this.hostedInBean = hostedInBean;
@@ -93,34 +93,9 @@ public class NotificationManager implements Notifications {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public final void processJobs() {
-        final Date now = new Date();
-        final List<NotificationJobEntity> unprocessedJobs = dao.findUnprocessedNotificationJobs(now);
-        if (!unprocessedJobs.isEmpty()) {
-            for (final NotificationJobEntity job : unprocessedJobs) {
-                prepareJobTasks(job);
-
-                job.setNotified(true);
-                job.setModified(new Date());
-                dao.persist(job);
-            }
-        }
-
-        notifyObservers();
-    }
-
-    private void prepareJobTasks(final NotificationJobEntity job) {
-        for (final Observer observer : observers) {
-            final NotificationConsumerEntity consumer = dao.findNotificationConsumerById(observer.getId());
-            final NotificationJobTaskEntity task = new NotificationJobTaskEntity(job, consumer);
-            dao.persist(task);
-        }
-    }
+    // =========================================================================
+    // Implementation of the Notifications Interface
+    // =========================================================================
 
     /**
      * {@inheritDoc}
@@ -174,16 +149,58 @@ public class NotificationManager implements Notifications {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public final void processJobs() {
+        final Date now = new Date();
+        final List<NotificationJobEntity> unprocessedJobs = dao.findUnprocessedNotificationJobs(now);
+        if (!unprocessedJobs.isEmpty()) {
+            for (final NotificationJobEntity job : unprocessedJobs) {
+                prepareJobTasks(job);
+
+                job.setNotified(true);
+                job.setModified(new Date());
+                dao.persist(job);
+            }
+        }
+
+        notifyObservers();
+    }
+
+    private void prepareJobTasks(final NotificationJobEntity job) {
+        for (final Observer observer : observers) {
+            final NotificationConsumerEntity consumer = dao.findNotificationConsumerById(observer.getId());
+            final NotificationJobTaskEntity task = new NotificationJobTaskEntity(job, consumer);
+            dao.persist(task);
+        }
+    }
+
+    // =========================================================================
+    // Implementation of the Observable Interface
+    // =========================================================================
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final void addObserver(final Observer observer) {
         observers.add(observer);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final void deleteObserver(final Observer observer) {
         observers.remove(observer);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final void notifyObservers() {
         for (final Observer observer : observers) {

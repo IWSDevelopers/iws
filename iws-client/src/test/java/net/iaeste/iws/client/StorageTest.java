@@ -81,6 +81,7 @@ public final class StorageTest extends AbstractTest {
      */
     @Override
     public void setUp() {
+        // Unused, no need to setup anything here
     }
 
     /**

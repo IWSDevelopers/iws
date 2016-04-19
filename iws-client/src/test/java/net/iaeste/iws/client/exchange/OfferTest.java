@@ -1534,7 +1534,7 @@ public final class OfferTest extends AbstractTest {
 
         final FetchOffersRequest fetchRequest = new FetchOffersRequest();
         final List<String> offerIds = new ArrayList<>();
-        offerIds.add(offer.getRefNo());;
+        offerIds.add(offer.getRefNo());
         fetchRequest.setIdentifiers(offerIds);
         fetchRequest.setFetchType(FetchType.DOMESTIC);
         final FetchOffersResponse fetchResponse = exchange.fetchOffers(token, fetchRequest);

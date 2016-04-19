@@ -35,7 +35,6 @@ import net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity;
 import net.iaeste.iws.persistence.jpa.AccessJpaDao;
 import net.iaeste.iws.persistence.jpa.ExchangeJpaDao;
 import net.iaeste.iws.persistence.setup.SpringConfig;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -95,10 +94,6 @@ public class OfferGroupEntityTest {
         final UserEntity user = accessDao.findActiveUserByUsername("austria@iaeste.at");
         final GroupEntity group = accessDao.findNationalGroup(user);
         authentication = new Authentication(token, user, group, UUID.randomUUID().toString());
-    }
-
-    @After
-    public void cleanUp() {
     }
 
     @Test

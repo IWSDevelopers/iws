@@ -51,10 +51,12 @@ public final class AccessClientTest extends AbstractTest {
 
     @Override
     public void setUp() {
+        // Unused, no need to setup anything here
     }
 
     @Override
     public void tearDown() {
+        // Unused, no need to tear down anything here
     }
 
     /**

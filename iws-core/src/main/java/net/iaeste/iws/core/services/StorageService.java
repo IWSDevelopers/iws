@@ -293,13 +293,11 @@ public final class StorageService extends CommonService<AccessDao> {
         // in comparison. So we start by checking if the Folder is Public
         // and that all Folders in the tree are also Public. If that is the case,
         // then we don't need to make any further checks.
-        if (isFolderPrivate(folders)) {
-            // If the Folder is not Public, then we need to check the user
-            // permissions, meaning that we have to verify that the User is a
-            // member of the Group, which the Folder belongs to.
-            if (!isUserGroupMember(authentication, folders)) {
-                throw new IWSException(IWSErrors.ILLEGAL_ACTION, "Unauthorized attempt at accessing the Folder " + folders.get(0).getExternalId() + '.');
-            }
+        //   If the Folder is not Public, then we need to check the user
+        // permissions, meaning that we have to verify that the User is a
+        // member of the Group, which the Folder belongs to.
+        if (isFolderPrivate(folders) && !isUserGroupMember(authentication, folders)) {
+            throw new IWSException(IWSErrors.ILLEGAL_ACTION, "Unauthorized attempt at accessing the Folder " + folders.get(0).getExternalId() + '.');
         }
     }
 
@@ -457,14 +455,12 @@ public final class StorageService extends CommonService<AccessDao> {
 
                 // If still not allowed, then we're down to the last option,
                 // that the file is public and belongs to a public folder.
-                if ((file == null) && (entity.getPrivacy() == Privacy.PUBLIC)) {
-                    // First, check that the Parent Folder exists
-                    if (entity.getFolder() != null) {
-                        // check that the file belongs to a Group with a public Folder.
-                        final GroupType.FolderType folderType = entity.getFolder().getGroup().getGroupType().getFolderType();
-                        if (folderType == GroupType.FolderType.PUBLIC) {
-                            file = entity;
-                        }
+                // However, first we must check that the Parent Folder exists.
+                if ((file == null) && (entity.getPrivacy() == Privacy.PUBLIC) && (entity.getFolder() != null)) {
+                    // check that the file belongs to a Group with a public Folder.
+                    final GroupType.FolderType folderType = entity.getFolder().getGroup().getGroupType().getFolderType();
+                    if (folderType == GroupType.FolderType.PUBLIC) {
+                        file = entity;
                     }
                 }
             }
@@ -697,7 +693,8 @@ public final class StorageService extends CommonService<AccessDao> {
         // Despite the fact that the Id's should be verified before we're
         // coming so deep in, there may be other ways to invoke this
         // functionality. So we're enforcing a check on the Id before using
-        // it in the Native Query.
+        // it in the Native Query. The Verification check will throw an
+        // IllegalArgument Exception, if it is not a valid Id.
         Verifications.ensureValidId("Folder Id", externalId);
 
         // Native Query to retrieve the Id's for the Tree starting with the
@@ -716,7 +713,7 @@ public final class StorageService extends CommonService<AccessDao> {
                 "      f2.parent_id\n" +
                 "    from folders f2\n" +
                 "    inner join tree t on f2.id = t.parent_id)\n" +
-                "select id from tree " +
+                "select id from tree\n" +
                 "order by id desc";
         final Query nativeQuery = entityManager.createNativeQuery(nativeSQL);
 

@@ -431,7 +431,7 @@ public class CommonService<T extends BasicDao> {
     // Common Attachment Methods
     // =========================================================================
 
-    FileEntity processFile(final Authentication authentication, final File file, final FolderEntity... folder) {
+    final FileEntity processFile(final Authentication authentication, final File file, final FolderEntity... folder) {
         final String externalId = file.getFileId();
         final byte[] data = file.getFiledata();
         final FileEntity entity;
@@ -567,12 +567,10 @@ public class CommonService<T extends BasicDao> {
         final String systemPath = settings.getRootFilePath() + '/' + dir + '/';
         final java.io.File file = new java.io.File(systemPath);
 
-        if (!file.exists()) {
-            // It can be that none of the directories exists, so let's just let
-            // Java crawl through them all and create them for us
-            if (!file.mkdirs()) {
-                throw new IWSException(IWSErrors.ERROR, "Cannot create the directory to store the Group files.");
-            }
+        // It can be that none of the directories exists, so let's just let
+        // Java crawl through them all and create them for us
+        if (!file.exists() && !file.mkdirs()) {
+            throw new IWSException(IWSErrors.ERROR, "Cannot create the directory to store the Group files.");
         }
     }
 

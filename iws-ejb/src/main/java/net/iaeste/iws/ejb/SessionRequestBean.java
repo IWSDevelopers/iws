@@ -230,12 +230,10 @@ public class SessionRequestBean {
     private void saveRequest(final String request, final Fallible response, final AuthenticationToken token) {
         final SessionEntity session = findAndUpdateSession(token);
 
-        if (!response.getError().equals(IWSErrors.SUCCESS)) {
-            if (session != null) {
-                final RequestEntity entity = prepareEntity(session, response, request);
-                LOG.info("Saving Requests information.");
-                dao.persist(entity);
-            }
+        if (!response.getError().equals(IWSErrors.SUCCESS) && (session != null)) {
+            final RequestEntity entity = prepareEntity(session, response, request);
+            LOG.info("Saving Requests information.");
+            dao.persist(entity);
         }
     }
 
@@ -261,7 +259,7 @@ public class SessionRequestBean {
         // Violation Exceptions, we simply check the error message and if it is
         // null - we'll set it to a default error that will hopefully help
         // improving the internal error handling.
-        entity.setErrormessage(cause.getMessage() != null ? cause.getMessage() : "No Error Message!");
+        entity.setErrormessage((cause.getMessage() != null) ? cause.getMessage() : "No Error Message!");
 
         return entity;
     }

@@ -33,7 +33,7 @@ import java.util.List;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "searchUserResponse", propOrder = { "users" })
+@XmlType(name = "searchUserResponse", propOrder = "users")
 public final class SearchUserResponse extends FallibleResponse {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */

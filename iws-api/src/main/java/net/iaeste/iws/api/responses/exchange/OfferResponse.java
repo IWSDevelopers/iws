@@ -33,7 +33,7 @@ import javax.xml.bind.annotation.XmlType;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "offerResponse", propOrder = { "offer" })
+@XmlType(name = "offerResponse", propOrder = "offer")
 public final class OfferResponse extends FallibleResponse {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
@@ -61,7 +61,7 @@ public final class OfferResponse extends FallibleResponse {
      * @param offer offer which was saved
      */
     public OfferResponse(final Offer offer) {
-        setOffer(offer);
+        this.offer = offer;
     }
 
     /**

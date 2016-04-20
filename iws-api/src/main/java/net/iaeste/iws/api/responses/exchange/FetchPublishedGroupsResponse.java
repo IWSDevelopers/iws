@@ -38,7 +38,7 @@ import java.util.Map;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "fetchPublishedGroupsResponse", propOrder = { "offersGroups" })
+@XmlType(name = "fetchPublishedGroupsResponse", propOrder = "offersGroups")
 public final class FetchPublishedGroupsResponse extends FallibleResponse {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */

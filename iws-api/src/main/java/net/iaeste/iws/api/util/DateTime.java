@@ -101,7 +101,7 @@ public final class DateTime implements Serializable, Comparable<DateTime> {
      * @param dateTime Date to check if it comes before this
      * @return True if the given Date is after the current, otherwise false
      */
-    public Boolean isBefore(final DateTime dateTime) {
+    private Boolean isBefore(final DateTime dateTime) {
         return timestamp.before(dateTime.timestamp);
     }
 

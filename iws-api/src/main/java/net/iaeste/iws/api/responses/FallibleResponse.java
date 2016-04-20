@@ -44,11 +44,11 @@ public class FallibleResponse implements Fallible {
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     /** IWS Error Object. */
-    @XmlElement(required = true, nillable = false)
+    @XmlElement(required = true)
     private final IWSError error;
 
     /** IWS Error Message. */
-    @XmlElement(required = true, nillable = false)
+    @XmlElement(required = true)
     private final String message;
 
     /**

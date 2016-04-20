@@ -101,7 +101,7 @@ public abstract class Verifications implements Verifiable {
      * @param source Collection to Sanitize
      * @return Set of sanitized String
      */
-    public static Set<String> sanitize(final Collection<String> source) {
+    protected static Set<String> sanitize(final Collection<String> source) {
         Set<String> sanitized = null;
 
         if (source != null) {

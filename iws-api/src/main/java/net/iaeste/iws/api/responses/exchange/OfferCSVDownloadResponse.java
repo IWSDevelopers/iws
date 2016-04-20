@@ -32,7 +32,7 @@ import javax.xml.bind.annotation.XmlType;
  * @since   IWS 1.1
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "offerCSVDownloadResponse", propOrder = { "data" })
+@XmlType(name = "offerCSVDownloadResponse", propOrder = "data")
 public final class OfferCSVDownloadResponse extends FallibleResponse {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */

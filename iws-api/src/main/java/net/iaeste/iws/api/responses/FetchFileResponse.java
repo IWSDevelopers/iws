@@ -32,7 +32,7 @@ import javax.xml.bind.annotation.XmlType;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "fetchFileResponse", propOrder = { "file" })
+@XmlType(name = "fetchFileResponse", propOrder = "file")
 public final class FetchFileResponse extends FallibleResponse {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */

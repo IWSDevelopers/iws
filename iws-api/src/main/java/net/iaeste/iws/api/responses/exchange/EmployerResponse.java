@@ -33,7 +33,7 @@ import javax.xml.bind.annotation.XmlType;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "employerResponse", propOrder = { "employer" })
+@XmlType(name = "employerResponse", propOrder = "employer")
 public final class EmployerResponse extends FallibleResponse {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */

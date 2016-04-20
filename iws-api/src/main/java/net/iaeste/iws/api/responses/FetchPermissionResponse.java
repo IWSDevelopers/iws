@@ -51,14 +51,14 @@ public final class FetchPermissionResponse extends FallibleResponse {
     /**
      * The UserId for the User, who requested the Permission Response.
      */
-    @XmlElement(required = true, nillable = false)
+    @XmlElement(required = true)
     private String userId;
 
     /**
      * List of all the Authorizations that the user has, complete with all the
      * User Group relations.
      */
-    @XmlElement(required = true, nillable = false)
+    @XmlElement(required = true)
     private List<Authorization> authorizations;
 
     // =========================================================================

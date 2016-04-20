@@ -32,7 +32,7 @@ import javax.xml.bind.annotation.XmlType;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "processUserGroupResponse", propOrder = { "userGroup" })
+@XmlType(name = "processUserGroupResponse", propOrder = "userGroup")
 public final class ProcessUserGroupResponse extends FallibleResponse {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */

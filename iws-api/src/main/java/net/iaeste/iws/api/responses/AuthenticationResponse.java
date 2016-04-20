@@ -36,14 +36,13 @@ import javax.xml.bind.annotation.XmlType;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "authenticationResponse", propOrder = { "token" })
+@XmlType(name = "authenticationResponse", propOrder = "token")
 public final class AuthenticationResponse extends FallibleResponse {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    @XmlElement(required = true, nillable = false)
-    //@StandardMethods(StandardMethods.For.NONE)
+    @XmlElement(required = true)
     private AuthenticationToken token;
 
     // =========================================================================
@@ -77,7 +76,8 @@ public final class AuthenticationResponse extends FallibleResponse {
         super(error, message);
 
         token = null;
-    }
+    }    //@StandardMethods(StandardMethods.For.NONE)
+
 
     // =========================================================================
     // Standard Setters & Getters

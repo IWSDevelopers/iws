@@ -34,13 +34,13 @@ import java.util.List;
  * @since   IWS 1.1
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "fetchCommitteeResponse", propOrder = { "committees" })
+@XmlType(name = "fetchCommitteeResponse", propOrder = "committees")
 public final class FetchCommitteeResponse extends FallibleResponse {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    @XmlElement(required = true, nillable = false)
+    @XmlElement(required = true)
     private List<UserGroup> committees = new ArrayList<>();
 
     // =========================================================================

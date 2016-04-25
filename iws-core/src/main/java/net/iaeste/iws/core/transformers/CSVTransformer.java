@@ -213,7 +213,10 @@ final class CSVTransformer {
     }
 
     private static boolean isTypeOfWorkCorrect(final Map<String, String> errors, final OfferFields field, final Boolean typeR, final Boolean typeO, final Boolean typeF) {
-        final int sum = (typeR ? 1 : 0) + (typeO ? 1 : 0) + (typeF ? 1 : 0);
+        // Using the Boolean comparison as it reduces the NPath complexity
+        final int sum = Boolean.compare(typeR, false)
+                      + Boolean.compare(typeO, false)
+                      + Boolean.compare(typeF, false);
 
         if (sum > 1) {
             errors.put(field.getField(), "Multiple TypeOfWork is set, only one is allowed.");

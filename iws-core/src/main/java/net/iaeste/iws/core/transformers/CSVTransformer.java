@@ -198,21 +198,6 @@ final class CSVTransformer {
             LOG.info("Ignoring the TypeOfWork 'N'.");
         }
 
-        if (isTypeOfWorkCorrect(errors, field, typeR, typeO, typeF)) {
-            TypeOfWork value = null;
-            if (typeR) {
-                value = TypeOfWork.R;
-            } else if (typeO) {
-                value = TypeOfWork.O;
-            } else if (typeF) {
-                value = TypeOfWork.F;
-            }
-
-            invokeMethodOnObject(errors, obj, field, value);
-        }
-    }
-
-    private static boolean isTypeOfWorkCorrect(final Map<String, String> errors, final OfferFields field, final Boolean typeR, final Boolean typeO, final Boolean typeF) {
         // Using the Boolean comparison as it reduces the NPath complexity
         final int sum = Boolean.compare(typeR, false)
                       + Boolean.compare(typeO, false)
@@ -222,9 +207,18 @@ final class CSVTransformer {
             errors.put(field.getField(), "Multiple TypeOfWork is set, only one is allowed.");
         } else if (sum == 0) {
             errors.put(field.getField(), "No TypeOfWork defined.");
-        }
+        } else {
+            final TypeOfWork value;
+            if (typeR) {
+                value = TypeOfWork.R;
+            } else if (typeO) {
+                value = TypeOfWork.O;
+            } else {
+                value = TypeOfWork.F;
+            }
 
-        return sum == 1;
+            invokeMethodOnObject(errors, obj, field, value);
+        }
     }
 
     static void transformStudyLevels(final Map<String, String> errors, final Verifiable obj, final OfferFields field, final CSVRecord record) {

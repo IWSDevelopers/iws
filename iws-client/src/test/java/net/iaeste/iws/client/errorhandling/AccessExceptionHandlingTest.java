@@ -52,14 +52,14 @@ import javax.persistence.PersistenceContext;
  * entered a state where the system cannot continue, but the system itself is
  * fine - meaning that the error can be corrected by the administrators.<br />
  *   Third level of Error handling, is for Fatal issues. Here, we're relying on
- * the Appication Server to properly log the issues. As a Fatal issue is
+ * the Application Server to properly log the issues. As a Fatal issue is
  * normally an unrecoverable state where we may not even be able to instantiate
  * a Bean, it makes little sense to try to cover this also. Errors such as
  * OutOfMemory or internal Application Server issues.<br />
  *   Although it may seem crazy to run these 3 types of tests for all our
  * requests, it is done deliberately, as we expect all our requests to behave
  * the same way regarding error handling. Otherwise, a programmer have made a
- * mistake internally. The type of Exception thrown is done for our Persistency
+ * mistake internally. The type of Exception thrown is done for our Persistence
  * layer, since this is the deepest layer where problems may occur.
  *
  * @author  Kim Jensen / last $Author:$
@@ -68,7 +68,7 @@ import javax.persistence.PersistenceContext;
  */
 @Transactional
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = {Beans.class})
+@ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = Beans.class)
 @Ignore("Test cases needs completion")
 public class AccessExceptionHandlingTest {
 

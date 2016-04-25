@@ -17,6 +17,8 @@
  */
 package net.iaeste.iws.persistence.setup;
 
+import net.iaeste.iws.api.constants.IWSErrors;
+import net.iaeste.iws.api.exceptions.IWSException;
 import org.postgresql.ds.PGSimpleDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -43,34 +45,30 @@ import java.util.Properties;
 @EnableTransactionManagement
 public class SpringConfig {
 
-    private static final Boolean USE_INMEMORY_DATABASE = true;
+    private static final Object LOCK = new Object();
+    private enum DBS { PSQL, HSQL, H2 }
+    private static final DBS db = DBS.HSQL;
+    private static DataSource dataSource = null;
 
     @Bean
     protected DataSource dataSource() {
-        return USE_INMEMORY_DATABASE ? hsqldbDataSource() : postgreDataSource();
-    }
+        final DataSource source;
 
-    private static DataSource postgreDataSource() {
-        final PGSimpleDataSource dataSource = new PGSimpleDataSource();
+        switch (db) {
+            case PSQL:
+                source = postgreDataSource();
+                break;
+            case HSQL:
+                source = hsqldbDataSource();
+                break;
+            case H2:
+                source = h2DataSource();
+                break;
+            default:
+                throw new IWSException(IWSErrors.FATAL, "Database not supported in this context.");
+        }
 
-        dataSource.setServerName("localhost");
-        dataSource.setPortNumber(5432);
-        dataSource.setDatabaseName("iws");
-        dataSource.setUser("iws_user");
-        dataSource.setPassword("iws");
-
-        return dataSource;
-    }
-
-    private static DataSource hsqldbDataSource() {
-        return new EmbeddedDatabaseBuilder().setType(EmbeddedDatabaseType.HSQL)
-                .addScript("net/iaeste/iws/persistence/hsqldb/10-base-tables.sql")
-                .addScript("net/iaeste/iws/persistence/15-base-views.sql")
-                .addScript("net/iaeste/iws/persistence/19-base-data.sql")
-                .addScript("net/iaeste/iws/persistence/hsqldb/30-exchange-tables.sql")
-                .addScript("net/iaeste/iws/persistence/35-exchange-views.sql")
-                .addScript("net/iaeste/iws/persistence/90-initial-test-data.sql")
-                .build();
+        return source;
     }
 
     @Bean
@@ -94,8 +92,65 @@ public class SpringConfig {
         return transactionManager;
     }
 
-    @Bean
-    protected Properties jpaProperties() {
+    // =========================================================================
+    // Internal methods to setup DataSources and Properties
+    // =========================================================================
+
+    private static DataSource postgreDataSource() {
+        synchronized (LOCK) {
+            if (dataSource == null) {
+                final PGSimpleDataSource pgDataSource = new PGSimpleDataSource();
+
+                pgDataSource.setServerName("localhost");
+                pgDataSource.setPortNumber(5432);
+                pgDataSource.setDatabaseName("iws");
+                pgDataSource.setUser("iws_user");
+                pgDataSource.setPassword("iws");
+
+                dataSource = pgDataSource;
+            }
+
+            return dataSource;
+        }
+    }
+
+    private static DataSource hsqldbDataSource() {
+        synchronized (LOCK) {
+            if (dataSource == null) {
+                dataSource = new EmbeddedDatabaseBuilder()
+                        .setType(EmbeddedDatabaseType.HSQL)
+                        .addScript("net/iaeste/iws/persistence/hsqldb/10-base-tables.sql")
+                        .addScript("net/iaeste/iws/persistence/15-base-views.sql")
+                        .addScript("net/iaeste/iws/persistence/19-base-data.sql")
+                        .addScript("net/iaeste/iws/persistence/hsqldb/30-exchange-tables.sql")
+                        .addScript("net/iaeste/iws/persistence/35-exchange-views.sql")
+                        .addScript("net/iaeste/iws/persistence/90-initial-test-data.sql")
+                        .build();
+            }
+
+            return dataSource;
+        }
+    }
+
+    private static DataSource h2DataSource() {
+        synchronized (LOCK) {
+            if (dataSource == null) {
+                dataSource = new EmbeddedDatabaseBuilder()
+                        .setType(EmbeddedDatabaseType.H2)
+                        .addScript("net/iaeste/iws/persistence/h2/10-base-tables.sql")
+                        .addScript("net/iaeste/iws/persistence/15-base-views.sql")
+                        .addScript("net/iaeste/iws/persistence/19-base-data.sql")
+                        .addScript("net/iaeste/iws/persistence/h2/30-exchange-tables.sql")
+                        .addScript("net/iaeste/iws/persistence/35-exchange-views.sql")
+                        .addScript("net/iaeste/iws/persistence/90-initial-test-data.sql")
+                        .build();
+            }
+
+            return dataSource;
+        }
+    }
+
+    private static Properties jpaProperties() {
         final Properties properties = new Properties();
 
         // For testing the result, it is helpful to be able to see the queries

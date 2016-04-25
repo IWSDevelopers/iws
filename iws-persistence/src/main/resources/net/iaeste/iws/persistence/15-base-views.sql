@@ -247,7 +247,7 @@ create view view_folder_files as
 
 
 -- =============================================================================
--- List the Notification job tasks with their Notfication type
+-- List the Notification job tasks with their Notification type
 -- and Notifiable object
 -- Note; only unprocessed job tasks are included in the view
 -- =============================================================================
@@ -263,27 +263,27 @@ create view notification_job_task_details as
     left join notification_jobs nj  on njt.job_id = nj.id
   where njt.processed = false;
 
--- The following view is finding Groups, which is not having an Owner or having
--- too many Owners. Either way it is problematic, since a Group may *only* have
--- a single Owner.
-create view problem_groups as
-  with gids as (select g.id as ids
-                from groups g left join user_to_group u2g on g.id = u2g.group_id
-                where u2g.role_id = 1 group by g.id having count(u2g.id) <> 1)
-  select
-    id,
-    parent_id,
-    grouptype_id,
-    group_name,
-    full_name,
-    list_name,
-    private_list,
-    public_list,
-    status,
-    modified,
-    created
-  from groups
-  where id in (select ids from gids);
+-- -- The following view is finding Groups, which is not having an Owner or having
+-- -- too many Owners. Either way it is problematic, since a Group may *only* have
+-- -- a single Owner.
+-- create view problem_groups as
+--   with gids as (select g.id as ids
+--                 from groups g left join user_to_group u2g on g.id = u2g.group_id
+--                 where u2g.role_id = 1 group by g.id having count(u2g.id) <> 1)
+--   select
+--     id,
+--     parent_id,
+--     grouptype_id,
+--     group_name,
+--     full_name,
+--     list_name,
+--     private_list,
+--     public_list,
+--     status,
+--     modified,
+--     created
+--   from groups
+--   where id in (select ids from gids);
 
 -- =============================================================================
 -- The NC's List

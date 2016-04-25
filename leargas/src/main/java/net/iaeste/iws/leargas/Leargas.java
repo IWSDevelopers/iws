@@ -63,7 +63,7 @@ public final class Leargas {
                 connection = prepareConnection(settings);
                 final Processor leargas = new Processor(settings, connection);
 
-                // Now we can start the comminication with IWS and updating
+                // Now we can start the communication with IWS and updating
                 // the Leargas Database accordingly
                 final Long start = System.nanoTime();
                 LOG.info("Starting IWS Communication.");
@@ -80,7 +80,6 @@ public final class Leargas {
                     "Usage:\n" +
                     "$ java -jar leargas.jar <Path To the \"leargas.properties\" file>\n";
             System.out.print(msg);
-            System.exit(1);
         }
     }
 

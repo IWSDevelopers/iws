@@ -198,12 +198,7 @@ final class CSVTransformer {
             LOG.info("Ignoring the TypeOfWork 'N'.");
         }
 
-        final int sum = (typeR ? 1 : 0) + (typeO ? 1 : 0) + (typeF ? 1 : 0);
-        if (sum > 1) {
-            errors.put(field.getField(), "Multiple TypeOfWork is set, only one is allowed.");
-        } else if (sum == 0) {
-            errors.put(field.getField(), "No TypeOfWork defined.");
-        } else {
+        if (isTypeOfWorkCorrect(errors, field, typeR, typeO, typeF)) {
             TypeOfWork value = null;
             if (typeR) {
                 value = TypeOfWork.R;
@@ -215,6 +210,18 @@ final class CSVTransformer {
 
             invokeMethodOnObject(errors, obj, field, value);
         }
+    }
+
+    private static boolean isTypeOfWorkCorrect(final Map<String, String> errors, final OfferFields field, final Boolean typeR, final Boolean typeO, final Boolean typeF) {
+        final int sum = (typeR ? 1 : 0) + (typeO ? 1 : 0) + (typeF ? 1 : 0);
+
+        if (sum > 1) {
+            errors.put(field.getField(), "Multiple TypeOfWork is set, only one is allowed.");
+        } else if (sum == 0) {
+            errors.put(field.getField(), "No TypeOfWork defined.");
+        }
+
+        return sum == 1;
     }
 
     static void transformStudyLevels(final Map<String, String> errors, final Verifiable obj, final OfferFields field, final CSVRecord record) {

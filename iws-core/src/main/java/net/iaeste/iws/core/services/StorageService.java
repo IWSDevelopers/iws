@@ -38,7 +38,6 @@ import net.iaeste.iws.api.responses.FetchFileResponse;
 import net.iaeste.iws.api.responses.FetchFolderResponse;
 import net.iaeste.iws.api.responses.FileResponse;
 import net.iaeste.iws.api.responses.FolderResponse;
-import net.iaeste.iws.api.util.Verifications;
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.core.exceptions.StorageException;
 import net.iaeste.iws.core.exceptions.UnsupportedOperationException;
@@ -690,13 +689,6 @@ public final class StorageService extends CommonService<AccessDao> {
      * @return Sorted list of Folders - first matches given Id and last is the root
      */
     private List<Long> findFolderIds(final String externalId) {
-        // Despite the fact that the Id's should be verified before we're
-        // coming so deep in, there may be other ways to invoke this
-        // functionality. So we're enforcing a check on the Id before using
-        // it in the Native Query. The Verification check will throw an
-        // IllegalArgument Exception, if it is not a valid Id.
-        Verifications.ensureValidId("Folder Id", externalId);
-
         // Native Query to retrieve the Id's for the Tree starting with the
         // deepest (requested Id) and going up to the root. Query utilizes
         // the SQL:1999 Common Table Expression to achieve a Recursive lookup.
@@ -706,7 +698,7 @@ public final class StorageService extends CommonService<AccessDao> {
                 "      f1.id,\n" +
                 "      f1.parent_id\n" +
                 "    from folders f1\n" +
-                "    where f1.external_id = '" + externalId + "'\n" +
+                "    where f1.external_id = :eid\n" +
                 "  union\n" +
                 "    select\n" +
                 "      f2.id,\n" +
@@ -716,6 +708,7 @@ public final class StorageService extends CommonService<AccessDao> {
                 "select id from tree\n" +
                 "order by id desc";
         final Query nativeQuery = entityManager.createNativeQuery(nativeSQL);
+        nativeQuery.setParameter("eid", externalId);
 
         // The Native Query is returning a list of Integers, but the JPA Query
         // requires a list of Longs. So we have to convert the list.

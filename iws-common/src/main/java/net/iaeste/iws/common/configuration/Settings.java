@@ -44,6 +44,7 @@ public final class Settings {
     private static final String PROPERTY_MAX_IDLE_TIME_FOR_SESSIONS = "max.idle.time.for.sessions";
     private static final String PROPERTY_LOGIN_BLOCKED_PERIOD = "login.blocked.period";
     private static final String PROPERTY_EULA_VERSION = "latest.eula.version";
+    private static final String PROPERTY_ENABLE_PAGINATION = "enable.pagination";
     private static final String PROPERTY_ANNUAL_CONFERENCE_START = "annual.conference.start";
     private static final String PROPERTY_ANNUAL_CONFERENCE_END = "annual.conference.end";
     private static final String PROPERTY_ANNUAL_CONFERENCE_DEADLINE = "annual.conference.nomination.deadline";
@@ -76,6 +77,7 @@ public final class Settings {
         properties.setProperty(PROPERTY_MAX_IDLE_TIME_FOR_SESSIONS, String.valueOf(InternalConstants.MAX_SESSION_IDLE_PERIOD));
         properties.setProperty(PROPERTY_LOGIN_BLOCKED_PERIOD, String.valueOf(InternalConstants.LOGIN_BLOCKING_PERIOD));
         properties.setProperty(PROPERTY_EULA_VERSION, String.valueOf(InternalConstants.INITIAL_EULA_VERSION));
+        properties.setProperty(PROPERTY_ENABLE_PAGINATION, String.valueOf(InternalConstants.ENABLE_PAGINATION));
         properties.setProperty(PROPERTY_ANNUAL_CONFERENCE_START, InternalConstants.AC_START);
         properties.setProperty(PROPERTY_ANNUAL_CONFERENCE_END, InternalConstants.AC_END);
         properties.setProperty(PROPERTY_ANNUAL_CONFERENCE_DEADLINE, InternalConstants.AC_DEADLINE);
@@ -176,6 +178,14 @@ public final class Settings {
 
     public long getCurrentEULAVersion() {
         return Long.valueOf(properties.getProperty(PROPERTY_EULA_VERSION));
+    }
+
+    public void setEnablePagination(final boolean enablePagination) {
+        properties.setProperty(PROPERTY_ENABLE_PAGINATION, String.valueOf(enablePagination));
+    }
+
+    public boolean isPaginationEnabled() {
+        return "true".equals(properties.getProperty(PROPERTY_ENABLE_PAGINATION).trim().toLowerCase(IWSConstants.DEFAULT_LOCALE));
     }
 
     public void setAnnualConferenceStart(final String start) {

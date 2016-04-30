@@ -135,6 +135,13 @@ public final class InternalConstants {
      */
     public static final int INITIAL_EULA_VERSION = 1;
 
+    /**
+     * Pagination is used to limit the number of results returned by the IWS,
+     * for all calls returning lists. By default, it is enabled, but it can be
+     * turned of via the Properties.
+     */
+    public static final boolean ENABLE_PAGINATION = true;
+
     private static final Integer CURRENT_YEAR = Calendar.getInstance().get(Calendar.YEAR);
 
     /**

@@ -98,7 +98,7 @@ public interface BasicDao {
      * @param page  Paging information
      * @return List of results from the Query
      */
-    <T extends IWSView<T>> List<T> fetchList(Query query, Paginatable page);
+    <T extends IWSView> List<T> fetchList(Query query, Paginatable page);
 
     // =========================================================================
     // Following lookup methods are added here, since they're used often

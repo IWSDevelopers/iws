@@ -43,7 +43,7 @@ import javax.persistence.Table;
                 "      and v.attempts < :attempts " +
                 "order by v.id"))
 @Table(name = "notification_job_task_details")
-public final class NotificationJobTasksView extends AbstractView<NotificationJobTasksView> {
+public final class NotificationJobTasksView extends AbstractView {
 
     @Id
     @Column(name = "id")
@@ -143,15 +143,5 @@ public final class NotificationJobTasksView extends AbstractView<NotificationJob
                 ", notificationType=" + notificationType +
                 ", consumerId=" + consumerId +
                 '}';
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int compareTo(final NotificationJobTasksView o) {
-        final int result = id.compareTo(o.id);
-
-        return sortAscending ? result : -result;
     }
 }

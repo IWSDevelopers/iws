@@ -38,7 +38,7 @@ public class IntegerXmlAdapter extends XmlAdapter<String, Integer> {
     private static final Logger LOG = LoggerFactory.getLogger(IntegerXmlAdapter.class);
 
     @Override
-    public Integer unmarshal(final String v) throws Exception {
+    public Integer unmarshal(final String v) {
         Integer result = null;
 
         try {
@@ -51,7 +51,7 @@ public class IntegerXmlAdapter extends XmlAdapter<String, Integer> {
     }
 
     @Override
-    public String marshal(final Integer v) throws Exception {
+    public String marshal(final Integer v) {
         return String.valueOf(v);
     }
 }

@@ -44,7 +44,7 @@ import javax.persistence.Table;
                     "  and o.offer.externalId in (:eids)")
 })
 @Table(name = "shared_offer_view")
-public final class SharedOfferView extends AbstractView<SharedOfferView> {
+public final class SharedOfferView extends AbstractView {
 
     @Id
     @Column(name = "shared_id", insertable = false, updatable = false)
@@ -201,15 +201,5 @@ public final class SharedOfferView extends AbstractView<SharedOfferView> {
     @Override
     public int hashCode() {
         return (id != null) ? id.hashCode() : 0;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int compareTo(final SharedOfferView o) {
-        final int result = id.compareTo(o.id);
-
-        return sortAscending ? result : -result;
     }
 }

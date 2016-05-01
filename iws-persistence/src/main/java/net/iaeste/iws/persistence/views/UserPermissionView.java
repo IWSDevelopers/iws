@@ -48,7 +48,7 @@ import java.io.Serializable;
                         "  and v.externalGroupId = :egid")
 })
 @Table(name = "user_permissions")
-public final class UserPermissionView extends AbstractView<UserPermissionView> {
+public final class UserPermissionView extends AbstractView {
 
     @EmbeddedId
     private UserPermissionViewId id = new UserPermissionViewId();
@@ -257,16 +257,6 @@ public final class UserPermissionView extends AbstractView<UserPermissionView> {
     @Override
     public int hashCode() {
         return id.hashCode();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int compareTo(final UserPermissionView o) {
-        final int result = permission.compareTo(o.permission);
-
-        return sortAscending ? result : -result;
     }
 
     /**

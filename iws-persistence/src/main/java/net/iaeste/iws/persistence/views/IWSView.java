@@ -33,7 +33,7 @@ import net.iaeste.iws.api.enums.SortingField;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
-public interface IWSView<T> extends Comparable<T> {
+public interface IWSView {
 
     /**
      * Sets the field to sort by, by default the listing is sorted according to

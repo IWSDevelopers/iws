@@ -45,7 +45,7 @@ import javax.persistence.Table;
                         "  and lower(e.employer.name) like :name")
 })
 @Table(name = "employer_view")
-public final class EmployerView extends AbstractView<EmployerView> {
+public final class EmployerView extends AbstractView {
 
     @Id
     @Column(name = "id", insertable = false, updatable = false)
@@ -147,15 +147,5 @@ public final class EmployerView extends AbstractView<EmployerView> {
     @Override
     public int hashCode() {
         return id.hashCode();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int compareTo(final EmployerView o) {
-        final int result = id.compareTo(o.id);
-
-        return sortAscending ? result : -result;
     }
 }

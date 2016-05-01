@@ -46,7 +46,7 @@ import javax.persistence.Table;
                         "  and v.offerExternalId = :eoid"),
 })
 @Table(name = "application_view")
-public final class ApplicationView extends AbstractView<ApplicationView> {
+public final class ApplicationView extends AbstractView {
 
     @Id
     @Column(name = "application_id", insertable = false, updatable = false)
@@ -215,15 +215,5 @@ public final class ApplicationView extends AbstractView<ApplicationView> {
     @Override
     public int hashCode() {
         return id.hashCode();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int compareTo(final ApplicationView o) {
-        final int result = id.compareTo(o.id);
-
-        return sortAscending ? result : -result;
     }
 }

@@ -18,14 +18,15 @@
 package net.iaeste.iws.api.requests;
 
 import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.api.util.Verifications;
 import net.iaeste.iws.api.util.Serializer;
+import net.iaeste.iws.api.util.Verifications;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -47,7 +48,7 @@ import java.util.Map;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "sessionDataRequest", propOrder = { "sessionData" })
+@XmlType(name = "sessionDataRequest", propOrder = "sessionData")
 public final class SessionDataRequest<T extends Serializable> extends Verifications {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
@@ -87,7 +88,7 @@ public final class SessionDataRequest<T extends Serializable> extends Verificati
      * @param sessionData Client specific Session Data
      */
     public SessionDataRequest(final T sessionData) {
-        this.sessionData = Serializer.serialize(sessionData);
+        setSessionData(sessionData);
     }
 
     // =========================================================================
@@ -112,7 +113,7 @@ public final class SessionDataRequest<T extends Serializable> extends Verificati
     }
 
     public byte[] getSessionData() {
-        return sessionData;
+        return Arrays.copyOf(sessionData, sessionData.length);
     }
 
     // =========================================================================

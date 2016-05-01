@@ -24,7 +24,7 @@ import net.iaeste.iws.api.enums.SortingField;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
-public abstract class AbstractView<T> implements IWSView<T> {
+public abstract class AbstractView implements IWSView {
 
     protected SortingField sortField = SortingField.CREATED;
     protected boolean sortAscending = true;

@@ -27,6 +27,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 import java.io.Serializable;
+import java.util.Arrays;
 
 /**
  * <p>The Session Response Object contains the Session Data belonging to the
@@ -79,7 +80,7 @@ public final class SessionDataResponse<T extends Serializable> extends FallibleR
     // =========================================================================
 
     public void setSessionData(final byte[] sessionData) {
-        this.sessionData = sessionData;
+        this.sessionData = Arrays.copyOf(sessionData, sessionData.length);
     }
 
     public T getSessionData() {

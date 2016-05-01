@@ -60,8 +60,6 @@ public final class Field implements Serializable {
      */
     public Field(final String field) {
         this.theField = field;
-        this.oldValue = null;
-        this.newValue = null;
     }
 
     /**

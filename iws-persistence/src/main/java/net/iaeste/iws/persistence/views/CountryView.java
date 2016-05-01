@@ -46,7 +46,7 @@ import javax.persistence.Table;
                         "where upper(v.country.countryCode) in :codes")
 })
 @Table(name = "country_details")
-public final class CountryView extends AbstractView<CountryView> {
+public final class CountryView extends AbstractView {
 
     @Id
     @Column(name = "country_id")
@@ -137,23 +137,5 @@ public final class CountryView extends AbstractView<CountryView> {
     @Override
     public int hashCode() {
         return id.hashCode();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int compareTo(final CountryView o) {
-        final int result;
-
-        switch (sortField) {
-            case NAME:
-                result = country.getCountryCode().compareTo(o.country.getCountryCode());
-                break;
-            default:
-                result = country.getCountryCode().compareTo(o.country.getCountryCode());
-        }
-
-        return sortAscending ? result : -result;
     }
 }

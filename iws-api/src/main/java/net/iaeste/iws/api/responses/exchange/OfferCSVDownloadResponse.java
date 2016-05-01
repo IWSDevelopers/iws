@@ -25,6 +25,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.Arrays;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -54,7 +55,7 @@ public final class OfferCSVDownloadResponse extends FallibleResponse {
     }
 
     public OfferCSVDownloadResponse(final byte[] data) {
-        this.data = data;
+        setData(data);
     }
 
     /**
@@ -72,10 +73,10 @@ public final class OfferCSVDownloadResponse extends FallibleResponse {
     // =========================================================================
 
     public void setData(final byte[] data) {
-        this.data = data;
+        this.data = Arrays.copyOf(data, data.length);
     }
 
     public byte[] getData() {
-        return data;
+        return Arrays.copyOf(data, data.length);
     }
 }

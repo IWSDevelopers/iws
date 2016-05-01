@@ -249,7 +249,7 @@ public final class ViewTransformer {
         return file;
     }
 
-    public static <V extends AbstractView<?>> List<Object> transformOfferToObjectList(final V view, final OfferFields.Type type) {
+    public static <V extends AbstractView> List<Object> transformOfferToObjectList(final V view, final OfferFields.Type type) {
         final List<Object> result;
 
         // This is an interim stage, we need to somehow make the two different

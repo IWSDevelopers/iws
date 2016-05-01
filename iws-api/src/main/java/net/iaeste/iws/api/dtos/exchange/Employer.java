@@ -52,21 +52,21 @@ public final class Employer extends Verifications {
     public static final int FIELD_LENGTH = 255;
 
     @XmlElement(required = true, nillable = true)  private String employerId = null;
-    @XmlElement(required = true, nillable = false) private Group group = null;
-    @XmlElement(required = true, nillable = false) private String name = null;
-    @XmlElement(required = true, nillable = false) private String department = "";
+    @XmlElement(required = true)                   private Group group = null;
+    @XmlElement(required = true)                   private String name = null;
+    @XmlElement(required = true)                   private String department = "";
     @XmlElement(required = true, nillable = true)  private String business = null;
-    @XmlElement(required = true, nillable = false) private Address address = null;
+    @XmlElement(required = true)                   private Address address = null;
     @XmlElement(required = true, nillable = true)  private String employeesCount = null;
     @XmlElement(required = true, nillable = true)  private String website = null;
-    @XmlElement(required = true, nillable = false) private String workingPlace = null;
+    @XmlElement(required = true)                   private String workingPlace = null;
     @XmlElement(required = true, nillable = true)  private Boolean canteen = null;
     @XmlElement(required = true, nillable = true)  private String nearestAirport = null;
     @XmlElement(required = true, nillable = true)  private String nearestPublicTransport = null;
     // Following fields is reporting fields, and not part of the actual
     // contract, hence they are not part of the equals, hashCode or toString
     // methods
-    @XmlElement(required = false, nillable = true) private List<String> offerReferenceNumbers = new ArrayList<>();
+    @XmlElement(nillable = true)                   private List<String> offerReferenceNumbers = new ArrayList<>();
     @XmlElement(required = true, nillable = true)  private DateTime modified = null;
     @XmlElement(required = true, nillable = true)  private DateTime created = null;
 

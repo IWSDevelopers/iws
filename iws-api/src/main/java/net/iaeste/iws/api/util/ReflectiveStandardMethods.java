@@ -113,9 +113,9 @@ public final class ReflectiveStandardMethods {
         final StringBuilder builder = new StringBuilder(256);
 
         // First part, we're adding the name of the Class.
-        builder.append(obj.getClass().getSimpleName());
+        builder.append(obj.getClass().getSimpleName())
         // Then we'll add a start brace, to indicate where the content comes
-        builder.append('{');
+               .append('{');
 
         // The fields are comma separated, so we're adding a comma between
         // each, but not for the first.
@@ -127,9 +127,9 @@ public final class ReflectiveStandardMethods {
                 } else {
                     builder.append(", ");
                 }
-                builder.append(field.getName());
-                builder.append('=');
-                builder.append(readValue(obj, field));
+                builder.append(field.getName())
+                       .append('=')
+                       .append(readValue(obj, field));
             }
         }
 

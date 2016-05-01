@@ -41,7 +41,7 @@ import javax.persistence.Table;
                         "where s.group.parentId = :parentId")
 })
 @Table(name = "student_view")
-public final class StudentView extends AbstractView<StudentView> {
+public final class StudentView extends AbstractView {
 
     @Id
     @Column(name = "student_id", insertable = false, updatable = false)
@@ -154,15 +154,5 @@ public final class StudentView extends AbstractView<StudentView> {
     @Override
     public int hashCode() {
         return id.hashCode();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int compareTo(final StudentView o) {
-        final int result = id.compareTo(o.id);
-
-        return sortAscending ? result : -result;
     }
 }

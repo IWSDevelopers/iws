@@ -52,7 +52,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -150,7 +149,7 @@ public class BasicJpaDao implements BasicDao {
      * {@inheritDoc}
      */
     @Override
-    public final <T extends IWSView<T>> List<T> fetchList(final Query query, final Paginatable page) {
+    public final <T extends IWSView> List<T> fetchList(final Query query, final Paginatable page) {
         // The Pagination starts with page 1, so we have to subtract one here,
         // to ensure that we read out the correct data from the database.
         query.setFirstResult((page.pageNumber() - 1) * page.pageSize());
@@ -160,7 +159,6 @@ public class BasicJpaDao implements BasicDao {
         for (final T view : found) {
             view.setSorting(page.sortBy(), page.sortAscending());
         }
-        Collections.sort(found);
 
         return found;
     }

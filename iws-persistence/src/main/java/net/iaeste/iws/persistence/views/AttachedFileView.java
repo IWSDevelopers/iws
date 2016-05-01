@@ -39,7 +39,7 @@ import java.util.Date;
                 "where v.recordTable = :table" +
                 "  and v.recordId = :recordId"))
 @Table(name = "file_attachments")
-public final class AttachedFileView extends AbstractView<AttachedFileView> {
+public final class AttachedFileView extends AbstractView {
 
     @Id
     @Column(name = "attachment_id", insertable = false, updatable = false)
@@ -153,13 +153,5 @@ public final class AttachedFileView extends AbstractView<AttachedFileView> {
     @Override
     public int hashCode() {
         return id.hashCode();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int compareTo(final AttachedFileView o) {
-        return 0;
     }
 }

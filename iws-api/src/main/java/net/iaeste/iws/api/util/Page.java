@@ -42,12 +42,12 @@ public final class Page implements Serializable {
      * The maximum allowed number of objects to be retrieved in a single
      * request.
      */
-    public static final int MAX_PAGE_SIZE = 100;
+    private static final int MAX_PAGE_SIZE = 100;
 
     /**
      * The first page to be read out is starting with 1.
      */
-    public static final int FIRST_PAGE = 1;
+    private static final int FIRST_PAGE = 1;
 
     private int pageNumber;
     private int pageSize;

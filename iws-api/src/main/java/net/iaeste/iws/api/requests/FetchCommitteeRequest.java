@@ -21,7 +21,7 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.GroupStatus;
 import net.iaeste.iws.api.enums.Membership;
 import net.iaeste.iws.api.enums.SortingField;
-import net.iaeste.iws.api.util.AbstractPaginatable;
+import net.iaeste.iws.api.util.Paginatable;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -40,7 +40,7 @@ import java.util.Set;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "fetchCommitteeRequest", propOrder = { "countryIds", "membership", "statuses" })
-public final class FetchCommitteeRequest extends AbstractPaginatable {
+public final class FetchCommitteeRequest extends Paginatable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;

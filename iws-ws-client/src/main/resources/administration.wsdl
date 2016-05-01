@@ -1,4 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://ws.iws.iaeste.net/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="administrationWSService" targetNamespace="http://ws.iws.iaeste.net/">
+  <wsdl:documentation>
+      Service: IWS Administration Service
+      Version: 1.2.20160501
+      Owner:   Kim Jensen
+  </wsdl:documentation>
   <wsdl:types>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://ws.iws.iaeste.net/" targetNamespace="http://ws.iws.iaeste.net/" version="1.0">
 
@@ -191,7 +196,7 @@
 
   <xs:complexType final="extension restriction" name="fetchCountryRequest">
     <xs:complexContent>
-      <xs:extension base="tns:abstractPaginatable">
+      <xs:extension base="tns:paginatable">
         <xs:sequence>
           <xs:element maxOccurs="unbounded" name="countryIds" nillable="true" type="xs:string"/>
           <xs:element name="membership" nillable="true" type="tns:membership"/>
@@ -201,7 +206,7 @@
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType abstract="true" name="abstractPaginatable">
+  <xs:complexType abstract="true" name="paginatable">
     <xs:complexContent>
       <xs:extension base="tns:verifications">
         <xs:sequence>
@@ -953,6 +958,7 @@
     </wsdl:part>
   </wsdl:message>
   <wsdl:portType name="administrationWS">
+    <wsdl:documentation>IWS Administration WebService</wsdl:documentation>
     <wsdl:operation name="updateUsername">
       <wsdl:input message="tns:updateUsername" name="updateUsername">
     </wsdl:input>

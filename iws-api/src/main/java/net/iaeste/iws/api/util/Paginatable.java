@@ -34,46 +34,14 @@ import javax.xml.bind.annotation.XmlType;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "abstractPaginatable", propOrder = "page")
-public abstract class AbstractPaginatable extends Verifications {
+@XmlType(name = "paginatable", propOrder = "page")
+public abstract class Paginatable extends Verifications {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     @XmlElement(required = true)
     protected final Page page = new Page();
-
-    /**
-     * Sets the Current Page Number to be retrieved. If the Page Number is not
-     * allowed, i.e. invalid - then the method throws a
-     * {@code IllegalArgumentException}.
-     *
-     * @param pageNumber Current Page Number
-     * @see Page#FIRST_PAGE
-     */
-    public final void setPageNumber(final int pageNumber) {
-        if (pageNumber < Page.FIRST_PAGE) {
-            throw new IllegalArgumentException("Invalid Page number.");
-        }
-
-        page.setPageNumber(pageNumber);
-    }
-
-    /**
-     * Sets the Current Page Size, meaning the (maximum) number of records to
-     * be retrieved from the IWS. If the given Page Size is outside of the
-     * allowed range, then a {@code IllegalArgumentException} is thrown.
-     *
-     * @param pageSize Current Page Size
-     * @see Page#MAX_PAGE_SIZE
-     */
-    public final void setPageSize(final int pageSize) {
-        if ((pageSize <= 0) || (pageSize > Page.MAX_PAGE_SIZE)) {
-            throw new IllegalArgumentException("Invalid Page Size.");
-        }
-
-        page.setPageSize(pageSize);
-    }
 
     /**
      * Sets the Sort Order for the request.

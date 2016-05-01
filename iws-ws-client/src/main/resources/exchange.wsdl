@@ -1,5 +1,10 @@
 <?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://ws.iws.iaeste.net/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="exchangeWSService" targetNamespace="http://ws.iws.iaeste.net/">
   <wsdl:types>
+    <wsdl:documentation>
+        Service: IWS Exchange Service
+        Version: 1.2.20160501
+        Owner:   Kim Jensen
+    </wsdl:documentation>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://ws.iws.iaeste.net/" targetNamespace="http://ws.iws.iaeste.net/" version="1.0">
 
   <xs:complexType final="extension restriction" name="authenticationToken">
@@ -19,7 +24,7 @@
 
   <xs:complexType final="extension restriction" name="offerCSVUploadRequest">
     <xs:complexContent>
-      <xs:extension base="tns:abstractPaginatable">
+      <xs:extension base="tns:paginatable">
         <xs:sequence>
           <xs:element name="data" type="xs:base64Binary"/>
           <xs:element name="delimiter" nillable="true" type="tns:fieldDelimiter"/>
@@ -28,7 +33,7 @@
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType abstract="true" name="abstractPaginatable">
+  <xs:complexType abstract="true" name="paginatable">
     <xs:complexContent>
       <xs:extension base="tns:verifications">
         <xs:sequence>
@@ -119,7 +124,7 @@
 
   <xs:complexType final="extension restriction" name="fetchPublishGroupsRequest">
     <xs:complexContent>
-      <xs:extension base="tns:abstractPaginatable">
+      <xs:extension base="tns:paginatable">
         <xs:all/>
       </xs:extension>
     </xs:complexContent>
@@ -201,7 +206,7 @@
 
   <xs:complexType final="extension restriction" name="fetchEmployerRequest">
     <xs:complexContent>
-      <xs:extension base="tns:abstractPaginatable">
+      <xs:extension base="tns:paginatable">
         <xs:sequence>
           <xs:element name="type" type="tns:employerFetchType"/>
           <xs:element name="field" nillable="true" type="xs:string"/>
@@ -415,7 +420,7 @@
 
   <xs:complexType final="extension restriction" name="offerCSVDownloadRequest">
     <xs:complexContent>
-      <xs:extension base="tns:abstractPaginatable">
+      <xs:extension base="tns:paginatable">
         <xs:sequence>
           <xs:element name="fetchType" type="tns:fetchType"/>
           <xs:element maxOccurs="unbounded" name="identifiers" type="xs:string"/>
@@ -451,7 +456,7 @@
 
   <xs:complexType final="extension restriction" name="fetchPublishedGroupsRequest">
     <xs:complexContent>
-      <xs:extension base="tns:abstractPaginatable">
+      <xs:extension base="tns:paginatable">
         <xs:sequence>
           <xs:element maxOccurs="unbounded" name="identifiers" type="xs:string"/>
           <xs:element name="exchangeYear" type="xs:int"/>
@@ -491,7 +496,7 @@
 
   <xs:complexType final="extension restriction" name="fetchOffersRequest">
     <xs:complexContent>
-      <xs:extension base="tns:abstractPaginatable">
+      <xs:extension base="tns:paginatable">
         <xs:sequence>
           <xs:element name="fetchType" type="tns:fetchType"/>
           <xs:element maxOccurs="unbounded" name="identifiers" type="xs:string"/>
@@ -1352,6 +1357,7 @@
     </wsdl:part>
   </wsdl:message>
   <wsdl:portType name="exchangeWS">
+    <wsdl:documentation>IWS Exchange WebService</wsdl:documentation>
     <wsdl:operation name="uploadOffers">
       <wsdl:input message="tns:uploadOffers" name="uploadOffers">
     </wsdl:input>

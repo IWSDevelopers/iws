@@ -24,6 +24,7 @@ import net.iaeste.iws.api.Storage;
 import net.iaeste.iws.api.Students;
 
 import javax.xml.bind.annotation.XmlType;
+import java.util.Arrays;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -176,6 +177,6 @@ public enum Permission {
      * @return List of requests for this Permission
      */
     public String[] getRequests() {
-        return requests;
+        return Arrays.copyOf(requests, requests.length);
     }
 }

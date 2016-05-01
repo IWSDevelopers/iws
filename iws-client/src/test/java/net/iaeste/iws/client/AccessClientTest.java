@@ -361,7 +361,7 @@ public final class AccessClientTest extends AbstractTest {
 
         // When we make a request for a specific Group, we only expect to find a single element
         assertThat(responseNational.getAuthorizations().size(), is(1));
-        assertThat(responseNational.getAuthorizations().get(0).getUserGroup().getRole().getPermissions().contains(Permission.PROCESS_OFFER), is(true));
+        assertThat(responseNational.hasPermission(Permission.PROCESS_OFFER), is(true));
         authToken.setGroupId(userId);
 
         // Finally, let's see what happens when we try to find the information

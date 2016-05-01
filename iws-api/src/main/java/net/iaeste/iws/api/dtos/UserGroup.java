@@ -107,7 +107,7 @@ public final class UserGroup extends Verifications {
      * @throws IllegalArgumentException if the Id is set but invalid
      * @see Verifications#UUID_FORMAT
      */
-    public void setUserGroupId(final String userGroupId) throws IllegalArgumentException {
+    public void setUserGroupId(final String userGroupId) {
         ensureValidId("userGroupId", userGroupId);
         this.userGroupId = userGroupId;
     }
@@ -124,7 +124,7 @@ public final class UserGroup extends Verifications {
      * @param user The User to create / manage a Group relation for
      * @throws IllegalArgumentException If the User is undefined
      */
-    public void setUser(final User user) throws IllegalArgumentException {
+    public void setUser(final User user) {
         ensureNotNullAndVerifiable("user", user);
         this.user = new User(user);
     }
@@ -141,7 +141,7 @@ public final class UserGroup extends Verifications {
      * @param group The Group, which the User is / should be related to
      * @throws IllegalArgumentException If the Group is invalid
      */
-    public void setGroup(final Group group) throws IllegalArgumentException {
+    public void setGroup(final Group group) {
         ensureNotNullAndVerifiable("group", group);
         this.group = new Group(group);
     }
@@ -163,7 +163,7 @@ public final class UserGroup extends Verifications {
      * @param role User Role within the Group
      * @throws IllegalArgumentException if the Role is invalid.
      */
-    public void setRole(final Role role) throws IllegalArgumentException {
+    public void setRole(final Role role) {
         ensureNotNullAndVerifiable("role", role);
         this.role = new Role(role);
     }
@@ -180,7 +180,7 @@ public final class UserGroup extends Verifications {
      * @param title Custom title for the user
      * @throws IllegalArgumentException if the value exceeds 50 characters
      */
-    public void setTitle(final String title) throws IllegalArgumentException {
+    public void setTitle(final String title) {
         ensureNotTooLong("title", title, 50);
         this.title = title;
     }

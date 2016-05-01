@@ -26,6 +26,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,15 +43,11 @@ public final class File extends Verifications {
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     @XmlElement(required = true, nillable = true) private String fileId = null;
-    // For now, we're setting the default privacy value to public, so as the
-    // Library primarily consists of public data. It is therefore an opt-in
-    // value to add enhanced privacy rather than an opt-out. This was a decision
-    // made at the Annual IDT Meeting in Stuttgart on October 24th, 2015.
-    @XmlElement(required = true, nillable = false) private Privacy privacy = Privacy.PUBLIC;
+    @XmlElement(required = true)                  private Privacy privacy = Privacy.PROTECTED;
     @XmlElement(required = true, nillable = true) private Group group = null;
     @XmlElement(required = true, nillable = true) private User user = null;
     @XmlElement(required = true, nillable = true) private String folderId = null;
-    @XmlElement(required = true, nillable = false) private String filename = null;
+    @XmlElement(required = true)                  private String filename = null;
     @XmlElement(required = true, nillable = true) private byte[] filedata = null;
     @XmlElement(required = true, nillable = true) private Integer filesize = null;
     @XmlElement(required = true, nillable = true) private String mimetype = null;
@@ -110,7 +107,7 @@ public final class File extends Verifications {
      * @param fileId File Id
      * @throws IllegalArgumentException if the File Id is invalid
      */
-    public void setFileId(final String fileId) throws IllegalArgumentException {
+    public void setFileId(final String fileId) {
         ensureValidId("fileId", fileId);
         this.fileId = fileId;
     }
@@ -150,7 +147,7 @@ public final class File extends Verifications {
      * @param group Group
      * @throws IllegalArgumentException if null or not verifiable
      */
-    public void setGroup(final Group group) throws IllegalArgumentException {
+    public void setGroup(final Group group) {
         ensureNotNullAndVerifiable("group", group);
         this.group = group;
     }
@@ -167,7 +164,7 @@ public final class File extends Verifications {
      * @param user User who uploaded the File
      * @throws IllegalArgumentException if null or not verifiable
      */
-    public void setUser(final User user) throws IllegalArgumentException {
+    public void setUser(final User user) {
         ensureNotNullAndVerifiable("user", user);
         this.user = user;
     }
@@ -201,7 +198,7 @@ public final class File extends Verifications {
      * @param filename Name of the File
      * @throws IllegalArgumentException if null, empty or too long
      */
-    public void setFilename(final String filename) throws IllegalArgumentException {
+    public void setFilename(final String filename) {
         ensureNotNullOrEmptyOrTooLong("filename", filename, 100);
         this.filename = filename;
     }
@@ -219,13 +216,13 @@ public final class File extends Verifications {
      * @param filedata Raw file data
      * @throws IllegalArgumentException if the byte array is too long
      */
-    public void setFiledata(final byte[] filedata) throws IllegalArgumentException {
+    public void setFiledata(final byte[] filedata) {
         ensureNotTooLong("filedata", filedata, 26214400);
-        this.filedata = filedata;
+        this.filedata = Arrays.copyOf(filedata, filedata.length);
     }
 
     public byte[] getFiledata() {
-        return filedata;
+        return Arrays.copyOf(filedata, filedata.length);
     }
 
     /**
@@ -252,7 +249,7 @@ public final class File extends Verifications {
      * @param mimetype File MIME Type
      * @throws IllegalArgumentException if the MIME Type value exceeds 50 characters
      */
-    public void setMimetype(final String mimetype) throws IllegalArgumentException {
+    public void setMimetype(final String mimetype) {
         ensureNotTooLong("mimetype", mimetype, 50);
         this.mimetype = mimetype;
     }
@@ -272,7 +269,7 @@ public final class File extends Verifications {
      * @param description File Description
      * @throws IllegalArgumentException if the length exceeds 250 characters
      */
-    public void setDescription(final String description) throws IllegalArgumentException {
+    public void setDescription(final String description) {
         ensureNotTooLong("description", description, 250);
         this.description = description;
     }
@@ -292,7 +289,7 @@ public final class File extends Verifications {
      * @param keywords File Keywords
      * @throws IllegalArgumentException if the length exceeds 250 characters.
      */
-    public void setKeywords(final String keywords) throws IllegalArgumentException {
+    public void setKeywords(final String keywords) {
         ensureNotTooLong("keywords", keywords, 250);
         this.keywords = keywords;
     }

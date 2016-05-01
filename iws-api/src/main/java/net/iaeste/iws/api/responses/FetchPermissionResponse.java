@@ -24,6 +24,7 @@ import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.Role;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.Permission;
+import net.iaeste.iws.api.util.Verifications;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -82,7 +83,7 @@ public final class FetchPermissionResponse extends FallibleResponse {
      */
     public FetchPermissionResponse(final String userId, final List<Authorization> authorizations) {
         this.userId = userId;
-        this.authorizations = authorizations;
+        this.authorizations = Verifications.immutableList(authorizations);
     }
 
     /**
@@ -111,11 +112,11 @@ public final class FetchPermissionResponse extends FallibleResponse {
     }
 
     public void setAuthorizations(final List<Authorization> authorizations) {
-        this.authorizations = authorizations;
+        this.authorizations = Verifications.immutableList(authorizations);
     }
 
     public List<Authorization> getAuthorizations() {
-        return authorizations;
+        return Verifications.immutableList(authorizations);
     }
 
     // =========================================================================
@@ -218,14 +219,14 @@ public final class FetchPermissionResponse extends FallibleResponse {
      *
      * @return Map with Permissions and Groups
      */
-    public Map<Permission, List<Group>> convertPermissions() {
+    private Map<Permission, List<Group>> convertPermissions() {
         final Map<Permission, List<Group>> permissionMap = new EnumMap<>(Permission.class);
 
-        for (Authorization authorization : authorizations) {
+        for (final Authorization authorization : authorizations) {
             final Role role = authorization.getUserGroup().getRole();
             final Group group = authorization.getUserGroup().getGroup();
 
-            for (Permission permission : role.getPermissions()) {
+            for (final Permission permission : role.getPermissions()) {
                 if (!permissionMap.containsKey(permission)) {
                     permissionMap.put(permission, new ArrayList<Group>(1));
                 }

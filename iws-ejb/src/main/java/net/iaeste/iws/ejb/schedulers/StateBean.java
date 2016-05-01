@@ -127,8 +127,8 @@ public class StateBean {
 
         // First, we need to initialize our dependencies
         activeSessions = ActiveSessions.getInstance(settings);
-        accessDao = new AccessJpaDao(entityManager);
-        exchangeDao = new ExchangeJpaDao(entityManager);
+        accessDao = new AccessJpaDao(entityManager, settings);
+        exchangeDao = new ExchangeJpaDao(entityManager, settings);
         service = new AccountService(settings, accessDao, notifications);
 
         // Second, we're registering the Timer Service. This will ensure that the

@@ -38,7 +38,7 @@ public enum SortingField {
     CREATED,
 
     /**
-     * The principel name of the Object to sort by. For Offers, this is the
+     * The principal name of the Object to sort by. For Offers, this is the
      * Reference Number.
      */
     NAME

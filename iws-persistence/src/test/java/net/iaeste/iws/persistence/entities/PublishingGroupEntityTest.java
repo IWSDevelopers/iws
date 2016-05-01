@@ -23,6 +23,7 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 import net.iaeste.iws.api.dtos.AuthenticationToken;
+import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.ExchangeDao;
@@ -68,8 +69,9 @@ public class PublishingGroupEntityTest {
 
     @Before
     public void before() {
-        accessDao = new AccessJpaDao(entityManager);
-        exchangeDao = new ExchangeJpaDao(entityManager);
+        final Settings settings = new Settings();
+        accessDao = new AccessJpaDao(entityManager, settings);
+        exchangeDao = new ExchangeJpaDao(entityManager, settings);
 
         final AuthenticationToken token = new AuthenticationToken();
         final UserEntity user = accessDao.findActiveUserByUsername("austria@iaeste.at");

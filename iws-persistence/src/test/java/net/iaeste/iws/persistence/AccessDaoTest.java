@@ -23,6 +23,7 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.persistence.entities.SessionEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.jpa.AccessJpaDao;
@@ -56,7 +57,7 @@ public class AccessDaoTest {
     @Test
     @Transactional
     public void testSession() {
-        final AccessDao dao = new AccessJpaDao(entityManager);
+        final AccessDao dao = new AccessJpaDao(entityManager, new Settings());
         final String key = "12345678901234567890123456789012";
         final UserEntity user = dao.findActiveUserByUsername("austria@iaeste.at");
 

@@ -20,6 +20,7 @@ package net.iaeste.iws.persistence.jpa;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.GroupStatus;
 import net.iaeste.iws.api.enums.GroupType;
+import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.persistence.AdminDao;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.UserGroupEntity;
@@ -43,9 +44,10 @@ public final class AdminJpaDao extends BasicJpaDao implements AdminDao {
      * Default Constructor.
      *
      * @param entityManager  Entity Manager instance to use
+     * @param settings       IWS System Settings
      */
-    public AdminJpaDao(final EntityManager entityManager) {
-        super(entityManager);
+    public AdminJpaDao(final EntityManager entityManager, final Settings settings) {
+        super(entityManager, settings);
     }
 
     /**

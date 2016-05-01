@@ -245,7 +245,7 @@ public final class ExchangeMapper extends CommonMapper {
         if (api != null) {
             ws = new net.iaeste.iws.ws.OfferCSVUploadRequest();
 
-            ws.setPage(map(api.getPagingInformation()));
+            ws.setPage(map(api.getPage()));
             ws.setData(api.getData());
             ws.setDelimiter(map(api.getDelimiter()));
         }
@@ -335,7 +335,7 @@ public final class ExchangeMapper extends CommonMapper {
 
         if (api != null) {
             ws = new net.iaeste.iws.ws.FetchPublishGroupsRequest();
-            ws.setPage(map(api.getPagingInformation()));
+            ws.setPage(map(api.getPage()));
         }
 
         return ws;
@@ -359,7 +359,7 @@ public final class ExchangeMapper extends CommonMapper {
         if (api != null) {
             ws = new net.iaeste.iws.ws.FetchPublishedGroupsRequest();
 
-            ws.setPage(map(api.getPagingInformation()));
+            ws.setPage(map(api.getPage()));
             ws.getIdentifiers().addAll(mapStringCollection(api.getIdentifiers()));
             ws.setExchangeYear(api.getExchangeYear());
         }

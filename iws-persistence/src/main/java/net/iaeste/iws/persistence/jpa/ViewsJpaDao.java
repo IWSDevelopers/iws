@@ -21,7 +21,8 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.dtos.exchange.Employer;
 import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.api.util.Date;
-import net.iaeste.iws.api.util.Paginatable;
+import net.iaeste.iws.api.util.Page;
+import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.ViewsDao;
 import net.iaeste.iws.persistence.entities.GroupEntity;
@@ -47,8 +48,8 @@ import java.util.Set;
  */
 public final class ViewsJpaDao extends BasicJpaDao implements ViewsDao {
 
-    public ViewsJpaDao(final EntityManager entityManager) {
-        super(entityManager);
+    public ViewsJpaDao(final EntityManager entityManager, final Settings settings) {
+        super(entityManager, settings);
     }
 
     /**
@@ -100,7 +101,7 @@ public final class ViewsJpaDao extends BasicJpaDao implements ViewsDao {
      * {@inheritDoc}
      */
     @Override
-    public List<EmployerView> findEmployers(final Long groupId, final Paginatable page) {
+    public List<EmployerView> findEmployers(final Long groupId, final Page page) {
         final Query query = entityManager.createNamedQuery("view.findEmployerByGroup");
         query.setParameter("gid", groupId);
 
@@ -111,7 +112,7 @@ public final class ViewsJpaDao extends BasicJpaDao implements ViewsDao {
      * {@inheritDoc}
      */
     @Override
-    public List<EmployerView> findEmployers(final Long groupId, final Paginatable page, final String partialName) {
+    public List<EmployerView> findEmployers(final Long groupId, final Page page, final String partialName) {
         final Query query = entityManager.createNamedQuery("view.findEmployerByGroupAndPartialName");
         query.setParameter("gid", groupId);
         query.setParameter("name", '%' + partialName.toLowerCase(IWSConstants.DEFAULT_LOCALE) + '%');
@@ -123,7 +124,7 @@ public final class ViewsJpaDao extends BasicJpaDao implements ViewsDao {
      * {@inheritDoc}
      */
     @Override
-    public List<OfferView> findDomesticOffers(final Authentication authentication, final Integer exchangeYear, final Set<OfferState> states, final Boolean retrieveCurrentAndNextExchangeYear, final Paginatable page) {
+    public List<OfferView> findDomesticOffers(final Authentication authentication, final Integer exchangeYear, final Set<OfferState> states, final Boolean retrieveCurrentAndNextExchangeYear, final Page page) {
         final Query query = entityManager.createNamedQuery("view.findDomesticOffersByGroupAndYears");
         query.setParameter("gid", authentication.getGroup().getId());
         query.setParameter("years", prepareExchangeYears(exchangeYear, retrieveCurrentAndNextExchangeYear));
@@ -151,7 +152,7 @@ public final class ViewsJpaDao extends BasicJpaDao implements ViewsDao {
      * {@inheritDoc}
      */
     @Override
-    public List<SharedOfferView> findSharedOffers(final Authentication authentication, final Integer exchangeYear, final Set<OfferState> states, final Boolean retrieveCurrentAndNextExchangeYear, final Paginatable page) {
+    public List<SharedOfferView> findSharedOffers(final Authentication authentication, final Integer exchangeYear, final Set<OfferState> states, final Boolean retrieveCurrentAndNextExchangeYear, final Page page) {
         final Query query = entityManager.createNamedQuery("view.findSharedOffersByGroupAndYears");
         query.setParameter("gid", authentication.getGroup().getId());
         query.setParameter("years", prepareExchangeYears(exchangeYear, retrieveCurrentAndNextExchangeYear));
@@ -192,7 +193,7 @@ public final class ViewsJpaDao extends BasicJpaDao implements ViewsDao {
      * {@inheritDoc}
      */
     @Override
-    public List<StudentView> findStudentsForMemberGroup(final Long groupId, final Paginatable page) {
+    public List<StudentView> findStudentsForMemberGroup(final Long groupId, final Page page) {
         final Query query = entityManager.createNamedQuery("view.findStudentsForMemberGroup");
         query.setParameter("parentId", groupId);
 

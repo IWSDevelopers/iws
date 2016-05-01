@@ -21,6 +21,7 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
+import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.entities.notifications.NotificationConsumerEntity;
 import net.iaeste.iws.persistence.jpa.AccessJpaDao;
@@ -54,7 +55,7 @@ public class NotificationConsumerEntityTest {
     @Test
     @Transactional
     public void testClassflow() {
-        final AccessDao dao = new AccessJpaDao(entityManager);
+        final AccessDao dao = new AccessJpaDao(entityManager, new Settings());
         final UserEntity user = dao.findActiveUserByUsername("austria@iaeste.at");
         assertThat(user.getUsername(), is("austria@iaeste.at"));
 

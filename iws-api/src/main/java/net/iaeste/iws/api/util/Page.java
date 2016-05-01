@@ -19,6 +19,7 @@ package net.iaeste.iws.api.util;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.SortingField;
+import net.iaeste.iws.api.enums.SortingOrder;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -31,39 +32,54 @@ import java.io.Serializable;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "page", propOrder = { "pageNumber", "pageSize", "sortAscending", "sortBy" })
-public final class Page implements Paginatable, Serializable {
+@XmlType(name = "page", propOrder = { "pageNumber", "pageSize", "sortOrder", "sortBy" })
+public final class Page implements Serializable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
+    /**
+     * The maximum allowed number of objects to be retrieved in a single
+     * request.
+     */
+    public static final int MAX_PAGE_SIZE = 100;
+
+    /**
+     * The first page to be read out is starting with 1.
+     */
+    public static final int FIRST_PAGE = 1;
+
     private int pageNumber;
     private int pageSize;
-    private boolean sortAscending;
+    private SortingOrder sortOrder;
     private SortingField sortBy;
 
     /**
      * Empty Constructor.
      */
     public Page() {
-        pageNumber = Paginatable.FIRST_PAGE;
-        pageSize = Paginatable.MAX_PAGE_SIZE;
-        sortAscending = Paginatable.ASCENDING_SORT_ORDER;
+        pageNumber = FIRST_PAGE;
+        pageSize = MAX_PAGE_SIZE;
+
+        // Default, we're sorting based on creation in descending order,
+        // meaning that the most recently created Object is the first to
+        // be returned.
+        sortOrder = SortingOrder.DESC;
         sortBy = SortingField.CREATED;
     }
 
     /**
      * Default Constructor, sets all Paginating fields.
      *
-     * @param pageNumber    The current page to fetch, starting from 0 (zero)
-     * @param pageSize      The max number of records on each page
-     * @param sortAscending Sorting Order
-     * @param sortBy        Sorting Field
+     * @param pageNumber  The current page to fetch, starting from 0 (zero)
+     * @param pageSize    The max number of records on each page
+     * @param sortOrder   Sorting Order
+     * @param sortBy      Sorting Field
      */
-    public Page(final int pageNumber, final int pageSize, final boolean sortAscending, final SortingField sortBy) {
+    public Page(final int pageNumber, final int pageSize, final SortingOrder sortOrder, final SortingField sortBy) {
         this.pageNumber = pageNumber;
         this.pageSize = pageSize;
-        this.sortAscending = sortAscending;
+        this.sortOrder = sortOrder;
         this.sortBy = sortBy;
     }
 
@@ -72,9 +88,10 @@ public final class Page implements Paginatable, Serializable {
     }
 
     /**
-     * {@inheritDoc}
+     * Retrieves the Current Page Number for this fetch request.
+     *
+     * @return Current Page number
      */
-    @Override
     public int pageNumber() {
         return pageNumber;
     }
@@ -84,23 +101,30 @@ public final class Page implements Paginatable, Serializable {
     }
 
     /**
-     * {@inheritDoc}
+     * Retrieves the Current Page Size for this fetch request.
+     *
+     * @return Current Page Size
      */
-    @Override
     public int pageSize() {
         return pageSize;
     }
 
-    public void setSortAscending(final boolean sortAscending) {
-        this.sortAscending = sortAscending;
+    /**
+     * Sets the Sorting Order for the page.
+     *
+     * @param sortOrder Sorting Order
+     */
+    public void setSortOrder(final SortingOrder sortOrder) {
+        this.sortOrder = sortOrder;
     }
 
     /**
-     * {@inheritDoc}
+     * Retrieves the Current Sort Order for this fetch request.
+     *
+     * @return Sorting Order
      */
-    @Override
-    public boolean sortAscending() {
-        return sortAscending;
+    public SortingOrder sortOrder() {
+        return sortOrder;
     }
 
     public void setSortBy(final SortingField sortBy) {
@@ -108,9 +132,13 @@ public final class Page implements Paginatable, Serializable {
     }
 
     /**
-     * {@inheritDoc}
+     * Retrieves the Current Sort By Field. Note, that all fields that is
+     * allowed to be sorted by is defined in the SortingField enumeration.
+     * However, the actually allowed values are request specific, so please
+     * check the documentation for the setting to see which fields may be used.
+     *
+     * @return Current Sort By Field
      */
-    @Override
     public SortingField sortBy() {
         return sortBy;
     }

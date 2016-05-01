@@ -26,6 +26,7 @@ import net.iaeste.iws.api.enums.exchange.FieldOfStudy;
 import net.iaeste.iws.api.enums.exchange.LanguageLevel;
 import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.api.enums.exchange.StudyLevel;
+import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.ExchangeDao;
@@ -86,8 +87,9 @@ public class OfferGroupEntityTest {
 
     @Before
     public void before() {
-        offerDao = new ExchangeJpaDao(entityManager);
-        final AccessDao accessDao = new AccessJpaDao(entityManager);
+        final Settings settings = new Settings();
+        offerDao = new ExchangeJpaDao(entityManager, settings);
+        final AccessDao accessDao = new AccessJpaDao(entityManager, settings);
 
         offer = getMinimalOffer();
         final AuthenticationToken token = new AuthenticationToken();

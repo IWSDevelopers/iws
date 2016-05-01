@@ -19,6 +19,7 @@ package net.iaeste.iws.persistence.jpa;
 
 import net.iaeste.iws.api.enums.exchange.ApplicationStatus;
 import net.iaeste.iws.api.enums.exchange.OfferState;
+import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.persistence.StudentDao;
 import net.iaeste.iws.persistence.entities.AttachmentEntity;
 import net.iaeste.iws.persistence.entities.exchange.ApplicationEntity;
@@ -42,9 +43,10 @@ public final class StudentJpaDao extends BasicJpaDao implements StudentDao {
      * Default Constructor.
      *
      * @param entityManager Entity Manager instance to use
+     * @param settings      IWS System Settings
      */
-    public StudentJpaDao(final EntityManager entityManager) {
-        super(entityManager);
+    public StudentJpaDao(final EntityManager entityManager, final Settings settings) {
+        super(entityManager, settings);
     }
 
     /**

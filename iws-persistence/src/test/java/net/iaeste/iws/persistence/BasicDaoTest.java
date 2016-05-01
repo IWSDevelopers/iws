@@ -22,6 +22,7 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
+import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.persistence.entities.AddressEntity;
 import net.iaeste.iws.persistence.entities.CountryEntity;
 import net.iaeste.iws.persistence.exceptions.IdentificationException;
@@ -57,7 +58,7 @@ public class BasicDaoTest {
     @Test(expected = IdentificationException.class)
     public void testSimpleFunctionality() {
         // The BasicDao contains the core functionality to persist & delete
-        final BasicDao dao = new BasicJpaDao(entityManager);
+        final BasicDao dao = new BasicJpaDao(entityManager, new Settings());
 
         // Prepare an Entity to work with. The Address is a good example, since
         // it is a fundamental Entity, and thus used many places.

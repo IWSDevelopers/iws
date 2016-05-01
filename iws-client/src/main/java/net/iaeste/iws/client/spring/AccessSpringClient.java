@@ -68,9 +68,10 @@ public final class AccessSpringClient implements Access {
         final NotificationManagerScheduler notificationBean = new NotificationManagerScheduler();
         notificationBean.setNotifications(notitications);
 
-        // Create a new SessionRequestBean instance wiht out entityManager
+        // Create a new SessionRequestBean instance with our entityManager
         final SessionRequestBean sessionRequestBean = new SessionRequestBean();
         sessionRequestBean.setEntityManager(entityManager);
+        sessionRequestBean.setSettings(Beans.settings());
         sessionRequestBean.postConstruct();
 
         // Create an Access EJB, and inject the EntityManager & Notification Spy
@@ -81,7 +82,7 @@ public final class AccessSpringClient implements Access {
         accessBean.setSettings(Beans.settings());
         accessBean.postConstruct();
 
-        // Set our Access implementation to the Access EJB, running withing a
+        // Set our Access implementation to the Access EJB, running within a
         // "Spring Container".
         client = accessBean;
     }

@@ -34,7 +34,7 @@ import net.iaeste.iws.api.requests.exchange.OfferCSVUploadRequest;
 import net.iaeste.iws.api.responses.exchange.OfferCSVDownloadResponse;
 import net.iaeste.iws.api.responses.exchange.OfferCSVUploadResponse;
 import net.iaeste.iws.api.util.Verifications;
-import net.iaeste.iws.api.util.Paginatable;
+import net.iaeste.iws.api.util.Page;
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.core.exceptions.PermissionException;
 import net.iaeste.iws.core.transformers.CommonTransformer;
@@ -142,7 +142,7 @@ public final class ExchangeCSVService extends CommonService<ExchangeDao> {
 
     private byte[] findDomesticOffers(final Authentication authentication, final OfferCSVDownloadRequest request) {
         final List<String> offerIds = request.getIdentifiers();
-        final Paginatable page = request.getPagingInformation();
+        final Page page = request.getPage();
         final Integer exchangeYear = request.getExchangeYear();
 
         final List<OfferView> found;
@@ -165,7 +165,7 @@ public final class ExchangeCSVService extends CommonService<ExchangeDao> {
 
     private byte[] findSharedOffers(final Authentication authentication, final OfferCSVDownloadRequest request) {
         final List<String> offerIds = request.getIdentifiers();
-        final Paginatable page = request.getPagingInformation();
+        final Page page = request.getPage();
         final Integer exchangeYear = request.getExchangeYear();
         final Set<OfferState> states = EnumSet.allOf(OfferState.class);
         states.remove(OfferState.DELETED);
@@ -188,7 +188,8 @@ public final class ExchangeCSVService extends CommonService<ExchangeDao> {
 
     private static CSVParser getDefaultCsvParser(final Reader input, final char delimiter) {
         try {
-            return CSVFormat.RFC4180.withDelimiter(delimiter)
+            return CSVFormat.RFC4180
+                    .withDelimiter(delimiter)
                     .withHeader()
                     .parse(input);
         } catch (IOException e) {
@@ -198,14 +199,14 @@ public final class ExchangeCSVService extends CommonService<ExchangeDao> {
 
     private static CSVPrinter getDefaultCsvPrinter(final Appendable output) {
         try {
-            return CSVFormat.RFC4180.withDelimiter(DELIMITER.getDescription())
-                                    .withNullString("")
-                                    .print(output);
+            return CSVFormat.RFC4180
+                    .withDelimiter(DELIMITER.getDescription())
+                    .withNullString("")
+                    .print(output);
         } catch (IOException e) {
             throw new IWSException(IWSErrors.PROCESSING_FAILURE, "Creating CSVPrinter failed", e);
         }
     }
-
 
     private static <V extends AbstractView> byte[] convertOffersToCsv(final List<V> offers, final OfferFields.Type type) {
         try (ByteArrayOutputStream stream = new ByteArrayOutputStream();

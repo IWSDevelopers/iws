@@ -1,9 +1,4 @@
 <?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://ws.iws.iaeste.net/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="accessWSService" targetNamespace="http://ws.iws.iaeste.net/">
-  <wsdl:documentation>
-      Service: IWS Access Service
-      Version: 1.2.20160411
-      Owner:   Kim Jensen
-  </wsdl:documentation>
   <wsdl:types>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://ws.iws.iaeste.net/" targetNamespace="http://ws.iws.iaeste.net/" version="1.0">
 
@@ -634,7 +629,6 @@
     </wsdl:part>
   </wsdl:message>
   <wsdl:portType name="accessWS">
-    <wsdl:documentation>IWS Access WebService</wsdl:documentation>
     <wsdl:operation name="generateSession">
       <wsdl:input message="tns:generateSession" name="generateSession">
     </wsdl:input>

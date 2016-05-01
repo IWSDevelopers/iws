@@ -81,7 +81,7 @@ public final class StudentMapper extends CommonMapper {
         if (api != null) {
             ws = new net.iaeste.iws.ws.FetchStudentsRequest();
 
-            ws.setPage(map(api.getPagingInformation()));
+            ws.setPage(map(api.getPage()));
         }
 
         return ws;
@@ -129,7 +129,7 @@ public final class StudentMapper extends CommonMapper {
         if (api != null) {
             ws = new net.iaeste.iws.ws.FetchStudentApplicationsRequest();
 
-            ws.setPage(map(api.getPagingInformation()));
+            ws.setPage(map(api.getPage()));
             ws.setOfferId(api.getOfferId());
         }
 

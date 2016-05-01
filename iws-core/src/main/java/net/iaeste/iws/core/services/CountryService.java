@@ -25,7 +25,7 @@ import net.iaeste.iws.api.enums.Membership;
 import net.iaeste.iws.api.requests.CountryRequest;
 import net.iaeste.iws.api.requests.FetchCountryRequest;
 import net.iaeste.iws.api.responses.FetchCountryResponse;
-import net.iaeste.iws.api.util.Paginatable;
+import net.iaeste.iws.api.util.Page;
 import net.iaeste.iws.core.transformers.CommonTransformer;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.CountryDao;
@@ -87,7 +87,7 @@ public final class CountryService {
      * @return Response Object with found Countries
      */
     public FetchCountryResponse fetchCountries(final FetchCountryRequest request) {
-        final Paginatable page = request.getPagingInformation();
+        final Page page = request.getPage();
         final List<String> countryCodes = request.getCountryIds();
         final Membership membership = request.getMembership();
 

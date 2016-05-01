@@ -58,7 +58,7 @@ public class SessionEntityTest {
 
     @Before
     public void before() {
-        dao = new AccessJpaDao(entityManager);
+        dao = new AccessJpaDao(entityManager, new Settings());
     }
 
     @Test

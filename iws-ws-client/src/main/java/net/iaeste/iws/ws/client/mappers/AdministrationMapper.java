@@ -78,7 +78,7 @@ public final class AdministrationMapper extends CommonMapper {
         if (api != null) {
             ws = new net.iaeste.iws.ws.FetchCountryRequest();
 
-            ws.setPage(map(api.getPagingInformation()));
+            ws.setPage(map(api.getPage()));
             ws.getCountryIds().addAll(mapStringCollection(api.getCountryIds()));
             ws.setMembership(map(api.getMembership()));
             ws.setCountryType(map(api.getCountryType()));

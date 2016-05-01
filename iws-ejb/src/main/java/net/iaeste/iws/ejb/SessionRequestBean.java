@@ -24,6 +24,7 @@ import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.api.util.Serializer;
+import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.common.exceptions.AuthenticationException;
 import net.iaeste.iws.ejb.cdi.IWSBean;
 import net.iaeste.iws.persistence.AccessDao;
@@ -41,7 +42,6 @@ import javax.ejb.TransactionAttributeType;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 import javax.inject.Inject;
-import javax.jws.WebMethod;
 import javax.persistence.EntityManager;
 import java.io.Serializable;
 import java.text.DecimalFormat;
@@ -73,6 +73,7 @@ public class SessionRequestBean {
     private static final Logger LOG = LoggerFactory.getLogger(SessionRequestBean.class);
 
     @Inject @IWSBean private EntityManager entityManager;
+    @Inject @IWSBean private Settings settings;
 
     // For internal data management, we're using the Access DAO
     private AccessDao dao = null;
@@ -88,14 +89,23 @@ public class SessionRequestBean {
      *
      * @param entityManager Transactional Entity Manager instance
      */
-    @WebMethod(exclude = true)
     public void setEntityManager(final EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 
+    /**
+     * Setter for the JNDI injected Settings bean. This allows us to also test
+     * the code, by invoking these setters on the instantiated Object.
+     *
+     * @param settings Settings Bean
+     */
+    public void setSettings(final Settings settings) {
+        this.settings = settings;
+    }
+
     @PostConstruct
     public void postConstruct() {
-        dao = new AccessJpaDao(entityManager);
+        dao = new AccessJpaDao(entityManager, settings);
     }
 
     // =========================================================================

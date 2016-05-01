@@ -18,6 +18,7 @@
 package net.iaeste.iws.persistence.views;
 
 import net.iaeste.iws.api.enums.SortingField;
+import net.iaeste.iws.api.enums.SortingOrder;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -27,14 +28,14 @@ import net.iaeste.iws.api.enums.SortingField;
 public abstract class AbstractView implements IWSView {
 
     protected SortingField sortField = SortingField.CREATED;
-    protected boolean sortAscending = true;
+    protected SortingOrder sortOrder = SortingOrder.DESC;
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public final void setSorting(final SortingField sortField, final boolean sortAscending) {
+    public final void setSorting(final SortingField sortField, final SortingOrder sortOrder) {
         this.sortField = sortField;
-        this.sortAscending = sortAscending;
+        this.sortOrder = sortOrder;
     }
 }

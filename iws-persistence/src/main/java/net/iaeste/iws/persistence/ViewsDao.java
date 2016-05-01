@@ -19,7 +19,7 @@ package net.iaeste.iws.persistence;
 
 import net.iaeste.iws.api.dtos.exchange.Employer;
 import net.iaeste.iws.api.enums.exchange.OfferState;
-import net.iaeste.iws.api.util.Paginatable;
+import net.iaeste.iws.api.util.Page;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.views.DomesticOfferStatisticsView;
 import net.iaeste.iws.persistence.views.EmployerView;
@@ -49,21 +49,21 @@ public interface ViewsDao {
 
     EmployerView findEmployer(Long groupId, String externalId);
 
-    List<EmployerView> findEmployers(Long groupId, Paginatable page);
+    List<EmployerView> findEmployers(Long groupId, Page page);
 
-    List<EmployerView> findEmployers(Long groupId, Paginatable page, String partialName);
+    List<EmployerView> findEmployers(Long groupId, Page page, String partialName);
 
-    List<OfferView> findDomesticOffers(Authentication authentication, Integer exchangeYear, Set<OfferState> states, Boolean retrieveCurrentAndNextExchangeYear, Paginatable page);
+    List<OfferView> findDomesticOffers(Authentication authentication, Integer exchangeYear, Set<OfferState> states, Boolean retrieveCurrentAndNextExchangeYear, Page page);
 
     List<OfferView> findDomesticOffersByOfferIds(Authentication authentication, Integer exchangeYear, List<String> offerIds);
 
-    List<SharedOfferView> findSharedOffers(Authentication authentication, Integer exchangeYear, Set<OfferState> states, Boolean retrieveCurrentAndNextExchangeYear, Paginatable page);
+    List<SharedOfferView> findSharedOffers(Authentication authentication, Integer exchangeYear, Set<OfferState> states, Boolean retrieveCurrentAndNextExchangeYear, Page page);
 
     List<SharedOfferView> findSharedOffersByOfferIds(Authentication authentication, Integer exchangeYear, List<String> offerIds);
 
     List<OfferSharedToGroupView> findSharedToGroup(Long parentId, Integer exchangeYear, List<String> externalOfferIds);
 
-    List<StudentView> findStudentsForMemberGroup(Long groupId, Paginatable page);
+    List<StudentView> findStudentsForMemberGroup(Long groupId, Page page);
 
     List<String> findOfferRefNoForEmployers(List<Employer> employers);
 }

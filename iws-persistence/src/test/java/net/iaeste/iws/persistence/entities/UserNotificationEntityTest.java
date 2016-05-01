@@ -21,6 +21,7 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
 import net.iaeste.iws.api.enums.NotificationFrequency;
+import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.common.notification.NotificationType;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.jpa.AccessJpaDao;
@@ -54,7 +55,7 @@ public class UserNotificationEntityTest {
     @Test
     @Transactional
     public void testClassflow() {
-        final AccessDao dao = new AccessJpaDao(entityManager);
+        final AccessDao dao = new AccessJpaDao(entityManager, new Settings());
         final UserEntity user = dao.findActiveUserByUsername("austria@iaeste.at");
         assertThat(user.getUsername(), is("austria@iaeste.at"));
         final Query query = entityManager.createNamedQuery("notifications.findSettingByUserAndType");

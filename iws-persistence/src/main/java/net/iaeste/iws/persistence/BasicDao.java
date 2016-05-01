@@ -19,7 +19,7 @@ package net.iaeste.iws.persistence;
 
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.StorageType;
-import net.iaeste.iws.api.util.Paginatable;
+import net.iaeste.iws.api.util.Page;
 import net.iaeste.iws.persistence.entities.AddressEntity;
 import net.iaeste.iws.persistence.entities.CountryEntity;
 import net.iaeste.iws.persistence.entities.FileEntity;
@@ -98,7 +98,7 @@ public interface BasicDao {
      * @param page  Paging information
      * @return List of results from the Query
      */
-    <T extends IWSView> List<T> fetchList(Query query, Paginatable page);
+    <T extends IWSView> List<T> fetchList(Query query, Page page);
 
     // =========================================================================
     // Following lookup methods are added here, since they're used often

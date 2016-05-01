@@ -86,8 +86,8 @@ public final class NotificationSystemAdministration implements Observer {
      */
     @Override
     public void init(final EntityManager entityManager, final Settings settings) {
-        this.accessDao = new AccessJpaDao(entityManager);
-        this.notificationDao = new NotificationJpaDao(entityManager);
+        this.accessDao = new AccessJpaDao(entityManager, settings);
+        this.notificationDao = new NotificationJpaDao(entityManager, settings);
 
         initialized = true;
     }

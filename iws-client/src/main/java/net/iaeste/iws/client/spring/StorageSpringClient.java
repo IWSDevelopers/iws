@@ -67,6 +67,7 @@ public class StorageSpringClient implements Storage {
         // Create a new SessionRequestBean instance with our entityManager
         final SessionRequestBean sessionRequestBean = new SessionRequestBean();
         sessionRequestBean.setEntityManager(entityManager);
+        sessionRequestBean.setSettings(Beans.settings());
         sessionRequestBean.postConstruct();
 
         // Create an Committees EJB, and inject the EntityManager & Notification Spy

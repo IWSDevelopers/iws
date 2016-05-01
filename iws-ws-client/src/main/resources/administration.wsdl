@@ -1,9 +1,4 @@
 <?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://ws.iws.iaeste.net/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="administrationWSService" targetNamespace="http://ws.iws.iaeste.net/">
-  <wsdl:documentation>
-      Service: IWS Administration Service
-      Version: 1.2.20160411
-      Owner:   Kim Jensen
-  </wsdl:documentation>
   <wsdl:types>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://ws.iws.iaeste.net/" targetNamespace="http://ws.iws.iaeste.net/" version="1.0">
 
@@ -220,7 +215,7 @@
     <xs:sequence>
       <xs:element name="pageNumber" type="xs:int"/>
       <xs:element name="pageSize" type="xs:int"/>
-      <xs:element name="sortAscending" type="xs:boolean"/>
+      <xs:element minOccurs="0" name="sortOrder" type="tns:sortingOrder"/>
       <xs:element minOccurs="0" name="sortBy" type="tns:sortingField"/>
     </xs:sequence>
   </xs:complexType>
@@ -705,6 +700,13 @@
     </xs:restriction>
   </xs:simpleType>
 
+  <xs:simpleType name="sortingOrder">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="ASC"/>
+      <xs:enumeration value="DESC"/>
+    </xs:restriction>
+  </xs:simpleType>
+
   <xs:simpleType name="sortingField">
     <xs:restriction base="xs:string">
       <xs:enumeration value="CREATED"/>
@@ -951,7 +953,6 @@
     </wsdl:part>
   </wsdl:message>
   <wsdl:portType name="administrationWS">
-    <wsdl:documentation>IWS Administration WebService</wsdl:documentation>
     <wsdl:operation name="updateUsername">
       <wsdl:input message="tns:updateUsername" name="updateUsername">
     </wsdl:input>

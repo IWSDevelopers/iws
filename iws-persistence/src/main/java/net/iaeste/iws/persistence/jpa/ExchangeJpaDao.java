@@ -19,6 +19,7 @@ package net.iaeste.iws.persistence.jpa;
 
 import net.iaeste.iws.api.dtos.exchange.Employer;
 import net.iaeste.iws.api.enums.exchange.OfferState;
+import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.ExchangeDao;
 import net.iaeste.iws.persistence.entities.GroupEntity;
@@ -45,9 +46,10 @@ public final class ExchangeJpaDao extends BasicJpaDao implements ExchangeDao {
      * Default Constructor.
      *
      * @param entityManager Entity Manager instance to use
+     * @param settings      IWS System Settings
      */
-    public ExchangeJpaDao(final EntityManager entityManager) {
-        super(entityManager);
+    public ExchangeJpaDao(final EntityManager entityManager, final Settings settings) {
+        super(entityManager, settings);
     }
 
     /**

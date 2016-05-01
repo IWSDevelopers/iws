@@ -101,7 +101,7 @@ public final class StudentService extends CommonService<StudentDao> {
     }
 
     public FetchStudentsResponse fetchStudents(final Authentication authentication, final FetchStudentsRequest request) {
-        final List<StudentView> found = viewsDao.findStudentsForMemberGroup(authentication.getGroup().getParentId(), request.getPagingInformation());
+        final List<StudentView> found = viewsDao.findStudentsForMemberGroup(authentication.getGroup().getParentId(), request.getPage());
 
         final List<Student> result = new ArrayList<>(found.size());
         for (final StudentView view : found) {

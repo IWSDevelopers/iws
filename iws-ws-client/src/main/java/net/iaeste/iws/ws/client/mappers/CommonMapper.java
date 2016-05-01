@@ -40,6 +40,7 @@ import net.iaeste.iws.api.enums.NotificationFrequency;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.enums.Privacy;
 import net.iaeste.iws.api.enums.SortingField;
+import net.iaeste.iws.api.enums.SortingOrder;
 import net.iaeste.iws.api.enums.UserStatus;
 import net.iaeste.iws.api.enums.UserType;
 import net.iaeste.iws.api.enums.exchange.FieldOfStudy;
@@ -73,10 +74,10 @@ import java.util.Set;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.1
  */
-public class CommonMapper {
+class CommonMapper {
 
     /** Protected Constructor, this is a Utility Class. */
-    protected CommonMapper() {
+    CommonMapper() {
     }
 
     protected static IWSError map(final IwsError ws) {
@@ -421,7 +422,7 @@ public class CommonMapper {
         return ws;
     }
 
-    protected static Set<Permission> mapPermissionList(final List<net.iaeste.iws.ws.Permission> ws) {
+    static Set<Permission> mapPermissionList(final List<net.iaeste.iws.ws.Permission> ws) {
         final Set<Permission> api = EnumSet.noneOf(Permission.class);
 
         for (final net.iaeste.iws.ws.Permission permission : ws) {
@@ -431,7 +432,7 @@ public class CommonMapper {
         return api;
     }
 
-    protected static Collection<net.iaeste.iws.ws.Permission> mapAPIPermissionList(final Collection<Permission> api) {
+    static Collection<net.iaeste.iws.ws.Permission> mapAPIPermissionList(final Collection<Permission> api) {
         final Set<net.iaeste.iws.ws.Permission> ws = EnumSet.noneOf(net.iaeste.iws.ws.Permission.class);
 
         if (api != null) {
@@ -451,7 +452,7 @@ public class CommonMapper {
 
             ws.setPageNumber(api.pageNumber());
             ws.setPageSize(api.pageSize());
-            ws.setSortAscending(api.sortAscending());
+            ws.setSortOrder(map(api.sortOrder()));
             ws.setSortBy(map(api.sortBy()));
         }
 
@@ -512,7 +513,7 @@ public class CommonMapper {
     // Conversion of Collections
     // =========================================================================
 
-    protected static List<Group> mapWSGroupCollection(final Collection<net.iaeste.iws.ws.Group> ws) {
+    static List<Group> mapWSGroupCollection(final Collection<net.iaeste.iws.ws.Group> ws) {
         final List<Group> api;
 
         if (ws != null) {
@@ -527,7 +528,7 @@ public class CommonMapper {
         return api;
     }
 
-    protected static List<net.iaeste.iws.ws.Group> mapAPIGroupCollection(final Collection<Group> api) {
+    static List<net.iaeste.iws.ws.Group> mapAPIGroupCollection(final Collection<Group> api) {
         final List<net.iaeste.iws.ws.Group> ws;
 
         if (api != null) {
@@ -543,7 +544,7 @@ public class CommonMapper {
         return ws;
     }
 
-    protected static List<UserGroup> mapWSUserGroupCollection(final Collection<net.iaeste.iws.ws.UserGroup> ws) {
+    static List<UserGroup> mapWSUserGroupCollection(final Collection<net.iaeste.iws.ws.UserGroup> ws) {
         final List<UserGroup> api;
 
         if (ws != null) {
@@ -559,7 +560,7 @@ public class CommonMapper {
         return api;
     }
 
-    protected static List<File> mapWSFileCollection(final List<net.iaeste.iws.ws.File> ws) {
+    static List<File> mapWSFileCollection(final List<net.iaeste.iws.ws.File> ws) {
         final List<File> api;
 
         if (ws != null) {
@@ -575,7 +576,7 @@ public class CommonMapper {
         return api;
     }
 
-    protected static List<net.iaeste.iws.ws.File> mapAPIFileCollection(final List<File> api) {
+    static List<net.iaeste.iws.ws.File> mapAPIFileCollection(final List<File> api) {
         final List<net.iaeste.iws.ws.File> ws;
 
         if (api != null) {
@@ -591,7 +592,7 @@ public class CommonMapper {
         return ws;
     }
 
-    protected static ArrayList<String> mapStringCollection(final Collection<String> source) {
+    static ArrayList<String> mapStringCollection(final Collection<String> source) {
         // It may seem stupid to map a Collection into a different Collection,
         // but we need this, to ensure that we do not get any pesky NPE's!
         return (source != null) ? new ArrayList<>(source) : new ArrayList<String>(0);
@@ -695,6 +696,10 @@ public class CommonMapper {
 
     private static net.iaeste.iws.ws.SortingField map(final SortingField api) {
         return (api != null) ? net.iaeste.iws.ws.SortingField.valueOf(api.name()) : null;
+    }
+
+    private static net.iaeste.iws.ws.SortingOrder map(final SortingOrder api) {
+        return (api != null) ? net.iaeste.iws.ws.SortingOrder.valueOf(api.name()) : null;
     }
 
     protected static StudyLevel map(final net.iaeste.iws.ws.StudyLevel ws) {
@@ -804,7 +809,7 @@ public class CommonMapper {
     // Shared Exchange related Conversions
     // =========================================================================
 
-    protected static Set<FieldOfStudy> mapFieldOfStudyCollection(final Collection<net.iaeste.iws.ws.FieldOfStudy> source) {
+    static Set<FieldOfStudy> mapFieldOfStudyCollection(final Collection<net.iaeste.iws.ws.FieldOfStudy> source) {
         final Set<FieldOfStudy> set = EnumSet.noneOf(FieldOfStudy.class);
 
         if (source != null) {
@@ -816,7 +821,7 @@ public class CommonMapper {
         return set;
     }
 
-    protected static Collection<net.iaeste.iws.ws.FieldOfStudy> mapAPIFieldOfStudyCollection(final Collection<FieldOfStudy> source) {
+    static Collection<net.iaeste.iws.ws.FieldOfStudy> mapAPIFieldOfStudyCollection(final Collection<FieldOfStudy> source) {
         final Set<net.iaeste.iws.ws.FieldOfStudy> set = EnumSet.noneOf(net.iaeste.iws.ws.FieldOfStudy.class);
 
         if (source != null) {
@@ -828,7 +833,7 @@ public class CommonMapper {
         return set;
     }
 
-    protected static Set<StudyLevel> mapStudyLevelCollectionToSet(final Collection<net.iaeste.iws.ws.StudyLevel> source) {
+    static Set<StudyLevel> mapStudyLevelCollectionToSet(final Collection<net.iaeste.iws.ws.StudyLevel> source) {
         final Set<StudyLevel> set = EnumSet.noneOf(StudyLevel.class);
 
         if (source != null) {
@@ -840,7 +845,7 @@ public class CommonMapper {
         return set;
     }
 
-    protected static Collection<net.iaeste.iws.ws.StudyLevel> mapStudyLevelCollection(final Collection<StudyLevel> source) {
+    static Collection<net.iaeste.iws.ws.StudyLevel> mapStudyLevelCollection(final Collection<StudyLevel> source) {
         final Set<net.iaeste.iws.ws.StudyLevel> set = EnumSet.noneOf(net.iaeste.iws.ws.StudyLevel.class);
 
         if (source != null) {

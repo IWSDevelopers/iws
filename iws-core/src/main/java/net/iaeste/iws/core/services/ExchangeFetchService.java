@@ -37,7 +37,7 @@ import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
 import net.iaeste.iws.api.responses.exchange.FetchPublishedGroupsResponse;
 import net.iaeste.iws.api.responses.exchange.FetchPublishingGroupResponse;
 import net.iaeste.iws.api.responses.exchange.OfferStatisticsResponse;
-import net.iaeste.iws.api.util.Paginatable;
+import net.iaeste.iws.api.util.Page;
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.core.exceptions.PermissionException;
 import net.iaeste.iws.core.transformers.AdministrationTransformer;
@@ -149,10 +149,10 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
                }
                 break;
             case NAME:
-                list = findEmployerByName(groupId, request.getPagingInformation(), request.getFetchField());
+                list = findEmployerByName(groupId, request.getPage(), request.getFetchField());
                 break;
             default:
-                list = findAllEmployers(groupId, request.getPagingInformation());
+                list = findAllEmployers(groupId, request.getPage());
         }
         response.setEmployers(list);
 
@@ -174,13 +174,13 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
         return result;
     }
 
-    private List<Employer> findEmployerByName(final Long groupId, final Paginatable page, final String partialName) {
+    private List<Employer> findEmployerByName(final Long groupId, final Page page, final String partialName) {
         final List<EmployerView> found = viewsDao.findEmployers(groupId, page, partialName);
 
         return convertEmployerViews(found);
     }
 
-    private List<Employer> findAllEmployers(final Long groupId, final Paginatable page) {
+    private List<Employer> findAllEmployers(final Long groupId, final Page page) {
         final List<EmployerView> found = viewsDao.findEmployers(groupId, page);
 
         return convertEmployerViews(found);
@@ -214,7 +214,7 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
     }
 
     private List<Offer> findDomesticOffers(final Authentication authentication, final FetchOffersRequest request) {
-        final List<OfferView> found = viewsDao.findDomesticOffers(authentication, request.getExchangeYear(), request.getStates(), request.getRetrieveCurrentAndNextExchangeYear(), request.getPagingInformation());
+        final List<OfferView> found = viewsDao.findDomesticOffers(authentication, request.getExchangeYear(), request.getStates(), request.getRetrieveCurrentAndNextExchangeYear(), request.getPage());
         final List<Offer> result = new ArrayList<>(found.size());
 
         for (final OfferView view : found) {
@@ -232,7 +232,7 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
     }
 
     private List<Offer> findSharedOffers(final Authentication authentication, final FetchOffersRequest request) {
-        final List<SharedOfferView> found = viewsDao.findSharedOffers(authentication, request.getExchangeYear(), request.getStates(), request.getRetrieveCurrentAndNextExchangeYear(), request.getPagingInformation());
+        final List<SharedOfferView> found = viewsDao.findSharedOffers(authentication, request.getExchangeYear(), request.getStates(), request.getRetrieveCurrentAndNextExchangeYear(), request.getPage());
         final List<Offer> result = new ArrayList<>(found.size());
 
         for (final SharedOfferView view : found) {

@@ -46,17 +46,13 @@ public final class MailingListJpaDao extends BasicJpaDao implements MailingListD
 
     private static final Logger LOG = LoggerFactory.getLogger(MailingListJpaDao.class);
 
-    private final Settings settings;
-
     /**
      * Default Constructor.
      *
      * @param entityManager Entity Manager instance to use
      */
     public MailingListJpaDao(final EntityManager entityManager, final Settings settings) {
-        super(entityManager);
-
-        this.settings = settings;
+        super(entityManager, settings);
     }
 
     // =========================================================================

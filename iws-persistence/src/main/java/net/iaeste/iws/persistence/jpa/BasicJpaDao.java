@@ -26,8 +26,9 @@ import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.MonitoringLevel;
 import net.iaeste.iws.api.enums.StorageType;
 import net.iaeste.iws.api.exceptions.IWSException;
-import net.iaeste.iws.api.util.Paginatable;
+import net.iaeste.iws.api.util.Page;
 import net.iaeste.iws.api.util.Serializer;
+import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.BasicDao;
 import net.iaeste.iws.persistence.Externable;
@@ -64,19 +65,22 @@ import java.util.UUID;
 public class BasicJpaDao implements BasicDao {
 
     protected EntityManager entityManager;
+    protected Settings settings;
     private final MonitoringProcessor monitoringProcessor;
 
     /**
      * Default Constructor.
      *
      * @param entityManager  Entity Manager instance to use
+     * @param settings       IWS System Settings
      */
-    public BasicJpaDao(final EntityManager entityManager) {
-        if (entityManager == null) {
-            throw new IWSException(IWSErrors.FATAL, "Cannot instantiate the DAO without a valid Entity Manager instance.");
+    public BasicJpaDao(final EntityManager entityManager, final Settings settings) {
+        if ((entityManager == null) || (settings == null)) {
+            throw new IWSException(IWSErrors.FATAL, "Cannot instantiate the DAO without a valid Entity Manager instance or settings.");
         }
 
         this.entityManager = entityManager;
+        this.settings = settings;
         this.monitoringProcessor = new MonitoringProcessor();
     }
 
@@ -149,7 +153,7 @@ public class BasicJpaDao implements BasicDao {
      * {@inheritDoc}
      */
     @Override
-    public final <T extends IWSView> List<T> fetchList(final Query query, final Paginatable page) {
+    public final <T extends IWSView> List<T> fetchList(final Query query, final Page page) {
         // The Pagination starts with page 1, so we have to subtract one here,
         // to ensure that we read out the correct data from the database.
         query.setFirstResult((page.pageNumber() - 1) * page.pageSize());
@@ -157,7 +161,7 @@ public class BasicJpaDao implements BasicDao {
 
         final List<T> found = query.getResultList();
         for (final T view : found) {
-            view.setSorting(page.sortBy(), page.sortAscending());
+            view.setSorting(page.sortBy(), page.sortOrder());
         }
 
         return found;

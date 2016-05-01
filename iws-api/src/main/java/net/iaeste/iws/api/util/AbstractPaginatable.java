@@ -19,6 +19,7 @@ package net.iaeste.iws.api.util;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.SortingField;
+import net.iaeste.iws.api.enums.SortingOrder;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -48,10 +49,10 @@ public abstract class AbstractPaginatable extends Verifications {
      * {@code IllegalArgumentException}.
      *
      * @param pageNumber Current Page Number
-     * @see Paginatable#FIRST_PAGE
+     * @see Page#FIRST_PAGE
      */
     public final void setPageNumber(final int pageNumber) {
-        if (pageNumber < Paginatable.FIRST_PAGE) {
+        if (pageNumber < Page.FIRST_PAGE) {
             throw new IllegalArgumentException("Invalid Page number.");
         }
 
@@ -64,10 +65,10 @@ public abstract class AbstractPaginatable extends Verifications {
      * allowed range, then a {@code IllegalArgumentException} is thrown.
      *
      * @param pageSize Current Page Size
-     * @see Paginatable#MAX_PAGE_SIZE
+     * @see Page#MAX_PAGE_SIZE
      */
     public final void setPageSize(final int pageSize) {
-        if ((pageSize <= 0) || (pageSize > Paginatable.MAX_PAGE_SIZE)) {
+        if ((pageSize <= 0) || (pageSize > Page.MAX_PAGE_SIZE)) {
             throw new IllegalArgumentException("Invalid Page Size.");
         }
 
@@ -75,15 +76,12 @@ public abstract class AbstractPaginatable extends Verifications {
     }
 
     /**
-     * Sets the Sort Order for the request. It can be either Ascending (if the
-     * given value is true) or Descending (if the given value is false).
+     * Sets the Sort Order for the request.
      *
-     * @param ascendingSortOrder True if sorting should be ascending, otherwise
-     *                           false
-     * @see Paginatable#ASCENDING_SORT_ORDER
+     * @param sortOrder  Sorting Order
      */
-    public final void setAscendingSortOrder(final boolean ascendingSortOrder) {
-        page.setSortAscending(ascendingSortOrder);
+    public final void setSortOrder(final SortingOrder sortOrder) {
+        page.setSortOrder(sortOrder);
     }
 
     /**
@@ -91,7 +89,7 @@ public abstract class AbstractPaginatable extends Verifications {
      *
      * @return Paginatable Object for this request
      */
-    public final Page getPagingInformation() {
+    public final Page getPage() {
         return page;
     }
 

@@ -75,7 +75,7 @@ public class NotificationManagerBean implements Notifications {
         this.settings = settings;
         this.hostedInBean = hostedInBean;
 
-        dao = new NotificationJpaDao(entityManager);
+        dao = new NotificationJpaDao(entityManager, settings);
     }
 
     /**

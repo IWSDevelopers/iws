@@ -20,6 +20,7 @@ package net.iaeste.iws.persistence.jpa;
 
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.exceptions.IWSException;
+import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.common.notification.NotificationType;
 import net.iaeste.iws.persistence.NotificationDao;
 import net.iaeste.iws.persistence.entities.notifications.NotificationConsumerEntity;
@@ -44,9 +45,10 @@ public final class NotificationJpaDao extends BasicJpaDao implements Notificatio
      * Default Constructor.
      *
      * @param entityManager  Entity Manager instance to use
+     * @param settings       IWS System Settings
      */
-    public NotificationJpaDao(final EntityManager entityManager) {
-        super(entityManager);
+    public NotificationJpaDao(final EntityManager entityManager, final Settings settings) {
+        super(entityManager, settings);
     }
 
     /**

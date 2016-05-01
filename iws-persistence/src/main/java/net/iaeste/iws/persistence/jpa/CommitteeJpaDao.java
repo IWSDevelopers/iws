@@ -21,6 +21,7 @@ import net.iaeste.iws.api.enums.GroupStatus;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.Membership;
 import net.iaeste.iws.common.configuration.InternalConstants;
+import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.persistence.CommitteeDao;
 import net.iaeste.iws.persistence.entities.CountryEntity;
 import net.iaeste.iws.persistence.entities.EntityConstants;
@@ -47,9 +48,10 @@ public final class CommitteeJpaDao extends BasicJpaDao implements CommitteeDao {
      * Default Constructor.
      *
      * @param entityManager Entity Manager instance to use
+     * @param settings      IWS System Settings
      */
-    public CommitteeJpaDao(final EntityManager entityManager) {
-        super(entityManager);
+    public CommitteeJpaDao(final EntityManager entityManager, final Settings settings) {
+        super(entityManager, settings);
     }
 
     // =========================================================================

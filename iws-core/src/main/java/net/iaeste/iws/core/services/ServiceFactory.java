@@ -52,7 +52,7 @@ import javax.persistence.EntityManager;
 public final class ServiceFactory {
 
     // Note, for now the Constructor sets the EntityManager, it is a long-term
-    // requirement, that we instead should have setters for the DAO's.
+    // requirement, that we instead should have setters for the DAOs.
     private final EntityManager entityManager;
     private final AccessDao accessDao;
     private final CountryDao countryDao;
@@ -66,10 +66,10 @@ public final class ServiceFactory {
         this.notifications = notifications;
         this.settings = settings;
 
-        accessDao = new AccessJpaDao(entityManager);
-        countryDao = new CountryJpaDao(entityManager);
-        exchangeDao = new ExchangeJpaDao(entityManager);
-        studentDao = new StudentJpaDao(entityManager);
+        accessDao = new AccessJpaDao(entityManager, settings);
+        countryDao = new CountryJpaDao(entityManager, settings);
+        exchangeDao = new ExchangeJpaDao(entityManager, settings);
+        studentDao = new StudentJpaDao(entityManager, settings);
     }
 
     // =========================================================================
@@ -85,7 +85,7 @@ public final class ServiceFactory {
     }
 
     public CommitteeService prepareCommitteeService() {
-        final CommitteeDao committeeDao = new CommitteeJpaDao(entityManager);
+        final CommitteeDao committeeDao = new CommitteeJpaDao(entityManager, settings);
         return new CommitteeService(settings, committeeDao, notifications);
     }
 
@@ -102,33 +102,33 @@ public final class ServiceFactory {
     }
 
     public ExchangeService prepareExchangeService() {
-        final ExchangeDao dao = new ExchangeJpaDao(entityManager);
+        final ExchangeDao dao = new ExchangeJpaDao(entityManager, settings);
 
         return new ExchangeService(settings, dao, accessDao, notifications);
     }
 
     public ExchangeFetchService prepareExchangeFetchService() {
-        final ExchangeDao dao = new ExchangeJpaDao(entityManager);
-        final ViewsDao viewsDao = new ViewsJpaDao(entityManager);
+        final ExchangeDao dao = new ExchangeJpaDao(entityManager, settings);
+        final ViewsDao viewsDao = new ViewsJpaDao(entityManager, settings);
 
         return new ExchangeFetchService(settings, dao, viewsDao, accessDao);
     }
 
     public ExchangeCSVService prepareExchangeCSVService() {
-        final ExchangeDao dao = new ExchangeJpaDao(entityManager);
-        final ViewsDao viewsDao = new ViewsJpaDao(entityManager);
+        final ExchangeDao dao = new ExchangeJpaDao(entityManager, settings);
+        final ViewsDao viewsDao = new ViewsJpaDao(entityManager, settings);
 
         return new ExchangeCSVService(settings, dao, accessDao, viewsDao);
     }
 
     public StudentService prepareStudentService() {
-        final ViewsDao viewsDao = new ViewsJpaDao(entityManager);
+        final ViewsDao viewsDao = new ViewsJpaDao(entityManager, settings);
 
         return new StudentService(settings, accessDao, exchangeDao, studentDao, viewsDao);
     }
 
     public ContactsService prepareContacsService() {
-        final AdminDao adminDao = new AdminJpaDao(entityManager);
+        final AdminDao adminDao = new AdminJpaDao(entityManager, settings);
 
         return new ContactsService(adminDao);
     }

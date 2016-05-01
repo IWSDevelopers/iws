@@ -22,6 +22,7 @@ import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.enums.UserStatus;
+import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.common.exceptions.AuthenticationException;
 import net.iaeste.iws.common.exceptions.AuthorizationException;
 import net.iaeste.iws.persistence.AccessDao;
@@ -57,9 +58,10 @@ public final class AccessJpaDao extends BasicJpaDao implements AccessDao {
      * Default Constructor.
      *
      * @param entityManager  Entity Manager instance to use
+     * @param settings       IWS System Settings
      */
-    public AccessJpaDao(final EntityManager entityManager) {
-        super(entityManager);
+    public AccessJpaDao(final EntityManager entityManager, final Settings settings) {
+        super(entityManager, settings);
     }
 
     /**

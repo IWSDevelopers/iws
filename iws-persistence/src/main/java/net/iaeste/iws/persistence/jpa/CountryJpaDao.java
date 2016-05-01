@@ -20,7 +20,8 @@ package net.iaeste.iws.persistence.jpa;
 import static net.iaeste.iws.common.utils.StringUtils.toUpper;
 
 import net.iaeste.iws.api.enums.Membership;
-import net.iaeste.iws.api.util.Paginatable;
+import net.iaeste.iws.api.util.Page;
+import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.persistence.CountryDao;
 import net.iaeste.iws.persistence.entities.CountryEntity;
 import net.iaeste.iws.persistence.views.CountryView;
@@ -41,9 +42,10 @@ public final class CountryJpaDao extends BasicJpaDao implements CountryDao {
      * Default Constructor.
      *
      * @param entityManager Entity Manager instance to use
+     * @param settings       IWS System Settings
      */
-    public CountryJpaDao(final EntityManager entityManager) {
-        super(entityManager);
+    public CountryJpaDao(final EntityManager entityManager, final Settings settings) {
+        super(entityManager, settings);
     }
 
     /**
@@ -62,7 +64,7 @@ public final class CountryJpaDao extends BasicJpaDao implements CountryDao {
      * {@inheritDoc}
      */
     @Override
-    public List<CountryEntity> getCountries(final List<String> countryCodes, final Paginatable page) {
+    public List<CountryEntity> getCountries(final List<String> countryCodes, final Page page) {
         // First, let's ensure that the list of Country Codes are all Upper Case
         final List<String> codes = new ArrayList<>(countryCodes.size());
         for (final String code : countryCodes) {
@@ -81,7 +83,7 @@ public final class CountryJpaDao extends BasicJpaDao implements CountryDao {
      * {@inheritDoc}
      */
     @Override
-    public List<CountryView> getMemberCountries(final List<String> countryCodes, final Paginatable page) {
+    public List<CountryView> getMemberCountries(final List<String> countryCodes, final Page page) {
         final List<String> codes = new ArrayList<>(countryCodes.size());
         for (final String code : countryCodes) {
             codes.add(toUpper(code));
@@ -97,7 +99,7 @@ public final class CountryJpaDao extends BasicJpaDao implements CountryDao {
      * {@inheritDoc}
      */
     @Override
-    public List<CountryView> getCountries(final Membership membership, final Paginatable page) {
+    public List<CountryView> getCountries(final Membership membership, final Page page) {
         final Query query = entityManager.createNamedQuery("view.findCountriesByMembership");
         query.setParameter("type", membership);
 
@@ -108,7 +110,7 @@ public final class CountryJpaDao extends BasicJpaDao implements CountryDao {
      * {@inheritDoc}
      */
     @Override
-    public List<CountryView> getAllCountries(final Paginatable page) {
+    public List<CountryView> getAllCountries(final Page page) {
         final Query query = entityManager.createNamedQuery("view.findAllCountries");
 
         return fetchList(query, page);

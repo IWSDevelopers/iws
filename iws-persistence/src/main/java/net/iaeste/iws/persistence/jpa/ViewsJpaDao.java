@@ -130,9 +130,7 @@ public final class ViewsJpaDao extends BasicJpaDao implements ViewsDao {
         query.setParameter("years", prepareExchangeYears(exchangeYear, retrieveCurrentAndNextExchangeYear));
         query.setParameter("states", states);
 
-        // Todo 2014-01-23 by Kim; When Trac Task #719 is finished, then we'll use the pagination
-        //return fetchList(query, page);
-        return query.getResultList();
+        return fetchList(query, page);
     }
 
     /**
@@ -158,9 +156,7 @@ public final class ViewsJpaDao extends BasicJpaDao implements ViewsDao {
         query.setParameter("years", prepareExchangeYears(exchangeYear, retrieveCurrentAndNextExchangeYear));
         query.setParameter("states", states);
 
-        // Todo 2014-01-23 by Kim; When Trac Task #719 is finished, then we'll use the pagination
-        //return fetchList(query, page);
-        return query.getResultList();
+        return fetchList(query, page);
     }
 
     /**

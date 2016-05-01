@@ -156,8 +156,10 @@ public class BasicJpaDao implements BasicDao {
     public final <T extends IWSView> List<T> fetchList(final Query query, final Page page) {
         // The Pagination starts with page 1, so we have to subtract one here,
         // to ensure that we read out the correct data from the database.
-        query.setFirstResult((page.pageNumber() - 1) * page.pageSize());
-        query.setMaxResults(page.pageSize());
+        if (settings.isPaginationEnabled()) {
+            query.setFirstResult((page.pageNumber() - 1) * page.pageSize());
+            query.setMaxResults(page.pageSize());
+        }
 
         final List<T> found = query.getResultList();
         for (final T view : found) {

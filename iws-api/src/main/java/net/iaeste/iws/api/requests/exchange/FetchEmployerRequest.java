@@ -87,7 +87,7 @@ public final class FetchEmployerRequest extends Paginatable {
     }
 
     public Boolean getFetchOfferReferenceNumbers() {
-        return (fetchOfferReferenceNumbers == null) ? false : fetchOfferReferenceNumbers;
+        return fetchOfferReferenceNumbers;
     }
 
     // =========================================================================

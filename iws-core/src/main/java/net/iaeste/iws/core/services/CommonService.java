@@ -203,9 +203,10 @@ public class CommonService<T extends BasicDao> {
     }
 
     /**
-     * Generally speaking, if the Id is undefined, a new Entity is created. If
-     * there are changes, then it is assumed that the third parameter is set,
-     * otherwise no actions are made.
+     * Processes the Person Entity, by first converting the potentially existing
+     * Person Object from the request. If no such Object exist, then there is
+     * no need to do any further processing. If it exist, then it is used to
+     * either create a new Person Entity or update an existing.
      *
      * @param authentication User & Group information
      * @param entity         Entity to persist
@@ -215,25 +216,27 @@ public class CommonService<T extends BasicDao> {
     PersonEntity processPerson(final Authentication authentication, final PersonEntity entity, final Person... persons) {
         final Person person = getFirstObject(persons);
         final PersonEntity newEntity = CommonTransformer.transform(person);
-        PersonEntity persisted = null;
+        final PersonEntity persisted;
 
-        if (entity == null) {
-            if (newEntity != null) {
+        if (newEntity != null) {
+            if (entity == null) {
                 newEntity.setAddress(processAddress(authentication, null, person.getAddress()));
                 dao.persist(authentication, newEntity);
                 persisted = newEntity;
+            } else {
+                entity.setAddress(processAddress(authentication, entity.getAddress(), person.getAddress()));
+                if (entity.getId() == null) {
+                    // We merge outside of the Persistence Scope, since we otherwise
+                    // will attempt to add history information, which with a
+                    // non-persisted entity will cause problems
+                    entity.merge(newEntity);
+                    dao.persist(authentication, entity);
+                } else {
+                    dao.persist(authentication, entity, newEntity);
+                }
+                persisted = entity;
             }
         } else {
-            entity.setAddress(processAddress(authentication, entity.getAddress(), person.getAddress()));
-            if (entity.getId() == null) {
-                // We merge outside of the Persistence Scope, since we otherwise
-                // will attempt to add history information, which with a
-                // non-persisted entity will cause problems
-                entity.merge(newEntity);
-                dao.persist(authentication, entity);
-            } else {
-                dao.persist(authentication, entity, newEntity);
-            }
             persisted = entity;
         }
 

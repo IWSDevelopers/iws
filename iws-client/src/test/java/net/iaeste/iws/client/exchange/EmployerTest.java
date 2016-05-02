@@ -148,13 +148,13 @@ public final class EmployerTest extends AbstractTest {
         final Exchange client = new ExchangeClient();
         final String name = "New Employer Name";
         final String department = "New Department";
-        String business = "New Business";
-        String employeesCount = "Updated Employee Count";
-        String website = "New Website";
-        String workingPlace = "New Working Place";
-        Boolean canteen = false;
-        String nearestAirport = "New Airport";
-        String nearestPublicTransport = "New Public Transportation";
+        final String business = "New Business";
+        final String employeesCount = "Updated Employee Count";
+        final String website = "New Website";
+        final String workingPlace = "New Working Place";
+        final Boolean canteen = false;
+        final String nearestAirport = "New Airport";
+        final String nearestPublicTransport = "New Public Transportation";
 
         final EmployerResponse create = client.processEmployer(token, new ProcessEmployerRequest(createEmployer(token, "The Employer")));
         assertThat(create.isOk(), is(true));

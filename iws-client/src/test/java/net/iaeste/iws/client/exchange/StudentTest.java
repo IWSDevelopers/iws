@@ -103,9 +103,7 @@ public final class StudentTest extends AbstractTest {
     @Test
     public void testProcessStudentApplication() {
         final AuthenticationToken austriaTokenWithNationalGroup = new AuthenticationToken(austriaToken);
-        if (austriaTokenNationallGroup != null) {
-            austriaTokenWithNationalGroup.setGroupId(austriaTokenNationallGroup.getGroupId());
-        }
+        austriaTokenWithNationalGroup.setGroupId(austriaTokenNationallGroup.getGroupId());
 
         final Date nominationDeadline = new Date().plusDays(20);
         final Offer offer = TestData.prepareMinimalOffer("PL-" + exchangeYear + "-001001", "Employer");
@@ -183,9 +181,7 @@ public final class StudentTest extends AbstractTest {
     @Test
     public void testFetchStudentApplications() {
         final AuthenticationToken austriaTokenWithNationalGroup = new AuthenticationToken(austriaToken);
-        if (austriaTokenNationallGroup != null) {
-            austriaTokenWithNationalGroup.setGroupId(austriaTokenNationallGroup.getGroupId());
-        }
+        austriaTokenWithNationalGroup.setGroupId(austriaTokenNationallGroup.getGroupId());
 
         final Date nominationDeadline = new Date().plusDays(20);
         final Offer offer = TestData.prepareMinimalOffer("PL-" + exchangeYear + "-001003", "Employer");
@@ -363,9 +359,7 @@ public final class StudentTest extends AbstractTest {
     @Test
     public void testNominatingApplication() {
         final AuthenticationToken austriaTokenWithNationalGroup = new AuthenticationToken(austriaToken);
-        if (austriaTokenNationallGroup != null) {
-            austriaTokenWithNationalGroup.setGroupId(austriaTokenNationallGroup.getGroupId());
-        }
+        austriaTokenWithNationalGroup.setGroupId(austriaTokenNationallGroup.getGroupId());
 
         final Date nominationDeadline = new Date().plusDays(20);
         final Offer offer = TestData.prepareMinimalOffer("PL-" + exchangeYear + "-001004", "Employer");
@@ -453,9 +447,7 @@ public final class StudentTest extends AbstractTest {
     @Test
     public void testRejectNominatedApplication() {
         final AuthenticationToken austriaTokenWithNationalGroup = new AuthenticationToken(austriaToken);
-        if (austriaTokenNationallGroup != null) {
-            austriaTokenWithNationalGroup.setGroupId(austriaTokenNationallGroup.getGroupId());
-        }
+        austriaTokenWithNationalGroup.setGroupId(austriaTokenNationallGroup.getGroupId());
 
         final Date nominationDeadline = new Date().plusDays(20);
         final Offer offer = TestData.prepareMinimalOffer("PL-" + exchangeYear + "-001005", "Employer");
@@ -528,9 +520,7 @@ public final class StudentTest extends AbstractTest {
     @Test
     public void testRejectAppliedApplicationBySendingCountry() {
         final AuthenticationToken austriaTokenWithNationalGroup = new AuthenticationToken(austriaToken);
-        if (austriaTokenNationallGroup != null) {
-            austriaTokenWithNationalGroup.setGroupId(austriaTokenNationallGroup.getGroupId());
-        }
+        austriaTokenWithNationalGroup.setGroupId(austriaTokenNationallGroup.getGroupId());
 
         //Sending country is only allowed to reject applied application
         final Date nominationDeadline = new Date().plusDays(20);
@@ -594,9 +584,7 @@ public final class StudentTest extends AbstractTest {
     @Test
     public void testRejectApplicationBySendingCountryForClosedOffer() {
         final AuthenticationToken austriaTokenWithNationalGroup = new AuthenticationToken(austriaToken);
-        if (austriaTokenNationallGroup != null) {
-            austriaTokenWithNationalGroup.setGroupId(austriaTokenNationallGroup.getGroupId());
-        }
+        austriaTokenWithNationalGroup.setGroupId(austriaTokenNationallGroup.getGroupId());
 
         //Sending country is only allowed to reject applied application
         final Date nominationDeadline = new Date().plusDays(20);
@@ -665,9 +653,7 @@ public final class StudentTest extends AbstractTest {
     @Test
     public void testCancelNominatedApplication() {
         final AuthenticationToken austriaTokenWithNationalGroup = new AuthenticationToken(austriaToken);
-        if (austriaTokenNationallGroup != null) {
-            austriaTokenWithNationalGroup.setGroupId(austriaTokenNationallGroup.getGroupId());
-        }
+        austriaTokenWithNationalGroup.setGroupId(austriaTokenNationallGroup.getGroupId());
 
         final Date nominationDeadline = new Date().plusDays(20);
         final Offer offer = TestData.prepareMinimalOffer("PL-" + exchangeYear + "-001006", "Employer");
@@ -805,9 +791,7 @@ public final class StudentTest extends AbstractTest {
     @Test
     public void testAcceptAtEmployerApplication() {
         final AuthenticationToken austriaTokenWithNationalGroup = new AuthenticationToken(austriaToken);
-        if (austriaTokenNationallGroup != null) {
-            austriaTokenWithNationalGroup.setGroupId(austriaTokenNationallGroup.getGroupId());
-        }
+        austriaTokenWithNationalGroup.setGroupId(austriaTokenNationallGroup.getGroupId());
 
         final Date nominationDeadline = new Date().plusDays(20);
         final Offer offer = TestData.prepareMinimalOffer("PL-" + exchangeYear + "-001008", "Employer");
@@ -882,9 +866,7 @@ public final class StudentTest extends AbstractTest {
     @Test
     public void testCancelAcceptedApplication() {
         final AuthenticationToken austriaTokenWithNationalGroup = new AuthenticationToken(austriaToken);
-        if (austriaTokenNationallGroup != null) {
-            austriaTokenWithNationalGroup.setGroupId(austriaTokenNationallGroup.getGroupId());
-        }
+        austriaTokenWithNationalGroup.setGroupId(austriaTokenNationallGroup.getGroupId());
 
         final Date nominationDeadline = new Date().plusDays(20);
         final Offer offer = TestData.prepareMinimalOffer("PL-" + exchangeYear + "-001009", "Employer");
@@ -967,9 +949,7 @@ public final class StudentTest extends AbstractTest {
     @Test
     public void testFetchSharedDomesticOfferWithApplication() {
         final AuthenticationToken austriaTokenWithNationalGroup = new AuthenticationToken(austriaToken);
-        if (austriaTokenNationallGroup != null) {
-            austriaTokenWithNationalGroup.setGroupId(austriaTokenNationallGroup.getGroupId());
-        }
+        austriaTokenWithNationalGroup.setGroupId(austriaTokenNationallGroup.getGroupId());
 
         final Date nominationDeadline = new Date().plusDays(20);
         final String refNo = "AT-" + exchangeYear + "-000003";

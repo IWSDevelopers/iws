@@ -161,12 +161,7 @@ public class BasicJpaDao implements BasicDao {
             query.setMaxResults(page.pageSize());
         }
 
-        final List<T> found = query.getResultList();
-        for (final T view : found) {
-            view.setSorting(page.sortBy(), page.sortOrder());
-        }
-
-        return found;
+        return query.getResultList();
     }
 
     private void persistMonitoredData(final Authentication authentication, final String className, final Long recordId, final ArrayList<Field> fields) {

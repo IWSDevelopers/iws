@@ -17,9 +17,11 @@
  */
 package net.iaeste.iws.persistence.jpa;
 
+import static net.iaeste.iws.common.utils.StringUtils.toLower;
 import static net.iaeste.iws.common.utils.StringUtils.toUpper;
 
 import net.iaeste.iws.api.enums.Membership;
+import net.iaeste.iws.api.enums.SortingField;
 import net.iaeste.iws.api.util.Page;
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.persistence.CountryDao;
@@ -30,6 +32,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -111,8 +114,32 @@ public final class CountryJpaDao extends BasicJpaDao implements CountryDao {
      */
     @Override
     public List<CountryView> getAllCountries(final Page page) {
-        final Query query = entityManager.createNamedQuery("view.findAllCountries");
+        final String jql = "select v from CountryView v";
+        final Query query = entityManager.createQuery(extendWithSorting(CountryView.class, page, jql));
 
         return fetchList(query, page);
+    }
+
+    private static String extendWithSorting(final Class<?> entity, final Page page, final String jql) {
+        final String sortBy = findSortBy(entity, page);
+        final String order = toLower(page.sortOrder().name());
+
+        return jql + " order by " + sortBy + ' ' + order;
+    }
+
+    private static String findSortBy(final Class<?> entity, final Page page) {
+        final String sortBy;
+
+        if (Objects.equals("CountryView", entity.getSimpleName())) {
+            if (page.sortBy() == SortingField.NAME) {
+                sortBy = "country_name";
+            } else {
+                sortBy = "country_created";
+            }
+        } else {
+            sortBy = toLower(page.sortBy().name());
+        }
+
+        return sortBy;
     }
 }

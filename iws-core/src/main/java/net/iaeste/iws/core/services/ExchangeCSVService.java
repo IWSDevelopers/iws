@@ -47,7 +47,7 @@ import net.iaeste.iws.persistence.ViewsDao;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.exchange.EmployerEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
-import net.iaeste.iws.persistence.views.AbstractView;
+import net.iaeste.iws.persistence.views.IWSView;
 import net.iaeste.iws.persistence.views.OfferView;
 import net.iaeste.iws.persistence.views.SharedOfferView;
 import org.apache.commons.csv.CSVFormat;
@@ -208,7 +208,7 @@ public final class ExchangeCSVService extends CommonService<ExchangeDao> {
         }
     }
 
-    private static <V extends AbstractView> byte[] convertOffersToCsv(final List<V> offers, final OfferFields.Type type) {
+    private static <V extends IWSView> byte[] convertOffersToCsv(final List<V> offers, final OfferFields.Type type) {
         try (ByteArrayOutputStream stream = new ByteArrayOutputStream();
              OutputStreamWriter streamWriter = new OutputStreamWriter(stream, IWSConstants.DEFAULT_ENCODING);
              BufferedWriter writer = new BufferedWriter(streamWriter);

@@ -40,7 +40,6 @@ import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.api.util.DateTime;
 import net.iaeste.iws.common.utils.StringUtils;
-import net.iaeste.iws.persistence.views.AbstractView;
 import net.iaeste.iws.persistence.views.ApplicationView;
 import net.iaeste.iws.persistence.views.AttachedFileView;
 import net.iaeste.iws.persistence.views.EmbeddedAddress;
@@ -48,6 +47,7 @@ import net.iaeste.iws.persistence.views.EmbeddedCountry;
 import net.iaeste.iws.persistence.views.EmbeddedEmployer;
 import net.iaeste.iws.persistence.views.EmbeddedOffer;
 import net.iaeste.iws.persistence.views.EmployerView;
+import net.iaeste.iws.persistence.views.IWSView;
 import net.iaeste.iws.persistence.views.OfferSharedToGroupView;
 import net.iaeste.iws.persistence.views.OfferView;
 import net.iaeste.iws.persistence.views.SharedOfferView;
@@ -249,7 +249,7 @@ public final class ViewTransformer {
         return file;
     }
 
-    public static <V extends AbstractView> List<Object> transformOfferToObjectList(final V view, final OfferFields.Type type) {
+    public static <V extends IWSView> List<Object> transformOfferToObjectList(final V view, final OfferFields.Type type) {
         final List<Object> result;
 
         // This is an interim stage, we need to somehow make the two different
@@ -513,10 +513,7 @@ public final class ViewTransformer {
                     // we're assuming that they don't contain any comma's.
                     //   The first letter is Capitalized, and the rest is lower,
                     // and any white space (including newlines) builder.append(is removed.
-                    //final String toAppend = toLower(specialization.trim());
                     builder.append(capitalizeFully(specialization.trim()));
-                    //builder.append(Character.toTitleCase(toAppend.charAt(0)))));
-                    //builder.append(toAppend.substring(1));
                 }
             }
 

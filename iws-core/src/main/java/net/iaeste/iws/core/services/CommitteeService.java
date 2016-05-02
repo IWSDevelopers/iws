@@ -757,7 +757,7 @@ public final class CommitteeService extends CommonService<CommitteeDao> {
                 // if so, we'll alter the relation otherwise we have to create
                 // a new
                 final UserGroupEntity oldCoordinator = dao.findGroupOwner(groupEntity);
-                UserGroupEntity newCoordinator = dao.findExistingRelation(groupEntity, userEntity);
+                final UserGroupEntity newCoordinator = dao.findExistingRelation(groupEntity, userEntity);
 
                 if (newCoordinator == null) {
                     createGroupCoordinator(authentication, groupEntity, userEntity);

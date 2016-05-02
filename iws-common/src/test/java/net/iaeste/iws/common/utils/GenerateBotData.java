@@ -132,13 +132,13 @@ public final class GenerateBotData {
             {"3835", "nicaragua_ulsa"}
     };
 
-    private static final String ADD_USER = "insert into users (external_id, username, alias, password, salt, firstname, lastname, status, user_type) values\n" +
+    private static final String ADD_USER = "insert into users (external_id, username, alias, password, salt, firstname, lastname, status, user_type) values%n" +
       "('%s', '%s@iaeste.bot', '%s.bot@iaeste.org', '%s', '%s', '%s', 'Offer Bot', 'SUSPENDED', 'UNKNOWN');";
-    private static final String ADD_GROUP_RELATIONS = "insert into user_to_group (external_id, user_id, group_id, role_id, custom_title, on_public_list, on_private_list, write_to_private_list) values\n" +
-      "-- First we're creating the Group Member relationship so the User can log in/out\n" +
-      "('%s', (select id from users where external_id = '%s'), (select parent_id from groups where id = %s), 3, 'Automated Bot', false, false, false),\n" +
-      "-- Second, we're adding the User to the National Group, so the Offers can be read out\n" +
-      "('%s', (select id from users where external_id = '%s'), %s, 3, 'Automated Bot', false, false, false);\n";
+    private static final String ADD_GROUP_RELATIONS = "insert into user_to_group (external_id, user_id, group_id, role_id, custom_title, on_public_list, on_private_list, write_to_private_list) values%n" +
+      "-- First we're creating the Group Member relationship so the User can log in/out%n" +
+      "('%s', (select id from users where external_id = '%s'), (select parent_id from groups where id = %s), 3, 'Automated Bot', false, false, false),%n" +
+      "-- Second, we're adding the User to the National Group, so the Offers can be read out%n" +
+      "('%s', (select id from users where external_id = '%s'), %s, 3, 'Automated Bot', false, false, false);%n";
     private static final String PASSWORD = PasswordGenerator.generatePassword();
 
     @Test

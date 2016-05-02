@@ -19,12 +19,14 @@ package net.iaeste.iws.ws.client;
 
 import net.iaeste.iws.api.Access;
 import net.iaeste.iws.api.Exchange;
+import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.dtos.Authorization;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.enums.FetchType;
 import net.iaeste.iws.api.enums.GroupType;
+import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
 import net.iaeste.iws.api.requests.exchange.OfferCSVDownloadRequest;
@@ -204,21 +206,7 @@ public final class ConcurrentWSClient implements Runnable {
             try {
                 final FetchPermissionResponse permissionResponse = fetchPermissions(token);
                 final Group member = findGroupByType(permissionResponse, GroupType.MEMBER);
-
-                // Iterate over the Exchange Years
-                for (int i = START_YEAR; i <= EXCHANGE_YEAR; i++) {
-                    LOG.debug("Start iterating over Exchange Year {} for Group '{}'.", i, member.getCommitteeName());
-                    final FetchOffersResponse domestic = fetchOffers(token, FetchType.DOMESTIC, i);
-                    final FetchOffersResponse shared = fetchOffers(token, FetchType.SHARED, i);
-                    LOG.info("Found {} Domestic Offers & {} Shared Offers for {} in {}", domestic.getOffers().size(), shared.getOffers().size(), member.getCommitteeName(), i);
-
-                    for (final Offer offer : domestic.getOffers()) {
-                        final OfferResponse response = processOffer(token, offer);
-                        if (!response.isOk()) {
-                            LOG.warn("Processing Offer with Reference Number '{}' failed: {}", offer.getRefNo(), processOffer(token, offer).getMessage());
-                        }
-                    }
-                }
+                processOffers(token, member);
             } catch (RuntimeException t) {
                 LOG.error(t.getMessage(), t);
             } finally {
@@ -229,6 +217,23 @@ public final class ConcurrentWSClient implements Runnable {
         }
 
         LOG.info("Completed Offer Processing thread for {}.", username);
+    }
+
+    private void processOffers(final AuthenticationToken token, final Group member) {
+        // Iterate over the Exchange Years
+        for (int i = START_YEAR; i <= EXCHANGE_YEAR; i++) {
+            LOG.debug("Start iterating over Exchange Year {} for Group '{}'.", i, member.getCommitteeName());
+            final FetchOffersResponse domestic = fetchOffers(token, FetchType.DOMESTIC, i);
+            final FetchOffersResponse shared = fetchOffers(token, FetchType.SHARED, i);
+            LOG.info("Found {} Domestic Offers & {} Shared Offers for {} in {}", domestic.getOffers().size(), shared.getOffers().size(), member.getCommitteeName(), i);
+
+            for (final Offer offer : domestic.getOffers()) {
+                final OfferResponse response = processOffer(token, offer);
+                if (!response.isOk()) {
+                    LOG.warn("Processing Offer with Reference Number '{}' failed: {}", offer.getRefNo(), processOffer(token, offer).getMessage());
+                }
+            }
+        }
     }
 
     // =========================================================================
@@ -388,6 +393,10 @@ public final class ConcurrentWSClient implements Runnable {
                 group = current;
                 break;
             }
+        }
+
+        if (group == null) {
+            throw new IWSException(IWSErrors.FATAL, "Cannot complete test.");
         }
 
         return group;

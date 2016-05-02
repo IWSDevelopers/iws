@@ -1000,9 +1000,7 @@ public final class OfferTest extends AbstractTest {
     @Test
     public void testHideForeignOffer() {
         final AuthenticationToken austriaTokenWithNationalGroup = new AuthenticationToken(austriaToken);
-        if (austriaTokenNationallGroup != null) {
-            austriaTokenWithNationalGroup.setGroupId(austriaTokenNationallGroup.getGroupId());
-        }
+        austriaTokenWithNationalGroup.setGroupId(austriaTokenNationallGroup.getGroupId());
 
         final Offer offer = TestData.prepareMinimalOffer(PL_YEAR + "-TIC772-R", "Poland A/S");
         final Date nominationDeadline = new Date().plusDays(20);
@@ -1068,9 +1066,7 @@ public final class OfferTest extends AbstractTest {
     @Test
     public void testRejectForeignOffer() {
         final AuthenticationToken austriaTokenWithNationalGroup = new AuthenticationToken(austriaToken);
-        if (austriaTokenNationallGroup != null) {
-            austriaTokenWithNationalGroup.setGroupId(austriaTokenNationallGroup.getGroupId());
-        }
+        austriaTokenWithNationalGroup.setGroupId(austriaTokenNationallGroup.getGroupId());
 
         final Offer offer = TestData.prepareMinimalOffer(PL_YEAR + "-TI806A-R", "Poland A/S");
         final Date nominationDeadline = new Date().plusDays(20);
@@ -1146,9 +1142,7 @@ public final class OfferTest extends AbstractTest {
     @Test
     public void testShareRejectedOffer() {
         final AuthenticationToken austriaTokenWithNationalGroup = new AuthenticationToken(austriaToken);
-        if (austriaTokenNationallGroup != null) {
-            austriaTokenWithNationalGroup.setGroupId(austriaTokenNationallGroup.getGroupId());
-        }
+        austriaTokenWithNationalGroup.setGroupId(austriaTokenNationallGroup.getGroupId());
 
         final Offer offer = TestData.prepareMinimalOffer(PL_YEAR + "-TI806B-R", "Poland A/S");
         final Date nominationDeadline = new Date().plusDays(20);
@@ -1242,9 +1236,7 @@ public final class OfferTest extends AbstractTest {
     @Test
     public void testShareRejectedOffer2() {
         final AuthenticationToken austriaTokenWithNationalGroup = new AuthenticationToken(austriaToken);
-        if (austriaTokenNationallGroup != null) {
-            austriaTokenWithNationalGroup.setGroupId(austriaTokenNationallGroup.getGroupId());
-        }
+        austriaTokenWithNationalGroup.setGroupId(austriaTokenNationallGroup.getGroupId());
 
         final Offer offer = TestData.prepareMinimalOffer(PL_YEAR + "-TI806C-R", "Poland A/S");
         final Date nominationDeadline = new Date().plusDays(20);
@@ -1340,9 +1332,7 @@ public final class OfferTest extends AbstractTest {
     @Test
     public void testCsvWorkflow() {
         final AuthenticationToken austriaTokenWithNationalGroup = new AuthenticationToken(austriaToken);
-        if (austriaTokenNationallGroup != null) {
-            austriaTokenWithNationalGroup.setGroupId(austriaTokenNationallGroup.getGroupId());
-        }
+        austriaTokenWithNationalGroup.setGroupId(austriaTokenNationallGroup.getGroupId());
 
         final Offer offer = TestData.prepareFullOffer(AT_YEAR + "-01T453-R", "Austria A/S");
         final Date nominationDeadline = new Date().plusDays(20);

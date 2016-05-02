@@ -48,7 +48,7 @@ import java.io.Serializable;
                         "  and v.externalGroupId = :egid")
 })
 @Table(name = "user_permissions")
-public final class UserPermissionView extends AbstractView {
+public final class UserPermissionView implements IWSView {
 
     @EmbeddedId
     private UserPermissionViewId id = new UserPermissionViewId();

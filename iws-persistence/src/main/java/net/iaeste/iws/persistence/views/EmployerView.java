@@ -45,7 +45,7 @@ import javax.persistence.Table;
                         "  and lower(e.employer.name) like :name")
 })
 @Table(name = "employer_view")
-public final class EmployerView extends AbstractView {
+public final class EmployerView implements IWSView {
 
     @Id
     @Column(name = "id", insertable = false, updatable = false)

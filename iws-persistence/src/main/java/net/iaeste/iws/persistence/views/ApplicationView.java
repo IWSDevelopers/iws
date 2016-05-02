@@ -46,7 +46,7 @@ import javax.persistence.Table;
                         "  and v.offerExternalId = :eoid"),
 })
 @Table(name = "application_view")
-public final class ApplicationView extends AbstractView {
+public final class ApplicationView implements IWSView {
 
     @Id
     @Column(name = "application_id", insertable = false, updatable = false)

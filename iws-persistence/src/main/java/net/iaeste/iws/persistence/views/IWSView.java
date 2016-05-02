@@ -17,9 +17,6 @@
  */
 package net.iaeste.iws.persistence.views;
 
-import net.iaeste.iws.api.enums.SortingField;
-import net.iaeste.iws.api.enums.SortingOrder;
-
 /**
  * When reading multiple records from the system, it must be possible to sort
  * these according to the user requesting it. Since sorting is a field that
@@ -35,15 +32,6 @@ import net.iaeste.iws.api.enums.SortingOrder;
  * @since   IWS 1.0
  */
 public interface IWSView {
-
-    /**
-     * Sets the field to sort by, by default the listing is sorted according to
-     * the creation time, and the sorting order is Ascending.
-     *
-     * @param sortField  Field to use for sorting
-     * @param sortOrder  If the sorting should be made Ascending or not
-     */
-    void setSorting(SortingField sortField, SortingOrder sortOrder);
 
     /**
      * {@inheritDoc}

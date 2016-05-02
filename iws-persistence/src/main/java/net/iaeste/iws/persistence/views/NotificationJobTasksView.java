@@ -43,7 +43,7 @@ import javax.persistence.Table;
                 "      and v.attempts < :attempts " +
                 "order by v.id"))
 @Table(name = "notification_job_task_details")
-public final class NotificationJobTasksView extends AbstractView {
+public final class NotificationJobTasksView implements IWSView {
 
     @Id
     @Column(name = "id")

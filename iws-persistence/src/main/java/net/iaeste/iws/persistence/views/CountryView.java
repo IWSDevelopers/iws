@@ -46,7 +46,7 @@ import javax.persistence.Table;
                         "where upper(v.country.countryCode) in :codes")
 })
 @Table(name = "country_details")
-public final class CountryView extends AbstractView {
+public final class CountryView implements IWSView {
 
     @Id
     @Column(name = "country_id")

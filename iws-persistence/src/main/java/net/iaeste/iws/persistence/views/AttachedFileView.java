@@ -39,7 +39,7 @@ import java.util.Date;
                 "where v.recordTable = :table" +
                 "  and v.recordId = :recordId"))
 @Table(name = "file_attachments")
-public final class AttachedFileView extends AbstractView {
+public final class AttachedFileView implements IWSView {
 
     @Id
     @Column(name = "attachment_id", insertable = false, updatable = false)

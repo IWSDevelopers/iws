@@ -149,7 +149,7 @@ public final class HeavyLoadTest {
 
     private static void cleanupTokenPool(final List<AuthenticationToken> pool) {
         for (final AuthenticationToken token : pool) {
-            access.deprecateSession(token).isOk();
+            access.deprecateSession(token);
         }
     }
 

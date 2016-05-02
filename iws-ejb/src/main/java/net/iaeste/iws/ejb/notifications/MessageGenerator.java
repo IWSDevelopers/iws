@@ -17,6 +17,7 @@
  */
 package net.iaeste.iws.ejb.notifications;
 
+import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.common.configuration.Settings;
@@ -113,7 +114,7 @@ public final class MessageGenerator {
         // instead, the old Scanner trick is applied.
         // See: http://web.archive.org/web/20140531042945/https://weblogs.java.net/blog/pat/archive/2004/10/stupid_scanner_1.html
         try (InputStream stream = MessageGenerator.class.getResourceAsStream(DIR + name);
-             Scanner streamScanner = new Scanner(stream);
+             Scanner streamScanner = new Scanner(stream, IWSConstants.DEFAULT_ENCODING);
              Scanner scanner = streamScanner.useDelimiter("\\A")) {
             return scanner.next();
         }

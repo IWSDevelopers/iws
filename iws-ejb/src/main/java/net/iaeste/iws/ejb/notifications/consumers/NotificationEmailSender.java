@@ -222,7 +222,7 @@ public class NotificationEmailSender implements Observer {
 
         NotificationProcessTaskStatus ret = NotificationProcessTaskStatus.ERROR;
         final List<UserEntity> recipients = getRecipients(fields, type);
-        if (recipients == null) {
+        if (recipients.isEmpty()) {
             LOG.info("Notification job task for {} has no recipient", type);
             return NotificationProcessTaskStatus.NOT_FOR_ME;
         }
@@ -299,7 +299,6 @@ public class NotificationEmailSender implements Observer {
                 }
                 break;
             default:
-                return null;
         }
 
         return result;

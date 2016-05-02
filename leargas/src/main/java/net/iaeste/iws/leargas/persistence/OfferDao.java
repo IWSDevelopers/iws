@@ -54,9 +54,9 @@ public final class OfferDao {
 
     private List<OfferEntity> findOffer(final PreparedStatement statement) {
         try (ResultSet resultSet = statement.executeQuery()) {
-            List<OfferEntity> entities = new ArrayList<>();
+            final List<OfferEntity> entities = new ArrayList<>();
             while (resultSet.next()) {
-                OfferEntity entity = new OfferEntity();
+                final OfferEntity entity = new OfferEntity();
 
                 entity.setRefNo(resultSet.getString(1));
                 entity.setDeadline(resultSet.getString(2));

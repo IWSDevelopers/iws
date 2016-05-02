@@ -269,16 +269,20 @@ public final class StorageService extends CommonService<AccessDao> {
         if (folders.isEmpty()) {
             // Simple error case, the User have requested a not existing Folder.
             throw new IdentificationException("No Folders were found, matching the Id " + externalFolderId + '.');
-        } else if (!ROOT_FOLDER_EID.equals(folders.get(folders.size() - 1).getExternalId())) {
-            // Very strange error case. The last Folder in the Structure should
-            // be the Root folder, if not - then it is an error case, since we
-            // then cannot traverse the tree. This specific case must then be
-            // corrected in the database!
+        }
+
+        // Very strange error case. The last Folder in the Structure should be
+        // the Root folder, if not - then it is an error case, since we then
+        // cannot traverse the tree. This specific case must then be corrected
+        // in the database!
+        if (!ROOT_FOLDER_EID.equals(folders.get(folders.size() - 1).getExternalId())) {
             throw new PersistenceException("Error in the Database, the Folder Tree is incorrect.");
-        } else if (folders.size() > 1) {
-            // Now we just have to run the Permission Check for the Folder, this
-            // is done if the size of the Folder Tree found is larger than 1,
-            // since a List with only a single Element must be the root.
+        }
+
+        // Now we just have to run the Permission Check for the Folder, this is
+        // done if the size of the Folder Tree found is larger than 1, since a
+        // List with only a single Element must be the root.
+        if (folders.size() > 1) {
             throwIfNotPermittedToAccessFolder(authentication, folders);
         }
 
@@ -357,7 +361,6 @@ public final class StorageService extends CommonService<AccessDao> {
     public FetchFileResponse fetchFile(final Authentication authentication, final FetchFileRequest request) {
         final String externalGroupId = request.getGroupId();
         final FileEntity entity;
-        final File file;
 
         switch (request.getType()) {
             case OWNER:
@@ -388,7 +391,7 @@ public final class StorageService extends CommonService<AccessDao> {
                 throw new UnsupportedOperationException("This operation is not implemented.");
         }
 
-        file = transform(entity);
+        final File file = transform(entity);
         if (request.getReadFileData()) {
             file.setFiledata(readFile(entity));
         }

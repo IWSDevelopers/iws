@@ -61,6 +61,7 @@ import net.iaeste.iws.persistence.views.StudentView;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -122,7 +123,7 @@ public final class StudentService extends CommonService<StudentDao> {
     private ApplicationEntity processStudentApplication(final Authentication authentication, final StudentApplication application) {
         final GroupEntity nationalGroup = accessDao.findNationalGroup(authentication.getUser());
         final String externalId = application.getApplicationId();
-        ApplicationEntity applicationEntity = dao.findApplicationByExternalId(externalId);
+        final ApplicationEntity applicationEntity = dao.findApplicationByExternalId(externalId);
 
         if ((applicationEntity == null) || applicationEntity.getOfferGroup().getGroup().getId().equals(nationalGroup.getId())) {
             //application owner
@@ -164,14 +165,12 @@ public final class StudentService extends CommonService<StudentDao> {
             nationality = dao.findCountry(application.getNationality().getCountryCode());
         }
 
-
         if (applicationEntity == null) {
             applicationEntity = transform(application);
             applicationEntity.setOfferGroup(sharedOfferGroup);
             processAddress(authentication, applicationEntity.getHomeAddress());
             processAddress(authentication, applicationEntity.getAddressDuringTerms());
             applicationEntity.setNationality(nationality);
-            //dao.persist(authentication, student, applicationEntity.getStudent());
             applicationEntity.setStudent(student);
             dao.persist(authentication, applicationEntity);
 
@@ -199,7 +198,6 @@ public final class StudentService extends CommonService<StudentDao> {
 
             processAddress(authentication, applicationEntity.getHomeAddress(), application.getHomeAddress());
             processAddress(authentication, applicationEntity.getAddressDuringTerms(), application.getAddressDuringTerms());
-            //dao.persist(authentication, student, updated.getStudent());
             dao.persist(authentication, applicationEntity, updated);
         }
 
@@ -361,7 +359,7 @@ public final class StudentService extends CommonService<StudentDao> {
 
     private void applyApplication(final Authentication authentication, final StudentApplication application, final ApplicationEntity applicationEntity) {
         application.setStatus(ApplicationStatus.APPLIED);
-        ApplicationEntity updated = transform(application);
+        final ApplicationEntity updated = transform(application);
         updated.setOfferGroup(applicationEntity.getOfferGroup());
         updated.setNationality(applicationEntity.getNationality());
         dao.persist(authentication, applicationEntity, updated);
@@ -369,7 +367,7 @@ public final class StudentService extends CommonService<StudentDao> {
 
     private void forwardToEmployer(final Authentication authentication, final StudentApplication application, final ApplicationEntity applicationEntity) {
         application.setStatus(ApplicationStatus.FORWARDED_TO_EMPLOYER);
-        ApplicationEntity updated = transform(application);
+        final ApplicationEntity updated = transform(application);
         updated.setOfferGroup(applicationEntity.getOfferGroup());
         updated.setNationality(applicationEntity.getNationality());
         dao.persist(authentication, applicationEntity, updated);
@@ -382,7 +380,7 @@ public final class StudentService extends CommonService<StudentDao> {
 
     private void acceptApplication(final Authentication authentication, final StudentApplication application, final ApplicationEntity applicationEntity) {
         application.setStatus(ApplicationStatus.ACCEPTED);
-        ApplicationEntity updated = transform(application);
+        final ApplicationEntity updated = transform(application);
         updated.setOfferGroup(applicationEntity.getOfferGroup());
         updated.setNationality(applicationEntity.getNationality());
         dao.persist(authentication, applicationEntity, updated);
@@ -396,7 +394,7 @@ public final class StudentService extends CommonService<StudentDao> {
     private void nominateApplication(final Authentication authentication, final StudentApplication application, final ApplicationEntity storedApplication) {
         application.setNominatedAt(new DateTime());
         application.setStatus(ApplicationStatus.NOMINATED);
-        ApplicationEntity updated = transform(application);
+        final ApplicationEntity updated = transform(application);
         //using OfferGroup from found entity since this field can't be updated
         updated.setOfferGroup(storedApplication.getOfferGroup());
         updated.setNationality(storedApplication.getNationality());
@@ -420,11 +418,11 @@ public final class StudentService extends CommonService<StudentDao> {
         application.setRejectByEmployerReason(request.getRejectByEmployerReason());
         application.setRejectDescription(request.getRejectDescription());
         application.setRejectInternalComment(request.getRejectInternalComment());
-        ApplicationEntity updated = transform(application);
+        AtomicReference<ApplicationEntity> updated = new AtomicReference<>(transform(application));
         //using OfferGroup from stored entity since this field can't be updated
-        updated.setOfferGroup(storedApplication.getOfferGroup());
-        updated.setNationality(storedApplication.getNationality());
-        dao.persist(authentication, storedApplication, updated);
+        updated.get().setOfferGroup(storedApplication.getOfferGroup());
+        updated.get().setNationality(storedApplication.getNationality());
+        dao.persist(authentication, storedApplication, updated.get());
 
         final OfferState newOfferGroupState = doUpdateOfferGroupStatus(storedApplication.getOfferGroup().getId(), storedApplication.getOfferGroup().getStatus());
         if (newOfferGroupState != null) {
@@ -444,7 +442,7 @@ public final class StudentService extends CommonService<StudentDao> {
         application.setStatus(ApplicationStatus.REJECTED_BY_SENDING_COUNTRY);
         application.setRejectDescription(request.getRejectDescription());
         application.setRejectInternalComment(request.getRejectInternalComment());
-        ApplicationEntity updated = transform(application);
+        final ApplicationEntity updated = transform(application);
         //using OfferGroup from stored entity since this field can't be updated
         updated.setOfferGroup(storedApplication.getOfferGroup());
         updated.setNationality(storedApplication.getNationality());
@@ -458,7 +456,7 @@ public final class StudentService extends CommonService<StudentDao> {
 
     private void cancelApplication(final Authentication authentication, final StudentApplication application, final ApplicationEntity storedApplication) {
         application.setStatus(ApplicationStatus.CANCELLED);
-        ApplicationEntity updated = transform(application);
+        final ApplicationEntity updated = transform(application);
         //using OfferGroup from stored entity since this field can't be updated
         updated.setOfferGroup(storedApplication.getOfferGroup());
         updated.setNationality(storedApplication.getNationality());
@@ -481,10 +479,9 @@ public final class StudentService extends CommonService<StudentDao> {
     }
 
     private OfferState doUpdateOfferGroupStatus(final Long offerGroupId, final OfferState offerGroupState) {
-        final OfferState newStatus;
-        if (offerGroupState == OfferState.CLOSED) {
-            newStatus = null;
-        } else {
+        OfferState newStatus = null;
+
+        if (offerGroupState != OfferState.CLOSED) {
             if (!dao.otherDomesticApplicationsWithCertainStatus(offerGroupId, EnumSet.of(ApplicationStatus.NOMINATED,
                                                                                          ApplicationStatus.FORWARDED_TO_EMPLOYER,
                                                                                          ApplicationStatus.ACCEPTED,
@@ -492,8 +489,6 @@ public final class StudentService extends CommonService<StudentDao> {
                 newStatus = OfferState.SHARED;
             } else if (dao.otherDomesticApplicationsWithCertainStatus(offerGroupId, EnumSet.of(ApplicationStatus.APPLIED))) {
                 newStatus = OfferState.APPLICATIONS;
-            } else {
-                newStatus = null;
             }
         }
 

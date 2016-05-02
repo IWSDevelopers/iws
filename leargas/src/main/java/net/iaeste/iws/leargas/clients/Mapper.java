@@ -36,6 +36,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * General Mapper Class, for handling mapping from IWS WebService Objects to
@@ -145,13 +146,13 @@ public final class Mapper {
     }
 
     private String map(final Date date) {
-        final DateFormat format = new SimpleDateFormat(settings.readDateFormatMapping());
+        final DateFormat format = new SimpleDateFormat(settings.readDateFormatMapping(), Locale.ENGLISH);
 
         return format.format(date.getMidnight().toGregorianCalendar().getTime());
     }
 
     private String map(final DateTime dateTime) {
-        final DateFormat format = new SimpleDateFormat(settings.readDateTimeFormatMapping());
+        final DateFormat format = new SimpleDateFormat(settings.readDateTimeFormatMapping(), Locale.ENGLISH);
 
         return format.format(dateTime.getTimestamp().toGregorianCalendar().getTime());
     }

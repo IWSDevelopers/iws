@@ -21,6 +21,7 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
 import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.api.util.Verifications;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -65,7 +66,7 @@ public class HeavyCSVLoadTest {
     private static final String URL = "http://localhost:8080/intraweb/exchange/inbox.csv";
 
     private static final int LOOPS = 100;
-    private static final int year = 2014;
+    private static final int year = Verifications.calculateExchangeYear();
 
     /**
      * Note, all passwords for these users needs to be updated. This is the SQL
@@ -147,7 +148,7 @@ public class HeavyCSVLoadTest {
                     if (csv.length() > 150) {
                         LOG.info("{}. Iteration: User <{}> received {} bytes from the server.", i, username, csv.length());
                     } else {
-                        LOG.info("{}. Iteration: Read folloring for user <{}>: '{}'.", i, username, csv);
+                        LOG.info("{}. Iteration: Read following for user <{}>: '{}'.", i, username, csv);
                     }
 
                     // First iteration, we'll save the length from the
@@ -172,24 +173,24 @@ public class HeavyCSVLoadTest {
             LOG.info("Thread <{}> ending.", username);
         }
 
-        private String sendRequest(final String username) throws IOException {
-            HttpURLConnection connection = prepareConnection();
-            String parameters = "username=" + username + "&password=" + password + "&year=" + year;
+        private static String sendRequest(final String username) throws IOException {
+            final HttpURLConnection connection = prepareConnection();
+            final String parameters = "username=" + username + "&password=" + password + "&year=" + year;
             sendOutputPostRequest(connection, parameters);
 
-            int responseCode = connection.getResponseCode();
+            final int responseCode = connection.getResponseCode();
             if (responseCode != 200) {
-                LOG.error("Response Code : " + responseCode);
+                LOG.error("Response Code : {}", responseCode);
             }
 
             return readInputResponse(connection);
         }
 
-        private HttpURLConnection prepareConnection() throws IOException {
+        private static HttpURLConnection prepareConnection() throws IOException {
             final URL url = new URL(URL);
             final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
-            //add reuqest header
+            // add request header
             connection.setRequestMethod("POST");
             connection.setRequestProperty("User-Agent", "Mozilla/5.0");
             connection.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
@@ -200,22 +201,23 @@ public class HeavyCSVLoadTest {
             return connection;
         }
 
-        private void sendOutputPostRequest(final HttpURLConnection connection, final String parameters) throws IOException {
+        private static void sendOutputPostRequest(final HttpURLConnection connection, final String parameters) throws IOException {
             try (DataOutputStream outputStream = new DataOutputStream(connection.getOutputStream())) {
                 outputStream.writeBytes(parameters);
                 outputStream.flush();
             }
         }
 
-        private String readInputResponse(final HttpURLConnection connection) throws IOException {
+        private static String readInputResponse(final HttpURLConnection connection) throws IOException {
             try (InputStream stream = connection.getInputStream();
                  InputStreamReader reader = new InputStreamReader(stream, IWSConstants.DEFAULT_ENCODING);
                  BufferedReader buffer = new BufferedReader(reader)) {
-                final StringBuilder response = new StringBuilder();
-                String inputLine;
+                final StringBuilder response = new StringBuilder(512);
+                String inputLine = buffer.readLine();
 
-                while ((inputLine = buffer.readLine()) != null) {
+                while (inputLine != null) {
                     response.append(inputLine);
+                    inputLine = buffer.readLine();
                 }
 
                 return response.toString();

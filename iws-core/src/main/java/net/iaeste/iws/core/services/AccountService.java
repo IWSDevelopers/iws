@@ -577,7 +577,7 @@ public final class AccountService extends CommonService<AccessDao> {
                 type = NotificationType.SUSPEND_ACTIVE_USER;
                 break;
             default:
-                type = null;
+                type = NotificationType.GENERAL;
         }
 
         return type;

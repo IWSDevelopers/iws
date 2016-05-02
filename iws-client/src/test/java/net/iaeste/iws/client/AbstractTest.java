@@ -91,9 +91,10 @@ public abstract class AbstractTest {
      * cause issues in others.
      *
      * @param token Authentication Token to deprecate
+     * @return True if Session was successfully deprecated, otherwise false
      */
-    protected static void logout(final AuthenticationToken token) {
-        access.deprecateSession(token).isOk();
+    protected static boolean logout(final AuthenticationToken token) {
+        return access.deprecateSession(token).isOk();
     }
 
     /**

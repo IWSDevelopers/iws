@@ -2,7 +2,7 @@
   <wsdl:types>
     <wsdl:documentation>
         Service: IWS Exchange Service
-        Version: 1.2.20160501
+        Version: 1.2.20160503
         Owner:   Kim Jensen
     </wsdl:documentation>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://ws.iws.iaeste.net/" targetNamespace="http://ws.iws.iaeste.net/" version="1.0">
@@ -26,8 +26,8 @@
     <xs:complexContent>
       <xs:extension base="tns:paginatable">
         <xs:sequence>
-          <xs:element name="data" type="xs:base64Binary"/>
-          <xs:element name="delimiter" nillable="true" type="tns:fieldDelimiter"/>
+          <xs:element name="csv" type="xs:string"/>
+          <xs:element name="delimiter" type="tns:fieldDelimiter"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -418,7 +418,7 @@
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="offerCSVDownloadRequest">
+  <xs:complexType final="extension restriction" name="fetchOffersRequest">
     <xs:complexContent>
       <xs:extension base="tns:paginatable">
         <xs:sequence>
@@ -436,7 +436,7 @@
     <xs:complexContent>
       <xs:extension base="tns:fallibleResponse">
         <xs:sequence>
-          <xs:element name="data" nillable="true" type="xs:base64Binary"/>
+          <xs:element name="csv" nillable="true" type="xs:string"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -492,20 +492,6 @@
     <xs:sequence>
       <xs:element maxOccurs="unbounded" name="groups" nillable="true" type="tns:group"/>
     </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType final="extension restriction" name="fetchOffersRequest">
-    <xs:complexContent>
-      <xs:extension base="tns:paginatable">
-        <xs:sequence>
-          <xs:element name="fetchType" type="tns:fetchType"/>
-          <xs:element maxOccurs="unbounded" name="identifiers" type="xs:string"/>
-          <xs:element name="exchangeYear" type="xs:int"/>
-          <xs:element maxOccurs="unbounded" name="states" type="tns:offerState"/>
-          <xs:element name="retrieveCurrentAndNextExchangeYear" type="xs:boolean"/>
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
   </xs:complexType>
 
   <xs:complexType final="extension restriction" name="fetchOffersResponse">
@@ -1277,7 +1263,7 @@
   <wsdl:message name="downloadOffers">
     <wsdl:part name="token" type="tns:authenticationToken">
     </wsdl:part>
-    <wsdl:part name="request" type="tns:offerCSVDownloadRequest">
+    <wsdl:part name="request" type="tns:fetchOffersRequest">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="fetchPublishedGroupsResponse">

@@ -168,7 +168,7 @@ public final class ExchangeWSClient extends CommonWSClient implements Exchange {
      */
     @Override
     public OfferCSVDownloadResponse downloadOffers(final AuthenticationToken token, final FetchOffersRequest request) {
-        return null;//map(client.downloadOffers(map(token), map(request)));
+        return map(client.downloadOffers(map(token), map(request)));
     }
 
     /**

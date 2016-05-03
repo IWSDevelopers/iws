@@ -18,8 +18,6 @@
 package net.iaeste.iws.api.util;
 
 import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.api.enums.SortingField;
-import net.iaeste.iws.api.enums.SortingOrder;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -44,15 +42,6 @@ public abstract class Paginatable extends Verifications {
     protected final Page page = new Page();
 
     /**
-     * Sets the Sort Order for the request.
-     *
-     * @param sortOrder  Sorting Order
-     */
-    public final void setSortOrder(final SortingOrder sortOrder) {
-        page.setSortOrder(sortOrder);
-    }
-
-    /**
      * Retrieves all the Paging information required for the request.
      *
      * @return Paginatable Object for this request
@@ -60,13 +49,4 @@ public abstract class Paginatable extends Verifications {
     public final Page getPage() {
         return page;
     }
-
-    /**
-     * The Field to sort by. Please note, that the available fields are request
-     * specific, which means that the values must be checked in actual
-     * implementations.
-     *
-     * @param sortBy Field to sort by
-     */
-    public abstract void setSortBy(SortingField sortBy);
 }

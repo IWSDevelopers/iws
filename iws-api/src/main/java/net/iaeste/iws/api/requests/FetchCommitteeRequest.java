@@ -20,7 +20,6 @@ package net.iaeste.iws.api.requests;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.GroupStatus;
 import net.iaeste.iws.api.enums.Membership;
-import net.iaeste.iws.api.enums.SortingField;
 import net.iaeste.iws.api.util.Paginatable;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -49,7 +48,7 @@ public final class FetchCommitteeRequest extends Paginatable {
 
     @XmlElement(required = true, nillable = true) private List<String> countryIds;
     @XmlElement(required = true, nillable = true) private Membership membership;
-    @XmlElement(required = true, nillable = true) private Set<GroupStatus> statuses = EnumSet.copyOf(ALLOWED);
+    @XmlElement(required = true, nillable = true) private final Set<GroupStatus> statuses = EnumSet.copyOf(ALLOWED);
 
     // =========================================================================
     // Object Constructors
@@ -73,7 +72,7 @@ public final class FetchCommitteeRequest extends Paginatable {
     public FetchCommitteeRequest(final List<String> countryIds) {
         ensureNotNullOrEmpty("countryIds", countryIds);
 
-        this.countryIds = countryIds;
+        setCountryIds(countryIds);
         this.membership = null;
     }
 
@@ -102,10 +101,10 @@ public final class FetchCommitteeRequest extends Paginatable {
      * @param countryIds List of Countries to fetch
      * @throws IllegalArgumentException if the CountryIds is null or empty
      */
-    public void setCountryIds(final List<String> countryIds) throws IllegalArgumentException {
+    public void setCountryIds(final List<String> countryIds) {
         ensureNotNullOrEmpty("countryIds", countryIds);
 
-        this.countryIds = countryIds;
+        this.countryIds = immutableList(countryIds);
         membership = null;
     }
 
@@ -115,7 +114,7 @@ public final class FetchCommitteeRequest extends Paginatable {
      * @return List of CountryIds to fetch
      */
     public List<String> getCountryIds() {
-        return countryIds;
+        return immutableList(countryIds);
     }
 
     /**
@@ -126,7 +125,7 @@ public final class FetchCommitteeRequest extends Paginatable {
      * @param membership Membership Type
      * @throws IllegalArgumentException if the membership value is null
      */
-    public void setMembership(final Membership membership) throws IllegalArgumentException {
+    public void setMembership(final Membership membership) {
         ensureNotNull("membership", membership);
 
         this.membership = membership;
@@ -149,14 +148,14 @@ public final class FetchCommitteeRequest extends Paginatable {
      * @param statuses Set of Status values to include in the lookup
      * @throws IllegalArgumentException if the statuses is null
      */
-    public void setStatuses(final Set<GroupStatus> statuses) throws IllegalArgumentException {
+    public void setStatuses(final Set<GroupStatus> statuses) {
         ensureNotNullAndContains("statuses", statuses, ALLOWED);
 
-        this.statuses = statuses;
+        this.statuses.retainAll(statuses);
     }
 
     public Set<GroupStatus> getStatuses() {
-        return statuses;
+        return immutableSet(statuses);
     }
 
     // =========================================================================
@@ -176,23 +175,5 @@ public final class FetchCommitteeRequest extends Paginatable {
         isNotNullAndContains(validation, "statuses", statuses, ALLOWED);
 
         return validation;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setSortBy(final SortingField sortBy) {
-        ensureNotNull("sortBy", sortBy);
-
-        switch (sortBy) {
-            //case CREATED:
-            case NAME:
-                page.setSortBy(sortBy);
-                break;
-            default:
-                // If unsupported, we're going to revert to the default
-                page.setSortBy(SortingField.CREATED);
-        }
     }
 }

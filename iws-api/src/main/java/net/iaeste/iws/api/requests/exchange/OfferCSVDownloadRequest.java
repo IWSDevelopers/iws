@@ -19,7 +19,6 @@ package net.iaeste.iws.api.requests.exchange;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.FetchType;
-import net.iaeste.iws.api.enums.SortingField;
 import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.api.util.Paginatable;
 
@@ -54,9 +53,9 @@ public final class OfferCSVDownloadRequest extends Paginatable {
             OfferState.EXPIRED,      OfferState.REJECTED);
 
     @XmlElement(required = true, nillable = false) private FetchType fetchType = null;
-    @XmlElement(required = true, nillable = false) private List<String> identifiers = null;
+    @XmlElement(required = true, nillable = false) private final List<String> identifiers = new ArrayList<>(0);
     @XmlElement(required = true, nillable = false) private Integer exchangeYear = null;
-    @XmlElement(required = true, nillable = false) private Set<OfferState> states = ALLOWED;
+    @XmlElement(required = true, nillable = false) private final Set<OfferState> states = ALLOWED;
     @XmlElement(required = true, nillable = false) private boolean retrieveCurrentAndNextExchangeYear = false;
 
     // =========================================================================
@@ -68,14 +67,13 @@ public final class OfferCSVDownloadRequest extends Paginatable {
      * for WebServices to work properly.</p>
      */
     public OfferCSVDownloadRequest() {
-        this.identifiers = new ArrayList<>(0);
         this.exchangeYear = calculateExchangeYear();
     }
 
     public OfferCSVDownloadRequest(final FetchType fetchType, final List<String> identifiers, final Integer exchangeYear) {
-        this.fetchType = fetchType;
-        this.identifiers = identifiers;
-        this.exchangeYear = exchangeYear;
+        setFetchType(fetchType);
+        setIdentifiers(identifiers);
+        setExchangeYear(exchangeYear);
     }
 
     // =========================================================================
@@ -93,7 +91,7 @@ public final class OfferCSVDownloadRequest extends Paginatable {
      * @param fetchType Type of Offers to be fetched
      * @throws IllegalArgumentException if the parameter is null
      */
-    public void setFetchType(final FetchType fetchType) throws IllegalArgumentException {
+    public void setFetchType(final FetchType fetchType) {
         ensureNotNull("fetchType", fetchType);
         this.fetchType = fetchType;
     }
@@ -118,13 +116,13 @@ public final class OfferCSVDownloadRequest extends Paginatable {
      * @param identifiers List of OfferId's or Reference Numbers to be fetched, may be empty
      * @throws IllegalArgumentException if the parameter is null
      */
-    public void setIdentifiers(final List<String> identifiers) throws IllegalArgumentException {
+    public void setIdentifiers(final List<String> identifiers) {
         ensureNotNullAndValidIdentifiers("identifiers", identifiers);
-        this.identifiers = identifiers;
+        this.identifiers.addAll(identifiers);
     }
 
     public List<String> getIdentifiers() {
-        return identifiers;
+        return immutableList(identifiers);
     }
 
     /**
@@ -142,7 +140,7 @@ public final class OfferCSVDownloadRequest extends Paginatable {
      * @see IWSConstants#FOUNDING_YEAR
      * @see #calculateExchangeYear()
      */
-    public void setExchangeYear(final Integer exchangeYear) throws IllegalArgumentException {
+    public void setExchangeYear(final Integer exchangeYear) {
         ensureNotNullAndWithinLimits("exchangeYear", exchangeYear, IWSConstants.FOUNDING_YEAR, calculateExchangeYear());
         this.exchangeYear = exchangeYear;
     }
@@ -159,11 +157,11 @@ public final class OfferCSVDownloadRequest extends Paginatable {
      */
     public void setStates(final Set<OfferState> states) {
         ensureNotNullAndContains("states", states, ALLOWED);
-        this.states = states;
+        this.states.retainAll(states);
     }
 
     public Set<OfferState> getStates() {
-        return states;
+        return immutableSet(states);
     }
 
     /**
@@ -206,19 +204,5 @@ public final class OfferCSVDownloadRequest extends Paginatable {
         isNotNull(validation, "retrieveCurrentAndNextExchangeYear", retrieveCurrentAndNextExchangeYear);
 
         return validation;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setSortBy(final SortingField sortBy) {
-        ensureNotNull("sortBy", sortBy);
-
-        switch (sortBy) {
-            default:
-                // If unsupported, we're going to revert to the default
-                page.setSortBy(SortingField.CREATED);
-        }
     }
 }

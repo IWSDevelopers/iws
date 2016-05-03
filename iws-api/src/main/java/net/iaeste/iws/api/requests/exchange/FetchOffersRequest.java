@@ -19,7 +19,6 @@ package net.iaeste.iws.api.requests.exchange;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.FetchType;
-import net.iaeste.iws.api.enums.SortingField;
 import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.api.util.Paginatable;
 
@@ -53,11 +52,11 @@ public final class FetchOffersRequest extends Paginatable {
             OfferState.COMPLETED,    OfferState.AT_EMPLOYER, OfferState.ACCEPTED,
             OfferState.EXPIRED,      OfferState.REJECTED);
 
-    @XmlElement(required = true, nillable = false) private FetchType fetchType = null;
-    @XmlElement(required = true, nillable = false) private List<String> identifiers = new ArrayList<>(0);
-    @XmlElement(required = true, nillable = false) private Integer exchangeYear = calculateExchangeYear();
-    @XmlElement(required = true, nillable = false) private Set<OfferState> states = ALLOWED;
-    @XmlElement(required = true, nillable = false) private boolean retrieveCurrentAndNextExchangeYear = false;
+    @XmlElement(required = true) private FetchType fetchType = null;
+    @XmlElement(required = true) private final List<String> identifiers = new ArrayList<>(0);
+    @XmlElement(required = true) private Integer exchangeYear = calculateExchangeYear();
+    @XmlElement(required = true) private final Set<OfferState> states = EnumSet.copyOf(ALLOWED);
+    @XmlElement(required = true) private boolean retrieveCurrentAndNextExchangeYear = false;
 
     // =========================================================================
     // Object Constructors
@@ -95,7 +94,7 @@ public final class FetchOffersRequest extends Paginatable {
      * @param fetchType Type of Offers to be fetched
      * @throws IllegalArgumentException if the parameter is null
      */
-    public void setFetchType(final FetchType fetchType) throws IllegalArgumentException {
+    public void setFetchType(final FetchType fetchType) {
         ensureNotNull("fetchType", fetchType);
         this.fetchType = fetchType;
     }
@@ -120,13 +119,13 @@ public final class FetchOffersRequest extends Paginatable {
      * @param identifiers List of OfferId's or Reference Numbers to be fetched, may be empty
      * @throws IllegalArgumentException if the parameter is null
      */
-    public void setIdentifiers(final List<String> identifiers) throws IllegalArgumentException {
+    public void setIdentifiers(final List<String> identifiers) {
         ensureNotNullAndValidIdentifiers("identifiers", identifiers);
-        this.identifiers = identifiers;
+        this.identifiers.addAll(identifiers);
     }
 
     public List<String> getIdentifiers() {
-        return identifiers;
+        return immutableList(identifiers);
     }
 
     public void setExchangeYear(final Integer exchangeYear) {
@@ -146,11 +145,11 @@ public final class FetchOffersRequest extends Paginatable {
      */
     public void setStates(final Set<OfferState> states) {
         ensureNotNullAndContains("states", states, ALLOWED);
-        this.states = states;
+        this.states.retainAll(states);
     }
 
     public Set<OfferState> getStates() {
-        return states;
+        return immutableSet(states);
     }
 
     /**
@@ -193,22 +192,5 @@ public final class FetchOffersRequest extends Paginatable {
         isNotNull(validation, "retrieveCurrentAndNextExchangeYear", retrieveCurrentAndNextExchangeYear);
 
         return validation;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setSortBy(final SortingField sortBy) {
-        ensureNotNull("sortBy", sortBy);
-
-        switch (sortBy) {
-            case NAME:
-                page.setSortBy(sortBy);
-                break;
-            default:
-                // If unsupported, we're going to revert to the default
-                page.setSortBy(SortingField.CREATED);
-        }
     }
 }

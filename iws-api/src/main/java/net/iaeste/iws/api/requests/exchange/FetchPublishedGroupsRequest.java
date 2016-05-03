@@ -18,13 +18,13 @@
 package net.iaeste.iws.api.requests.exchange;
 
 import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.api.enums.SortingField;
 import net.iaeste.iws.api.util.Paginatable;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,8 +45,8 @@ public final class FetchPublishedGroupsRequest extends Paginatable {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    @XmlElement(required = true, nillable = false) private List<String> identifiers = null;
-    @XmlElement(required = true, nillable = false) private Integer exchangeYear;
+    @XmlElement(required = true) private final List<String> identifiers = new ArrayList<>(0);
+    @XmlElement(required = true) private Integer exchangeYear;
 
     // =========================================================================
     // Object Constructors
@@ -85,13 +85,13 @@ public final class FetchPublishedGroupsRequest extends Paginatable {
      * @param identifiers List of OfferId's or Reference Numbers to be fetched, may be empty
      * @throws IllegalArgumentException if the parameter is null
      */
-    public void setIdentifiers(final List<String> identifiers) throws IllegalArgumentException {
+    public void setIdentifiers(final List<String> identifiers) {
         ensureNotNullAndValidIdentifiers("identifiers", identifiers);
-        this.identifiers = identifiers;
+        this.identifiers.addAll(identifiers);
     }
 
     public List<String> getIdentifiers() {
-        return identifiers;
+        return immutableList(identifiers);
     }
 
     /**
@@ -106,7 +106,7 @@ public final class FetchPublishedGroupsRequest extends Paginatable {
      * @param exchangeYear Exchange YeAr
      * @throws IllegalArgumentException if the given argument is invalid
      */
-    public void setExchangeYear(final Integer exchangeYear) throws IllegalArgumentException {
+    public void setExchangeYear(final Integer exchangeYear) {
         ensureNotNullAndWithinLimits("exchangeYear", exchangeYear, IWSConstants.FOUNDING_YEAR, calculateExchangeYear());
         this.exchangeYear = exchangeYear;
     }
@@ -130,22 +130,5 @@ public final class FetchPublishedGroupsRequest extends Paginatable {
         isNotNull(validation, "exchangeYear", exchangeYear);
 
         return validation;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setSortBy(final SortingField sortBy) {
-        ensureNotNull("sortBy", sortBy);
-
-        switch (sortBy) {
-            case NAME:
-                page.setSortBy(sortBy);
-                break;
-            default:
-                // If unsupported, we're going to revert to the default
-                page.setSortBy(SortingField.CREATED);
-        }
     }
 }

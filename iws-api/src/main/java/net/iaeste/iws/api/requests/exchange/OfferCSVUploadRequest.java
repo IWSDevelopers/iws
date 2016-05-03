@@ -18,7 +18,6 @@
 package net.iaeste.iws.api.requests.exchange;
 
 import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.api.enums.SortingField;
 import net.iaeste.iws.api.util.Paginatable;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -67,7 +66,7 @@ public final class OfferCSVUploadRequest extends Paginatable {
     /**
      * CSV file content
      */
-    @XmlElement(required = true, nillable = false)
+    @XmlElement(required = true)
     private byte[] data;
 
     /**
@@ -123,24 +122,6 @@ public final class OfferCSVUploadRequest extends Paginatable {
      */
     @Override
     public Map<String, String> validate() {
-        final Map<String, String> validation = new HashMap<>(0);
-
-        isNotNull(validation, "data", data);
-
-        return validation;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setSortBy(final SortingField sortBy) {
-        ensureNotNull("sortBy", sortBy);
-
-        switch (sortBy) {
-            default:
-                // If unsupported, we're going to revert to the default
-                page.setSortBy(SortingField.CREATED);
-        }
+        return new HashMap<>(0);
     }
 }

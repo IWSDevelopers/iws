@@ -18,7 +18,6 @@
 package net.iaeste.iws.api.requests.exchange;
 
 import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.api.enums.SortingField;
 import net.iaeste.iws.api.enums.exchange.EmployerFetchType;
 import net.iaeste.iws.api.util.Paginatable;
 
@@ -107,22 +106,5 @@ public final class FetchEmployerRequest extends Paginatable {
         }
 
         return validation;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setSortBy(final SortingField sortBy) {
-        ensureNotNull("sortBy", sortBy);
-
-        switch (sortBy) {
-            case NAME:
-                page.setSortBy(sortBy);
-                break;
-            default:
-                // If unsupported, we're going to revert to the default
-                page.setSortBy(SortingField.CREATED);
-        }
     }
 }

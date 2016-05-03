@@ -18,7 +18,6 @@
 package net.iaeste.iws.api.requests.student;
 
 import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.api.enums.SortingField;
 import net.iaeste.iws.api.util.Paginatable;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -34,13 +33,13 @@ import java.util.Map;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "fetchStudentApplicationsRequest", propOrder = { "offerId" })
+@XmlType(name = "fetchStudentApplicationsRequest", propOrder = "offerId")
 public final class FetchStudentApplicationsRequest extends Paginatable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    @XmlElement(required = true, nillable = false)
+    @XmlElement(required = true)
     private String offerId = null;
 
     // =========================================================================
@@ -75,7 +74,7 @@ public final class FetchStudentApplicationsRequest extends Paginatable {
      * @param offerId OfferId
      * @throws IllegalArgumentException if the token is invalid
      */
-    public void setOfferId(final String offerId) throws IllegalArgumentException {
+    public void setOfferId(final String offerId) {
         ensureValidId("offerId", offerId);
 
         this.offerId = offerId;
@@ -99,23 +98,5 @@ public final class FetchStudentApplicationsRequest extends Paginatable {
         isNotNull(validation, "offerId", offerId);
 
         return validation;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setSortBy(final SortingField sortBy) {
-        ensureNotNull("sortBy", sortBy);
-
-        switch (sortBy) {
-            //case CREATED:
-            case NAME:
-                page.setSortBy(sortBy);
-                break;
-            default:
-                // If unsupported, we're going to revert to the default
-                page.setSortBy(SortingField.CREATED);
-        }
     }
 }

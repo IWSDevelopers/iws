@@ -455,31 +455,34 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
     public void rejectOffer(final Authentication authentication, final RejectOfferRequest request) {
         final List<OfferGroupEntity> offerGroups = dao.findInfoForSharedOffer(request.getOfferId());
         final OfferGroupEntity offerGroupToReject = findOfferGroupByGroup(authentication.getGroup(), offerGroups);
-        final OfferGroupEntity updatedOfferGroup = new OfferGroupEntity(offerGroupToReject);
-        updatedOfferGroup.setStatus(OfferState.REJECTED);
-        dao.persist(authentication, offerGroupToReject, updatedOfferGroup);
 
-        offerGroups.remove(offerGroupToReject);
+        if (offerGroupToReject != null) {
+            final OfferGroupEntity updatedOfferGroup = new OfferGroupEntity(offerGroupToReject);
+            updatedOfferGroup.setStatus(OfferState.REJECTED);
+            dao.persist(authentication, offerGroupToReject, updatedOfferGroup);
 
-        final EnumSet<OfferState> activeStates = EnumSet.of(OfferState.SHARED,
-                AT_EMPLOYER,
-                OfferState.ACCEPTED,
-                OfferState.APPLICATIONS,
-                OfferState.COMPLETED,
-                OfferState.NOMINATIONS);
-        boolean updateOfferState = true;
-        for (final OfferGroupEntity offerGroup : offerGroups) {
-            if (activeStates.contains(offerGroup.getStatus())) {
-                updateOfferState = false;
-                break;
+            offerGroups.remove(offerGroupToReject);
+
+            final EnumSet<OfferState> activeStates = EnumSet.of(OfferState.SHARED,
+                    AT_EMPLOYER,
+                    OfferState.ACCEPTED,
+                    OfferState.APPLICATIONS,
+                    OfferState.COMPLETED,
+                    OfferState.NOMINATIONS);
+            boolean updateOfferState = true;
+            for (final OfferGroupEntity offerGroup : offerGroups) {
+                if (activeStates.contains(offerGroup.getStatus())) {
+                    updateOfferState = false;
+                    break;
+                }
             }
-        }
 
-        if (updateOfferState) {
-            final List<Long> rejectedOfferIds = new ArrayList<>(1);
-            rejectedOfferIds.add(offerGroupToReject.getOffer().getId());
+            if (updateOfferState) {
+                final List<Long> rejectedOfferIds = new ArrayList<>(1);
+                rejectedOfferIds.add(offerGroupToReject.getOffer().getId());
 
-            dao.updateOfferState(rejectedOfferIds, OfferState.REJECTED);
+                dao.updateOfferState(rejectedOfferIds, OfferState.REJECTED);
+            }
         }
     }
 
@@ -710,5 +713,4 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
 
         return result;
     }
-
 }

@@ -421,6 +421,7 @@ public final class StudentTest extends AbstractTest {
         assertThat(fetchApplicationsResponse.isOk(), is(true));
         final StudentApplication foundApplication = findApplicationFromResponse(studentApplication.getApplicationId(), fetchApplicationsResponse);
 
+        assertThat("Ensure that we have an Application.", foundApplication, is(not(nullValue())));
         assertThat("Make sure that new application state has been persisted", foundApplication.getStatus(), is(ApplicationStatus.NOMINATED));
         assertThat("Nomination date is set", foundApplication.getNominatedAt(), not(nullValue()));
     }
@@ -1043,11 +1044,15 @@ public final class StudentTest extends AbstractTest {
     }
 
     private static StudentApplication findApplicationFromResponse(final String applicationId, final FetchStudentApplicationsResponse response) {
+        StudentApplication application = null;
+
         for (final StudentApplication found : response.getStudentApplications()) {
             if (found.getApplicationId().equals(applicationId)) {
-                return found;
+                application = found;
+                break;
             }
         }
-        return null;
+
+        return application;
     }
 }

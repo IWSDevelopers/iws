@@ -63,15 +63,14 @@ import net.iaeste.iws.api.responses.exchange.OfferCSVUploadResponse;
 import net.iaeste.iws.api.responses.exchange.OfferResponse;
 import net.iaeste.iws.api.responses.exchange.OfferStatisticsResponse;
 import net.iaeste.iws.api.responses.exchange.PublishOfferResponse;
-import net.iaeste.iws.api.util.Verifications;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.api.util.Fallible;
+import net.iaeste.iws.api.util.Verifications;
 import net.iaeste.iws.client.AbstractTest;
 import net.iaeste.iws.client.ExchangeClient;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -1356,15 +1355,15 @@ public final class OfferTest extends AbstractTest {
         final OfferCSVDownloadResponse outboxCsvResponse = exchange.downloadOffers(austriaTokenWithNationalGroup, outboxCsvRequest);
 
         assertThat(outboxCsvResponse.isOk(), is(true));
-        assertThat(outboxCsvResponse.getData(), is(not(nullValue())));
+        assertThat(outboxCsvResponse.getCsv(), is(not(nullValue())));
 
         final OfferCSVDownloadRequest inboxCsvRequest = new OfferCSVDownloadRequest(FetchType.SHARED, new ArrayList<String>(0), Verifications.calculateExchangeYear());
         final OfferCSVDownloadResponse inboxCsvResponse = exchange.downloadOffers(croatiaToken, inboxCsvRequest);
 
         assertThat(inboxCsvResponse.isOk(), is(true));
-        assertThat(inboxCsvResponse.getData(), is(not(nullValue())));
+        assertThat(inboxCsvResponse.getCsv(), is(not(nullValue())));
 
-        final OfferCSVUploadRequest uploadRequest = new OfferCSVUploadRequest(outboxCsvResponse.getData(), OfferCSVUploadRequest.FieldDelimiter.COMMA);
+        final OfferCSVUploadRequest uploadRequest = new OfferCSVUploadRequest(outboxCsvResponse.getCsv(), OfferCSVUploadRequest.FieldDelimiter.COMMA);
         final OfferCSVUploadResponse uploadResponse = exchange.uploadOffers(austriaTokenWithNationalGroup, uploadRequest);
         assertThat(uploadResponse.isOk(), is(true));
     }
@@ -1380,7 +1379,7 @@ public final class OfferTest extends AbstractTest {
      * in the end.</p>
      */
     @Test
-    public void testInvalidRefNoInCsv() throws UnsupportedEncodingException {
+    public void testInvalidRefNoInCsv() {
         // First, we need a valid offer which we can download as CSV and change
         // to a new, different Offer
         final AuthenticationToken germany = login("germany@iaeste.de", "germany");
@@ -1402,11 +1401,11 @@ public final class OfferTest extends AbstractTest {
         // Okay, preparations is in place. Now we're replacing the refno with
         // one that exceeds the allowed size. This should result in the refno
         // Setter to throw an IllegalArgumentException
-        final String originalCSV = new String(downloadResponse.getData(), IWSConstants.DEFAULT_ENCODING);
+        final String originalCSV = downloadResponse.getCsv();
         final String newCSV = originalCSV.replace(refno, invalidRefno);
 
         final OfferCSVUploadRequest uploadRequest = new OfferCSVUploadRequest();
-        uploadRequest.setData(newCSV.getBytes(IWSConstants.DEFAULT_ENCODING));
+        uploadRequest.setCsv(newCSV);
         final OfferCSVUploadResponse uploadResponse = exchange.uploadOffers(germany, uploadRequest);
 
         assertThat(uploadResponse.isOk(), is(true));
@@ -1429,7 +1428,7 @@ public final class OfferTest extends AbstractTest {
      * in the end.</p>
      */
     @Test
-    public void testInvalidLanguageInCsv() throws UnsupportedEncodingException {
+    public void testInvalidLanguageInCsv() {
         // First, we need a valid offer which we can download as CSV and change
         // to a new, different Offer
         final AuthenticationToken germany = login("germany@iaeste.de", "germany");
@@ -1450,14 +1449,14 @@ public final class OfferTest extends AbstractTest {
         // Okay, preparations is in place. Now we're replacing the language with
         // one that is not allowed. This should result in the Language setter
         // throwing an IllegalArgument Exception
-        final String originalCSV = new String(downloadResponse.getData(), IWSConstants.DEFAULT_ENCODING);
+        final String originalCSV = downloadResponse.getCsv();
         final String newCSV = originalCSV.replace("English", "ENGLISCH");
 
         final OfferCSVUploadRequest uploadRequest = new OfferCSVUploadRequest();
-        uploadRequest.setData(newCSV.getBytes(IWSConstants.DEFAULT_ENCODING));
+        uploadRequest.setCsv(newCSV);
         final OfferCSVUploadResponse uploadResponse = exchange.uploadOffers(germany, uploadRequest);
 
-        assertThat(uploadResponse.isOk(), is(true));
+        assertThat(uploadResponse.getMessage(), is(IWSConstants.SUCCESS));
         final Map<String, CSVProcessingErrors> result = uploadResponse.getErrors();
         assertThat(result.size(), is(1));
         final Map<String, String> errors = result.get(refno).getCsvErrors();

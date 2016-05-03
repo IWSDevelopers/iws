@@ -19,7 +19,6 @@ package net.iaeste.iws.core.services;
 
 import static net.iaeste.iws.api.util.LogUtil.formatLogMessage;
 
-import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.Address;
 import net.iaeste.iws.api.dtos.Country;
@@ -47,10 +46,9 @@ import org.apache.commons.csv.CSVRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.StringReader;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -74,15 +72,12 @@ public final class ExchangeCSVService extends CommonCSVService<ExchangeDao> {
     }
 
     public OfferCSVUploadResponse uploadOffers(final Authentication authentication, final OfferCSVUploadRequest request) {
-        final OfferCSVUploadResponse response = new OfferCSVUploadResponse();
         final Map<String, OfferCSVUploadResponse.ProcessingResult> processingResult = new HashMap<>();
+        final OfferCSVUploadResponse response = new OfferCSVUploadResponse();
         final Map<String, CSVProcessingErrors> errors = new HashMap<>();
 
-        final OfferCSVUploadRequest.FieldDelimiter delimiter = (request.getDelimiter() != null) ? request.getDelimiter() : DELIMITER;
-
-        try (ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(request.getData());
-             Reader reader = new InputStreamReader(byteArrayInputStream, IWSConstants.DEFAULT_ENCODING);
-             CSVParser parser = getDefaultCsvParser(reader, delimiter.getDescription())) {
+        try (Reader reader = new StringReader(request.getCsv());
+             CSVParser parser = getDefaultCsvParser(reader, request.getDelimiter().getDescription())) {
             final Set<String> headers = readHeader(parser);
             final Set<String> expectedHeaders = new HashSet<>(createFirstRow(OfferFields.Type.UPLOAD));
             if (headers.containsAll(expectedHeaders)) {
@@ -111,17 +106,6 @@ public final class ExchangeCSVService extends CommonCSVService<ExchangeDao> {
         }
 
         return map.keySet();
-    }
-
-    private static CSVParser getDefaultCsvParser(final Reader input, final char delimiter) {
-        try {
-            return CSVFormat.RFC4180
-                    .withDelimiter(delimiter)
-                    .withHeader()
-                    .parse(input);
-        } catch (IOException e) {
-            throw new IWSException(IWSErrors.PROCESSING_FAILURE, "Creating CSVParser failed", e);
-        }
     }
 
     private static Offer extractOfferFromCSV(final Authentication authentication, final Map<String, String> errors, final CSVRecord record) {
@@ -275,5 +259,16 @@ public final class ExchangeCSVService extends CommonCSVService<ExchangeDao> {
         }
 
         return entity;
+    }
+
+    private static CSVParser getDefaultCsvParser(final Reader input, final char delimiter) {
+        try {
+            return CSVFormat.RFC4180
+                            .withDelimiter(delimiter)
+                            .withHeader()
+                            .parse(input);
+        } catch (IOException e) {
+            throw new IWSException(IWSErrors.PROCESSING_FAILURE, "Creating CSVParser failed", e);
+        }
     }
 }

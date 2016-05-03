@@ -33,7 +33,7 @@ import java.util.Map;
  * @since   IWS 1.1
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "offerCSVUploadRequest", propOrder = { "data", "delimiter" })
+@XmlType(name = "offerCSVUploadRequest", propOrder = { "csv", "delimiter" })
 public final class OfferCSVUploadRequest extends Paginatable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
@@ -48,9 +48,9 @@ public final class OfferCSVUploadRequest extends Paginatable {
         COMMA(','),
         SEMICOLON(';');
 
-        // =========================================================================
+        // =====================================================================
         // Private Constructor & functionality
-        // =========================================================================
+        // =====================================================================
 
         private final char description;
 
@@ -63,17 +63,8 @@ public final class OfferCSVUploadRequest extends Paginatable {
         }
     }
 
-    /**
-     * CSV file content
-     */
-    @XmlElement(required = true)
-    private byte[] data;
-
-    /**
-     * CSV field delimiter
-     */
-    @XmlElement(required = true, nillable = true)
-    private FieldDelimiter delimiter;
+    @XmlElement(required = true) private String csv = null;
+    @XmlElement(required = true) private FieldDelimiter delimiter = FieldDelimiter.COMMA;
 
     // =========================================================================
     // Object Constructors
@@ -84,28 +75,29 @@ public final class OfferCSVUploadRequest extends Paginatable {
      * for WebServices to work properly.
      */
     public OfferCSVUploadRequest() {
-        this.data = null;
-        this.delimiter = null;
+        this.csv = null;
     }
 
-    public OfferCSVUploadRequest(final byte[] data, final FieldDelimiter delimiter) {
-        this.data = data;
-        this.delimiter = delimiter;
+    public OfferCSVUploadRequest(final String csv, final FieldDelimiter delimiter) {
+        setCsv(csv);
+        setDelimiter(delimiter);
     }
 
     // =========================================================================
     // Standard Setters & Getters
     // =========================================================================
 
-    public void setData(final byte[] data) {
-        this.data = data;
+    public void setCsv(final String csv) {
+        ensureNotNullOrEmpty("csv", csv);
+        this.csv = csv;
     }
 
-    public byte[] getData() {
-        return data;
+    public String getCsv() {
+        return csv;
     }
 
     public void setDelimiter(final FieldDelimiter delimiter) {
+        ensureNotNull("delimiter", delimiter);
         this.delimiter = delimiter;
     }
 
@@ -122,6 +114,11 @@ public final class OfferCSVUploadRequest extends Paginatable {
      */
     @Override
     public Map<String, String> validate() {
-        return new HashMap<>(0);
+        final Map<String, String> validation = new HashMap<>(0);
+
+        isNotNull(validation, "csv", csv);
+        isNotNull(validation, "delimiter", delimiter);
+
+        return validation;
     }
 }

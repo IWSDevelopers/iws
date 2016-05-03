@@ -25,7 +25,6 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
-import java.util.Arrays;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -33,14 +32,14 @@ import java.util.Arrays;
  * @since   IWS 1.1
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "offerCSVDownloadResponse", propOrder = "data")
+@XmlType(name = "offerCSVDownloadResponse", propOrder = "csv")
 public final class OfferCSVDownloadResponse extends FallibleResponse {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     @XmlElement(required = true, nillable = true)
-    private byte[] data = null;
+    private String csv = null;
 
     // =========================================================================
     // Object Constructors
@@ -68,11 +67,11 @@ public final class OfferCSVDownloadResponse extends FallibleResponse {
     // Standard Setters & Getters
     // =========================================================================
 
-    public void setData(final byte[] data) {
-        this.data = Arrays.copyOf(data, data.length);
+    public void setCsv(final String csv) {
+        this.csv = csv;
     }
 
-    public byte[] getData() {
-        return Arrays.copyOf(data, data.length);
+    public String getCsv() {
+        return csv;
     }
 }

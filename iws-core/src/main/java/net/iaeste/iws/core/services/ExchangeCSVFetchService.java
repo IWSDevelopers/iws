@@ -64,10 +64,10 @@ public final class ExchangeCSVFetchService extends CommonCSVService<ExchangeDao>
         final OfferCSVDownloadResponse response = new OfferCSVDownloadResponse();
         switch (request.getFetchType()) {
             case DOMESTIC:
-                response.setData(findDomesticOffers(authentication, request));
+                response.setCsv(findDomesticOffers(authentication, request));
                 break;
             case SHARED:
-                response.setData(findSharedOffers(authentication, request));
+                response.setCsv(findSharedOffers(authentication, request));
                 break;
             default:
                 throw new PermissionException("The search type is not permitted.");
@@ -76,7 +76,7 @@ public final class ExchangeCSVFetchService extends CommonCSVService<ExchangeDao>
         return response;
     }
 
-    private byte[] findDomesticOffers(final Authentication authentication, final OfferCSVDownloadRequest request) {
+    private String findDomesticOffers(final Authentication authentication, final OfferCSVDownloadRequest request) {
         final List<String> offerIds = request.getIdentifiers();
         final Page page = request.getPage();
         final Integer exchangeYear = request.getExchangeYear();
@@ -94,7 +94,7 @@ public final class ExchangeCSVFetchService extends CommonCSVService<ExchangeDao>
         return convertOffersToCsv(found, OfferFields.Type.DOMESTIC);
     }
 
-    private byte[] findSharedOffers(final Authentication authentication, final OfferCSVDownloadRequest request) {
+    private String findSharedOffers(final Authentication authentication, final OfferCSVDownloadRequest request) {
         final List<String> offerIds = request.getIdentifiers();
         final Page page = request.getPage();
         final Integer exchangeYear = request.getExchangeYear();
@@ -112,40 +112,35 @@ public final class ExchangeCSVFetchService extends CommonCSVService<ExchangeDao>
         return convertOffersToCsv(found, OfferFields.Type.FOREIGN);
     }
 
-    private static CSVPrinter getDefaultCsvPrinter(final Appendable output) {
-        try {
-            return CSVFormat.RFC4180
-                    .withDelimiter(DELIMITER.getDescription())
-                    .withNullString("")
-                    .print(output);
+    private static <V extends IWSView> String convertOffersToCsv(final List<V> offers, final OfferFields.Type type) {
+        try (ByteArrayOutputStream stream = new ByteArrayOutputStream();
+             OutputStreamWriter streamWriter = new OutputStreamWriter(stream, IWSConstants.DEFAULT_ENCODING);
+             BufferedWriter writer = new BufferedWriter(streamWriter);
+             CSVPrinter printer = getDefaultCsvPrinter(writer)) {
+            printer.printRecord(createFirstRow(type));
+
+            for (final V offer : offers) {
+                printer.printRecord(ViewTransformer.transformOfferToObjectList(offer, type));
+            }
+
+            // Should suffice to flush the Writer
+            writer.flush();
+            //streamWriter.flush();
+            //stream.flush();
+            return new String(stream.toByteArray(), IWSConstants.DEFAULT_ENCODING);
         } catch (IOException e) {
-            throw new IWSException(IWSErrors.PROCESSING_FAILURE, "Creating CSVPrinter failed", e);
+            throw new IWSException(IWSErrors.PROCESSING_FAILURE, "Serialization to CSV failed", e);
         }
     }
 
-    private static <V extends IWSView> byte[] convertOffersToCsv(final List<V> offers, final OfferFields.Type type) {
-        byte[] result = null;
-
-        if (!offers.isEmpty()) {
-            try (ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                 OutputStreamWriter streamWriter = new OutputStreamWriter(stream, IWSConstants.DEFAULT_ENCODING);
-                 BufferedWriter writer = new BufferedWriter(streamWriter);
-                 CSVPrinter printer = getDefaultCsvPrinter(writer)) {
-                printer.printRecord(createFirstRow(type));
-
-                for (final V offer : offers) {
-                    printer.printRecord(ViewTransformer.transformOfferToObjectList(offer, type));
-                }
-
-                writer.flush();
-                streamWriter.flush();
-                stream.flush();
-                result = stream.toByteArray();
-            } catch (IOException e) {
-                throw new IWSException(IWSErrors.PROCESSING_FAILURE, "Serialization to CSV failed", e);
-            }
+    private static CSVPrinter getDefaultCsvPrinter(final Appendable output) {
+        try {
+            return CSVFormat.RFC4180
+                            .withDelimiter(DELIMITER.getDescription())
+                            .withNullString("")
+                            .print(output);
+        } catch (IOException e) {
+            throw new IWSException(IWSErrors.PROCESSING_FAILURE, "Creating CSVPrinter failed", e);
         }
-
-        return result;
     }
 }

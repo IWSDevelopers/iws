@@ -246,7 +246,7 @@ public final class ExchangeMapper extends CommonMapper {
             ws = new net.iaeste.iws.ws.OfferCSVUploadRequest();
 
             ws.setPage(map(api.getPage()));
-            ws.setData(api.getData());
+            ws.setData(api.getCsv().getBytes());
             ws.setDelimiter(map(api.getDelimiter()));
         }
 
@@ -324,7 +324,7 @@ public final class ExchangeMapper extends CommonMapper {
         if (ws != null) {
             api = new OfferCSVDownloadResponse(map(ws.getError()), ws.getMessage());
 
-            api.setData(ws.getData());
+            api.setCsv(new String(ws.getData()));
         }
 
         return api;

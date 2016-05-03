@@ -54,10 +54,6 @@ public final class OfferCSVDownloadResponse extends FallibleResponse {
         // Required for WebServices to work. Comment added to please Sonar.
     }
 
-    public OfferCSVDownloadResponse(final byte[] data) {
-        setData(data);
-    }
-
     /**
      * Error Constructor.
      *

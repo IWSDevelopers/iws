@@ -116,9 +116,15 @@ public final class ServiceFactory {
 
     public ExchangeCSVService prepareExchangeCSVService() {
         final ExchangeDao dao = new ExchangeJpaDao(entityManager, settings);
+
+        return new ExchangeCSVService(settings, dao, accessDao);
+    }
+
+    public ExchangeCSVFetchService prepareExchangeCSVFetchService() {
+        final ExchangeDao dao = new ExchangeJpaDao(entityManager, settings);
         final ViewsDao viewsDao = new ViewsJpaDao(entityManager, settings);
 
-        return new ExchangeCSVService(settings, dao, accessDao, viewsDao);
+        return new ExchangeCSVFetchService(settings, dao, viewsDao);
     }
 
     public StudentService prepareStudentService() {

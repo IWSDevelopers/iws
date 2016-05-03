@@ -167,6 +167,8 @@ public final class IWSErrors {
 
     public static final IWSError INVALID_EXCHANGE_TYPE = new IWSError(703, "Invalid Exchange Type.");
 
+    public static final IWSError CSV_HEADER_ERROR = new IWSError(710, "CSV Header error.");
+
     public static final IWSError PDF_ERROR = new IWSError(990, "PDF Generator Error.");
 
     /**

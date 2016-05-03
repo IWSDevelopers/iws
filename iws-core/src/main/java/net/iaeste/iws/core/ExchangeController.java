@@ -47,6 +47,7 @@ import net.iaeste.iws.api.responses.exchange.OfferCSVUploadResponse;
 import net.iaeste.iws.api.responses.exchange.OfferResponse;
 import net.iaeste.iws.api.responses.exchange.OfferStatisticsResponse;
 import net.iaeste.iws.api.responses.exchange.PublishOfferResponse;
+import net.iaeste.iws.core.services.ExchangeCSVFetchService;
 import net.iaeste.iws.core.services.ExchangeCSVService;
 import net.iaeste.iws.core.services.ExchangeFetchService;
 import net.iaeste.iws.core.services.ExchangeService;
@@ -268,7 +269,7 @@ public final class ExchangeController extends CommonController implements Exchan
             verify(request);
             final Authentication authentication = verifyAccess(token, Permission.FETCH_OFFERS);
 
-            final ExchangeCSVService service = factory.prepareExchangeCSVService();
+            final ExchangeCSVFetchService service = factory.prepareExchangeCSVFetchService();
             response = service.downloadOffers(authentication, request);
         } catch (IWSException e) {
             // Generally, Exceptions should always be either logged or rethrown.

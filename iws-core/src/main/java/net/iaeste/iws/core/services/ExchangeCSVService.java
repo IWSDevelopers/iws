@@ -29,46 +29,30 @@ import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.enums.exchange.OfferFields;
 import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.api.exceptions.IWSException;
-import net.iaeste.iws.api.requests.exchange.OfferCSVDownloadRequest;
 import net.iaeste.iws.api.requests.exchange.OfferCSVUploadRequest;
-import net.iaeste.iws.api.responses.exchange.OfferCSVDownloadResponse;
 import net.iaeste.iws.api.responses.exchange.OfferCSVUploadResponse;
 import net.iaeste.iws.api.util.Verifications;
-import net.iaeste.iws.api.util.Page;
 import net.iaeste.iws.common.configuration.Settings;
-import net.iaeste.iws.core.exceptions.PermissionException;
 import net.iaeste.iws.core.transformers.CommonTransformer;
 import net.iaeste.iws.core.transformers.ExchangeTransformer;
-import net.iaeste.iws.core.transformers.ViewTransformer;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.ExchangeDao;
-import net.iaeste.iws.persistence.ViewsDao;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.exchange.EmployerEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
-import net.iaeste.iws.persistence.views.IWSView;
-import net.iaeste.iws.persistence.views.OfferView;
-import net.iaeste.iws.persistence.views.SharedOfferView;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
-import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.io.Reader;
-import java.util.ArrayList;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -77,20 +61,16 @@ import java.util.Set;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.1
  */
-public final class ExchangeCSVService extends CommonService<ExchangeDao> {
+public final class ExchangeCSVService extends CommonCSVService<ExchangeDao> {
 
     private static final Logger LOG = LoggerFactory.getLogger(ExchangeCSVService.class);
 
-    private static final OfferCSVUploadRequest.FieldDelimiter DELIMITER = OfferCSVUploadRequest.FieldDelimiter.COMMA;
-
     private final AccessDao accessDao;
-    private final ViewsDao viewsDao;
 
-    public ExchangeCSVService(final Settings settings, final ExchangeDao dao, final AccessDao accessDao, final ViewsDao viewsDao) {
+    public ExchangeCSVService(final Settings settings, final ExchangeDao dao, final AccessDao accessDao) {
         super(settings, dao);
 
         this.accessDao = accessDao;
-        this.viewsDao = viewsDao;
     }
 
     public OfferCSVUploadResponse uploadOffers(final Authentication authentication, final OfferCSVUploadRequest request) {
@@ -103,8 +83,7 @@ public final class ExchangeCSVService extends CommonService<ExchangeDao> {
         try (ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(request.getData());
              Reader reader = new InputStreamReader(byteArrayInputStream, IWSConstants.DEFAULT_ENCODING);
              CSVParser parser = getDefaultCsvParser(reader, delimiter.getDescription())) {
-            final Map<String, Integer> headersMap = parser.getHeaderMap();
-            final Set<String> headers = headersMap.keySet();
+            final Set<String> headers = readHeader(parser);
             final Set<String> expectedHeaders = new HashSet<>(createFirstRow(OfferFields.Type.UPLOAD));
             if (headers.containsAll(expectedHeaders)) {
                 for (final CSVRecord record : parser.getRecords()) {
@@ -124,66 +103,14 @@ public final class ExchangeCSVService extends CommonService<ExchangeDao> {
         return response;
     }
 
-    public OfferCSVDownloadResponse downloadOffers(final Authentication authentication, final OfferCSVDownloadRequest request) {
-        final OfferCSVDownloadResponse response;
-        switch (request.getFetchType()) {
-            case DOMESTIC:
-                response = new OfferCSVDownloadResponse(findDomesticOffers(authentication, request));
-                break;
-            case SHARED:
-                response = new OfferCSVDownloadResponse(findSharedOffers(authentication, request));
-                break;
-            default:
-                throw new PermissionException("The search type is not permitted.");
+    private static Set<String> readHeader(final CSVParser parser) {
+        final Map<String, Integer> map = parser.getHeaderMap();
+
+        if (map == null) {
+            throw new IWSException(IWSErrors.CSV_HEADER_ERROR, "The CSV did not have a valid header.");
         }
 
-        return response;
-    }
-
-    private byte[] findDomesticOffers(final Authentication authentication, final OfferCSVDownloadRequest request) {
-        final List<String> offerIds = request.getIdentifiers();
-        final Page page = request.getPage();
-        final Integer exchangeYear = request.getExchangeYear();
-
-        final List<OfferView> found;
-        if (offerIds.isEmpty()) {
-            //paging could make a problem here if it returns only some offers
-            final Set<OfferState> states = EnumSet.allOf(OfferState.class);
-            states.remove(OfferState.DELETED);
-            found = viewsDao.findDomesticOffers(authentication, exchangeYear, states, false, page);
-        } else {
-            found = viewsDao.findDomesticOffersByOfferIds(authentication, exchangeYear, offerIds);
-        }
-
-        byte[] result = null;
-        if (!found.isEmpty()) {
-            result = convertOffersToCsv(found, OfferFields.Type.DOMESTIC);
-        }
-
-        return result;
-    }
-
-    private byte[] findSharedOffers(final Authentication authentication, final OfferCSVDownloadRequest request) {
-        final List<String> offerIds = request.getIdentifiers();
-        final Page page = request.getPage();
-        final Integer exchangeYear = request.getExchangeYear();
-        final Set<OfferState> states = EnumSet.allOf(OfferState.class);
-        states.remove(OfferState.DELETED);
-
-        final List<SharedOfferView> found;
-        if (offerIds.isEmpty()) {
-            //paging could make a problem here if it returns only some offers
-            found = viewsDao.findSharedOffers(authentication, exchangeYear, states, false, page);
-        } else {
-            found = viewsDao.findSharedOffersByOfferIds(authentication, exchangeYear, offerIds);
-        }
-
-        byte[] data = null;
-        if (!found.isEmpty()) {
-            data = convertOffersToCsv(found, OfferFields.Type.FOREIGN);
-        }
-
-        return data;
+        return map.keySet();
     }
 
     private static CSVParser getDefaultCsvParser(final Reader input, final char delimiter) {
@@ -194,37 +121,6 @@ public final class ExchangeCSVService extends CommonService<ExchangeDao> {
                     .parse(input);
         } catch (IOException e) {
             throw new IWSException(IWSErrors.PROCESSING_FAILURE, "Creating CSVParser failed", e);
-        }
-    }
-
-    private static CSVPrinter getDefaultCsvPrinter(final Appendable output) {
-        try {
-            return CSVFormat.RFC4180
-                    .withDelimiter(DELIMITER.getDescription())
-                    .withNullString("")
-                    .print(output);
-        } catch (IOException e) {
-            throw new IWSException(IWSErrors.PROCESSING_FAILURE, "Creating CSVPrinter failed", e);
-        }
-    }
-
-    private static <V extends IWSView> byte[] convertOffersToCsv(final List<V> offers, final OfferFields.Type type) {
-        try (ByteArrayOutputStream stream = new ByteArrayOutputStream();
-             OutputStreamWriter streamWriter = new OutputStreamWriter(stream, IWSConstants.DEFAULT_ENCODING);
-             BufferedWriter writer = new BufferedWriter(streamWriter);
-             CSVPrinter printer = getDefaultCsvPrinter(writer)) {
-            printer.printRecord(createFirstRow(type));
-
-            for (final V offer : offers) {
-                printer.printRecord(ViewTransformer.transformOfferToObjectList(offer, type));
-            }
-
-            writer.flush();
-            streamWriter.flush();
-            stream.flush();
-            return stream.toByteArray();
-        } catch (IOException e) {
-            throw new IWSException(IWSErrors.PROCESSING_FAILURE, "Serialization to CSV failed", e);
         }
     }
 
@@ -379,86 +275,5 @@ public final class ExchangeCSVService extends CommonService<ExchangeDao> {
         }
 
         return entity;
-    }
-
-    private static List<String> createFirstRow(final OfferFields.Type type) {
-        final List<String> result = new ArrayList<>();
-
-        addField(result, OfferFields.REF_NO, type);
-        addField(result, OfferFields.OFFER_TYPE, type);
-        addField(result, OfferFields.EXCHANGE_TYPE, type);
-        addField(result, OfferFields.DEADLINE, type);
-        addField(result, OfferFields.COMMENT, type);
-        addField(result, OfferFields.EMPLOYER, type);
-        addField(result, OfferFields.DEPARTMENT, type);
-        addField(result, OfferFields.STREET1, type);
-        addField(result, OfferFields.STREET2, type);
-        addField(result, OfferFields.POSTBOX, type);
-        addField(result, OfferFields.POSTAL_CODE, type);
-        addField(result, OfferFields.CITY, type);
-        addField(result, OfferFields.STATE, type);
-        addField(result, OfferFields.COUNTRY, type);
-        addField(result, OfferFields.WEBSITE, type);
-        addField(result, OfferFields.WORKPLACE, type);
-        addField(result, OfferFields.BUSINESS, type);
-        addField(result, OfferFields.RESPONSIBLE, type);
-        addField(result, OfferFields.AIRPORT, type);
-        addField(result, OfferFields.TRANSPORT, type);
-        addField(result, OfferFields.EMPLOYEES, type);
-        addField(result, OfferFields.HOURS_WEEKLY, type);
-        addField(result, OfferFields.HOURS_DAILY, type);
-        addField(result, OfferFields.CANTEEN, type);
-        addField(result, OfferFields.FACULTY, type);
-        addField(result, OfferFields.SPECIALIZATION, type);
-        addField(result, OfferFields.TRAINING_REQUIRED, type);
-        addField(result, OfferFields.OTHER_REQUIREMENTS, type);
-        addField(result, OfferFields.WORK_KIND, type);
-        addField(result, OfferFields.WEEKS_MIN, type);
-        addField(result, OfferFields.WEEKS_MAX, type);
-        addField(result, OfferFields.FROM, type);
-        addField(result, OfferFields.TO, type);
-        addField(result, OfferFields.STUDY_COMPLETED_BEGINNING, type);
-        addField(result, OfferFields.STUDY_COMPLETED_MIDDLE, type);
-        addField(result, OfferFields.STUDY_COMPLETED_END, type);
-        addField(result, OfferFields.WORK_TYPE_P, type);
-        addField(result, OfferFields.WORK_TYPE_R, type);
-        addField(result, OfferFields.WORK_TYPE_W, type);
-        addField(result, OfferFields.WORK_TYPE_N, type);
-        addField(result, OfferFields.LANGUAGE_1, type);
-        addField(result, OfferFields.LANGUAGE_1_LEVEL, type);
-        addField(result, OfferFields.LANGUAGE_1_OR, type);
-        addField(result, OfferFields.LANGUAGE_2, type);
-        addField(result, OfferFields.LANGUAGE_2_LEVEL, type);
-        addField(result, OfferFields.LANGUAGE_2_OR, type);
-        addField(result, OfferFields.LANGUAGE_3, type);
-        addField(result, OfferFields.LANGUAGE_3_LEVEL, type);
-        addField(result, OfferFields.CURRENCY, type);
-        addField(result, OfferFields.PAYMENT, type);
-        addField(result, OfferFields.PAYMENT_FREQUENCY, type);
-        addField(result, OfferFields.DEDUCTION, type);
-        addField(result, OfferFields.LODGING, type);
-        addField(result, OfferFields.LODGING_COST, type);
-        addField(result, OfferFields.LODGING_COST_FREQUENCY, type);
-        addField(result, OfferFields.LIVING_COST, type);
-        addField(result, OfferFields.LIVING_COST_FREQUENCY, type);
-        addField(result, OfferFields.NO_HARD_COPIES, type);
-        addField(result, OfferFields.STATUS, type);
-        addField(result, OfferFields.PERIOD_2_FROM, type);
-        addField(result, OfferFields.PERIOD_2_TO, type);
-        addField(result, OfferFields.HOLIDAYS_FROM, type);
-        addField(result, OfferFields.HOLIDAYS_TO, type);
-        addField(result, OfferFields.ADDITIONAL_INFO, type);
-        addField(result, OfferFields.SHARED, type);
-        addField(result, OfferFields.LAST_MODIFIED, type);
-        addField(result, OfferFields.NS_FIRST_NAME, type);
-        addField(result, OfferFields.NS_LAST_NAME, type);
-
-        return result;
-    }
-
-    private static void addField(final List<String> row, final OfferFields field, final OfferFields.Type type) {
-        if (field.useField(type)) {
-            row.add(field.getField());
-        }
     }
 }

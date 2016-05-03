@@ -22,7 +22,7 @@ import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.enums.exchange.OfferFields;
 import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.api.exceptions.IWSException;
-import net.iaeste.iws.api.requests.exchange.OfferCSVDownloadRequest;
+import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
 import net.iaeste.iws.api.responses.exchange.OfferCSVDownloadResponse;
 import net.iaeste.iws.api.util.Page;
 import net.iaeste.iws.common.configuration.Settings;
@@ -60,7 +60,7 @@ public final class ExchangeCSVFetchService extends CommonCSVService<ExchangeDao>
         this.viewsDao = viewsDao;
     }
 
-    public OfferCSVDownloadResponse downloadOffers(final Authentication authentication, final OfferCSVDownloadRequest request) {
+    public OfferCSVDownloadResponse downloadOffers(final Authentication authentication, final FetchOffersRequest request) {
         final OfferCSVDownloadResponse response = new OfferCSVDownloadResponse();
         switch (request.getFetchType()) {
             case DOMESTIC:
@@ -76,7 +76,7 @@ public final class ExchangeCSVFetchService extends CommonCSVService<ExchangeDao>
         return response;
     }
 
-    private String findDomesticOffers(final Authentication authentication, final OfferCSVDownloadRequest request) {
+    private String findDomesticOffers(final Authentication authentication, final FetchOffersRequest request) {
         final List<String> offerIds = request.getIdentifiers();
         final Page page = request.getPage();
         final Integer exchangeYear = request.getExchangeYear();
@@ -94,7 +94,7 @@ public final class ExchangeCSVFetchService extends CommonCSVService<ExchangeDao>
         return convertOffersToCsv(found, OfferFields.Type.DOMESTIC);
     }
 
-    private String findSharedOffers(final Authentication authentication, final OfferCSVDownloadRequest request) {
+    private String findSharedOffers(final Authentication authentication, final FetchOffersRequest request) {
         final List<String> offerIds = request.getIdentifiers();
         final Page page = request.getPage();
         final Integer exchangeYear = request.getExchangeYear();
@@ -125,8 +125,6 @@ public final class ExchangeCSVFetchService extends CommonCSVService<ExchangeDao>
 
             // Should suffice to flush the Writer
             writer.flush();
-            //streamWriter.flush();
-            //stream.flush();
             return new String(stream.toByteArray(), IWSConstants.DEFAULT_ENCODING);
         } catch (IOException e) {
             throw new IWSException(IWSErrors.PROCESSING_FAILURE, "Serialization to CSV failed", e);

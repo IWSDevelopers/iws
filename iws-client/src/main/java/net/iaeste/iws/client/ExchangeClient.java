@@ -25,7 +25,6 @@ import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishedGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.HideForeignOffersRequest;
-import net.iaeste.iws.api.requests.exchange.OfferCSVDownloadRequest;
 import net.iaeste.iws.api.requests.exchange.OfferCSVUploadRequest;
 import net.iaeste.iws.api.requests.exchange.OfferStatisticsRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessEmployerRequest;
@@ -126,7 +125,7 @@ public final class ExchangeClient implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    public OfferCSVDownloadResponse downloadOffers(final AuthenticationToken token, final OfferCSVDownloadRequest request) {
+    public OfferCSVDownloadResponse downloadOffers(final AuthenticationToken token, final FetchOffersRequest request) {
         return client.downloadOffers(token, request);
     }
 

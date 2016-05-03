@@ -25,7 +25,6 @@ import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishedGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.HideForeignOffersRequest;
-import net.iaeste.iws.api.requests.exchange.OfferCSVDownloadRequest;
 import net.iaeste.iws.api.requests.exchange.OfferCSVUploadRequest;
 import net.iaeste.iws.api.requests.exchange.OfferStatisticsRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessEmployerRequest;
@@ -269,7 +268,7 @@ public class ExchangeWS implements Exchange {
     @WebResult(name = "response")
     public OfferCSVDownloadResponse downloadOffers(
             @WebParam(name = "token") final AuthenticationToken token,
-            @WebParam(name = "request") final OfferCSVDownloadRequest request) {
+            @WebParam(name = "request") final FetchOffersRequest request) {
         LOG.info(requestLogger.prepareLogMessage(token, "downloadOffers"));
         OfferCSVDownloadResponse response;
 

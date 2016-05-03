@@ -24,7 +24,6 @@ import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishedGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.HideForeignOffersRequest;
-import net.iaeste.iws.api.requests.exchange.OfferCSVDownloadRequest;
 import net.iaeste.iws.api.requests.exchange.OfferCSVUploadRequest;
 import net.iaeste.iws.api.requests.exchange.OfferStatisticsRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessEmployerRequest;
@@ -156,7 +155,7 @@ g     * <dl>
      * @param request Offer CSV Download Request
      * @return Response Object with standard error information and CSV Data
      */
-    OfferCSVDownloadResponse downloadOffers(AuthenticationToken token, OfferCSVDownloadRequest request);
+    OfferCSVDownloadResponse downloadOffers(AuthenticationToken token, FetchOffersRequest request);
 
     /**
      * <p>Retrieves a list of all groups to which an offer can be shared to.

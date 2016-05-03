@@ -49,7 +49,6 @@ import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishedGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.HideForeignOffersRequest;
-import net.iaeste.iws.api.requests.exchange.OfferCSVDownloadRequest;
 import net.iaeste.iws.api.requests.exchange.OfferCSVUploadRequest;
 import net.iaeste.iws.api.requests.exchange.OfferStatisticsRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
@@ -1351,13 +1350,15 @@ public final class OfferTest extends AbstractTest {
         assertThat(publishResponse.getError(), is(IWSErrors.SUCCESS));
         assertThat(publishResponse.isOk(), is(true));
 
-        final OfferCSVDownloadRequest outboxCsvRequest = new OfferCSVDownloadRequest(FetchType.DOMESTIC, new ArrayList<String>(0), Verifications.calculateExchangeYear());
+        final FetchOffersRequest outboxCsvRequest = new FetchOffersRequest();
+        outboxCsvRequest.setFetchType(FetchType.DOMESTIC);
         final OfferCSVDownloadResponse outboxCsvResponse = exchange.downloadOffers(austriaTokenWithNationalGroup, outboxCsvRequest);
 
         assertThat(outboxCsvResponse.isOk(), is(true));
         assertThat(outboxCsvResponse.getCsv(), is(not(nullValue())));
 
-        final OfferCSVDownloadRequest inboxCsvRequest = new OfferCSVDownloadRequest(FetchType.SHARED, new ArrayList<String>(0), Verifications.calculateExchangeYear());
+        final FetchOffersRequest inboxCsvRequest = new FetchOffersRequest();
+        inboxCsvRequest.setFetchType(FetchType.SHARED);
         final OfferCSVDownloadResponse inboxCsvResponse = exchange.downloadOffers(croatiaToken, inboxCsvRequest);
 
         assertThat(inboxCsvResponse.isOk(), is(true));
@@ -1393,7 +1394,7 @@ public final class OfferTest extends AbstractTest {
         final OfferResponse saveResponse = exchange.processOffer(germany, request);
         assertThat(saveResponse.isOk(), is(true));
 
-        final OfferCSVDownloadRequest downloadRequest = new OfferCSVDownloadRequest();
+        final FetchOffersRequest downloadRequest = new FetchOffersRequest();
         downloadRequest.setFetchType(FetchType.DOMESTIC);
         final OfferCSVDownloadResponse downloadResponse = exchange.downloadOffers(germany, downloadRequest);
         assertThat(downloadResponse.isOk(), is(true));
@@ -1441,7 +1442,7 @@ public final class OfferTest extends AbstractTest {
         final OfferResponse saveResponse = exchange.processOffer(germany, request);
         assertThat(saveResponse.isOk(), is(true));
 
-        final OfferCSVDownloadRequest downloadRequest = new OfferCSVDownloadRequest();
+        final FetchOffersRequest downloadRequest = new FetchOffersRequest();
         downloadRequest.setFetchType(FetchType.DOMESTIC);
         final OfferCSVDownloadResponse downloadResponse = exchange.downloadOffers(germany, downloadRequest);
         assertThat(downloadResponse.isOk(), is(true));

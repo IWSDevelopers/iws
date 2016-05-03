@@ -37,7 +37,6 @@ import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishedGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.HideForeignOffersRequest;
-import net.iaeste.iws.api.requests.exchange.OfferCSVDownloadRequest;
 import net.iaeste.iws.api.requests.exchange.OfferCSVUploadRequest;
 import net.iaeste.iws.api.requests.exchange.OfferStatisticsRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessEmployerRequest;
@@ -300,22 +299,6 @@ public final class ExchangeMapper extends CommonMapper {
         }
 
         return api;
-    }
-
-    public static net.iaeste.iws.ws.OfferCSVDownloadRequest map(final OfferCSVDownloadRequest api) {
-        net.iaeste.iws.ws.OfferCSVDownloadRequest ws = null;
-
-        if (api != null) {
-            ws = new net.iaeste.iws.ws.OfferCSVDownloadRequest();
-
-            ws.setFetchType(map(api.getFetchType()));
-            ws.getIdentifiers().addAll(mapStringCollection(api.getIdentifiers()));
-            ws.setExchangeYear(api.getExchangeYear());
-            ws.getStates().addAll(mapApiStateCollection(api.getStates()));
-            ws.setRetrieveCurrentAndNextExchangeYear(api.getRetrieveCurrentAndNextExchangeYear());
-        }
-
-        return ws;
     }
 
     public static OfferCSVDownloadResponse map(final net.iaeste.iws.ws.OfferCSVDownloadResponse ws) {

@@ -25,7 +25,6 @@ import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishedGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.HideForeignOffersRequest;
-import net.iaeste.iws.api.requests.exchange.OfferCSVDownloadRequest;
 import net.iaeste.iws.api.requests.exchange.OfferCSVUploadRequest;
 import net.iaeste.iws.api.requests.exchange.OfferStatisticsRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessEmployerRequest;
@@ -48,8 +47,8 @@ import net.iaeste.iws.api.responses.exchange.PublishOfferResponse;
 import net.iaeste.iws.client.notifications.NotificationSpy;
 import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.ejb.ExchangeBean;
-import net.iaeste.iws.ejb.schedulers.NotificationManagerScheduler;
 import net.iaeste.iws.ejb.SessionRequestBean;
+import net.iaeste.iws.ejb.schedulers.NotificationManagerScheduler;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -173,7 +172,7 @@ public final class ExchangeSpringClient implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    public OfferCSVDownloadResponse downloadOffers(final AuthenticationToken token, final OfferCSVDownloadRequest request) {
+    public OfferCSVDownloadResponse downloadOffers(final AuthenticationToken token, final FetchOffersRequest request) {
         return client.downloadOffers(token, request);
     }
 

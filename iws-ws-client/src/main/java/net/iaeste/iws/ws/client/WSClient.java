@@ -27,7 +27,6 @@ import net.iaeste.iws.api.enums.FetchType;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.requests.exchange.FetchEmployerRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
-import net.iaeste.iws.api.requests.exchange.OfferCSVDownloadRequest;
 import net.iaeste.iws.api.requests.exchange.OfferStatisticsRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessEmployerRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
@@ -270,7 +269,7 @@ public final class WSClient {
      * @return Response Object from the IWS
      */
     public OfferCSVDownloadResponse downloadOffers(final AuthenticationToken token, final FetchType type) {
-        final OfferCSVDownloadRequest request = new OfferCSVDownloadRequest();
+        final FetchOffersRequest request = new FetchOffersRequest();
         request.setFetchType(type);
 
         return getExchange().downloadOffers(token, request);

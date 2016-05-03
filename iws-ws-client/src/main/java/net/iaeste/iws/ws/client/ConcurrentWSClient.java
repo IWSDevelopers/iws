@@ -29,7 +29,6 @@ import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
-import net.iaeste.iws.api.requests.exchange.OfferCSVDownloadRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
 import net.iaeste.iws.api.responses.FallibleResponse;
@@ -355,7 +354,7 @@ public final class ConcurrentWSClient implements Runnable {
      * @return Response Object from the IWS
      */
     public OfferCSVDownloadResponse downloadOffers(final AuthenticationToken token, final FetchType type, final int year) {
-        final OfferCSVDownloadRequest request = new OfferCSVDownloadRequest();
+        final FetchOffersRequest request = new FetchOffersRequest();
         request.setFetchType(type);
         request.setExchangeYear(year);
 

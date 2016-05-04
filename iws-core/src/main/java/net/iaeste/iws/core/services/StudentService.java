@@ -61,7 +61,6 @@ import net.iaeste.iws.persistence.views.StudentView;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -418,11 +417,11 @@ public final class StudentService extends CommonService<StudentDao> {
         application.setRejectByEmployerReason(request.getRejectByEmployerReason());
         application.setRejectDescription(request.getRejectDescription());
         application.setRejectInternalComment(request.getRejectInternalComment());
-        AtomicReference<ApplicationEntity> updated = new AtomicReference<>(transform(application));
+        final ApplicationEntity updated = transform(application);
         //using OfferGroup from stored entity since this field can't be updated
-        updated.get().setOfferGroup(storedApplication.getOfferGroup());
-        updated.get().setNationality(storedApplication.getNationality());
-        dao.persist(authentication, storedApplication, updated.get());
+        updated.setOfferGroup(storedApplication.getOfferGroup());
+        updated.setNationality(storedApplication.getNationality());
+        dao.persist(authentication, storedApplication, updated);
 
         final OfferState newOfferGroupState = doUpdateOfferGroupStatus(storedApplication.getOfferGroup().getId(), storedApplication.getOfferGroup().getStatus());
         if (newOfferGroupState != null) {

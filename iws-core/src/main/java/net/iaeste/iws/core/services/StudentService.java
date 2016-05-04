@@ -69,6 +69,8 @@ import java.util.List;
  */
 public final class StudentService extends CommonService<StudentDao> {
 
+    private static final String STUDENT_APPLICATION_TABLE = "student_applications";
+
     private final AccessDao accessDao;
     private final ExchangeDao exchangeDao;
     private final ViewsDao viewsDao;
@@ -85,7 +87,7 @@ public final class StudentService extends CommonService<StudentDao> {
         return new StudentResponse(transform(studentEntity));
     }
 
-    public StudentEntity processStudent(final Authentication authentication, final Student student) {
+    private StudentEntity processStudent(final Authentication authentication, final Student student) {
         final GroupEntity memberGroup = accessDao.findMemberGroup(authentication.getUser());
         final UserEntity user = accessDao.findUserByExternalId(student.getStudentId());
         final StudentEntity newEntity = transform(student);
@@ -123,29 +125,32 @@ public final class StudentService extends CommonService<StudentDao> {
         final GroupEntity nationalGroup = accessDao.findNationalGroup(authentication.getUser());
         final String externalId = application.getApplicationId();
         final ApplicationEntity applicationEntity = dao.findApplicationByExternalId(externalId);
+        final ApplicationEntity processed;
 
         if ((applicationEntity == null) || applicationEntity.getOfferGroup().getGroup().getId().equals(nationalGroup.getId())) {
             //application owner
-            return processStudentApplicationByApplicationOwner(authentication, application, applicationEntity);
+            processed = processStudentApplicationByApplicationOwner(authentication, application, applicationEntity);
         } else {
             final OfferGroupEntity sharedOfferGroup = applicationEntity.getOfferGroup();
             final OfferEntity offer = sharedOfferGroup.getOffer();
             if (offer.getEmployer().getGroup().getId().equals(nationalGroup.getId())) {
                 //offer owner
-                return processStudentApplicationByOfferOwner(authentication, application, applicationEntity);
+                processed = processStudentApplicationByOfferOwner(authentication, application, applicationEntity);
+            } else {
+                throw new IWSException(IWSErrors.PROCESSING_FAILURE, "Cannot process student application");
             }
         }
 
-        throw new IWSException(IWSErrors.PROCESSING_FAILURE, "Cannot process student application");
+        return processed;
     }
 
-    private ApplicationEntity processStudentApplicationByApplicationOwner(final Authentication authentication, final StudentApplication application, ApplicationEntity applicationEntity) {
+    private ApplicationEntity processStudentApplicationByApplicationOwner(final Authentication authentication, final StudentApplication application, final ApplicationEntity existingApplication) {
         final GroupEntity nationalGroup = accessDao.findNationalGroup(authentication.getUser());
         final OfferGroupEntity sharedOfferGroup;
-        if (applicationEntity == null) {
+        if (existingApplication == null) {
             sharedOfferGroup = exchangeDao.findInfoForSharedOffer(authentication.getGroup(), application.getOfferId());
         } else {
-            sharedOfferGroup = applicationEntity.getOfferGroup();
+            sharedOfferGroup = existingApplication.getOfferGroup();
         }
 
         if ((sharedOfferGroup == null) || !sharedOfferGroup.getGroup().getId().equals(nationalGroup.getId())) {
@@ -164,41 +169,53 @@ public final class StudentService extends CommonService<StudentDao> {
             nationality = dao.findCountry(application.getNationality().getCountryCode());
         }
 
-        if (applicationEntity == null) {
-            applicationEntity = transform(application);
-            applicationEntity.setOfferGroup(sharedOfferGroup);
-            processAddress(authentication, applicationEntity.getHomeAddress());
-            processAddress(authentication, applicationEntity.getAddressDuringTerms());
-            applicationEntity.setNationality(nationality);
-            applicationEntity.setStudent(student);
-            dao.persist(authentication, applicationEntity);
-
-            boolean updateOfferGroup = false;
-            //TODO complete status list from which we should change the status
-            if (sharedOfferGroup.getStatus() == OfferState.SHARED) {
-                sharedOfferGroup.setStatus(OfferState.APPLICATIONS);
-                updateOfferGroup = true;
-            }
-            if (!sharedOfferGroup.getHasApplication()) {
-                sharedOfferGroup.setHasApplication(true);
-                updateOfferGroup = true;
-            }
-            if (updateOfferGroup) {
-                dao.persist(sharedOfferGroup);
-            }
+        final ApplicationEntity processed;
+        if (existingApplication == null) {
+            processed = createNewApplication(authentication, application, sharedOfferGroup, student, nationality);
         } else {
-            final ApplicationEntity updated = transform(application);
-            updated.setNationality(nationality);
-
-            //using OfferGroup from found entity since this field can't be updated
-            updated.setOfferGroup(applicationEntity.getOfferGroup());
-            //do not allow to change status
-            updated.setStatus(applicationEntity.getStatus());
-
-            processAddress(authentication, applicationEntity.getHomeAddress(), application.getHomeAddress());
-            processAddress(authentication, applicationEntity.getAddressDuringTerms(), application.getAddressDuringTerms());
-            dao.persist(authentication, applicationEntity, updated);
+            processed = updateExistingApplication(authentication, application, existingApplication, nationality);
         }
+
+        return processed;
+    }
+
+    private ApplicationEntity createNewApplication(final Authentication authentication, final StudentApplication application, final OfferGroupEntity sharedOfferGroup, final StudentEntity student, final CountryEntity nationality) {
+        final ApplicationEntity processed = transform(application);
+        processed.setOfferGroup(sharedOfferGroup);
+        processAddress(authentication, processed.getHomeAddress());
+        processAddress(authentication, processed.getAddressDuringTerms());
+        processed.setNationality(nationality);
+        processed.setStudent(student);
+        dao.persist(authentication, processed);
+
+        boolean updateOfferGroup = false;
+        if (sharedOfferGroup.getStatus() == OfferState.SHARED) {
+            sharedOfferGroup.setStatus(OfferState.APPLICATIONS);
+            updateOfferGroup = true;
+        }
+        if (!sharedOfferGroup.getHasApplication()) {
+            sharedOfferGroup.setHasApplication(true);
+            updateOfferGroup = true;
+        }
+        if (updateOfferGroup) {
+            dao.persist(sharedOfferGroup);
+        }
+
+        return processed;
+    }
+
+    private ApplicationEntity updateExistingApplication(final Authentication authentication, final StudentApplication application, final ApplicationEntity applicationEntity, final CountryEntity nationality) {
+        final ApplicationEntity updated = transform(application);
+        updated.setNationality(nationality);
+
+        //using OfferGroup from found entity since this field can't be updated
+        updated.setOfferGroup(applicationEntity.getOfferGroup());
+        //do not allow to change status
+        updated.setStatus(applicationEntity.getStatus());
+
+        processAddress(authentication, applicationEntity.getHomeAddress(), application.getHomeAddress());
+        processAddress(authentication, applicationEntity.getAddressDuringTerms(), application.getAddressDuringTerms());
+        dao.persist(authentication, applicationEntity, updated);
 
         return applicationEntity;
     }
@@ -234,11 +251,11 @@ public final class StudentService extends CommonService<StudentDao> {
     }
 
     private AttachmentEntity processAttachment(final Authentication authentication, final ApplicationEntity applicationEntity, final FileEntity fileEntity) {
-        AttachmentEntity attachmentEntity = dao.findAttachment("student_applications", applicationEntity.getId(), fileEntity.getId());
+        AttachmentEntity attachmentEntity = dao.findAttachment(STUDENT_APPLICATION_TABLE, applicationEntity.getId(), fileEntity.getId());
 
         if (attachmentEntity == null) {
             attachmentEntity = new AttachmentEntity();
-            attachmentEntity.setTable("student_applications");
+            attachmentEntity.setTable(STUDENT_APPLICATION_TABLE);
             attachmentEntity.setRecord(applicationEntity.getId());
             attachmentEntity.setFile(fileEntity);
 
@@ -272,7 +289,7 @@ public final class StudentService extends CommonService<StudentDao> {
     }
 
     private List<File> findAndTransformAttachments(final ApplicationView view) {
-        final List<AttachmentEntity> attachments = dao.findAttachments("student_applications", view.getId());
+        final List<AttachmentEntity> attachments = dao.findAttachments(STUDENT_APPLICATION_TABLE, view.getId());
         final List<File> files = new ArrayList<>(attachments.size());
 
         for (final AttachmentEntity entity : attachments) {
@@ -336,8 +353,7 @@ public final class StudentService extends CommonService<StudentDao> {
 
         verifyOfferAcceptNewApplicationStatus(sharedOfferGroup.getStatus(), request.getStatus());
         verifyApplicationStatusTransition(studentApplication.getStatus(), request.getStatus());
-        //TODO - see #526
-        //TODO - when application status affects also offer status, change it accordingly
+
         switch (request.getStatus()) {
             case NOMINATED:
                 nominateApplication(authentication, studentApplication, applicationEntity);

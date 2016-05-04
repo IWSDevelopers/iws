@@ -300,13 +300,13 @@ public final class AccountService extends CommonService<AccessDao> {
      * @param request        Account Request information
      */
     public void changeAccountName(final Authentication authentication, final AccountNameRequest request) {
-        final String externalId = request.getUser().getUserId();
-
         if ((request.getLastname() == null) && (request.getFirstname() == null)) {
             throw new VerificationException("Cannot update the Account Name for the user, as both the first and last names are missing.");
         }
 
         final GroupType type = authentication.getGroup().getGroupType().getGrouptype();
+        final String externalId = request.getUser().getUserId();
+
         if (type == GroupType.MEMBER) {
             final UserGroupEntity userGroup = dao.findByGroupAndExternalUserId(authentication.getGroup(), externalId);
             if (userGroup != null) {

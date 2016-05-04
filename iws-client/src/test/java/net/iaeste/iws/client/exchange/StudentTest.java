@@ -598,7 +598,7 @@ public final class StudentTest extends AbstractTest {
         final String offerId = saveResponse.getOffer().getOfferId();
         offersToShare.add(offerId);
 
-        List<String> groupIds = new ArrayList<>(2);
+        final List<String> groupIds = new ArrayList<>(2);
         groupIds.add(findNationalGroup(austriaToken).getGroupId());
         groupIds.add(findNationalGroup(croatiaToken).getGroupId());
 

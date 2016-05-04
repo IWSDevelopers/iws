@@ -224,42 +224,42 @@ public class NotificationEmailSender implements Observer {
         final List<UserEntity> recipients = getRecipients(fields, type);
         if (recipients.isEmpty()) {
             LOG.info("Notification job task for {} has no recipient", type);
-            return NotificationProcessTaskStatus.NOT_FOR_ME;
-        }
+            ret = NotificationProcessTaskStatus.NOT_FOR_ME;
+        } else {
+            for (final UserEntity recipient : recipients) {
+                LOG.info("Notification job task for {} has recipient {}", type, recipient.getId());
+                try {
+                    final UserNotificationEntity userSetting = dao.findUserNotificationSetting(recipient, type);
+                    //Processing of other notification than 'IMMEDIATELY' ones will be triggered by a timer and all required information
+                    //should be get from DB directly according to the NotificationType
+                    if ((userSetting != null) && (userSetting.getFrequency() == NotificationFrequency.IMMEDIATELY)) {
+                        LOG.info("User notification setting for {} was found", type);
+                        try {
+                            final ObjectMessage msg = session.createObjectMessage();
+                            final EmailMessage emsg = new EmailMessage();
+                            emsg.setTo(getTargetEmailAddress(recipient, type));
+                            final Map<MessageField, String> messageData = messageGenerator.generate(fields, type);
+                            LOG.info("Email message for for {} was generated", type);
+                            emsg.setSubject(messageData.get(MessageField.SUBJECT));
+                            emsg.setMessage(messageData.get(MessageField.MESSAGE));
+                            msg.setObject(emsg);
 
-        for (final UserEntity recipient : recipients) {
-            LOG.info("Notification job task for {} has recipient {}", type, recipient.getId());
-            try {
-                final UserNotificationEntity userSetting = dao.findUserNotificationSetting(recipient, type);
-                //Processing of other notification than 'IMMEDIATELY' ones will be triggered by a timer and all required information
-                //should be get from DB directly according to the NotificationType
-                if ((userSetting != null) && (userSetting.getFrequency() == NotificationFrequency.IMMEDIATELY)) {
-                    LOG.info("User notification setting for {} was found", type);
-                    try {
-                        final ObjectMessage msg = session.createObjectMessage();
-                        final EmailMessage emsg = new EmailMessage();
-                        emsg.setTo(getTargetEmailAddress(recipient, type));
-                        final Map<MessageField, String> messageData = messageGenerator.generate(fields, type);
-                        LOG.info("Email message for for {} was generated", type);
-                        emsg.setSubject(messageData.get(MessageField.SUBJECT));
-                        emsg.setMessage(messageData.get(MessageField.MESSAGE));
-                        msg.setObject(emsg);
-
-                        sender.send(msg);
-                        LOG.info("Email message for for {} was sent to message queue", type);
-                        ret = NotificationProcessTaskStatus.OK;
-                    } catch (IWSException e) {
-                        LOG.error("Notification message generating failed", e);
-                    } catch (JMSException e) {
-                        //do something, log or exception?
-                        LOG.error("Error during sending notification message to JMS queue", e);
+                            sender.send(msg);
+                            LOG.info("Email message for for {} was sent to message queue", type);
+                            ret = NotificationProcessTaskStatus.OK;
+                        } catch (IWSException e) {
+                            LOG.error("Notification message generating failed", e);
+                        } catch (JMSException e) {
+                            //do something, log or exception?
+                            LOG.error("Error during sending notification message to JMS queue", e);
+                        }
+                    } else if (userSetting == null) {
+                        LOG.warn("User {} has no setting for notification type '{}'", recipient.getId(), type);
                     }
-                } else if (userSetting == null) {
-                    LOG.warn("User {} has no setting for notification type '{}'", recipient.getId(), type);
+                } catch (IWSException e) {
+                    LOG.debug(e.getMessage(), e);
+                    LOG.warn("User {} has not proper notification setting for notification type {}", recipient.getId(), type);
                 }
-            } catch (IWSException e) {
-                LOG.debug(e.getMessage(), e);
-                LOG.warn("User {} has not proper notification setting for notification type {}", recipient.getId(), type);
             }
         }
 

@@ -21,6 +21,7 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 import net.iaeste.iws.api.Exchange;
 import net.iaeste.iws.api.Students;
@@ -421,9 +422,12 @@ public final class StudentTest extends AbstractTest {
         assertThat(fetchApplicationsResponse.isOk(), is(true));
         final StudentApplication foundApplication = findApplicationFromResponse(studentApplication.getApplicationId(), fetchApplicationsResponse);
 
-        assertThat("Ensure that we have an Application.", foundApplication, is(not(nullValue())));
-        assertThat("Make sure that new application state has been persisted", foundApplication.getStatus(), is(ApplicationStatus.NOMINATED));
-        assertThat("Nomination date is set", foundApplication.getNominatedAt(), not(nullValue()));
+        if (foundApplication != null) {
+            assertThat("Make sure that new application state has been persisted", foundApplication.getStatus(), is(ApplicationStatus.NOMINATED));
+            assertThat("Nomination date is set", foundApplication.getNominatedAt(), not(nullValue()));
+        } else {
+            fail("Ensure that we have an Application.");
+        }
     }
 
     @Test

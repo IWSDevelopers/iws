@@ -111,22 +111,27 @@ public final class MonitoringProcessor {
                 final Annotation annotation = field.getAnnotation(Monitored.class);
 
                 if (annotation != null) {
-                    final MonitoringLevel fieldLevel = ((Monitored) annotation).level();
-                    if (fieldLevel == MonitoringLevel.MARKED) {
-                        found.add(new Field(((Monitored) annotation).name()));
-                    } else if (fieldLevel == MonitoringLevel.DETAILED) {
-                        final String name = ((Monitored) annotation).name();
-                        final String newValue = readObjectValue(field, entity);
-
-                        // For new Objects, there cannot be any old value, so
-                        // we set the 'old' value to null
-                        found.add(new Field(name, null, newValue));
-                    }
+                    addField(entity, found, field, (Monitored) annotation);
                 }
             }
         }
 
         return found;
+    }
+
+    private static void addField(final IWSEntity entity, final ArrayList<Field> found, final java.lang.reflect.Field field, final Monitored annotation) {
+        final MonitoringLevel fieldLevel = annotation.level();
+
+        if (fieldLevel == MonitoringLevel.MARKED) {
+            found.add(new Field(annotation.name()));
+        } else if (fieldLevel == MonitoringLevel.DETAILED) {
+            final String name = annotation.name();
+            final String newValue = readObjectValue(field, entity);
+
+            // For new Objects, there cannot be any old value, so
+            // we set the 'old' value to null
+            found.add(new Field(name, null, newValue));
+        }
     }
 
     /**
@@ -155,24 +160,28 @@ public final class MonitoringProcessor {
                 final Annotation annotation = field.getAnnotation(Monitored.class);
 
                 if (annotation != null) {
-                    final MonitoringLevel fieldLevel = ((Monitored) annotation).level();
-                    final String newValue = readObjectValue(field, newEntity);
-                    final String oldValue = readObjectValue(field, oldEntity);
-
-                    if ((newValue != null) && !newValue.equals(oldValue)) {
-                        final String name = ((Monitored) annotation).name();
-
-                        if (fieldLevel == MonitoringLevel.MARKED) {
-                            found.add(new Field(name));
-                        } else if (fieldLevel == MonitoringLevel.DETAILED) {
-                            found.add(new Field(name, oldValue, newValue));
-                        }
-                    }
+                    addField(oldEntity, newEntity, found, field, (Monitored) annotation);
                 }
             }
         }
 
         return found;
+    }
+
+    private static void addField(final IWSEntity oldEntity, final IWSEntity newEntity, final ArrayList<Field> found, final java.lang.reflect.Field field, final Monitored annotation) {
+        final MonitoringLevel fieldLevel = annotation.level();
+        final String newValue = readObjectValue(field, newEntity);
+        final String oldValue = readObjectValue(field, oldEntity);
+
+        if ((newValue != null) && !newValue.equals(oldValue)) {
+            final String name = annotation.name();
+
+            if (fieldLevel == MonitoringLevel.MARKED) {
+                found.add(new Field(name));
+            } else if (fieldLevel == MonitoringLevel.DETAILED) {
+                found.add(new Field(name, oldValue, newValue));
+            }
+        }
     }
 
     /**

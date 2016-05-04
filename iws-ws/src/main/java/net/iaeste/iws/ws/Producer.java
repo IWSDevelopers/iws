@@ -40,25 +40,25 @@ public class Producer {
 
     @Produces @IWSBean
     @EJB(beanInterface = Access.class, lookup = "java:global/iws/iws-ejb/AccessBean!net.iaeste.iws.api.Access")
-    private Access access = null;
+    private Access access;
 
     @Produces @IWSBean
     @EJB(beanInterface = Administration.class, lookup = "java:global/iws/iws-ejb/AdministrationBean!net.iaeste.iws.api.Administration")
-    private Administration administration = null;
+    private Administration administration;
 
     @Produces @IWSBean
     @EJB(beanInterface = Committees.class, lookup = "java:global/iws/iws-ejb/CommitteeBean!net.iaeste.iws.api.Committees")
-    private Committees committees = null;
+    private Committees committees;
 
     @Produces @IWSBean
     @EJB(beanInterface = Exchange.class, lookup = "java:global/iws/iws-ejb/ExchangeBean!net.iaeste.iws.api.Exchange")
-    private Exchange exchange = null;
+    private Exchange exchange;
 
     @Produces @IWSBean
     @EJB(beanInterface = Storage.class, lookup = "java:global/iws/iws-ejb/StorageBean!net.iaeste.iws.api.Storage")
-    private Storage storage = null;
+    private Storage storage;
 
     @Produces @IWSBean
     @EJB(beanInterface = Students.class, lookup = "java:global/iws/iws-ejb/StudentBean!net.iaeste.iws.api.Students")
-    private Students students = null;
+    private Students students;
 }

@@ -70,12 +70,11 @@ public class OfferGroupEntityTest {
     private static final Integer MINIMUM_WEEKS = 12;
     private static final Float WEEKLY_HOURS = 40.0f;
     private static final Date FROM_DATE = new Date();
-    private static final Date TO_DATE = new Date(FROM_DATE.getTime() + 3600 * 24 * 90);
+    private static final Date TO_DATE = new Date(FROM_DATE.getTime() + (3600 * 24 * 90));
     private static final String FIELDS_OF_STUDY = String.format("%s|%s", FieldOfStudy.IT, FieldOfStudy.CHEMISTRY);
     private static final String STUDY_LEVELS = String.format("%s|%s", StudyLevel.E, StudyLevel.M);
     private static final String GROUP_EXTERNAL_ID = "adc8dfd4-bc3a-4b27-897b-87d3950db503";
     private static final String GROUP_EXTERNAL_ID_2 = "3adbeb2b-05c0-456e-8809-1d1e4743f2c1";
-    private static final String GROUP_NAME = "Croatia";
 
     @PersistenceContext
     private EntityManager entityManager;

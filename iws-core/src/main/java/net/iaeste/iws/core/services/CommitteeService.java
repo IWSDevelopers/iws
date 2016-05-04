@@ -65,6 +65,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -74,6 +76,7 @@ import java.util.UUID;
 public final class CommitteeService extends CommonService<CommitteeDao> {
 
     private static final Logger LOG = LoggerFactory.getLogger(CommitteeService.class);
+    private static final Pattern PATTERN_SEPARATOR = Pattern.compile(", ", Pattern.LITERAL);
 
     private final Notifications notifications;
 
@@ -156,9 +159,7 @@ public final class CommitteeService extends CommonService<CommitteeDao> {
         }
 
         final UserGroup userGroup = AdministrationTransformer.transform(nsStaff);
-        final CommitteeResponse response = new CommitteeResponse(userGroup);
-
-        return response;
+        return new CommitteeResponse(userGroup);
     }
 
     /**
@@ -219,7 +220,7 @@ public final class CommitteeService extends CommonService<CommitteeDao> {
         group.setGroupType(dao.findGroupTypeByType(type));
         group.setParentId(parent.getId());
         group.setExternalParentId(parent.getExternalId());
-        group.setListName(toLower(groupName.replace(", ", "_")));
+        group.setListName(toLower(PATTERN_SEPARATOR.matcher(groupName).replaceAll(Matcher.quoteReplacement("_"))));
         group.setPublicList(type.getMayHavePublicMailinglist());
         group.setPrivateList(type.getMayHavePrivateMailinglist());
         group.setPrivateReplyTo(MailReply.REPLY_TO_LIST);
@@ -274,28 +275,36 @@ public final class CommitteeService extends CommonService<CommitteeDao> {
         if (staff != null) {
             if (staff.getStatus() == GroupStatus.ACTIVE) {
                 final GroupEntity member = dao.findMemberGroupForStaff(staff);
-                if (request.getNationalSecretary() != null) {
-                    final UserEntity user = dao.findUserByExternalId(request.getNationalSecretary().getUserId());
-                    if (user != null) {
-                        nsStaff = makeUserNationalSecretary(authentication, user, member, staff);
-                    } else {
-                        throw new IllegalActionException("National Secretary provided is not a valid User.");
-                    }
-                } else if ((request.getFirstname() != null) && (request.getLastname() != null) && (request.getUsername() != null)) {
-                    final UserEntity existing = dao.findUserByUsername(request.getUsername());
-                    if (existing == null) {
-                        nsStaff = makeUserNationalSecretary(authentication, request, member, staff);
-                    } else {
-                        throw new IllegalActionException("Cannot create new National Secretary for existing User.");
-                    }
-                } else {
-                    throw new IllegalActionException("No new National Secretary information provided.");
-                }
+                nsStaff = changeNsForActiveCommittee(authentication, request, staff, member);
             } else {
                 throw new IllegalActionException("Attempting to change National Secretary for a suspended Committee, is not allowed.");
             }
         } else {
             throw new IllegalActionException("Attempting to change National Secretary non-existing Committee.");
+        }
+
+        return nsStaff;
+    }
+
+    private UserGroupEntity changeNsForActiveCommittee(final Authentication authentication, final CommitteeRequest request, final GroupEntity staff, final GroupEntity member) {
+        final UserGroupEntity nsStaff;
+
+        if (request.getNationalSecretary() != null) {
+            final UserEntity user = dao.findUserByExternalId(request.getNationalSecretary().getUserId());
+            if (user != null) {
+                nsStaff = makeUserNationalSecretary(authentication, user, member, staff);
+            } else {
+                throw new IllegalActionException("National Secretary provided is not a valid User.");
+            }
+        } else if ((request.getFirstname() != null) && (request.getLastname() != null) && (request.getUsername() != null)) {
+            final UserEntity existing = dao.findUserByUsername(request.getUsername());
+            if (existing == null) {
+                nsStaff = makeUserNationalSecretary(authentication, request, member, staff);
+            } else {
+                throw new IllegalActionException("Cannot create new National Secretary for existing User.");
+            }
+        } else {
+            throw new IllegalActionException("No new National Secretary information provided.");
         }
 
         return nsStaff;
@@ -438,15 +447,7 @@ public final class CommitteeService extends CommonService<CommitteeDao> {
                 final CountryEntity country = staff.getCountry();
 
                 if (country.getMembership() == Membership.COOPERATING_INSTITUTION) {
-                    List<GroupEntity> staffs = dao.findAllCommitteesForCountry(country);
-
-                    if (staffs.size() == 1) {
-                        country.setMembership(Membership.ASSOCIATE_MEMBER);
-                        dao.persist(authentication, country);
-                        LOG.info(formatLogMessage(authentication, "Country %s has been upgraded from %s to %s.", country.getCountryName(), Membership.COOPERATING_INSTITUTION, Membership.ASSOCIATE_MEMBER));
-                    } else {
-                        throw new IllegalActionException("Attempting to upgrade a Cooperating Institution to Associate Membership, while other Cooperating Institutions still exist for the Country.");
-                    }
+                    updateActiveCooperatingInstitution(authentication, country);
                 } else if (country.getMembership() == Membership.ASSOCIATE_MEMBER) {
                     country.setMembership(Membership.FULL_MEMBER);
                     dao.persist(authentication, country);
@@ -462,6 +463,18 @@ public final class CommitteeService extends CommonService<CommitteeDao> {
         }
 
         return dao.findGroupOwner(staff);
+    }
+
+    private void updateActiveCooperatingInstitution(final Authentication authentication, final CountryEntity country) {
+        final List<GroupEntity> staffs = dao.findAllCommitteesForCountry(country);
+
+        if (staffs.size() == 1) {
+            country.setMembership(Membership.ASSOCIATE_MEMBER);
+            dao.persist(authentication, country);
+            LOG.info(formatLogMessage(authentication, "Country %s has been upgraded from %s to %s.", country.getCountryName(), Membership.COOPERATING_INSTITUTION, Membership.ASSOCIATE_MEMBER));
+        } else {
+            throw new IllegalActionException("Attempting to upgrade a Cooperating Institution to Associate Membership, while other Cooperating Institutions still exist for the Country.");
+        }
     }
 
     /**
@@ -553,7 +566,7 @@ public final class CommitteeService extends CommonService<CommitteeDao> {
 
                 // Finally, set status of the Country to former member, but
                 // only if no other Committees exist for the Country.
-                List<GroupEntity> staffs = dao.findAllCommitteesForCountry(country);
+                final List<GroupEntity> staffs = dao.findAllCommitteesForCountry(country);
                 if (staffs.isEmpty()) {
                     country.setMembership(Membership.FORMER_MEMBER);
                     dao.persist(authentication, country);
@@ -720,7 +733,7 @@ public final class CommitteeService extends CommonService<CommitteeDao> {
                 if (groupEntity.getStatus() == GroupStatus.ACTIVE) {
                     // Suspension means just that it will be suspended, and thus
                     // no longer be usable by anyone.
-                    groupEntity.setStatus(status);
+                    groupEntity.setStatus(GroupStatus.SUSPENDED);
                     dao.persist(authentication, groupEntity);
                 }
             } else if (status == GroupStatus.DELETED) {
@@ -731,7 +744,7 @@ public final class CommitteeService extends CommonService<CommitteeDao> {
                 // full-name to something which won't cause problems. Even as
                 // it may mean that we loose information!
                 groupEntity.setFullName(UUID.randomUUID().toString());
-                groupEntity.setStatus(status);
+                groupEntity.setStatus(GroupStatus.DELETED);
                 dao.persist(authentication, groupEntity);
             } else {
                 // Defaulting to just updating the Group and set the status to
@@ -804,10 +817,12 @@ public final class CommitteeService extends CommonService<CommitteeDao> {
     // =========================================================================
 
     public FetchCountrySurveyResponse fetchCountrySurvey(final Authentication authentication, final FetchCountrySurveyRequest request) {
+        LOG.debug("fetchCountrySurvey Request from '{}' with Request '{}'.", authentication, request);
         throw new NotImplementedException("Method pending implementation, see Trac #924.");
     }
 
     public void processCountrySurvey(final Authentication authentication, final CountrySurveyRequest request) {
+        LOG.debug("processCountrySurvey Request from '{}' with Request '{}'.", authentication, request);
         throw new NotImplementedException("Method pending implementation, see Trac #924.");
     }
 }

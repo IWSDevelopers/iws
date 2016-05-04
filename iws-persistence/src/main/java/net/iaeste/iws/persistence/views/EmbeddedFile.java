@@ -91,6 +91,14 @@ public final class EmbeddedFile {
         return externalId;
     }
 
+    public void setGroup(final EmbeddedGroup group) {
+        this.group = group;
+    }
+
+    public EmbeddedGroup getGroup() {
+        return group;
+    }
+
     public void setFileName(final String fileName) {
         this.fileName = fileName;
     }

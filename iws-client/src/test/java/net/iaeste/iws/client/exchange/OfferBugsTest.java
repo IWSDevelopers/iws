@@ -25,7 +25,6 @@ import static org.junit.Assert.assertThat;
 import net.iaeste.iws.api.Exchange;
 import net.iaeste.iws.api.dtos.Address;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
-import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.TestData;
 import net.iaeste.iws.api.dtos.exchange.Employer;
 import net.iaeste.iws.api.dtos.exchange.Offer;
@@ -52,21 +51,16 @@ public final class OfferBugsTest extends AbstractOfferTest {
 
     private static final int exchangeYear = Verifications.calculateExchangeYear();
     private static final String PL_YEAR = "PL-" + exchangeYear;
-    private static final String AT_YEAR = "AT-" + exchangeYear;
 
     private final Exchange exchange = new ExchangeClient();
     private AuthenticationToken austriaToken = null;
     private AuthenticationToken croatiaToken = null;
-
-    private Group austriaTokenNationallGroup = null;
 
     @Override
     public void setUp() {
         token = login("poland@iaeste.pl", "poland");
         austriaToken = login("austria@iaeste.at", "austria");
         croatiaToken = login("croatia@iaeste.hr", "croatia");
-
-        austriaTokenNationallGroup = findNationalGroup(austriaToken);
     }
 
     @Override
@@ -77,7 +71,7 @@ public final class OfferBugsTest extends AbstractOfferTest {
     }
 
     /**
-     * See trac bug report #451.
+     * See Trac bug report #451.
      */
     @Test
     public void testSavingOfferWithoutCountry() {

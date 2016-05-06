@@ -66,24 +66,24 @@ public final class StorageTest extends AbstractTest {
     // each path of the name represent a folder.
     private static final String ROOT = null;
     private static final String PUBLIC_BOARD = "6adc3bac-c85c-4dfa-b9d8-3d9b848314af";
-    private static final String PUBLIC_BOARD_AC = "c9bde21a-011e-42e4-8985-b1da95c0fbdf";
-    private static final String PUBLIC_BOARD_AC_2014 = "af0a0c34-7037-4153-a707-65a1ed0b380b";
-    private static final String PROTECTED_BOARD_FINANCES = "b54a005d-d9cd-4456-9263-7ab3833ab303";
-    private static final String MIXED_BOARD_FINANCES_2014 = "4126e3c4-2e79-4ee1-a73f-a3ab5f9e52a5";
-    private static final String PROTECTED_BOARD_FINANCES_2015 = "9dd06a36-4e02-4a7d-9a46-da78648eaaae";
-    private static final String PUBLIC_SID_2014 = "d8d6d7eb-754a-4e3b-8d4d-7657339096d1";
-    private static final String PUBLIC_SID_2014_ADMINISTRATION = "01749318-9f20-4369-bd05-555c18e643ad";
-    private static final String PUBLIC_SID_2014_IWUG = "888f6c83-fcae-4e4a-9f8c-4fb02c2ec8e2";
-    private static final String PROTECTED_SID_2015 = "60ba5c47-3dce-41a1-94f9-e0dafe2f717a";
-    private static final String MIXED_SID_2015_ADMINISTRATION = "a4fa7715-3a10-470f-8538-e8ee13666819";
-    private static final String MIXED_SID_2015_IWUG = "f50bed53-7295-4b91-8746-78136df0a189";
-    private static final String PUBLIC_TUNISIA = "94a6d74f-c510-4302-83fd-cd79ea8a4c9a";
-    private static final String PUBLIC_TUNISIA_2015 = "b0ed8121-f359-4bc5-8ce8-bc5c4a7de536";
-    private static final String PUBLIC_TUNISIA_2015_EU = "ed5e0487-0605-428d-b40c-78e88df85d8d";
-    private static final String PUBLIC_TUNISIA_2015_OTHER = "0328281b-cf80-4c7a-8ad7-04721eaa45aa";
-    private static final String PROTECTED_TUNISIA_2014 = "df7a45f5-2aed-4529-a527-488ad538e03a";
-    private static final String MIXED_TUNISIA_2014_EU = "30a460be-641e-4cb9-a336-5eab00c19c3a";
-    private static final String MIXED_TUNISIA_2014_OTHER = "bb7953a8-8b7a-43a2-84fe-dca74291abd3";
+    //private static final String PUBLIC_BOARD_AC = "c9bde21a-011e-42e4-8985-b1da95c0fbdf";
+    //private static final String PUBLIC_BOARD_AC_2014 = "af0a0c34-7037-4153-a707-65a1ed0b380b";
+    //private static final String PROTECTED_BOARD_FINANCES = "b54a005d-d9cd-4456-9263-7ab3833ab303";
+    //private static final String MIXED_BOARD_FINANCES_2014 = "4126e3c4-2e79-4ee1-a73f-a3ab5f9e52a5";
+    //private static final String PROTECTED_BOARD_FINANCES_2015 = "9dd06a36-4e02-4a7d-9a46-da78648eaaae";
+    //private static final String PUBLIC_SID_2014 = "d8d6d7eb-754a-4e3b-8d4d-7657339096d1";
+    //private static final String PUBLIC_SID_2014_ADMINISTRATION = "01749318-9f20-4369-bd05-555c18e643ad";
+    //private static final String PUBLIC_SID_2014_IWUG = "888f6c83-fcae-4e4a-9f8c-4fb02c2ec8e2";
+    //private static final String PROTECTED_SID_2015 = "60ba5c47-3dce-41a1-94f9-e0dafe2f717a";
+    //private static final String MIXED_SID_2015_ADMINISTRATION = "a4fa7715-3a10-470f-8538-e8ee13666819";
+    //private static final String MIXED_SID_2015_IWUG = "f50bed53-7295-4b91-8746-78136df0a189";
+    //private static final String PUBLIC_TUNISIA = "94a6d74f-c510-4302-83fd-cd79ea8a4c9a";
+    //private static final String PUBLIC_TUNISIA_2015 = "b0ed8121-f359-4bc5-8ce8-bc5c4a7de536";
+    //private static final String PUBLIC_TUNISIA_2015_EU = "ed5e0487-0605-428d-b40c-78e88df85d8d";
+    //private static final String PUBLIC_TUNISIA_2015_OTHER = "0328281b-cf80-4c7a-8ad7-04721eaa45aa";
+    //private static final String PROTECTED_TUNISIA_2014 = "df7a45f5-2aed-4529-a527-488ad538e03a";
+    //private static final String MIXED_TUNISIA_2014_EU = "30a460be-641e-4cb9-a336-5eab00c19c3a";
+    //private static final String MIXED_TUNISIA_2014_OTHER = "bb7953a8-8b7a-43a2-84fe-dca74291abd3";
 
     /**
      * {@inheritDoc}

@@ -15,10 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.iaeste.iws.client;
+package net.iaeste.iws.client.storage;
 
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.isOneOf;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 
@@ -35,17 +36,25 @@ import net.iaeste.iws.api.requests.FileRequest;
 import net.iaeste.iws.api.responses.FetchFileResponse;
 import net.iaeste.iws.api.responses.FetchFolderResponse;
 import net.iaeste.iws.api.responses.FileResponse;
+import net.iaeste.iws.client.AbstractTest;
+import net.iaeste.iws.client.StorageClient;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import java.nio.charset.Charset;
 
 /**
+ * <p>Note, this test is scheduled for an overhaul, so it is parameterized.
+ * Since it is then easier to check each of the different folders using
+ * different accounts, so all aspects of the fetching can be achieved. Test
+ * should also be split up into a Fetching Test and a Processing Test.</p>
+ *
+ * <p>A better division between Files and Folders is also required.</p>
+ *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
-@Ignore
 public final class StorageTest extends AbstractTest {
 
     private final Storage storage = new StorageClient();
@@ -164,7 +173,9 @@ public final class StorageTest extends AbstractTest {
         // Now, let's check that we have a folder with content
         assertThat(response.getFolder(), is(not(nullValue())));
         assertThat(response.getFolder().getFolders().size(), is(1));
-        assertThat(response.getFolder().getFiles().size(), is(0));
+        assertThat(response.getFolder().getFiles().size(), is(1));
+        assertThat(response.getFolder().getFolders().get(0).getFoldername(), is("AC"));
+        assertThat(response.getFolder().getFiles().get(0).getFilename(), is("bla01.txt"));
     }
 
     @Test
@@ -180,13 +191,17 @@ public final class StorageTest extends AbstractTest {
 
         // Now, let's check that we have a folder with content
         assertThat(response.getFolder(), is(not(nullValue())));
-        assertThat(response.getFolder().getFolders().size(), is(3));
-        assertThat(response.getFolder().getFiles().size(), is(0));
+        assertThat(response.getFolder().getFolders().size(), is(2));
+        assertThat(response.getFolder().getFolders().get(0).getFoldername(), isOneOf("AC", "Finances"));
+        assertThat(response.getFolder().getFolders().get(1).getFoldername(), isOneOf("AC", "Finances"));
+        assertThat(response.getFolder().getFiles().size(), is(2));
+        assertThat(response.getFolder().getFiles().get(0).getFilename(), isOneOf("bla01.txt", "bla02.txt"));
+        assertThat(response.getFolder().getFiles().get(1).getFilename(), isOneOf("bla01.txt", "bla02.txt"));
     }
 
     @Test
+    @Ignore
     public void testReadingIWUGFolder() {
-        // The SID IWUG Folder have Id: 888f6c83-fcae-4e4a-9f8c-4fb02c2ec8e2
         // Contain zero sub folders and 1 file
         final FetchFolderRequest request = new FetchFolderRequest("888f6c83-fcae-4e4a-9f8c-4fb02c2ec8e2");
         final FetchFolderResponse response = storage.fetchFolder(token, request);

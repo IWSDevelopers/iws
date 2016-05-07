@@ -28,6 +28,7 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.dtos.File;
+import net.iaeste.iws.api.dtos.Folder;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.enums.Action;
 import net.iaeste.iws.api.requests.FetchFileRequest;
@@ -42,6 +43,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import java.nio.charset.Charset;
+import java.util.Objects;
 
 /**
  * <p>Note, this test is scheduled for an overhaul, so it is parameterized.
@@ -178,25 +180,38 @@ public final class StorageTest extends AbstractTest {
         assertThat(response.getFolder().getFiles().get(0).getFilename(), is("bla01.txt"));
     }
 
-    @Test
-    public void testReadingBoardFolderAsBoardMember() {
-        token = login("australia@iaeste.au", "australia");
-        final FetchFolderRequest request = new FetchFolderRequest(PUBLIC_BOARD);
+    private void testReadingFolder(final String username, final String password, final String folderId, final String iwsMessage, final String[] folders, final String[] files) {
+        token = login(username, password);
+        final FetchFolderRequest request = new FetchFolderRequest(folderId);
         final FetchFolderResponse response = storage.fetchFolder(token, request);
 
         // Standard check, we assume that everything is ok.
         assertThat(response.isOk(), is(true));
-        assertThat(response.getError(), is(IWSErrors.SUCCESS));
-        assertThat(response.getMessage(), is(IWSConstants.SUCCESS));
+        assertThat(response.getMessage(), is(iwsMessage));
 
-        // Now, let's check that we have a folder with content
-        assertThat(response.getFolder(), is(not(nullValue())));
-        assertThat(response.getFolder().getFolders().size(), is(2));
-        assertThat(response.getFolder().getFolders().get(0).getFoldername(), isOneOf("AC", "Finances"));
-        assertThat(response.getFolder().getFolders().get(1).getFoldername(), isOneOf("AC", "Finances"));
-        assertThat(response.getFolder().getFiles().size(), is(2));
-        assertThat(response.getFolder().getFiles().get(0).getFilename(), isOneOf("bla01.txt", "bla02.txt"));
-        assertThat(response.getFolder().getFiles().get(1).getFilename(), isOneOf("bla01.txt", "bla02.txt"));
+        if (Objects.equals(IWSConstants.SUCCESS, iwsMessage)) {
+            final Folder folder = response.getFolder();
+            assertThat(folder, is(not(nullValue())));
+
+            if (folders.length > 0) {
+                assertThat(folder.getFolders().size(), is(folders.length));
+                for (final Folder subFolder : folder.getFolders()) {
+                    assertThat(subFolder.getFoldername(), isOneOf(folders));
+                }
+            }
+
+            if (files.length > 0) {
+                assertThat(folder.getFiles().size(), is(files.length));
+                for (final File file : folder.getFiles()) {
+                    assertThat(file.getFilename(), isOneOf(files));
+                }
+            }
+        }
+    }
+
+    @Test
+    public void testReadingBoardFolderAsBoardMember() {
+        testReadingFolder("australia@iaeste.au", "australia", PUBLIC_BOARD, IWSConstants.SUCCESS, new String[]{"AC", "Finances"}, new String[]{"bla01.txt", "bla02.txt"});
     }
 
     @Test

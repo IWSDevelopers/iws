@@ -78,9 +78,16 @@ public final class FetchFolderTest extends AbstractTest {
     private static final String PUBLIC_TUNISIA_2015 = "b0ed8121-f359-4bc5-8ce8-bc5c4a7de536";
     private static final String PUBLIC_TUNISIA_2015_EU = "ed5e0487-0605-428d-b40c-78e88df85d8d";
     private static final String PUBLIC_TUNISIA_2015_OTHER = "0328281b-cf80-4c7a-8ad7-04721eaa45aa";
+
+    private static final String UNAUTHORIZED = "Unauthorized attempt at accessing the Folder ";
     private static final String[] EMPTY = {};
 
     private final Storage storage = new StorageClient();
+    private final Credentials credentials;
+    private final String folderId;
+    private final String iwsMessage;
+    private final String[] folders;
+    private final String[] files;
 
     /**
      * <p>The test is running with the following parameters:</p>
@@ -144,13 +151,6 @@ public final class FetchFolderTest extends AbstractTest {
                 {"Other reading /Tunisia/2015/Other/", OTHER, PUBLIC_TUNISIA_2015_OTHER, IWSConstants.SUCCESS, EMPTY, new String[]{"bla31.txt"}},
         });
     }
-
-    private static final String UNAUTHORIZED = "Unauthorized attempt at accessing the Folder ";
-    private final Credentials credentials;
-    private final String folderId;
-    private final String iwsMessage;
-    private final String[] folders;
-    private final String[] files;
 
     public FetchFolderTest(final String name, final Credentials credentials, final String folderId, final String iwsMessage, final String[] folders, final String[] files){
         LOG.debug("Initializing {} test.", name);

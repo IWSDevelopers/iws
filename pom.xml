@@ -78,6 +78,26 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <!-- We are using Spring & Hibernate for our testing, so we can
+             create EntityManager instances to use. However, there is a
+             problem in the combination of Spring & Hibernate, which is
+             causing test errors as we cannot create the initial setup,
+             which we need to run the tests.
+               Problem is present when upgrading to either us the JEE 7
+             framework, which includes JPA 2.1 or upgrading one or more
+             of the frameworks; Spring & Hibernate to later versions.
+               Until such time when it can be investigated what is
+             causing the problems, we're going to stay with these
+             versions, after all - it is not affecting production
+             code. -->
+        <!--<hibernate.version>5.1.0.Final</hibernate.version>-->
+        <hibernate.version>4.1.6.Final</hibernate.version>
+
+        <!-- Plese don't upgrade from 3.2.x; it leads to test problems. -->
+        <!--<spring.version>4.2.6.RELEASE</spring.version>-->
+        <spring.version>3.2.15.RELEASE</spring.version>
+
         <!-- The ${argLine} is important to have here, as we otherwise cannot
              pass the JaCoCo Agent settings through SureFire. -->
         <argLine>-Xmx1024m</argLine>
@@ -323,20 +343,7 @@
             <dependency>
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-entitymanager</artifactId>
-                <!-- We are using Spring & Hibernate for our testing, so we can
-                     create EntityManager instances to use. However, there is a
-                     problem in the combination of Spring & Hibernate, which is
-                     causing test errors as we cannot create the initial setup,
-                     which we need to run the tests.
-                       Problem is present when upgrading to either us the JEE 7
-                     framework, which includes JPA 2.1 or upgrading one or more
-                     of the frameworks; Spring & Hibernate to later versions.
-                       Until such time when it can be investigated what is
-                     causing the problems, we're going to stay with these
-                     versions, after all - it is not affecting production
-                     code. -->
-                <!--<version>5.1.0.Final</version>-->
-                <version>4.1.6.Final</version>
+                <version>${hibernate.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.postgresql</groupId>
@@ -358,44 +365,32 @@
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-context</artifactId>
-                <version>3.2.15.RELEASE</version>
-                <!-- Plese don't upgrade from 3.2.x; it leads to test problems. -->
-                <!--<version>4.2.5.RELEASE</version>-->
+                <version>${spring.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-beans</artifactId>
-                <version>3.2.15.RELEASE</version>
-                <!-- Plese don't upgrade from 3.2.x; it leads to test problems. -->
-                <!--<version>4.2.5.RELEASE</version>-->
+                <version>${spring.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-tx</artifactId>
-                <version>3.2.15.RELEASE</version>
-                <!-- Plese don't upgrade from 3.2.x; it leads to test problems. -->
-                <!--<version>4.2.5.RELEASE</version>-->
+                <version>${spring.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-orm</artifactId>
-                <version>3.2.15.RELEASE</version>
-                <!-- Plese don't upgrade from 3.2.x; it leads to test problems. -->
-                <!--<version>4.2.5.RELEASE</version>-->
+                <version>${spring.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-jdbc</artifactId>
-                <version>3.2.15.RELEASE</version>
-                <!-- Plese don't upgrade from 3.2.x; it leads to test problems. -->
-                <!--<version>4.2.5.RELEASE</version>-->
+                <version>${spring.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-test</artifactId>
-                <version>3.2.15.RELEASE</version>
-                <!-- Plese don't upgrade from 3.2.x; it leads to test problems. -->
-                <!--<version>4.2.5.RELEASE</version>-->
+                <version>${spring.version}</version>
             </dependency>
             <dependency>
                 <groupId>junit</groupId>

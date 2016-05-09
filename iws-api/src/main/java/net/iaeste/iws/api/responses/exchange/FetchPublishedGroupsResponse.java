@@ -21,11 +21,13 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.dtos.GroupList;
 import net.iaeste.iws.api.responses.FallibleResponse;
+import net.iaeste.iws.api.util.Verifications;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -45,7 +47,7 @@ public final class FetchPublishedGroupsResponse extends FallibleResponse {
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     @XmlElement(required = true, nillable = true)
-    private Map<String, GroupList> offersGroups = null;
+    private final Map<String, GroupList> offersGroups = new HashMap<>(0);
 
     // =========================================================================
     // Object Constructors
@@ -65,7 +67,7 @@ public final class FetchPublishedGroupsResponse extends FallibleResponse {
      * @param offersGroups List of Offers found
      */
     public FetchPublishedGroupsResponse(final Map<String, GroupList> offersGroups) {
-        this.offersGroups = offersGroups;
+        setOffersGroups(offersGroups);
     }
 
     /**
@@ -83,10 +85,10 @@ public final class FetchPublishedGroupsResponse extends FallibleResponse {
     // =========================================================================
 
     public void setOffersGroups(final Map<String, GroupList> offersGroups) {
-        this.offersGroups = offersGroups;
+        this.offersGroups.putAll(offersGroups);
     }
 
     public Map<String, GroupList> getOffersGroups() {
-        return offersGroups;
+        return Verifications.immutableMap(offersGroups);
     }
 }

@@ -50,8 +50,8 @@ public final class Folder extends Verifications {
 
     @XmlElement(required = true, nillable = true)  private String folderId = null;
     @XmlElement(required = true, nillable = true)  private String parentId = null;
-    @XmlElement(required = true, nillable = false) private Group group = null;
-    @XmlElement(required = true, nillable = false) private String foldername = null;
+    @XmlElement(required = true)                   private Group group = null;
+    @XmlElement(required = true)                   private String foldername = null;
     @XmlElement(required = true, nillable = true)  private List<Folder> folders = new ArrayList<>();
     @XmlElement(required = true, nillable = true)  private List<File> files = new ArrayList<>();
     // For now, we're setting the default privacy value to public, so as the
@@ -107,7 +107,7 @@ public final class Folder extends Verifications {
      * @param folderId Folder Id
      * @throws IllegalArgumentException if the Folder Id is invalid
      */
-    public void setFolderId(final String folderId) throws IllegalArgumentException {
+    public void setFolderId(final String folderId) {
         ensureValidId("folderId", folderId);
         this.folderId = folderId;
     }
@@ -122,7 +122,7 @@ public final class Folder extends Verifications {
      *
      * @param parentId Parent Folder Id
      */
-    public void setParentId(final String parentId) throws IllegalArgumentException {
+    public void setParentId(final String parentId) {
         ensureValidId("parentId", parentId);
         this.parentId = parentId;
     }
@@ -141,7 +141,7 @@ public final class Folder extends Verifications {
      * @param group Group
      * @throws IllegalArgumentException if null or not verifiable
      */
-    public void setGroup(final Group group) throws IllegalArgumentException {
+    public void setGroup(final Group group) {
         ensureNotNullAndVerifiable("group", group);
         this.group = group;
     }
@@ -157,7 +157,7 @@ public final class Folder extends Verifications {
      * @param foldername Name of the Folder
      * @throws IllegalArgumentException if null, empty or longer than 100 characters
      */
-    public void setFoldername(final String foldername) throws IllegalArgumentException {
+    public void setFoldername(final String foldername) {
         ensureNotNullOrEmptyOrTooLong("foldername", foldername, 100);
         this.foldername = foldername;
     }
@@ -177,7 +177,7 @@ public final class Folder extends Verifications {
     }
 
     public List<Folder> getFolders() {
-        return folders;
+        return immutableList(folders);
     }
 
     /**
@@ -191,7 +191,7 @@ public final class Folder extends Verifications {
     }
 
     public List<File> getFiles() {
-        return files;
+        return immutableList(files);
     }
 
     /**
@@ -208,7 +208,7 @@ public final class Folder extends Verifications {
      * @param privacy Privacy Value for the Folder, either Public or Protected
      * @throws IllegalArgumentException if value is null or not allowed
      */
-    public void setPrivacy(final Privacy privacy) throws IllegalArgumentException {
+    public void setPrivacy(final Privacy privacy) {
         ensureNotNullAndContains("privacy", privacy, ALLOWED);
         this.privacy = privacy;
     }

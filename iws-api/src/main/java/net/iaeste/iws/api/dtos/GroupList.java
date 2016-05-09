@@ -18,6 +18,7 @@
 package net.iaeste.iws.api.dtos;
 
 import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.api.util.Verifications;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -37,14 +38,14 @@ import java.util.List;
  * @since   IWS 1.1
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "groupList", propOrder = { "groups" })
+@XmlType(name = "groupList", propOrder = "groups")
 public final class GroupList implements Serializable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     @XmlElement(required = true, nillable = true)
-    private List<Group> groups = null;
+    private List<Group> groups = new ArrayList<>(0);
 
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
@@ -60,7 +61,7 @@ public final class GroupList implements Serializable {
      * @param groups List of Groups
      */
     public GroupList(final List<Group> groups) {
-        this.groups = groups;
+        setGroups(groups);
     }
 
     // =========================================================================
@@ -68,11 +69,11 @@ public final class GroupList implements Serializable {
     // =========================================================================
 
     public void setGroups(final List<Group> groups) {
-        this.groups = groups;
+        this.groups.addAll(groups);
     }
 
     public List<Group> getGroups() {
-        return groups;
+        return Verifications.immutableList(groups);
     }
 
     // =========================================================================

@@ -26,6 +26,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -50,10 +51,10 @@ public final class Role extends Verifications {
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     @XmlElement(required = true, nillable = true)  @StandardMethods(StandardMethods.For.ALL)      private String roleId = null;
-    @XmlElement(required = true, nillable = false) @StandardMethods(StandardMethods.For.ALL)      private String roleName = null;
+    @XmlElement(required = true)                   @StandardMethods(StandardMethods.For.ALL)      private String roleName = null;
     // For the HashCode & Equals, the name and Id should be enough as they
     // combined should be unique. The Permissions are only used by toString
-    @XmlElement(required = true, nillable = false) @StandardMethods(StandardMethods.For.TOSTRING) private Set<Permission> permissions = null;
+    @XmlElement(required = true) @StandardMethods(StandardMethods.For.TOSTRING) private Set<Permission> permissions = EnumSet.noneOf(Permission.class);
 
     // =========================================================================
     // Object Constructors
@@ -77,9 +78,9 @@ public final class Role extends Verifications {
      * @param permissions Associated Permissions for this Role
      */
     public Role(final String roleId, final String roleName, final Set<Permission> permissions) {
-        this.roleId = roleId;
-        this.roleName = roleName;
-        this.permissions = permissions;
+        setRoleId(roleId);
+        setRoleName(roleName);
+        setPermissions(permissions);
     }
 
     /**
@@ -114,7 +115,7 @@ public final class Role extends Verifications {
      * @throws IllegalArgumentException if the Id is set but invalid
      * @see Verifications#UUID_FORMAT
      */
-    public void setRoleId(final String roleId) throws IllegalArgumentException {
+    public void setRoleId(final String roleId) {
         ensureValidId("roleId", roleId);
         this.roleId = roleId;
     }
@@ -132,7 +133,7 @@ public final class Role extends Verifications {
      * @param roleName Name of this Role
      * @throws IllegalArgumentException if the name is either null, empty or too long
      */
-    public void setRoleName(final String roleName) throws IllegalArgumentException {
+    public void setRoleName(final String roleName) {
         ensureNotNullOrEmptyOrTooLong("roleName", roleName, 50);
         this.roleName = roleName;
     }
@@ -161,13 +162,13 @@ public final class Role extends Verifications {
      * @param permissions Set of Permissions for this Role
      * @throws IllegalArgumentException if the value is null
      */
-    public void setPermissions(final Set<Permission> permissions) throws IllegalArgumentException {
+    public void setPermissions(final Set<Permission> permissions) {
         ensureNotNull("permissions", permissions);
-        this.permissions = permissions;
+        this.permissions.addAll(permissions);
     }
 
     public Set<Permission> getPermissions() {
-        return permissions;
+        return immutableSet(permissions);
     }
 
     // =========================================================================

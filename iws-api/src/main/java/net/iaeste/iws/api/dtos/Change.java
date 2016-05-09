@@ -23,6 +23,7 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.util.ReflectiveStandardMethods;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -52,7 +53,7 @@ public final class Change implements Serializable {
 
     private User user = null;
     private Group group = null;
-    private List<Field> fields = null;
+    private List<Field> fields = new ArrayList<>(0);
     private Date changed = null;
 
     // =========================================================================
@@ -132,7 +133,7 @@ public final class Change implements Serializable {
      * @param fields Changed Fields
      */
     public void setFields(final List<Field> fields) {
-        this.fields = immutableList(fields);
+        this.fields.addAll(fields);
     }
 
     public List<Field> getFields() {

@@ -48,7 +48,7 @@ public final class Password extends Verifications {
      * The new Password for the user. This field is mandatory for both the
      * update Password and reset Password requests.
      */
-    @XmlElement(required = true, nillable = false)
+    @XmlElement(required = true)
     @StandardMethods(StandardMethods.For.NONE)
     private String newPassword = null;
 
@@ -62,7 +62,7 @@ public final class Password extends Verifications {
      * this Object to determine which variant is required, the identification
      * field will contain either the one or other.</p>
      */
-    @XmlElement(required = true, nillable = false)
+    @XmlElement(required = true)
     @StandardMethods(StandardMethods.For.NONE)
     private String identification = null;
 
@@ -121,7 +121,7 @@ public final class Password extends Verifications {
      * @param newPassword New Password for a user
      * @throws IllegalArgumentException if the given value is invalid
      */
-    public void setNewPassword(final String newPassword) throws IllegalArgumentException {
+    public void setNewPassword(final String newPassword) {
         ensureNotNullOrTooShort("newPassword", newPassword, IWSConstants.MINIMAL_PASSWORD_LENGTH);
         this.newPassword = newPassword;
     }
@@ -148,7 +148,7 @@ public final class Password extends Verifications {
      * @param identification Old User Password or given Password Token
      * @throws IllegalArgumentException if the given value is invalid
      */
-    public void setIdentification(final String identification) throws IllegalArgumentException {
+    public void setIdentification(final String identification) {
         ensureNotNullOrEmpty("identification", identification);
         this.identification = identification;
     }

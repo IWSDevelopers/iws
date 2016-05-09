@@ -46,14 +46,14 @@ public final class Group extends Verifications {
 
     @XmlElement(required = true, nillable = true)  private String groupId = null;
     @XmlElement(required = true, nillable = true)  private String parentId = null;
-    @XmlElement(required = true, nillable = false) private String groupName = null;
+    @XmlElement(required = true)                   private String groupName = null;
     @XmlElement(required = true, nillable = true)  private String fullName = null;
     @XmlElement(required = true, nillable = true)  private String listName = null;
-    @XmlElement(required = true, nillable = false) private Boolean privateList = true;
-    @XmlElement(required = true, nillable = false) private MailReply privateListReplyTo = MailReply.REPLY_TO_LIST;
-    @XmlElement(required = true, nillable = false) private Boolean publicList = true;
-    @XmlElement(required = true, nillable = false) private MailReply publicListReplyTo = MailReply.REPLY_TO_SENDER;
-    @XmlElement(required = true, nillable = false) private GroupType groupType = null;
+    @XmlElement(required = true)                   private Boolean privateList = true;
+    @XmlElement(required = true)                   private MailReply privateListReplyTo = MailReply.REPLY_TO_LIST;
+    @XmlElement(required = true)                   private Boolean publicList = true;
+    @XmlElement(required = true)                   private MailReply publicListReplyTo = MailReply.REPLY_TO_SENDER;
+    @XmlElement(required = true)                   private GroupType groupType = null;
     @XmlElement(required = true, nillable = true)  private String description = null;
     @XmlElement(required = true, nillable = true)  private MonitoringLevel monitoringLevel = MonitoringLevel.NONE;
     @XmlElement(required = true, nillable = true)  private Country country = null;
@@ -112,7 +112,7 @@ public final class Group extends Verifications {
      * @throws IllegalArgumentException if the Id is set but invalid
      * @see Verifications#UUID_FORMAT
      */
-    public void setGroupId(final String groupId) throws IllegalArgumentException {
+    public void setGroupId(final String groupId) {
         ensureValidId("groupId", groupId);
         this.groupId = groupId;
     }
@@ -147,7 +147,7 @@ public final class Group extends Verifications {
      * @param groupName The name of the Group
      * @throws IllegalArgumentException if the given value is invalid
      */
-    public void setGroupName(final String groupName) throws IllegalArgumentException {
+    public void setGroupName(final String groupName) {
         ensureNotNullOrEmptyOrTooLong("name", groupName, 50);
         this.groupName = groupName;
     }
@@ -205,7 +205,7 @@ public final class Group extends Verifications {
      * @param privateList True or False, depending on the GroupType
      * @throws IllegalArgumentException if set to null
      */
-    public void setPrivateList(final Boolean privateList) throws IllegalArgumentException {
+    public void setPrivateList(final Boolean privateList) {
         ensureNotNull("privateList", privateList);
         this.privateList = privateList;
     }
@@ -228,7 +228,7 @@ public final class Group extends Verifications {
      * @param privateListReplyTo Who is receiving mail when replying
      * @throws IllegalArgumentException if set to null
      */
-    public void setPrivateListReplyTo(final MailReply privateListReplyTo) throws IllegalArgumentException {
+    public void setPrivateListReplyTo(final MailReply privateListReplyTo) {
         ensureNotNull("privateListReplyTo", privateListReplyTo);
         this.privateListReplyTo = privateListReplyTo;
     }
@@ -272,7 +272,7 @@ public final class Group extends Verifications {
      * @param publicListReplyTo Who is receiving mail when replying
      * @throws IllegalArgumentException if set to null
      */
-    public void setPublicListReplyTo(final MailReply publicListReplyTo) throws IllegalArgumentException {
+    public void setPublicListReplyTo(final MailReply publicListReplyTo) {
         ensureNotNull("publicListReplyTo", publicListReplyTo);
         this.publicListReplyTo = publicListReplyTo;
     }
@@ -290,14 +290,18 @@ public final class Group extends Verifications {
     public String getCommitteeName() {
         final String committeeName;
 
-        if (groupType == GroupType.NATIONAL) {
-            committeeName = PATTERN_STAFF.matcher(groupName).replaceAll("").trim();
-        } else if (groupType == GroupType.MEMBER) {
-            committeeName = groupName;
-        } else if (groupType == GroupType.LOCAL) {
-            committeeName = fullName.replace(groupName, "").trim();
-        } else {
-            committeeName = "";
+        switch (groupType) {
+            case NATIONAL:
+                committeeName = PATTERN_STAFF.matcher(groupName).replaceAll("").trim();
+                break;
+            case MEMBER:
+                committeeName = groupName;
+                break;
+            case LOCAL:
+                committeeName = fullName.replace(groupName, "").trim();
+                break;
+            default:
+                committeeName = "";
         }
 
         return committeeName;
@@ -313,7 +317,7 @@ public final class Group extends Verifications {
      * @param groupType The Type of Group
      * @throws IllegalArgumentException if the given value is invalid
      */
-    public void setGroupType(final GroupType groupType) throws IllegalArgumentException {
+    public void setGroupType(final GroupType groupType) {
         ensureNotNull("groupType", groupType);
         this.groupType = groupType;
     }

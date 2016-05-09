@@ -25,6 +25,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,12 +63,12 @@ public final class PublishingGroup extends Verifications {
      * The name of the Publishing Group, the name must be non-null and unique
      * for the Committee, and will not be shared or shown to other Committees.
      */
-    @XmlElement(required = true, nillable = false)
+    @XmlElement(required = true)
     private String name = null;
 
     /** The List of Committees, to make up this Publishing Group. */
-    @XmlElement(required = true, nillable = false)
-    private List<Group> groups = null;
+    @XmlElement(required = true)
+    private List<Group> groups = new ArrayList<>(0);
 
     // =========================================================================
     // Object Constructors
@@ -170,7 +171,7 @@ public final class PublishingGroup extends Verifications {
      */
     public void setGroups(final List<Group> groups) {
         ensureNotNull("groups", groups);
-        this.groups = immutableList(groups);
+        this.groups.addAll(groups);
     }
 
     public List<Group> getGroups() {

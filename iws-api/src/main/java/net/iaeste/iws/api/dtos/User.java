@@ -65,9 +65,9 @@ public final class User extends Verifications {
     @XmlElement(required = true, nillable = true)  @StandardMethods(StandardMethods.For.ALL)  private String lastname = null;
     @XmlElement(required = true, nillable = true)  @StandardMethods(StandardMethods.For.NONE) private Person person = null;
     @XmlElement(required = true, nillable = true)  @StandardMethods(StandardMethods.For.ALL)  private UserStatus status = null;
-    @XmlElement(required = true, nillable = false) @StandardMethods(StandardMethods.For.ALL)  private UserType type = UserType.VOLUNTEER;
-    @XmlElement(required = true, nillable = false) @StandardMethods(StandardMethods.For.NONE) private Privacy privacy = Privacy.PRIVATE;
-    @XmlElement(required = true, nillable = false) @StandardMethods(StandardMethods.For.NONE) private NotificationFrequency notifications = NotificationFrequency.IMMEDIATELY;
+    @XmlElement(required = true)                   @StandardMethods(StandardMethods.For.ALL)  private UserType type = UserType.VOLUNTEER;
+    @XmlElement(required = true)                   @StandardMethods(StandardMethods.For.NONE) private Privacy privacy = Privacy.PRIVATE;
+    @XmlElement(required = true)                   @StandardMethods(StandardMethods.For.NONE) private NotificationFrequency notifications = NotificationFrequency.IMMEDIATELY;
 
     // =========================================================================
     // Object Constructors
@@ -158,7 +158,7 @@ public final class User extends Verifications {
      * @throws IllegalArgumentException if the Id is invalid
      * @see Verifications#UUID_FORMAT
      */
-    public void setUserId(final String userId) throws IllegalArgumentException {
+    public void setUserId(final String userId) {
         ensureValidId("userId", userId);
         this.userId = userId;
     }
@@ -242,7 +242,7 @@ public final class User extends Verifications {
      * @param person User's personal details
      * @throws IllegalArgumentException if invalid
      */
-    public void setPerson(final Person person) throws IllegalArgumentException {
+    public void setPerson(final Person person) {
         ensureVerifiable("person", person);
         this.person = new Person(person);
     }
@@ -285,7 +285,7 @@ public final class User extends Verifications {
      * @param privacy User's privacy setting
      * @throws IllegalArgumentException if set to null
      */
-    public void setPrivacy(final Privacy privacy) throws IllegalArgumentException {
+    public void setPrivacy(final Privacy privacy) {
         ensureNotNull("privacy", privacy);
         this.privacy = privacy;
     }
@@ -306,7 +306,7 @@ public final class User extends Verifications {
      * @param notifications User Notification Frequency
      * @throws IllegalArgumentException if set to null
      */
-    public void setNotifications(final NotificationFrequency notifications) throws IllegalArgumentException {
+    public void setNotifications(final NotificationFrequency notifications) {
         ensureNotNull("notifications", notifications);
         this.notifications = notifications;
     }

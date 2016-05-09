@@ -102,7 +102,7 @@ public final class Person extends Verifications {
      * @param nationality User Nationality
      * @throws IllegalArgumentException if not verifiable
      */
-    public void setNationality(final Country nationality) throws IllegalArgumentException {
+    public void setNationality(final Country nationality) {
         ensureVerifiable("nationality", nationality);
         this.nationality = nationality;
     }
@@ -119,7 +119,7 @@ public final class Person extends Verifications {
      * @param address Address for the Person
      * @throws IllegalArgumentException of not verifiable
      */
-    public void setAddress(final Address address) throws IllegalArgumentException {
+    public void setAddress(final Address address) {
         ensureVerifiable("address", address);
         this.address = address;
     }
@@ -139,7 +139,7 @@ public final class Person extends Verifications {
      * @param alternateEmail Alternate E-mail address for the Person
      * @throws IllegalArgumentException if the e-mail is incorrect
      */
-    public void setAlternateEmail(final String alternateEmail) throws IllegalArgumentException {
+    public void setAlternateEmail(final String alternateEmail) {
         ensureValidEmail("alternateEmail", alternateEmail);
         this.alternateEmail = alternateEmail;
     }
@@ -157,7 +157,7 @@ public final class Person extends Verifications {
      * @param phone Person's Land line PhoneNumber
      * @throws IllegalArgumentException if the PhoneNumber exceeds 25 characters
      */
-    public void setPhone(final String phone) throws IllegalArgumentException {
+    public void setPhone(final String phone) {
         ensureNotTooLong("phone", phone, 25);
         this.phone = phone;
     }
@@ -175,7 +175,7 @@ public final class Person extends Verifications {
      * @param mobile Person's Mobile PhoneNumber
      * @throws IllegalArgumentException if the mobile number exceeds 25 characters
      */
-    public void setMobile(final String mobile) throws IllegalArgumentException {
+    public void setMobile(final String mobile) {
         ensureNotTooLong("mobile", mobile, 25);
         this.mobile = mobile;
     }
@@ -193,7 +193,7 @@ public final class Person extends Verifications {
      * @param fax Person's Fax Number
      * @throws IllegalArgumentException if the fax number exceeds 25 characters
      */
-    public void setFax(final String fax) throws IllegalArgumentException {
+    public void setFax(final String fax) {
         ensureNotTooLong("fax", fax, 25);
         this.fax = fax;
     }
@@ -242,7 +242,7 @@ public final class Person extends Verifications {
      * @param understoodPrivacySettings Has the User understood the Privacy Settings
      * @throws IllegalArgumentException if set to null
      */
-    public void setUnderstoodPrivacySettings(final Boolean understoodPrivacySettings) throws IllegalArgumentException {
+    public void setUnderstoodPrivacySettings(final Boolean understoodPrivacySettings) {
         ensureNotNull("understoodPrivacySettings", understoodPrivacySettings);
         this.understoodPrivacySettings = understoodPrivacySettings;
     }
@@ -264,7 +264,7 @@ public final class Person extends Verifications {
      *
      * @param acceptNewsletters If the User accepts to receive Newsletters
      */
-    public void setAcceptNewsletters(final Boolean acceptNewsletters) throws IllegalArgumentException {
+    public void setAcceptNewsletters(final Boolean acceptNewsletters) {
         ensureNotNull("acceptNewsletters", acceptNewsletters);
         this.acceptNewsletters = acceptNewsletters;
     }

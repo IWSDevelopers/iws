@@ -47,6 +47,15 @@ public final class CommitteeRequest extends Verifications implements Actionable 
 
     /** Default allowed Actions for the Committee Request. */
     private static final Set<Action> ALLOWED = EnumSet.of(Action.CREATE, Action.CHANGE_NS, Action.UPDATE, Action.MERGE, Action.UPGRADE, Action.ACTIVATE, Action.SUSPEND, Action.DELETE);
+    private static final String FIELD_CC = "countryCode";
+    private static final String FIELD_NAME = "institutionName";
+    private static final String FIELD_ABBREVIATION = "institutionAbbreviation";
+    private static final String FIELD_USERNAME = "username";
+    private static final String FIELD_FIRSTNAME = "firstname";
+    private static final String FIELD_LASTNAME = "lastname";
+    private static final String FIELD_NC = "nationalCommittee";
+    private static final String FIELD_NS = "nationalSecretary";
+    private static final String FIELD_ACTION = "action";
 
     /** The Id of the Country to create a new Cooperating Institution for. */
     @XmlElement(required = true, nillable = true) private String countryCode = null;
@@ -69,7 +78,7 @@ public final class CommitteeRequest extends Verifications implements Actionable 
      * <p>Action to perform on a Committee, by default we're assuming that it
      * must be updated, i.e. that the National Secretary must be set.</p>
      */
-    @XmlElement(required = true, nillable = false) private Action action = Action.CHANGE_NS;
+    @XmlElement(required = true) private Action action = Action.CHANGE_NS;
 
     // =========================================================================
     // Object Constructors
@@ -111,7 +120,7 @@ public final class CommitteeRequest extends Verifications implements Actionable 
      */
     @Override
     public void setAction(final Action action) {
-        ensureNotNullAndContains("action", action, ALLOWED);
+        ensureNotNullAndContains(FIELD_ACTION, action, ALLOWED);
         this.action = action;
     }
 
@@ -135,7 +144,7 @@ public final class CommitteeRequest extends Verifications implements Actionable 
      * @throws IllegalArgumentException if null or not exactly 2 characters long
      */
     public void setCountryCode(final String countryCode) {
-        ensureNotNullAndExactLength("countryCode", countryCode, 2);
+        ensureNotNullAndExactLength(FIELD_CC, countryCode, 2);
         this.countryCode = countryCode;
     }
 
@@ -156,7 +165,7 @@ public final class CommitteeRequest extends Verifications implements Actionable 
      * @throws IllegalArgumentException if not valid, i.e. null, empty or longer than 50 characters
      */
     public void setInstitutionName(final String institutionName) {
-        ensureNotNullOrEmptyOrTooLong("institutionName", institutionName, 50);
+        ensureNotNullOrEmptyOrTooLong(FIELD_NAME, institutionName, 50);
         this.institutionName = institutionName;
     }
 
@@ -174,7 +183,7 @@ public final class CommitteeRequest extends Verifications implements Actionable 
      * @throws IllegalArgumentException if null, empty or longer than 5 characters
      */
     public void setInstitutionAbbreviation(final String institutionAbbreviation) {
-        ensureNotNullOrEmptyOrTooLong("institutionAbbreviation", institutionAbbreviation, 5);
+        ensureNotNullOrEmptyOrTooLong(FIELD_ABBREVIATION, institutionAbbreviation, 5);
         this.institutionAbbreviation = institutionAbbreviation;
     }
 
@@ -183,7 +192,7 @@ public final class CommitteeRequest extends Verifications implements Actionable 
     }
 
     public void setFirstname(final String firstname) {
-        ensureNotNullOrEmptyOrTooLong("firstname", firstname, CreateUserRequest.USER_MAXIMUM_FIRSTNAME);
+        ensureNotNullOrEmptyOrTooLong(FIELD_FIRSTNAME, firstname, CreateUserRequest.USER_MAXIMUM_FIRSTNAME);
         this.firstname = firstname;
     }
 
@@ -197,7 +206,7 @@ public final class CommitteeRequest extends Verifications implements Actionable 
      * @throws IllegalArgumentException in value is invalid
      */
     public void setLastname(final String lastname) {
-        ensureNotNullOrEmptyOrTooLong("lastname", lastname, CreateUserRequest.USER_MAXIMUM_LASTNAME);
+        ensureNotNullOrEmptyOrTooLong(FIELD_LASTNAME, lastname, CreateUserRequest.USER_MAXIMUM_LASTNAME);
         this.lastname = lastname;
     }
 
@@ -217,8 +226,8 @@ public final class CommitteeRequest extends Verifications implements Actionable 
      * @throws IllegalArgumentException if not a valid e-mail address
      */
     public void setUsername(final String username) {
-        ensureNotNullAndValidEmail("username", username);
-        ensureNotTooLong("username", username, CreateUserRequest.USER_MAXIMUM_USERNAME);
+        ensureNotNullAndValidEmail(FIELD_USERNAME, username);
+        ensureNotTooLong(FIELD_USERNAME, username, CreateUserRequest.USER_MAXIMUM_USERNAME);
         this.username = username;
     }
 
@@ -227,7 +236,7 @@ public final class CommitteeRequest extends Verifications implements Actionable 
     }
 
     public void setNationalCommittee(final Group nationalCommittee) {
-        ensureNotNullAndVerifiable("nationalCommittee", nationalCommittee);
+        ensureNotNullAndVerifiable(FIELD_NC, nationalCommittee);
         if (nationalCommittee.getGroupType() != GroupType.NATIONAL) {
             throw new IllegalArgumentException("Cannot process a Committee which is not having type " + GroupType.NATIONAL.getDescription());
         }
@@ -239,7 +248,7 @@ public final class CommitteeRequest extends Verifications implements Actionable 
     }
 
     public void setNationalSecretary(final User nationalSecretary) {
-        ensureNotNullAndVerifiable("nationalSecretary", nationalSecretary);
+        ensureNotNullAndVerifiable(FIELD_NS, nationalSecretary);
         this.nationalSecretary = nationalSecretary;
     }
 
@@ -258,25 +267,21 @@ public final class CommitteeRequest extends Verifications implements Actionable 
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(0);
 
-        isNotNull(validation, "action", action);
+        isNotNull(validation, FIELD_ACTION, action);
         if (action != null) {
             switch (action) {
                 case CREATE:
-                    isNotNull(validation, "countryCode", countryCode);
-                    isNotNull(validation, "institutionName", institutionName);
-                    isNotNull(validation, "institutionAbbreviation", institutionAbbreviation);
-                    isNotNull(validation, "firstname", firstname);
-                    isNotNull(validation, "lastname", lastname);
-                    isNotNull(validation, "username", username);
+                    isNotNull(validation, FIELD_CC, countryCode);
+                    validateInstitution(validation, institutionName, institutionAbbreviation);
+                    validateUser(validation, firstname, lastname, username);
                     break;
                 case UPDATE:
-                    isNotNull(validation, "nationalCommittee", nationalCommittee);
-                    isNotNull(validation, "institutionName", institutionName);
-                    isNotNull(validation, "institutionAbbreviation", institutionAbbreviation);
+                    isNotNull(validation, FIELD_NC, nationalCommittee);
+                    validateInstitution(validation, institutionName, institutionAbbreviation);
                     break;
                 case MERGE:
-                    isNotNull(validation, "countryCode", countryCode);
-                    isNotNull(validation, "nationalSecretary", nationalSecretary);
+                    isNotNull(validation, FIELD_CC, countryCode);
+                    isNotNull(validation, FIELD_NS, nationalSecretary);
                     break;
                 case CHANGE_NS:
                     // Updating means changing the current National Secretary,
@@ -287,13 +292,24 @@ public final class CommitteeRequest extends Verifications implements Actionable 
                 case ACTIVATE:
                 case SUSPEND:
                 case DELETE:
-                    isNotNull(validation, "nationalCommittee", nationalCommittee);
+                    isNotNull(validation, FIELD_NC, nationalCommittee);
                     break;
                 default:
-                    validation.put("action", "The Action '" + action + "' is not allowed");
+                    validation.put(FIELD_ACTION, "The Action '" + action + "' is not allowed");
             }
         }
 
         return validation;
+    }
+
+    private static void validateUser(final Map<String, String> validation, final String firstname, final String lastname, final String username) {
+        isNotNull(validation, FIELD_FIRSTNAME, firstname);
+        isNotNull(validation, FIELD_LASTNAME, lastname);
+        isNotNull(validation, FIELD_USERNAME, username);
+    }
+
+    private static void validateInstitution(final Map<String, String> validation, final String institutionName, final String institutionAbbreviation) {
+        isNotNull(validation, FIELD_NAME, institutionName);
+        isNotNull(validation, FIELD_ABBREVIATION, institutionAbbreviation);
     }
 }

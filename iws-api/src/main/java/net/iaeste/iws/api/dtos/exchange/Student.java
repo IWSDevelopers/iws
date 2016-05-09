@@ -33,6 +33,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -51,10 +52,10 @@ public final class Student extends Verifications {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    @XmlElement(required = true, nillable = false) private User user = null;
+    @XmlElement(required = true) private User user = null;
     @XmlElement(required = true, nillable = true)  private StudyLevel studyLevel = StudyLevel.B;
-    @XmlElement(required = true, nillable = true)  private Set<FieldOfStudy> fieldOfStudies = null;
-    @XmlElement(required = true, nillable = true)  private Set<Specialization> specializations = null;
+    @XmlElement(required = true, nillable = true)  private Set<FieldOfStudy> fieldOfStudies = EnumSet.noneOf(FieldOfStudy.class);
+    @XmlElement(required = true, nillable = true)  private Set<Specialization> specializations = EnumSet.noneOf(Specialization.class);
     @XmlElement(required = true, nillable = true)  private DatePeriod available = null;
     @XmlElement(required = true, nillable = true)  private Language language1 = null;
     @XmlElement(required = true, nillable = true)  private LanguageLevel language1Level = null;
@@ -146,7 +147,7 @@ public final class Student extends Verifications {
 
     public void setFieldOfStudies(final Set<FieldOfStudy> fieldOfStudies) {
         ensureNotTooLong("fieldOfStudies", fieldOfStudies, IWSExchangeConstants.MAX_OFFER_FIELDS_OF_STUDY);
-        this.fieldOfStudies = immutableSet(fieldOfStudies);
+        this.fieldOfStudies.addAll(fieldOfStudies);
     }
 
     public Set<FieldOfStudy> getFieldOfStudies() {
@@ -155,7 +156,7 @@ public final class Student extends Verifications {
 
     public void setSpecializations(final Set<Specialization> specializations) {
         ensureNotTooLong("specializations", specializations, IWSExchangeConstants.MAX_OFFER_SPECIALIZATIONS);
-        this.specializations = immutableSet(specializations);
+        this.specializations.addAll(specializations);
     }
 
     public Set<Specialization> getSpecializations() {

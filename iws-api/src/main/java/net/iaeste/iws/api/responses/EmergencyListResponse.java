@@ -20,11 +20,13 @@ package net.iaeste.iws.api.responses;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.dtos.UserGroup;
+import net.iaeste.iws.api.util.Verifications;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -40,7 +42,7 @@ public final class EmergencyListResponse extends FallibleResponse {
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     @XmlElement(required = true, nillable = true)
-    private List<UserGroup> emergencyContacts = null;
+    private final List<UserGroup> emergencyContacts = new ArrayList<>(10);
 
     // =========================================================================
     // Object Constructors
@@ -69,10 +71,10 @@ public final class EmergencyListResponse extends FallibleResponse {
     // =========================================================================
 
     public void setEmergencyContacts(final List<UserGroup> emergencyContacts) {
-        this.emergencyContacts = emergencyContacts;
+        this.emergencyContacts.addAll(emergencyContacts);
     }
 
     public List<UserGroup> getEmergencyContacts() {
-        return emergencyContacts;
+        return Verifications.immutableList(emergencyContacts);
     }
 }

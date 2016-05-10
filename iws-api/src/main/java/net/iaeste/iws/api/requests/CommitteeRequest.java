@@ -108,31 +108,6 @@ public final class CommitteeRequest extends Verifications implements Actionable 
     // =========================================================================
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Set<Action> allowedActions() {
-        return immutableSet(ALLOWED);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setAction(final Action action) {
-        ensureNotNullAndContains(FIELD_ACTION, action, ALLOWED);
-        this.action = action;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Action getAction() {
-        return action;
-    }
-
-    /**
      * <p>Sets the CountryId, or CountryCode, which is the standard two-letter
      * code for all Countries, defined by the UN. The Code is used by several
      * of the request variations, and if needed, it must be set.</p>
@@ -256,9 +231,34 @@ public final class CommitteeRequest extends Verifications implements Actionable 
         return nationalSecretary;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setAction(final Action action) {
+        ensureNotNullAndContains(FIELD_ACTION, action, ALLOWED);
+        this.action = action;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Action getAction() {
+        return action;
+    }
+
     // =========================================================================
     // Standard Request Methods
     // =========================================================================
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Set<Action> allowedActions() {
+        return immutableSet(ALLOWED);
+    }
 
     /**
      * {@inheritDoc}

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://ws.iws.iaeste.net/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="committeeWSService" targetNamespace="http://ws.iws.iaeste.net/">
   <wsdl:documentation>
       Service: IWS Committee Service
-      Version: 1.2.20160501
+      Version: 1.2.20160511
       Owner:   Kim Jensen
   </wsdl:documentation>
   <wsdl:types>
@@ -292,6 +292,7 @@
           <xs:element name="group" type="tns:group"/>
           <xs:element name="user" type="tns:user"/>
           <xs:element name="status" type="tns:groupStatus"/>
+          <xs:element name="action" type="tns:action"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -302,6 +303,7 @@
       <xs:extension base="tns:verifications">
         <xs:sequence>
           <xs:element name="survey" type="tns:countrySurvey"/>
+          <xs:element name="action" type="tns:action"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>

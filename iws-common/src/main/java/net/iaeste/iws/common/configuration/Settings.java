@@ -168,16 +168,13 @@ public final class Settings {
         return Long.valueOf(properties.getProperty(PROPERTY_LOGIN_BLOCKED_PERIOD));
     }
 
-    public void setCurrentEULAVersion(final int eulaVersion) {
-        if (eulaVersion < InternalConstants.INITIAL_EULA_VERSION) {
-            throw new IllegalArgumentException("The EULA Version must be greater than " + InternalConstants.INITIAL_EULA_VERSION + '.');
-
-        }
+    public void setCurrentEULAVersion(final String eulaVersion) {
+        throwIfNull("eulaVersion", eulaVersion);
         properties.setProperty(PROPERTY_EULA_VERSION, String.valueOf(eulaVersion));
     }
 
-    public long getCurrentEULAVersion() {
-        return Long.valueOf(properties.getProperty(PROPERTY_EULA_VERSION));
+    public String getCurrentEULAVersion() {
+        return properties.getProperty(PROPERTY_EULA_VERSION);
     }
 
     public void setEnablePagination(final boolean enablePagination) {
@@ -185,7 +182,7 @@ public final class Settings {
     }
 
     public boolean isPaginationEnabled() {
-        return "true".equals(properties.getProperty(PROPERTY_ENABLE_PAGINATION).trim().toLowerCase(IWSConstants.DEFAULT_LOCALE));
+        return "true".equalsIgnoreCase(properties.getProperty(PROPERTY_ENABLE_PAGINATION).trim());
     }
 
     public void setAnnualConferenceStart(final String start) {

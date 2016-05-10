@@ -107,6 +107,10 @@ public final class AccessService extends CommonService<AccessDao> {
         final SessionEntity activeSession = dao.findActiveSession(user);
 
         if ((activeSession == null) && !activeSessions.hasMaximumRegisteredSessions()) {
+            // Before continuing with authenticating the User, we're checking
+            // the EULA status, to ensure that the User has accepted the latest
+            verifyLicenseAgreement(request, user);
+
             final SessionEntity session = generateAndPersistSessionKey(user);
             activeSessions.registerToken(session.getSessionKey(), session.getCreated());
             loginRetries.removeAuthenticatedUser(request.getUsername());
@@ -117,6 +121,40 @@ public final class AccessService extends CommonService<AccessDao> {
         } else {
             final String msg = "An Active Session for user %s %s already exists.";
             throw new SessionException(format(msg, user.getFirstname(), user.getLastname()));
+        }
+    }
+
+    /**
+     * Checks if the User have accepted the latest EULA version. If not, then an
+     * Exception is thrown with this error.
+     *
+     * @param request User Authentication Request with optional EULA version
+     * @param user    User Entity to check and possibly update
+     * @throws IWSException if the accepted or given EULA version is incorrect
+     */
+    private void verifyLicenseAgreement(final AuthenticationRequest request, final UserEntity user) {
+        final String version = settings.getCurrentEULAVersion();
+        final String accepted = user.getEulaVersion();
+
+        // First check, if the current EULA is different from what the User has
+        // accepted, then we have to check if the User have accepted the new
+        // License or not. It should be noted, that the User has already been
+        // added to the LoginRetries queue, so attempting to guess a new version
+        // will result in the account being prevented access for a period.
+        if (!version.equals(accepted)) {
+            // Okay, versions differ. So - let's see if the User have set a new
+            // License. By default, the License in the Request is undefined, in
+            // which case we will throw an Exception. If it is set, then we will
+            // update it in the Database.
+            final String updated = request.getEulaVersion();
+
+            if (version.equals(updated)) {
+                // User have updated it, so we're storing the changes.
+                user.setEulaVersion(version);
+                dao.persist(user);
+            } else {
+                throw new IWSException(IWSErrors.DEPRECATED_EULA, "The User must accept the latest EULA before being able to log in.");
+            }
         }
     }
 

@@ -182,6 +182,16 @@ public final class UserEntity extends AbstractUpdateable<UserEntity> implements 
     private PersonEntity person = null;
 
     /**
+     * The EULA, End User License Agreement, Version, is the currently accepted
+     * License version for this User. If it is not correct, then the User cannot
+     * log in until the correct one has been approved, which is happening as
+     * part of the Authentication Process (login).
+     */
+    @Monitored(name = "EULA Version", level = MonitoringLevel.DETAILED)
+    @Column(name = "eula_version", length = 50, nullable = false)
+    private String eulaVersion = "";
+
+    /**
      * The current status for this User Account. Please note, that the usage of
      * the code is closely linked together with the users status. Same applies
      * to the possibility to log in, this can only be done for accounts where
@@ -352,6 +362,14 @@ public final class UserEntity extends AbstractUpdateable<UserEntity> implements 
 
     public PersonEntity getPerson() {
         return person;
+    }
+
+    public void setEulaVersion(final String eulaVersion) {
+        this.eulaVersion = eulaVersion;
+    }
+
+    public String getEulaVersion() {
+        return eulaVersion;
     }
 
     public void setStatus(final UserStatus status) {

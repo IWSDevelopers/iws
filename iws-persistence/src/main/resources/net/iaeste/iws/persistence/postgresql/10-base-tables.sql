@@ -528,7 +528,7 @@ create table users (
     firstname           varchar(50),
     lastname            varchar(50),
     person_id           integer,
-    eula_version        integer     default 0,
+    eula_version        varchar(50) default '',
     status              varchar(25) default 'NEW',
     user_type           varchar(10) default 'VOLUNTEER',
     private_data        varchar(10) default 'PRIVATE',

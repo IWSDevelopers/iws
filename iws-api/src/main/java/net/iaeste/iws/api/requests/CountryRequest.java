@@ -19,14 +19,17 @@ package net.iaeste.iws.api.requests;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.dtos.Country;
+import net.iaeste.iws.api.enums.Action;
 import net.iaeste.iws.api.util.Verifications;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -34,14 +37,23 @@ import java.util.Map;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "countryRequest", propOrder = { "country" })
-public final class CountryRequest extends Verifications {
+@XmlType(name = "countryRequest", propOrder = {"country", "action"})
+public final class CountryRequest extends Verifications implements Actionable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    @XmlElement(required = true, nillable = false)
+    /** Default allowed Actions for the Country Request. */
+    private static final Set<Action> ALLOWED = EnumSet.of(Action.PROCESS);
+
+    @XmlElement(required = true)
     private Country country = null;
+
+    /**
+     * <p>Action to perform on a Country, by default we're assuming that it
+     * should be processed, i.e. either created or updated.</p>
+     */
+    @XmlElement(required = true) private Action action = Action.PROCESS;
 
     // =========================================================================
     // Object Constructors
@@ -92,9 +104,34 @@ public final class CountryRequest extends Verifications {
         return new Country(country);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setAction(final Action action) {
+        ensureNotNullAndContains("action", action, ALLOWED);
+        this.action = action;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Action getAction() {
+        return action;
+    }
+
     // =========================================================================
     // Standard Request Methods
     // =========================================================================
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Set<Action> allowedActions() {
+        return immutableSet(ALLOWED);
+    }
 
     /**
      * {@inheritDoc}
@@ -104,6 +141,7 @@ public final class CountryRequest extends Verifications {
         final Map<String, String> validation = new HashMap<>(0);
 
         isNotNull(validation, "country", country);
+        isNotNull(validation, "action", action);
 
         return validation;
     }

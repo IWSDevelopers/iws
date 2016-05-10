@@ -133,7 +133,7 @@ public final class InternalConstants {
     /**
      * The initial EULA (End User License Agreement) version.
      */
-    public static final int INITIAL_EULA_VERSION = 1;
+    public static final String INITIAL_EULA_VERSION = "";
 
     /**
      * Pagination is used to limit the number of results returned by the IWS,

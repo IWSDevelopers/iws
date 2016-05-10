@@ -67,6 +67,7 @@ public final class AdministrationMapper extends CommonMapper {
             ws = new net.iaeste.iws.ws.CountryRequest();
 
             ws.setCountry(map(api.getCountry()));
+            ws.setAction(map(api.getAction()));
         }
 
         return ws;

@@ -34,7 +34,7 @@ import java.util.Map;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "authenticationRequest", propOrder = { "username", "password" })
+@XmlType(name = "authenticationRequest", propOrder = { "username", "password", "eulaVersion" })
 public final class AuthenticationRequest extends Verifications {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
@@ -43,16 +43,26 @@ public final class AuthenticationRequest extends Verifications {
     /**
      * User Credential: Username (the user's private e-mail address).
      */
-    @XmlElement(required = true, nillable = false)
-    private String username;
+    @XmlElement(required = true)
+    private String username = null;
 
     /**
      * User Credential: Password, must follow the requirements defined in the
      * Constants.
      */
-    @XmlElement(required = true, nillable = false)
+    @XmlElement(required = true)
     @StandardMethods(StandardMethods.For.NONE)
-    private String password;
+    private String password = null;
+
+    /**
+     * EULA, End User License Agreement, Version. If the User need to accept a
+     * newer version of the EULA, it must be done as part of the Authentication
+     * process. The actual version required is left to the configuration of the
+     * System.
+     */
+    @XmlElement
+    @StandardMethods(StandardMethods.For.NONE)
+    private String eulaVersion = null;
 
     // =========================================================================
     // Object Constructors
@@ -63,8 +73,7 @@ public final class AuthenticationRequest extends Verifications {
      * for WebServices to work properly.
      */
     public AuthenticationRequest() {
-        username = null;
-        password = null;
+        // Comment to please Sonar
     }
 
     /**
@@ -82,7 +91,7 @@ public final class AuthenticationRequest extends Verifications {
     // Standard Setters & Getters
     // =========================================================================
 
-    public void setUsername(final String username) throws IllegalArgumentException {
+    public void setUsername(final String username) {
         ensureNotNullOrEmpty("username", username);
 
         this.username = username;
@@ -92,7 +101,7 @@ public final class AuthenticationRequest extends Verifications {
         return username;
     }
 
-    public void setPassword(final String password) throws IllegalArgumentException {
+    public void setPassword(final String password) {
         ensureNotNullOrEmpty("password", password);
 
         this.password = password;
@@ -100,6 +109,14 @@ public final class AuthenticationRequest extends Verifications {
 
     public String getPassword() {
         return password;
+    }
+
+    public void setEulaVersion(final String eulaVersion) {
+        this.eulaVersion = eulaVersion;
+    }
+
+    public String getEulaVersion() {
+        return eulaVersion;
     }
 
     // =========================================================================

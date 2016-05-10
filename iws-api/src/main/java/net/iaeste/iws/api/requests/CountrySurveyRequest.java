@@ -19,14 +19,17 @@ package net.iaeste.iws.api.requests;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.dtos.CountrySurvey;
+import net.iaeste.iws.api.enums.Action;
 import net.iaeste.iws.api.util.Verifications;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -34,14 +37,23 @@ import java.util.Map;
  * @since   IWS 1.1
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "countrySurveyRequest", propOrder = { "survey" })
-public final class CountrySurveyRequest extends Verifications {
+@XmlType(name = "countrySurveyRequest", propOrder = {"survey", "action"})
+public final class CountrySurveyRequest extends Verifications implements Actionable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    @XmlElement(required = true, nillable = false)
+    /** Default allowed Actions for the Committee Request. */
+    private static final Set<Action> ALLOWED = EnumSet.of(Action.PROCESS);
+
+    @XmlElement(required = true)
     private CountrySurvey survey = null;
+
+    /**
+     * <p>Action to perform on a Country Survey, by default we're assuming
+     * that it must be processed, i.e. either created or updated.</p>
+     */
+    @XmlElement(required = true) private Action action = Action.PROCESS;
 
     // =========================================================================
     // Object Constructors
@@ -68,13 +80,30 @@ public final class CountrySurveyRequest extends Verifications {
     // Standard Setters & Getters
     // =========================================================================
 
-    public void setSurvey(final CountrySurvey survey) throws IllegalArgumentException {
+    public void setSurvey(final CountrySurvey survey) {
         ensureNotNullAndVerifiable("survey", survey);
         this.survey = survey;
     }
 
     public CountrySurvey getSurvey() {
         return survey;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setAction(final Action action) {
+        ensureNotNullAndContains("action", action, ALLOWED);
+        this.action = action;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Action getAction() {
+        return action;
     }
 
     // =========================================================================
@@ -85,10 +114,19 @@ public final class CountrySurveyRequest extends Verifications {
      * {@inheritDoc}
      */
     @Override
+    public Set<Action> allowedActions() {
+        return immutableSet(ALLOWED);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(1);
 
         isNotNull(validation, "survey", survey);
+        isNotNull(validation, "action", action);
 
         return validation;
     }

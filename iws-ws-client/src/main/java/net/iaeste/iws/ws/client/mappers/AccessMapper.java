@@ -48,6 +48,7 @@ public final class AccessMapper extends CommonMapper {
 
             ws.setUsername(api.getUsername());
             ws.setPassword(api.getPassword());
+            ws.setEulaVersion(api.getEulaVersion());
         }
 
         return ws;
@@ -103,7 +104,7 @@ public final class AccessMapper extends CommonMapper {
         return api;
     }
 
-    public static List<Authorization> mapAuthorizationList(final List<net.iaeste.iws.ws.Authorization> ws) {
+    private static List<Authorization> mapAuthorizationList(final List<net.iaeste.iws.ws.Authorization> ws) {
         List<Authorization> api = null;
 
         if (ws != null) {

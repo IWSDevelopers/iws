@@ -37,6 +37,7 @@ import net.iaeste.iws.api.responses.FetchPermissionResponse;
 import net.iaeste.iws.api.responses.SessionDataResponse;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.api.util.Fallible;
+import net.iaeste.iws.client.spring.Beans;
 import net.iaeste.iws.common.configuration.InternalConstants;
 import net.iaeste.iws.common.notification.NotificationField;
 import net.iaeste.iws.common.notification.NotificationType;
@@ -342,6 +343,42 @@ public final class AccessClientTest extends AbstractTest {
         final AuthenticationResponse response = access.generateSession(new AuthenticationRequest(username, newPassword));
         assertThat(response.isOk(), is(true));
         assertThat(response.getError(), is(IWSErrors.SUCCESS));
+    }
+
+    @Test
+    public void testEULAVersion() {
+        final AuthenticationRequest request = new AuthenticationRequest("Lithuania@iaeste.lt", "lithuania");
+
+        // Pre test conditions, check that we can log in & out without problems
+        final AuthenticationResponse response1 = access.generateSession(request);
+        assertThat(response1.getMessage(), is(IWSConstants.SUCCESS));
+        final Fallible response2 = access.deprecateSession(response1.getToken());
+        assertThat(response2.getMessage(), is(IWSConstants.SUCCESS));
+
+        // Now we're setting a new EULA version, which will cause our account
+        // to be blocked until the correct EULA is provided.
+        Beans.settings().setCurrentEULAVersion("eula1");
+
+        // First login attempt - without EULA information.
+        final AuthenticationResponse response3 = access.generateSession(request);
+        assertThat(response3.getError(), is(IWSErrors.DEPRECATED_EULA));
+        assertThat(response3.getMessage(), is("The User must accept the latest EULA before being able to log in."));
+
+        // Second attempt, where we're setting an invalid EULA
+        request.setEulaVersion("wrong EULA");
+        final AuthenticationResponse response4 = access.generateSession(request);
+        assertThat(response4.getError(), is(IWSErrors.DEPRECATED_EULA));
+        assertThat(response4.getMessage(), is("The User must accept the latest EULA before being able to log in."));
+
+        // Third attempt, where we're setting the correct EULA
+        request.setEulaVersion("eula1");
+        final AuthenticationResponse response5 = access.generateSession(request);
+        assertThat(response5.getMessage(), is(IWSConstants.SUCCESS));
+        final Fallible response6 = access.deprecateSession(response5.getToken());
+        assertThat(response6.getMessage(), is(IWSConstants.SUCCESS));
+
+        // Finally, let's reset the EULA version so other tests won't fail.
+        Beans.settings().setCurrentEULAVersion("");
     }
 
     @Test

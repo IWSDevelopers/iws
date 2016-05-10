@@ -9,6 +9,19 @@
 -- correct some problems discovered with the Views & Data Content
 insert into versions (db_version, iws_version) values (9, '1.2.0');
 
+
+-- =============================================================================
+-- Issue #4 EULA corrections
+-- =============================================================================
+-- Considering the importance of Data Protection, it is necessary to frequently
+-- update the EULA to reflect changes.
+alter table users drop constraint user_notnull_eula_version;
+alter table users drop column eula_version;
+alter table users add column eula_version varchar(50) default '';
+alter table users add constraint user_notnull_eula_version check (eula_version is not null);
+update users set eula_version = '';
+
+
 -- =============================================================================
 -- Issue #11 Sequence Correction for Student Applications
 -- =============================================================================

@@ -222,6 +222,7 @@ g     * <dl>
      */
     PublishOfferResponse processPublishOffer(AuthenticationToken token, PublishOfferRequest request);
 
+    // Note, the following two should be merged into a single method called "processSharedOffer"
     /**
      * <p>Hides specified foreign offer for given group.</p>
      *

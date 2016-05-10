@@ -136,6 +136,7 @@ public final class CommitteeMapper extends CommonMapper {
             ws.setGroup(map(api.getGroup()));
             ws.setUser(map(api.getUser()));
             ws.setStatus(map(api.getStatus()));
+            ws.setAction(map(api.getAction()));
         }
 
         return ws;
@@ -172,6 +173,7 @@ public final class CommitteeMapper extends CommonMapper {
             ws = new net.iaeste.iws.ws.CountrySurveyRequest();
 
             ws.setSurvey(map(api.getSurvey()));
+            ws.setAction(map(api.getAction()));
         }
 
         return ws;

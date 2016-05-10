@@ -20,6 +20,7 @@ package net.iaeste.iws.api.requests;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.User;
+import net.iaeste.iws.api.enums.Action;
 import net.iaeste.iws.api.enums.GroupStatus;
 import net.iaeste.iws.api.util.Verifications;
 
@@ -27,8 +28,10 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -36,15 +39,24 @@ import java.util.Map;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "internationalGroupRequest", propOrder = { "group", "user", "status" })
-public final class InternationalGroupRequest extends Verifications {
+@XmlType(name = "internationalGroupRequest", propOrder = { "group", "user", "status", "action" })
+public final class InternationalGroupRequest extends Verifications implements Actionable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    @XmlElement(required = true, nillable = false) private Group group = null;
-    @XmlElement(required = true, nillable = false) private User user = null;
-    @XmlElement(required = true, nillable = false) private GroupStatus status = GroupStatus.ACTIVE;
+    /** Default allowed Actions for the Committee Request. */
+    private static final Set<Action> ALLOWED = EnumSet.of(Action.PROCESS, Action.ACTIVATE, Action.SUSPEND, Action.DELETE);
+
+    @XmlElement(required = true) private Group group = null;
+    @XmlElement(required = true) private User user = null;
+    @XmlElement(required = true) private GroupStatus status = GroupStatus.ACTIVE;
+
+    /**
+     * <p>Action to perform on an International Group, by default we're assuming
+     * that it must be processed, i.e. either created or updated.</p>
+     */
+    @XmlElement(required = true) private Action action = Action.PROCESS;
 
     // =========================================================================
     // Object Constructors
@@ -135,9 +147,34 @@ public final class InternationalGroupRequest extends Verifications {
         return status;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setAction(final Action action) {
+        ensureNotNullAndContains("action", action, ALLOWED);
+        this.action = action;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Action getAction() {
+        return action;
+    }
+
     // =========================================================================
     // Standard Request Methods
     // =========================================================================
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Set<Action> allowedActions() {
+        return immutableSet(ALLOWED);
+    }
 
     /**
      * {@inheritDoc}
@@ -149,6 +186,7 @@ public final class InternationalGroupRequest extends Verifications {
         isNotNullAndVerifiable(validation, "group", group);
         isVerifiable(validation, "user", user);
         isNotNull(validation, "status", status);
+        isNotNull(validation, "action", action);
 
         return validation;
     }

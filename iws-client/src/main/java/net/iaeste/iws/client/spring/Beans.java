@@ -45,6 +45,9 @@ import java.util.Properties;
 @EnableTransactionManagement
 public class Beans {
 
+    // Internal Lock, to synchronize access
+    private static final Object LOCK = new Object();
+
     // Following is used to configure the Settings
     private static final Integer MAX_ACTIVE_TOKENS = InternalConstants.MAX_ACTIVE_TOKENS;
     private static final Long MAX_IDLE_TIME_FOR_SESSIONS = InternalConstants.MAX_SESSION_IDLE_PERIOD;
@@ -52,6 +55,10 @@ public class Beans {
     private static final long LOGIN_BLOCKED_TIME = InternalConstants.LOGIN_BLOCKING_PERIOD;
 
     private static final Boolean USE_INMEMORY_DATABASE = true;
+
+    // Internal Settings, which we can reuse to control the behaviour of IWS
+    // from the tests.
+    private static Settings settings = null;
 
     @Bean
     protected DataSource dataSource() {
@@ -114,13 +121,17 @@ public class Beans {
     }
 
     public static Settings settings() {
-        final Settings settings = new Settings();
+        synchronized (LOCK) {
+            if (settings == null) {
+                settings = new Settings();
 
-        settings.setMaxActiveTokens(MAX_ACTIVE_TOKENS);
-        settings.setMaxIdleTimeForSessions(MAX_IDLE_TIME_FOR_SESSIONS);
-        settings.setMaxLoginRetries(MAX_LOGIN_RETRIES);
-        settings.setLoginBlockedTime(LOGIN_BLOCKED_TIME);
+                settings.setMaxActiveTokens(MAX_ACTIVE_TOKENS);
+                settings.setMaxIdleTimeForSessions(MAX_IDLE_TIME_FOR_SESSIONS);
+                settings.setMaxLoginRetries(MAX_LOGIN_RETRIES);
+                settings.setLoginBlockedTime(LOGIN_BLOCKED_TIME);
+            }
 
-        return settings;
+            return settings;
+        }
     }
 }

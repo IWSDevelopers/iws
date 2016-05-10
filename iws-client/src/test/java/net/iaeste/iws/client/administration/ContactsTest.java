@@ -113,7 +113,7 @@ public final class ContactsTest extends AbstractAdministration {
         assertThat(responseAll.isOk(), is(true));
         assertThat(responseAll.getType(), is(ContactsType.OTHER));
         assertThat(responseAll.getGroups().isEmpty(), is(false));
-        assertThat(responseAll.getUsers(), is(nullValue()));
+        assertThat(responseAll.getUsers().isEmpty(), is(true));
 
         final ContactsRequest requestGroup = new ContactsRequest();
         // The result from the common listing is Admin groups first, and the

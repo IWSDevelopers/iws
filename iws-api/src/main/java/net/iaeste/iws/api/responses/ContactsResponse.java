@@ -22,11 +22,13 @@ import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.User;
 import net.iaeste.iws.api.enums.ContactsType;
+import net.iaeste.iws.api.util.Verifications;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -41,8 +43,8 @@ public final class ContactsResponse extends FallibleResponse {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    @XmlElement(required = true, nillable = true) private List<User> users = null;
-    @XmlElement(required = true, nillable = true) private List<Group> groups = null;
+    @XmlElement(required = true, nillable = true) private final List<User> users = new ArrayList<>(0);
+    @XmlElement(required = true, nillable = true) private final List<Group> groups = new ArrayList<>(0);
     @XmlElement(required = true, nillable = true) private ContactsType type = null;
 
     // =========================================================================
@@ -72,7 +74,7 @@ public final class ContactsResponse extends FallibleResponse {
     // =========================================================================
 
     public void setUsers(final List<User> users) {
-        this.users = users;
+        this.users.addAll(users);
     }
 
     /**
@@ -83,11 +85,11 @@ public final class ContactsResponse extends FallibleResponse {
      * @return List with either 1 User, all Users or empty list
      */
     public List<User> getUsers() {
-        return users;
+        return Verifications.immutableList(users);
     }
 
     public void setGroups(final List<Group> groups) {
-        this.groups = groups;
+        this.groups.addAll(groups);
     }
 
     /**
@@ -98,7 +100,7 @@ public final class ContactsResponse extends FallibleResponse {
      * @return List with either 1 Group, All User Groups or all Top Groups
      */
     public List<Group> getGroups() {
-        return groups;
+        return Verifications.immutableList(groups);
     }
 
     public void setType(final ContactsType type) {

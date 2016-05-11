@@ -1,19 +1,2 @@
 language: java
 jdk: oraclejdk8
-env:
-  global:
-    - secure: "IWN5iigRwG/zJtJigha8jS4N7bex8KBblenwaO+Z+1aqvzHbI5hprOvu6ZNnWFw8je+dcGxZiut0M2dNMR6GostJCt0h/LIFCoRRVZKCg8CwklmQzOfS4eg5bgGAmFJQ5ehJ96LWKEJgX2hIArOXCG1fMl/pbzPZU3fNalYcivRg+kY7mMuuGF+ANOgMPs4PRxE1UK1PR1I7ccFbbH4Z+G/tiXle9uVOVft002iwdfup8m3wfb9KoD9kcCPCpSWMlKX/DjNmTLm+R52O2HPeB0HaevsOeQGfS9gxKIqyrm1D1fGiP6Ls+oOCsNWFVn2VlHDf1mIB++EwFKGqxm4uTtD5SThbp5KnTPH7ELUdqC+LUI7bVZx13CRBgyMaNssSlqYLzhU07mSgd5sRfFeKqFtkNbVsvZJ7hEAGpXD+rFuTppmhN9c1IOCLiGtY3t97EolEN9RNOQl0T46/YpIOmWSNCc5ywou/u5DCPyTuYzWk8TfPOgwoSnfVLbw4ADrGv0/cEd2D7qjpvccd2aY17V9xpAx82jcyoyWhZWjT9Y/l583DXTuf5Q3SWPeSp4QWu0fQ/iZoH+LSQAwJ6nu1252DjiF5AUtAQNHrdmWqGxK/vSRw+Ti8NHYhe02bQOG3PhEZ+Pl2DBhg32uoBgITpd/SAet3taRzaBqRYoA/WK4="
-
-install: mvn clean install -U
-
-addons:
-  coverity_scan:
-
-    project:
-      name: "IWSDevelopers/iws"
-      version: 1.2.0-SNAPSHOT
-      description: "IntraWeb Services"
-
-    notification_email: kim@dawn.dk
-    build_command_prepend: mvn clean
-    build_command: mvn install -U

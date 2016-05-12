@@ -38,8 +38,24 @@ import net.iaeste.iws.api.responses.student.StudentResponse;
 public interface Students {
 
     /**
-     * <p>Creates a new Student Account, with the data from the Request Object.
-     * The new Student Account will have Status
+     * Deprecated - please use the processStudent instead.
+     *
+     * @param token   Authentication information about the user invoking the
+     *                request
+     * @param request Request data, must contain username, password as well as
+     *                first and last name
+     * @return Standard Error Object
+     * @deprecated please use the processStudent instead
+     */
+    @Deprecated
+    CreateUserResponse createStudent(AuthenticationToken token, CreateUserRequest request);
+
+    /**
+     * <p>Processes a Student Object. Meaning, either creating, updating an existing
+     * Student, deleting an existing Student, or making an existing User a
+     * Student.</p>
+     *
+     * <p>The new Student Account will have Status
      * {@link net.iaeste.iws.api.enums.UserStatus#NEW}, and an e-mail is send
      * to the user via the provided username. The e-mail will contain an
      * Activation Link, which is then used to activate the account.</p>
@@ -53,19 +69,6 @@ public interface Students {
      * <p>Note, the StudentAccount flag in the Request Object is ignored for
      * this request, meaning that the method will always create a Student
      * Account, if the requesting user is permitted to do so.</p>
-     *
-     * @param token   Authentication information about the user invoking the
-     *                request
-     * @param request Request data, must contain username, password as well as
-     *                first and last name
-     * @return Standard Error Object
-     */
-    CreateUserResponse createStudent(AuthenticationToken token, CreateUserRequest request);
-
-    /**
-     * <p>Processes a Student Object. Meaning, either updating an existing
-     * Student, deleting an existing Student, or making an existing User a
-     * Student.</p>
      *
      * @param token   {@link AuthenticationToken}
      * @param request {@link StudentRequest}

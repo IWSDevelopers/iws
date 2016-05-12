@@ -42,7 +42,7 @@ public final class EmergencyListResponse extends FallibleResponse {
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     @XmlElement(required = true, nillable = true)
-    private final List<UserGroup> emergencyContacts = new ArrayList<>(10);
+    private final List<UserGroup> emergencyContacts = new ArrayList<>(0);
 
     // =========================================================================
     // Object Constructors

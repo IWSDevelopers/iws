@@ -40,7 +40,7 @@ public final class StudentResponse extends FallibleResponse {
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     /**
-     * The newly created/update Studnet Object.
+     * The newly created/update Student Object.
      */
     @XmlElement(required = true, nillable = true)
     private Student student = null;

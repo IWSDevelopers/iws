@@ -20,6 +20,7 @@ package net.iaeste.iws.api.responses;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.dtos.UserGroup;
+import net.iaeste.iws.api.util.Verifications;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -41,7 +42,7 @@ public final class FetchCommitteeResponse extends FallibleResponse {
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     @XmlElement(required = true)
-    private List<UserGroup> committees = new ArrayList<>();
+    private final List<UserGroup> committees = new ArrayList<>();
 
     // =========================================================================
     // Object Constructors
@@ -78,6 +79,6 @@ public final class FetchCommitteeResponse extends FallibleResponse {
     }
 
     public List<UserGroup> getCommittees() {
-        return committees;
+        return Verifications.immutableList(committees);
     }
 }

@@ -21,11 +21,13 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.dtos.exchange.CSVProcessingErrors;
 import net.iaeste.iws.api.responses.FallibleResponse;
+import net.iaeste.iws.api.util.Verifications;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -53,7 +55,7 @@ public final class OfferCSVUploadResponse extends FallibleResponse {
      * result of the processing as the value.
      */
     @XmlElement(required = true, nillable = true)
-    private Map<String, ProcessingResult> processingResult;
+    private final Map<String, ProcessingResult> processingResult = new HashMap<>(0);
 
     /**
      * Map with the error information related to the processing. The map contain
@@ -61,7 +63,7 @@ public final class OfferCSVUploadResponse extends FallibleResponse {
      * value.
      */
     @XmlElement(required = true, nillable = true)
-    private Map<String, CSVProcessingErrors> errors;
+    private final Map<String, CSVProcessingErrors> errors = new HashMap<>(0);
 
     // =========================================================================
     // Object Constructors
@@ -91,18 +93,18 @@ public final class OfferCSVUploadResponse extends FallibleResponse {
     // =========================================================================
 
     public void setProcessingResult(final Map<String, ProcessingResult> processingResult) {
-        this.processingResult = processingResult;
+        this.processingResult.putAll(processingResult);
     }
 
     public Map<String, ProcessingResult> getProcessingResult() {
-        return processingResult;
+        return Verifications.immutableMap(processingResult);
     }
 
     public void setErrors(final Map<String, CSVProcessingErrors> errors) {
-        this.errors = errors;
+        this.errors.putAll(errors);
     }
 
     public Map<String, CSVProcessingErrors> getErrors() {
-        return errors;
+        return Verifications.immutableMap(errors);
     }
 }

@@ -20,11 +20,13 @@ package net.iaeste.iws.api.responses;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.dtos.Country;
+import net.iaeste.iws.api.util.Verifications;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -40,7 +42,7 @@ public final class FetchCountryResponse extends FallibleResponse {
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     @XmlElement(required = true, nillable = true)
-    private List<Country> countries = null;
+    private final List<Country> countries = new ArrayList<>(0);
 
     // =========================================================================
     // Object Constructors
@@ -55,7 +57,7 @@ public final class FetchCountryResponse extends FallibleResponse {
     }
 
     public FetchCountryResponse(final List<Country> countries) {
-        this.countries = countries;
+        setCountries(countries);
     }
 
     /**
@@ -73,10 +75,10 @@ public final class FetchCountryResponse extends FallibleResponse {
     // =========================================================================
 
     public void setCountries(final List<Country> countries) {
-        this.countries = countries;
+        this.countries.addAll(countries);
     }
 
     public List<Country> getCountries() {
-        return countries;
+        return Verifications.immutableList(countries);
     }
 }

@@ -76,8 +76,7 @@ public final class AuthenticationResponse extends FallibleResponse {
         super(error, message);
 
         token = null;
-    }    //@StandardMethods(StandardMethods.For.NONE)
-
+    }
 
     // =========================================================================
     // Standard Setters & Getters

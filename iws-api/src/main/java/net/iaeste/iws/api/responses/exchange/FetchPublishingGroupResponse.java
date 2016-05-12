@@ -21,11 +21,13 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.dtos.exchange.PublishingGroup;
 import net.iaeste.iws.api.responses.FallibleResponse;
+import net.iaeste.iws.api.util.Verifications;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -41,7 +43,7 @@ public final class FetchPublishingGroupResponse extends FallibleResponse {
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     @XmlElement(required = true, nillable = true)
-    private List<PublishingGroup> publishingGroups = null;
+    private final List<PublishingGroup> publishingGroups = new ArrayList<>(0);
 
     // =========================================================================
     // Object Constructors
@@ -56,7 +58,7 @@ public final class FetchPublishingGroupResponse extends FallibleResponse {
     }
 
     public FetchPublishingGroupResponse(final List<PublishingGroup> publishingGroups) {
-        this.publishingGroups = publishingGroups;
+        setPublishingGroups(publishingGroups);
     }
 
     /**
@@ -74,10 +76,10 @@ public final class FetchPublishingGroupResponse extends FallibleResponse {
     // =========================================================================
 
     public void setPublishingGroups(final List<PublishingGroup> publishingGroups) {
-        this.publishingGroups = publishingGroups;
+        this.publishingGroups.addAll(publishingGroups);
     }
 
     public List<PublishingGroup> getPublishingGroups() {
-        return publishingGroups;
+        return Verifications.immutableList(publishingGroups);
     }
 }

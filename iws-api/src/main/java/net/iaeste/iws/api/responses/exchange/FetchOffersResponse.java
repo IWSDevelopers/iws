@@ -21,11 +21,13 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.responses.FallibleResponse;
+import net.iaeste.iws.api.util.Verifications;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -41,7 +43,7 @@ public final class FetchOffersResponse extends FallibleResponse {
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     @XmlElement(required = true, nillable = true)
-    private List<Offer> offers = null;
+    private final List<Offer> offers = new ArrayList<>(0);
 
     // =========================================================================
     // Object Constructors
@@ -61,7 +63,7 @@ public final class FetchOffersResponse extends FallibleResponse {
      * @param offers List of Offers found
      */
     public FetchOffersResponse(final List<Offer> offers) {
-        this.offers = offers;
+        setOffers(offers);
     }
 
     /**
@@ -79,10 +81,10 @@ public final class FetchOffersResponse extends FallibleResponse {
     // =========================================================================
 
     public void setOffers(final List<Offer> offers) {
-        this.offers = offers;
+        this.offers.addAll(offers);
     }
 
     public List<Offer> getOffers() {
-        return offers;
+        return Verifications.immutableList(offers);
     }
 }

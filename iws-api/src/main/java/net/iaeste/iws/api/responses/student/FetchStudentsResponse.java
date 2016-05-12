@@ -21,11 +21,13 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.dtos.exchange.Student;
 import net.iaeste.iws.api.responses.FallibleResponse;
+import net.iaeste.iws.api.util.Verifications;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -42,7 +44,7 @@ public final class FetchStudentsResponse extends FallibleResponse {
 
     /** The List of Students, matching the request. */
     @XmlElement(required = true, nillable = true)
-    private List<Student> students = null;
+    private final List<Student> students = new ArrayList<>(0);
 
     // =========================================================================
     // Object Constructors
@@ -62,7 +64,7 @@ public final class FetchStudentsResponse extends FallibleResponse {
      * @param students List of found Students
      */
     public FetchStudentsResponse(final List<Student> students) {
-        this.students = students;
+        setStudents(students);
     }
 
     /**
@@ -80,10 +82,10 @@ public final class FetchStudentsResponse extends FallibleResponse {
     // =========================================================================
 
     public void setStudents(final List<Student> students) {
-        this.students = students;
+        this.students.addAll(students);
     }
 
     public List<Student> getStudents() {
-        return students;
+        return Verifications.immutableList(students);
     }
 }

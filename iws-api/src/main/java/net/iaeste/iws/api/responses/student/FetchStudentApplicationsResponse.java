@@ -22,11 +22,13 @@ import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.exchange.StudentApplication;
 import net.iaeste.iws.api.responses.FallibleResponse;
+import net.iaeste.iws.api.util.Verifications;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -42,7 +44,7 @@ public final class FetchStudentApplicationsResponse extends FallibleResponse {
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     @XmlElement(required = true, nillable = true)
-    private List<StudentApplication> studentApplications;
+    private final List<StudentApplication> studentApplications = new ArrayList<>(0);
 
     // =========================================================================
     // Object Constructors
@@ -54,7 +56,6 @@ public final class FetchStudentApplicationsResponse extends FallibleResponse {
      */
     public FetchStudentApplicationsResponse() {
         super(IWSErrors.SUCCESS, IWSConstants.SUCCESS);
-        studentApplications = null;
     }
 
     /**
@@ -63,7 +64,7 @@ public final class FetchStudentApplicationsResponse extends FallibleResponse {
      * @param studentApplications List of Applications found
      */
     public FetchStudentApplicationsResponse(final List<StudentApplication> studentApplications) {
-        this.studentApplications = studentApplications;
+        setStudentApplications(studentApplications);
     }
 
     /**
@@ -74,8 +75,6 @@ public final class FetchStudentApplicationsResponse extends FallibleResponse {
      */
     public FetchStudentApplicationsResponse(final IWSError error, final String message) {
         super(error, message);
-
-        studentApplications = null;
     }
 
     // =========================================================================
@@ -83,10 +82,10 @@ public final class FetchStudentApplicationsResponse extends FallibleResponse {
     // =========================================================================
 
     public void setStudentApplications(final List<StudentApplication> studentApplications) {
-        this.studentApplications = studentApplications;
+        this.studentApplications.addAll(studentApplications);
     }
 
     public List<StudentApplication> getStudentApplications() {
-        return studentApplications;
+        return Verifications.immutableList(studentApplications);
     }
 }

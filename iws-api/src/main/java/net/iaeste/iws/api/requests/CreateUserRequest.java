@@ -129,7 +129,7 @@ public final class CreateUserRequest extends Verifications {
      * @see #USER_MAXIMUM_USERNAME
      * @see IWSConstants#EMAIL_PATTERN
      */
-    public void setUsername(final String username) throws IllegalArgumentException {
+    public void setUsername(final String username) {
         ensureNotNullOrEmptyOrTooLong("username", username, USER_MAXIMUM_USERNAME);
 
         if (!IWSConstants.EMAIL_PATTERN.matcher(username).matches()) {
@@ -184,7 +184,7 @@ public final class CreateUserRequest extends Verifications {
      * @throws IllegalArgumentException if the Firstname is invalid
      * @see #USER_MAXIMUM_FIRSTNAME
      */
-    public void setFirstname(final String firstname) throws IllegalArgumentException {
+    public void setFirstname(final String firstname) {
         ensureNotNullOrEmptyOrTooLong("firstname", firstname, USER_MAXIMUM_FIRSTNAME);
         this.firstname = firstname;
     }
@@ -207,7 +207,7 @@ public final class CreateUserRequest extends Verifications {
      * @throws IllegalArgumentException if the Lastname is invalid
      * @see #USER_MAXIMUM_LASTNAME
      */
-    public void setLastname(final String lastname) throws IllegalArgumentException {
+    public void setLastname(final String lastname) {
         ensureNotNullOrEmptyOrTooLong("lastname", lastname, USER_MAXIMUM_LASTNAME);
         this.lastname = lastname;
     }

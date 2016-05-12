@@ -45,8 +45,8 @@ public final class StudentApplicationRequest extends Verifications {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    @XmlElement(required = true, nillable = false) private String applicationId = null;
-    @XmlElement(required = true, nillable = false) private ApplicationStatus status = null;
+    @XmlElement(required = true)                  private String applicationId = null;
+    @XmlElement(required = true)                  private ApplicationStatus status = null;
     @XmlElement(required = true, nillable = true) private String rejectByEmployerReason = null;
     @XmlElement(required = true, nillable = true) private String rejectDescription = null;
     @XmlElement(required = true, nillable = true) private String rejectInternalComment = null;
@@ -79,7 +79,7 @@ public final class StudentApplicationRequest extends Verifications {
      * @param applicationId Student Application Id
      * @throws IllegalArgumentException if not a valid Id
      */
-    public void setApplicationId(final String applicationId) throws IllegalArgumentException {
+    public void setApplicationId(final String applicationId) {
         ensureNotNullAndValidId("applicationId", applicationId);
         this.applicationId = applicationId;
     }
@@ -96,7 +96,7 @@ public final class StudentApplicationRequest extends Verifications {
      * @param status Student Application Status
      * @throws IllegalArgumentException if set to null
      */
-    public void setStatus(final ApplicationStatus status) throws IllegalArgumentException {
+    public void setStatus(final ApplicationStatus status) {
         ensureNotNull("status", status);
         this.status = status;
     }

@@ -20,11 +20,13 @@ package net.iaeste.iws.api.responses;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.dtos.UserGroup;
+import net.iaeste.iws.api.util.Verifications;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -40,7 +42,7 @@ public final class SearchUserResponse extends FallibleResponse {
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     @XmlElement(required = true, nillable = true)
-    private List<UserGroup> users = null;
+    private final List<UserGroup> users = new ArrayList<>(0);
 
     // =========================================================================
     // Object Constructors
@@ -60,7 +62,7 @@ public final class SearchUserResponse extends FallibleResponse {
      * @param users List of found Users With their Member Group information
      */
     public SearchUserResponse(final List<UserGroup> users) {
-        this.users = users;
+        setUsers(users);
     }
 
     /**
@@ -77,11 +79,11 @@ public final class SearchUserResponse extends FallibleResponse {
     // Standard Setters & Getters
     // =========================================================================
 
-    public List<UserGroup> getUsers() {
-        return users;
+    public void setUsers(final List<UserGroup> users) {
+        this.users.addAll(users);
     }
 
-    public void setUsers(final List<UserGroup> users) {
-        this.users = users;
+    public List<UserGroup> getUsers() {
+        return Verifications.immutableList(users);
     }
 }

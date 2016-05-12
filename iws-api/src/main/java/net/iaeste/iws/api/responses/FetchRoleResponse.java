@@ -20,11 +20,13 @@ package net.iaeste.iws.api.responses;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.dtos.Role;
+import net.iaeste.iws.api.util.Verifications;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -41,7 +43,7 @@ public final class FetchRoleResponse extends FallibleResponse {
 
     /** The List of Roles, matching the request. */
     @XmlElement(required = true, nillable = true)
-    private List<Role> roles = null;
+    private final List<Role> roles = new ArrayList<>(0);
 
     // =========================================================================
     // Object Constructors
@@ -61,7 +63,7 @@ public final class FetchRoleResponse extends FallibleResponse {
      * @param roles List of Roles
      */
     public FetchRoleResponse(final List<Role> roles) {
-        this.roles = roles;
+        setRoles(roles);
     }
 
     /**
@@ -79,10 +81,10 @@ public final class FetchRoleResponse extends FallibleResponse {
     // =========================================================================
 
     public void setRoles(final List<Role> roles) {
-        this.roles = roles;
+        this.roles.addAll(roles);
     }
 
     public List<Role> getRoles() {
-        return roles;
+        return Verifications.immutableList(roles);
     }
 }

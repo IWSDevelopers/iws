@@ -21,11 +21,13 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.UserGroup;
+import net.iaeste.iws.api.util.Verifications;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -41,9 +43,9 @@ public final class FetchGroupResponse extends FallibleResponse {
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     @XmlElement(required = true, nillable = true) private Group group = null;
-    @XmlElement(required = true, nillable = true) private List<UserGroup> members = null;
-    @XmlElement(required = true, nillable = true) private List<UserGroup> students = null;
-    @XmlElement(required = true, nillable = true) private List<Group> subGroups = null;
+    @XmlElement(required = true, nillable = true) private final List<UserGroup> members = new ArrayList<>(0);
+    @XmlElement(required = true, nillable = true) private final List<UserGroup> students = new ArrayList<>(0);
+    @XmlElement(required = true, nillable = true) private final List<Group> subGroups = new ArrayList<>(0);
 
     // =========================================================================
     // Object Constructors
@@ -67,8 +69,8 @@ public final class FetchGroupResponse extends FallibleResponse {
      */
     public FetchGroupResponse(final Group group, final List<UserGroup> members, final List<Group> subGroups) {
         this.group = group;
-        this.members = members;
-        this.subGroups = subGroups;
+        setMembers(members);
+        setSubGroups(subGroups);
     }
 
     /**
@@ -90,30 +92,30 @@ public final class FetchGroupResponse extends FallibleResponse {
     }
 
     public Group getGroup() {
-        return new Group(group);
+        return group;
     }
 
     public void setMembers(final List<UserGroup> members) {
-        this.members = members;
+        this.members.addAll(members);
     }
 
     public List<UserGroup> getMembers() {
-        return members;
+        return Verifications.immutableList(members);
     }
 
     public void setStudents(final List<UserGroup> students) {
-        this.students = students;
+        this.students.addAll(students);
     }
 
     public List<UserGroup> getStudents() {
-        return students;
+        return Verifications.immutableList(students);
     }
 
     public void setSubGroups(final List<Group> subGroups) {
-        this.subGroups = subGroups;
+        this.subGroups.addAll(subGroups);
     }
 
     public List<Group> getSubGroups() {
-        return subGroups;
+        return Verifications.immutableList(subGroups);
     }
 }

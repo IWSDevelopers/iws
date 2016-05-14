@@ -20,14 +20,17 @@ package net.iaeste.iws.api.requests;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.User;
+import net.iaeste.iws.api.enums.Action;
 import net.iaeste.iws.api.util.Verifications;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -35,15 +38,21 @@ import java.util.Map;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "ownerRequest", propOrder = { "group", "user", "title" })
-public final class OwnerRequest extends Verifications {
+@XmlType(name = "ownerRequest", propOrder = { "group", "user", "title", "action" })
+public final class OwnerRequest extends Verifications implements Actionable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    @XmlElement(required = true, nillable = false) private Group group = null;
-    @XmlElement(required = true, nillable = false) private User user = null;
+    /** Default allowed Actions for the Process UserGroup Requests. */
+    private static final Set<Action> ALLOWED = EnumSet.of(Action.UPDATE);
+
+    @XmlElement(required = true)                   private Group group = null;
+    @XmlElement(required = true)                   private User user = null;
     @XmlElement(required = true, nillable = true)  private String title = null;
+
+    /** Action to perform for the given Owner Change. */
+    @XmlElement(required = true) private Action action = Action.UPDATE;
 
     // =========================================================================
     // Object Constructors
@@ -104,9 +113,34 @@ public final class OwnerRequest extends Verifications {
         return title;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setAction(final Action action) {
+        ensureNotNullAndContains("action", action, ALLOWED);
+        this.action = action;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Action getAction() {
+        return action;
+    }
+
     // =========================================================================
     // Standard Request Methods
     // =========================================================================
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Set<Action> allowedActions() {
+        return immutableSet(ALLOWED);
+    }
 
     /**
      * {@inheritDoc}
@@ -117,6 +151,7 @@ public final class OwnerRequest extends Verifications {
 
         isNotNull(validation, "group", group);
         isNotNull(validation, "user", user);
+        isNotNull(validation, "action", action);
 
         return validation;
     }

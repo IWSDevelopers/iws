@@ -67,36 +67,36 @@ public final class Offer extends Verifications {
     private static final String FIELD_FIELD_OF_STUDIES = "fieldOfStudies";
 
     @XmlElement(required = true, nillable = true)  private String offerId = null;
-    @XmlElement(required = true, nillable = false) private String refNo = null;
-    @XmlElement(required = true, nillable = false) private OfferType offerType = OfferType.OPEN;
+    @XmlElement(required = true)                   private String refNo = null;
+    @XmlElement(required = true)                   private OfferType offerType = OfferType.OPEN;
     // Defaulting to IW, as COBE is causing problems for Reserved Offers
     @XmlElement(required = true, nillable = true)  private ExchangeType exchangeType = ExchangeType.IW;
 
     @XmlElement(required = true, nillable = true)  private String oldRefNo = null;
 
     // General Work Description
-    @XmlElement(required = true, nillable = false) private Employer employer = null;
-    @XmlElement(required = true, nillable = false) private String workDescription = null;
-    @XmlElement(required = true, nillable = false) private TypeOfWork typeOfWork = null;
-    @XmlElement(required = true, nillable = false) private Float weeklyHours = null;
+    @XmlElement(required = true)                   private Employer employer = null;
+    @XmlElement(required = true)                   private String workDescription = null;
+    @XmlElement(required = true)                   private TypeOfWork typeOfWork = null;
+    @XmlElement(required = true)                   private Float weeklyHours = null;
     @XmlElement(required = true, nillable = true)  private Float dailyHours = null;
     @XmlElement(required = true, nillable = true)  private Float weeklyWorkDays = null;
-    @XmlElement(required = true, nillable = false) private Set<StudyLevel> studyLevels = EnumSet.noneOf(StudyLevel.class);
+    @XmlElement(required = true)                   private Set<StudyLevel> studyLevels = EnumSet.noneOf(StudyLevel.class);
     @XmlElement(required = true, nillable = true)  private Set<FieldOfStudy> fieldOfStudies = EnumSet.noneOf(FieldOfStudy.class);
     @XmlElement(required = true, nillable = true)  private Set<String> specializations = new HashSet<>(1);
     @XmlElement(required = true, nillable = true)  private Boolean previousTrainingRequired = null;
     @XmlElement(required = true, nillable = true)  private String otherRequirements = null;
 
     // DatePeriod for the Offer
-    @XmlElement(required = true, nillable = false) private Integer minimumWeeks = null;
-    @XmlElement(required = true, nillable = false) private Integer maximumWeeks = null;
-    @XmlElement(required = true, nillable = false) private DatePeriod period1 = null;
+    @XmlElement(required = true)                   private Integer minimumWeeks = null;
+    @XmlElement(required = true)                   private Integer maximumWeeks = null;
+    @XmlElement(required = true)                   private DatePeriod period1 = null;
     @XmlElement(required = true, nillable = true)  private DatePeriod period2 = null;
     @XmlElement(required = true, nillable = true)  private DatePeriod unavailable = null;
 
     // Language restrictions
-    @XmlElement(required = true, nillable = false) private Language language1 = null;
-    @XmlElement(required = true, nillable = false) private LanguageLevel language1Level = null;
+    @XmlElement(required = true)                   private Language language1 = null;
+    @XmlElement(required = true)                   private LanguageLevel language1Level = null;
     @XmlElement(required = true, nillable = true)  private LanguageOperator language1Operator = null;
     @XmlElement(required = true, nillable = true)  private Language language2 = null;
     @XmlElement(required = true, nillable = true)  private LanguageLevel language2Level = null;

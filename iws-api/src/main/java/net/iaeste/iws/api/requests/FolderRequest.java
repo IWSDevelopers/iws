@@ -37,30 +37,27 @@ import java.util.Set;
  * @since   IWS 1.1
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "folderRequest", propOrder = { "action", "parentId", "folder" })
+@XmlType(name = "folderRequest", propOrder = { "parentId", "folder", "action" })
 public final class FolderRequest extends Verifications implements Actionable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     /** Default allowed Actions for the Folder Request. */
-    private static final Set<Action> allowed = EnumSet.of(Action.PROCESS, Action.MOVE, Action.DELETE);
-
-    /** Action to perform against the given Folder. */
-    @XmlElement(required = true, nillable = false)
-    private Action action = Action.PROCESS;
+    private static final Set<Action> ALLOWED = EnumSet.of(Action.PROCESS, Action.MOVE, Action.DELETE);
 
     /**
      * The Id of the Parent Folder, if nothing given - the Group's root folder
      * is used. This value is used when creating new Folders and when moving
      * Folders.
      */
-    @XmlElement(required = true, nillable = true)
-    private String parentId = null;
+    @XmlElement(required = true, nillable = true)  private String parentId = null;
 
     /** The Folder Object to process. */
-    @XmlElement(required = true, nillable = true)
-    private Folder folder = null;
+    @XmlElement(required = true, nillable = true)  private Folder folder = null;
+
+    /** Action to perform against the given Folder. */
+    @XmlElement(required = true)                   private Action action = Action.PROCESS;
 
     // =========================================================================
     // Object Constructors
@@ -81,35 +78,6 @@ public final class FolderRequest extends Verifications implements Actionable {
      */
     public FolderRequest(final Folder folder) {
         setFolder(folder);
-    }
-
-    // =========================================================================
-    // Implementation of the Actionable Interface
-    // =========================================================================
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Set<Action> allowedActions() {
-        return allowed;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setAction(final Action action) {
-        ensureNotNullAndContains("action", action, allowed);
-        this.action = action;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Action getAction() {
-        return action;
     }
 
     // =========================================================================
@@ -147,9 +115,34 @@ public final class FolderRequest extends Verifications implements Actionable {
         return parentId;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setAction(final Action action) {
+        ensureNotNullAndContains("action", action, ALLOWED);
+        this.action = action;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Action getAction() {
+        return action;
+    }
+
     // =========================================================================
     // Standard Request Methods
     // =========================================================================
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Set<Action> allowedActions() {
+        return immutableSet(ALLOWED);
+    }
 
     /**
      * {@inheritDoc}

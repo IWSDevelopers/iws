@@ -41,7 +41,7 @@ public final class GroupRequest extends Verifications {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    @XmlElement(required = true, nillable = false) private Group group = null;
+    @XmlElement(required = true)                   private Group group = null;
     @XmlElement(required = true, nillable = true)  private User user = null;
 
     // =========================================================================

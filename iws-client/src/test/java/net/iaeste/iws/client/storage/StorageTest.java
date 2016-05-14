@@ -147,7 +147,8 @@ public final class StorageTest extends AbstractTest {
         file.setMimetype("text/plain");
 
         // Create new file
-        final FileRequest createRequest = new FileRequest(file);
+        final FileRequest createRequest = new FileRequest();
+        createRequest.setFile(file);
         final Group nationalGroup = findNationalGroup(token);
         token.setGroupId(nationalGroup.getGroupId());
         final FileResponse response = storage.processFile(token, createRequest);
@@ -167,7 +168,8 @@ public final class StorageTest extends AbstractTest {
         assertThat(fetchResponseForUser.getFile().getChecksum(), is(response.getFile().getChecksum()));
 
         // Update the file
-        final FileRequest updateRequest = new FileRequest(file);
+        final FileRequest updateRequest = new FileRequest();
+        updateRequest.setFile(file);
         file.setFileId(fetchResponseForGroup.getFile().getFileId());
         file.setFiledata(testData2);
         updateRequest.setFile(file);
@@ -181,7 +183,8 @@ public final class StorageTest extends AbstractTest {
         assertThat(fetchUpdatedFile.getFile().getFiledata(), is(testData2));
 
         // Delete the File
-        final FileRequest deleteRequest = new FileRequest(response.getFile());
+        final FileRequest deleteRequest = new FileRequest();
+        deleteRequest.setFile(response.getFile());
         deleteRequest.setAction(Action.DELETE);
         token.setGroupId(nationalGroup.getGroupId());
         final FileResponse deleteResponse = storage.processFile(token, deleteRequest);

@@ -60,7 +60,7 @@ public abstract class Verifications implements Verifiable {
     private static final String ERROR_ILLEGAL_VALUES = "The field %s contain illegal value %s.";
     private static final String ERROR_DELIMITER_FOUND = "THe field %s contains the internally used delimiter '%s'.";
     private static final String ERROR_INVALID = "The field %s is invalid.";
-    private static final String ERROR_INVALID_IDENTIFIER = "The field %s is not a valid Identifier as it neither matches an IWS Id or Offer Reference Number.";
+    private static final String ERROR_INVALID_IDENTIFIER = "The field %s is not a valid Identifier.";
     private static final String ERROR_INVALID_REGEX = "The field %s does not follow the required format %s.";
     private static final String ERROR_NOT_VERIFABLE = "The field %s is not verifiable.";
     private static final String ERROR_INVALID_EMAIL = "The e-mail address %s (%s) is invalid.";

@@ -41,7 +41,7 @@ public final class SearchUserRequest extends Verifications {
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     @XmlElement(required = true, nillable = true)  private Group group = null;
-    @XmlElement(required = true, nillable = false) private String name = null;
+    @XmlElement(required = true)                   private String name = null;
 
     // =========================================================================
     // Object Constructors

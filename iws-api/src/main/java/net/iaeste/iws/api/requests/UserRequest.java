@@ -47,7 +47,7 @@ public final class UserRequest extends Verifications {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    @XmlElement(required = true, nillable = false) private User user = null;
+    @XmlElement(required = true)                   private User user = null;
     @XmlElement(required = true, nillable = true)  private UserStatus newStatus = null;
     @XmlElement(required = true, nillable = true)  private String newUsername = null;
     @XmlElement(required = true, nillable = true)  private String newPassword = null;

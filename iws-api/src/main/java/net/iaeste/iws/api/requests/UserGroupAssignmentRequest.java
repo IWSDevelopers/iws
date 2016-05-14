@@ -44,17 +44,13 @@ public final class UserGroupAssignmentRequest extends Verifications implements A
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     /** Default allowed Actions for the Process UserGroup Requests. */
-    private static final Set<Action> allowed = EnumSet.of(Action.PROCESS, Action.DELETE);
+    private static final Set<Action> ALLOWED = EnumSet.of(Action.PROCESS, Action.DELETE);
 
-    /**
-     * User Group Relationship to process.
-     */
-    @XmlElement(required = true, nillable = false)
-    private UserGroup userGroup = null;
+    /** User Group Relationship to process. */
+    @XmlElement(required = true) private UserGroup userGroup = null;
 
-    /** Action to perform against the given Folder. */
-    @XmlElement(required = true, nillable = false)
-    private Action action = Action.PROCESS;
+    /** Action to perform against the given User Group Relation. */
+    @XmlElement(required = true) private Action action = Action.PROCESS;
 
     // =========================================================================
     // Object Constructors
@@ -78,35 +74,6 @@ public final class UserGroupAssignmentRequest extends Verifications implements A
     }
 
     // =========================================================================
-    // Implementation of the Actionable Interface
-    // =========================================================================
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Set<Action> allowedActions() {
-        return allowed;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setAction(final Action action) {
-        ensureNotNullAndContains("action", action, allowed);
-        this.action = action;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Action getAction() {
-        return action;
-    }
-
-    // =========================================================================
     // Standard Setters & Getters
     // =========================================================================
 
@@ -119,9 +86,34 @@ public final class UserGroupAssignmentRequest extends Verifications implements A
         return new UserGroup(userGroup);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setAction(final Action action) {
+        ensureNotNullAndContains("action", action, ALLOWED);
+        this.action = action;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Action getAction() {
+        return action;
+    }
+
     // =========================================================================
     // Standard Request Methods
     // =========================================================================
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Set<Action> allowedActions() {
+        return immutableSet(ALLOWED);
+    }
 
     /**
      * {@inheritDoc}

@@ -20,7 +20,6 @@ package net.iaeste.iws.api.requests;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.dtos.CountrySurvey;
 import net.iaeste.iws.api.enums.Action;
-import net.iaeste.iws.api.util.Verifications;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -29,7 +28,6 @@ import javax.xml.bind.annotation.XmlType;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -37,43 +35,24 @@ import java.util.Set;
  * @since   IWS 1.1
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "countrySurveyRequest", propOrder = {"survey", "action"})
-public final class CountrySurveyRequest extends Verifications implements Actionable {
+@XmlType(name = "countrySurveyRequest", propOrder = "survey")
+public final class CountrySurveyRequest extends Actions {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    /** Default allowed Actions for the Committee Request. */
-    private static final Set<Action> ALLOWED = EnumSet.of(Action.PROCESS);
-
     @XmlElement(required = true)
     private CountrySurvey survey = null;
-
-    /**
-     * <p>Action to perform on a Country Survey, by default we're assuming
-     * that it must be processed, i.e. either created or updated.</p>
-     */
-    @XmlElement(required = true) private Action action = Action.PROCESS;
 
     // =========================================================================
     // Object Constructors
     // =========================================================================
 
     /**
-     * Empty Constructor, to use if the setters are invoked. This is required
-     * for WebServices to work properly.
+     * Default Constructor.
      */
     public CountrySurveyRequest() {
-        // Required for WebServices to work. Comment added to please Sonar.
-    }
-
-    /**
-     * Default Constructor,
-     *
-     * @param survey Survey Of Country Object to process
-     */
-    public CountrySurveyRequest(final CountrySurvey survey) {
-        setSurvey(survey);
+        super(EnumSet.of(Action.PROCESS), Action.PROCESS);
     }
 
     // =========================================================================
@@ -89,34 +68,9 @@ public final class CountrySurveyRequest extends Verifications implements Actiona
         return survey;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setAction(final Action action) {
-        ensureNotNullAndContains("action", action, ALLOWED);
-        this.action = action;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Action getAction() {
-        return action;
-    }
-
     // =========================================================================
     // Standard Request Methods
     // =========================================================================
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Set<Action> allowedActions() {
-        return immutableSet(ALLOWED);
-    }
 
     /**
      * {@inheritDoc}
@@ -126,7 +80,7 @@ public final class CountrySurveyRequest extends Verifications implements Actiona
         final Map<String, String> validation = new HashMap<>(1);
 
         isNotNull(validation, "survey", survey);
-        isNotNull(validation, "action", action);
+        isNotNull(validation, FIELD_ACTION, action);
 
         return validation;
     }

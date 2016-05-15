@@ -22,7 +22,6 @@ import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.User;
 import net.iaeste.iws.api.enums.Action;
 import net.iaeste.iws.api.enums.GroupType;
-import net.iaeste.iws.api.util.Verifications;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -31,7 +30,6 @@ import javax.xml.bind.annotation.XmlType;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -39,14 +37,13 @@ import java.util.Set;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "committeeRequest", propOrder = { "countryCode", "institutionName", "institutionAbbreviation", "firstname", "lastname", "username", "nationalCommittee", "nationalSecretary", "action" })
-public final class CommitteeRequest extends Verifications implements Actionable {
+@XmlType(name = "committeeRequest", propOrder = { "countryCode", "institutionName", "institutionAbbreviation", "firstname", "lastname", "username", "nationalCommittee", "nationalSecretary" })
+public final class CommitteeRequest extends Actions {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     /** Default allowed Actions for the Committee Request. */
-    private static final Set<Action> ALLOWED = EnumSet.of(Action.CREATE, Action.CHANGE_NS, Action.UPDATE, Action.MERGE, Action.UPGRADE, Action.ACTIVATE, Action.SUSPEND, Action.DELETE);
     private static final String FIELD_CC = "countryCode";
     private static final String FIELD_NAME = "institutionName";
     private static final String FIELD_ABBREVIATION = "institutionAbbreviation";
@@ -55,7 +52,6 @@ public final class CommitteeRequest extends Verifications implements Actionable 
     private static final String FIELD_LASTNAME = "lastname";
     private static final String FIELD_NC = "nationalCommittee";
     private static final String FIELD_NS = "nationalSecretary";
-    private static final String FIELD_ACTION = "action";
 
     /** The Id of the Country to create a new Cooperating Institution for. */
     @XmlElement(required = true, nillable = true) private String countryCode = null;
@@ -74,33 +70,15 @@ public final class CommitteeRequest extends Verifications implements Actionable 
     /** New National Secretary for a given Committee. */
     @XmlElement(required = true, nillable = true) private User nationalSecretary = null;
 
-    /**
-     * <p>Action to perform on a Committee, by default we're assuming that it
-     * must be updated, i.e. that the National Secretary must be set.</p>
-     */
-    @XmlElement(required = true) private Action action = Action.CHANGE_NS;
-
     // =========================================================================
     // Object Constructors
     // =========================================================================
 
     /**
-     * <p>Empty Constructor, to use if the setters are invoked. This is required
-     * for WebServices to work properly.</p>
+     * Default Constructor.
      */
     public CommitteeRequest() {
-        // Required for WebServices to work. Comment added to please Sonar.
-    }
-
-    /**
-     * <p>Default Constructor, sets the type of Action to perform for the given
-     * Committee.</p>
-     *
-     * @param action Action to perform
-     * @throws IllegalArgumentException if the action is null or not allowed
-     */
-    public CommitteeRequest(final Action action) {
-        setAction(action);
+        super(EnumSet.of(Action.CREATE, Action.CHANGE_NS, Action.UPDATE, Action.MERGE, Action.UPGRADE, Action.ACTIVATE, Action.SUSPEND, Action.DELETE), Action.CHANGE_NS);
     }
 
     // =========================================================================
@@ -231,34 +209,9 @@ public final class CommitteeRequest extends Verifications implements Actionable 
         return nationalSecretary;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setAction(final Action action) {
-        ensureNotNullAndContains(FIELD_ACTION, action, ALLOWED);
-        this.action = action;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Action getAction() {
-        return action;
-    }
-
     // =========================================================================
     // Standard Request Methods
     // =========================================================================
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Set<Action> allowedActions() {
-        return immutableSet(ALLOWED);
-    }
 
     /**
      * {@inheritDoc}

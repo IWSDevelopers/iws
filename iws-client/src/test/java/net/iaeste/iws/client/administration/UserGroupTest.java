@@ -98,7 +98,8 @@ public final class UserGroupTest extends AbstractAdministration {
         userGroup.setGroup(nationalGroup);
         userGroup.setUser(createUserResponse.getUser());
         userGroup.setRole(fetchRoleResponse.getRoles().get(1));
-        final UserGroupAssignmentRequest request = new UserGroupAssignmentRequest(userGroup);
+        final UserGroupAssignmentRequest request = new UserGroupAssignmentRequest();
+        request.setUserGroup(userGroup);
         final Fallible response = administration.processUserGroupAssignment(token, request);
         assertThat(response, is(not(nullValue())));
         assertThat(response.isOk(), is(true));
@@ -112,10 +113,12 @@ public final class UserGroupTest extends AbstractAdministration {
 
     @Test
     public void testChangingOwnershipOfLocalCommittee() {
-        final User user = createAndActiveUser(token, "alfa@iaeste.dk", "Alfa", "Beta");
+        final User user = createAndActiveUser(token, "alpha@iaeste.dk", "Alpha", "Beta");
         final Group group = createGroup(token, GroupType.LOCAL, "LC Copenhagen");
 
-        final OwnerRequest request = new OwnerRequest(group, user);
+        final OwnerRequest request = new OwnerRequest();
+        request.setGroup(group);
+        request.setUser(user);
         final Fallible response = administration.changeGroupOwner(token, request);
         assertThat(response, is(not(nullValue())));
         assertThat(response.isOk(), is(true));
@@ -148,7 +151,9 @@ public final class UserGroupTest extends AbstractAdministration {
         final Group group = findNationalGroup(alternativeToken);
 
         // Change the Owner
-        final OwnerRequest request = new OwnerRequest(group, user);
+        final OwnerRequest request = new OwnerRequest();
+        request.setGroup(group);
+        request.setUser(user);
         final Fallible response = administration.changeGroupOwner(alternativeToken, request);
         assertThat(response, is(not(nullValue())));
         assertThat(response.isOk(), is(true));
@@ -184,10 +189,12 @@ public final class UserGroupTest extends AbstractAdministration {
 
     @Test
     public void testChangingNationalSecretaryToNewMember() {
-        final User user = createUser(token, "beta@iaeste.dk", "Beta", "Alfa");
+        final User user = createUser(token, "beta@iaeste.dk", "Beta", "Alpha");
         final Group group = findNationalGroup(token);
 
-        final OwnerRequest request = new OwnerRequest(group, user);
+        final OwnerRequest request = new OwnerRequest();
+        request.setGroup(group);
+        request.setUser(user);
         final Fallible response = administration.changeGroupOwner(token, request);
         assertThat(response, is(not(nullValue())));
         assertThat(response.isOk(), is(false));
@@ -204,7 +211,9 @@ public final class UserGroupTest extends AbstractAdministration {
         final Group group = findNationalGroup(alternativeToken);
 
         // Change the Owner
-        final OwnerRequest request = new OwnerRequest(group, user);
+        final OwnerRequest request = new OwnerRequest();
+        request.setGroup(group);
+        request.setUser(user);
         final Fallible response = administration.changeGroupOwner(alternativeToken, request);
         assertThat(response, is(not(nullValue())));
         assertThat(response.isOk(), is(true));
@@ -235,7 +244,9 @@ public final class UserGroupTest extends AbstractAdministration {
         final Group group = groupResponse.getGroup();
         final UserGroup user = groupResponse.getMembers().get(0);
 
-        final OwnerRequest request = new OwnerRequest(group, user.getUser());
+        final OwnerRequest request = new OwnerRequest();
+        request.setGroup(group);
+        request.setUser(user.getUser());
         final Fallible response = administration.changeGroupOwner(token, request);
         assertThat(response, is(not(nullValue())));
         assertThat(response.isOk(), is(false));
@@ -250,7 +261,9 @@ public final class UserGroupTest extends AbstractAdministration {
         logout(newToken);
         final Group group = findNationalGroup(token);
 
-        final OwnerRequest request = new OwnerRequest(group, user);
+        final OwnerRequest request = new OwnerRequest();
+        request.setGroup(group);
+        request.setUser(user);
         final Fallible response = administration.changeGroupOwner(token, request);
         assertThat(response, is(not(nullValue())));
         assertThat(response.isOk(), is(false));

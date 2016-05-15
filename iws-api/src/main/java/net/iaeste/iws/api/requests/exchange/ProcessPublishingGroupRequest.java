@@ -20,8 +20,7 @@ package net.iaeste.iws.api.requests.exchange;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.dtos.exchange.PublishingGroup;
 import net.iaeste.iws.api.enums.Action;
-import net.iaeste.iws.api.requests.Actionable;
-import net.iaeste.iws.api.util.Verifications;
+import net.iaeste.iws.api.requests.Actions;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -30,7 +29,6 @@ import javax.xml.bind.annotation.XmlType;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -38,29 +36,25 @@ import java.util.Set;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "processPublishingGroupRequest", propOrder = { "publishingGroup", "publishingGroupId", "action" })
-public final class ProcessPublishingGroupRequest extends Verifications implements Actionable {
+@XmlType(name = "processPublishingGroupRequest", propOrder = { "publishingGroup", "publishingGroupId" })
+public final class ProcessPublishingGroupRequest extends Actions {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    private static final String ACTION_FIELD = "action";
-
-    /** Default allowed Actions for the Committee Request. */
-    private static final Set<Action> ALLOWED = EnumSet.of(Action.PROCESS, Action.DELETE);
-
     @XmlElement(required = true, nillable = true) private PublishingGroup publishingGroup = null;
     @XmlElement(required = true, nillable = true) private String publishingGroupId = null;
-
-    /**
-     * <p>Action to perform on a PublishingGroup, by default we're assuming that
-     * it must be processed, i.e. either saved or updated.</p>
-     */
-    @XmlElement(required = true) private Action action = Action.PROCESS;
 
     // =========================================================================
     // Object Constructors
     // =========================================================================
+
+    /**
+     * Default Constructor.
+     */
+    public ProcessPublishingGroupRequest() {
+        super(EnumSet.of(Action.PROCESS, Action.DELETE), Action.PROCESS);
+    }
 
     // =========================================================================
     // Standard Setters & Getters
@@ -100,23 +94,6 @@ public final class ProcessPublishingGroupRequest extends Verifications implement
         return publishingGroupId;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setAction(final Action action) {
-        ensureNotNullAndContains(ACTION_FIELD, action, ALLOWED);
-        this.action = action;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Action getAction() {
-        return action;
-    }
-
     // =========================================================================
     // Standard Request Methods
     // =========================================================================
@@ -125,18 +102,10 @@ public final class ProcessPublishingGroupRequest extends Verifications implement
      * {@inheritDoc}
      */
     @Override
-    public Set<Action> allowedActions() {
-        return immutableSet(ALLOWED);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(0);
 
-        isNotNull(validation, ACTION_FIELD, action);
+        isNotNull(validation, FIELD_ACTION, action);
         if (action != null) {
             switch (action) {
                 case PROCESS:
@@ -149,7 +118,7 @@ public final class ProcessPublishingGroupRequest extends Verifications implement
                     isNotNull(validation, "publishingGroupId", publishingGroupId);
                     break;
                 default:
-                    validation.put(ACTION_FIELD, "The Action '" + action + "' is not allowed");
+                    validation.put(FIELD_ACTION, "The Action '" + action + "' is not allowed");
             }
         }
 

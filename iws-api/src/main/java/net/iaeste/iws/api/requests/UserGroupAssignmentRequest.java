@@ -20,7 +20,6 @@ package net.iaeste.iws.api.requests;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.dtos.UserGroup;
 import net.iaeste.iws.api.enums.Action;
-import net.iaeste.iws.api.util.Verifications;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -29,7 +28,6 @@ import javax.xml.bind.annotation.XmlType;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -37,40 +35,24 @@ import java.util.Set;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "userGroupAssignmentRequest", propOrder = { "userGroup", "action" })
-public final class UserGroupAssignmentRequest extends Verifications implements Actionable {
+@XmlType(name = "userGroupAssignmentRequest", propOrder = "userGroup")
+public final class UserGroupAssignmentRequest extends Actions {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    /** Default allowed Actions for the Process UserGroup Requests. */
-    private static final Set<Action> ALLOWED = EnumSet.of(Action.PROCESS, Action.DELETE);
-
     /** User Group Relationship to process. */
     @XmlElement(required = true) private UserGroup userGroup = null;
-
-    /** Action to perform against the given User Group Relation. */
-    @XmlElement(required = true) private Action action = Action.PROCESS;
 
     // =========================================================================
     // Object Constructors
     // =========================================================================
 
     /**
-     * Empty Constructor, to use if the setters are invoked. This is required
-     * for WebServices to work properly.
+     * Default Constructor.
      */
     public UserGroupAssignmentRequest() {
-        // Required for WebServices to work. Comment added to please Sonar.
-    }
-
-    /**
-     * Default Constructor.
-     *
-     * @param userGroup User Group relation
-     */
-    public UserGroupAssignmentRequest(final UserGroup userGroup) {
-        setUserGroup(userGroup);
+        super(EnumSet.of(Action.PROCESS, Action.DELETE), Action.PROCESS);
     }
 
     // =========================================================================
@@ -86,34 +68,9 @@ public final class UserGroupAssignmentRequest extends Verifications implements A
         return new UserGroup(userGroup);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setAction(final Action action) {
-        ensureNotNullAndContains("action", action, ALLOWED);
-        this.action = action;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Action getAction() {
-        return action;
-    }
-
     // =========================================================================
     // Standard Request Methods
     // =========================================================================
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Set<Action> allowedActions() {
-        return immutableSet(ALLOWED);
-    }
 
     /**
      * {@inheritDoc}
@@ -123,7 +80,7 @@ public final class UserGroupAssignmentRequest extends Verifications implements A
         final Map<String, String> validation = new HashMap<>(0);
 
         isNotNull(validation, "userGroup", userGroup);
-        isNotNull(validation, "action", action);
+        isNotNull(validation, FIELD_ACTION, action);
 
         return validation;
     }

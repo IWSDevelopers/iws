@@ -20,7 +20,6 @@ package net.iaeste.iws.api.requests;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.dtos.Country;
 import net.iaeste.iws.api.enums.Action;
-import net.iaeste.iws.api.util.Verifications;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -29,7 +28,6 @@ import javax.xml.bind.annotation.XmlType;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -37,43 +35,24 @@ import java.util.Set;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "countryRequest", propOrder = {"country", "action"})
-public final class CountryRequest extends Verifications implements Actionable {
+@XmlType(name = "countryRequest", propOrder = "country")
+public final class CountryRequest extends Actions {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    /** Default allowed Actions for the Country Request. */
-    private static final Set<Action> ALLOWED = EnumSet.of(Action.PROCESS);
-
     @XmlElement(required = true)
     private Country country = null;
-
-    /**
-     * <p>Action to perform on a Country, by default we're assuming that it
-     * should be processed, i.e. either created or updated.</p>
-     */
-    @XmlElement(required = true) private Action action = Action.PROCESS;
 
     // =========================================================================
     // Object Constructors
     // =========================================================================
 
     /**
-     * Empty Constructor, to use if the setters are invoked. This is required
-     * for WebServices to work properly.
+     * Default Constructor.
      */
     public CountryRequest() {
-        // Required for WebServices to work. Comment added to please Sonar.
-    }
-
-    /**
-     * Default Constructor, for creating or updating a country.
-     *
-     * @param country Country Object
-     */
-    public CountryRequest(final Country country) {
-        setCountry(country);
+        super(EnumSet.of(Action.PROCESS), Action.PROCESS);
     }
 
     // =========================================================================
@@ -104,34 +83,9 @@ public final class CountryRequest extends Verifications implements Actionable {
         return new Country(country);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setAction(final Action action) {
-        ensureNotNullAndContains("action", action, ALLOWED);
-        this.action = action;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Action getAction() {
-        return action;
-    }
-
     // =========================================================================
     // Standard Request Methods
     // =========================================================================
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Set<Action> allowedActions() {
-        return immutableSet(ALLOWED);
-    }
 
     /**
      * {@inheritDoc}

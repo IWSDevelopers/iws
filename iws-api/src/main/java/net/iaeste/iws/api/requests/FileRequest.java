@@ -21,17 +21,14 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.dtos.File;
 import net.iaeste.iws.api.enums.Action;
 import net.iaeste.iws.api.enums.StorageType;
-import net.iaeste.iws.api.util.Verifications;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
-import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -39,21 +36,14 @@ import java.util.Set;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "fileRequest", propOrder = { "action", "file", "type" })
-public final class FileRequest extends Verifications implements Actionable {
+@XmlType(name = "fileRequest", propOrder = { "file", "type" })
+public final class FileRequest extends Actions {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    /** Default allowed Actions for the Folder Request. */
-    private static final Set<Action> allowed = EnumSet.of(Action.PROCESS, Action.DELETE);
-
-    /** <p>Action to perform against the given Folder.</p> */
-    @XmlElement(required = true, nillable = false)
-    private Action action = Action.PROCESS;
-
     /** <p>The File Object to process.</p> */
-    @XmlElement(required = true, nillable = false)
+    @XmlElement(required = true)
     private File file = null;
 
     /**
@@ -63,7 +53,7 @@ public final class FileRequest extends Verifications implements Actionable {
      * attachment, other internal criteria's is used to determine if the user is
      * allowed, hence - it is important that the type is set accordingly.</p>
      */
-    @XmlElement(required = true, nillable = false)
+    @XmlElement(required = true)
     private StorageType type = StorageType.OWNER;
 
     // =========================================================================
@@ -75,45 +65,7 @@ public final class FileRequest extends Verifications implements Actionable {
      * for WebServices to work properly.</p>
      */
     public FileRequest() {
-        // Required for WebServices to work. Comment added to please Sonar.
-    }
-
-    /**
-     * <p>Default Constructor.</p>
-     *
-     * @param file Meta data for the newly created file.
-     */
-    public FileRequest(final File file) {
-        setFile(file);
-    }
-
-    // =========================================================================
-    // Implementation of the Actionable Interface
-    // =========================================================================
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Set<Action> allowedActions() {
-        return Collections.unmodifiableSet(allowed);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setAction(final Action action) {
-        ensureNotNullAndContains("action", action, allowed);
-        this.action = action;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Action getAction() {
-        return action;
+        super(EnumSet.of(Action.PROCESS, Action.DELETE), Action.PROCESS);
     }
 
     // =========================================================================

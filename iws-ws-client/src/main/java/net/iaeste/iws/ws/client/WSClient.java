@@ -28,8 +28,8 @@ import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.requests.exchange.FetchEmployerRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
 import net.iaeste.iws.api.requests.exchange.OfferStatisticsRequest;
-import net.iaeste.iws.api.requests.exchange.ProcessEmployerRequest;
-import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
+import net.iaeste.iws.api.requests.exchange.EmployerRequest;
+import net.iaeste.iws.api.requests.exchange.OfferRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
 import net.iaeste.iws.api.responses.EmergencyListResponse;
 import net.iaeste.iws.api.responses.FallibleResponse;
@@ -250,7 +250,7 @@ public final class WSClient {
      * @return Response Object from the IWS
      */
     private EmployerResponse processEmployer(final AuthenticationToken token, final Employer employer) {
-        final ProcessEmployerRequest request = new ProcessEmployerRequest();
+        final EmployerRequest request = new EmployerRequest();
         request.setEmployer(employer);
 
         return getExchange().processEmployer(token, request);
@@ -306,7 +306,7 @@ public final class WSClient {
      * @return Response Object from the IWS
      */
     private OfferResponse processOffer(final AuthenticationToken token, final Offer offer) {
-        final ProcessOfferRequest request = new ProcessOfferRequest();
+        final OfferRequest request = new OfferRequest();
         request.setOffer(offer);
 
         return getExchange().processOffer(token, request);

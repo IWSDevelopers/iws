@@ -27,8 +27,8 @@ import net.iaeste.iws.api.requests.exchange.FetchPublishedGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.HideForeignOffersRequest;
 import net.iaeste.iws.api.requests.exchange.OfferCSVUploadRequest;
 import net.iaeste.iws.api.requests.exchange.OfferStatisticsRequest;
-import net.iaeste.iws.api.requests.exchange.ProcessEmployerRequest;
-import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
+import net.iaeste.iws.api.requests.exchange.EmployerRequest;
+import net.iaeste.iws.api.requests.exchange.OfferRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessPublishingGroupRequest;
 import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
 import net.iaeste.iws.api.requests.exchange.RejectOfferRequest;
@@ -77,7 +77,7 @@ public final class ExchangeClient implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    public EmployerResponse processEmployer(final AuthenticationToken token, final ProcessEmployerRequest request) {
+    public EmployerResponse processEmployer(final AuthenticationToken token, final EmployerRequest request) {
         return client.processEmployer(token, request);
     }
 
@@ -93,7 +93,7 @@ public final class ExchangeClient implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    public OfferResponse processOffer(final AuthenticationToken token, final ProcessOfferRequest request) {
+    public OfferResponse processOffer(final AuthenticationToken token, final OfferRequest request) {
         return client.processOffer(token, request);
     }
 

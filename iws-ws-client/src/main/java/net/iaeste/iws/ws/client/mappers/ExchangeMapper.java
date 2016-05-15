@@ -39,8 +39,8 @@ import net.iaeste.iws.api.requests.exchange.FetchPublishedGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.HideForeignOffersRequest;
 import net.iaeste.iws.api.requests.exchange.OfferCSVUploadRequest;
 import net.iaeste.iws.api.requests.exchange.OfferStatisticsRequest;
-import net.iaeste.iws.api.requests.exchange.ProcessEmployerRequest;
-import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
+import net.iaeste.iws.api.requests.exchange.EmployerRequest;
+import net.iaeste.iws.api.requests.exchange.OfferRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessPublishingGroupRequest;
 import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
 import net.iaeste.iws.api.requests.exchange.RejectOfferRequest;
@@ -116,7 +116,7 @@ public final class ExchangeMapper extends CommonMapper {
         return api;
     }
 
-    public static net.iaeste.iws.ws.ProcessEmployerRequest map(final ProcessEmployerRequest api) {
+    public static net.iaeste.iws.ws.ProcessEmployerRequest map(final EmployerRequest api) {
         net.iaeste.iws.ws.ProcessEmployerRequest ws = null;
 
         if (api != null) {
@@ -202,7 +202,7 @@ public final class ExchangeMapper extends CommonMapper {
         return api;
     }
 
-    public static net.iaeste.iws.ws.ProcessOfferRequest map(final ProcessOfferRequest api) {
+    public static net.iaeste.iws.ws.ProcessOfferRequest map(final OfferRequest api) {
         net.iaeste.iws.ws.ProcessOfferRequest ws = null;
 
         if (api != null) {

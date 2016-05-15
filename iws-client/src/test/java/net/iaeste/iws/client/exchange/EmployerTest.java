@@ -34,8 +34,8 @@ import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.requests.FetchCountryRequest;
 import net.iaeste.iws.api.requests.exchange.FetchEmployerRequest;
-import net.iaeste.iws.api.requests.exchange.ProcessEmployerRequest;
-import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
+import net.iaeste.iws.api.requests.exchange.EmployerRequest;
+import net.iaeste.iws.api.requests.exchange.OfferRequest;
 import net.iaeste.iws.api.responses.FetchCountryResponse;
 import net.iaeste.iws.api.responses.exchange.EmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchEmployerResponse;
@@ -221,7 +221,7 @@ public final class EmployerTest extends AbstractTest {
 
         // Now, we swap the Id's and try to save the Employer.
         employer1.setEmployerId(employer2.getEmployerId());
-        final ProcessEmployerRequest request = new ProcessEmployerRequest();
+        final EmployerRequest request = new EmployerRequest();
         request.setEmployer(employer1);
         final EmployerResponse response = client.processEmployer(token, request);
         assertThat(response.isOk(), is(false));
@@ -235,7 +235,7 @@ public final class EmployerTest extends AbstractTest {
         final String employer = "Vietnam Inc.";
         final String refno = "VN-" + Verifications.calculateExchangeYear() + "-554331";
         final Offer offer = TestData.prepareFullOffer(refno, employer);
-        final ProcessOfferRequest offerRequest = new ProcessOfferRequest();
+        final OfferRequest offerRequest = new OfferRequest();
         offerRequest.setOffer(offer);
         final OfferResponse offerResponse = exchange.processOffer(token, offerRequest);
         assertThat(offerResponse.getMessage(), is(IWSConstants.SUCCESS));
@@ -254,8 +254,8 @@ public final class EmployerTest extends AbstractTest {
     // Internal Methods
     // =========================================================================
 
-    private static ProcessEmployerRequest prepareRequest(final Employer employer) {
-        final ProcessEmployerRequest request = new ProcessEmployerRequest();
+    private static EmployerRequest prepareRequest(final Employer employer) {
+        final EmployerRequest request = new EmployerRequest();
         request.setEmployer(employer);
 
         return request;

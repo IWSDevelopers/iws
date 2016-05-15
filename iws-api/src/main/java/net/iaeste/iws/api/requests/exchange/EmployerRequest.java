@@ -36,8 +36,8 @@ import java.util.Map;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "processEmployerRequest", propOrder = { "employer", "employerId" })
-public final class ProcessEmployerRequest extends Actions {
+@XmlType(name = "employerRequest", propOrder = { "employer", "employerId" })
+public final class EmployerRequest extends Actions {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -53,7 +53,7 @@ public final class ProcessEmployerRequest extends Actions {
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.
      */
-    public ProcessEmployerRequest() {
+    public EmployerRequest() {
         super(EnumSet.of(Action.PROCESS, Action.DELETE), Action.PROCESS);
     }
 

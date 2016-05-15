@@ -21,7 +21,7 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.dtos.exchange.StudentApplication;
-import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
+import net.iaeste.iws.api.requests.exchange.OfferRequest;
 import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
 import net.iaeste.iws.api.responses.exchange.FetchPublishedGroupsResponse;
 import net.iaeste.iws.api.responses.student.FetchStudentApplicationsResponse;
@@ -34,8 +34,8 @@ import net.iaeste.iws.client.AbstractTest;
  */
 public abstract class AbstractOfferTest extends AbstractTest {
 
-    protected static ProcessOfferRequest prepareRequest(final Offer offer) {
-        final ProcessOfferRequest request = new ProcessOfferRequest();
+    protected static OfferRequest prepareRequest(final Offer offer) {
+        final OfferRequest request = new OfferRequest();
         request.setOffer(offer);
 
         return request;

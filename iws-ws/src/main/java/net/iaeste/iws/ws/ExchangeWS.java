@@ -27,8 +27,8 @@ import net.iaeste.iws.api.requests.exchange.FetchPublishedGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.HideForeignOffersRequest;
 import net.iaeste.iws.api.requests.exchange.OfferCSVUploadRequest;
 import net.iaeste.iws.api.requests.exchange.OfferStatisticsRequest;
-import net.iaeste.iws.api.requests.exchange.ProcessEmployerRequest;
-import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
+import net.iaeste.iws.api.requests.exchange.EmployerRequest;
+import net.iaeste.iws.api.requests.exchange.OfferRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessPublishingGroupRequest;
 import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
 import net.iaeste.iws.api.requests.exchange.RejectOfferRequest;
@@ -142,7 +142,7 @@ public class ExchangeWS implements Exchange {
     @WebResult(name = "response")
     public EmployerResponse processEmployer(
             @WebParam(name = "token") final AuthenticationToken token,
-            @WebParam(name = "request") final ProcessEmployerRequest request) {
+            @WebParam(name = "request") final EmployerRequest request) {
         LOG.info(requestLogger.prepareLogMessage(token, "processEmployer"));
         EmployerResponse response;
 
@@ -184,7 +184,7 @@ public class ExchangeWS implements Exchange {
     @WebResult(name = "response")
     public OfferResponse processOffer(
             @WebParam(name = "token") final AuthenticationToken token,
-            @WebParam(name = "request") final ProcessOfferRequest request) {
+            @WebParam(name = "request") final OfferRequest request) {
         LOG.info(requestLogger.prepareLogMessage(token, "processOffer"));
         OfferResponse response;
 

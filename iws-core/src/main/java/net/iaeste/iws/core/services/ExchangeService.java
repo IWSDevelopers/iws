@@ -32,8 +32,8 @@ import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
 import net.iaeste.iws.api.requests.exchange.HideForeignOffersRequest;
-import net.iaeste.iws.api.requests.exchange.ProcessEmployerRequest;
-import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
+import net.iaeste.iws.api.requests.exchange.EmployerRequest;
+import net.iaeste.iws.api.requests.exchange.OfferRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessPublishingGroupRequest;
 import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
 import net.iaeste.iws.api.requests.exchange.RejectOfferRequest;
@@ -85,7 +85,7 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
         this.accessDao = accessDao;
     }
 
-    public EmployerResponse processEmployer(final Authentication authentication, final ProcessEmployerRequest request) {
+    public EmployerResponse processEmployer(final Authentication authentication, final EmployerRequest request) {
         final EmployerEntity entity = process(authentication, request.getEmployer());
         return new EmployerResponse(transform(entity));
     }
@@ -140,7 +140,7 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
      * @param request        Offer Request information, i.e. OfferDTO
      * @return OfferResponse with error information
      */
-    public OfferResponse processOffer(final Authentication authentication, final ProcessOfferRequest request) {
+    public OfferResponse processOffer(final Authentication authentication, final OfferRequest request) {
         final EmployerEntity employer = process(authentication, request.getOffer().getEmployer());
         final OfferEntity newEntity = transform(request.getOffer());
         final Offer givenOffer = request.getOffer();

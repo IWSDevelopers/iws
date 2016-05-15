@@ -36,8 +36,8 @@ import java.util.Map;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "processOfferRequest", propOrder = { "offer", "offerId" })
-public final class ProcessOfferRequest extends Actions {
+@XmlType(name = "offerRequest", propOrder = { "offer", "offerId" })
+public final class OfferRequest extends Actions {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -53,7 +53,7 @@ public final class ProcessOfferRequest extends Actions {
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.
      */
-    public ProcessOfferRequest() {
+    public OfferRequest() {
         super(EnumSet.of(Action.PROCESS, Action.DELETE), Action.PROCESS);
     }
 

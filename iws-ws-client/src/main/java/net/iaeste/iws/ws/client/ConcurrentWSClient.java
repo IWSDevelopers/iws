@@ -29,7 +29,7 @@ import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
-import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
+import net.iaeste.iws.api.requests.exchange.OfferRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
 import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchPermissionResponse;
@@ -373,7 +373,7 @@ public final class ConcurrentWSClient implements Runnable {
      * @return Response Object from the IWS
      */
     private OfferResponse processOffer(final AuthenticationToken token, final Offer offer) {
-        final ProcessOfferRequest request = new ProcessOfferRequest();
+        final OfferRequest request = new OfferRequest();
         request.setOffer(offer);
 
         return getExchange().processOffer(token, request);

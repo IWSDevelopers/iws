@@ -26,8 +26,8 @@ import net.iaeste.iws.api.requests.exchange.FetchPublishedGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.HideForeignOffersRequest;
 import net.iaeste.iws.api.requests.exchange.OfferCSVUploadRequest;
 import net.iaeste.iws.api.requests.exchange.OfferStatisticsRequest;
-import net.iaeste.iws.api.requests.exchange.ProcessEmployerRequest;
-import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
+import net.iaeste.iws.api.requests.exchange.EmployerRequest;
+import net.iaeste.iws.api.requests.exchange.OfferRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessPublishingGroupRequest;
 import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
 import net.iaeste.iws.api.requests.exchange.RejectOfferRequest;
@@ -72,7 +72,7 @@ public interface Exchange {
      * @param request Request Object, with the Employer
      * @return Persisted Employer Object
      */
-    EmployerResponse processEmployer(AuthenticationToken token, ProcessEmployerRequest request);
+    EmployerResponse processEmployer(AuthenticationToken token, EmployerRequest request);
 
     /**
      * <p>Fetches a list of Employers, belonging to the requesting User, i.e.
@@ -97,7 +97,7 @@ public interface Exchange {
      * @param request contains a {@link net.iaeste.iws.api.dtos.exchange.Offer}
      * @return the persisted {@link net.iaeste.iws.api.dtos.exchange.Offer} including the generated Id
      */
-    OfferResponse processOffer(AuthenticationToken token, ProcessOfferRequest request);
+    OfferResponse processOffer(AuthenticationToken token, OfferRequest request);
 
     /**
      * <p>Performs a deletion of the offer.</p>

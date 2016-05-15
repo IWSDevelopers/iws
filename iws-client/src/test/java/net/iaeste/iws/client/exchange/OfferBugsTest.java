@@ -30,7 +30,7 @@ import net.iaeste.iws.api.dtos.exchange.Employer;
 import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.enums.FetchType;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
-import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
+import net.iaeste.iws.api.requests.exchange.OfferRequest;
 import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
 import net.iaeste.iws.api.responses.exchange.OfferResponse;
 import net.iaeste.iws.api.util.Verifications;
@@ -85,7 +85,7 @@ public final class OfferBugsTest extends AbstractOfferTest {
         address.setCountry(null);
         employer.setAddress(address);
         offer.setEmployer(employer);
-        final ProcessOfferRequest request = prepareRequest(offer);
+        final OfferRequest request = prepareRequest(offer);
 
         // Invoking the IWS with our null-country request
         final OfferResponse response = exchange.processOffer(token, request);
@@ -126,7 +126,7 @@ public final class OfferBugsTest extends AbstractOfferTest {
         specializations.add(specialization);
         offer.setSpecializations(specializations);
 
-        final ProcessOfferRequest request = prepareRequest(offer);
+        final OfferRequest request = prepareRequest(offer);
         final OfferResponse response = exchange.processOffer(token, request);
         assertThat(response.isOk(), is(true));
     }

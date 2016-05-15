@@ -33,7 +33,7 @@ import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.enums.FetchType;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
 import net.iaeste.iws.api.requests.exchange.OfferCSVUploadRequest;
-import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
+import net.iaeste.iws.api.requests.exchange.OfferRequest;
 import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
 import net.iaeste.iws.api.responses.exchange.OfferCSVDownloadResponse;
 import net.iaeste.iws.api.responses.exchange.OfferCSVUploadResponse;
@@ -93,7 +93,7 @@ public final class OfferCsvTest extends AbstractOfferTest {
         final Offer offer = TestData.prepareFullOffer(AT_YEAR + "-01T453-R", "Austria A/S");
         final Date nominationDeadline = new Date().plusDays(20);
 
-        final ProcessOfferRequest saveRequest = prepareRequest(offer);
+        final OfferRequest saveRequest = prepareRequest(offer);
         final OfferResponse saveResponse = exchange.processOffer(austriaTokenWithNationalGroup, saveRequest);
         assertThat(saveResponse.isOk(), is(true));
 
@@ -146,9 +146,9 @@ public final class OfferCsvTest extends AbstractOfferTest {
         final String invalidRefno = refno + "123";
         final Offer initialOffer = TestData.prepareFullOffer(refno, "Germany A/S");
 
-        final ProcessOfferRequest processRequest = new ProcessOfferRequest();
+        final OfferRequest processRequest = new OfferRequest();
         processRequest.setOffer(initialOffer);
-        final ProcessOfferRequest request = prepareRequest(initialOffer);
+        final OfferRequest request = prepareRequest(initialOffer);
         final OfferResponse saveResponse = exchange.processOffer(germany, request);
         assertThat(saveResponse.isOk(), is(true));
 
@@ -194,9 +194,9 @@ public final class OfferCsvTest extends AbstractOfferTest {
         final String refno = "DE-" + Verifications.calculateExchangeYear() + "-00123457";
         final Offer initialOffer = TestData.prepareFullOffer(refno, "Germany A/S");
 
-        final ProcessOfferRequest processRequest = new ProcessOfferRequest();
+        final OfferRequest processRequest = new OfferRequest();
         processRequest.setOffer(initialOffer);
-        final ProcessOfferRequest request = prepareRequest(initialOffer);
+        final OfferRequest request = prepareRequest(initialOffer);
         final OfferResponse saveResponse = exchange.processOffer(germany, request);
         assertThat(saveResponse.isOk(), is(true));
 

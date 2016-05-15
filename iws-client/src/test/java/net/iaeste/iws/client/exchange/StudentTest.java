@@ -40,7 +40,7 @@ import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.api.requests.CreateUserRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishedGroupsRequest;
-import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
+import net.iaeste.iws.api.requests.exchange.OfferRequest;
 import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentsRequest;
@@ -107,7 +107,7 @@ public final class StudentTest extends AbstractOfferTest {
         final Date nominationDeadline = new Date().plusDays(20);
         final Offer offer = TestData.prepareMinimalOffer("PL-" + exchangeYear + "-001001", "Employer");
 
-        final ProcessOfferRequest offerRequest = prepareRequest(offer);
+        final OfferRequest offerRequest = prepareRequest(offer);
         final OfferResponse saveResponse = exchange.processOffer(token, offerRequest);
 
         // verify processResponse
@@ -185,7 +185,7 @@ public final class StudentTest extends AbstractOfferTest {
         final Date nominationDeadline = new Date().plusDays(20);
         final Offer offer = TestData.prepareMinimalOffer("PL-" + exchangeYear + "-001003", "Employer");
 
-        final ProcessOfferRequest offerRequest = prepareRequest(offer);
+        final OfferRequest offerRequest = prepareRequest(offer);
         final OfferResponse saveResponse = exchange.processOffer(token, offerRequest);
         final String refNo = saveResponse.getOffer().getRefNo();
 
@@ -272,7 +272,7 @@ public final class StudentTest extends AbstractOfferTest {
         final Date nominationDeadline = new Date().plusDays(20);
         final Offer offer = TestData.prepareMinimalOffer("PL-" + exchangeYear + "-001002", "Employer");
 
-        final ProcessOfferRequest offerRequest = prepareRequest(offer);
+        final OfferRequest offerRequest = prepareRequest(offer);
         final OfferResponse saveResponse = exchange.processOffer(token, offerRequest);
 
         // verify processResponse
@@ -960,7 +960,7 @@ public final class StudentTest extends AbstractOfferTest {
 
         offer.setPrivateComment("austria");
 
-        final ProcessOfferRequest offerRequest = prepareRequest(offer);
+        final OfferRequest offerRequest = prepareRequest(offer);
         final OfferResponse processResponse = exchange.processOffer(austriaTokenWithNationalGroup, offerRequest);
 
         assertThat("verify that the offer was persisted", processResponse.isOk(), is(true));

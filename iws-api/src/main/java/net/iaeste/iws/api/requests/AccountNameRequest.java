@@ -19,12 +19,13 @@ package net.iaeste.iws.api.requests;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.dtos.User;
-import net.iaeste.iws.api.util.Verifications;
+import net.iaeste.iws.api.enums.Action;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,12 +36,12 @@ import java.util.Map;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "accountNameRequest", propOrder = { "user", "firstname", "lastname" })
-public final class AccountNameRequest extends Verifications {
+public final class AccountNameRequest extends Actions {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    @XmlElement(required = true, nillable = false) private User user = null;
+    @XmlElement(required = true)                   private User user = null;
     @XmlElement(required = true, nillable = true)  private String firstname = null;
     @XmlElement(required = true, nillable = true)  private String lastname = null;
 
@@ -49,22 +50,10 @@ public final class AccountNameRequest extends Verifications {
     // =========================================================================
 
     /**
-     * Empty Constructor, to use if the setters are invoked. This is required
-     * for WebServices to work properly.
+     * Default Constructor.
      */
     public AccountNameRequest() {
-        // Required for WebServices to work. Comment added to please Sonar.
-    }
-
-    /**
-     * Default Constructor,
-     *
-     * @param user      The user to change the account name for
-     * @param lastname  The users new lastname
-     */
-    public AccountNameRequest(final User user, final String lastname) {
-        setUser(user);
-        setLastname(lastname);
+        super(EnumSet.of(Action.PROCESS), Action.PROCESS);
     }
 
     // =========================================================================
@@ -81,7 +70,7 @@ public final class AccountNameRequest extends Verifications {
      * @param user User Object
      * @throws IllegalArgumentException if the given value is invalid
      */
-    public void setUser(final User user) throws IllegalArgumentException {
+    public void setUser(final User user) {
         ensureNotNullAndVerifiable("user", user);
         this.user = user;
     }
@@ -90,7 +79,7 @@ public final class AccountNameRequest extends Verifications {
         return user;
     }
 
-    public void setFirstname(final String firstname) throws IllegalArgumentException {
+    public void setFirstname(final String firstname) {
         ensureNotTooLong("firstname", firstname, 50);
         this.firstname = firstname;
     }
@@ -99,7 +88,7 @@ public final class AccountNameRequest extends Verifications {
         return firstname;
     }
 
-    public void setLastname(final String lastname) throws IllegalArgumentException {
+    public void setLastname(final String lastname) {
         ensureNotTooLong("lastname", lastname, 50);
         this.lastname = lastname;
     }

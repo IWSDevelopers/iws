@@ -40,9 +40,9 @@ public final class FetchFileRequest extends Verifications {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    @XmlElement(required = true, nillable = false) private String fileId = null;
+    @XmlElement(required = true)                   private String fileId = null;
     @XmlElement(required = true, nillable = true)  private String groupId = null;
-    @XmlElement(required = true, nillable = false) private StorageType type = StorageType.OWNER;
+    @XmlElement(required = true)                   private StorageType type = StorageType.OWNER;
     @XmlElement(required = true, nillable = true)  private Boolean readFileData = false;
 
     // =========================================================================
@@ -63,7 +63,7 @@ public final class FetchFileRequest extends Verifications {
      * @param fileId the Id of the file to read
      * @throws IllegalArgumentException if the fileId is invalid
      */
-    public FetchFileRequest(final String fileId) throws IllegalArgumentException {
+    public FetchFileRequest(final String fileId) {
         setFileId(fileId);
     }
 
@@ -78,7 +78,7 @@ public final class FetchFileRequest extends Verifications {
      * @param fileId Id of the file to fetch
      * @throws IllegalArgumentException if null or an invalid Id
      */
-    public void setFileId(final String fileId) throws IllegalArgumentException {
+    public void setFileId(final String fileId) {
         ensureNotNullAndValidId("fileId", fileId);
         this.fileId = fileId;
     }
@@ -98,7 +98,7 @@ public final class FetchFileRequest extends Verifications {
      * @param groupId GroupId
      * @throws IllegalArgumentException if the given GroupId is invalid
      */
-    public void setGroupId(final String groupId) throws IllegalArgumentException {
+    public void setGroupId(final String groupId) {
         ensureValidId("groupId", groupId);
         this.groupId = groupId;
     }
@@ -119,7 +119,7 @@ public final class FetchFileRequest extends Verifications {
      *
      * @param type Storage Type
      */
-    public void setType(final StorageType type) throws IllegalArgumentException {
+    public void setType(final StorageType type) {
         ensureNotNull("type", type);
         this.type = type;
     }
@@ -138,7 +138,7 @@ public final class FetchFileRequest extends Verifications {
      * @param readFileData Boolean flag to read file data or not
      * @throws IllegalArgumentException if set to null
      */
-    public void setReadFileData(final Boolean readFileData) throws IllegalArgumentException {
+    public void setReadFileData(final Boolean readFileData) {
         ensureNotNull("readFileData", readFileData);
         this.readFileData = readFileData;
     }

@@ -19,6 +19,7 @@ package net.iaeste.iws.persistence.exceptions;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
+import net.iaeste.iws.api.exceptions.IWSException;
 
 /**
  * Special variant of the Persistence Exception, to deal with Identification
@@ -28,7 +29,7 @@ import net.iaeste.iws.api.constants.IWSErrors;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
-public final class IdentificationException extends PersistenceException {
+public final class IdentificationException extends IWSException {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;

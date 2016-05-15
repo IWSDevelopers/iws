@@ -137,7 +137,9 @@ public final class UserAccountTest extends AbstractAdministration {
         final String username = "alfons@iaeste.se";
         final CreateUserRequest createRequest = new CreateUserRequest(username, "Alfons", "Åberg");
         final CreateUserResponse createResponse = administration.createUser(token, createRequest);
-        final AccountNameRequest request = new AccountNameRequest(createResponse.getUser(), "Aaberg");
+        final AccountNameRequest request = new AccountNameRequest();
+        request.setUser(createResponse.getUser());
+        request.setLastname("Aaberg");
 
         // To rename someone, we need to be Administrator, for the test,
         // Australia acts as Administrator, so we're using this Account for it

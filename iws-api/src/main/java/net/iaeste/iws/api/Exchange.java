@@ -109,7 +109,9 @@ public interface Exchange {
      * @param token The valid authentication token provided by {@link Access#generateSession(net.iaeste.iws.api.requests.AuthenticationRequest)}
      * @param request contains a field with the RefNo (will be changed to id #359)
      * @return empty {@link OfferResponse} (offer=null) on success
+     * @deprecated Please use the processOffer request instead.
      */
+    @Deprecated
     OfferResponse deleteOffer(AuthenticationToken token, DeleteOfferRequest request);
 
     /**

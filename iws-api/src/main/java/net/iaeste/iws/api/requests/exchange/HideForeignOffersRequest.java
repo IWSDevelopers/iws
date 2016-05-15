@@ -18,12 +18,14 @@
 package net.iaeste.iws.api.requests.exchange;
 
 import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.api.util.Verifications;
+import net.iaeste.iws.api.enums.Action;
+import net.iaeste.iws.api.requests.Actions;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -35,14 +37,13 @@ import java.util.Set;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "hideForeignOffersRequest", propOrder = { "offers" })
-public final class HideForeignOffersRequest extends Verifications {
+@XmlType(name = "hideForeignOffersRequest", propOrder = "offers")
+public final class HideForeignOffersRequest extends Actions {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    @XmlElement(required = true, nillable = false)
-    private Set<String> offers;
+    @XmlElement(required = true)  private final Set<String> offers = new HashSet<>(0);
 
     // =========================================================================
     // Object Constructors
@@ -53,16 +54,7 @@ public final class HideForeignOffersRequest extends Verifications {
      * for WebServices to work properly.
      */
     public HideForeignOffersRequest() {
-        offers = new HashSet<>();
-    }
-
-    /**
-     * Default Constructor,
-     *
-     * @param offers List of offer IDs to be hidden
-     */
-    public HideForeignOffersRequest(final Set<String> offers) {
-        this.offers = offers;
+        super(EnumSet.of(Action.PROCESS), Action.PROCESS);
     }
 
     // =========================================================================
@@ -70,11 +62,11 @@ public final class HideForeignOffersRequest extends Verifications {
     // =========================================================================
 
     public void setOffers(final Set<String> offers) {
-        this.offers = offers;
+        this.offers.addAll(offers);
     }
 
     public Set<String> getOffers() {
-        return offers;
+        return immutableSet(offers);
     }
 
     // =========================================================================

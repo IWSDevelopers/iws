@@ -670,7 +670,8 @@ public final class OfferSharingTest extends AbstractOfferTest {
         final Set<String> offersToHide = new HashSet<>(1);
         //offersToHide.add(offer.getOfferId());
         offersToHide.add(sharedOffer.getOfferId());
-        final HideForeignOffersRequest hideOfferRequest = new HideForeignOffersRequest(offersToHide);
+        final HideForeignOffersRequest hideOfferRequest = new HideForeignOffersRequest();
+        hideOfferRequest.setOffers(offersToHide);
         final Fallible hideOfferResponse = exchange.processHideForeignOffers(austriaTokenWithNationalGroup, hideOfferRequest);
         assertThat(hideOfferResponse.getError(), is(IWSErrors.SUCCESS));
         assertThat(hideOfferResponse.isOk(), is(true));

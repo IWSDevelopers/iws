@@ -26,7 +26,7 @@ import net.iaeste.iws.api.enums.exchange.Specialization;
 import net.iaeste.iws.api.enums.exchange.TransportationType;
 import net.iaeste.iws.api.requests.student.FetchStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentsRequest;
-import net.iaeste.iws.api.requests.student.ProcessStudentApplicationsRequest;
+import net.iaeste.iws.api.requests.student.StudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.StudentApplicationRequest;
 import net.iaeste.iws.api.requests.student.StudentRequest;
 import net.iaeste.iws.api.responses.student.FetchStudentApplicationsResponse;
@@ -99,7 +99,7 @@ public final class StudentMapper extends CommonMapper {
         return api;
     }
 
-    public static net.iaeste.iws.ws.ProcessStudentApplicationsRequest map(final ProcessStudentApplicationsRequest api) {
+    public static net.iaeste.iws.ws.ProcessStudentApplicationsRequest map(final StudentApplicationsRequest api) {
         net.iaeste.iws.ws.ProcessStudentApplicationsRequest ws = null;
 
         if (api != null) {

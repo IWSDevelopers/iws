@@ -44,7 +44,7 @@ import net.iaeste.iws.api.requests.exchange.OfferRequest;
 import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentsRequest;
-import net.iaeste.iws.api.requests.student.ProcessStudentApplicationsRequest;
+import net.iaeste.iws.api.requests.student.StudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.StudentApplicationRequest;
 import net.iaeste.iws.api.requests.student.StudentRequest;
 import net.iaeste.iws.api.responses.CreateUserResponse;
@@ -172,7 +172,7 @@ public final class StudentTest extends AbstractOfferTest {
         application.setHomeAddress(TestData.prepareAddress("DE"));
         application.setAddressDuringTerms(TestData.prepareAddress("AT"));
 
-        final ProcessStudentApplicationsRequest createStudentApplicationsRequest = new ProcessStudentApplicationsRequest(application);
+        final StudentApplicationsRequest createStudentApplicationsRequest = prepareRequest(application);
         final StudentApplicationResponse createStudentApplicationResponse = students.processStudentApplication(austriaTokenWithNationalGroup, createStudentApplicationsRequest);
         assertThat(createStudentApplicationResponse.isOk(), is(true));
     }
@@ -253,7 +253,7 @@ public final class StudentTest extends AbstractOfferTest {
         application.setGender(Gender.FEMALE);
         application.setNationality(TestData.prepareCountry("DE"));
 
-        final ProcessStudentApplicationsRequest createStudentApplicationsRequest = new ProcessStudentApplicationsRequest(application);
+        final StudentApplicationsRequest createStudentApplicationsRequest = prepareRequest(application);
         final StudentApplicationResponse createStudentApplicationResponse = students.processStudentApplication(austriaTokenWithNationalGroup, createStudentApplicationsRequest);
         assertThat(createStudentApplicationResponse.isOk(), is(true));
 
@@ -337,7 +337,7 @@ public final class StudentTest extends AbstractOfferTest {
         application1.setHomeAddress(TestData.prepareAddress("DE"));
         application1.setAddressDuringTerms(TestData.prepareAddress("AT"));
 
-        final ProcessStudentApplicationsRequest createStudentApplicationsRequest = new ProcessStudentApplicationsRequest(application1);
+        final StudentApplicationsRequest createStudentApplicationsRequest = prepareRequest(application1);
         // We have two Austrian Groups with the same permission; Staff & LC1.
         // The problem is that the permission check is failing, so we need to
         // add the Staff Group explicitly
@@ -349,7 +349,7 @@ public final class StudentTest extends AbstractOfferTest {
         //test updating existing application
         final StudentApplication application2 = createStudentApplicationResponse.getStudentApplication();
         application2.setUniversity("MyUniversity");
-        final ProcessStudentApplicationsRequest createStudentApplicationsRequest2 = new ProcessStudentApplicationsRequest(application2);
+        final StudentApplicationsRequest createStudentApplicationsRequest2 = prepareRequest(application2);
         final StudentApplicationResponse createStudentApplicationResponse2 = students.processStudentApplication(austriaToken, createStudentApplicationsRequest2);
         assertThat(createStudentApplicationResponse2.isOk(), is(true));
         assertThat(createStudentApplicationResponse2.getStudentApplication().getUniversity(), is(application2.getUniversity()));
@@ -400,7 +400,7 @@ public final class StudentTest extends AbstractOfferTest {
         application.setHomeAddress(TestData.prepareAddress("DE"));
         application.setAddressDuringTerms(TestData.prepareAddress("AT"));
 
-        final ProcessStudentApplicationsRequest createApplicationsRequest = new ProcessStudentApplicationsRequest(application);
+        final StudentApplicationsRequest createApplicationsRequest = prepareRequest(application);
         final StudentApplicationResponse createApplicationResponse = students.processStudentApplication(austriaTokenWithNationalGroup, createApplicationsRequest);
         final StudentApplication studentApplication = createApplicationResponse.getStudentApplication();
         assertThat("Student application has been created", createApplicationResponse.isOk(), is(true));
@@ -492,7 +492,7 @@ public final class StudentTest extends AbstractOfferTest {
         application.setHomeAddress(TestData.prepareAddress("DE"));
         application.setAddressDuringTerms(TestData.prepareAddress("AT"));
 
-        final ProcessStudentApplicationsRequest createApplicationsRequest = new ProcessStudentApplicationsRequest(application);
+        final StudentApplicationsRequest createApplicationsRequest = prepareRequest(application);
         final StudentApplicationResponse createApplicationResponse = students.processStudentApplication(austriaTokenWithNationalGroup, createApplicationsRequest);
         final StudentApplication studentApplication = createApplicationResponse.getStudentApplication();
         assertThat("Student application has been created", createApplicationResponse.isOk(), is(true));
@@ -566,7 +566,7 @@ public final class StudentTest extends AbstractOfferTest {
         application.setHomeAddress(TestData.prepareAddress("DE"));
         application.setAddressDuringTerms(TestData.prepareAddress("AT"));
 
-        final ProcessStudentApplicationsRequest createApplicationsRequest = new ProcessStudentApplicationsRequest(application);
+        final StudentApplicationsRequest createApplicationsRequest = prepareRequest(application);
         final StudentApplicationResponse createApplicationResponse = students.processStudentApplication(austriaTokenWithNationalGroup, createApplicationsRequest);
         final StudentApplication studentApplication = createApplicationResponse.getStudentApplication();
         assertThat("Student application has been created", createApplicationResponse.isOk(), is(true));
@@ -630,7 +630,7 @@ public final class StudentTest extends AbstractOfferTest {
         application.setHomeAddress(TestData.prepareAddress("DE"));
         application.setAddressDuringTerms(TestData.prepareAddress("AT"));
 
-        final ProcessStudentApplicationsRequest createApplicationsRequest = new ProcessStudentApplicationsRequest(application);
+        final StudentApplicationsRequest createApplicationsRequest = prepareRequest(application);
         final StudentApplicationResponse createApplicationResponse = students.processStudentApplication(austriaTokenWithNationalGroup, createApplicationsRequest);
         final StudentApplication studentApplication = createApplicationResponse.getStudentApplication();
         assertThat("Student application has been created", createApplicationResponse.isOk(), is(true));
@@ -698,7 +698,7 @@ public final class StudentTest extends AbstractOfferTest {
         application.setHomeAddress(TestData.prepareAddress("DE"));
         application.setAddressDuringTerms(TestData.prepareAddress("AT"));
 
-        final ProcessStudentApplicationsRequest createApplicationsRequest = new ProcessStudentApplicationsRequest(application);
+        final StudentApplicationsRequest createApplicationsRequest = prepareRequest(application);
         final StudentApplicationResponse createApplicationResponse = students.processStudentApplication(austriaTokenWithNationalGroup, createApplicationsRequest);
         final StudentApplication studentApplication = createApplicationResponse.getStudentApplication();
         assertThat("Student application has been created", createApplicationResponse.isOk(), is(true));
@@ -768,7 +768,7 @@ public final class StudentTest extends AbstractOfferTest {
             austriaTokenWithNationalGroup.setGroupId(austriaTokenNationallGroup.getGroupId());
         }
 
-        final ProcessStudentApplicationsRequest createApplicationsRequest = new ProcessStudentApplicationsRequest(application);
+        final StudentApplicationsRequest createApplicationsRequest = prepareRequest(application);
         final StudentApplicationResponse createApplicationResponse = students.processStudentApplication(austriaTokenWithNationalGroup, createApplicationsRequest);
         final StudentApplication studentApplication = createApplicationResponse.getStudentApplication();
         assertThat("Student application has been created", createApplicationResponse.isOk(), is(true));
@@ -836,7 +836,7 @@ public final class StudentTest extends AbstractOfferTest {
         application.setHomeAddress(TestData.prepareAddress("DE"));
         application.setAddressDuringTerms(TestData.prepareAddress("AT"));
 
-        final ProcessStudentApplicationsRequest createApplicationsRequest = new ProcessStudentApplicationsRequest(application);
+        final StudentApplicationsRequest createApplicationsRequest = prepareRequest(application);
         final StudentApplicationResponse createApplicationResponse = students.processStudentApplication(austriaTokenWithNationalGroup, createApplicationsRequest);
         final StudentApplication studentApplication = createApplicationResponse.getStudentApplication();
         assertThat("Student application has been created", createApplicationResponse.isOk(), is(true));
@@ -911,7 +911,7 @@ public final class StudentTest extends AbstractOfferTest {
         application.setHomeAddress(TestData.prepareAddress("DE"));
         application.setAddressDuringTerms(TestData.prepareAddress("AT"));
 
-        final ProcessStudentApplicationsRequest createApplicationsRequest = new ProcessStudentApplicationsRequest(application);
+        final StudentApplicationsRequest createApplicationsRequest = prepareRequest(application);
         final StudentApplicationResponse createApplicationResponse = students.processStudentApplication(austriaTokenWithNationalGroup, createApplicationsRequest);
         final StudentApplication studentApplication = createApplicationResponse.getStudentApplication();
         assertThat("Student application has been created", createApplicationResponse.isOk(), is(true));
@@ -1007,7 +1007,7 @@ public final class StudentTest extends AbstractOfferTest {
         application.setHomeAddress(TestData.prepareAddress("DE"));
         application.setAddressDuringTerms(TestData.prepareAddress("DE"));
 
-        final ProcessStudentApplicationsRequest createApplicationsRequest = new ProcessStudentApplicationsRequest(application);
+        final StudentApplicationsRequest createApplicationsRequest = prepareRequest(application);
         final StudentApplicationResponse createApplicationResponse = students.processStudentApplication(croatiaToken, createApplicationsRequest);
         assertThat("Student application has been created", createApplicationResponse.isOk(), is(true));
 
@@ -1026,5 +1026,12 @@ public final class StudentTest extends AbstractOfferTest {
         assertThat("Domestic offer was loaded", readOfferAt, is(not(nullValue())));
         assertThat("Domestic offer has correct state", readOfferAt.getStatus(), is(OfferState.SHARED));
         assertThat("Domestic offer should see private comment", readOfferAt.getPrivateComment(), is("austria"));
+    }
+
+    private static StudentApplicationsRequest prepareRequest(final StudentApplication application) {
+        final StudentApplicationsRequest request = new StudentApplicationsRequest();
+        request.setStudentApplication(application);
+
+        return request;
     }
 }

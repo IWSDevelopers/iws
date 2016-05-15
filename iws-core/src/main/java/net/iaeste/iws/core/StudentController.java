@@ -24,7 +24,7 @@ import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.requests.CreateUserRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentsRequest;
-import net.iaeste.iws.api.requests.student.ProcessStudentApplicationsRequest;
+import net.iaeste.iws.api.requests.student.StudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.StudentApplicationRequest;
 import net.iaeste.iws.api.requests.student.StudentRequest;
 import net.iaeste.iws.api.responses.CreateUserResponse;
@@ -140,7 +140,7 @@ public final class StudentController extends CommonController implements Student
      * {@inheritDoc}
      */
     @Override
-    public StudentApplicationResponse processStudentApplication(final AuthenticationToken token, final ProcessStudentApplicationsRequest request) {
+    public StudentApplicationResponse processStudentApplication(final AuthenticationToken token, final StudentApplicationsRequest request) {
         StudentApplicationResponse response;
 
         try {

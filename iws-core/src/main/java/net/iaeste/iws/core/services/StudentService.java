@@ -28,7 +28,7 @@ import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.requests.student.FetchStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentsRequest;
-import net.iaeste.iws.api.requests.student.ProcessStudentApplicationsRequest;
+import net.iaeste.iws.api.requests.student.StudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.StudentApplicationRequest;
 import net.iaeste.iws.api.requests.student.StudentRequest;
 import net.iaeste.iws.api.responses.student.FetchStudentApplicationsResponse;
@@ -113,7 +113,7 @@ public final class StudentService extends CommonService<StudentDao> {
         return new FetchStudentsResponse(result);
     }
 
-    public StudentApplicationResponse processStudentApplication(final Authentication authentication, final ProcessStudentApplicationsRequest request) {
+    public StudentApplicationResponse processStudentApplication(final Authentication authentication, final StudentApplicationsRequest request) {
         final ApplicationEntity entity = processStudentApplication(authentication, request.getStudentApplication());
         final List<AttachmentEntity> attachments = processAttachments(authentication, entity, request.getStudentApplication().getAttachments());
 

@@ -24,7 +24,7 @@ import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.CreateUserRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentsRequest;
-import net.iaeste.iws.api.requests.student.ProcessStudentApplicationsRequest;
+import net.iaeste.iws.api.requests.student.StudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.StudentApplicationRequest;
 import net.iaeste.iws.api.requests.student.StudentRequest;
 import net.iaeste.iws.api.responses.CreateUserResponse;
@@ -121,7 +121,7 @@ public final class StudentWSClient extends CommonWSClient implements Students {
      * {@inheritDoc}
      */
     @Override
-    public StudentApplicationResponse processStudentApplication(final AuthenticationToken token, final ProcessStudentApplicationsRequest request) {
+    public StudentApplicationResponse processStudentApplication(final AuthenticationToken token, final StudentApplicationsRequest request) {
         return map(client.processStudentApplication(map(token), map(request)));
     }
 

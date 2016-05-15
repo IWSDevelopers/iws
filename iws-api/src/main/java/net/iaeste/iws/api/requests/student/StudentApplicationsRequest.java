@@ -19,12 +19,14 @@ package net.iaeste.iws.api.requests.student;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.dtos.exchange.StudentApplication;
-import net.iaeste.iws.api.util.Verifications;
+import net.iaeste.iws.api.enums.Action;
+import net.iaeste.iws.api.requests.Actions;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,36 +38,24 @@ import java.util.Map;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "processStudentApplicationsRequest", propOrder = { "studentApplication" })
-public class ProcessStudentApplicationsRequest extends Verifications {
+@XmlType(name = "studentApplicationsRequest", propOrder = "studentApplication")
+public class StudentApplicationsRequest extends Actions {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     /** The StudentApplication Object to process. */
-    @XmlElement(required = true, nillable = false)
-    private StudentApplication studentApplication = null;
+    @XmlElement(required = true)  private StudentApplication studentApplication = null;
 
     // =========================================================================
     // Object Constructors
     // =========================================================================
 
     /**
-     * Empty Constructor, to use if the setters are invoked. This is required
-     * for WebServices to work properly.
+     * Default Constructor.
      */
-    public ProcessStudentApplicationsRequest() {
-        // Required for WebServices to work. Comment added to please Sonar.
-    }
-
-    /**
-     * Default Constructor, sets the StudentApplication to be processed. If the StudentApplication exists,
-     * it will be updated otherwise a new StudentApplication will be created.
-     *
-     * @param studentApplication object to create or update
-     */
-    public ProcessStudentApplicationsRequest(final StudentApplication studentApplication) {
-        this.studentApplication = new StudentApplication(studentApplication);
+    public StudentApplicationsRequest() {
+        super(EnumSet.of(Action.PROCESS), Action.PROCESS);
     }
 
     // =========================================================================
@@ -80,9 +70,6 @@ public class ProcessStudentApplicationsRequest extends Verifications {
      */
     public void setStudentApplication(final StudentApplication studentApplication) {
         ensureNotNullAndVerifiable("studentApplication", studentApplication);
-        if (studentApplication == null) {
-            throw new IllegalArgumentException("The StudentApplication value may not be null.");
-        }
 
         this.studentApplication = new StudentApplication(studentApplication);
     }
@@ -102,6 +89,7 @@ public class ProcessStudentApplicationsRequest extends Verifications {
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(0);
 
+        isNotNull(validation, FIELD_ACTION, action);
         isNotNull(validation, "studentApplication", studentApplication);
 
         return validation;

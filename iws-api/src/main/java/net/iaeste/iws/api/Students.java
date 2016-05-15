@@ -21,7 +21,7 @@ import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.CreateUserRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentsRequest;
-import net.iaeste.iws.api.requests.student.ProcessStudentApplicationsRequest;
+import net.iaeste.iws.api.requests.student.StudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.StudentApplicationRequest;
 import net.iaeste.iws.api.requests.student.StudentRequest;
 import net.iaeste.iws.api.responses.CreateUserResponse;
@@ -90,10 +90,10 @@ public interface Students {
      * <p>Create or update a student application.</p>
      *
      * @param token   {@link AuthenticationToken}
-     * @param request {@link ProcessStudentApplicationsRequest}
+     * @param request {@link StudentApplicationsRequest}
      * @return {@link StudentApplicationResponse}
      */
-    StudentApplicationResponse processStudentApplication(AuthenticationToken token, ProcessStudentApplicationsRequest request);
+    StudentApplicationResponse processStudentApplication(AuthenticationToken token, StudentApplicationsRequest request);
 
     /**
      * <p>Fetch student applications.</p>

@@ -22,7 +22,7 @@ import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.CreateUserRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentsRequest;
-import net.iaeste.iws.api.requests.student.ProcessStudentApplicationsRequest;
+import net.iaeste.iws.api.requests.student.StudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.StudentApplicationRequest;
 import net.iaeste.iws.api.requests.student.StudentRequest;
 import net.iaeste.iws.api.responses.CreateUserResponse;
@@ -170,7 +170,7 @@ public class StudentWS implements Students {
     @WebResult(name = "response")
     public StudentApplicationResponse processStudentApplication(
             @WebParam(name = "token") final AuthenticationToken token,
-            @WebParam(name = "request") final ProcessStudentApplicationsRequest request) {
+            @WebParam(name = "request") final StudentApplicationsRequest request) {
         LOG.info(requestLogger.prepareLogMessage(token, "processStudentApplication"));
         StudentApplicationResponse response;
 

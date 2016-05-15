@@ -99,7 +99,7 @@ public final class OfferSharingTest extends AbstractOfferTest {
         final String refno = PL_YEAR + "-000004";
         final Offer offer = TestData.prepareMinimalOffer(refno, "Polish Employer");
 
-        final ProcessOfferRequest offerRequest = new ProcessOfferRequest(offer);
+        final ProcessOfferRequest offerRequest = prepareRequest(offer);
         final OfferResponse saveResponse = exchange.processOffer(token, offerRequest);
 
         assertThat(saveResponse.isOk(), is(true));
@@ -192,7 +192,7 @@ public final class OfferSharingTest extends AbstractOfferTest {
         final String refNo = AT_YEAR + "-000001";
         final Offer offer = TestData.prepareMinimalOffer(refNo, "Austrian Employer");
 
-        final ProcessOfferRequest offerRequest = new ProcessOfferRequest(offer);
+        final ProcessOfferRequest offerRequest = prepareRequest(offer);
         final OfferResponse processResponse = exchange.processOffer(austriaTokenWithNationalGroup, offerRequest);
 
         assertThat("verify that the offer was persisted", processResponse.isOk(), is(true));
@@ -211,7 +211,7 @@ public final class OfferSharingTest extends AbstractOfferTest {
         final String refno = PL_YEAR + "-000099";
         final Offer offer = TestData.prepareMinimalOffer(refno, "Polish Employer");
 
-        final ProcessOfferRequest offerRequest = new ProcessOfferRequest(offer);
+        final ProcessOfferRequest offerRequest = prepareRequest(offer);
         final OfferResponse saveResponse = exchange.processOffer(token, offerRequest);
 
         assertThat(saveResponse.isOk(), is(true));
@@ -275,7 +275,7 @@ public final class OfferSharingTest extends AbstractOfferTest {
         final String refno = PL_YEAR + "-BUG669-R";
         final Offer offer = TestData.prepareMinimalOffer(refno, "Polish Employer");
 
-        final ProcessOfferRequest offerRequest = new ProcessOfferRequest(offer);
+        final ProcessOfferRequest offerRequest = prepareRequest(offer);
         final OfferResponse saveResponse = exchange.processOffer(token, offerRequest);
 
         assertThat(saveResponse.isOk(), is(true));
@@ -352,7 +352,7 @@ public final class OfferSharingTest extends AbstractOfferTest {
         final String refno = PL_YEAR + "-000005";
         final Offer offer = TestData.prepareMinimalOffer(refno, "Polish Employer");
 
-        final ProcessOfferRequest offerRequest = new ProcessOfferRequest(offer);
+        final ProcessOfferRequest offerRequest = prepareRequest(offer);
         final OfferResponse saveResponse = exchange.processOffer(token, offerRequest);
         assertThat(saveResponse.isOk(), is(true));
 
@@ -385,7 +385,7 @@ public final class OfferSharingTest extends AbstractOfferTest {
         final String refno = PL_YEAR + "-000006";
         final Offer offer = TestData.prepareMinimalOffer(refno, "Polish Employer");
 
-        final ProcessOfferRequest offerRequest = new ProcessOfferRequest(offer);
+        final ProcessOfferRequest offerRequest = prepareRequest(offer);
         final OfferResponse saveResponse = exchange.processOffer(token, offerRequest);
         assertThat(saveResponse.isOk(), is(true));
 
@@ -419,7 +419,7 @@ public final class OfferSharingTest extends AbstractOfferTest {
         final String refno = PL_YEAR + "-000007";
         final Offer offer = TestData.prepareMinimalOffer(refno, "Polish Employer");
 
-        final ProcessOfferRequest offerRequest = new ProcessOfferRequest(offer);
+        final ProcessOfferRequest offerRequest = prepareRequest(offer);
         final OfferResponse saveResponse = exchange.processOffer(token, offerRequest);
         assertThat(saveResponse.isOk(), is(true));
 
@@ -457,7 +457,7 @@ public final class OfferSharingTest extends AbstractOfferTest {
         final String refNo = AT_YEAR + "-000002";
         final Offer offer = TestData.prepareMinimalOffer(refNo, "Austrian Employer");
 
-        final ProcessOfferRequest offerRequest = new ProcessOfferRequest(offer);
+        final ProcessOfferRequest offerRequest = prepareRequest(offer);
         final OfferResponse processResponse = exchange.processOffer(austriaTokenWithNationalGroup, offerRequest);
 
         assertThat("verify that the offer was persisted", processResponse.isOk(), is(true));
@@ -501,7 +501,7 @@ public final class OfferSharingTest extends AbstractOfferTest {
         final String refno = PL_YEAR + "-000011";
         final Offer offer = TestData.prepareMinimalOffer(refno, "Polish Employer");
 
-        final ProcessOfferRequest saveRequest2 = new ProcessOfferRequest(offer);
+        final ProcessOfferRequest saveRequest2 = prepareRequest(offer);
         final OfferResponse saveResponse2 = exchange.processOffer(token, saveRequest2);
         final String refNo = saveResponse2.getOffer().getRefNo();
 
@@ -540,7 +540,7 @@ public final class OfferSharingTest extends AbstractOfferTest {
         final String refno = PL_YEAR + "-000014";
         final Offer offer = TestData.prepareMinimalOffer(refno, "Polish Employer");
 
-        final ProcessOfferRequest saveRequest1 = new ProcessOfferRequest(offer);
+        final ProcessOfferRequest saveRequest1 = prepareRequest(offer);
         final OfferResponse saveResponse1 = exchange.processOffer(token, saveRequest1);
 
         assertThat("verify that the offer was persisted", saveResponse1.isOk(), is(true));
@@ -569,7 +569,7 @@ public final class OfferSharingTest extends AbstractOfferTest {
         final String refno = PL_YEAR + "-000012";
         final Offer offer = TestData.prepareMinimalOffer(refno, "Polish Employer");
 
-        final ProcessOfferRequest saveRequest2 = new ProcessOfferRequest(offer);
+        final ProcessOfferRequest saveRequest2 = prepareRequest(offer);
         final OfferResponse saveResponse2 = exchange.processOffer(token, saveRequest2);
 
         assertThat("verify that the offer was persisted", saveResponse2.isOk(), is(true));
@@ -623,7 +623,7 @@ public final class OfferSharingTest extends AbstractOfferTest {
         final Offer offer = TestData.prepareMinimalOffer(PL_YEAR + "-TIC772-R", "Poland A/S");
         final Date nominationDeadline = new Date().plusDays(20);
 
-        final ProcessOfferRequest saveRequest = new ProcessOfferRequest(offer);
+        final ProcessOfferRequest saveRequest = prepareRequest(offer);
         final OfferResponse saveResponse = exchange.processOffer(token, saveRequest);
         assertThat(saveResponse.isOk(), is(true));
 
@@ -689,7 +689,7 @@ public final class OfferSharingTest extends AbstractOfferTest {
         final Offer offer = TestData.prepareMinimalOffer(PL_YEAR + "-TI806A-R", "Poland A/S");
         final Date nominationDeadline = new Date().plusDays(20);
 
-        final ProcessOfferRequest saveRequest = new ProcessOfferRequest(offer);
+        final ProcessOfferRequest saveRequest = prepareRequest(offer);
         final OfferResponse saveResponse = exchange.processOffer(token, saveRequest);
         assertThat(saveResponse.isOk(), is(true));
 
@@ -765,7 +765,7 @@ public final class OfferSharingTest extends AbstractOfferTest {
         final Offer offer = TestData.prepareMinimalOffer(PL_YEAR + "-TI806B-R", "Poland A/S");
         final Date nominationDeadline = new Date().plusDays(20);
 
-        final ProcessOfferRequest saveRequest = new ProcessOfferRequest(offer);
+        final ProcessOfferRequest saveRequest = prepareRequest(offer);
         final OfferResponse saveResponse = exchange.processOffer(token, saveRequest);
         assertThat(saveResponse.isOk(), is(true));
 
@@ -859,7 +859,7 @@ public final class OfferSharingTest extends AbstractOfferTest {
         final Offer offer = TestData.prepareMinimalOffer(PL_YEAR + "-TI806C-R", "Poland A/S");
         final Date nominationDeadline = new Date().plusDays(20);
 
-        final ProcessOfferRequest saveRequest = new ProcessOfferRequest(offer);
+        final ProcessOfferRequest saveRequest = prepareRequest(offer);
         final OfferResponse saveResponse = exchange.processOffer(token, saveRequest);
         assertThat(saveResponse.isOk(), is(true));
 

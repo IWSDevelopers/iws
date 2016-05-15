@@ -87,11 +87,11 @@ public final class EmployerTest extends AbstractTest {
         final Employer employer3 = createEmployer(token, "MySecondEmployerAgain");
 
         // Save our new Employers
-        final EmployerResponse save1 = client.processEmployer(token, new ProcessEmployerRequest(employer1));
+        final EmployerResponse save1 = client.processEmployer(token, prepareRequest(employer1));
         assertThat(save1.isOk(), is(true));
-        final EmployerResponse save2 = client.processEmployer(token, new ProcessEmployerRequest(employer2));
+        final EmployerResponse save2 = client.processEmployer(token, prepareRequest(employer2));
         assertThat(save2.isOk(), is(true));
-        final EmployerResponse save3 = client.processEmployer(token, new ProcessEmployerRequest(employer3));
+        final EmployerResponse save3 = client.processEmployer(token, prepareRequest(employer3));
         assertThat(save3.isOk(), is(true));
 
         // Now, we'll start the test. We have three different types if lookups
@@ -119,7 +119,7 @@ public final class EmployerTest extends AbstractTest {
         final Employer employer = TestData.prepareEmployer("MyEmployer", "DE");
 
         // Invoke IWS to persist the Employer
-        final EmployerResponse response1 = client.processEmployer(token, new ProcessEmployerRequest(employer));
+        final EmployerResponse response1 = client.processEmployer(token, prepareRequest(employer));
         assertThat(response1.isOk(), is(true));
 
         // Update the Employer, let's just set a few fields
@@ -133,7 +133,7 @@ public final class EmployerTest extends AbstractTest {
         persisted.setAddress(address);
 
         // Now, let's update the existing Employer
-        final EmployerResponse response2 = client.processEmployer(token, new ProcessEmployerRequest(persisted));
+        final EmployerResponse response2 = client.processEmployer(token, prepareRequest(persisted));
         assertThat(response2.isOk(), is(true));
 
         // And verify that everything is working
@@ -156,7 +156,7 @@ public final class EmployerTest extends AbstractTest {
         final String nearestAirport = "New Airport";
         final String nearestPublicTransport = "New Public Transportation";
 
-        final EmployerResponse create = client.processEmployer(token, new ProcessEmployerRequest(createEmployer(token, "The Employer")));
+        final EmployerResponse create = client.processEmployer(token, prepareRequest(createEmployer(token, "The Employer")));
         assertThat(create.isOk(), is(true));
         final Employer employer = create.getEmployer();
 
@@ -181,7 +181,7 @@ public final class EmployerTest extends AbstractTest {
         employer.setCanteen(canteen);
         employer.setNearestAirport(nearestAirport);
         employer.setNearestPublicTransport(nearestPublicTransport);
-        final EmployerResponse update = client.processEmployer(token, new ProcessEmployerRequest(employer));
+        final EmployerResponse update = client.processEmployer(token, prepareRequest(employer));
 
         // Now verify that the request went through, and that our updated
         // Employer object contain the new values
@@ -212,16 +212,17 @@ public final class EmployerTest extends AbstractTest {
         final Exchange client = new ExchangeClient();
 
         // First, we create & retrieve two new Employers
-        final EmployerResponse save1 = client.processEmployer(token, new ProcessEmployerRequest(createEmployer(token, "The Employer")));
+        final EmployerResponse save1 = client.processEmployer(token, prepareRequest(createEmployer(token, "The Employer")));
         assertThat(save1.isOk(), is(true));
         final Employer employer1 = save1.getEmployer();
-        final EmployerResponse save2 = client.processEmployer(token, new ProcessEmployerRequest(createEmployer(token, "The Same Employer")));
+        final EmployerResponse save2 = client.processEmployer(token, prepareRequest(createEmployer(token, "The Same Employer")));
         assertThat(save2.isOk(), is(true));
         final Employer employer2 = save2.getEmployer();
 
         // Now, we swap the Id's and try to save the Employer.
         employer1.setEmployerId(employer2.getEmployerId());
-        final ProcessEmployerRequest request = new ProcessEmployerRequest(employer1);
+        final ProcessEmployerRequest request = new ProcessEmployerRequest();
+        request.setEmployer(employer1);
         final EmployerResponse response = client.processEmployer(token, request);
         assertThat(response.isOk(), is(false));
         assertThat(response.getError(), is(IWSErrors.OBJECT_IDENTIFICATION_ERROR));
@@ -252,6 +253,13 @@ public final class EmployerTest extends AbstractTest {
     // =========================================================================
     // Internal Methods
     // =========================================================================
+
+    private static ProcessEmployerRequest prepareRequest(final Employer employer) {
+        final ProcessEmployerRequest request = new ProcessEmployerRequest();
+        request.setEmployer(employer);
+
+        return request;
+    }
 
     private static Employer createEmployer(final AuthenticationToken token, final String name) {
         final Employer employer = TestData.prepareEmployer(name, "DE");

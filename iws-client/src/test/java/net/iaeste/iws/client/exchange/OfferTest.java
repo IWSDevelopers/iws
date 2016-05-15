@@ -102,7 +102,7 @@ public final class OfferTest extends AbstractOfferTest {
         final Offer initialOffer = TestData.prepareFullOffer(refno, "Poland A/S");
 
         // Save our offer.
-        final ProcessOfferRequest request = new ProcessOfferRequest(initialOffer);
+        final ProcessOfferRequest request = prepareRequest(initialOffer);
         final OfferResponse saveResponse = exchange.processOffer(token, request);
         assertThat(saveResponse.isOk(), is(true));
         assertThat(saveResponse.getOffer(), is(not(nullValue())));
@@ -265,7 +265,7 @@ public final class OfferTest extends AbstractOfferTest {
         final String refno = "GB-" + exchangeYear + "-000001";
         final Offer minimalOffer = TestData.prepareMinimalOffer(refno, "British Employer", "AT");
 
-        final ProcessOfferRequest offerRequest = new ProcessOfferRequest(minimalOffer);
+        final ProcessOfferRequest offerRequest = prepareRequest(minimalOffer);
         final OfferResponse processResponse = exchange.processOffer(token, offerRequest);
 
         // verify processResponse
@@ -279,7 +279,7 @@ public final class OfferTest extends AbstractOfferTest {
         final String refno = PL_YEAR + "-000001";
         final Offer minimalOffer = TestData.prepareMinimalOffer(refno, "Polish Employer");
 
-        final ProcessOfferRequest offerRequest = new ProcessOfferRequest(minimalOffer);
+        final ProcessOfferRequest offerRequest = prepareRequest(minimalOffer);
         final OfferResponse processResponse = exchange.processOffer(token, offerRequest);
         final String refNo = processResponse.getOffer().getRefNo();
 
@@ -299,7 +299,7 @@ public final class OfferTest extends AbstractOfferTest {
         final String refno = PL_YEAR + "-000002";
         final Offer fullOffer = TestData.prepareFullOffer(refno, "Polish Employer");
 
-        final ProcessOfferRequest offerRequest = new ProcessOfferRequest(fullOffer);
+        final ProcessOfferRequest offerRequest = prepareRequest(fullOffer);
         final OfferResponse processResponse = exchange.processOffer(token, offerRequest);
         final String refNo = processResponse.getOffer().getRefNo();
 
@@ -319,7 +319,7 @@ public final class OfferTest extends AbstractOfferTest {
         final String refno = PL_YEAR + "-000003";
         final Offer offer = TestData.prepareMinimalOffer(refno, "Polish Employer");
 
-        final ProcessOfferRequest offerRequest = new ProcessOfferRequest(offer);
+        final ProcessOfferRequest offerRequest = prepareRequest(offer);
         final OfferResponse saveResponse = exchange.processOffer(token, offerRequest);
 
         assertThat(saveResponse.isOk(), is(true));
@@ -354,7 +354,7 @@ public final class OfferTest extends AbstractOfferTest {
         newOffer.setNumberOfHardCopies(2);
 
         // Persist Offer, verify that everything went well
-        final ProcessOfferRequest offerRequest = new ProcessOfferRequest(newOffer);
+        final ProcessOfferRequest offerRequest = prepareRequest(newOffer);
         final OfferResponse saveResponse = exchange.processOffer(token, offerRequest);
         assertThat(saveResponse.isOk(), is(true));
 
@@ -368,7 +368,7 @@ public final class OfferTest extends AbstractOfferTest {
 
         // Update the Offer, with a new value for NumberOfHardCopies
         readOffer.setNumberOfHardCopies(3);
-        final ProcessOfferRequest updateOfferRequest = new ProcessOfferRequest(readOffer);
+        final ProcessOfferRequest updateOfferRequest = prepareRequest(readOffer);
         assertThat(exchange.processOffer(token, updateOfferRequest).isOk(), is(true));
 
         // Update the Offer, and verify that the changes are saved.
@@ -408,7 +408,7 @@ public final class OfferTest extends AbstractOfferTest {
         offer.setLanguage3(Language.LATVIAN);
         offer.setLanguage3Level(null);
 
-        final ProcessOfferRequest request = new ProcessOfferRequest(offer);
+        final ProcessOfferRequest request = prepareRequest(offer);
         final OfferResponse response = exchange.processOffer(token, request);
         assertThat(response.getMessage(), is(IWSConstants.SUCCESS));
         final Offer saved = response.getOffer();
@@ -454,7 +454,7 @@ public final class OfferTest extends AbstractOfferTest {
         offer.setLanguage3(Language.LATVIAN);
         offer.setLanguage3Level(LanguageLevel.E);
 
-        final ProcessOfferRequest request = new ProcessOfferRequest(offer);
+        final ProcessOfferRequest request = prepareRequest(offer);
         final OfferResponse response = exchange.processOffer(token, request);
         assertThat(response.getMessage(), is(IWSConstants.SUCCESS));
         final Offer saved = response.getOffer();
@@ -500,7 +500,7 @@ public final class OfferTest extends AbstractOfferTest {
         offer.setLanguage3(null);
         offer.setLanguage3Level(LanguageLevel.E);
 
-        final ProcessOfferRequest request = new ProcessOfferRequest(offer);
+        final ProcessOfferRequest request = prepareRequest(offer);
         final OfferResponse response = exchange.processOffer(token, request);
         assertThat(response.getMessage(), is(IWSConstants.SUCCESS));
         final Offer saved = response.getOffer();

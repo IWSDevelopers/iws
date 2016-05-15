@@ -45,7 +45,6 @@ public abstract class Actions extends Verifications {
     /** Default allowed Actions for the Folder Request. */
     private static final Set<Action> ALLOWED = EnumSet.noneOf(Action.class);
 
-    /** Action to perform against the given Folder. */
     @XmlElement(required = true)  protected Action action = null;
 
     /**

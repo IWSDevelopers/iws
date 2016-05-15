@@ -250,8 +250,8 @@ public final class WSClient {
      * @return Response Object from the IWS
      */
     private EmployerResponse processEmployer(final AuthenticationToken token, final Employer employer) {
-        final Employer copy = new Employer(employer);
-        final ProcessEmployerRequest request = new ProcessEmployerRequest(copy);
+        final ProcessEmployerRequest request = new ProcessEmployerRequest();
+        request.setEmployer(employer);
 
         return getExchange().processEmployer(token, request);
     }

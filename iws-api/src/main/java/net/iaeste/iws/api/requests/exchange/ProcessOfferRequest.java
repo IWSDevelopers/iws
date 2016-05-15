@@ -19,12 +19,14 @@ package net.iaeste.iws.api.requests.exchange;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.dtos.exchange.Offer;
-import net.iaeste.iws.api.util.Verifications;
+import net.iaeste.iws.api.enums.Action;
+import net.iaeste.iws.api.requests.Actions;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,15 +36,14 @@ import java.util.Map;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "processOfferRequest", propOrder = { "offer" })
-public final class ProcessOfferRequest extends Verifications {
+@XmlType(name = "processOfferRequest", propOrder = { "offer", "offerId" })
+public final class ProcessOfferRequest extends Actions {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    /** The Offer Object to process. */
-    @XmlElement(required = true, nillable = false)
-    private Offer offer;
+    @XmlElement(required = true, nillable = true)  private Offer offer = null;
+    @XmlElement(required = true, nillable = true)  private String offerId = null;
 
     // =========================================================================
     // Object Constructors
@@ -53,17 +54,7 @@ public final class ProcessOfferRequest extends Verifications {
      * for WebServices to work properly.
      */
     public ProcessOfferRequest() {
-        offer = null;
-    }
-
-    /**
-     * Default Constructor, sets the Offer to be processed. If the Offer exists,
-     * it will be updated otherwise a new Offer will be created.
-     *
-     * @param offer object to create or update
-     */
-    public ProcessOfferRequest(final Offer offer) {
-        this.offer = new Offer(offer);
+        super(EnumSet.of(Action.PROCESS, Action.DELETE), Action.PROCESS);
     }
 
     // =========================================================================
@@ -79,6 +70,14 @@ public final class ProcessOfferRequest extends Verifications {
         return new Offer(offer);
     }
 
+    public void setOfferId(final String offerId) {
+        this.offerId = offerId;
+    }
+
+    public String getOfferId() {
+        return offerId;
+    }
+
     // =========================================================================
     // Standard Request Methods
     // =========================================================================
@@ -90,7 +89,19 @@ public final class ProcessOfferRequest extends Verifications {
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(0);
 
-        isNotNull(validation, "offer", offer);
+        isNotNull(validation, FIELD_ACTION, action);
+        if (action != null) {
+            switch (action) {
+                case PROCESS:
+                    isNotNull(validation, "offer", offer);
+                    break;
+                case DELETE:
+                    isNotNull(validation, "offerId", offerId);
+                    break;
+                default:
+                    validation.put(FIELD_ACTION, "The Action '" + action + "' is not allowed");
+            }
+        }
 
         return validation;
     }

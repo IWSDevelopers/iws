@@ -19,12 +19,14 @@ package net.iaeste.iws.api.requests.exchange;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.dtos.exchange.Employer;
-import net.iaeste.iws.api.util.Verifications;
+import net.iaeste.iws.api.enums.Action;
+import net.iaeste.iws.api.requests.Actions;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,14 +36,14 @@ import java.util.Map;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "processEmployerRequest", propOrder = { "employer" })
-public final class ProcessEmployerRequest extends Verifications {
+@XmlType(name = "processEmployerRequest", propOrder = { "employer", "employerId" })
+public final class ProcessEmployerRequest extends Actions {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    @XmlElement(required = true, nillable = false)
-    private Employer employer = null;
+    @XmlElement(required = true, nillable = true)  private Employer employer = null;
+    @XmlElement(required = true, nillable = true)  private String employerId = null;
 
     // =========================================================================
     // Object Constructors
@@ -52,17 +54,7 @@ public final class ProcessEmployerRequest extends Verifications {
      * for WebServices to work properly.
      */
     public ProcessEmployerRequest() {
-        employer = null;
-    }
-
-    /**
-     * Default Constructor, sets the Employer to be processed. If the Employer
-     * exists, it will be updated otherwise a new Employer will be created.
-     *
-     * @param employer object to create or update
-     */
-    public ProcessEmployerRequest(final Employer employer) {
-        setEmployer(employer);
+        super(EnumSet.of(Action.PROCESS, Action.DELETE), Action.PROCESS);
     }
 
     // =========================================================================
@@ -70,7 +62,7 @@ public final class ProcessEmployerRequest extends Verifications {
     // =========================================================================
 
     public void setEmployer(final Employer employer) {
-        ensureNotNullAndVerifiable("employer", employer);
+        ensureVerifiable("employer", employer);
         this.employer = new Employer(employer);
     }
 
@@ -78,6 +70,13 @@ public final class ProcessEmployerRequest extends Verifications {
         return employer;
     }
 
+    public void setEmployerId(final String employerId) {
+        this.employerId = employerId;
+    }
+
+    public String getEmployerId() {
+        return employerId;
+    }
 
     // =========================================================================
     // Standard Request Methods
@@ -90,7 +89,19 @@ public final class ProcessEmployerRequest extends Verifications {
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(0);
 
-        isNotNull(validation, "employer", employer);
+        isNotNull(validation, FIELD_ACTION, action);
+        if (action != null) {
+            switch (action) {
+                case PROCESS:
+                    isNotNull(validation, "employer", employer);
+                    break;
+                case DELETE:
+                    isNotNull(validation, "employerId", employerId);
+                    break;
+                default:
+                    validation.put(FIELD_ACTION, "The Action '" + action + "' is not allowed");
+            }
+        }
 
         return validation;
     }

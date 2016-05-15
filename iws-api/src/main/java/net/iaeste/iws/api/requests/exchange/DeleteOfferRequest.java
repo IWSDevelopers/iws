@@ -31,16 +31,17 @@ import java.util.Map;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
+ * @deprecated please use the OfferRequest and processOffer method
  */
+@Deprecated
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "deleteOfferRequest", propOrder = { "offerId" })
+@XmlType(name = "deleteOfferRequest", propOrder = "offerId")
 public final class DeleteOfferRequest extends Verifications {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    @XmlElement(required = true, nillable = false)
-    private String offerId;
+    @XmlElement(required = true)  private String offerId;
 
     // =========================================================================
     // Object Constructors

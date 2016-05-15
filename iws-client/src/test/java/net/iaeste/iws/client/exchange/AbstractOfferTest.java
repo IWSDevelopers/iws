@@ -20,8 +20,11 @@ package net.iaeste.iws.client.exchange;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.exchange.Offer;
+import net.iaeste.iws.api.dtos.exchange.StudentApplication;
+import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
 import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
 import net.iaeste.iws.api.responses.exchange.FetchPublishedGroupsResponse;
+import net.iaeste.iws.api.responses.student.FetchStudentApplicationsResponse;
 import net.iaeste.iws.client.AbstractTest;
 
 /**
@@ -30,6 +33,13 @@ import net.iaeste.iws.client.AbstractTest;
  * @since   IWS 1.2
  */
 public abstract class AbstractOfferTest extends AbstractTest {
+
+    protected static ProcessOfferRequest prepareRequest(final Offer offer) {
+        final ProcessOfferRequest request = new ProcessOfferRequest();
+        request.setOffer(offer);
+
+        return request;
+    }
 
     protected static Offer findOfferFromResponse(final String refno, final FetchOffersResponse response) {
         // As the IWS is replacing the new Reference Number with the correct
@@ -46,6 +56,19 @@ public abstract class AbstractOfferTest extends AbstractTest {
         }
 
         return offer;
+    }
+
+    protected static StudentApplication findApplicationFromResponse(final String applicationId, final FetchStudentApplicationsResponse response) {
+        StudentApplication application = null;
+
+        for (final StudentApplication found : response.getStudentApplications()) {
+            if (found.getApplicationId().equals(applicationId)) {
+                application = found;
+                break;
+            }
+        }
+
+        return application;
     }
 
     protected static Group findGroupFromResponse(final String offerId, final String groupId, final FetchPublishedGroupsResponse response) {

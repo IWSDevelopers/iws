@@ -25,7 +25,6 @@ import static org.junit.Assert.fail;
 
 import net.iaeste.iws.api.Exchange;
 import net.iaeste.iws.api.Students;
-import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.dtos.Group;
@@ -57,10 +56,9 @@ import net.iaeste.iws.api.responses.student.FetchStudentApplicationsResponse;
 import net.iaeste.iws.api.responses.student.FetchStudentsResponse;
 import net.iaeste.iws.api.responses.student.StudentApplicationResponse;
 import net.iaeste.iws.api.responses.student.StudentResponse;
-import net.iaeste.iws.api.util.Verifications;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.api.util.DatePeriod;
-import net.iaeste.iws.client.AbstractTest;
+import net.iaeste.iws.api.util.Verifications;
 import net.iaeste.iws.client.ExchangeClient;
 import net.iaeste.iws.client.StudentClient;
 import org.junit.Test;
@@ -75,7 +73,7 @@ import java.util.Set;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
-public final class StudentTest extends AbstractTest {
+public final class StudentTest extends AbstractOfferTest {
 
     private static final int exchangeYear = Verifications.calculateExchangeYear();
     private final Exchange exchange = new ExchangeClient();
@@ -109,7 +107,7 @@ public final class StudentTest extends AbstractTest {
         final Date nominationDeadline = new Date().plusDays(20);
         final Offer offer = TestData.prepareMinimalOffer("PL-" + exchangeYear + "-001001", "Employer");
 
-        final ProcessOfferRequest offerRequest = new ProcessOfferRequest(offer);
+        final ProcessOfferRequest offerRequest = prepareRequest(offer);
         final OfferResponse saveResponse = exchange.processOffer(token, offerRequest);
 
         // verify processResponse
@@ -187,7 +185,7 @@ public final class StudentTest extends AbstractTest {
         final Date nominationDeadline = new Date().plusDays(20);
         final Offer offer = TestData.prepareMinimalOffer("PL-" + exchangeYear + "-001003", "Employer");
 
-        final ProcessOfferRequest offerRequest = new ProcessOfferRequest(offer);
+        final ProcessOfferRequest offerRequest = prepareRequest(offer);
         final OfferResponse saveResponse = exchange.processOffer(token, offerRequest);
         final String refNo = saveResponse.getOffer().getRefNo();
 
@@ -274,7 +272,7 @@ public final class StudentTest extends AbstractTest {
         final Date nominationDeadline = new Date().plusDays(20);
         final Offer offer = TestData.prepareMinimalOffer("PL-" + exchangeYear + "-001002", "Employer");
 
-        final ProcessOfferRequest offerRequest = new ProcessOfferRequest(offer);
+        final ProcessOfferRequest offerRequest = prepareRequest(offer);
         final OfferResponse saveResponse = exchange.processOffer(token, offerRequest);
 
         // verify processResponse
@@ -365,7 +363,7 @@ public final class StudentTest extends AbstractTest {
         final Date nominationDeadline = new Date().plusDays(20);
         final Offer offer = TestData.prepareMinimalOffer("PL-" + exchangeYear + "-001004", "Employer");
 
-        final OfferResponse saveResponse = exchange.processOffer(token, new ProcessOfferRequest(offer));
+        final OfferResponse saveResponse = exchange.processOffer(token, prepareRequest(offer));
         assertThat("Offer has been saved", saveResponse.isOk(), is(true));
 
         final Set<String> offersToShare = new HashSet<>(1);
@@ -457,7 +455,7 @@ public final class StudentTest extends AbstractTest {
         final Date nominationDeadline = new Date().plusDays(20);
         final Offer offer = TestData.prepareMinimalOffer("PL-" + exchangeYear + "-001005", "Employer");
 
-        final OfferResponse saveResponse = exchange.processOffer(token, new ProcessOfferRequest(offer));
+        final OfferResponse saveResponse = exchange.processOffer(token, prepareRequest(offer));
         assertThat("Offer has been saved", saveResponse.isOk(), is(true));
 
         final Set<String> offersToShare = new HashSet<>(1);
@@ -531,7 +529,7 @@ public final class StudentTest extends AbstractTest {
         final Date nominationDeadline = new Date().plusDays(20);
         final Offer offer = TestData.prepareMinimalOffer("PL-" + exchangeYear + "-001065", "Employer");
 
-        final OfferResponse saveResponse = exchange.processOffer(token, new ProcessOfferRequest(offer));
+        final OfferResponse saveResponse = exchange.processOffer(token, prepareRequest(offer));
         assertThat("Offer has been saved", saveResponse.isOk(), is(true));
 
         final Set<String> offersToShare = new HashSet<>(1);
@@ -595,7 +593,7 @@ public final class StudentTest extends AbstractTest {
         final Date nominationDeadline = new Date().plusDays(20);
         final Offer offer = TestData.prepareMinimalOffer("PL-" + exchangeYear + "-001064", "Employer");
 
-        final OfferResponse saveResponse = exchange.processOffer(token, new ProcessOfferRequest(offer));
+        final OfferResponse saveResponse = exchange.processOffer(token, prepareRequest(offer));
         assertThat("Offer has been saved", saveResponse.isOk(), is(true));
 
         final Set<String> offersToShare = new HashSet<>(1);
@@ -663,7 +661,7 @@ public final class StudentTest extends AbstractTest {
         final Date nominationDeadline = new Date().plusDays(20);
         final Offer offer = TestData.prepareMinimalOffer("PL-" + exchangeYear + "-001006", "Employer");
 
-        final OfferResponse saveResponse = exchange.processOffer(token, new ProcessOfferRequest(offer));
+        final OfferResponse saveResponse = exchange.processOffer(token, prepareRequest(offer));
         assertThat("Offer has been saved", saveResponse.isOk(), is(true));
 
         final Set<String> offersToShare = new HashSet<>(1);
@@ -728,7 +726,7 @@ public final class StudentTest extends AbstractTest {
         final Date nominationDeadline = new Date().plusDays(20);
         final Offer offer = TestData.prepareMinimalOffer("PL-" + exchangeYear + "-001007", "Employer");
 
-        final OfferResponse saveResponse = exchange.processOffer(token, new ProcessOfferRequest(offer));
+        final OfferResponse saveResponse = exchange.processOffer(token, prepareRequest(offer));
         assertThat("Offer has been saved", saveResponse.isOk(), is(true));
 
         final Set<String> offersToShare = new HashSet<>(1);
@@ -801,7 +799,7 @@ public final class StudentTest extends AbstractTest {
         final Date nominationDeadline = new Date().plusDays(20);
         final Offer offer = TestData.prepareMinimalOffer("PL-" + exchangeYear + "-001008", "Employer");
 
-        final OfferResponse saveResponse = exchange.processOffer(token, new ProcessOfferRequest(offer));
+        final OfferResponse saveResponse = exchange.processOffer(token, prepareRequest(offer));
         assertThat("Offer has been saved", saveResponse.isOk(), is(true));
 
         final Set<String> offersToShare = new HashSet<>(1);
@@ -876,7 +874,7 @@ public final class StudentTest extends AbstractTest {
         final Date nominationDeadline = new Date().plusDays(20);
         final Offer offer = TestData.prepareMinimalOffer("PL-" + exchangeYear + "-001009", "Employer");
 
-        final OfferResponse saveResponse = exchange.processOffer(token, new ProcessOfferRequest(offer));
+        final OfferResponse saveResponse = exchange.processOffer(token, prepareRequest(offer));
         assertThat("Offer has been saved", saveResponse.isOk(), is(true));
 
         final Set<String> offersToShare = new HashSet<>(1);
@@ -962,7 +960,7 @@ public final class StudentTest extends AbstractTest {
 
         offer.setPrivateComment("austria");
 
-        final ProcessOfferRequest offerRequest = new ProcessOfferRequest(offer);
+        final ProcessOfferRequest offerRequest = prepareRequest(offer);
         final OfferResponse processResponse = exchange.processOffer(austriaTokenWithNationalGroup, offerRequest);
 
         assertThat("verify that the offer was persisted", processResponse.isOk(), is(true));
@@ -1028,35 +1026,5 @@ public final class StudentTest extends AbstractTest {
         assertThat("Domestic offer was loaded", readOfferAt, is(not(nullValue())));
         assertThat("Domestic offer has correct state", readOfferAt.getStatus(), is(OfferState.SHARED));
         assertThat("Domestic offer should see private comment", readOfferAt.getPrivateComment(), is("austria"));
-    }
-
-    private static Offer findOfferFromResponse(final String refno, final FetchOffersResponse response) {
-        // As the IWS is replacing the new Reference Number with the correct
-        // year, the only valid information to go on is the running number.
-        // Hence, we're skipping everything before that
-        final String refNoLowerCase = refno.toLowerCase(IWSConstants.DEFAULT_LOCALE).substring(8);
-        Offer offer = null;
-
-        for (final Offer found : response.getOffers()) {
-            final String foundRefNo = found.getRefNo().toLowerCase(IWSConstants.DEFAULT_LOCALE);
-            if (foundRefNo.contains(refNoLowerCase)) {
-                offer = found;
-            }
-        }
-
-        return offer;
-    }
-
-    private static StudentApplication findApplicationFromResponse(final String applicationId, final FetchStudentApplicationsResponse response) {
-        StudentApplication application = null;
-
-        for (final StudentApplication found : response.getStudentApplications()) {
-            if (found.getApplicationId().equals(applicationId)) {
-                application = found;
-                break;
-            }
-        }
-
-        return application;
     }
 }

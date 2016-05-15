@@ -93,7 +93,7 @@ public final class OfferCsvTest extends AbstractOfferTest {
         final Offer offer = TestData.prepareFullOffer(AT_YEAR + "-01T453-R", "Austria A/S");
         final Date nominationDeadline = new Date().plusDays(20);
 
-        final ProcessOfferRequest saveRequest = new ProcessOfferRequest(offer);
+        final ProcessOfferRequest saveRequest = prepareRequest(offer);
         final OfferResponse saveResponse = exchange.processOffer(austriaTokenWithNationalGroup, saveRequest);
         assertThat(saveResponse.isOk(), is(true));
 
@@ -148,7 +148,7 @@ public final class OfferCsvTest extends AbstractOfferTest {
 
         final ProcessOfferRequest processRequest = new ProcessOfferRequest();
         processRequest.setOffer(initialOffer);
-        final ProcessOfferRequest request = new ProcessOfferRequest(initialOffer);
+        final ProcessOfferRequest request = prepareRequest(initialOffer);
         final OfferResponse saveResponse = exchange.processOffer(germany, request);
         assertThat(saveResponse.isOk(), is(true));
 
@@ -196,7 +196,7 @@ public final class OfferCsvTest extends AbstractOfferTest {
 
         final ProcessOfferRequest processRequest = new ProcessOfferRequest();
         processRequest.setOffer(initialOffer);
-        final ProcessOfferRequest request = new ProcessOfferRequest(initialOffer);
+        final ProcessOfferRequest request = prepareRequest(initialOffer);
         final OfferResponse saveResponse = exchange.processOffer(germany, request);
         assertThat(saveResponse.isOk(), is(true));
 

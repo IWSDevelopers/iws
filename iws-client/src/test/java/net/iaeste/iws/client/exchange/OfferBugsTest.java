@@ -85,7 +85,7 @@ public final class OfferBugsTest extends AbstractOfferTest {
         address.setCountry(null);
         employer.setAddress(address);
         offer.setEmployer(employer);
-        final ProcessOfferRequest request = new ProcessOfferRequest(offer);
+        final ProcessOfferRequest request = prepareRequest(offer);
 
         // Invoking the IWS with our null-country request
         final OfferResponse response = exchange.processOffer(token, request);
@@ -126,7 +126,7 @@ public final class OfferBugsTest extends AbstractOfferTest {
         specializations.add(specialization);
         offer.setSpecializations(specializations);
 
-        final ProcessOfferRequest request = new ProcessOfferRequest(offer);
+        final ProcessOfferRequest request = prepareRequest(offer);
         final OfferResponse response = exchange.processOffer(token, request);
         assertThat(response.isOk(), is(true));
     }

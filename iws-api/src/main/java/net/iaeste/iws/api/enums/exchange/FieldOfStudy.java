@@ -18,6 +18,7 @@
 package net.iaeste.iws.api.enums.exchange;
 
 import net.iaeste.iws.api.enums.Descriptable;
+import net.iaeste.iws.api.util.Verifications;
 
 import javax.xml.bind.annotation.XmlType;
 import java.util.ArrayList;
@@ -395,7 +396,7 @@ public enum FieldOfStudy implements Descriptable<FieldOfStudy> {
     }
 
     public List<Specialization> getSpecializations() {
-        return specializations;
+        return Verifications.immutableList(specializations);
     }
 
     /**

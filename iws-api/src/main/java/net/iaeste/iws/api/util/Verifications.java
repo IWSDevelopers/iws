@@ -125,7 +125,7 @@ public abstract class Verifications implements Verifiable {
      * @param <S> The Set type
      * @return Immutable version of the Set
      */
-    protected static <S> Set<S> immutableSet(final Set<S> set) {
+    public static <S> Set<S> immutableSet(final Set<S> set) {
         return (set != null) ? Collections.unmodifiableSet(set) : null;
     }
 

@@ -337,6 +337,7 @@ public final class Country extends Verifications {
 
         isNotNull(validation, "countryCode", countryCode);
         isNotNull(validation, "countryName", countryName);
+        isNotNull(validation, "membership", membership);
         isNotNull(validation, "currency", currency);
 
         return validation;

@@ -52,12 +52,10 @@ public final class AuthenticationToken extends Verifications implements Traceabl
     private static final int LENGTH_SHA2_256 = 64;
 
     /** The actual token, stored as an ASCII value. */
-    @XmlElement(required = true, nillable = false)
-    private String token = null;
+    @XmlElement(required = true)                   private String token = null;
 
     /** For Group Authorization, the GroupId must also be provided. */
-    @XmlElement(required = true, nillable = true)
-    private String groupId = null;
+    @XmlElement(required = true, nillable = true)  private String groupId = null;
 
     // =========================================================================
     // Object Constructors

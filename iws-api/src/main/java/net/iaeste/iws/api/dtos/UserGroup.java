@@ -48,13 +48,13 @@ public final class UserGroup extends Verifications {
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     @XmlElement(required = true, nillable = true)  private String userGroupId = null;
-    @XmlElement(required = true, nillable = false) private User user = null;
-    @XmlElement(required = true, nillable = false) private Group group = null;
-    @XmlElement(required = true, nillable = false) private Role role = null;
+    @XmlElement(required = true)                   private User user = null;
+    @XmlElement(required = true)                   private Group group = null;
+    @XmlElement(required = true)                   private Role role = null;
     @XmlElement(required = true, nillable = true)  private String title = null;
-    @XmlElement(required = true, nillable = false) private boolean onPublicList = false;
-    @XmlElement(required = true, nillable = false) private boolean onPrivateList = false;
-    @XmlElement(required = true, nillable = false) private boolean writeToPrivateList = false;
+    @XmlElement(required = true)                   private boolean onPublicList = false;
+    @XmlElement(required = true)                   private boolean onPrivateList = false;
+    @XmlElement(required = true)                   private boolean writeToPrivateList = false;
     @XmlElement(required = true, nillable = true)  private Date memberSince = null;
 
     // =========================================================================

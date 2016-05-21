@@ -27,6 +27,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -45,11 +46,11 @@ public final class PublishOfferRequest extends Verifications {
 
     /** The Offer Object to published. */
     @XmlElement(required = true, nillable = true)
-    private Set<String> offerIds = null;
+    private final Set<String> offerIds = new HashSet<>(0);
 
     /** The group to which the offer will be published. */
     @XmlElement(required = true, nillable = true)
-    private List<String> groupIds = null;
+    private final List<String> groupIds = new ArrayList<>(0);
 
     /**
      * New nomination deadline for submitted offers.
@@ -67,13 +68,13 @@ public final class PublishOfferRequest extends Verifications {
      * for WebServices to work properly.
      */
     public PublishOfferRequest() {
-        groupIds = new ArrayList<>(10);
+        // Empty Constructor required for Websites, Comment to please Sonar.
     }
 
     public PublishOfferRequest(final Set<String> offerIds, final List<String> groupIds, final Date nominationDeadline) {
         setOfferIds(offerIds);
         setGroupIds(groupIds);
-        setNominationDeadline(nominationDeadline);
+        this.nominationDeadline = nominationDeadline;
     }
 
     // =========================================================================
@@ -82,20 +83,20 @@ public final class PublishOfferRequest extends Verifications {
 
     public void setOfferIds(final Set<String> offerIds) {
         ensureValidIdentifiers("offerIds", offerIds);
-        this.offerIds = offerIds;
+        this.offerIds.addAll(offerIds);
     }
 
     public Set<String> getOfferIds() {
-        return offerIds;
+        return immutableSet(offerIds);
     }
 
     public void setGroupIds(final List<String> groupIds) {
         ensureNotNullAndValidIdentifiers("groupIds", groupIds);
-        this.groupIds = groupIds;
+        this.groupIds.addAll(groupIds);
     }
 
     public List<String> getGroupIds() {
-        return groupIds;
+        return immutableList(groupIds);
     }
 
     public void setNominationDeadline(final Date nominationDeadline) {
@@ -117,7 +118,7 @@ public final class PublishOfferRequest extends Verifications {
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(0);
 
-        if ((offerIds == null) && ((groupIds == null) || groupIds.isEmpty())) {
+        if (offerIds.isEmpty() && groupIds.isEmpty()) {
             validation.put("Ids", "OfferIds and groupIds are both missing");
         }
 

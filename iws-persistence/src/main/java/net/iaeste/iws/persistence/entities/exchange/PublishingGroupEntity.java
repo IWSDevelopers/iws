@@ -39,6 +39,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -91,11 +93,7 @@ public final class PublishingGroupEntity extends AbstractUpdateable<PublishingGr
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "publishing_group_selection", joinColumns = @JoinColumn(name = "publishing_group_id"), inverseJoinColumns = @JoinColumn(name = "group_id"))
-    private List<GroupEntity> list = null;
-
-//    @Monitored(name="Employer name", level = MonitoringLevel.DETAILED)
-//    @Column(name = "name", length = 255, nullable = false)
-//    private String name = null;
+    private List<GroupEntity> list = new ArrayList<>(0);
 
     /**
      * Last time the Entity was modified.
@@ -164,11 +162,11 @@ public final class PublishingGroupEntity extends AbstractUpdateable<PublishingGr
     }
 
     public void setList(final List<GroupEntity> list) {
-        this.list = list;
+        this.list.addAll(list);
     }
 
     public List<GroupEntity> getList() {
-        return list;
+        return Collections.unmodifiableList(list);
     }
 
     /**

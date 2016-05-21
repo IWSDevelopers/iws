@@ -101,7 +101,7 @@ final class RequestLogger {
 
             ip = ((ServletRequest) request).getRemoteAddr();
         } else {
-            ip = "127.0.0.1";
+            ip = "localhost";
         }
 
         return ip;

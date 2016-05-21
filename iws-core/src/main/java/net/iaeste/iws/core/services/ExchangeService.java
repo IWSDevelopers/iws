@@ -30,9 +30,9 @@ import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.enums.Action;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.exchange.OfferState;
-import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
-import net.iaeste.iws.api.requests.exchange.HideForeignOffersRequest;
+import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.requests.exchange.EmployerRequest;
+import net.iaeste.iws.api.requests.exchange.HideForeignOffersRequest;
 import net.iaeste.iws.api.requests.exchange.OfferRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessPublishingGroupRequest;
 import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
@@ -141,78 +141,122 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
      * @return OfferResponse with error information
      */
     public OfferResponse processOffer(final Authentication authentication, final OfferRequest request) {
-        final EmployerEntity employer = process(authentication, request.getOffer().getEmployer());
-        final OfferEntity newEntity = transform(request.getOffer());
-        final Offer givenOffer = request.getOffer();
-        final String externalId = givenOffer.getOfferId();
-        final Offer offer;
+        final OfferResponse response = new OfferResponse();
+        final Action action = request.getAction();
 
-        if (externalId == null) {
-            // Add the Group to the Offer, otherwise our ref-no checks will fail
-            newEntity.getEmployer().setGroup(authentication.getGroup());
-            // Before we can persist the Offer, we need to check that the ref-no
-            // is valid. Since the Country is part of the Group, we can simply
-            // compare the ref-no with that.
-            verifyRefnoValidity(newEntity);
+        if (action == Action.PROCESS) {
+            final EmployerEntity employer = process(authentication, request.getOffer().getEmployer());
+            final String externalId = request.getOffer().getOfferId();
+            final OfferEntity entity;
 
-            final OfferEntity existingEntity = dao.findOfferByRefNo(authentication, newEntity.getRefNo());
-            if (existingEntity == null) {
-                // Create a new Offer
-
-                // We're setting the Exchange Year to the one from the Offer
-                // ref-no. Since this should be the controlling number.
-                newEntity.setExchangeYear(givenOffer.getExchangeYear());
-                // Add the employer to the Offer
-                newEntity.setEmployer(employer);
-                // Set the Offer status to New
-                newEntity.setStatus(OfferState.NEW);
-
-                // Persist the Offer with history
-                dao.persist(authentication, newEntity);
-
-                // Now transform our saved Entity for the result
-                offer = transform(newEntity);
+            if (externalId == null) {
+                entity = processNewOffer(authentication, employer, request);
             } else {
-                // An Offer exists with this RefNo, but the Id was not provided,
-                // hence we have the case where someone tries to create a new
-                // Offer using an existing RefNo, this is not allowed
-                throw new IdentificationException(formatLogMessage(authentication, "An Offer with the Reference Number %s already exists.", newEntity.getRefNo()));
+                entity = processExistingOffer(authentication, request);
             }
+
+            final Offer offer = transform(entity);
+            final UserEntity nationalSecretary = accessDao.findNationalSecretaryByMemberGroup(authentication.getGroup());
+            offer.setNsFirstname(nationalSecretary.getFirstname());
+            offer.setNsLastname(nationalSecretary.getLastname());
+            response.setOffer(cleanOfferLanguage(offer));
+
+            // Send a notification to the users who so desire. Via the Notifiable
+            // Interface, can the Object handle it itself
+            notifications.notify(authentication, entity, NotificationType.GENERAL);
+        } else if (action == Action.DELETE) {
+            deleteOffer(authentication, request);
         } else {
-            // Check if the user is allowed to work with the Object, if not -
-            // then a Permission Exception is thrown
-            permissionCheck(authentication, authentication.getGroup());
-
-            // Okay, user is permitted. Let's check if we can find this Offer
-            final OfferEntity existingEntity = dao.findOfferByExternalIdAndRefNo(authentication, externalId, newEntity.getRefNo());
-
-            if (existingEntity == null) {
-                // We could not find an Offer matching the given criteria's,
-                // hence we have a case, where the user have not provided the
-                // correct information, we cannot process this Offer
-                throw new IdentificationException(formatLogMessage(authentication, "No Offer could be found with the Id %s and Reference Number %s.", externalId, newEntity.getRefNo()));
-            }
-
-            // Persist the changes, the method takes the existing and merges the
-            // new values into it, and finally it also writes an entry in the
-            // history table
-            dao.persist(authentication, existingEntity, newEntity);
-
-            // Now transform the existing entity for the result
-            offer = transform(existingEntity);
+            throw new IWSException(IWSErrors.ILLEGAL_ACTION, "The action " + action + " is not supported in this context.");
         }
 
-        // Send a notification to the users who so desire. Via the Notifiable
-        // Interface, can the Object handle it itself
-        notifications.notify(authentication, newEntity, NotificationType.GENERAL);
-
-        final UserEntity nationalSecretary = accessDao.findNationalSecretaryByMemberGroup(authentication.getGroup());
-        offer.setNsFirstname(nationalSecretary.getFirstname());
-        offer.setNsLastname(nationalSecretary.getLastname());
-
-        return new OfferResponse(cleanOfferLanguage(offer));
+        return response;
     }
 
+    private OfferEntity processNewOffer(final Authentication authentication, final EmployerEntity employer, final OfferRequest request) {
+        final Offer givenOffer = request.getOffer();
+        final OfferEntity newEntity = transform(givenOffer);
+
+        // Add the Group to the Offer, otherwise our ref-no checks will fail
+        newEntity.getEmployer().setGroup(authentication.getGroup());
+        // Before we can persist the Offer, we need to check that the ref-no
+        // is valid. Since the Country is part of the Group, we can simply
+        // compare the ref-no with that.
+        verifyRefnoValidity(newEntity);
+
+        final OfferEntity existingEntity = dao.findOfferByRefNo(authentication, newEntity.getRefNo());
+        if (existingEntity == null) {
+            // Create a new Offer
+
+            // We're setting the Exchange Year to the one from the Offer
+            // ref-no. Since this should be the controlling number.
+            newEntity.setExchangeYear(givenOffer.getExchangeYear());
+            // Add the employer to the Offer
+            newEntity.setEmployer(employer);
+            // Set the Offer status to New
+            newEntity.setStatus(OfferState.NEW);
+
+            // Persist the Offer with history
+            dao.persist(authentication, newEntity);
+
+            return newEntity;
+        } else {
+            // An Offer exists with this RefNo, but the Id was not provided,
+            // hence we have the case where someone tries to create a new
+            // Offer using an existing RefNo, this is not allowed
+            throw new IdentificationException(formatLogMessage(authentication, "An Offer with the Reference Number %s already exists.", newEntity.getRefNo()));
+        }
+    }
+
+    private OfferEntity processExistingOffer(final Authentication authentication, final OfferRequest request) {
+        final Offer givenOffer = request.getOffer();
+        final OfferEntity newEntity = transform(givenOffer);
+        final String externalId = givenOffer.getOfferId();
+
+        // Check if the user is allowed to work with the Object, if not -
+        // then a Permission Exception is thrown
+        permissionCheck(authentication, authentication.getGroup());
+
+        // Okay, user is permitted. Let's check if we can find this Offer
+        final OfferEntity existingEntity = dao.findOfferByExternalIdAndRefNo(authentication, externalId, newEntity.getRefNo());
+
+        if (existingEntity == null) {
+            // We could not find an Offer matching the given criteria's,
+            // hence we have a case, where the user have not provided the
+            // correct information, we cannot process this Offer
+            throw new IdentificationException(formatLogMessage(authentication, "No Offer could be found with the Id %s and Reference Number %s.", externalId, newEntity.getRefNo()));
+        }
+
+        // Persist the changes, the method takes the existing and merges the
+        // new values into it, and finally it also writes an entry in the
+        // history table
+        dao.persist(authentication, existingEntity, newEntity);
+
+        // Now transform the existing entity for the result
+        return existingEntity;
+    }
+
+    /**
+     * It is allowed to delete Objects from the database, provided that their
+     * state indicates that the Offer has never been shared or exchanged, or
+     * anything, i.e. that the state is NEW and NEW only.
+     *
+     * @param authentication User & Group information
+     * @param request        Offer Request information, i.e. OfferId
+     */
+    private void deleteOffer(final Authentication authentication, final OfferRequest request) {
+        final OfferEntity foundOffer = dao.findOfferByExternalId(authentication, request.getOfferId());
+
+        if (foundOffer != null) {
+            if (foundOffer.getStatus() == OfferState.NEW) {
+                dao.delete(foundOffer);
+            } else {
+                throw new ExchangeException(IWSErrors.CANNOT_DELETE_OFFER, "It is not permitted to delete the offer with OfferId " + request.getOfferId() + " because it has been shared already");
+            }
+        } else {
+            throw new IdentificationException("Cannot delete Offer with OfferId " + request.getOfferId());
+        }
+    }
     /**
      * This method is checking the Offer Reference Number, and verifying that
      * new Offers follow the requirements:
@@ -263,28 +307,6 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
             if ((foundYear != currentYear) || (foundYear != exchangeYear)) {
                 throw new VerificationException("The Exchange Year for the Reference Number '" + refno + "- is invalid, expected is " + currentYear + " or " + exchangeYear + '.');
             }
-        }
-    }
-
-    /**
-     * It is allowed to delete Objects from the database, provided that their
-     * state indicates that the Offer has never been shared or exchanged, or
-     * anything, i.e. that the state is NEW and NEW only.
-     *
-     * @param authentication User & Group information
-     * @param request        Offer Request information, i.e. OfferId
-     */
-    public void deleteOffer(final Authentication authentication, final DeleteOfferRequest request) {
-        final OfferEntity foundOffer = dao.findOfferByExternalId(authentication, request.getOfferId());
-
-        if (foundOffer != null) {
-            if (foundOffer.getStatus() == OfferState.NEW) {
-                dao.delete(foundOffer);
-            } else {
-                throw new ExchangeException(IWSErrors.CANNOT_DELETE_OFFER, "It is not permitted to delete the offer with OfferId " + request.getOfferId() + " because it has been shared already");
-            }
-        } else {
-            throw new IdentificationException("Cannot delete Offer with OfferId " + request.getOfferId());
         }
     }
 

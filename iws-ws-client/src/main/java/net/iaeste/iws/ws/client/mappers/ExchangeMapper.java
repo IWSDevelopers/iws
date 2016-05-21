@@ -31,16 +31,15 @@ import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.api.enums.exchange.OfferType;
 import net.iaeste.iws.api.enums.exchange.PaymentFrequency;
 import net.iaeste.iws.api.enums.exchange.TypeOfWork;
-import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
+import net.iaeste.iws.api.requests.exchange.EmployerRequest;
 import net.iaeste.iws.api.requests.exchange.FetchEmployerRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishedGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.HideForeignOffersRequest;
 import net.iaeste.iws.api.requests.exchange.OfferCSVUploadRequest;
-import net.iaeste.iws.api.requests.exchange.OfferStatisticsRequest;
-import net.iaeste.iws.api.requests.exchange.EmployerRequest;
 import net.iaeste.iws.api.requests.exchange.OfferRequest;
+import net.iaeste.iws.api.requests.exchange.OfferStatisticsRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessPublishingGroupRequest;
 import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
 import net.iaeste.iws.api.requests.exchange.RejectOfferRequest;
@@ -209,18 +208,6 @@ public final class ExchangeMapper extends CommonMapper {
             ws = new net.iaeste.iws.ws.ProcessOfferRequest();
 
             ws.setOffer(map(api.getOffer()));
-        }
-
-        return ws;
-    }
-
-    public static net.iaeste.iws.ws.DeleteOfferRequest map(final DeleteOfferRequest api) {
-        net.iaeste.iws.ws.DeleteOfferRequest ws = null;
-
-        if (api != null) {
-            ws = new net.iaeste.iws.ws.DeleteOfferRequest();
-
-            ws.setOfferId(api.getOfferId());
         }
 
         return ws;

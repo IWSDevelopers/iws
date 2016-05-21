@@ -30,6 +30,7 @@ import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.dtos.TestData;
 import net.iaeste.iws.api.dtos.exchange.Offer;
+import net.iaeste.iws.api.enums.Action;
 import net.iaeste.iws.api.enums.FetchType;
 import net.iaeste.iws.api.enums.Language;
 import net.iaeste.iws.api.enums.exchange.ExchangeType;
@@ -37,10 +38,9 @@ import net.iaeste.iws.api.enums.exchange.LanguageLevel;
 import net.iaeste.iws.api.enums.exchange.LanguageOperator;
 import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.api.enums.exchange.OfferType;
-import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
-import net.iaeste.iws.api.requests.exchange.OfferStatisticsRequest;
 import net.iaeste.iws.api.requests.exchange.OfferRequest;
+import net.iaeste.iws.api.requests.exchange.OfferStatisticsRequest;
 import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
 import net.iaeste.iws.api.responses.exchange.OfferResponse;
 import net.iaeste.iws.api.responses.exchange.OfferStatisticsResponse;
@@ -331,8 +331,10 @@ public final class OfferTest extends AbstractOfferTest {
 
         final Offer offerToDelete = findOfferFromResponse(saveResponse.getOffer().getRefNo(), response);
 
-        final DeleteOfferRequest deleteRequest = new DeleteOfferRequest(offerToDelete.getOfferId());
-        final OfferResponse deleteResponse = exchange.deleteOffer(token, deleteRequest);
+        final OfferRequest deleteRequest = new OfferRequest();
+        deleteRequest.setAction(Action.DELETE);
+        deleteRequest.setOfferId(offerToDelete.getOfferId());
+        final OfferResponse deleteResponse = exchange.processOffer(token, deleteRequest);
 
         assertThat(deleteResponse.isOk(), is(true));
         final FetchOffersRequest fetchRequest = new FetchOffersRequest(FetchType.DOMESTIC);

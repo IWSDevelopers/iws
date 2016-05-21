@@ -20,16 +20,15 @@ package net.iaeste.iws.ejb;
 import net.iaeste.iws.api.Exchange;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
-import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
+import net.iaeste.iws.api.requests.exchange.EmployerRequest;
 import net.iaeste.iws.api.requests.exchange.FetchEmployerRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishedGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.HideForeignOffersRequest;
 import net.iaeste.iws.api.requests.exchange.OfferCSVUploadRequest;
-import net.iaeste.iws.api.requests.exchange.OfferStatisticsRequest;
-import net.iaeste.iws.api.requests.exchange.EmployerRequest;
 import net.iaeste.iws.api.requests.exchange.OfferRequest;
+import net.iaeste.iws.api.requests.exchange.OfferStatisticsRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessPublishingGroupRequest;
 import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
 import net.iaeste.iws.api.requests.exchange.RejectOfferRequest;
@@ -216,26 +215,6 @@ public class ExchangeBean implements Exchange {
             LOG.info(session.generateLogAndUpdateSession("processOffer", start, response, token));
         } catch (RuntimeException e) {
             LOG.error(session.generateLogAndSaveRequest("processOffer", start, e, token, request), e);
-            response = new OfferResponse(IWSErrors.ERROR, e.getMessage());
-        }
-
-        return response;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public OfferResponse deleteOffer(final AuthenticationToken token, final DeleteOfferRequest request) {
-        final long start = System.nanoTime();
-        OfferResponse response;
-
-        try {
-            response = controller.deleteOffer(token, request);
-            LOG.info(session.generateLogAndUpdateSession("deleteOffer", start, response, token));
-        } catch (RuntimeException e) {
-            LOG.error(session.generateLogAndSaveRequest("deleteOffer", start, e, token, request), e);
             response = new OfferResponse(IWSErrors.ERROR, e.getMessage());
         }
 

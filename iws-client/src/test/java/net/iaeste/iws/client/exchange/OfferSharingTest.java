@@ -31,10 +31,10 @@ import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.GroupList;
 import net.iaeste.iws.api.dtos.TestData;
 import net.iaeste.iws.api.dtos.exchange.Offer;
+import net.iaeste.iws.api.enums.Action;
 import net.iaeste.iws.api.enums.FetchType;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.exchange.OfferState;
-import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishedGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.HideForeignOffersRequest;
@@ -260,8 +260,10 @@ public final class OfferSharingTest extends AbstractOfferTest {
         assertThat("The offer is shared now, the status has to be SHARED", sharedOffer.getStatus(), is(OfferState.SHARED));
         assertThat(sharedOffer.getNominationDeadline(), is(nominationDeadline));
 
-        final DeleteOfferRequest deleteRequest = new DeleteOfferRequest(saveResponse.getOffer().getOfferId());
-        final OfferResponse deleteResponse = exchange.deleteOffer(token, deleteRequest);
+        final OfferRequest deleteRequest = new OfferRequest();
+        deleteRequest.setAction(Action.DELETE);
+        deleteRequest.setOfferId(saveResponse.getOffer().getOfferId());
+        final OfferResponse deleteResponse = exchange.processOffer(token, deleteRequest);
 
         assertThat(deleteResponse.isOk(), is(false));
         assertThat(deleteResponse.getError(), is(IWSErrors.CANNOT_DELETE_OFFER));

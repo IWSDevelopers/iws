@@ -19,16 +19,15 @@ package net.iaeste.iws.client;
 
 import net.iaeste.iws.api.Exchange;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
-import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
+import net.iaeste.iws.api.requests.exchange.EmployerRequest;
 import net.iaeste.iws.api.requests.exchange.FetchEmployerRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishedGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.HideForeignOffersRequest;
 import net.iaeste.iws.api.requests.exchange.OfferCSVUploadRequest;
-import net.iaeste.iws.api.requests.exchange.OfferStatisticsRequest;
-import net.iaeste.iws.api.requests.exchange.EmployerRequest;
 import net.iaeste.iws.api.requests.exchange.OfferRequest;
+import net.iaeste.iws.api.requests.exchange.OfferStatisticsRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessPublishingGroupRequest;
 import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
 import net.iaeste.iws.api.requests.exchange.RejectOfferRequest;
@@ -95,14 +94,6 @@ public final class ExchangeClient implements Exchange {
     @Override
     public OfferResponse processOffer(final AuthenticationToken token, final OfferRequest request) {
         return client.processOffer(token, request);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public OfferResponse deleteOffer(final AuthenticationToken token, final DeleteOfferRequest request) {
-        return client.deleteOffer(token, request);
     }
 
     /**

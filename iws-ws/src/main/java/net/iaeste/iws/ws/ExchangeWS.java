@@ -19,7 +19,6 @@ package net.iaeste.iws.ws;
 
 import net.iaeste.iws.api.Exchange;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
-import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
 import net.iaeste.iws.api.requests.exchange.FetchEmployerRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishGroupsRequest;
@@ -190,27 +189,6 @@ public class ExchangeWS implements Exchange {
 
         try {
             response = bean.processOffer(token, request);
-        } catch (RuntimeException e) {
-            response = RequestLogger.handleError(e, OfferResponse.class);
-        }
-
-        return response;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @WebMethod
-    @WebResult(name = "response")
-    public OfferResponse deleteOffer(
-            @WebParam(name = "token") final AuthenticationToken token,
-            @WebParam(name = "request") final DeleteOfferRequest request) {
-        LOG.info(requestLogger.prepareLogMessage(token, "deleteOffer"));
-        OfferResponse response;
-
-        try {
-            response = bean.deleteOffer(token, request);
         } catch (RuntimeException e) {
             response = RequestLogger.handleError(e, OfferResponse.class);
         }

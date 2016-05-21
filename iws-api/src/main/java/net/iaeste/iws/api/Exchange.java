@@ -18,16 +18,15 @@
 package net.iaeste.iws.api;
 
 import net.iaeste.iws.api.dtos.AuthenticationToken;
-import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
+import net.iaeste.iws.api.requests.exchange.EmployerRequest;
 import net.iaeste.iws.api.requests.exchange.FetchEmployerRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishedGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.HideForeignOffersRequest;
 import net.iaeste.iws.api.requests.exchange.OfferCSVUploadRequest;
-import net.iaeste.iws.api.requests.exchange.OfferStatisticsRequest;
-import net.iaeste.iws.api.requests.exchange.EmployerRequest;
 import net.iaeste.iws.api.requests.exchange.OfferRequest;
+import net.iaeste.iws.api.requests.exchange.OfferStatisticsRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessPublishingGroupRequest;
 import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
 import net.iaeste.iws.api.requests.exchange.RejectOfferRequest;
@@ -98,21 +97,6 @@ public interface Exchange {
      * @return the persisted {@link net.iaeste.iws.api.dtos.exchange.Offer} including the generated Id
      */
     OfferResponse processOffer(AuthenticationToken token, OfferRequest request);
-
-    /**
-     * <p>Performs a deletion of the offer.</p>
-     *
-     * <p>Note; This should only be under certain circumstances: only if the
-     * offer is in state new. Doesn't matter if it was once shared. But it
-     * should never be able to be deleted once a student was nominated.</p>
-     *
-     * @param token The valid authentication token provided by {@link Access#generateSession(net.iaeste.iws.api.requests.AuthenticationRequest)}
-     * @param request contains a field with the RefNo (will be changed to id #359)
-     * @return empty {@link OfferResponse} (offer=null) on success
-     * @deprecated Please use the processOffer request instead.
-     */
-    @Deprecated
-    OfferResponse deleteOffer(AuthenticationToken token, DeleteOfferRequest request);
 
     /**
      * <p>IW3, IAESTE IntraWeb version 3, allowed users to upload their Offers

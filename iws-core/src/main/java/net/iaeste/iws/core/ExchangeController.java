@@ -21,16 +21,15 @@ import net.iaeste.iws.api.Exchange;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.exceptions.IWSException;
-import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
+import net.iaeste.iws.api.requests.exchange.EmployerRequest;
 import net.iaeste.iws.api.requests.exchange.FetchEmployerRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishedGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.HideForeignOffersRequest;
 import net.iaeste.iws.api.requests.exchange.OfferCSVUploadRequest;
-import net.iaeste.iws.api.requests.exchange.OfferStatisticsRequest;
-import net.iaeste.iws.api.requests.exchange.EmployerRequest;
 import net.iaeste.iws.api.requests.exchange.OfferRequest;
+import net.iaeste.iws.api.requests.exchange.OfferStatisticsRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessPublishingGroupRequest;
 import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
 import net.iaeste.iws.api.requests.exchange.RejectOfferRequest;
@@ -165,33 +164,6 @@ public final class ExchangeController extends CommonController implements Exchan
 
             final ExchangeService service = factory.prepareExchangeService();
             response = service.processOffer(authentication, request);
-        } catch (IWSException e) {
-            // Generally, Exceptions should always be either logged or rethrown.
-            // In our case, we're transforming the Exception into an Error
-            // Object which can be returned to the User. However, to ensure
-            // that we're not loosing anything - the Exception is also LOG.ed
-            // here as a debug message
-            LOG.debug(e.getMessage(), e);
-            response = new OfferResponse(e.getError(), e.getMessage());
-        }
-
-        return response;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public OfferResponse deleteOffer(final AuthenticationToken token, final DeleteOfferRequest request) {
-        OfferResponse response;
-
-        try {
-            verify(request);
-            final Authentication authentication = verifyAccess(token, Permission.PROCESS_OFFER);
-
-            final ExchangeService service = factory.prepareExchangeService();
-            service.deleteOffer(authentication, request);
-            response = new OfferResponse();
         } catch (IWSException e) {
             // Generally, Exceptions should always be either logged or rethrown.
             // In our case, we're transforming the Exception into an Error

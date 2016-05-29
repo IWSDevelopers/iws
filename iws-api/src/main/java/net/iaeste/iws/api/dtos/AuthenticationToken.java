@@ -30,7 +30,7 @@ import java.util.Map;
 
 /**
  * All requests (with the exception of the initial Authorization request) is
- * made with this Object as the first parameter. The Token contains  enough
+ * made with this Object as the first parameter. The Token contains enough
  * information to positively identify the user, who initiated a given Request.
  *
  * @author  Kim Jensen / last $Author:$

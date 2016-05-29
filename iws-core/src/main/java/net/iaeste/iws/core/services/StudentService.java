@@ -267,7 +267,7 @@ public final class StudentService extends CommonService<StudentDao> {
 
     public FetchStudentApplicationsResponse fetchStudentApplications(final Authentication authentication, final FetchStudentApplicationsRequest request) {
         final String offerExternalId = request.getOfferId();
-        final OfferEntity ownedOffer = exchangeDao.findOfferByExternalId(authentication, offerExternalId);
+        final OfferEntity ownedOffer = exchangeDao.findOfferByOwnerAndExternalId(authentication, offerExternalId);
 
         final List<ApplicationView> found;
         if ((ownedOffer != null) && ownedOffer.getEmployer().getGroup().equals(authentication.getGroup())) {

@@ -464,10 +464,12 @@ public class BasicJpaDao implements BasicDao {
         final List<T> found = query.getResultList();
         T result = null;
 
-        if (found.size() == 1) {
-            result = found.get(0);
-        } else if (found.size() > 1) {
-            throw new IdentificationException("Multiple " + entityName + "s were found.");
+        if (found != null) {
+            if (found.size() == 1) {
+                result = found.get(0);
+            } else if (found.size() > 1) {
+                throw new IdentificationException("Multiple " + entityName + "s were found.");
+            }
         }
 
         return result;

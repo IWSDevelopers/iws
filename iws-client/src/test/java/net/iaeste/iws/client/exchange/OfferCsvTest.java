@@ -45,10 +45,8 @@ import net.iaeste.iws.client.ExchangeClient;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -97,13 +95,10 @@ public final class OfferCsvTest extends AbstractOfferTest {
         final OfferResponse saveResponse = exchange.processOffer(austriaTokenWithNationalGroup, saveRequest);
         assertThat(saveResponse.isOk(), is(true));
 
-        final Set<String> offersToShare = new HashSet<>(1);
-        offersToShare.add(saveResponse.getOffer().getOfferId());
-
         final List<String> groupIds = new ArrayList<>(2);
         groupIds.add(findNationalGroup(croatiaToken).getGroupId());
 
-        final PublishOfferRequest publishRequest = new PublishOfferRequest(offersToShare, groupIds, nominationDeadline);
+        final PublishOfferRequest publishRequest = new PublishOfferRequest(saveResponse.getOffer().getOfferId(), groupIds, nominationDeadline);
         final PublishOfferResponse publishResponse = exchange.processPublishOffer(austriaTokenWithNationalGroup, publishRequest);
         assertThat(publishResponse.getError(), is(IWSErrors.SUCCESS));
         assertThat(publishResponse.isOk(), is(true));

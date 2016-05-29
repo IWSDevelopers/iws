@@ -369,7 +369,7 @@ public final class ExchangeMapper extends CommonMapper {
             ws = new net.iaeste.iws.ws.PublishOfferRequest();
 
             ws.getGroupIds().addAll(mapStringCollection(api.getGroupIds()));
-            ws.getOfferIds().addAll(mapStringCollection(api.getOfferIds()));
+            //ws.getOfferIds().addAll(mapStringCollection(api.getOfferIds()));
             ws.setNominationDeadline(map(api.getNominationDeadline()));
         }
 

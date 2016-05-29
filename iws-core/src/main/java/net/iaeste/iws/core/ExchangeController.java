@@ -345,8 +345,7 @@ public final class ExchangeController extends CommonController implements Exchan
             final Authentication authentication = verifyAccess(token, Permission.PROCESS_PUBLISH_OFFER);
 
             final ExchangeService service = factory.prepareExchangeService();
-            service.processPublishOffer(authentication, request);
-            response = new PublishOfferResponse();
+            response = service.processPublishOffer(authentication, request);
         } catch (IWSException e) {
             // Generally, Exceptions should always be either logged or rethrown.
             // In our case, we're transforming the Exception into an Error

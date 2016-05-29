@@ -68,7 +68,7 @@ public interface ExchangeDao extends BasicDao {
      * @return OfferEntity for given id, if no entity exists, then a null value is returned.
      * @throws PersistenceException
      */
-    OfferEntity findOfferByExternalId(Authentication authentication, String externalId);
+    OfferEntity findOfferByOwnerAndExternalId(Authentication authentication, String externalId);
 
     /**
      * Finds the entity in the database.
@@ -192,4 +192,10 @@ public interface ExchangeDao extends BasicDao {
     PublishingGroupEntity getSharingListByExternalIdAndOwnerId(String externalId, Long groupId);
 
     List<PublishingGroupEntity> getSharingListForOwner(Long id);
+
+    List<GroupEntity> findNationalGroupsById(List<String> groupIds);
+
+    List<GroupEntity> findNationalGroupsByIdForSharing(GroupEntity owner, List<String> groupIds);
+
+    OfferEntity findOfferByOwnerAndIdentifier(Authentication authentication, String identifier);
 }

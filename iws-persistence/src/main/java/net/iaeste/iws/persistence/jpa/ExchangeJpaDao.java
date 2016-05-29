@@ -18,6 +18,7 @@
 package net.iaeste.iws.persistence.jpa;
 
 import net.iaeste.iws.api.dtos.exchange.Employer;
+import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.persistence.Authentication;
@@ -93,7 +94,7 @@ public final class ExchangeJpaDao extends BasicJpaDao implements ExchangeDao {
      * {@inheritDoc}
      */
     @Override
-    public OfferEntity findOfferByExternalId(final Authentication authentication, final String externalId) {
+    public OfferEntity findOfferByOwnerAndExternalId(final Authentication authentication, final String externalId) {
         final Query query = entityManager.createNamedQuery("offer.findByGroupAndExternalId");
         query.setParameter("gid", authentication.getGroup().getId());
         query.setParameter("eid", externalId);
@@ -146,7 +147,11 @@ public final class ExchangeJpaDao extends BasicJpaDao implements ExchangeDao {
      */
     @Override
     public List<OfferEntity> findOffersByExternalId(final Authentication authentication, final Set<String> externalIds) {
-        final Query query = entityManager.createNamedQuery("offer.findByGroupAndExternalIds");
+        final String jql =
+                "select o from OfferEntity o " +
+                "where o.employer.group.id = :gid" +
+                "  and o.externalId in :eids";
+        final Query query = entityManager.createQuery(jql);
         query.setParameter("gid", authentication.getGroup().getId());
         query.setParameter("eids", expandEmptyCollection(externalIds, ""));
 
@@ -317,5 +322,58 @@ public final class ExchangeJpaDao extends BasicJpaDao implements ExchangeDao {
         query.setParameter("gid", id);
 
         return query.getResultList();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<GroupEntity> findNationalGroupsById(final List<String> groupIds) {
+        final String jql =
+                "select g from  GroupEntity g " +
+                "where g.groupType.grouptype = :type" +
+                "  and g.externalId in :list";
+        final Query query = entityManager.createQuery(jql);
+        query.setParameter("type", GroupType.NATIONAL);
+        query.setParameter("list", groupIds);
+
+        return query.getResultList();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<GroupEntity> findNationalGroupsByIdForSharing(final GroupEntity owner, final List<String> groupIds) {
+        final String jql =
+                "select g from GroupEntity g " +
+                "where g.id != :owner" +
+                "  and g.groupType.grouptype = :type" +
+                "  and g.externalId in :ids";
+        final Query query = entityManager.createQuery(jql);
+        query.setParameter("owner", owner.getId());
+        query.setParameter("type", GroupType.NATIONAL);
+        query.setParameter("ids", groupIds);
+
+        return query.getResultList();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public OfferEntity findOfferByOwnerAndIdentifier(final Authentication authentication, final String identifier) {
+        final String jql =
+                "select o from OfferEntity o " +
+                "where o.employer.group = :owner" +
+                "  and o.status != :state" +
+                "  and (o.externalId = :identifier" +
+                "     or o.refNo = :identifier)";
+        final Query query = entityManager.createQuery(jql);
+        query.setParameter("owner", authentication.getGroup());
+        query.setParameter("state", OfferState.DELETED);
+        query.setParameter("identifier", identifier);
+
+        return findSingleResult(query, "Offer");
     }
 }

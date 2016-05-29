@@ -20,10 +20,14 @@ package net.iaeste.iws.api.responses.exchange;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.responses.FallibleResponse;
+import net.iaeste.iws.api.util.Verifications;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author  Pavel Fiala / last $Author:$
@@ -31,11 +35,14 @@ import javax.xml.bind.annotation.XmlType;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "publishOfferResponse", propOrder = {})
+@XmlType(name = "publishOfferResponse", propOrder = { "offerId", "groupIds" })
 public final class PublishOfferResponse extends FallibleResponse {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
+
+    @XmlElement(name = "offerId", required = true)   private String offerId = null;
+    @XmlElement(name = "groupIds", required = true)  private final List<String> groupIds = new ArrayList<>(0);
 
     // =========================================================================
     // Object Constructors
@@ -57,5 +64,25 @@ public final class PublishOfferResponse extends FallibleResponse {
      */
     public PublishOfferResponse(final IWSError error, final String message) {
         super(error, message);
+    }
+
+    // =========================================================================
+    // Standard Setters & Getters
+    // =========================================================================
+
+    public void setOfferId(final String offerId) {
+        this.offerId = offerId;
+    }
+
+    public String getOfferId() {
+        return offerId;
+    }
+
+    public void setGroupIds(final List<String> groupIds) {
+        this.groupIds.addAll(groupIds);
+    }
+
+    public List<String> getGroupIds() {
+        return Verifications.immutableList(groupIds);
     }
 }

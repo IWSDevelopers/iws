@@ -18,6 +18,8 @@
 package net.iaeste.iws.core.services;
 
 import static net.iaeste.iws.api.enums.exchange.OfferState.AT_EMPLOYER;
+import static net.iaeste.iws.api.enums.exchange.OfferState.OPEN;
+import static net.iaeste.iws.api.enums.exchange.OfferState.VIEWED;
 import static net.iaeste.iws.api.util.LogUtil.formatLogMessage;
 import static net.iaeste.iws.api.util.Verifications.calculateExchangeYear;
 import static net.iaeste.iws.common.utils.StringUtils.toUpper;
@@ -28,7 +30,6 @@ import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.exchange.Employer;
 import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.enums.Action;
-import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.requests.exchange.EmployerRequest;
@@ -39,6 +40,7 @@ import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
 import net.iaeste.iws.api.requests.exchange.RejectOfferRequest;
 import net.iaeste.iws.api.responses.exchange.EmployerResponse;
 import net.iaeste.iws.api.responses.exchange.OfferResponse;
+import net.iaeste.iws.api.responses.exchange.PublishOfferResponse;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.common.exceptions.ExchangeException;
@@ -61,7 +63,6 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.EnumSet;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -245,7 +246,7 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
      * @param request        Offer Request information, i.e. OfferId
      */
     private void deleteOffer(final Authentication authentication, final OfferRequest request) {
-        final OfferEntity foundOffer = dao.findOfferByExternalId(authentication, request.getOfferId());
+        final OfferEntity foundOffer = dao.findOfferByOwnerAndExternalId(authentication, request.getOfferId());
 
         if (foundOffer != null) {
             if (foundOffer.getStatus() == OfferState.NEW) {
@@ -328,7 +329,7 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
                     groupIds.add(group.getGroupId());
                 }
             }
-            final List<GroupEntity> countryList = getAndVerifyGroupExist(groupIds);
+            final List<GroupEntity> countryList = dao.findNationalGroupsById(groupIds);
             newEntity.setList(countryList);
             newEntity.setGroup(authentication.getGroup());
             final String externalId = newEntity.getExternalId();
@@ -348,100 +349,182 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
 
     /**
      * Method for processing publishing (sharing) of offer. Passing empty list
-     * of groups means complete unsharing of the offer. Otherwise the offer is
+     * of groups means complete un-sharing of the offer. Otherwise the offer is
      * unshared for groups that are not present in the request and shared to
      * such new groups in request for which there is no OfferGroupEntity.
      *
      * @param authentication User & Group information
      * @param request        Publish Offer Request information
      */
-    public void processPublishOffer(final Authentication authentication, final PublishOfferRequest request) {
-        // ToDo for Kim - please rewrite this mess. It is one long unclear process!
-        //verify Group exist for given groupId
-        final List<GroupEntity> groups = getAndVerifyGroupExist(request.getGroupIds());
+    public PublishOfferResponse processPublishOffer(final Authentication authentication, final PublishOfferRequest request) {
+        final OfferEntity offer = dao.findOfferByOwnerAndIdentifier(authentication, request.getOfferId());
+        // Before continuing, first we must check the Offer.
+        checkOfferForReSharing(offer, request);
 
-        verifyPublishRequest(authentication, request, groups);
-        final List<OfferEntity> offers = dao.findOffersByExternalId(authentication, request.getOfferIds());
+        final List<String> groupIds = request.getGroupIds();
+        final PublishOfferResponse response = new PublishOfferResponse();
+        response.setOfferId(request.getOfferId());
+        final List<OfferGroupEntity> shares = new ArrayList<>(0);
 
-        for (final OfferEntity offer : offers) {
-            //TODO tune the number of DB queries, get everything at once
-            final List<OfferGroupEntity> allOfferGroups = dao.findInfoForSharedOffer(offer.getId());
-
-            final List<OfferGroupEntity> unshareOfferGroups = new ArrayList<>();
-            final List<GroupEntity> keepSharing = new ArrayList<>();
-            final List<OfferGroupEntity> keepOfferGroups = new ArrayList<>();
-            final List<GroupEntity> resharing = new ArrayList<>();
-            final List<OfferGroupEntity> reshareGroups = new ArrayList<>();
-
-            for (final OfferGroupEntity offerGroup : allOfferGroups) {
-                if (groups.contains(offerGroup.getGroup())) {
-                    if (EnumSet.of(OfferState.CLOSED, OfferState.EXPIRED, OfferState.REJECTED).contains(offerGroup.getStatus())) {
-                        resharing.add(offerGroup.getGroup());
-                        reshareGroups.add(offerGroup);
-                    } else {
-                        keepSharing.add(offerGroup.getGroup());
-                        keepOfferGroups.add(offerGroup);
-                    }
-                } else {
-                    if (offerGroup.getStatus() != OfferState.CLOSED) {
-                        unshareOfferGroups.add(offerGroup);
-                    }
-                }
+        if (groupIds.isEmpty()) {
+            // Since no GroupId's has been provided, we're going to remove
+            // all Shares by Closing them, however it can only be done for
+            // Shares in a non-final state.
+            final Set<OfferState> currentStates = EnumSet.of(OfferState.NEW, VIEWED);
+            final int records = updateOfferGroupStates(authentication, offer, currentStates, OfferState.CLOSED);
+            LOG.info("Closed {} Shares for the Offer {}.", records, offer.getRefNo());
+        } else {
+            final List<OfferGroupEntity> processed = processOfferSharing(authentication, offer, request);
+            for (final OfferGroupEntity entity : processed) {
+                shares.add(entity);
             }
-
-            boolean updateOfferState = false;
-
-            final List<GroupEntity> newSharing = new ArrayList<>(groups);
-            newSharing.removeAll(keepSharing);
-            newSharing.removeAll(resharing);
-
-            if (!newSharing.isEmpty()) {
-                updateOfferState = keepOfferGroups.isEmpty();
-                keepOfferGroups.addAll(publishOffer(authentication, offer, newSharing));
-            }
-
-            if (!resharing.isEmpty()) {
-                updateOfferState = keepOfferGroups.isEmpty() || updateOfferState;
-                keepOfferGroups.addAll(republishOffer(authentication, offer, reshareGroups));
-            }
-
-            if (!unshareOfferGroups.isEmpty()) {
-                final OfferState removedState = unshareOfferFromGroups(offer, unshareOfferGroups);
-                if (offer.getStatus() == removedState) {
-                    updateOfferState = true;
-                }
-            }
-
-            if (updateOfferState) {
-                final OfferState oldOfferState = offer.getStatus();
-                OfferState newOfferState = isOtherCurrentOfferGroupStateHigher(oldOfferState, OfferState.SHARED) ? OfferState.SHARED : oldOfferState;
-
-                if (!keepOfferGroups.isEmpty()) {
-                    for (final OfferGroupEntity offerGroup : keepOfferGroups) {
-                        if ((offerGroup.getStatus() != oldOfferState) && isOtherCurrentOfferGroupStateHigher(newOfferState, offerGroup.getStatus())) {
-                            newOfferState = offerGroup.getStatus();
-                        }
-                    }
-                } else if (newSharing.isEmpty()) {
-                    newOfferState = OfferState.OPEN;
-                }
-
-                if (oldOfferState != newOfferState) {
-                    offer.setStatus(newOfferState);
-                }
-            }
-
-            // The above logic is flawed, causing strange changes to the state
-            // of the Offer. The following is just a hack, until we have a
-            // proper process in place. The hack will simply based on current
-            // state & deadline correct the state.
-            if (request.getNominationDeadline() != null) {
-                offer.setStatus(evaluateOfferState(request.getNominationDeadline(), offer.getStatus(), offer.getRefNo()));
-                offer.setNominationDeadline(request.getNominationDeadline().toDate());
-            }
-
-            dao.persist(authentication, offer);
         }
+
+        // Update the status of the Offer, based on the request & states of the
+        // shares, and set the list of GroupIds in the response. So it is clear
+        // with whom the Offer was shared to.
+        updateSharedOffer(authentication, request, offer, shares);
+        response.setGroupIds(readGroupIds(shares));
+
+        return response;
+    }
+
+    private int updateOfferGroupStates(final Authentication authentication, final OfferEntity offer, final Set<OfferState> currentStates, final OfferState newState) {
+        final List<OfferGroupEntity> entities = dao.findInfoForSharedOffer(offer.getId());
+        int count = 0;
+
+        for (final OfferGroupEntity entity : entities) {
+            boolean update = true;
+            for (final OfferState state : currentStates) {
+                if (entity.getStatus() == state) {
+                    update = false;
+                }
+            }
+
+            if (update) {
+                entity.setStatus(newState);
+                dao.persist(authentication, entity);
+                count++;
+            }
+        }
+
+        return count;
+    }
+
+    /**
+     * Performs some initial checks on the Offer we have found (if any). If no
+     * Offer matching the lookup criteria's, i.e. Existing Offer which the User
+     * may process which is not in a non-sharable state.
+     *
+     * @param offer   The Offer to check
+     * @param request Publish Offer Request Object
+     * @throws VerificationException if not processable
+     */
+    private static void checkOfferForReSharing(final OfferEntity offer, final PublishOfferRequest request) {
+        // Check if the Offer is null, i.e. it is either not existing, deleted
+        // or the User is not allowed to work with it (it belongs to a
+        // different Group).
+        if (offer == null) {
+            throw new VerificationException("The offer with Id '" + request.getOfferId() + "' cannot be shared.");
+        }
+
+        // Offers which belongs to a different Exchange Year, cannot be shared.
+        if (offer.getExchangeYear() != calculateExchangeYear()) {
+            throw new VerificationException("Cannot share Offers from '" + offer.getExchangeYear() + "'.");
+        }
+    }
+
+    private static List<String> readGroupIds(final List<OfferGroupEntity> shares) {
+        final List<String> list = new ArrayList<>(shares.size());
+
+        for (final OfferGroupEntity entity : shares) {
+            list.add(entity.getGroup().getExternalId());
+        }
+
+        return list;
+    }
+
+    /**
+     * Handles the re-sharing of Offers. Meaning adding, deleting or updating
+     * shares. Please note that this handling is not following an approved
+     * process, and should be replaced with something better. But for now, it
+     * is left as it is. As it is at least more understandable than the old
+     * process.
+     *
+     * @param authentication User Authentication information
+     * @param offer          Offer to handling sharing for
+     * @param request        Request information, with Groups & Deadline
+     * @return Updated share listing
+     */
+    private List<OfferGroupEntity> processOfferSharing(final Authentication authentication, final OfferEntity offer, final PublishOfferRequest request) {
+        final List<String> groupIds = request.getGroupIds();
+        final GroupEntity owner = authentication.getGroup();
+        final List<GroupEntity> groups = dao.findNationalGroupsByIdForSharing(owner, groupIds);
+        // Share or re-share the Offer
+        final List<OfferGroupEntity> allOfferGroups = dao.findInfoForSharedOffer(offer.getId());
+
+        final List<OfferGroupEntity> unshareOfferGroups = new ArrayList<>();
+        final List<GroupEntity> keepSharing = new ArrayList<>();
+        final List<OfferGroupEntity> keepOfferGroups = new ArrayList<>();
+        final List<GroupEntity> resharing = new ArrayList<>();
+        final List<OfferGroupEntity> reshareGroups = new ArrayList<>();
+
+        for (final OfferGroupEntity offerGroup : allOfferGroups) {
+            if (groups.contains(offerGroup.getGroup())) {
+                if (EnumSet.of(OfferState.CLOSED, OfferState.EXPIRED, OfferState.REJECTED).contains(offerGroup.getStatus())) {
+                    resharing.add(offerGroup.getGroup());
+                    reshareGroups.add(offerGroup);
+                } else {
+                    keepSharing.add(offerGroup.getGroup());
+                    keepOfferGroups.add(offerGroup);
+                }
+            } else {
+                if (offerGroup.getStatus() != OfferState.CLOSED) {
+                    unshareOfferGroups.add(offerGroup);
+                }
+            }
+        }
+
+        final List<GroupEntity> newSharing = new ArrayList<>(groups);
+        newSharing.removeAll(keepSharing);
+        newSharing.removeAll(resharing);
+
+        if (!newSharing.isEmpty()) {
+            keepOfferGroups.addAll(publishOffer(authentication, offer, newSharing));
+        }
+
+        if (!resharing.isEmpty()) {
+            keepOfferGroups.addAll(republishOffer(authentication, offer, reshareGroups));
+        }
+
+        if (!unshareOfferGroups.isEmpty()) {
+            unshareOfferFromGroups(offer, unshareOfferGroups);
+        }
+
+        return keepOfferGroups;
+    }
+
+    private void updateSharedOffer(final Authentication authentication, final PublishOfferRequest request, final OfferEntity offer, final List<OfferGroupEntity> shares) {
+        final OfferState oldOfferState = offer.getStatus();
+        OfferState newOfferState = isOtherCurrentOfferGroupStateHigher(oldOfferState, OfferState.SHARED) ? OfferState.SHARED : oldOfferState;
+
+        if (shares.isEmpty()) {
+            newOfferState = OPEN;
+        } else {
+            for (final OfferGroupEntity offerGroup : shares) {
+                if ((offerGroup.getStatus() != oldOfferState) && isOtherCurrentOfferGroupStateHigher(newOfferState, offerGroup.getStatus())) {
+                    newOfferState = offerGroup.getStatus();
+                }
+            }
+        }
+
+        // Now, we're done dealing with the Offer Shares - it is time to
+        // update the Offer also, to reflect this.
+        if (request.getNominationDeadline() != null) {
+            offer.setNominationDeadline(request.getNominationDeadline().toDate());
+        }
+        offer.setStatus(evaluateOfferState(request.getNominationDeadline(), newOfferState, offer.getRefNo()));
+        dao.persist(authentication, offer);
     }
 
     private static OfferState evaluateOfferState(final Date deadline, final OfferState current, final String refno) {
@@ -511,8 +594,8 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
     /**
      * Returns highest OfferGroup state from all unshared OfferGroups
      *
-     * @param offer
-     * @param offerGroups
+     * @param offer       Offer
+     * @param offerGroups List of Groups to remove sharing to
      * @return OfferState
      */
     private OfferState unshareOfferFromGroups(final OfferEntity offer, final List<OfferGroupEntity> offerGroups) {
@@ -630,66 +713,6 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
         }
 
         return result;
-    }
-
-    private void verifyPublishRequest(final Authentication authentication, final PublishOfferRequest request, final List<GroupEntity> groupEntities) {
-        //verify only allowed group type(s) are share to
-        verifyGroupTypeToBeShareTo(groupEntities);
-        //verify that the user's group owns all offers before performing sharing
-        verifyOffersOwnership(authentication, request.getOfferIds());
-        //verify that an offer is not shared to the owner of the offer
-        verifyNotSharingToItself(authentication, groupEntities);
-    }
-
-    private static void verifyNotSharingToItself(final Authentication authentication, final List<GroupEntity> groupEntities) {
-        // All operations in the Exchange module requires that a user is a
-        // member of a National or LocalCommittee group. As it is only possible
-        // to be member of one, then the Authentication/Authorization module can
-        // easily extract this information, and does it as well. The Group from
-        // the Authentication Object is the users National / SAR Group
-        final GroupEntity nationalGroup = authentication.getGroup();
-
-        for (final GroupEntity group : groupEntities) {
-            if (group.getExternalId().equals(nationalGroup.getExternalId())) {
-                throw new VerificationException("Cannot publish offers to itself.");
-            }
-        }
-    }
-
-    private List<GroupEntity> getAndVerifyGroupExist(final List<String> groupIds) {
-        final List<GroupEntity> groups = new ArrayList<>(groupIds.size());
-
-        for (final String groupId : groupIds) {
-            final GroupEntity groupEntity = dao.findGroupByExternalId(groupId);
-            if (groupEntity == null) {
-                throw new VerificationException("The group with id = '" + groupId + "' does not exist.");
-            }
-            groups.add(groupEntity);
-        }
-
-        return groups;
-    }
-
-    private static void verifyGroupTypeToBeShareTo(final List<GroupEntity> groups) {
-        for (final GroupEntity group : groups) {
-            if (group.getGroupType().getGrouptype() != GroupType.NATIONAL) {
-                throw new VerificationException("The group type '" + group.getGroupType().getGrouptype() + "' is not allowed to be used for publishing of offers.");
-            }
-        }
-    }
-
-    private void verifyOffersOwnership(final Authentication authentication, final Set<String> offerExternalIds) {
-        final List<OfferEntity> offers = dao.findOffersByExternalId(authentication, offerExternalIds);
-        final Set<String> fetchedOffersExtId = new HashSet<>(offers.size());
-        for (final OfferEntity offer : offers) {
-            fetchedOffersExtId.add(offer.getExternalId());
-        }
-
-        for (final String externalId : offerExternalIds) {
-            if (!fetchedOffersExtId.contains(externalId)) {
-                throw new VerificationException("The offer with externalId '" + externalId + "' is not owned by the group '" + authentication.getGroup().getGroupName() + "'.");
-            }
-        }
     }
 
     private List<OfferGroupEntity> publishOffer(final Authentication authentication, final OfferEntity offer, final List<GroupEntity> groups) {

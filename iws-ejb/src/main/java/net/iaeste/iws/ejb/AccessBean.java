@@ -27,6 +27,7 @@ import net.iaeste.iws.api.responses.AuthenticationResponse;
 import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchPermissionResponse;
 import net.iaeste.iws.api.responses.SessionDataResponse;
+import net.iaeste.iws.api.responses.VersionResponse;
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.core.AccessController;
 import net.iaeste.iws.core.notifications.Notifications;
@@ -123,6 +124,25 @@ public class AccessBean implements Access {
     // =========================================================================
     // Implementation of methods from Access in the API
     // =========================================================================
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public VersionResponse version() {
+        final long start = System.nanoTime();
+        VersionResponse response;
+
+        try {
+            response = controller.version();
+            LOG.info(session.generateLog("version", start, response));
+        } catch (RuntimeException e) {
+            LOG.error(session.generateLog("version", start, e));
+            response = new VersionResponse(IWSErrors.ERROR, e.getMessage());
+        }
+
+        return response;
+    }
 
     /**
      * {@inheritDoc}

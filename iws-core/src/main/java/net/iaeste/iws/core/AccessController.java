@@ -18,6 +18,8 @@
 package net.iaeste.iws.core;
 
 import net.iaeste.iws.api.Access;
+import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.dtos.Password;
 import net.iaeste.iws.api.exceptions.IWSException;
@@ -27,6 +29,7 @@ import net.iaeste.iws.api.responses.AuthenticationResponse;
 import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchPermissionResponse;
 import net.iaeste.iws.api.responses.SessionDataResponse;
+import net.iaeste.iws.api.responses.VersionResponse;
 import net.iaeste.iws.core.services.AccessService;
 import net.iaeste.iws.core.services.ServiceFactory;
 import net.iaeste.iws.persistence.Authentication;
@@ -34,6 +37,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 /**
  * Primary implementation of the IWS Access functionality. The class is the
@@ -62,6 +67,31 @@ public final class AccessController extends CommonController implements Access {
      */
     public AccessController(final ServiceFactory factory) {
         super(factory);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public VersionResponse version() {
+        VersionResponse response;
+
+        try {
+            response = new VersionResponse();
+            response.setHostname(InetAddress.getLocalHost().getHostName());
+            response.setAddress(InetAddress.getLocalHost().getHostAddress());
+            response.setVersion(IWSConstants.IWS_VERSION);
+        } catch (UnknownHostException e) {
+            // Generally, Exceptions should always be either logged or rethrown.
+            // In our case, we're transforming the Exception into an Error
+            // Object which can be returned to the User. However, to ensure
+            // that we're not loosing anything - the Exception is also logged
+            // here as a debug message
+            LOG.warn(e.getMessage(), e);
+            response = new VersionResponse(IWSErrors.FATAL, e.getMessage());
+        }
+
+        return response;
     }
 
     /**

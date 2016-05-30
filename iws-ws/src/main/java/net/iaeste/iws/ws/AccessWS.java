@@ -26,6 +26,7 @@ import net.iaeste.iws.api.responses.AuthenticationResponse;
 import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchPermissionResponse;
 import net.iaeste.iws.api.responses.SessionDataResponse;
+import net.iaeste.iws.api.responses.VersionResponse;
 import net.iaeste.iws.ejb.AccessBean;
 import net.iaeste.iws.ejb.cdi.IWSBean;
 import org.slf4j.Logger;
@@ -99,6 +100,25 @@ public class AccessWS implements Access {
     // =========================================================================
     // WebService implementation of the API Access interface
     // =========================================================================
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @WebMethod
+    @WebResult(name = "versionResponse")
+    public VersionResponse version() {
+        LOG.info("{}", requestLogger.prepareLogMessage("generateSession"));
+        VersionResponse response;
+
+        try {
+            response = bean.version();
+        } catch (RuntimeException e) {
+            response = RequestLogger.handleError(e, VersionResponse.class);
+        }
+
+        return response;
+    }
 
     /**
      * {@inheritDoc}

@@ -26,6 +26,7 @@ import net.iaeste.iws.api.responses.AuthenticationResponse;
 import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchPermissionResponse;
 import net.iaeste.iws.api.responses.SessionDataResponse;
+import net.iaeste.iws.api.responses.VersionResponse;
 
 import java.io.Serializable;
 
@@ -52,6 +53,14 @@ public final class AccessClient implements Access {
     // =========================================================================
     // Implementation of methods from Access in the API
     // =========================================================================
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public VersionResponse version() {
+        return client.version();
+    }
 
     /**
      * {@inheritDoc}

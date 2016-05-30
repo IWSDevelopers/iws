@@ -25,6 +25,7 @@ import net.iaeste.iws.api.responses.AuthenticationResponse;
 import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchPermissionResponse;
 import net.iaeste.iws.api.responses.SessionDataResponse;
+import net.iaeste.iws.api.responses.VersionResponse;
 
 import java.io.Serializable;
 
@@ -58,6 +59,14 @@ import java.io.Serializable;
  * @since   IWS 1.0
  */
 public interface Access {
+
+    /**
+     * <p>Returns the current version of the IWS, which can be used for improved
+     * error tracking.</p>
+     *
+     * @return Version Response Object
+     */
+    VersionResponse version();
 
     /**
      * Based on the given user credentials in the {@code AuthenticationRequest}

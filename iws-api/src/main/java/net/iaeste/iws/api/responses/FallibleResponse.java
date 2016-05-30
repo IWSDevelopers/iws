@@ -17,11 +17,15 @@
  */
 package net.iaeste.iws.api.responses;
 
+import static net.iaeste.iws.api.constants.IWSConstants.CONTACT_EMAIL;
+import static net.iaeste.iws.api.constants.IWSConstants.CONTACT_URL;
+
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.api.util.ReflectiveStandardMethods;
+import net.iaeste.iws.api.util.StandardMethods;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -37,19 +41,16 @@ import javax.xml.bind.annotation.XmlType;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "fallibleResponse", propOrder = { "error", "message" })
+@XmlType(name = "fallibleResponse", propOrder = { "error", "message", "contact" })
 public class FallibleResponse implements Fallible {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    /** IWS Error Object. */
-    @XmlElement(required = true)
-    private final IWSError error;
-
-    /** IWS Error Message. */
-    @XmlElement(required = true)
-    private final String message;
+    @XmlElement(name = "error", required = true)    private final IWSError error;
+    @XmlElement(name = "message", required = true)  private final String message;
+    @StandardMethods(StandardMethods.For.NONE)
+    @XmlElement(name = "contact", required = true)  private final String contact;
 
     /**
      * Default Constructor.
@@ -57,6 +58,7 @@ public class FallibleResponse implements Fallible {
     public FallibleResponse() {
         error = IWSErrors.SUCCESS;
         message = IWSConstants.SUCCESS;
+        contact = CONTACT_EMAIL + "; " + CONTACT_URL;
     }
 
     /**
@@ -68,6 +70,7 @@ public class FallibleResponse implements Fallible {
     public FallibleResponse(final IWSError error, final String message) {
         this.error = error;
         this.message = message;
+        contact = CONTACT_EMAIL + "; " + CONTACT_URL;
     }
 
     /**
@@ -82,6 +85,14 @@ public class FallibleResponse implements Fallible {
      * {@inheritDoc}
      */
     @Override
+    public final IWSError getError() {
+        return error;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public final String getMessage() {
         return message;
     }
@@ -90,8 +101,8 @@ public class FallibleResponse implements Fallible {
      * {@inheritDoc}
      */
     @Override
-    public final IWSError getError() {
-        return error;
+    public final String getContact() {
+        return contact;
     }
 
     /**

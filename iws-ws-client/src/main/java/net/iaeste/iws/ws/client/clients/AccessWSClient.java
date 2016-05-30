@@ -28,6 +28,7 @@ import net.iaeste.iws.api.responses.AuthenticationResponse;
 import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchPermissionResponse;
 import net.iaeste.iws.api.responses.SessionDataResponse;
+import net.iaeste.iws.api.responses.VersionResponse;
 import net.iaeste.iws.ws.AccessWS;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.frontend.ClientProxy;
@@ -89,6 +90,14 @@ public final class AccessWSClient extends CommonWSClient implements Access {
     // =========================================================================
     // Implementation of the Access Interface
     // =========================================================================
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public VersionResponse version() {
+        return null;
+    }
 
     /**
      * {@inheritDoc}

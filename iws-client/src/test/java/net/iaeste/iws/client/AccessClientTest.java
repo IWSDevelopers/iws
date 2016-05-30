@@ -17,6 +17,7 @@
  */
 package net.iaeste.iws.client;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.nullValue;
@@ -35,6 +36,7 @@ import net.iaeste.iws.api.responses.AuthenticationResponse;
 import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchPermissionResponse;
 import net.iaeste.iws.api.responses.SessionDataResponse;
+import net.iaeste.iws.api.responses.VersionResponse;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.client.spring.Beans;
@@ -42,6 +44,9 @@ import net.iaeste.iws.common.configuration.InternalConstants;
 import net.iaeste.iws.common.notification.NotificationField;
 import net.iaeste.iws.common.notification.NotificationType;
 import org.junit.Test;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -58,6 +63,19 @@ public final class AccessClientTest extends AbstractTest {
     @Override
     public void tearDown() {
         // Unused, no need to tear down anything here
+    }
+
+    @Test
+    public void testReadIWSVersion() throws UnknownHostException {
+        final VersionResponse response = access.version();
+
+        assertThat(response.getHostname(), is(InetAddress.getLocalHost().getHostName()));
+        assertThat(response.getAddress(), is(InetAddress.getLocalHost().getHostAddress()));
+        assertThat(response.getVersion(), is(IWSConstants.IWS_VERSION));
+        assertThat(response.getError(), is(IWSErrors.SUCCESS));
+        assertThat(response.getMessage(), is(IWSConstants.SUCCESS));
+        assertThat(response.getContact(), containsString(IWSConstants.CONTACT_EMAIL));
+        assertThat(response.getContact(), containsString(IWSConstants.CONTACT_URL));
     }
 
     /**
@@ -257,7 +275,7 @@ public final class AccessClientTest extends AbstractTest {
     }
     @Test
     public void testResetPasswordCountrySuspended() {
-        // Bu default, the Albian Test Group is Suspended
+        // Bu default, the Albanian Test Group is Suspended
         final Fallible suspendedGroupResponse = access.forgotPassword("albania@iaeste.al");
         assertThat(suspendedGroupResponse.isOk(), is(false));
         assertThat(suspendedGroupResponse.getError(), is(IWSErrors.AUTHENTICATION_ERROR));

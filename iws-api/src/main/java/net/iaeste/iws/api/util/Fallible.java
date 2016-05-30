@@ -55,6 +55,12 @@ public interface Fallible extends Serializable {
      */
     String getMessage();
 
+    /**
+     * Returns contact information to report errors.
+     *
+     * @return Contact information
+     */
+    String getContact();
 
     /**
      * {@inheritDoc}

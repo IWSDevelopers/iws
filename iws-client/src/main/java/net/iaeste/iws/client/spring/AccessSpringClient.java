@@ -26,6 +26,7 @@ import net.iaeste.iws.api.responses.AuthenticationResponse;
 import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchPermissionResponse;
 import net.iaeste.iws.api.responses.SessionDataResponse;
+import net.iaeste.iws.api.responses.VersionResponse;
 import net.iaeste.iws.client.notifications.NotificationSpy;
 import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.ejb.AccessBean;
@@ -90,6 +91,14 @@ public final class AccessSpringClient implements Access {
     // =========================================================================
     // Implementation of methods from Access in the API
     // =========================================================================
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public VersionResponse version() {
+        return client.version();
+    }
 
     /**
      * {@inheritDoc}

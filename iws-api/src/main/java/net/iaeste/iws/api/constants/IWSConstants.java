@@ -53,6 +53,26 @@ public final class IWSConstants {
     public static final long SERIAL_VERSION_UID = 201510260010000L;//// YYYYMMDDvvvnnnn
 
     /**
+     * <p>The IWS is currently being developed as an Open Source Project under
+     * GitHub, the group response is the IWSDevelopers, who can be contacted
+     * via this <a href="mailto:iws@dawn.dk">e-mail address</a>.</p>
+     */
+    public static final String CONTACT_EMAIL = "IWS Developers <iws@dawn.dk>";
+
+    /**
+     * <p>The IWS is currently being developed as an Open Source Project under
+     * GitHub, the group responsible is the IWSDevelopers, who can be reached at
+     * the <a href="https://github.com/IWSDevelopers"></a>here</a>. In case of
+     * problems, this is the place to go and report errors.</p>
+     */
+    public static final String CONTACT_URL = "https://github.com/IWSDevelopers";
+
+    /**
+     * Current Version of the IWS, which is running.
+     */
+    public static final String IWS_VERSION = "IWS 1.2.0";
+
+    /**
      * <p>The default encoding used for all processing of strings. The main
      * reason why we're forcing a rather old encoding, which is limited in
      * characters that it can represent is simple. If someone uses special

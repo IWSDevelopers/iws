@@ -22,7 +22,6 @@ import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 
-import net.iaeste.iws.api.Exchange;
 import net.iaeste.iws.api.dtos.Address;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.dtos.TestData;
@@ -34,7 +33,6 @@ import net.iaeste.iws.api.requests.exchange.OfferRequest;
 import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
 import net.iaeste.iws.api.responses.exchange.OfferResponse;
 import net.iaeste.iws.api.util.Verifications;
-import net.iaeste.iws.client.ExchangeClient;
 import org.junit.Test;
 
 import java.util.HashSet;
@@ -52,7 +50,6 @@ public final class OfferBugsTest extends AbstractOfferTest {
     private static final int exchangeYear = Verifications.calculateExchangeYear();
     private static final String PL_YEAR = "PL-" + exchangeYear;
 
-    private final Exchange exchange = new ExchangeClient();
     private AuthenticationToken austriaToken = null;
     private AuthenticationToken croatiaToken = null;
 

@@ -62,7 +62,6 @@ public final class OfferTest extends AbstractOfferTest {
     private static final int exchangeYear = Verifications.calculateExchangeYear();
     private static final String PL_YEAR = "PL-" + exchangeYear;
 
-    private final Exchange exchange = new ExchangeClient();
     private AuthenticationToken austriaToken = null;
     private AuthenticationToken croatiaToken = null;
 

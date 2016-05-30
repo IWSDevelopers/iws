@@ -24,8 +24,6 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
-import net.iaeste.iws.api.Exchange;
-import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.dtos.Group;
@@ -50,7 +48,6 @@ import net.iaeste.iws.api.responses.exchange.PublishOfferResponse;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.api.util.Verifications;
-import net.iaeste.iws.client.ExchangeClient;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -71,10 +68,8 @@ public final class OfferSharingTest extends AbstractOfferTest {
     private static final String PL_YEAR = "PL-" + exchangeYear;
     private static final String AT_YEAR = "AT-" + exchangeYear;
 
-    private final Exchange exchange = new ExchangeClient();
     private AuthenticationToken austriaToken = null;
     private AuthenticationToken croatiaToken = null;
-
     private Group austriaTokenNationallGroup = null;
 
     @Override
@@ -93,48 +88,14 @@ public final class OfferSharingTest extends AbstractOfferTest {
         logout(croatiaToken);
     }
 
-    private Offer saveOffer(final String refno, final String employer) {
-        final Offer offer = TestData.prepareMinimalOffer(refno, employer);
-
-        final OfferRequest request = prepareRequest(offer);
-        final OfferResponse response = exchange.processOffer(token, request);
-
-        assertThat(response.getMessage(), is(IWSConstants.SUCCESS));
-        assertThat(response.getOffer().getNsFirstname(), is(not(nullValue())));
-        assertThat(response.getOffer().getNsLastname(), is(not(nullValue())));
-
-        return response.getOffer();
-    }
-
-    private PublishOfferResponse publishOffer(final Offer offer, final Date deadline, final AuthenticationToken... tokens) {
-        final PublishOfferRequest request = new PublishOfferRequest();
-        request.setOfferId(offer.getOfferId());
-        request.setNominationDeadline(deadline);
-        final List<String> groupIds = new ArrayList<>(tokens.length);
-
-        if (tokens != null) {
-            for (final AuthenticationToken groupToken : tokens) {
-                groupIds.add(findNationalGroup(groupToken).getGroupId());
-            }
-            request.setGroupIds(groupIds);
-        }
-
-        final PublishOfferResponse response = exchange.processPublishOffer(token, request);
-        assertThat(response.getMessage(), is(IWSConstants.SUCCESS));
-        assertThat(response.getOfferId(), is(offer.getOfferId()));
-        assertThat(response.getGroupIds().size(), is(groupIds.size()));
-
-        return response;
-    }
-
     @Test
     public void testShareOffer() {
         final Date nominationDeadline = new Date().plusDays(20);
-        final Offer offer = saveOffer(PL_YEAR + "-000004", "Polish Employer");
+        final Offer offer = createOffer(token, PL_YEAR + "-000004", "Polish Employer");
         assertThat(offer.getStatus(), is(OfferState.NEW));
         assertThat(offer.getNominationDeadline(), is(not(nominationDeadline)));
 
-        publishOffer(offer, nominationDeadline, austriaToken, croatiaToken);
+        publishOffer(token, offer, nominationDeadline, austriaToken, croatiaToken);
 
         final List<String> offerIds = new ArrayList<>(1);
         offerIds.add(offer.getOfferId());
@@ -149,7 +110,7 @@ public final class OfferSharingTest extends AbstractOfferTest {
         assertThat("The offer is shared now, the status has to be SHARED", sharedOffer.getStatus(), is(OfferState.SHARED));
         assertThat(sharedOffer.getNominationDeadline(), is(nominationDeadline));
 
-        publishOffer(offer, nominationDeadline);
+        publishOffer(token, offer, nominationDeadline);
         final List<String> groupIds = new ArrayList<>(0);
         final PublishOfferRequest publishRequest2 = new PublishOfferRequest(sharedOffer.getOfferId(), groupIds, nominationDeadline);
         final PublishOfferResponse publishResponse2 = exchange.processPublishOffer(token, publishRequest2);

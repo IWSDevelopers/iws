@@ -23,7 +23,6 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
-import net.iaeste.iws.api.Exchange;
 import net.iaeste.iws.api.Students;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
@@ -59,7 +58,6 @@ import net.iaeste.iws.api.responses.student.StudentResponse;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.api.util.DatePeriod;
 import net.iaeste.iws.api.util.Verifications;
-import net.iaeste.iws.client.ExchangeClient;
 import net.iaeste.iws.client.StudentClient;
 import org.junit.Test;
 
@@ -74,7 +72,6 @@ import java.util.List;
 public final class StudentTest extends AbstractOfferTest {
 
     private static final int exchangeYear = Verifications.calculateExchangeYear();
-    private final Exchange exchange = new ExchangeClient();
     private final Students students = new StudentClient();
     private AuthenticationToken austriaToken = null;
     private AuthenticationToken croatiaToken = null;

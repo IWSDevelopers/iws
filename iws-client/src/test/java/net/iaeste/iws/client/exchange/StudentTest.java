@@ -425,8 +425,6 @@ public final class StudentTest extends AbstractOfferTest {
         final OfferResponse saveResponse = exchange.processOffer(token, prepareRequest(offer));
         assertThat("Offer has been saved", saveResponse.isOk(), is(true));
 
-        final String offerId = saveResponse.getOffer().getOfferId();
-
         final List<String> groupIds = new ArrayList<>(2);
         groupIds.add(findNationalGroup(austriaToken).getGroupId());
         groupIds.add(findNationalGroup(croatiaToken).getGroupId());
@@ -495,8 +493,6 @@ public final class StudentTest extends AbstractOfferTest {
         final OfferResponse saveResponse = exchange.processOffer(token, prepareRequest(offer));
         assertThat("Offer has been saved", saveResponse.isOk(), is(true));
 
-        final String offerId = saveResponse.getOffer().getOfferId();
-
         final List<String> groupIds = new ArrayList<>(2);
         groupIds.add(findNationalGroup(austriaToken).getGroupId());
         groupIds.add(findNationalGroup(croatiaToken).getGroupId());
@@ -555,8 +551,6 @@ public final class StudentTest extends AbstractOfferTest {
         final OfferResponse saveResponse = exchange.processOffer(token, prepareRequest(offer));
         assertThat("Offer has been saved", saveResponse.isOk(), is(true));
 
-        final String offerId = saveResponse.getOffer().getOfferId();
-
         final List<String> groupIds = new ArrayList<>(2);
         groupIds.add(findNationalGroup(austriaToken).getGroupId());
         groupIds.add(findNationalGroup(croatiaToken).getGroupId());
@@ -592,10 +586,6 @@ public final class StudentTest extends AbstractOfferTest {
 
         //usnhare offer
         publishOffer(token, saveResponse.getOffer(), nominationDeadline);
-//        groupIds.clear();
-//
-//        final PublishOfferResponse unshareResponse = exchange.processPublishOffer(token, new PublishOfferRequest(offerId, groupIds, nominationDeadline));
-//        assertThat("Offer has been unshared", unshareResponse.isOk(), is(true));
 
         final StudentApplicationRequest rejectStudentRequest = new StudentApplicationRequest(
                 studentApplication.getApplicationId(),

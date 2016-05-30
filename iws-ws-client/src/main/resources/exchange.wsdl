@@ -24,32 +24,13 @@
 
   <xs:complexType final="extension restriction" name="offerCSVUploadRequest">
     <xs:complexContent>
-      <xs:extension base="tns:paginatable">
+      <xs:extension base="tns:verifications">
         <xs:sequence>
           <xs:element name="csv" type="xs:string"/>
           <xs:element name="delimiter" type="tns:fieldDelimiter"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
-  </xs:complexType>
-
-  <xs:complexType abstract="true" name="paginatable">
-    <xs:complexContent>
-      <xs:extension base="tns:verifications">
-        <xs:sequence>
-          <xs:element name="page" type="tns:page"/>
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
-  <xs:complexType final="extension restriction" name="page">
-    <xs:sequence>
-      <xs:element name="pageNumber" type="xs:int"/>
-      <xs:element name="pageSize" type="xs:int"/>
-      <xs:element minOccurs="0" name="sortOrder" type="tns:sortingOrder"/>
-      <xs:element minOccurs="0" name="sortBy" type="tns:sortingField"/>
-    </xs:sequence>
   </xs:complexType>
 
   <xs:complexType final="extension restriction" name="offerCSVUploadResponse">
@@ -129,6 +110,25 @@
         <xs:all/>
       </xs:extension>
     </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType abstract="true" name="paginatable">
+    <xs:complexContent>
+      <xs:extension base="tns:verifications">
+        <xs:sequence>
+          <xs:element name="page" type="tns:page"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="page">
+    <xs:sequence>
+      <xs:element name="pageNumber" type="xs:int"/>
+      <xs:element name="pageSize" type="xs:int"/>
+      <xs:element minOccurs="0" name="sortOrder" type="tns:sortingOrder"/>
+      <xs:element minOccurs="0" name="sortBy" type="tns:sortingField"/>
+    </xs:sequence>
   </xs:complexType>
 
   <xs:complexType final="extension restriction" name="fetchPublishingGroupResponse">
@@ -317,7 +317,7 @@
 
   <xs:complexType final="extension restriction" name="publishOfferRequest">
     <xs:complexContent>
-      <xs:extension base="tns:verifications">
+      <xs:extension base="tns:actions">
         <xs:sequence>
           <xs:element name="offerId" type="xs:string"/>
           <xs:element maxOccurs="unbounded" name="groupIds" type="xs:string"/>
@@ -577,6 +577,14 @@
     </xs:restriction>
   </xs:simpleType>
 
+  <xs:simpleType name="processingResult">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="ADDED"/>
+      <xs:enumeration value="UPDATED"/>
+      <xs:enumeration value="ERROR"/>
+    </xs:restriction>
+  </xs:simpleType>
+
   <xs:simpleType name="sortingOrder">
     <xs:restriction base="xs:string">
       <xs:enumeration value="ASC"/>
@@ -588,14 +596,6 @@
     <xs:restriction base="xs:string">
       <xs:enumeration value="CREATED"/>
       <xs:enumeration value="NAME"/>
-    </xs:restriction>
-  </xs:simpleType>
-
-  <xs:simpleType name="processingResult">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="ADDED"/>
-      <xs:enumeration value="UPDATED"/>
-      <xs:enumeration value="ERROR"/>
     </xs:restriction>
   </xs:simpleType>
 
@@ -821,6 +821,7 @@
       <xs:enumeration value="ACTIVATE"/>
       <xs:enumeration value="SUSPEND"/>
       <xs:enumeration value="DELETE"/>
+      <xs:enumeration value="REMOVE"/>
     </xs:restriction>
   </xs:simpleType>
 

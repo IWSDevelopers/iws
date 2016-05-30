@@ -645,6 +645,7 @@
       <xs:enumeration value="ACTIVATE"/>
       <xs:enumeration value="SUSPEND"/>
       <xs:enumeration value="DELETE"/>
+      <xs:enumeration value="REMOVE"/>
     </xs:restriction>
   </xs:simpleType>
 

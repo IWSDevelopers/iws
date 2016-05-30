@@ -29,6 +29,7 @@ import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.TestData;
 import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.dtos.exchange.StudentApplication;
+import net.iaeste.iws.api.enums.Action;
 import net.iaeste.iws.api.enums.FetchType;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
 import net.iaeste.iws.api.requests.exchange.OfferRequest;
@@ -123,7 +124,7 @@ public abstract class AbstractOfferTest extends AbstractTest {
      * @param employer  Offer Employer name
      * @return Newly created Offer
      */
-    protected Offer createOffer(final AuthenticationToken authentication, final String refno, final String employer) {
+    protected final Offer createOffer(final AuthenticationToken authentication, final String refno, final String employer) {
         // First, create a new Offer, which we can use
         final Offer offer = TestData.prepareFullOffer(refno, employer);
 
@@ -132,6 +133,17 @@ public abstract class AbstractOfferTest extends AbstractTest {
         request.setOffer(offer);
 
         // Invoke IWS, and ensure that the request was successful
+        final OfferResponse response = exchange.processOffer(authentication, request);
+        assertThat(response.getMessage(), is(IWSConstants.SUCCESS));
+
+        return response.getOffer();
+    }
+
+    protected final Offer updateOffer(final AuthenticationToken authentication, final Offer offer) {
+        final OfferRequest request = new OfferRequest();
+        request.setAction(Action.PROCESS);
+        request.setOffer(offer);
+
         final OfferResponse response = exchange.processOffer(authentication, request);
         assertThat(response.getMessage(), is(IWSConstants.SUCCESS));
 
@@ -153,7 +165,7 @@ public abstract class AbstractOfferTest extends AbstractTest {
      * @param tokens         The Tokens for the NC's to be published to
      * @return The Publish Offer Response Object
      */
-    protected PublishOfferResponse publishOffer(final AuthenticationToken authentication, final Offer offer, final Date deadline, final AuthenticationToken... tokens) {
+    protected final PublishOfferResponse publishOffer(final AuthenticationToken authentication, final Offer offer, final Date deadline, final AuthenticationToken... tokens) {
         final PublishOfferRequest request = new PublishOfferRequest();
         request.setOfferId(offer.getOfferId());
         request.setNominationDeadline(deadline);
@@ -177,7 +189,7 @@ public abstract class AbstractOfferTest extends AbstractTest {
         return response;
     }
 
-    protected Offer fetchOffer(final AuthenticationToken authentication, final FetchType type, final String refno) {
+    protected final Offer fetchOffer(final AuthenticationToken authentication, final FetchType type, final String refno) {
         final FetchOffersRequest request = new FetchOffersRequest(type);
         final FetchOffersResponse response = exchange.fetchOffers(authentication, request);
         Offer offer = null;

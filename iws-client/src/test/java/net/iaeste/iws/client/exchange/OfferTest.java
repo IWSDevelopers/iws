@@ -24,7 +24,6 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
-import net.iaeste.iws.api.Exchange;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
@@ -45,12 +44,12 @@ import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
 import net.iaeste.iws.api.responses.exchange.OfferResponse;
 import net.iaeste.iws.api.responses.exchange.OfferStatisticsResponse;
 import net.iaeste.iws.api.util.Verifications;
-import net.iaeste.iws.client.ExchangeClient;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -97,31 +96,30 @@ public final class OfferTest extends AbstractOfferTest {
 
     @Test
     public void testChangingOfferAndExchangeType() {
+        System.out.println(UUID.randomUUID().toString());
         final String refno = "PL-" + Verifications.calculateExchangeYear() + "-00634743";
-        final Offer initialOffer = TestData.prepareFullOffer(refno, "Poland A/S");
 
-        // Save our offer.
-        final OfferRequest request = prepareRequest(initialOffer);
-        final OfferResponse saveResponse = exchange.processOffer(token, request);
-        assertThat(saveResponse.isOk(), is(true));
-        assertThat(saveResponse.getOffer(), is(not(nullValue())));
+        // Create a new Offer, and store the OfferType & ExchangeType for later
+        final Offer initialOffer = createOffer(token, refno, "Poland A/S");
+        final OfferType initialOfferType = initialOffer.getOfferType();
+        final ExchangeType initialExchangeType = initialOffer.getExchangeType();
 
-        // Now, let's update the Offer & Exchange Types
-        final Offer savedOffer = saveResponse.getOffer();
-        savedOffer.setOfferType(OfferType.RESERVED);
-        savedOffer.setExchangeType(ExchangeType.AC);
-        request.setOffer(savedOffer);
-        final OfferResponse updateResponse = exchange.processOffer(token, request);
-        assertThat(updateResponse.isOk(), is(true));
+        // Update the Offer with new OfferType & ExchangeType values
+        initialOffer.setOfferType(OfferType.RESERVED);
+        initialOffer.setExchangeType(ExchangeType.AC);
+        final Offer updatedOffer = updateOffer(token, initialOffer);
 
-        final Offer updatedOffer = updateResponse.getOffer();
-        assertThat(initialOffer.getOfferType(), is(TestData.OFFER_TYPE));
-        assertThat(updatedOffer.getOfferType(), is(not(TestData.OFFER_TYPE)));
+        // Check, that the OfferType was changed from the initially saved Offer
+        assertThat(initialOfferType, is(not(OfferType.RESERVED)));
+        assertThat(initialOffer.getOfferType(), is(OfferType.RESERVED));
         assertThat(updatedOffer.getOfferType(), is(OfferType.RESERVED));
-        assertThat(initialOffer.getExchangeType(), is(TestData.OFFER_EXCHANGE_TYPE));
-        assertThat(updatedOffer.getExchangeType(), is(not(TestData.OFFER_EXCHANGE_TYPE)));
+        // Check, that the ExchangeType was changed from the initially saved Offer
+        assertThat(initialExchangeType, is(not(TestData.OFFER_EXCHANGE_TYPE)));
+        assertThat(initialOffer.getExchangeType(), is(ExchangeType.AC));
         assertThat(updatedOffer.getExchangeType(), is(ExchangeType.AC));
+        // Check, that the refno and printable refno are both correct
         assertThat(updatedOffer.getRefNo(), is(refno));
+        assertThat(updatedOffer.getRefNo(), is(not(refno + OfferType.RESERVED.getType())));
         assertThat(updatedOffer.printableRefNo(), is(refno + OfferType.RESERVED.getType()));
     }
 

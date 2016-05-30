@@ -36,8 +36,8 @@ update users set eula_version = '';
 select max(id) + 1 as restart_value from student_applications;
 
 -- The input from this, must be taken and used in the following, the default is
--- the value which was present at the latest available snapshot (2016-02-29):
-alter sequence student_application_sequence restart with 52553;
+-- the value which was present at the latest available snapshot (2016-05-30):
+alter sequence student_application_sequence restart with 52607;
 -- =============================================================================
 
 
@@ -178,3 +178,27 @@ update offers set language_2_op = null, language_3_level = null where language_3
 -- for IWS.
 update offers set work_type = 'O' where work_type is null;
 -- =============================================================================
+
+-- =============================================================================
+-- Various Corrections...
+-- =============================================================================
+delete from history where group_id = 391;
+delete from user_to_group where group_id = 391;
+delete from groups where id = 391;
+update users set status = 'ACTIVE' where id = 35;
+insert into user_to_group (id, external_id, user_id, group_id, role_id) values (35, '1787d15c-26c1-4ef1-8640-8a2dfdcf2063', 35, 463, 1);
+update user_to_group set role_id = 2 where id = 10990;
+delete from user_to_group where id = 10997;
+delete from user_to_group where id = 10993;
+insert into user_to_group (id, external_id, user_id, group_id, role_id) values (2288, '0f02f6b1-14f3-42f4-aee1-1b4febd20c4c', 35, 1, 2);
+insert into user_to_group (id, external_id, user_id, group_id, role_id) values (5992, 'a867bf8f-2fc5-49eb-a79d-1a02761e74bf', 35, 2, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values
+  ('d92ed883-d0da-49f9-b4c3-3d3688ff6422', 3249, 2, 3),
+  ('ab9b92bd-fe02-4127-97b4-12ed621a82dc', 2581, 2, 3),
+  ('2d3cec20-3594-4f3c-97ba-7cc1858d15f8', 3181, 2, 3),
+  ('be4a4361-e8cf-47a0-8ed6-bf126094212b', 2994, 2, 3),
+  ('fceda0d3-cd61-4339-a36f-4dce5f803712', 1598, 2, 3);
+insert into aliases (external_id, group_id, alias_address) values ('877d4640-a28a-4e85-8435-56fbabaca61b', 5, 'idt');
+alter table user_to_group drop constraint u2g_unique_session_key;
+alter table user_to_group add constraint u2g_unique_user_group  unique (user_id, group_id);
+

@@ -670,7 +670,7 @@ create table user_to_group (
 
     /* Unique Constraints */
     constraint u2g_unique_external_id unique (external_id),
-    constraint u2g_unique_session_key unique (user_id, group_id),
+    constraint u2g_unique_user_group  unique (user_id, group_id),
 
     /* Not Null Constraints */
     constraint u2g_notnull_id                 check (id is not null),

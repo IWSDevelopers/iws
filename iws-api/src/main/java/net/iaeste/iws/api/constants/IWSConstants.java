@@ -50,7 +50,7 @@ public final class IWSConstants {
      *
      * {@code private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;}
      */
-    public static final long SERIAL_VERSION_UID = 201510260010000L;//// YYYYMMDDvvvnnnn
+    public static final long SERIAL_VERSION_UID = 201606010010000L;// YYYYMMDDvvvnnnn
 
     /**
      * <p>The IWS is currently being developed as an Open Source Project under

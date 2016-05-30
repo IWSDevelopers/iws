@@ -31,7 +31,7 @@ import javax.xml.bind.annotation.XmlType;
  * @since   IWD 1.2
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "sessionDataResponse", propOrder = { "hostname", "address", "version" })
+@XmlType(name = "versionResponse", propOrder = { "hostname", "address", "version" })
 public final class VersionResponse extends FallibleResponse {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */

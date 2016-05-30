@@ -77,10 +77,10 @@ import java.util.Set;
 class CommonMapper {
 
     /** Protected Constructor, this is a Utility Class. */
-    CommonMapper() {
+    protected CommonMapper() {
     }
 
-    protected static IWSError map(final IwsError ws) {
+    public static IWSError map(final IwsError ws) {
         return new IWSError(ws.getError(), ws.getDescription());
     }
 
@@ -140,7 +140,7 @@ class CommonMapper {
         return api;
     }
 
-    protected static Country map(final net.iaeste.iws.ws.Country ws) {
+    public static Country map(final net.iaeste.iws.ws.Country ws) {
         Country api = null;
 
         // The CountryName may be null if it was a null Object returned, not
@@ -164,7 +164,7 @@ class CommonMapper {
         return api;
     }
 
-    protected static net.iaeste.iws.ws.Country map(final Country api) {
+    public static net.iaeste.iws.ws.Country map(final Country api) {
         net.iaeste.iws.ws.Country ws = null;
 
         if (api != null) {
@@ -186,7 +186,7 @@ class CommonMapper {
         return ws;
     }
 
-    protected static Address map(final net.iaeste.iws.ws.Address ws) {
+    public static Address map(final net.iaeste.iws.ws.Address ws) {
         Address api = null;
 
         if (ws != null) {
@@ -204,7 +204,7 @@ class CommonMapper {
         return api;
     }
 
-    protected static net.iaeste.iws.ws.Address map(final Address api) {
+    public static net.iaeste.iws.ws.Address map(final Address api) {
         net.iaeste.iws.ws.Address ws = null;
 
         if (api != null) {
@@ -222,7 +222,7 @@ class CommonMapper {
         return ws;
     }
 
-    protected static UserGroup map(final net.iaeste.iws.ws.UserGroup ws) {
+    public static UserGroup map(final net.iaeste.iws.ws.UserGroup ws) {
         UserGroup api = null;
 
         if (ws != null) {
@@ -242,7 +242,7 @@ class CommonMapper {
         return api;
     }
 
-    protected static net.iaeste.iws.ws.UserGroup map(final UserGroup api) {
+    public static net.iaeste.iws.ws.UserGroup map(final UserGroup api) {
         net.iaeste.iws.ws.UserGroup ws = null;
 
         if (api != null) {
@@ -422,7 +422,7 @@ class CommonMapper {
         return ws;
     }
 
-    static Set<Permission> mapPermissionList(final List<net.iaeste.iws.ws.Permission> ws) {
+    private static Set<Permission> mapPermissionList(final List<net.iaeste.iws.ws.Permission> ws) {
         final Set<Permission> api = EnumSet.noneOf(Permission.class);
 
         for (final net.iaeste.iws.ws.Permission permission : ws) {
@@ -432,7 +432,7 @@ class CommonMapper {
         return api;
     }
 
-    static Collection<net.iaeste.iws.ws.Permission> mapAPIPermissionList(final Collection<Permission> api) {
+    private static Collection<net.iaeste.iws.ws.Permission> mapAPIPermissionList(final Collection<Permission> api) {
         final Set<net.iaeste.iws.ws.Permission> ws = EnumSet.noneOf(net.iaeste.iws.ws.Permission.class);
 
         if (api != null) {

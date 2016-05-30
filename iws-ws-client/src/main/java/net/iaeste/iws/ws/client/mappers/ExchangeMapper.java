@@ -115,12 +115,14 @@ public final class ExchangeMapper extends CommonMapper {
         return api;
     }
 
-    public static net.iaeste.iws.ws.ProcessEmployerRequest map(final EmployerRequest api) {
-        net.iaeste.iws.ws.ProcessEmployerRequest ws = null;
+    public static net.iaeste.iws.ws.EmployerRequest map(final EmployerRequest api) {
+        net.iaeste.iws.ws.EmployerRequest ws = null;
 
         if (api != null) {
-            ws = new net.iaeste.iws.ws.ProcessEmployerRequest();
+            ws = new net.iaeste.iws.ws.EmployerRequest();
             ws.setEmployer(map(api.getEmployer()));
+            ws.setEmployerId(api.getEmployerId());
+            ws.setAction(map(api.getAction()));
         }
 
         return ws;
@@ -201,13 +203,15 @@ public final class ExchangeMapper extends CommonMapper {
         return api;
     }
 
-    public static net.iaeste.iws.ws.ProcessOfferRequest map(final OfferRequest api) {
-        net.iaeste.iws.ws.ProcessOfferRequest ws = null;
+    public static net.iaeste.iws.ws.OfferRequest map(final OfferRequest api) {
+        net.iaeste.iws.ws.OfferRequest ws = null;
 
         if (api != null) {
-            ws = new net.iaeste.iws.ws.ProcessOfferRequest();
+            ws = new net.iaeste.iws.ws.OfferRequest();
 
             ws.setOffer(map(api.getOffer()));
+            ws.setOfferId(api.getOfferId());
+            ws.setAction(map(api.getAction()));
         }
 
         return ws;
@@ -231,7 +235,6 @@ public final class ExchangeMapper extends CommonMapper {
         if (api != null) {
             ws = new net.iaeste.iws.ws.OfferCSVUploadRequest();
 
-            ws.setPage(map(api.getPage()));
             ws.setCsv(api.getCsv());
             ws.setDelimiter(map(api.getDelimiter()));
         }
@@ -368,9 +371,9 @@ public final class ExchangeMapper extends CommonMapper {
         if (api != null) {
             ws = new net.iaeste.iws.ws.PublishOfferRequest();
 
-            ws.getGroupIds().addAll(mapStringCollection(api.getGroupIds()));
-            //ws.getOfferIds().addAll(mapStringCollection(api.getOfferIds()));
+            ws.setOfferId(api.getOfferId());
             ws.setNominationDeadline(map(api.getNominationDeadline()));
+            ws.getGroupIds().addAll(mapStringCollection(api.getGroupIds()));
         }
 
         return ws;

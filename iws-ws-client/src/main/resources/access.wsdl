@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://ws.iws.iaeste.net/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="accessWSService" targetNamespace="http://ws.iws.iaeste.net/">
   <wsdl:documentation>
       Service: IWS Access Service
-      Version: 1.2.20160511
+      Version: 1.2.20160530
       Owner:   Kim Jensen
   </wsdl:documentation>
   <wsdl:types>
@@ -37,6 +37,7 @@
     <xs:sequence>
       <xs:element name="error" type="tns:iwsError"/>
       <xs:element name="message" type="xs:string"/>
+      <xs:element name="contact" type="xs:string"/>
     </xs:sequence>
   </xs:complexType>
 
@@ -202,6 +203,18 @@
           <xs:element name="roleId" nillable="true" type="xs:string"/>
           <xs:element name="roleName" type="xs:string"/>
           <xs:element maxOccurs="unbounded" name="permissions" type="tns:permission"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="versionResponse">
+    <xs:complexContent>
+      <xs:extension base="tns:fallibleResponse">
+        <xs:sequence>
+          <xs:element name="hostname" nillable="true" type="xs:string"/>
+          <xs:element name="address" nillable="true" type="xs:string"/>
+          <xs:element name="version" nillable="true" type="xs:string"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -562,6 +575,10 @@
     <wsdl:part name="sessionDataResponse" type="tns:sessionDataResponse">
     </wsdl:part>
   </wsdl:message>
+  <wsdl:message name="versionResponse">
+    <wsdl:part name="versionResponse" type="tns:versionResponse">
+    </wsdl:part>
+  </wsdl:message>
   <wsdl:message name="forgotPassword">
     <wsdl:part name="username" type="xsd:string">
     </wsdl:part>
@@ -581,6 +598,8 @@
   <wsdl:message name="fetchPermissions">
     <wsdl:part name="authenticationToken" type="tns:authenticationToken">
     </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="version">
   </wsdl:message>
   <wsdl:message name="deprecateSession">
     <wsdl:part name="authenticationToken" type="tns:authenticationToken">
@@ -642,28 +661,40 @@
       <wsdl:output message="tns:generateSessionResponse" name="generateSessionResponse">
     </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="fetchPermissions">
-      <wsdl:input message="tns:fetchPermissions" name="fetchPermissions">
-    </wsdl:input>
-      <wsdl:output message="tns:fetchPermissionsResponse" name="fetchPermissionsResponse">
-    </wsdl:output>
-    </wsdl:operation>
     <wsdl:operation name="requestResettingSession">
       <wsdl:input message="tns:requestResettingSession" name="requestResettingSession">
     </wsdl:input>
       <wsdl:output message="tns:requestResettingSessionResponse" name="requestResettingSessionResponse">
     </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="deprecateSession">
-      <wsdl:input message="tns:deprecateSession" name="deprecateSession">
-    </wsdl:input>
-      <wsdl:output message="tns:deprecateSessionResponse" name="deprecateSessionResponse">
-    </wsdl:output>
-    </wsdl:operation>
     <wsdl:operation name="verifySession">
       <wsdl:input message="tns:verifySession" name="verifySession">
     </wsdl:input>
       <wsdl:output message="tns:verifySessionResponse" name="verifySessionResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="forgotPassword">
+      <wsdl:input message="tns:forgotPassword" name="forgotPassword">
+    </wsdl:input>
+      <wsdl:output message="tns:forgotPasswordResponse" name="forgotPasswordResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="fetchPermissions">
+      <wsdl:input message="tns:fetchPermissions" name="fetchPermissions">
+    </wsdl:input>
+      <wsdl:output message="tns:fetchPermissionsResponse" name="fetchPermissionsResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="version">
+      <wsdl:input message="tns:version" name="version">
+    </wsdl:input>
+      <wsdl:output message="tns:versionResponse" name="versionResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deprecateSession">
+      <wsdl:input message="tns:deprecateSession" name="deprecateSession">
+    </wsdl:input>
+      <wsdl:output message="tns:deprecateSessionResponse" name="deprecateSessionResponse">
     </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="readSessionData">
@@ -676,12 +707,6 @@
       <wsdl:input message="tns:resetPassword" name="resetPassword">
     </wsdl:input>
       <wsdl:output message="tns:resetPasswordResponse" name="resetPasswordResponse">
-    </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="forgotPassword">
-      <wsdl:input message="tns:forgotPassword" name="forgotPassword">
-    </wsdl:input>
-      <wsdl:output message="tns:forgotPasswordResponse" name="forgotPasswordResponse">
     </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="resetSession">
@@ -714,15 +739,6 @@
         <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="fetchPermissions">
-      <soap:operation soapAction="" style="rpc"/>
-      <wsdl:input name="fetchPermissions">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
-      </wsdl:input>
-      <wsdl:output name="fetchPermissionsResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
-      </wsdl:output>
-    </wsdl:operation>
     <wsdl:operation name="requestResettingSession">
       <soap:operation soapAction="" style="rpc"/>
       <wsdl:input name="requestResettingSession">
@@ -732,21 +748,48 @@
         <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="deprecateSession">
-      <soap:operation soapAction="" style="rpc"/>
-      <wsdl:input name="deprecateSession">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
-      </wsdl:input>
-      <wsdl:output name="deprecateSessionResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
-      </wsdl:output>
-    </wsdl:operation>
     <wsdl:operation name="verifySession">
       <soap:operation soapAction="" style="rpc"/>
       <wsdl:input name="verifySession">
         <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="verifySessionResponse">
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="forgotPassword">
+      <soap:operation soapAction="" style="rpc"/>
+      <wsdl:input name="forgotPassword">
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="forgotPasswordResponse">
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="fetchPermissions">
+      <soap:operation soapAction="" style="rpc"/>
+      <wsdl:input name="fetchPermissions">
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="fetchPermissionsResponse">
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="version">
+      <soap:operation soapAction="" style="rpc"/>
+      <wsdl:input name="version">
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="versionResponse">
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deprecateSession">
+      <soap:operation soapAction="" style="rpc"/>
+      <wsdl:input name="deprecateSession">
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="deprecateSessionResponse">
         <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
@@ -765,15 +808,6 @@
         <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="resetPasswordResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="forgotPassword">
-      <soap:operation soapAction="" style="rpc"/>
-      <wsdl:input name="forgotPassword">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
-      </wsdl:input>
-      <wsdl:output name="forgotPasswordResponse">
         <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>

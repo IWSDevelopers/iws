@@ -18,14 +18,16 @@
 package net.iaeste.iws.api.requests.exchange;
 
 import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.api.enums.Action;
+import net.iaeste.iws.api.requests.Actions;
 import net.iaeste.iws.api.util.Date;
-import net.iaeste.iws.api.util.Verifications;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,16 +39,16 @@ import java.util.Map;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "publishOfferRequest", propOrder = { "offerId", "groupIds", "nominationDeadline" })
-public final class PublishOfferRequest extends Verifications {
+public final class PublishOfferRequest extends Actions {
+
+    private static final String FIELD_OFFER_ID = "offerId";
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    @XmlElement(required = true)  private String offerId = null;
-    @XmlElement(required = true)  private final List<String> groupIds = new ArrayList<>(0);
-
-    @XmlElement(required = true, nillable = true)
-    private Date nominationDeadline = null;
+    @XmlElement(required = true)                   private String offerId = null;
+    @XmlElement(required = true)                   private final List<String> groupIds = new ArrayList<>(0);
+    @XmlElement(required = true, nillable = true)  private Date nominationDeadline = null;
 
     // =========================================================================
     // Object Constructors
@@ -57,13 +59,7 @@ public final class PublishOfferRequest extends Verifications {
      * for WebServices to work properly.
      */
     public PublishOfferRequest() {
-        // Empty Constructor required for Websites, Comment to please Sonar.
-    }
-
-    public PublishOfferRequest(final String offerId, final List<String> groupIds, final Date nominationDeadline) {
-        setOfferId(offerId);
-        setGroupIds(groupIds);
-        this.nominationDeadline = nominationDeadline;
+        super(EnumSet.of(Action.PROCESS, Action.REMOVE), Action.PROCESS);
     }
 
     // =========================================================================
@@ -80,7 +76,7 @@ public final class PublishOfferRequest extends Verifications {
      * @throws IllegalArgumentException if null or invalid
      */
     public void setOfferId(final String offerId) {
-        ensureNotNullAndValidId("offerId", offerId);
+        ensureNotNullAndValidId(FIELD_OFFER_ID, offerId);
         this.offerId = offerId;
     }
 
@@ -89,19 +85,18 @@ public final class PublishOfferRequest extends Verifications {
     }
 
     /**
-     * <p>Sets the Id's of the Groups which the Offer should be shared with. If
-     * the list is empty, then any existing shares will be closed. Please note
-     * that the Id's must be for Groups of type NATIONAL. Any other Group Types
-     * will be ignored.</p>
+     * <p>Sets the Id's of the Groups which the Offer should be shared with.
+     * Please note that the Id's must be for Groups of type NATIONAL. Any other
+     * Group Types will be ignored.</p>
      *
      * <p>The method will throw an {@code {@link IllegalArgumentException} if
-     * the the argument is null or contain illegal Identifiers.</p>
+     * the the argument is null, empty or contain illegal Identifiers.</p>
      *
      * @param groupIds List of National Group Id's to share the Offer with
      * @throws IllegalArgumentException if null or contain illegal Identifiers
      */
     public void setGroupIds(final List<String> groupIds) {
-        ensureNotNullAndValidIdentifiers("groupIds", groupIds);
+        ensureNotNullOrEmptyAndValidIdentifiers("groupIds", groupIds);
         this.groupIds.addAll(groupIds);
     }
 
@@ -134,7 +129,19 @@ public final class PublishOfferRequest extends Verifications {
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(0);
 
-        isNotNull(validation, "offerId", offerId);
+        isNotNull(validation, "action", action);
+        if (action != null) {
+            switch (action) {
+                case PROCESS:
+                    isNotNull(validation, FIELD_OFFER_ID, offerId);
+                    break;
+                case REMOVE:
+                    isNotNull(validation, FIELD_OFFER_ID, offerId);
+                    break;
+                default:
+                    validation.put(FIELD_ACTION, "The Action '" + action + "' is not allowed");
+            }
+        }
 
         return validation;
     }

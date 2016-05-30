@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://ws.iws.iaeste.net/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="studentWSService" targetNamespace="http://ws.iws.iaeste.net/">
   <wsdl:documentation>
       Service: IWS Student Service
-      Version: 1.2.20160501
+      Version: 1.2.20160530
       Owner:   Kim Jensen
   </wsdl:documentation>
   <wsdl:types>
@@ -63,6 +63,7 @@
     <xs:sequence>
       <xs:element name="error" type="tns:iwsError"/>
       <xs:element name="message" type="xs:string"/>
+      <xs:element name="contact" type="xs:string"/>
     </xs:sequence>
   </xs:complexType>
 
@@ -410,11 +411,21 @@
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType name="processStudentApplicationsRequest">
+  <xs:complexType name="studentApplicationsRequest">
+    <xs:complexContent>
+      <xs:extension base="tns:actions">
+        <xs:sequence>
+          <xs:element name="studentApplication" type="tns:studentApplication"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType abstract="true" name="actions">
     <xs:complexContent>
       <xs:extension base="tns:verifications">
         <xs:sequence>
-          <xs:element name="studentApplication" type="tns:studentApplication"/>
+          <xs:element name="action" type="tns:action"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -1026,6 +1037,21 @@
     </xs:restriction>
   </xs:simpleType>
 
+  <xs:simpleType name="action">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="CREATE"/>
+      <xs:enumeration value="UPDATE"/>
+      <xs:enumeration value="UPGRADE"/>
+      <xs:enumeration value="PROCESS"/>
+      <xs:enumeration value="MOVE"/>
+      <xs:enumeration value="CHANGE_NS"/>
+      <xs:enumeration value="MERGE"/>
+      <xs:enumeration value="ACTIVATE"/>
+      <xs:enumeration value="SUSPEND"/>
+      <xs:enumeration value="DELETE"/>
+    </xs:restriction>
+  </xs:simpleType>
+
 </xs:schema>
   </wsdl:types>
   <wsdl:message name="fetchStudents">
@@ -1069,7 +1095,7 @@
   <wsdl:message name="processStudentApplication">
     <wsdl:part name="token" type="tns:authenticationToken">
     </wsdl:part>
-    <wsdl:part name="request" type="tns:processStudentApplicationsRequest">
+    <wsdl:part name="request" type="tns:studentApplicationsRequest">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="processStudentApplicationResponse">

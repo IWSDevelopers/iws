@@ -49,7 +49,6 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -96,7 +95,6 @@ public final class OfferTest extends AbstractOfferTest {
 
     @Test
     public void testChangingOfferAndExchangeType() {
-        System.out.println(UUID.randomUUID().toString());
         final String refno = "PL-" + Verifications.calculateExchangeYear() + "-00634743";
 
         // Create a new Offer, and store the OfferType & ExchangeType for later
@@ -114,7 +112,7 @@ public final class OfferTest extends AbstractOfferTest {
         assertThat(initialOffer.getOfferType(), is(OfferType.RESERVED));
         assertThat(updatedOffer.getOfferType(), is(OfferType.RESERVED));
         // Check, that the ExchangeType was changed from the initially saved Offer
-        assertThat(initialExchangeType, is(not(TestData.OFFER_EXCHANGE_TYPE)));
+        assertThat(initialExchangeType, is(not(ExchangeType.AC)));
         assertThat(initialOffer.getExchangeType(), is(ExchangeType.AC));
         assertThat(updatedOffer.getExchangeType(), is(ExchangeType.AC));
         // Check, that the refno and printable refno are both correct

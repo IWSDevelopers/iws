@@ -99,13 +99,14 @@ public final class StudentMapper extends CommonMapper {
         return api;
     }
 
-    public static net.iaeste.iws.ws.ProcessStudentApplicationsRequest map(final StudentApplicationsRequest api) {
-        net.iaeste.iws.ws.ProcessStudentApplicationsRequest ws = null;
+    public static net.iaeste.iws.ws.StudentApplicationsRequest map(final StudentApplicationsRequest api) {
+        net.iaeste.iws.ws.StudentApplicationsRequest ws = null;
 
         if (api != null) {
-            ws = new net.iaeste.iws.ws.ProcessStudentApplicationsRequest();
+            ws = new net.iaeste.iws.ws.StudentApplicationsRequest();
 
             ws.setStudentApplication(map(api.getStudentApplication()));
+            ws.setAction(map(api.getAction()));
         }
 
         return ws;
@@ -455,26 +456,26 @@ public final class StudentMapper extends CommonMapper {
     }
 
     private static ApplicationStatus map(final net.iaeste.iws.ws.ApplicationStatus ws) {
-        return ws != null ? ApplicationStatus.valueOf(ws.value()) : null;
+        return (ws != null) ? ApplicationStatus.valueOf(ws.value()) : null;
     }
 
     private static net.iaeste.iws.ws.ApplicationStatus map(final ApplicationStatus api) {
-        return api != null ? net.iaeste.iws.ws.ApplicationStatus.valueOf(api.name()) : null;
+        return (api != null) ? net.iaeste.iws.ws.ApplicationStatus.valueOf(api.name()) : null;
     }
 
     private static TransportationType map(final net.iaeste.iws.ws.TransportationType ws) {
-        return ws != null ? TransportationType.valueOf(ws.value()) : null;
+        return (ws != null) ? TransportationType.valueOf(ws.value()) : null;
     }
 
     private static net.iaeste.iws.ws.TransportationType map(final TransportationType api) {
-        return api != null ? net.iaeste.iws.ws.TransportationType.valueOf(api.name()) : null;
+        return (api != null) ? net.iaeste.iws.ws.TransportationType.valueOf(api.name()) : null;
     }
 
     private static Specialization map(final net.iaeste.iws.ws.Specialization ws) {
-        return ws != null ? Specialization.valueOf(ws.value()) : null;
+        return (ws != null) ? Specialization.valueOf(ws.value()) : null;
     }
 
     private static net.iaeste.iws.ws.Specialization map(final Specialization api) {
-        return api != null ? net.iaeste.iws.ws.Specialization.valueOf(api.name()) : null;
+        return (api != null) ? net.iaeste.iws.ws.Specialization.valueOf(api.name()) : null;
     }
 }

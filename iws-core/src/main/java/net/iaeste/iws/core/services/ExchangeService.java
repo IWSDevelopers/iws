@@ -361,23 +361,22 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
         // Before continuing, first we must check the Offer.
         checkOfferForReSharing(offer, request);
 
-        final List<String> groupIds = request.getGroupIds();
         final PublishOfferResponse response = new PublishOfferResponse();
         response.setOfferId(request.getOfferId());
         final List<OfferGroupEntity> shares = new ArrayList<>(0);
 
-        if (groupIds.isEmpty()) {
+        if (request.getAction() == Action.PROCESS) {
+            final List<OfferGroupEntity> processed = processOfferSharing(authentication, offer, request);
+            for (final OfferGroupEntity entity : processed) {
+                shares.add(entity);
+            }
+        } else {
             // Since no GroupId's has been provided, we're going to remove
             // all Shares by Closing them, however it can only be done for
             // Shares in a non-final state.
             final Set<OfferState> currentStates = EnumSet.of(OfferState.NEW, VIEWED);
             final int records = updateOfferGroupStates(authentication, offer, currentStates, OfferState.CLOSED);
             LOG.info("Closed {} Shares for the Offer {}.", records, offer.getRefNo());
-        } else {
-            final List<OfferGroupEntity> processed = processOfferSharing(authentication, offer, request);
-            for (final OfferGroupEntity entity : processed) {
-                shares.add(entity);
-            }
         }
 
         // Update the status of the Offer, based on the request & states of the

@@ -584,7 +584,7 @@ public abstract class Verifications implements Verifiable {
      * @param values List of Identifiers to check for validity
      * @throws IllegalArgumentException if the list contain invalid identifiers
      */
-    protected static void ensureValidIdentifiers(final String field, final Collection<String> values) {
+    private static void ensureValidIdentifiers(final String field, final Collection<String> values) {
         if (values != null) {
             for (final String id : values) {
                 ensureValidIdentifier(field, id);
@@ -603,6 +603,19 @@ public abstract class Verifications implements Verifiable {
     protected static void ensureNotNullAndValidId(final String field, final String value) {
         ensureNotNull(field, value);
         ensureValidId(field, value);
+    }
+
+    /**
+     * Throws an {@code IllegalArgumentException} if the given list of
+     * identifiers is either null, empty or contain invalid entries.
+     *
+     * @param field  Name of the field
+     * @param values List of Identifiers to check
+     * @throws IllegalArgumentException if the values is null, empty or invalid
+     */
+    protected static void ensureNotNullOrEmptyAndValidIdentifiers(final String field, final Collection<String> values) {
+        ensureNotNullOrEmpty(field, values);
+        ensureValidIdentifiers(field, values);
     }
 
     /**

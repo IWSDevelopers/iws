@@ -24,7 +24,6 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
 import net.iaeste.iws.api.Students;
-import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.GroupList;
@@ -40,7 +39,6 @@ import net.iaeste.iws.api.requests.CreateUserRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishedGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.OfferRequest;
-import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentsRequest;
 import net.iaeste.iws.api.requests.student.StudentApplicationRequest;
@@ -50,7 +48,6 @@ import net.iaeste.iws.api.responses.CreateUserResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
 import net.iaeste.iws.api.responses.exchange.FetchPublishedGroupsResponse;
 import net.iaeste.iws.api.responses.exchange.OfferResponse;
-import net.iaeste.iws.api.responses.exchange.PublishOfferResponse;
 import net.iaeste.iws.api.responses.student.FetchStudentApplicationsResponse;
 import net.iaeste.iws.api.responses.student.FetchStudentsResponse;
 import net.iaeste.iws.api.responses.student.StudentApplicationResponse;
@@ -121,11 +118,7 @@ public final class StudentTest extends AbstractOfferTest {
         groupIds.add(findNationalGroup(austriaToken).getGroupId());
         groupIds.add(findNationalGroup(croatiaToken).getGroupId());
 
-        final PublishOfferRequest publishRequest1 = new PublishOfferRequest(sharedOffer.getOfferId(), groupIds, nominationDeadline);
-        final PublishOfferResponse publishResponse1 = exchange.processPublishOffer(token, publishRequest1);
-
-        assertThat(publishResponse1.getError(), is(IWSErrors.SUCCESS));
-        assertThat(publishResponse1.isOk(), is(true));
+        publishOffer(token, sharedOffer, nominationDeadline, groupIds);
 
         final List<String> offersExternalId = new ArrayList<>(1);
         offersExternalId.add(sharedOffer.getOfferId());
@@ -197,11 +190,7 @@ public final class StudentTest extends AbstractOfferTest {
         groupIds.add(findNationalGroup(austriaToken).getGroupId());
         groupIds.add(findNationalGroup(croatiaToken).getGroupId());
 
-        final PublishOfferRequest publishRequest1 = new PublishOfferRequest(sharedOffer.getOfferId(), groupIds, nominationDeadline);
-        final PublishOfferResponse publishResponse1 = exchange.processPublishOffer(token, publishRequest1);
-
-        assertThat(publishResponse1.getError(), is(IWSErrors.SUCCESS));
-        assertThat(publishResponse1.isOk(), is(true));
+        publishOffer(token, sharedOffer, nominationDeadline, groupIds);
 
         final List<String> offersExternalId = new ArrayList<>(1);
         offersExternalId.add(sharedOffer.getOfferId());
@@ -280,11 +269,7 @@ public final class StudentTest extends AbstractOfferTest {
         groupIds.add(findNationalGroup(austriaToken).getGroupId());
         groupIds.add(findNationalGroup(croatiaToken).getGroupId());
 
-        final PublishOfferRequest publishRequest1 = new PublishOfferRequest(sharedOffer1.getOfferId(), groupIds, nominationDeadline);
-        final PublishOfferResponse publishResponse1 = exchange.processPublishOffer(token, publishRequest1);
-
-        assertThat(publishResponse1.getError(), is(IWSErrors.SUCCESS));
-        assertThat(publishResponse1.isOk(), is(true));
+        publishOffer(token, sharedOffer1, nominationDeadline, groupIds);
 
         final List<String> offersExternalId = new ArrayList<>(1);
         offersExternalId.add(sharedOffer1.getOfferId());
@@ -358,9 +343,7 @@ public final class StudentTest extends AbstractOfferTest {
         groupIds.add(findNationalGroup(austriaToken).getGroupId());
         groupIds.add(findNationalGroup(croatiaToken).getGroupId());
 
-        final PublishOfferResponse publishResponse1 = exchange.processPublishOffer(token, new PublishOfferRequest(offerId, groupIds, nominationDeadline));
-
-        assertThat("Offer has been shared to 2 countries", publishResponse1.isOk(), is(true));
+        publishOffer(token, saveResponse.getOffer(), nominationDeadline, groupIds);
 
         final CreateUserRequest createUserRequest1 = new CreateUserRequest("student_app004@university.edu", "password1", "Student1", "Graduate1");
         createUserRequest1.setStudentAccount(true);
@@ -448,9 +431,7 @@ public final class StudentTest extends AbstractOfferTest {
         groupIds.add(findNationalGroup(austriaToken).getGroupId());
         groupIds.add(findNationalGroup(croatiaToken).getGroupId());
 
-        final PublishOfferResponse publishResponse1 = exchange.processPublishOffer(token, new PublishOfferRequest(offerId, groupIds, nominationDeadline));
-
-        assertThat("Offer has been shared to 2 countries", publishResponse1.isOk(), is(true));
+        publishOffer(token, saveResponse.getOffer(), nominationDeadline, groupIds);
 
         final CreateUserRequest createUserRequest1 = new CreateUserRequest("student_app006@university.edu", "password1", "Student1", "Graduate1");
         createUserRequest1.setStudentAccount(true);
@@ -520,9 +501,7 @@ public final class StudentTest extends AbstractOfferTest {
         groupIds.add(findNationalGroup(austriaToken).getGroupId());
         groupIds.add(findNationalGroup(croatiaToken).getGroupId());
 
-        final PublishOfferResponse publishResponse1 = exchange.processPublishOffer(token, new PublishOfferRequest(offerId, groupIds, nominationDeadline));
-
-        assertThat("Offer has been shared to 2 countries", publishResponse1.isOk(), is(true));
+        publishOffer(token, saveResponse.getOffer(), nominationDeadline, groupIds);
 
         final CreateUserRequest createUserRequest1 = new CreateUserRequest("student_app065@university.edu", "password1", "Student1", "Graduate1");
         createUserRequest1.setStudentAccount(true);
@@ -582,9 +561,7 @@ public final class StudentTest extends AbstractOfferTest {
         groupIds.add(findNationalGroup(austriaToken).getGroupId());
         groupIds.add(findNationalGroup(croatiaToken).getGroupId());
 
-        final PublishOfferResponse publishResponse1 = exchange.processPublishOffer(token, new PublishOfferRequest(offerId, groupIds, nominationDeadline));
-
-        assertThat("Offer has been shared to 2 countries", publishResponse1.isOk(), is(true));
+        publishOffer(token, saveResponse.getOffer(), nominationDeadline, groupIds);
 
         final CreateUserRequest createUserRequest1 = new CreateUserRequest("student_app064@university.edu", "password1", "Student1", "Graduate1");
         createUserRequest1.setStudentAccount(true);
@@ -614,9 +591,11 @@ public final class StudentTest extends AbstractOfferTest {
         assertThat("Student application has been created", createApplicationResponse.isOk(), is(true));
 
         //usnhare offer
-        groupIds.clear();
-        final PublishOfferResponse unshareResponse = exchange.processPublishOffer(token, new PublishOfferRequest(offerId, groupIds, nominationDeadline));
-        assertThat("Offer has been unshared", unshareResponse.isOk(), is(true));
+        publishOffer(token, saveResponse.getOffer(), nominationDeadline);
+//        groupIds.clear();
+//
+//        final PublishOfferResponse unshareResponse = exchange.processPublishOffer(token, new PublishOfferRequest(offerId, groupIds, nominationDeadline));
+//        assertThat("Offer has been unshared", unshareResponse.isOk(), is(true));
 
         final StudentApplicationRequest rejectStudentRequest = new StudentApplicationRequest(
                 studentApplication.getApplicationId(),
@@ -642,15 +621,11 @@ public final class StudentTest extends AbstractOfferTest {
         final OfferResponse saveResponse = exchange.processOffer(token, prepareRequest(offer));
         assertThat("Offer has been saved", saveResponse.isOk(), is(true));
 
-        final String offerId = saveResponse.getOffer().getOfferId();
-
         final List<String> groupIds = new ArrayList<>(2);
         groupIds.add(findNationalGroup(austriaToken).getGroupId());
         groupIds.add(findNationalGroup(croatiaToken).getGroupId());
 
-        final PublishOfferResponse publishResponse1 = exchange.processPublishOffer(token, new PublishOfferRequest(offerId, groupIds, nominationDeadline));
-
-        assertThat("Offer has been shared to 2 countries", publishResponse1.isOk(), is(true));
+        publishOffer(token, saveResponse.getOffer(), nominationDeadline, groupIds);
 
         final CreateUserRequest createUserRequest1 = new CreateUserRequest("student_app008@university.edu", "password1", "Student1", "Graduate1");
         createUserRequest1.setStudentAccount(true);
@@ -705,15 +680,11 @@ public final class StudentTest extends AbstractOfferTest {
         final OfferResponse saveResponse = exchange.processOffer(token, prepareRequest(offer));
         assertThat("Offer has been saved", saveResponse.isOk(), is(true));
 
-        final String offerId = saveResponse.getOffer().getOfferId();
-
         final List<String> groupIds = new ArrayList<>(2);
         groupIds.add(findNationalGroup(austriaToken).getGroupId());
         groupIds.add(findNationalGroup(croatiaToken).getGroupId());
 
-        final PublishOfferResponse publishResponse1 = exchange.processPublishOffer(token, new PublishOfferRequest(offerId, groupIds, nominationDeadline));
-
-        assertThat("Offer has been shared to 2 countries", publishResponse1.isOk(), is(true));
+        publishOffer(token, saveResponse.getOffer(), nominationDeadline, groupIds);
 
         final CreateUserRequest createUserRequest1 = new CreateUserRequest("student_app009@university.edu", "password1", "Student1", "Graduate1");
         createUserRequest1.setStudentAccount(true);
@@ -776,15 +747,11 @@ public final class StudentTest extends AbstractOfferTest {
         final OfferResponse saveResponse = exchange.processOffer(token, prepareRequest(offer));
         assertThat("Offer has been saved", saveResponse.isOk(), is(true));
 
-        final String offerId = saveResponse.getOffer().getOfferId();
-
         final List<String> groupIds = new ArrayList<>(2);
         groupIds.add(findNationalGroup(austriaToken).getGroupId());
         groupIds.add(findNationalGroup(croatiaToken).getGroupId());
 
-        final PublishOfferResponse publishResponse1 = exchange.processPublishOffer(token, new PublishOfferRequest(offerId, groupIds, nominationDeadline));
-
-        assertThat("Offer has been shared to 2 countries", publishResponse1.isOk(), is(true));
+        publishOffer(token, saveResponse.getOffer(), nominationDeadline, groupIds);
 
         final CreateUserRequest createUserRequest1 = new CreateUserRequest("student_app010@university.edu", "password1", "Student1", "Graduate1");
         createUserRequest1.setStudentAccount(true);
@@ -849,15 +816,11 @@ public final class StudentTest extends AbstractOfferTest {
         final OfferResponse saveResponse = exchange.processOffer(token, prepareRequest(offer));
         assertThat("Offer has been saved", saveResponse.isOk(), is(true));
 
-        final String offerId = saveResponse.getOffer().getOfferId();
-
         final List<String> groupIds = new ArrayList<>(2);
         groupIds.add(findNationalGroup(austriaToken).getGroupId());
         groupIds.add(findNationalGroup(croatiaToken).getGroupId());
 
-        final PublishOfferResponse publishResponse1 = exchange.processPublishOffer(token, new PublishOfferRequest(offerId, groupIds, nominationDeadline));
-
-        assertThat("Offer has been shared to 2 countries", publishResponse1.isOk(), is(true));
+        publishOffer(token, saveResponse.getOffer(), nominationDeadline, groupIds);
 
         final CreateUserRequest createUserRequest1 = new CreateUserRequest("student_app011@university.edu", "password1", "Student1", "Graduate1");
         createUserRequest1.setStudentAccount(true);
@@ -939,11 +902,7 @@ public final class StudentTest extends AbstractOfferTest {
         final List<String> groupIds = new ArrayList<>(2);
         groupIds.add(findNationalGroup(croatiaToken).getGroupId());
 
-        final PublishOfferRequest publishRequest = new PublishOfferRequest(processResponse.getOffer().getOfferId(), groupIds, nominationDeadline);
-        final PublishOfferResponse publishResponse = exchange.processPublishOffer(austriaTokenWithNationalGroup, publishRequest);
-
-        assertThat("verify that there was no error during sharing the offer", publishResponse.getError(), is(IWSErrors.SUCCESS));
-        assertThat("verify that the offer was successfully shared with Croatia", publishResponse.isOk(), is(true));
+        publishOffer(austriaTokenWithNationalGroup, processResponse.getOffer(), nominationDeadline, groupIds);
 
         final FetchOffersRequest requestHr1 = new FetchOffersRequest(FetchType.SHARED);
         final FetchOffersResponse fetchResponseHr1 = exchange.fetchOffers(croatiaToken, requestHr1);

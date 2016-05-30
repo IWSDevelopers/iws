@@ -114,8 +114,6 @@ public abstract class AbstractTest {
      * @return Member Group
      */
     protected static Group findNationalGroup(final AuthenticationToken token) {
-        // There's a rumour going around that SAR's are a thing of the past. So
-        // we only need to fetch the Group with type NATIONAL
         return findGroup(token, GroupType.NATIONAL);
     }
 

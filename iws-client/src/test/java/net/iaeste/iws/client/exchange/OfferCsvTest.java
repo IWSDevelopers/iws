@@ -23,7 +23,6 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.TestData;
@@ -33,11 +32,9 @@ import net.iaeste.iws.api.enums.FetchType;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
 import net.iaeste.iws.api.requests.exchange.OfferCSVUploadRequest;
 import net.iaeste.iws.api.requests.exchange.OfferRequest;
-import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
 import net.iaeste.iws.api.responses.exchange.OfferCSVDownloadResponse;
 import net.iaeste.iws.api.responses.exchange.OfferCSVUploadResponse;
 import net.iaeste.iws.api.responses.exchange.OfferResponse;
-import net.iaeste.iws.api.responses.exchange.PublishOfferResponse;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.api.util.Verifications;
 import org.junit.Test;
@@ -95,10 +92,7 @@ public final class OfferCsvTest extends AbstractOfferTest {
         final List<String> groupIds = new ArrayList<>(2);
         groupIds.add(findNationalGroup(croatiaToken).getGroupId());
 
-        final PublishOfferRequest publishRequest = new PublishOfferRequest(saveResponse.getOffer().getOfferId(), groupIds, nominationDeadline);
-        final PublishOfferResponse publishResponse = exchange.processPublishOffer(austriaTokenWithNationalGroup, publishRequest);
-        assertThat(publishResponse.getError(), is(IWSErrors.SUCCESS));
-        assertThat(publishResponse.isOk(), is(true));
+        publishOfferWithoutCheck(token, saveResponse.getOffer(), nominationDeadline, groupIds);
 
         final FetchOffersRequest outboxCsvRequest = new FetchOffersRequest();
         outboxCsvRequest.setFetchType(FetchType.DOMESTIC);

@@ -96,5 +96,11 @@ public enum Action {
      * <p>Deletion may also be done against other data, where the process
      * of deleting it will determine how much is erased.</p>
      */
-    DELETE
+    DELETE,
+
+    /**
+     * <p>Shares are removed, not deleted. This is used when existing shares
+     * should be removed.</p>
+     */
+    REMOVE
 }

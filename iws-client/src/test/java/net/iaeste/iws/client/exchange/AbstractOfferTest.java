@@ -32,6 +32,7 @@ import net.iaeste.iws.api.dtos.exchange.StudentApplication;
 import net.iaeste.iws.api.enums.Action;
 import net.iaeste.iws.api.enums.FetchType;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
+import net.iaeste.iws.api.requests.exchange.FetchPublishedGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.OfferRequest;
 import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
 import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
@@ -166,27 +167,40 @@ public abstract class AbstractOfferTest extends AbstractTest {
      * @return The Publish Offer Response Object
      */
     protected final PublishOfferResponse publishOffer(final AuthenticationToken authentication, final Offer offer, final Date deadline, final AuthenticationToken... tokens) {
-        final PublishOfferRequest request = new PublishOfferRequest();
-        request.setOfferId(offer.getOfferId());
-        request.setNominationDeadline(deadline);
         final List<String> groupIds;
-
         if ((tokens != null) && (tokens.length > 0)) {
             groupIds = new ArrayList<>(tokens.length);
             for (final AuthenticationToken groupToken : tokens) {
                 groupIds.add(findNationalGroup(groupToken).getGroupId());
             }
-            request.setGroupIds(groupIds);
         } else {
             groupIds = new ArrayList<>(0);
         }
 
-        final PublishOfferResponse response = exchange.processPublishOffer(authentication, request);
+        return publishOffer(authentication, offer, deadline, groupIds);
+    }
+
+    protected final PublishOfferResponse publishOffer(final AuthenticationToken authentication, final Offer offer, final Date deadline, final List<String> groupIds) {
+        final PublishOfferResponse response = publishOfferWithoutCheck(authentication, offer, deadline, groupIds);
         assertThat(response.getMessage(), is(IWSConstants.SUCCESS));
         assertThat(response.getOfferId(), is(offer.getOfferId()));
-        assertThat(response.getGroupIds().size(), is(groupIds.size()));
 
         return response;
+    }
+
+    protected final PublishOfferResponse publishOfferWithoutCheck(final AuthenticationToken authentication, final Offer offer, final Date deadline, final List<String> groupIds) {
+        final PublishOfferRequest request = new PublishOfferRequest();
+        request.setOfferId(offer.getOfferId());
+
+        if ((groupIds != null) && !groupIds.isEmpty()) {
+            request.setNominationDeadline(deadline);
+            request.setGroupIds(groupIds);
+            request.setAction(Action.PROCESS);
+        } else {
+            request.setAction(Action.REMOVE);
+        }
+
+        return exchange.processPublishOffer(authentication, request);
     }
 
     protected final Offer fetchOffer(final AuthenticationToken authentication, final FetchType type, final String refno) {
@@ -201,5 +215,15 @@ public abstract class AbstractOfferTest extends AbstractTest {
         }
 
         return offer;
+    }
+
+    protected final FetchPublishedGroupsResponse fetchPublishedGroups(final AuthenticationToken authentication, final List<String> offerIds) {
+        final FetchPublishedGroupsRequest request = new FetchPublishedGroupsRequest();
+        request.setIdentifiers(offerIds);
+
+        final FetchPublishedGroupsResponse response = exchange.fetchPublishedGroups(authentication, request);
+        assertThat(response.isOk(), is(true));
+
+        return response;
     }
 }

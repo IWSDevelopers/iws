@@ -440,25 +440,7 @@ public class CommonService<T extends BasicDao> {
         final FileEntity entity;
 
         if (externalId == null) {
-            final String newId = UUID.randomUUID().toString();
-            final String storedNamed = authentication.getGroup().getExternalId() + '/' + newId;
-
-            entity = transform(file, ((folder != null) && (folder.length > 0)) ? folder[0] : null);
-            entity.setExternalId(newId);
-            entity.setChecksum(calculateChecksum(data));
-            entity.setStoredFilename(storedNamed);
-            entity.setFilesize((data != null) ? data.length : 0);
-            entity.setUser(authentication.getUser());
-            entity.setGroup(authentication.getGroup());
-            // TODO The Storage Service & Common Service needs to be updated to better control how and where files are handled
-            if ((folder != null) && (folder.length == 1)) {
-                entity.setFolder(folder[0]);
-            } else {
-                entity.setFolder(null);
-            }
-
-            writeFileToSystem(storedNamed, data);
-            dao.persist(authentication, entity);
+            entity = processNewFile(authentication, file, data, folder);
         } else {
             entity = dao.findFileByUserAndExternalId(authentication.getUser(), externalId);
             if (entity != null) {
@@ -475,6 +457,30 @@ public class CommonService<T extends BasicDao> {
             }
         }
 
+        return entity;
+    }
+
+    private FileEntity processNewFile(final Authentication authentication, final File file, final byte[] data, final FolderEntity[] folder) {
+        final FileEntity entity;
+        final String newId = UUID.randomUUID().toString();
+        final String storedNamed = authentication.getGroup().getExternalId() + '/' + newId;
+
+        entity = transform(file, ((folder != null) && (folder.length > 0)) ? folder[0] : null);
+        entity.setExternalId(newId);
+        entity.setChecksum(calculateChecksum(data));
+        entity.setStoredFilename(storedNamed);
+        entity.setFilesize((data != null) ? data.length : 0);
+        entity.setUser(authentication.getUser());
+        entity.setGroup(authentication.getGroup());
+
+        if ((folder != null) && (folder.length == 1)) {
+            entity.setFolder(folder[0]);
+        } else {
+            entity.setFolder(null);
+        }
+
+        writeFileToSystem(storedNamed, data);
+        dao.persist(authentication, entity);
         return entity;
     }
 
@@ -616,15 +622,15 @@ public class CommonService<T extends BasicDao> {
      * have the following values, null, empty or one Object on the list. The
      * method will simply return either null or the first Object found.
      *
-     * @param objs Object listing to get the first valid Object from
+     * @param objects Object listing to get the first valid Object from
      * @return First valid Object or null
      */
     @SafeVarargs
-    private static <T> T getFirstObject(final T... objs) {
+    private static <T> T getFirstObject(final T... objects) {
         T result = null;
 
-        if ((objs != null) && (objs.length == 1)) {
-            result = objs[0];
+        if ((objects != null) && (objects.length == 1)) {
+            result = objects[0];
         }
 
         return result;

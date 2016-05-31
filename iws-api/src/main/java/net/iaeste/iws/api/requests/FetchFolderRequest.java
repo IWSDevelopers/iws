@@ -33,7 +33,7 @@ import java.util.Map;
  * @since   IWS 1.1
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "fetchFolderRequest", propOrder = { "folderId" })
+@XmlType(name = "fetchFolderRequest", propOrder = "folderId")
 public final class FetchFolderRequest extends Verifications {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
@@ -46,24 +46,6 @@ public final class FetchFolderRequest extends Verifications {
     // Object Constructors
     // =========================================================================
 
-    /**
-     * Empty Constructor, to use if the setters are invoked. This is required
-     * for WebServices to work properly.
-     */
-    public FetchFolderRequest() {
-        // Required for WebServices to work. Comment added to please Sonar.
-    }
-
-    /**
-     * Default Constructor.
-     *
-     * @param folderId the Id of the folder to read
-     * @throws IllegalArgumentException if the fileId is invalid
-     */
-    public FetchFolderRequest(final String folderId) throws IllegalArgumentException {
-        setFolderId(folderId);
-    }
-
     // =========================================================================
     // Standard Setters & Getters
     // =========================================================================
@@ -75,7 +57,7 @@ public final class FetchFolderRequest extends Verifications {
      * @param folderId Id of the folder to fetch
      * @throws IllegalArgumentException if not an valid Id
      */
-    public void setFolderId(final String folderId) throws IllegalArgumentException {
+    public void setFolderId(final String folderId) {
         ensureValidId("folderId", folderId);
         this.folderId = folderId;
     }
@@ -93,8 +75,6 @@ public final class FetchFolderRequest extends Verifications {
      */
     @Override
     public Map<String, String> validate() {
-        final Map<String, String> validation = new HashMap<>(1);
-
-        return validation;
+        return new HashMap<>(0);
     }
 }

@@ -47,6 +47,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import java.util.Date;
 import java.util.EnumMap;
+import java.util.Map;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -494,7 +495,7 @@ public final class UserEntity extends AbstractUpdateable<UserEntity> implements 
      * {@inheritDoc}
      */
     @Override
-    public EnumMap<NotificationField, String> prepareNotifiableFields(final NotificationType type) {
+    public Map<NotificationField, String> prepareNotifiableFields(final NotificationType type) {
         final EnumMap<NotificationField, String> fields = new EnumMap<>(NotificationField.class);
 
         // By default, all notifications need the name of the person to receive

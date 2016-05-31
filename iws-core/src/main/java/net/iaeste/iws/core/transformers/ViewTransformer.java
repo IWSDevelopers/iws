@@ -291,7 +291,6 @@ public final class ViewTransformer {
 
         commonOfferInformation(type, result, offer, employer);
 
-        //TODO: Add The name of the country to whom this view is shared once available in the embeddedOfferView
         addObjectIfRequired(OfferFields.SHARED, type, result, null);
         addDateIfRequired(OfferFields.LAST_MODIFIED, type, result, offer.getModified());
         addObjectIfRequired(OfferFields.NS_FIRST_NAME, type, result, view.getNsFirstname());

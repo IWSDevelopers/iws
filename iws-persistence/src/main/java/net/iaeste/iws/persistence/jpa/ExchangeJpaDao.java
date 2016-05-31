@@ -31,7 +31,6 @@ import net.iaeste.iws.persistence.entities.exchange.PublishingGroupEntity;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -146,22 +145,6 @@ public final class ExchangeJpaDao extends BasicJpaDao implements ExchangeDao {
      * {@inheritDoc}
      */
     @Override
-    public List<OfferEntity> findOffersByExternalId(final Authentication authentication, final Set<String> externalIds) {
-        final String jql =
-                "select o from OfferEntity o " +
-                "where o.employer.group.id = :gid" +
-                "  and o.externalId in :eids";
-        final Query query = entityManager.createQuery(jql);
-        query.setParameter("gid", authentication.getGroup().getId());
-        query.setParameter("eids", expandEmptyCollection(externalIds, ""));
-
-        return query.getResultList();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public List<OfferGroupEntity> findInfoForSharedOffer(final Long offerId) {
         final Query query = entityManager.createNamedQuery("offerGroup.findByOffer");
         query.setParameter("oid", offerId);
@@ -236,24 +219,6 @@ public final class ExchangeJpaDao extends BasicJpaDao implements ExchangeDao {
         query.setParameter("egids", expandEmptyCollection(externalIds, ""));
 
         return query.getResultList();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public GroupEntity findGroupByExternalId(final String externalId) {
-        final List<String> externalIds = new ArrayList<>(1);
-        externalIds.add(externalId);
-        final List<GroupEntity> groups = findGroupByExternalIds(externalIds);
-
-        GroupEntity group = null;
-
-        if (groups.size() == 1) {
-            group = groups.get(0);
-        }
-
-        return group;
     }
 
     /**

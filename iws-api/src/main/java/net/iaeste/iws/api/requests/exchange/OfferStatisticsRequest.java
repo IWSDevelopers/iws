@@ -33,13 +33,13 @@ import java.util.Map;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "offerStatisticsRequest", propOrder = { "exchangeYear" })
+@XmlType(name = "offerStatisticsRequest", propOrder = "exchangeYear")
 public final class OfferStatisticsRequest extends Verifications {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    @XmlElement(required = true, nillable = false)
+    @XmlElement(required = true)
     private Integer exchangeYear = calculateExchangeYear();
 
     // =========================================================================
@@ -82,7 +82,7 @@ public final class OfferStatisticsRequest extends Verifications {
      * @param exchangeYear IAESTE Exchange Year
      * @throws IllegalArgumentException if null or not a valid IAESTE Year
      */
-    public void setExchangeYear(final Integer exchangeYear) throws IllegalArgumentException {
+    public void setExchangeYear(final Integer exchangeYear) {
         ensureNotNullAndWithinLimits("exchangeYear", exchangeYear, IWSConstants.FOUNDING_YEAR, calculateExchangeYear());
         this.exchangeYear = exchangeYear;
     }

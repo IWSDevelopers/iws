@@ -18,7 +18,7 @@
 package net.iaeste.iws.common.notification;
 
 import java.io.Serializable;
-import java.util.EnumMap;
+import java.util.Map;
 
 /**
  * Please note, that the current information here is very much incomplete. A
@@ -44,5 +44,5 @@ public interface Notifiable extends Serializable {
      * @param type Notification Type
      * @return Map with required fields for the given Notification Type
      */
-    EnumMap<NotificationField, String> prepareNotifiableFields(NotificationType type);
+    Map<NotificationField, String> prepareNotifiableFields(NotificationType type);
 }

@@ -52,7 +52,7 @@ public interface AccessDao extends BasicDao {
      * @return Found {@code UserEntity}
      * @throws IWSException if multiple accounts exists
      */
-    UserEntity findActiveUserByUsername(String username) throws IWSException;
+    UserEntity findActiveUserByUsername(String username);
 
     /**
      * Finds an {@code UserEntity} based on the given (unique) username, only
@@ -66,7 +66,7 @@ public interface AccessDao extends BasicDao {
      * @return Found {@code UserEntity}
      * @throws IWSException if multiple accounts exists
      */
-    UserEntity findExistingUserByUsername(String username) throws IWSException;
+    UserEntity findExistingUserByUsername(String username);
 
     /**
      * Finds an {@code UserEntity} based on the given (unique) username,
@@ -79,7 +79,7 @@ public interface AccessDao extends BasicDao {
      * @return Found {@code UserEntity}
      * @throws IWSException if multiple accounts exists
      */
-    UserEntity findUserByUsername(String username) throws IWSException;
+    UserEntity findUserByUsername(String username);
 
     UserEntity findActiveUserByCode(String code);
 
@@ -239,14 +239,6 @@ public interface AccessDao extends BasicDao {
      * @return List of GroupEntity
      */
     List<UserGroupEntity> findAllUserGroups(UserEntity user);
-
-    /**
-     * Finds a group membership for given username
-     *
-     * @param username        Username
-     * @param groupExternalId External Group Id
-     */
-    UserGroupEntity findGroupMemberByUsernameAndGroupExternalId(String username, String groupExternalId);
 
     /**
      * Finds a list of User Accounts, which is having status NEW, but have not

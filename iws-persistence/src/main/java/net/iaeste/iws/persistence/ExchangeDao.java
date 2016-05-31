@@ -52,7 +52,7 @@ public interface ExchangeDao extends BasicDao {
      * @return Found Employer Entity or null
      * @throws IdentificationException if more Employer Entities were found
      */
-    EmployerEntity findUniqueEmployer(Authentication authentication, Employer employer) throws IdentificationException;
+    EmployerEntity findUniqueEmployer(Authentication authentication, Employer employer);
 
     /**
      * Get all offers from the database.
@@ -89,12 +89,6 @@ public interface ExchangeDao extends BasicDao {
      * @return Found Offer Entity or null
      */
     OfferEntity findOfferByExternalIdAndRefNo(Authentication authentication, String externalId, String refNo);
-
-    /**
-     * @param externalIds list of external IDs for fetching
-     * @return list of {@code OfferEntity}
-     */
-    List<OfferEntity> findOffersByExternalId(Authentication authentication, Set<String> externalIds);
 
     /**
      * Finds information about sharing of the offer
@@ -153,14 +147,6 @@ public interface ExchangeDao extends BasicDao {
      * @return list of {@link GroupEntity}
      */
     List<GroupEntity> findGroupByExternalIds(List<String> externalIds);
-
-    /**
-     * Finds group for given external id
-     *
-     * @param externalId group's external id
-     * @return {@link GroupEntity}
-     */
-    GroupEntity findGroupByExternalId(String externalId);
 
     List<GroupEntity> findGroupsForSharing(GroupEntity group);
 

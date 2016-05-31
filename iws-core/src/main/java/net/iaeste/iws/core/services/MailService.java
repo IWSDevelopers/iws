@@ -258,15 +258,6 @@ public final class MailService extends CommonService<MailingListDao> {
             LOG.info("NC's Mailing List; Added {} and removed {} Subscribers.", ncsListSubscribers.size(), ncsListUnsubscribers.size());
         }
 
-        // TODO Correct the logic, so the members will follow the subscription rules regarding who may write to it
-        //final List<UserGroupEntity> announceListSubscribers = dao.findMissingAnnounceSubscribers();
-        //if (!announceListSubscribers.isEmpty()) {
-        //    final String announceList = settings.getAnnounceList() + privateList;
-        //    final MailinglistEntity list = dao.findMailingList(announceList);
-        //    addSubscribers(authentication, list, announceListSubscribers);
-        //    changes += list.size();
-        //}
-
         return changes;
     }
 
@@ -326,12 +317,7 @@ public final class MailService extends CommonService<MailingListDao> {
                     processNewLists(authentication, group);
                 }
             } else {
-                for (final MailinglistEntity entity : list) {
-                    final MailinglistEntity toMerge = createGroupList(group, entity.getListType());
-                    if (entity.diff(toMerge)) {
-                        dao.persist(authentication, entity, toMerge);
-                    }
-                }
+                processExistingGroupLists(authentication, group, list);
             }
         }
     }
@@ -357,6 +343,15 @@ public final class MailService extends CommonService<MailingListDao> {
         if (group.getPublicList()) {
             final MailinglistEntity entity = createGroupList(group, MailinglistType.PUBLIC_LIST);
             dao.persist(authentication, entity);
+        }
+    }
+
+    private void processExistingGroupLists(final Authentication authentication, final GroupEntity group, final List<MailinglistEntity> list) {
+        for (final MailinglistEntity entity : list) {
+            final MailinglistEntity toMerge = createGroupList(group, entity.getListType());
+            if (entity.diff(toMerge)) {
+                dao.persist(authentication, entity, toMerge);
+            }
         }
     }
 

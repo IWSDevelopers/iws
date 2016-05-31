@@ -418,7 +418,7 @@ public final class AccessService extends CommonService<AccessDao> {
      * @return Found UserEntity
      * @throws IWSException if no user account exists or matches the credentials
      */
-    private UserEntity findUserFromCredentials(final AuthenticationRequest request) throws IWSException {
+    private UserEntity findUserFromCredentials(final AuthenticationRequest request) {
         // First, find an Entity exists for the given (lowerCased) username
         final String username = toLower(request.getUsername());
         final UserEntity user = dao.findActiveUserByUsername(username);

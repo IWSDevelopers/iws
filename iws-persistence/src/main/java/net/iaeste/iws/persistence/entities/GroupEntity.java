@@ -44,6 +44,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.util.Date;
 import java.util.EnumMap;
+import java.util.Map;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -491,7 +492,7 @@ public class GroupEntity extends AbstractUpdateable<GroupEntity> implements Exte
      * {@inheritDoc}
      */
     @Override
-    public final EnumMap<NotificationField, String> prepareNotifiableFields(final NotificationType type) {
+    public final Map<NotificationField, String> prepareNotifiableFields(final NotificationType type) {
         final EnumMap<NotificationField, String> fields = new EnumMap<>(NotificationField.class);
 
         switch (type) {

@@ -96,7 +96,8 @@ public final class StorageTest extends AbstractTest {
     @Test
     public void testReadingRootFolder() {
         token = login("finland@iaeste.fi", "finland");
-        final FetchFolderRequest request = new FetchFolderRequest(ROOT);
+        final FetchFolderRequest request = new FetchFolderRequest();
+        request.setFolderId(ROOT);
         final FetchFolderResponse response = storage.fetchFolder(token, request);
 
         // Standard check, we assume that everything is ok.
@@ -118,7 +119,8 @@ public final class StorageTest extends AbstractTest {
     @Test
     public void testReadingRootFolderAsSharingNS() {
         token = login("tunisia@iaeste.tn", "tunisia");
-        final FetchFolderRequest request = new FetchFolderRequest(ROOT);
+        final FetchFolderRequest request = new FetchFolderRequest();
+        request.setFolderId(ROOT);
         final FetchFolderResponse response = storage.fetchFolder(token, request);
 
         // Standard check, we assume that everything is ok.

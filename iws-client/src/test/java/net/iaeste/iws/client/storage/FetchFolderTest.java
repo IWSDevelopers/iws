@@ -179,7 +179,8 @@ public final class FetchFolderTest extends AbstractTest {
 
     @Test
     public void test() {
-        final FetchFolderRequest request = new FetchFolderRequest(folderId);
+        final FetchFolderRequest request = new FetchFolderRequest();
+        request.setFolderId(folderId);
         final FetchFolderResponse response = storage.fetchFolder(token, request);
 
         // First check, the response error information. Regardless of what is

@@ -170,7 +170,7 @@ public final class GroupService {
         groupEntity.setGroupName(GroupUtil.prepareGroupName(type, group));
         groupEntity.setDescription(group.getDescription());
         groupEntity.setFullName(GroupUtil.prepareFullGroupName(type, group, basename));
-        groupEntity.setListName(GroupUtil.prepareListName(type, groupEntity.getFullName(), entity.getCountry() != null ? entity.getCountry().getCountryName() : null));
+        groupEntity.setListName(GroupUtil.prepareListName(type, groupEntity.getFullName(), (entity.getCountry() != null) ? entity.getCountry().getCountryName() : null));
         groupEntity.setPrivateList(group.hasPrivateList() && group.getGroupType().getMayHavePrivateMailinglist());
         groupEntity.setPublicList(group.hasPublicList() && group.getGroupType().getMayHavePublicMailinglist());
         groupEntity.setMonitoringLevel(group.getMonitoringLevel());
@@ -366,11 +366,6 @@ public final class GroupService {
         LOG.debug(formatLogMessage(authentication, "Old Owner: %s gets the role %s for group %s.", authentication.getUser().getFirstname() + ' ' + authentication.getUser().getLastname(), oldOwner.getRole().getRole(), group.getGroupName()));
         dao.persist(authentication, oldOwner);
         LOG.debug(formatLogMessage(authentication, "Ownership changes have been persisted."));
-
-        // Old Owner is the one invoking this request, so no need to include that
-        // Commenting out the notifications, since they cause errors
-        //notifications.notify(authentication, newOwner, NotificationType.NEW_GROUP_OWNER);
-        //notifications.notify(authentication, newOwner, NotificationType.CHANGE_IN_GROUP_MEMBERS);
     }
 
     /**
@@ -476,7 +471,7 @@ public final class GroupService {
         final Action action = request.getAction();
         final GroupType type = request.getUserGroup().getGroup().getGroupType();
 
-        return  action == Action.DELETE && type == GroupType.MEMBER;
+        return (action == Action.DELETE) && (type == GroupType.MEMBER);
     }
 
     /**
@@ -642,8 +637,7 @@ public final class GroupService {
                 members = new ArrayList<>(0);
         }
 
-        final List<UserGroup> result = transformMembers(members);
-        return result;
+        return transformMembers(members);
     }
 
     private List<UserGroup> findStudents(final GroupEntity entity, final boolean fetchStudents) {

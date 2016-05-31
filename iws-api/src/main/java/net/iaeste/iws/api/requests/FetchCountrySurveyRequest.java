@@ -33,13 +33,13 @@ import java.util.Map;
  * @since   IWS 1.1
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "fetchCountrySurveyRequest", propOrder = { "groupId" })
+@XmlType(name = "fetchCountrySurveyRequest", propOrder = "groupId")
 public final class FetchCountrySurveyRequest extends Verifications {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    @XmlElement(required = true, nillable = false)
+    @XmlElement(required = true)
     private String groupId = null;
 
     // =========================================================================
@@ -58,7 +58,7 @@ public final class FetchCountrySurveyRequest extends Verifications {
      * @param groupId National Group Id
      * @throws IllegalArgumentException if given group Id is invalid
      */
-    public void setGroupId(final String groupId) throws IllegalArgumentException {
+    public void setGroupId(final String groupId) {
         ensureValidId("groupId", groupId);
         this.groupId = groupId;
     }

@@ -54,9 +54,10 @@ public final class ClientFactory {
     private static final Object LOCK = new Object();
     private static ClientFactory instance = null;
     private final ConfigurableApplicationContext context;
-    private static final boolean useWebService = false;
-    private static final String wsHost = "localhost";
-    private static final String wsPort = "9080";
+    private static final boolean USE_WEB_SERVICE = false;
+    private static final String WS_HOST = "http://localhost";
+    private static final String WS_PORT = "9080";
+    private static final String STANDARD_ERROR = "Cannot connect to the IWS WebServices: ";
 
     // =========================================================================
     // Factory Instantiation Methods
@@ -95,11 +96,11 @@ public final class ClientFactory {
     Access getAccessImplementation() {
         final Access access;
 
-        if (useWebService) {
+        if (USE_WEB_SERVICE) {
             try {
-                access = new AccessWSClient("http://" + wsHost + ':' + wsPort + "/iws-ws/accessWS?wsdl");
+                access = new AccessWSClient(WS_HOST + ':' + WS_PORT + "/iws-ws/accessWS?wsdl");
             } catch (MalformedURLException e) {
-                throw new IWSException(IWSErrors.FATAL, "Cannot connect to the IWS WebServices: " + e.getMessage(), e);
+                throw new IWSException(IWSErrors.FATAL, STANDARD_ERROR + e.getMessage(), e);
             }
         } else {
             access = (Access) context.getBean("accessSpringClient");
@@ -111,11 +112,11 @@ public final class ClientFactory {
     Administration getAdministrationImplementation() {
         final Administration administration;
 
-        if (useWebService) {
+        if (USE_WEB_SERVICE) {
             try {
-                administration = new AdministrationWSClient("http://" + wsHost + ':' + wsPort + "/iws-ws/administrationWS?wsdl");
+                administration = new AdministrationWSClient(WS_HOST + ':' + WS_PORT + "/iws-ws/administrationWS?wsdl");
             } catch (MalformedURLException e) {
-                throw new IWSException(IWSErrors.FATAL, "Cannot connect to the IWS WebServices: " + e.getMessage(), e);
+                throw new IWSException(IWSErrors.FATAL, STANDARD_ERROR + e.getMessage(), e);
             }
         } else {
             administration = (Administration) context.getBean("administrationSpringClient");
@@ -127,11 +128,11 @@ public final class ClientFactory {
     Storage getStorageImplementation() {
         final Storage storage;
 
-        if (useWebService) {
+        if (USE_WEB_SERVICE) {
             try {
-                storage = new StorageWSClient("http://" + wsHost + ':' + wsPort + "/iws-ws/storageWS?wsdl");
+                storage = new StorageWSClient(WS_HOST + ':' + WS_PORT + "/iws-ws/storageWS?wsdl");
             } catch (MalformedURLException e) {
-                throw new IWSException(IWSErrors.FATAL, "Cannot connect to the IWS WebServices: " + e.getMessage(), e);
+                throw new IWSException(IWSErrors.FATAL, STANDARD_ERROR + e.getMessage(), e);
             }
         } else {
             storage = (Storage) context.getBean("storageSpringClient");
@@ -143,11 +144,11 @@ public final class ClientFactory {
     Committees getCommitteeImplementation() {
         final Committees committees;
 
-        if (useWebService) {
+        if (USE_WEB_SERVICE) {
             try {
-                committees = new CommitteeWSClient("http://" + wsHost + ':' + wsPort + "/iws-ws/committeeWS?wsdl");
+                committees = new CommitteeWSClient(WS_HOST + ':' + WS_PORT + "/iws-ws/committeeWS?wsdl");
             } catch (MalformedURLException e) {
-                throw new IWSException(IWSErrors.FATAL, "Cannot connect to the IWS WebServices: " + e.getMessage(), e);
+                throw new IWSException(IWSErrors.FATAL, STANDARD_ERROR + e.getMessage(), e);
             }
         } else {
             committees = (Committees) context.getBean("committeeSpringClient");
@@ -159,11 +160,11 @@ public final class ClientFactory {
     Exchange getExchangeImplementation() {
         final Exchange exchange;
 
-        if (useWebService) {
+        if (USE_WEB_SERVICE) {
             try {
-                exchange = new ExchangeWSClient("http://" + wsHost + ':' + wsPort + "/iws-ws/exchangeWS?wsdl");
+                exchange = new ExchangeWSClient(WS_HOST + ':' + WS_PORT + "/iws-ws/exchangeWS?wsdl");
             } catch (MalformedURLException e) {
-                throw new IWSException(IWSErrors.FATAL, "Cannot connect to the IWS WebServices: " + e.getMessage(), e);
+                throw new IWSException(IWSErrors.FATAL, STANDARD_ERROR + e.getMessage(), e);
             }
         } else {
             exchange = (Exchange) context.getBean("exchangeSpringClient");
@@ -175,11 +176,11 @@ public final class ClientFactory {
     Students getStudentImplementation() {
         final Students students;
 
-        if (useWebService) {
+        if (USE_WEB_SERVICE) {
             try {
-                students = new StudentWSClient("http://" + wsHost + ':' + wsPort + "/iws-ws/studentWS?wsdl");
+                students = new StudentWSClient(WS_HOST + ':' + WS_PORT + "/iws-ws/studentWS?wsdl");
             } catch (MalformedURLException e) {
-                throw new IWSException(IWSErrors.FATAL, "Cannot connect to the IWS WebServices: " + e.getMessage(), e);
+                throw new IWSException(IWSErrors.FATAL, STANDARD_ERROR + e.getMessage(), e);
             }
         } else {
             students = (Students) context.getBean("studentSpringClient");

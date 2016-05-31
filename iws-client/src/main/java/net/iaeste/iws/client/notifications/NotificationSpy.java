@@ -75,7 +75,7 @@ public final class NotificationSpy implements Notifications {
      */
     @Override
     public void notify(final Authentication authentication, final Notifiable obj, final NotificationType type) {
-        LOG.info(authentication.getUser() + " has altered Object " + obj + " belonging to " + authentication.getGroup());
+        LOG.info("{} has altered Object {} belonging to {}", authentication.getUser(), obj, authentication.getGroup());
         final NotificationMessage message = new NotificationMessage(obj, type);
         notifiables.add(message);
         notifyObservers();
@@ -86,7 +86,7 @@ public final class NotificationSpy implements Notifications {
      */
     @Override
     public void notify(final UserEntity user) {
-        LOG.info(user + " has forgotten the password.");
+        LOG.info("{} has forgotten the password.", user);
         final NotificationMessage message = new NotificationMessage(user, NotificationType.RESET_PASSWORD);
         notifiables.add(message);
         notifyObservers();
@@ -123,7 +123,7 @@ public final class NotificationSpy implements Notifications {
      */
     @Override
     public void processJobs() {
-        //this method is not important for NotificationSpy
+        // This method is not important for the NotificationSpy
     }
 
     /**
@@ -168,14 +168,10 @@ public final class NotificationSpy implements Notifications {
         NotificationMessage message = null;
 
         if (!notifiables.isEmpty()) {
-            int index = -1;
+            final int index;
+
             if ((types != null) && (types.length == 1)) {
-                final NotificationType type = types[0];
-                for (int i = 0; i < notifiables.size(); i++) {
-                    if ((index == -1) && (type == notifiables.get(i).getType())) {
-                        index = i;
-                    }
-                }
+                index = findNextIndex(types[0]);
             } else {
                 index = 0;
             }
@@ -185,5 +181,17 @@ public final class NotificationSpy implements Notifications {
         }
 
         return message;
+    }
+
+    private int findNextIndex(final NotificationType type) {
+        int index = -1;
+
+        for (int i = 0; i < notifiables.size(); i++) {
+            if ((index == -1) && (type == notifiables.get(i).getType())) {
+                index = i;
+            }
+        }
+
+        return index;
     }
 }

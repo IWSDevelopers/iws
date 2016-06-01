@@ -180,7 +180,7 @@ public final class CommitteeMapper extends CommonMapper {
     }
 
     // =========================================================================
-    // Internal mapping of required Collections, DTO's & Enums
+    // Internal mapping of required Collections, DTOs & Enums
     // =========================================================================
 
     private static Set<net.iaeste.iws.ws.GroupStatus> mapAPIGroupStatusCollection(final Collection<GroupStatus> api) {

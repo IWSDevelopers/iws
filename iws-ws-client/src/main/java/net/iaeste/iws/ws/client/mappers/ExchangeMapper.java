@@ -404,7 +404,7 @@ public final class ExchangeMapper extends CommonMapper {
     }
 
     // =========================================================================
-    // Internal mapping of required Collections, DTO's & Enums
+    // Internal mapping of required Collections, DTOs & Enums
     // =========================================================================
 
     private static List<PublishingGroup> mapWSPublishingGroupCollection(final Collection<net.iaeste.iws.ws.PublishingGroup> ws) {

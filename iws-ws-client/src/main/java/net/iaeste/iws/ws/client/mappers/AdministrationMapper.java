@@ -339,7 +339,7 @@ public final class AdministrationMapper extends CommonMapper {
     }
 
     // =========================================================================
-    // Internal mapping of required Collections, DTO's & Enums
+    // Internal mapping of required Collections, DTOs & Enums
     // =========================================================================
 
     private static List<Country> mapWSCountryCollection(final Collection<net.iaeste.iws.ws.Country> ws) {
@@ -391,18 +391,18 @@ public final class AdministrationMapper extends CommonMapper {
     }
 
     private static net.iaeste.iws.ws.CountryType map(final CountryType api) {
-        return api != null ? net.iaeste.iws.ws.CountryType.valueOf(api.name()) : null;
+        return (api != null) ? net.iaeste.iws.ws.CountryType.valueOf(api.name()) : null;
     }
 
     private static ContactsType map(final net.iaeste.iws.ws.ContactsType ws) {
-        return ws != null ? ContactsType.valueOf(ws.value()) : null;
+        return (ws != null) ? ContactsType.valueOf(ws.value()) : null;
     }
 
     private static net.iaeste.iws.ws.ContactsType map(final ContactsType api) {
-        return api != null ? net.iaeste.iws.ws.ContactsType.valueOf(api.name()) : null;
+        return (api != null) ? net.iaeste.iws.ws.ContactsType.valueOf(api.name()) : null;
     }
 
     private static UserFetchType map(final FetchGroupRequest.UserFetchType api) {
-        return api != null ? UserFetchType.valueOf(api.name()) : null;
+        return (api != null) ? UserFetchType.valueOf(api.name()) : null;
     }
 }

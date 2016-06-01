@@ -70,37 +70,6 @@ public final class Password extends Verifications {
     // Object Constructors
     // =========================================================================
 
-    /**
-     * Empty Constructor, to use if the setters are invoked. This is required
-     * for WebServices to work properly.
-     */
-    public Password() {
-        // Required for WebServices to work. Comment added to please Sonar.
-    }
-
-    /**
-     * Default Constructor for the update Password request.
-     *
-     * @param newPassword New Password for the user
-     * @param identification Old User Password or Password Token
-     */
-    public Password(final String newPassword, final String identification) {
-        setNewPassword(newPassword);
-        setIdentification(identification);
-    }
-
-    /**
-     * Copy Constructor.
-     *
-     * @param password Password Object to copy
-     */
-    public Password(final Password password) {
-        if (password != null) {
-            this.newPassword = password.newPassword;
-            this.identification = password.identification;
-        }
-    }
-
     // =========================================================================
     // Standard Setters & Getters
     // =========================================================================

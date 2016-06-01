@@ -305,7 +305,9 @@ public final class AccessClientTest extends AbstractTest {
 
         // Reset the Password for the User
         final String newPassword = "Uzbekistan123";
-        final Password password = new Password(newPassword, resetCode);
+        final Password password = new Password();
+        password.setNewPassword(newPassword);
+        password.setIdentification(resetCode);
         final Fallible resetResponse = access.resetPassword(password);
         assertThat(resetResponse.isOk(), is(true));
 
@@ -348,12 +350,12 @@ public final class AccessClientTest extends AbstractTest {
         assertThat(update1.getError(), is(IWSErrors.VERIFICATION_ERROR));
 
         // Now, we're trying to update the password by providing a false old password
-        final Fallible update2 = access.updatePassword(userToken, new Password(newPassword, "bla"));
+        final Fallible update2 = access.updatePassword(userToken, preparePassword(newPassword, "bla"));
         assertThat(update2.isOk(), is(false));
         assertThat(update2.getError(), is(IWSErrors.CANNOT_UPDATE_PASSWORD));
 
         // Finally, let's update the password using the correct old password
-        final Fallible update3 = access.updatePassword(userToken, new Password(newPassword, oldPassword));
+        final Fallible update3 = access.updatePassword(userToken, preparePassword(newPassword, oldPassword));
         assertThat(update3.isOk(), is(true));
 
         // Let's check that it also works... Logout, and log in again :-)
@@ -361,6 +363,14 @@ public final class AccessClientTest extends AbstractTest {
         final AuthenticationResponse response = access.generateSession(new AuthenticationRequest(username, newPassword));
         assertThat(response.isOk(), is(true));
         assertThat(response.getError(), is(IWSErrors.SUCCESS));
+    }
+
+    private static Password preparePassword(final String newPassword, final String identification) {
+        final Password password = new Password();
+        password.setNewPassword(newPassword);
+        password.setIdentification(identification);
+
+        return password;
     }
 
     @Test

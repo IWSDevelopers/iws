@@ -166,7 +166,7 @@ public final class StudentMapper extends CommonMapper {
     }
 
     // =========================================================================
-    // Internal mapping of required Collections, DTO's & Enums
+    // Internal mapping of required Collections, DTOs & Enums
     // =========================================================================
 
     private static List<Student> mapWSStudentCollection(final List<net.iaeste.iws.ws.Student> ws) {

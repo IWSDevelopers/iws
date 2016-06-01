@@ -146,7 +146,7 @@ public final class StorageMapper extends CommonMapper {
     }
 
     // =========================================================================
-    // Internal mapping of required Collections, DTO's & Enums
+    // Internal mapping of required Collections, DTOs & Enums
     // =========================================================================
 
     private static List<Folder> mapWSFolderCollection(final List<net.iaeste.iws.ws.Folder> ws) {

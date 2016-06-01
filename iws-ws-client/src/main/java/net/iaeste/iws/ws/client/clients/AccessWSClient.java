@@ -96,7 +96,7 @@ public final class AccessWSClient extends CommonWSClient implements Access {
      */
     @Override
     public VersionResponse version() {
-        return null;
+        return map(client.version());
     }
 
     /**

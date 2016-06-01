@@ -258,7 +258,7 @@ public final class CommonMapperTest {
     // Internal Preparation methods
     // =========================================================================
 
-    private static UserGroup prepareUserGroup() {
+    public static UserGroup prepareUserGroup() {
         final UserGroup userGroup = new UserGroup();
         userGroup.setUserGroupId(UUID.randomUUID().toString());
         userGroup.setUser(prepareUser());

@@ -24,6 +24,7 @@ import net.iaeste.iws.api.requests.SessionDataRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
 import net.iaeste.iws.api.responses.FetchPermissionResponse;
 import net.iaeste.iws.api.responses.SessionDataResponse;
+import net.iaeste.iws.api.responses.VersionResponse;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -38,6 +39,19 @@ public final class AccessMapper extends CommonMapper {
 
     /** Private Constructor, this is a Utility Class. */
     private AccessMapper() {
+    }
+
+    public static VersionResponse map(final net.iaeste.iws.ws.VersionResponse ws) {
+        VersionResponse api = null;
+
+        if (ws != null) {
+            api = new VersionResponse(map(ws.getError()), ws.getMessage());
+            api.setHostname(ws.getHostname());
+            api.setAddress(ws.getAddress());
+            api.setVersion(ws.getVersion());
+        }
+
+        return api;
     }
 
     public static net.iaeste.iws.ws.AuthenticationRequest map(final AuthenticationRequest api) {
@@ -105,15 +119,12 @@ public final class AccessMapper extends CommonMapper {
     }
 
     private static List<Authorization> mapAuthorizationList(final List<net.iaeste.iws.ws.Authorization> ws) {
-        List<Authorization> api = null;
+        final List<Authorization> api = new ArrayList<>(ws.size());
 
-        if (ws != null) {
-            api = new ArrayList<>(ws.size());
-            for (final net.iaeste.iws.ws.Authorization wsAuth : ws) {
-                final Authorization authorization = new Authorization();
-                authorization.setUserGroup(map(wsAuth.getUserGroup()));
-                api.add(authorization);
-            }
+        for (final net.iaeste.iws.ws.Authorization wsAuth : ws) {
+            final Authorization authorization = new Authorization();
+            authorization.setUserGroup(map(wsAuth.getUserGroup()));
+            api.add(authorization);
         }
 
         return api;

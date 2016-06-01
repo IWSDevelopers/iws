@@ -81,7 +81,13 @@ class CommonMapper {
     }
 
     public static IWSError map(final IwsError ws) {
-        return new IWSError(ws.getError(), ws.getDescription());
+        IWSError api = null;
+
+        if (ws != null) {
+            api = new IWSError(ws.getError(), ws.getDescription());
+        }
+
+        return api;
     }
 
     public static AuthenticationToken map(final net.iaeste.iws.ws.AuthenticationToken ws) {

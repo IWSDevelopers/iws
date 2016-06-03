@@ -20,6 +20,7 @@ package net.iaeste.iws.ejb.notifications;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.common.notification.Notifiable;
+import net.iaeste.iws.common.notification.NotificationField;
 import net.iaeste.iws.common.notification.NotificationType;
 import net.iaeste.iws.common.utils.Observer;
 import net.iaeste.iws.core.notifications.Notifications;
@@ -43,6 +44,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.EnumMap;
 import java.util.List;
 
 /**
@@ -107,7 +109,7 @@ public class NotificationManagerBean implements Notifications {
         if (obj != null) {
             try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
                  ObjectOutputStream objectStream = new ObjectOutputStream(outputStream)) {
-                objectStream.writeObject(obj.prepareNotifiableFields(type));
+                objectStream.writeObject(prepareNotification(obj, type));
                 final byte[] bytes = outputStream.toByteArray();
                 final NotificationJobEntity job = new NotificationJobEntity(type, bytes);
                 dao.persist(job);
@@ -133,7 +135,7 @@ public class NotificationManagerBean implements Notifications {
         if (user != null) {
             try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
                  ObjectOutputStream objectStream = new ObjectOutputStream(outputStream)) {
-                objectStream.writeObject(user.prepareNotifiableFields(NotificationType.RESET_PASSWORD));
+                objectStream.writeObject(prepareNotification(user, NotificationType.RESET_PASSWORD));
                 final byte[] bytes = outputStream.toByteArray();
                 final NotificationJobEntity job = new NotificationJobEntity(NotificationType.RESET_PASSWORD, bytes);
                 dao.persist(job);
@@ -206,5 +208,16 @@ public class NotificationManagerBean implements Notifications {
         for (final Observer observer : observers) {
             observer.update(this);
         }
+    }
+
+    // =========================================================================
+    // Internal methods
+    // =========================================================================
+
+    private static EnumMap<NotificationField, String> prepareNotification(final Notifiable notifiable, final NotificationType type) {
+        final EnumMap<NotificationField, String> map = new EnumMap<>(NotificationField.class);
+        map.putAll(notifiable.prepareNotifiableFields(type));
+
+        return map;
     }
 }

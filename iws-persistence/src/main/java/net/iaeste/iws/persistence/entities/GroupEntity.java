@@ -497,26 +497,23 @@ public class GroupEntity extends AbstractUpdateable<GroupEntity> implements Exte
 
         switch (type) {
             case NEW_GROUP:
-                fields.put(NotificationField.GROUP_NAME, groupName);
-                if (country != null) {
-                    fields.put(NotificationField.COUNTRY_NAME, country.getCountryName());
-                }
-                fields.put(NotificationField.GROUP_TYPE, groupType.getGrouptype().name());
-                fields.put(NotificationField.GROUP_EXTERNAL_ID, externalId);
-                break;
             case PROCESS_MAILING_LIST:
-                fields.put(NotificationField.GROUP_NAME, groupName);
-                if (country != null) {
-                    fields.put(NotificationField.COUNTRY_NAME, country.getCountryName());
-                }
-                fields.put(NotificationField.GROUP_TYPE, groupType.getGrouptype().name());
-                fields.put(NotificationField.GROUP_EXTERNAL_ID, externalId);
+                fillFields(fields, groupName, country, groupType, externalId);
                 break;
             default:
                 throw new NotificationException("NotificationType " + type + " is not supported in this context.");
         }
 
         return fields;
+    }
+
+    private static void fillFields(final EnumMap<NotificationField, String> fields, final String groupName, final CountryEntity country, final GroupTypeEntity groupType, final String externalId) {
+        fields.put(NotificationField.GROUP_NAME, groupName);
+        if (country != null) {
+            fields.put(NotificationField.COUNTRY_NAME, country.getCountryName());
+        }
+        fields.put(NotificationField.GROUP_TYPE, groupType.getGrouptype().name());
+        fields.put(NotificationField.GROUP_EXTERNAL_ID, externalId);
     }
 
     /**

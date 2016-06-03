@@ -17,6 +17,7 @@
  */
 package net.iaeste.iws.core.transformers;
 
+import static net.iaeste.iws.common.utils.StringUtils.toUpper;
 import static net.iaeste.iws.core.transformers.CSVTransformer.transformString;
 
 import net.iaeste.iws.api.dtos.Address;
@@ -242,13 +243,22 @@ public final class CommonTransformer {
         return country;
     }
 
+    /**
+     * Transforms a Country Object to the corresponding Entity. Not all
+     * information from the Country Object is mapped into the Entity, this
+     * includes the National Secretary and ListName - these are managed via
+     * the Group functionality.
+     *
+     * @param country Country Object
+     * @return Country Entity
+     */
     public static CountryEntity transform(final Country country) {
         CountryEntity entity = null;
 
         if (country != null) {
             entity = new CountryEntity();
 
-            entity.setCountryCode(country.getCountryCode());
+            entity.setCountryCode(toUpper(country.getCountryCode()));
             entity.setCountryName(country.getCountryName());
             entity.setCountryNameFull(country.getCountryNameFull());
             entity.setCountryNameNative(country.getCountryNameNative());

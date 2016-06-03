@@ -133,8 +133,6 @@ public final class PublishOfferRequest extends Actions {
         if (action != null) {
             switch (action) {
                 case PROCESS:
-                    isNotNull(validation, FIELD_OFFER_ID, offerId);
-                    break;
                 case REMOVE:
                     isNotNull(validation, FIELD_OFFER_ID, offerId);
                     break;

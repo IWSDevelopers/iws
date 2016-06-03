@@ -218,7 +218,7 @@ public class NotificationEmailSender implements Observer {
     private NotificationProcessTaskStatus processTask(final Map<NotificationField, String> fields, final NotificationType type) {
         //TODO marking task as processed depending on the successful sending to all recepients might be a problem. if it
         //     fails for one user, even those already sent users will be included during next processing. Just failed user
-        //     NotificationType and message could be saved for furthere processing/investigation
+        //     NotificationType and message could be saved for further processing/investigation
 
         NotificationProcessTaskStatus ret = NotificationProcessTaskStatus.ERROR;
         final List<UserEntity> recipients = getRecipients(fields, type);
@@ -227,43 +227,59 @@ public class NotificationEmailSender implements Observer {
             ret = NotificationProcessTaskStatus.NOT_FOR_ME;
         } else {
             for (final UserEntity recipient : recipients) {
-                LOG.info("Notification job task for {} has recipient {}", type, recipient.getId());
-                try {
-                    final UserNotificationEntity userSetting = dao.findUserNotificationSetting(recipient, type);
-                    //Processing of other notification than 'IMMEDIATELY' ones will be triggered by a timer and all required information
-                    //should be get from DB directly according to the NotificationType
-                    if ((userSetting != null) && (userSetting.getFrequency() == NotificationFrequency.IMMEDIATELY)) {
-                        LOG.info("User notification setting for {} was found", type);
-                        try {
-                            final ObjectMessage msg = session.createObjectMessage();
-                            final EmailMessage emsg = new EmailMessage();
-                            emsg.setTo(getTargetEmailAddress(recipient, type));
-                            final Map<MessageField, String> messageData = messageGenerator.generate(fields, type);
-                            LOG.info("Email message for for {} was generated", type);
-                            emsg.setSubject(messageData.get(MessageField.SUBJECT));
-                            emsg.setMessage(messageData.get(MessageField.MESSAGE));
-                            msg.setObject(emsg);
-
-                            sender.send(msg);
-                            LOG.info("Email message for for {} was sent to message queue", type);
-                            ret = NotificationProcessTaskStatus.OK;
-                        } catch (IWSException e) {
-                            LOG.error("Notification message generating failed", e);
-                        } catch (JMSException e) {
-                            //do something, log or exception?
-                            LOG.error("Error during sending notification message to JMS queue", e);
-                        }
-                    } else if (userSetting == null) {
-                        LOG.warn("User {} has no setting for notification type '{}'", recipient.getId(), type);
-                    }
-                } catch (IWSException e) {
-                    LOG.debug(e.getMessage(), e);
-                    LOG.warn("User {} has not proper notification setting for notification type {}", recipient.getId(), type);
-                }
+                ret = prepareNotification(fields, type, recipient);
             }
         }
 
         return ret;
+    }
+
+    private NotificationProcessTaskStatus prepareNotification(final Map<NotificationField, String> fields, final NotificationType type, final UserEntity recipient) {
+        LOG.info("Notification job task for {} has recipient {}", type, recipient.getId());
+        NotificationProcessTaskStatus status = NotificationProcessTaskStatus.ERROR;
+
+        try {
+            final UserNotificationEntity userSetting = dao.findUserNotificationSetting(recipient, type);
+            //Processing of other notification than 'IMMEDIATELY' ones will be triggered by a timer and all required information
+            //should be get from DB directly according to the NotificationType
+            if ((userSetting != null) && (userSetting.getFrequency() == NotificationFrequency.IMMEDIATELY)) {
+                LOG.info("User notification setting for {} was found", type);
+                status = sendNotication(fields, type, recipient);
+            } else if (userSetting == null) {
+                LOG.warn("User {} has no setting for notification type '{}'", recipient.getId(), type);
+            }
+        } catch (IWSException e) {
+            LOG.debug(e.getMessage(), e);
+            LOG.warn("User {} has not proper notification setting for notification type {}", recipient.getId(), type);
+        }
+
+        return status;
+    }
+
+    private NotificationProcessTaskStatus sendNotication(final Map<NotificationField, String> fields, final NotificationType type, final UserEntity recipient) {
+        NotificationProcessTaskStatus status = NotificationProcessTaskStatus.ERROR;
+
+        try {
+            final ObjectMessage msg = session.createObjectMessage();
+            final EmailMessage emsg = new EmailMessage();
+            emsg.setTo(getTargetEmailAddress(recipient, type));
+            final Map<MessageField, String> messageData = messageGenerator.generate(fields, type);
+            LOG.info("Email message for for {} was generated", type);
+            emsg.setSubject(messageData.get(MessageField.SUBJECT));
+            emsg.setMessage(messageData.get(MessageField.MESSAGE));
+            msg.setObject(emsg);
+
+            sender.send(msg);
+            LOG.info("Email message for for {} was sent to message queue", type);
+            status = NotificationProcessTaskStatus.OK;
+        } catch (IWSException e) {
+            LOG.error("Notification message generating failed", e);
+        } catch (JMSException e) {
+            //do something, log or exception?
+            LOG.error("Error during sending notification message to JMS queue", e);
+        }
+
+        return status;
     }
 
     /**
@@ -287,11 +303,6 @@ public class NotificationEmailSender implements Observer {
             case NEW_GROUP_OWNER:
             case RESET_PASSWORD:
             case RESET_SESSION:
-                user = accessDao.findActiveUserByUsername(fields.get(NotificationField.EMAIL));
-                if (user != null) {
-                    result.add(user);
-                }
-                break;
             case UPDATE_USERNAME:
                 user = accessDao.findActiveUserByUsername(fields.get(NotificationField.EMAIL));
                 if (user != null) {

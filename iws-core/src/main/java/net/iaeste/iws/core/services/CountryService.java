@@ -17,8 +17,6 @@
  */
 package net.iaeste.iws.core.services;
 
-import static net.iaeste.iws.common.utils.StringUtils.toUpper;
-
 import net.iaeste.iws.api.dtos.Country;
 import net.iaeste.iws.api.enums.CountryType;
 import net.iaeste.iws.api.enums.Membership;
@@ -60,7 +58,7 @@ public final class CountryService {
      * @param request        Process Country Request information
      */
     public void processCountries(final Authentication authentication, final CountryRequest request) {
-        final CountryEntity newEntity = transform(request.getCountry());
+        final CountryEntity newEntity = CommonTransformer.transform(request.getCountry());
         final CountryEntity existingWithId = dao.findCountry(newEntity.getCountryCode());
         final CountryEntity existingWithName = dao.findCountryByName(newEntity.getCountryName());
 
@@ -182,43 +180,12 @@ public final class CountryService {
         // than one NS & list
         country.setCountryCode(view.getCountry().getCountryCode());
         country.setCountryName(view.getCountry().getCountryName());
-        //country.setCountryNameFull(view.getCountry().getCountryNameFull());
-        //country.setCountryNameNative(view.getCountry().getCountryNameNative());
         country.setNationality(view.getCountry().getNationality());
-        //country.setCitizens(view.getCountry().getCitizens());
         country.setPhonecode(view.getCountry().getPhonecode());
         country.setCurrency(view.getCountry().getCurrency());
-        //country.setLanguages(view.getCountry().getLanguages());
         country.setMembership(view.getCountry().getMembership());
         country.setMemberSince(view.getCountry().getMemberSince());
 
         return country;
-    }
-
-    /**
-     * Transforms a Country Object to the corresponding Entity. Not all
-     * information from the Country Object is mapped into the Entity, this
-     * includes the National Secretary and ListName - these are managed via
-     * the Group functionality.
-     *
-     * @param country Country Object
-     * @return Country Entity
-     */
-    private static CountryEntity transform(final Country country) {
-        final CountryEntity entity = new CountryEntity();
-
-        entity.setCountryCode(toUpper(country.getCountryCode()));
-        entity.setCountryName(country.getCountryName());
-        entity.setCountryNameFull(country.getCountryNameFull());
-        entity.setCountryNameNative(country.getCountryNameNative());
-        entity.setNationality(country.getNationality());
-        entity.setCitizens(country.getCitizens());
-        entity.setPhonecode(country.getPhonecode());
-        entity.setCurrency(country.getCurrency());
-        entity.setLanguages(country.getLanguages());
-        entity.setMembership(country.getMembership());
-        entity.setMemberSince(country.getMemberSince());
-
-        return entity;
     }
 }

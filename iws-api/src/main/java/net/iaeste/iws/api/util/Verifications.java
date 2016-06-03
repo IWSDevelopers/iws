@@ -21,9 +21,10 @@ import static net.iaeste.iws.api.constants.exchange.IWSExchangeConstants.REFNO_P
 
 import net.iaeste.iws.api.constants.IWSConstants;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -126,7 +127,16 @@ public abstract class Verifications implements Verifiable {
      * @return Immutable version of the Set
      */
     public static <S> Set<S> immutableSet(final Set<S> set) {
-        return (set != null) ? Collections.unmodifiableSet(set) : null;
+        // IW4 has a problem with an immutable map, hence we cannot just use
+        // the nifty Collections feature "unmodifiable", which will add
+        // protection to the given set.
+        Set<S> copy = null;
+
+        if (set != null) {
+            copy = new HashSet<>(set.size());
+            copy.addAll(set);
+        }
+        return copy;
     }
 
     /**
@@ -137,7 +147,17 @@ public abstract class Verifications implements Verifiable {
      * @return Immutable version of the List
      */
     public static <S> List<S> immutableList(final List<S> list) {
-        return (list != null) ? Collections.unmodifiableList(list) : null;
+        // IW4 has a problem with an immutable map, hence we cannot just use
+        // the nifty Collections feature "unmodifiable", which will add
+        // protection to the given list.
+        List<S> copy = null;
+
+        if (list != null) {
+            copy = new ArrayList<>(list.size());
+            copy.addAll(list);
+        }
+
+        return copy;
     }
 
     /**
@@ -149,7 +169,17 @@ public abstract class Verifications implements Verifiable {
      * @return Immutable version of the Map
      */
     public static <K,V> Map<K,V> immutableMap(final Map<K,V> map) {
-        return (map != null) ? Collections.unmodifiableMap(map) : null;
+        // IW4 has a problem with an immutable map, hence we cannot just use
+        // the nifty Collections feature "unmodifiable", which will add
+        // protection to the given map.
+        Map<K,V> copy = null;
+
+        if (map != null) {
+            copy = new HashMap<>(map.size());
+            copy.putAll(map);
+        }
+
+        return copy;
     }
 
     // =========================================================================

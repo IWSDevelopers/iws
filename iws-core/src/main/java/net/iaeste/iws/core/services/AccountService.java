@@ -31,16 +31,19 @@ import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.enums.Privacy;
 import net.iaeste.iws.api.enums.UserStatus;
 import net.iaeste.iws.api.exceptions.IWSException;
-import net.iaeste.iws.common.exceptions.VerificationException;
 import net.iaeste.iws.api.requests.AccountNameRequest;
 import net.iaeste.iws.api.requests.CreateUserRequest;
 import net.iaeste.iws.api.requests.FetchUserRequest;
+import net.iaeste.iws.api.requests.RoleRequest;
 import net.iaeste.iws.api.requests.UserRequest;
 import net.iaeste.iws.api.responses.CreateUserResponse;
 import net.iaeste.iws.api.responses.FetchRoleResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
+import net.iaeste.iws.api.responses.ProcessRoleResponse;
 import net.iaeste.iws.common.configuration.InternalConstants;
 import net.iaeste.iws.common.configuration.Settings;
+import net.iaeste.iws.common.exceptions.NotImplementedException;
+import net.iaeste.iws.common.exceptions.VerificationException;
 import net.iaeste.iws.common.notification.NotificationType;
 import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.persistence.AccessDao;
@@ -370,6 +373,10 @@ public final class AccountService extends CommonService<AccessDao> {
         }
 
         return new FetchUserResponse(user);
+    }
+
+    public ProcessRoleResponse processRole(final Authentication authentication, final RoleRequest request) {
+        throw new NotImplementedException("Not yet implemented.");
     }
 
     public FetchRoleResponse fetchRoles(final Authentication authentication) {

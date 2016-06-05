@@ -32,49 +32,50 @@ insert into roles (id, external_id, role, description) values (5, '29ee5196-0db1
 -- Permissions from net.iaeste.iws.api.enums.Permission
 -- =============================================================================
 -- System Control: 1xx
-insert into permissions (id, permission) values (100, 'FETCH_COUNTRIES');
-insert into permissions (id, permission) values (101, 'PROCESS_COUNTRY');
-insert into permissions (id, permission) values (110, 'FETCH_COMMITTEES');
-insert into permissions (id, permission) values (111, 'PROCESS_COMMITTEE');
-insert into permissions (id, permission) values (120, 'FETCH_INTERNATIONAL_GROUPS');
-insert into permissions (id, permission) values (121, 'PROCESS_INTERNATIONAL_GROUP');
-insert into permissions (id, permission) values (150, 'FETCH_SURVEY_OF_COUNTRIES');
-insert into permissions (id, permission) values (151, 'PROCESS_SURVEY_OF_COUNTRIES');
+insert into permissions (id, permission, restricted) values (100, 'FETCH_COUNTRIES', false);
+insert into permissions (id, permission, restricted) values (101, 'PROCESS_COUNTRY', true);
+insert into permissions (id, permission, restricted) values (110, 'FETCH_COMMITTEES', false);
+insert into permissions (id, permission, restricted) values (111, 'PROCESS_COMMITTEE', true);
+insert into permissions (id, permission, restricted) values (120, 'FETCH_INTERNATIONAL_GROUPS', false);
+insert into permissions (id, permission, restricted) values (121, 'PROCESS_INTERNATIONAL_GROUP', true);
+insert into permissions (id, permission, restricted) values (150, 'FETCH_SURVEY_OF_COUNTRIES', false);
+insert into permissions (id, permission, restricted) values (151, 'PROCESS_SURVEY_OF_COUNTRIES', false);
 -- Administration: 2xx
-insert into permissions (id, permission) values (200, 'CONTROL_USER_ACCOUNT');
-insert into permissions (id, permission) values (201, 'FETCH_USER');
-insert into permissions (id, permission) values (202, 'CHANGE_ACCOUNT_NAME');
-insert into permissions (id, permission) values (210, 'PROCESS_GROUP');
-insert into permissions (id, permission) values (211, 'CHANGE_GROUP_OWNER');
-insert into permissions (id, permission) values (212, 'DELETE_GROUP');
-insert into permissions (id, permission) values (213, 'PROCESS_USER_GROUP_ASSIGNMENT');
-insert into permissions (id, permission) values (220, 'FETCH_EMERGENCY_LIST');
-insert into permissions (id, permission) values (230, 'CREATE_STUDENT_ACCOUNT');
+insert into permissions (id, permission, restricted) values (200, 'CONTROL_USER_ACCOUNT', false);
+insert into permissions (id, permission, restricted) values (201, 'FETCH_USER', false);
+insert into permissions (id, permission, restricted) values (202, 'CHANGE_ACCOUNT_NAME', true);
+insert into permissions (id, permission, restricted) values (205, 'PROCESS_ROLE', false);
+insert into permissions (id, permission, restricted) values (210, 'PROCESS_GROUP', false);
+insert into permissions (id, permission, restricted) values (211, 'CHANGE_GROUP_OWNER', false);
+insert into permissions (id, permission, restricted) values (212, 'DELETE_GROUP', false);
+insert into permissions (id, permission, restricted) values (213, 'PROCESS_USER_GROUP_ASSIGNMENT', false);
+insert into permissions (id, permission, restricted) values (220, 'FETCH_EMERGENCY_LIST', false);
+insert into permissions (id, permission, restricted) values (230, 'CREATE_STUDENT_ACCOUNT', false);
 -- Storage 3xx
-insert into permissions (id, permission) values (300, 'PROCESS_FILE');
-insert into permissions (id, permission) values (301, 'FETCH_FILE');
-insert into permissions (id, permission) values (310, 'PROCESS_FOLDER');
-insert into permissions (id, permission) values (311, 'FETCH_FOLDER');
+insert into permissions (id, permission, restricted) values (300, 'PROCESS_FILE', false);
+insert into permissions (id, permission, restricted) values (301, 'FETCH_FILE', false);
+insert into permissions (id, permission, restricted) values (310, 'PROCESS_FOLDER', false);
+insert into permissions (id, permission, restricted) values (311, 'FETCH_FOLDER', false);
 
 -- Exchange: 4xx
-insert into permissions (id, permission) values (400, 'FETCH_OFFER_STATISTICS');
-insert into permissions (id, permission) values (410, 'PROCESS_EMPLOYER');
-insert into permissions (id, permission) values (411, 'FETCH_EMPLOYERS');
-insert into permissions (id, permission) values (412, 'PROCESS_OFFER');
-insert into permissions (id, permission) values (413, 'FETCH_OFFERS');
+insert into permissions (id, permission, restricted) values (400, 'FETCH_OFFER_STATISTICS', false);
+insert into permissions (id, permission, restricted) values (410, 'PROCESS_EMPLOYER', false);
+insert into permissions (id, permission, restricted) values (411, 'FETCH_EMPLOYERS', false);
+insert into permissions (id, permission, restricted) values (412, 'PROCESS_OFFER', false);
+insert into permissions (id, permission, restricted) values (413, 'FETCH_OFFERS', false);
 
-insert into permissions (id, permission) values (414, 'FETCH_GROUPS_FOR_SHARING');
-insert into permissions (id, permission) values (420, 'PROCESS_OFFER_TEMPLATES');
-insert into permissions (id, permission) values (421, 'FETCH_OFFER_TEMPLATES');
+insert into permissions (id, permission, restricted) values (414, 'FETCH_GROUPS_FOR_SHARING', false);
+insert into permissions (id, permission, restricted) values (420, 'PROCESS_OFFER_TEMPLATES', false);
+insert into permissions (id, permission, restricted) values (421, 'FETCH_OFFER_TEMPLATES', false);
 
-insert into permissions (id, permission) values (422, 'PROCESS_PUBLISH_OFFER');
-insert into permissions (id, permission) values (423, 'FETCH_PUBLISH_GROUPS');
+insert into permissions (id, permission, restricted) values (422, 'PROCESS_PUBLISH_OFFER', false);
+insert into permissions (id, permission, restricted) values (423, 'FETCH_PUBLISH_GROUPS', false);
 
-insert into permissions (id, permission) values (424, 'APPLY_FOR_OPEN_OFFER');
-insert into permissions (id, permission) values (450, 'PROCESS_STUDENT');
-insert into permissions (id, permission) values (451, 'FETCH_STUDENTS');
-insert into permissions (id, permission) values (452, 'PROCESS_STUDENT_APPLICATION');
-insert into permissions (id, permission) values (453, 'FETCH_STUDENT_APPLICATION');
+insert into permissions (id, permission, restricted) values (424, 'APPLY_FOR_OPEN_OFFER', false);
+insert into permissions (id, permission, restricted) values (450, 'PROCESS_STUDENT', false);
+insert into permissions (id, permission, restricted) values (451, 'FETCH_STUDENTS', false);
+insert into permissions (id, permission, restricted) values (452, 'PROCESS_STUDENT_APPLICATION', false);
+insert into permissions (id, permission, restricted) values (453, 'FETCH_STUDENT_APPLICATION', false);
 
 -- =============================================================================
 -- Linking the Permissions to both Roles & GroupTypes, so when we do perform a
@@ -201,6 +202,14 @@ insert into permission_to_role (role_id, permission_id) values (3, 201);
 insert into permission_to_grouptype (grouptype_id, permission_id) values (0, 202);
 insert into permission_to_role (role_id, permission_id) values (1, 202);
 insert into permission_to_role (role_id, permission_id) values (2, 202);
+
+-- Permission 205 - Process Role
+--   -> GroupTypes: 2 Member
+--   -> Roles:      1 Owner
+--                  2 Moderator
+insert into permission_to_grouptype (grouptype_id, permission_id) values (2, 205);
+insert into permission_to_role (role_id, permission_id) values (1, 205);
+insert into permission_to_role (role_id, permission_id) values (2, 205);
 
 -- Permission: 210 - Process Group
 --   -> GroupTypes: All except Private & Student

@@ -31,6 +31,7 @@ import net.iaeste.iws.api.requests.FetchRoleRequest;
 import net.iaeste.iws.api.requests.FetchUserRequest;
 import net.iaeste.iws.api.requests.GroupRequest;
 import net.iaeste.iws.api.requests.OwnerRequest;
+import net.iaeste.iws.api.requests.RoleRequest;
 import net.iaeste.iws.api.requests.SearchUserRequest;
 import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
 import net.iaeste.iws.api.requests.UserRequest;
@@ -43,6 +44,7 @@ import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchRoleResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
 import net.iaeste.iws.api.responses.ProcessGroupResponse;
+import net.iaeste.iws.api.responses.ProcessRoleResponse;
 import net.iaeste.iws.api.responses.ProcessUserGroupResponse;
 import net.iaeste.iws.api.responses.SearchUserResponse;
 import net.iaeste.iws.core.services.AccountService;
@@ -288,6 +290,32 @@ public final class AdministrationController extends CommonController implements 
             // here as a debug message
             LOG.debug(e.getMessage(), e);
             response = new FetchUserResponse(e.getError(), e.getMessage());
+        }
+
+        return response;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ProcessRoleResponse processRole(final AuthenticationToken token, final RoleRequest request) {
+        ProcessRoleResponse response;
+
+        try {
+            verify(request);
+            final Authentication authentication = verifyAccess(token, Permission.PROCESS_ROLE);
+
+            final AccountService service = factory.prepareAccountService();
+            response = service.processRole(authentication, request);
+        } catch (IWSException e) {
+            // Generally, Exceptions should always be either logged or rethrown.
+            // In our case, we're transforming the Exception into an Error
+            // Object which can be returned to the User. However, to ensure
+            // that we're not loosing anything - the Exception is also logged
+            // here as a debug message
+            LOG.debug(e.getMessage(), e);
+            response = new ProcessRoleResponse(e.getError(), e.getMessage());
         }
 
         return response;

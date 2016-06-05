@@ -29,6 +29,7 @@ import net.iaeste.iws.api.requests.FetchRoleRequest;
 import net.iaeste.iws.api.requests.FetchUserRequest;
 import net.iaeste.iws.api.requests.GroupRequest;
 import net.iaeste.iws.api.requests.OwnerRequest;
+import net.iaeste.iws.api.requests.RoleRequest;
 import net.iaeste.iws.api.requests.SearchUserRequest;
 import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
 import net.iaeste.iws.api.requests.UserRequest;
@@ -41,6 +42,7 @@ import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchRoleResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
 import net.iaeste.iws.api.responses.ProcessGroupResponse;
+import net.iaeste.iws.api.responses.ProcessRoleResponse;
 import net.iaeste.iws.api.responses.ProcessUserGroupResponse;
 import net.iaeste.iws.api.responses.SearchUserResponse;
 import net.iaeste.iws.ejb.AdministrationBean;
@@ -273,6 +275,27 @@ public class AdministrationWS implements Administration {
             response = bean.fetchUser(token, request);
         } catch (RuntimeException e) {
             response = RequestLogger.handleError(e, FetchUserResponse.class);
+        }
+
+        return response;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @WebMethod
+    @WebResult(name = "fetchRoleResponse")
+    public ProcessRoleResponse processRole(
+            @WebParam(name = "authenticationToken") final AuthenticationToken token,
+            @WebParam(name = "roleRequest") final RoleRequest request) {
+        LOG.info(requestLogger.prepareLogMessage(token, "processRole"));
+        ProcessRoleResponse response;
+
+        try {
+            response = bean.processRole(token, request);
+        } catch (RuntimeException e) {
+            response = RequestLogger.handleError(e, ProcessRoleResponse.class);
         }
 
         return response;

@@ -30,6 +30,7 @@ import net.iaeste.iws.api.requests.FetchRoleRequest;
 import net.iaeste.iws.api.requests.FetchUserRequest;
 import net.iaeste.iws.api.requests.GroupRequest;
 import net.iaeste.iws.api.requests.OwnerRequest;
+import net.iaeste.iws.api.requests.RoleRequest;
 import net.iaeste.iws.api.requests.SearchUserRequest;
 import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
 import net.iaeste.iws.api.requests.UserRequest;
@@ -42,6 +43,7 @@ import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchRoleResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
 import net.iaeste.iws.api.responses.ProcessGroupResponse;
+import net.iaeste.iws.api.responses.ProcessRoleResponse;
 import net.iaeste.iws.api.responses.ProcessUserGroupResponse;
 import net.iaeste.iws.api.responses.SearchUserResponse;
 import net.iaeste.iws.common.configuration.Settings;
@@ -289,6 +291,26 @@ public class AdministrationBean implements Administration {
         } catch (RuntimeException e) {
             LOG.error(session.generateLogAndSaveRequest("fetchUser", start, e, token, request), e);
             response = new FetchUserResponse(IWSErrors.ERROR, e.getMessage());
+        }
+
+        return response;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+    public ProcessRoleResponse processRole(final AuthenticationToken token, final RoleRequest request) {
+        final long start = System.nanoTime();
+        ProcessRoleResponse response;
+
+        try {
+            response = controller.processRole(token, request);
+            LOG.info(session.generateLogAndUpdateSession("processRole", start, response, token));
+        } catch (RuntimeException e) {
+            LOG.error(session.generateLogAndSaveRequest("processRole", start, e, token, request), e);
+            response = new ProcessRoleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
         return response;

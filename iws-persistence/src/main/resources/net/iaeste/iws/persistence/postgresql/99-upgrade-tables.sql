@@ -202,3 +202,11 @@ insert into aliases (external_id, group_id, alias_address) values ('877d4640-a28
 alter table user_to_group drop constraint u2g_unique_session_key;
 alter table user_to_group add constraint u2g_unique_user_group  unique (user_id, group_id);
 
+-- =============================================================================
+-- Issue #6: Process Role
+-- =============================================================================
+insert into permissions (id, permission, restricted) values (205, 'PROCESS_ROLE', false);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (2, 205);
+insert into permission_to_role (role_id, permission_id) values (1, 205);
+insert into permission_to_role (role_id, permission_id) values (2, 205);
+update permissions set restricted = false where id in (101, 111, 121, 202);

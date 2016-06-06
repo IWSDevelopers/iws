@@ -177,7 +177,7 @@ public final class AdministrationWSClient extends CommonWSClient implements Admi
      */
     @Override
     public ProcessRoleResponse processRole(final AuthenticationToken token, final RoleRequest request) {
-        return null;//map(client.processRole(map(token), map(request)));
+        return map(client.processRole(map(token), map(request)));
     }
 
     /**

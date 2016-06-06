@@ -31,6 +31,7 @@ import net.iaeste.iws.api.requests.FetchRoleRequest;
 import net.iaeste.iws.api.requests.FetchUserRequest;
 import net.iaeste.iws.api.requests.GroupRequest;
 import net.iaeste.iws.api.requests.OwnerRequest;
+import net.iaeste.iws.api.requests.RoleRequest;
 import net.iaeste.iws.api.requests.SearchUserRequest;
 import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
 import net.iaeste.iws.api.requests.UserRequest;
@@ -41,6 +42,7 @@ import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchRoleResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
 import net.iaeste.iws.api.responses.ProcessGroupResponse;
+import net.iaeste.iws.api.responses.ProcessRoleResponse;
 import net.iaeste.iws.api.responses.ProcessUserGroupResponse;
 import net.iaeste.iws.api.responses.SearchUserResponse;
 import net.iaeste.iws.ws.UserFetchType;
@@ -149,6 +151,32 @@ public final class AdministrationMapper extends CommonMapper {
             api = new FetchUserResponse(map(ws.getError()), ws.getMessage());
 
             api.setUser(map(ws.getUser()));
+        }
+
+        return api;
+    }
+
+    public static net.iaeste.iws.ws.RoleRequest map(final RoleRequest api) {
+        net.iaeste.iws.ws.RoleRequest ws = null;
+
+        if (api != null) {
+            ws = new net.iaeste.iws.ws.RoleRequest();
+
+            ws.setRole(map(api.getRole()));
+            ws.setRoleId(api.getRoleId());
+            ws.setAction(map(api.getAction()));
+        }
+
+        return ws;
+    }
+
+    public static ProcessRoleResponse map(final net.iaeste.iws.ws.ProcessRoleResponse ws) {
+        ProcessRoleResponse api = null;
+
+        if (ws != null) {
+            api = new ProcessRoleResponse(map(ws.getError()), ws.getMessage());
+
+            api.setRole(map(ws.getRole()));
         }
 
         return api;

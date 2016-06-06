@@ -62,8 +62,10 @@ public final class CountriesTest extends AbstractAdministration {
         countryIds.add("AT");
         countryIds.add("DE");
         countryIds.add("DK");
-        final FetchCountryRequest request1 = new FetchCountryRequest(countryIds);
-        final FetchCountryRequest request2 = new FetchCountryRequest(Membership.FULL_MEMBER);
+        final FetchCountryRequest request1 = new FetchCountryRequest();
+        request1.setCountryIds(countryIds);
+        final FetchCountryRequest request2 = new FetchCountryRequest();
+        request2.setMembership(Membership.FULL_MEMBER);
         final FetchCountryRequest request3 = new FetchCountryRequest();
         final FetchCountryResponse response1 = administration.fetchCountries(token, request1);
         final FetchCountryResponse response2 = administration.fetchCountries(token, request2);

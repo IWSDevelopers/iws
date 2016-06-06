@@ -45,9 +45,7 @@ public interface Students {
      * @param request Request data, must contain username, password as well as
      *                first and last name
      * @return Standard Error Object
-     * @deprecated please use the processStudent instead
      */
-    @Deprecated
     CreateUserResponse createStudent(AuthenticationToken token, CreateUserRequest request);
 
     /**

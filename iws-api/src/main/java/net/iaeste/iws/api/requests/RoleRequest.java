@@ -35,7 +35,7 @@ import java.util.Map;
  * @since   IWS 1.2
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "fileRequest", propOrder = { "role", "roleId" })
+@XmlType(name = "roleRequest", propOrder = { "role", "roleId" })
 public final class RoleRequest extends Actions {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */

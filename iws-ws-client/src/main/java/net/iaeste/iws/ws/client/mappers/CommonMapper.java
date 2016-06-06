@@ -115,7 +115,7 @@ class CommonMapper {
     }
 
     public static FallibleResponse map(final net.iaeste.iws.ws.FallibleResponse ws) {
-        return new FallibleResponse(map(ws.getError()), ws.getMessage());
+        return (ws != null) ? new FallibleResponse(map(ws.getError()), ws.getMessage()) : null;
     }
 
     public static net.iaeste.iws.ws.CreateUserRequest map(final CreateUserRequest api) {

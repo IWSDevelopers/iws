@@ -65,10 +65,10 @@ public final class CreateUserRequest extends Verifications {
     /** The maximum length for a users lastname that is allowed. */
     public static final int USER_MAXIMUM_LASTNAME = 50;
 
-    @XmlElement(required = true, nillable = false) private String username = null;
+    @XmlElement(required = true)                   private String username = null;
     @XmlElement(required = true, nillable = true)  private String password = null;
-    @XmlElement(required = true, nillable = false) private String firstname = null;
-    @XmlElement(required = true, nillable = false) private String lastname = null;
+    @XmlElement(required = true)                   private String firstname = null;
+    @XmlElement(required = true)                   private String lastname = null;
     @XmlElement(required = true, nillable = true)  private boolean studentAccount = false;
 
     // =========================================================================
@@ -90,8 +90,8 @@ public final class CreateUserRequest extends Verifications {
      * delivered.</p>
      *
      * @param username  The users e-mail address, is used as username in IWS
-     * @param firstname The users given name, can only be altered by the DBA's
-     * @param lastname  The users Family name, can only be altered by the DBA's
+     * @param firstname The users given name, can only be altered by the DBAs
+     * @param lastname  The users Family name, can only be altered by the DBAs
      */
     public CreateUserRequest(final String username, final String firstname, final String lastname) {
         setUsername(username);
@@ -105,8 +105,8 @@ public final class CreateUserRequest extends Verifications {
      *
      * @param username  The users e-mail address, is used as username in IWS
      * @param password  Chosen Password in clear-text
-     * @param firstname The users given name, can only be altered by the DBA's
-     * @param lastname  The users Family name, can only be altered by the DBA's
+     * @param firstname The users given name, can only be altered by the DBAs
+     * @param lastname  The users Family name, can only be altered by the DBAs
      */
     public CreateUserRequest(final String username, final String password, final String firstname, final String lastname) {
         setUsername(username);

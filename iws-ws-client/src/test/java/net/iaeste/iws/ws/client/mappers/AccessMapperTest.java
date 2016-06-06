@@ -18,12 +18,14 @@
 package net.iaeste.iws.ws.client.mappers;
 
 import static net.iaeste.iws.ws.client.mappers.AccessMapper.map;
+import static net.iaeste.iws.ws.client.mappers.TestUtils.prepareIwsError;
+import static net.iaeste.iws.ws.client.mappers.TestUtils.prepareToken;
+import static net.iaeste.iws.ws.client.mappers.TestUtils.prepareUserGroup;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.Password;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
@@ -34,9 +36,7 @@ import net.iaeste.iws.api.responses.SessionDataResponse;
 import net.iaeste.iws.api.responses.VersionResponse;
 import net.iaeste.iws.api.util.DateTime;
 import net.iaeste.iws.api.util.Serializer;
-import net.iaeste.iws.ws.AuthenticationToken;
 import net.iaeste.iws.ws.Authorization;
-import net.iaeste.iws.ws.IwsError;
 import org.junit.Test;
 
 import java.util.UUID;
@@ -205,7 +205,7 @@ public final class AccessMapperTest {
 
     private static Authorization prepareAuthorization() {
         final Authorization authorization = new Authorization();
-        authorization.setUserGroup(map(CommonMapperTest.prepareUserGroup()));
+        authorization.setUserGroup(map(prepareUserGroup()));
 
         return authorization;
     }
@@ -251,25 +251,5 @@ public final class AccessMapperTest {
 
         assertThat(mapped.getNewPassword(), is(newPassword));
         assertThat(mapped.getIdentification(), is(identification));
-    }
-
-    // =========================================================================
-    // Internal helper methods
-    // =========================================================================
-
-    private static AuthenticationToken prepareToken(final String sessionKey, final String groupId) {
-        final AuthenticationToken token = new AuthenticationToken();
-        token.setToken(sessionKey);
-        token.setGroupId(groupId);
-
-        return token;
-    }
-
-    private static IwsError prepareIwsError(final IWSError error) {
-        final IwsError ws = new IwsError();
-        ws.setError(error.getError());
-        ws.setDescription(error.getDescription());
-
-        return ws;
     }
 }

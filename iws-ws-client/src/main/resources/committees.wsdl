@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://ws.iws.iaeste.net/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="committeeWSService" targetNamespace="http://ws.iws.iaeste.net/">
   <wsdl:documentation>
       Service: IWS Committee Service
-      Version: 1.2.20160530
+      Version: 1.2.20160606
       Owner:   Kim Jensen
   </wsdl:documentation>
   <wsdl:types>
@@ -600,6 +600,7 @@
       <xs:enumeration value="CREATE_STUDENT_ACCOUNT"/>
       <xs:enumeration value="FETCH_USER"/>
       <xs:enumeration value="CHANGE_ACCOUNT_NAME"/>
+      <xs:enumeration value="PROCESS_ROLE"/>
       <xs:enumeration value="PROCESS_GROUP"/>
       <xs:enumeration value="CHANGE_GROUP_OWNER"/>
       <xs:enumeration value="DELETE_GROUP"/>

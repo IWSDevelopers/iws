@@ -26,6 +26,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,48 +56,9 @@ public final class FetchCountryRequest extends Paginatable {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    @XmlElement(required = true, nillable = true)  private List<String> countryIds;
-    @XmlElement(required = true, nillable = true)  private Membership membership;
+    @XmlElement(required = true, nillable = true)  private final List<String> countryIds = new ArrayList<>(0);
+    @XmlElement(required = true, nillable = true)  private Membership membership = null;
     @XmlElement(required = true)                   private CountryType countryType = CountryType.COMMITTEES;
-
-    // =========================================================================
-    // Object Constructors
-    // =========================================================================
-
-    /**
-     * <p>Empty Constructor, to use if the setters are invoked. This is required
-     * for WebServices to work properly.</p>
-     */
-    public FetchCountryRequest() {
-        countryIds = null;
-        membership = null;
-    }
-
-    /**
-     * <p>Default Constructor, for the case where a list of countries, matching
-     * the given Ids, should be fetched.</p>
-     *
-     * @param countryIds List of Countries to fetch
-     */
-    public FetchCountryRequest(final List<String> countryIds) {
-        ensureNotNullOrEmpty("countryIds", countryIds);
-
-        setCountryIds(countryIds);
-        this.membership = null;
-    }
-
-    /**
-     * <p>Default Constructor, for the case where a list of countries, with a
-     * specific membership type, should be fetched.</p>
-     *
-     * @param membership Membership Type
-     */
-    public FetchCountryRequest(final Membership membership) {
-        ensureNotNull("membership", membership);
-
-        this.membership = membership;
-        this.countryIds = null;
-    }
 
     // =========================================================================
     // Standard Setters & Getters
@@ -114,8 +76,7 @@ public final class FetchCountryRequest extends Paginatable {
     public void setCountryIds(final List<String> countryIds) {
         ensureNotNullOrEmpty("countryIds", countryIds);
 
-        this.countryIds = immutableList(countryIds);
-        membership = null;
+        this.countryIds.addAll(countryIds);
     }
 
     /**
@@ -140,7 +101,6 @@ public final class FetchCountryRequest extends Paginatable {
         ensureNotNull("membership", membership);
 
         this.membership = membership;
-        countryIds = null;
     }
 
     /**

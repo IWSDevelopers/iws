@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://ws.iws.iaeste.net/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="administrationWSService" targetNamespace="http://ws.iws.iaeste.net/">
   <wsdl:documentation>
       Service: IWS Administration Service
-      Version: 1.2.20160530
+      Version: 1.2.20160607
       Owner:   Kim Jensen
   </wsdl:documentation>
   <wsdl:types>
@@ -269,6 +269,39 @@
     </xs:complexContent>
   </xs:complexType>
 
+  <xs:complexType final="extension restriction" name="roleRequest">
+    <xs:complexContent>
+      <xs:extension base="tns:actions">
+        <xs:sequence>
+          <xs:element name="role" nillable="true" type="tns:role"/>
+          <xs:element name="roleId" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="role">
+    <xs:complexContent>
+      <xs:extension base="tns:verifications">
+        <xs:sequence>
+          <xs:element name="roleId" nillable="true" type="xs:string"/>
+          <xs:element name="roleName" type="xs:string"/>
+          <xs:element maxOccurs="unbounded" name="permissions" type="tns:permission"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="processRoleResponse">
+    <xs:complexContent>
+      <xs:extension base="tns:fallibleResponse">
+        <xs:sequence>
+          <xs:element name="role" nillable="true" type="tns:role"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
   <xs:complexType final="extension restriction" name="contactsRequest">
     <xs:complexContent>
       <xs:extension base="tns:verifications">
@@ -330,18 +363,6 @@
           <xs:element name="onPrivateList" type="xs:boolean"/>
           <xs:element name="writeToPrivateList" type="xs:boolean"/>
           <xs:element name="memberSince" nillable="true" type="tns:date"/>
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
-  <xs:complexType final="extension restriction" name="role">
-    <xs:complexContent>
-      <xs:extension base="tns:verifications">
-        <xs:sequence>
-          <xs:element name="roleId" nillable="true" type="xs:string"/>
-          <xs:element name="roleName" type="xs:string"/>
-          <xs:element maxOccurs="unbounded" name="permissions" type="tns:permission"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -745,14 +766,6 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="contactsType">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="USER"/>
-      <xs:enumeration value="GROUP"/>
-      <xs:enumeration value="OTHER"/>
-    </xs:restriction>
-  </xs:simpleType>
-
   <xs:simpleType name="permission">
     <xs:restriction base="xs:string">
       <xs:enumeration value="FETCH_COUNTRIES"/>
@@ -761,6 +774,7 @@
       <xs:enumeration value="CREATE_STUDENT_ACCOUNT"/>
       <xs:enumeration value="FETCH_USER"/>
       <xs:enumeration value="CHANGE_ACCOUNT_NAME"/>
+      <xs:enumeration value="PROCESS_ROLE"/>
       <xs:enumeration value="PROCESS_GROUP"/>
       <xs:enumeration value="CHANGE_GROUP_OWNER"/>
       <xs:enumeration value="DELETE_GROUP"/>
@@ -791,6 +805,14 @@
       <xs:enumeration value="FETCH_STUDENTS"/>
       <xs:enumeration value="FETCH_STUDENT_APPLICATION"/>
       <xs:enumeration value="PROCESS_STUDENT_APPLICATION"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="contactsType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="USER"/>
+      <xs:enumeration value="GROUP"/>
+      <xs:enumeration value="OTHER"/>
     </xs:restriction>
   </xs:simpleType>
 
@@ -918,12 +940,22 @@
     <wsdl:part name="fetchUserRequest" type="tns:fetchUserRequest">
     </wsdl:part>
   </wsdl:message>
+  <wsdl:message name="processRoleResponse">
+    <wsdl:part name="fetchRoleResponse" type="tns:processRoleResponse">
+    </wsdl:part>
+  </wsdl:message>
   <wsdl:message name="changeGroupOwnerResponse">
     <wsdl:part name="fallibleResponse" type="tns:fallibleResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="activateUser">
     <wsdl:part name="activationString" type="xsd:string">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="processRole">
+    <wsdl:part name="authenticationToken" type="tns:authenticationToken">
+    </wsdl:part>
+    <wsdl:part name="roleRequest" type="tns:roleRequest">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="deleteSubGroupResponse">
@@ -1018,6 +1050,12 @@
       <wsdl:output message="tns:activateUserResponse" name="activateUserResponse">
     </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="processRole">
+      <wsdl:input message="tns:processRole" name="processRole">
+    </wsdl:input>
+      <wsdl:output message="tns:processRoleResponse" name="processRoleResponse">
+    </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="fetchContacts">
       <wsdl:input message="tns:fetchContacts" name="fetchContacts">
     </wsdl:input>
@@ -1102,21 +1140,21 @@
         <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="fetchCountries">
-      <soap:operation soapAction="" style="rpc"/>
-      <wsdl:input name="fetchCountries">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
-      </wsdl:input>
-      <wsdl:output name="fetchCountriesResponse">
-        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
-      </wsdl:output>
-    </wsdl:operation>
     <wsdl:operation name="changeGroupOwner">
       <soap:operation soapAction="" style="rpc"/>
       <wsdl:input name="changeGroupOwner">
         <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="changeGroupOwnerResponse">
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="fetchCountries">
+      <soap:operation soapAction="" style="rpc"/>
+      <wsdl:input name="fetchCountries">
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="fetchCountriesResponse">
         <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>
@@ -1144,6 +1182,15 @@
         <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:input>
       <wsdl:output name="activateUserResponse">
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processRole">
+      <soap:operation soapAction="" style="rpc"/>
+      <wsdl:input name="processRole">
+        <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="processRoleResponse">
         <soap:body namespace="http://ws.iws.iaeste.net/" use="literal"/>
       </wsdl:output>
     </wsdl:operation>

@@ -91,27 +91,6 @@ public final class NotificationJobEntity implements IWSEntity {
     private Date created = new Date();
 
     // =========================================================================
-    // Entity Constructors
-    // =========================================================================
-
-    /**
-     * Empty Constructor, JPA requirement.
-     */
-    public NotificationJobEntity() {
-    }
-
-    /**
-     * Default Constructor
-     *
-     * @param notificationType    Notification type
-     * @param object              Serialized Notifiable object
-     */
-    public NotificationJobEntity(final NotificationType notificationType, final byte[] object) {
-        this.notificationType = notificationType;
-        this.object = object;
-    }
-
-    // =========================================================================
     // Entity Setters & Getters
     // =========================================================================
 

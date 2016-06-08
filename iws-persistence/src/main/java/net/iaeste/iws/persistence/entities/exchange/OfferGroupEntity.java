@@ -191,6 +191,7 @@ public final class OfferGroupEntity extends AbstractUpdateable<OfferGroupEntity>
      * Empty Constructor, JPA requirement.
      */
     public OfferGroupEntity() {
+        // Empty Constructor required by JPA, comment to please Sonar.
     }
 
     /**

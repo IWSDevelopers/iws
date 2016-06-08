@@ -105,7 +105,7 @@ public final class StudentEntity extends AbstractUpdateable<StudentEntity> {
 
     @Monitored(name="Student language skill 1", level = MonitoringLevel.DETAILED)
     @Enumerated(EnumType.STRING)
-    @Column(name = "language_1", length = 255)
+    @Column(name = "language_1")
     private Language language1 = null;
 
     @Enumerated(EnumType.STRING)
@@ -114,7 +114,7 @@ public final class StudentEntity extends AbstractUpdateable<StudentEntity> {
 
     @Monitored(name="Student language skill 2", level = MonitoringLevel.DETAILED)
     @Enumerated(EnumType.STRING)
-    @Column(name = "language_2", length = 255)
+    @Column(name = "language_2")
     private Language language2 = null;
 
     @Enumerated(EnumType.STRING)
@@ -123,7 +123,7 @@ public final class StudentEntity extends AbstractUpdateable<StudentEntity> {
 
     @Monitored(name="Student language skill 3", level = MonitoringLevel.DETAILED)
     @Enumerated(EnumType.STRING)
-    @Column(name = "language_3", length = 255)
+    @Column(name = "language_3")
     private Language language3 = null;
 
     @Enumerated(EnumType.STRING)
@@ -143,25 +143,6 @@ public final class StudentEntity extends AbstractUpdateable<StudentEntity> {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created", nullable = false, updatable = false)
     private Date created = new Date();
-
-    // =========================================================================
-    // Entity Constructors
-    // =========================================================================
-
-    /**
-     * Empty Constructor, JPA requirement.
-     */
-    public StudentEntity() {
-    }
-
-    /**
-     * Constructor for creating new Student Entities.
-     *
-     * @param user Student User Object
-     */
-    public StudentEntity(final UserEntity user) {
-        this.user = user;
-    }
 
     // =========================================================================
     // Entity Setters & Getters
@@ -331,8 +312,7 @@ public final class StudentEntity extends AbstractUpdateable<StudentEntity> {
     @Override
     public void merge(final StudentEntity obj) {
         // don't merge if objects are not the same entity
-        //if ((id != null) && (obj != null) && id.equals(obj.id)) {
-        if ((id != null) && (obj != null) && (user != null) && (user.getExternalId() != null) && user.getExternalId().equals(obj.user.getExternalId())) {
+        if ((id != null) && (obj != null) && isUserReady(user) && user.getExternalId().equals(obj.user.getExternalId())) {
             studyLevel = which(studyLevel, obj.studyLevel);
             fieldOfStudies = which(fieldOfStudies, obj.fieldOfStudies);
             specializations = which(specializations, obj.specializations);
@@ -345,5 +325,16 @@ public final class StudentEntity extends AbstractUpdateable<StudentEntity> {
             language3 = which(language3, obj.language3);
             language3Level = which(language3Level, obj.language3Level);
         }
+    }
+
+    /**
+     * We should not compare too many things in a single If statement, so this
+     * method was extracted for clarity.
+     *
+     * @param user UserEntity
+     * @return True if User is ready, i.e. is present and persisted
+     */
+    private static boolean isUserReady(final UserEntity user) {
+        return (user != null) && (user.getExternalId() != null);
     }
 }

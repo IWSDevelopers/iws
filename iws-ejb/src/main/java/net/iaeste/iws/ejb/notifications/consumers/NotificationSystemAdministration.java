@@ -17,7 +17,6 @@
  */
 package net.iaeste.iws.ejb.notifications.consumers;
 
-import net.iaeste.iws.api.enums.NotificationFrequency;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.common.notification.NotificationField;
@@ -184,7 +183,9 @@ public final class NotificationSystemAdministration implements Observer {
             final UserNotificationEntity userNotification = notificationDao.findUserNotificationSetting(user, NotificationType.ACTIVATE_NEW_USER);
 
             if (userNotification == null) {
-                final UserNotificationEntity entity = new UserNotificationEntity(user, NotificationType.ACTIVATE_NEW_USER, NotificationFrequency.IMMEDIATELY);
+                final UserNotificationEntity entity = new UserNotificationEntity();
+                entity.setUser(user);
+                entity.setType(NotificationType.ACTIVATE_NEW_USER);
                 notificationDao.persist(entity);
                 LOG.info("Notification setting {} for user {} created.", NotificationType.ACTIVATE_NEW_USER, user.getId());
             }
@@ -227,7 +228,9 @@ public final class NotificationSystemAdministration implements Observer {
                 LOG.info("Setting {} for user {}.", notificationType, user.getId());
 
                 if (notificationDao.findUserNotificationSetting(user, notificationType) == null) {
-                    final UserNotificationEntity entity = new UserNotificationEntity(user, notificationType, NotificationFrequency.IMMEDIATELY);
+                    final UserNotificationEntity entity = new UserNotificationEntity();
+                    entity.setUser(user);
+                    entity.setType(notificationType);
                     notificationDao.persist(entity);
                     LOG.info("Setting {} for user {} created.", notificationType, user.getId());
                 } else {

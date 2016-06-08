@@ -72,6 +72,13 @@ public class NotificationManagerBean implements Notifications {
     private final NotificationDao dao;
     private final boolean hostedInBean;
 
+    /**
+     * Default Constructor.
+     *
+     * @param entityManager Entity Manager
+     * @param settings      IWS Settings
+     * @param hostedInBean  If Hosted in Bean
+     */
     public NotificationManagerBean(final EntityManager entityManager, final Settings settings, final boolean hostedInBean) {
         this.entityManager = entityManager;
         this.settings = settings;
@@ -111,7 +118,9 @@ public class NotificationManagerBean implements Notifications {
                  ObjectOutputStream objectStream = new ObjectOutputStream(outputStream)) {
                 objectStream.writeObject(prepareNotification(obj, type));
                 final byte[] bytes = outputStream.toByteArray();
-                final NotificationJobEntity job = new NotificationJobEntity(type, bytes);
+                final NotificationJobEntity job = new NotificationJobEntity();
+                job.setNotificationType(type);
+                job.setObject(bytes);
                 dao.persist(job);
                 LOG.info("New notification job for '{}' created", type);
                 if (!hostedInBean) {
@@ -137,7 +146,9 @@ public class NotificationManagerBean implements Notifications {
                  ObjectOutputStream objectStream = new ObjectOutputStream(outputStream)) {
                 objectStream.writeObject(prepareNotification(user, NotificationType.RESET_PASSWORD));
                 final byte[] bytes = outputStream.toByteArray();
-                final NotificationJobEntity job = new NotificationJobEntity(NotificationType.RESET_PASSWORD, bytes);
+                final NotificationJobEntity job = new NotificationJobEntity();
+                job.setNotificationType(NotificationType.RESET_PASSWORD);
+                job.setObject(bytes);
                 dao.persist(job);
                 LOG.info("New notification job for '{}' created", NotificationType.RESET_PASSWORD);
                 if (!hostedInBean) {
@@ -175,7 +186,9 @@ public class NotificationManagerBean implements Notifications {
     private void prepareJobTasks(final NotificationJobEntity job) {
         for (final Observer observer : observers) {
             final NotificationConsumerEntity consumer = dao.findNotificationConsumerById(observer.getId());
-            final NotificationJobTaskEntity task = new NotificationJobTaskEntity(job, consumer);
+            final NotificationJobTaskEntity task = new NotificationJobTaskEntity();
+            task.setJob(job);
+            task.setConsumer(consumer);
             dao.persist(task);
         }
     }

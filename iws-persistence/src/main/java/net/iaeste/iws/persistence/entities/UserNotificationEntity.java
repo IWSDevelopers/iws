@@ -70,7 +70,7 @@ public final class UserNotificationEntity implements IWSEntity {
 
     @Column(name = "frequency")
     @Enumerated(EnumType.STRING)
-    private NotificationFrequency frequency = null;
+    private NotificationFrequency frequency = NotificationFrequency.IMMEDIATELY;
 
     /**
      * Timestamp when the Entity was created.
@@ -78,29 +78,6 @@ public final class UserNotificationEntity implements IWSEntity {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created", nullable = false, updatable = false)
     private Date created = new Date();
-
-    // =========================================================================
-    // Entity Constructors
-    // =========================================================================
-
-    /**
-     * Empty Constructor, JPA requirement.
-     */
-    public UserNotificationEntity() {
-    }
-
-    /**
-     * Default Constructor, for creating Message Entity without date of processing.
-     *
-     * @param user      The User to receive the notification
-     * @param type      Type of the notification
-     * @param frequency Frequency of sending notification to the user for selected subject
-     */
-    public UserNotificationEntity(final UserEntity user, final NotificationType type, final NotificationFrequency frequency) {
-        this.type = type;
-        this.user = user;
-        this.frequency = frequency;
-    }
 
     // =========================================================================
     // Entity Setters & Getters

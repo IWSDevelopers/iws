@@ -113,27 +113,6 @@ public final class SessionEntity extends AbstractUpdateable<SessionEntity> imple
     private Date created = new Date();
 
     // =========================================================================
-    // Entity Constructors
-    // =========================================================================
-
-    /**
-     * Empty Constructor, JPA requirement.
-     */
-    public SessionEntity() {
-    }
-
-    /**
-     * Default Constructor, for creating a new Session.
-     *
-     * @param user       The User, which this Session is for
-     * @param sessionKey The SessionKey to assign to this Session
-     */
-    public SessionEntity(final UserEntity user, final String sessionKey) {
-        this.sessionKey = sessionKey;
-        this.user = user;
-    }
-
-    // =========================================================================
     // Entity Setters & Getters
     // =========================================================================
 

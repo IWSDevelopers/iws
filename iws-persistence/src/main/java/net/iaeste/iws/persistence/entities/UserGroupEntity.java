@@ -242,6 +242,7 @@ public final class UserGroupEntity extends AbstractUpdateable<UserGroupEntity> i
      * Empty Constructor, JPA requirement.
      */
     public UserGroupEntity() {
+        // Empty Constructor required by JPA, comment to please Sonar.
     }
 
     /**
@@ -417,30 +418,31 @@ public final class UserGroupEntity extends AbstractUpdateable<UserGroupEntity> i
     @Override
     public Map<NotificationField, String> prepareNotifiableFields(final NotificationType type) {
         final EnumMap<NotificationField, String> fields = new EnumMap<>(NotificationField.class);
+        fields.put(NotificationField.GROUP_EXTERNAL_ID, group.getExternalId());
+        fields.put(NotificationField.GROUP_TYPE, group.getGroupType().getGrouptype().name());
+        fields.put(NotificationField.EMAIL, user.getUsername());
 
         switch (type) {
             case CHANGE_IN_GROUP_MEMBERS:
-                fields.put(NotificationField.ROLE, role.getRole());
-                fields.put(NotificationField.ON_PUBLIC_LIST, String.valueOf(onPublicList));
-                fields.put(NotificationField.ON_PRIVATE_LIST, String.valueOf(onPrivateList));
-                fields.put(NotificationField.GROUP_TYPE, group.getGroupType().getGrouptype().name());
-                fields.put(NotificationField.GROUP_EXTERNAL_ID, group.getExternalId());
-                fields.put(NotificationField.EMAIL, user.getUsername());
-                fields.put(NotificationField.USER_STATUS, user.getStatus().name());
-                fields.put(NotificationField.ROLE, role.getRole());
+                prepareGroupMemberFieldsForNotification(fields);
                 break;
             case NEW_GROUP_OWNER:
-                fields.put(NotificationField.GROUP_EXTERNAL_ID, group.getExternalId());
-                fields.put(NotificationField.GROUP_TYPE, group.getGroupType().getGrouptype().name());
                 fields.put(NotificationField.GROUP_NAME, group.getGroupName());
                 fields.put(NotificationField.FIRSTNAME, user.getFirstname());
                 fields.put(NotificationField.LASTNAME, user.getLastname());
-                fields.put(NotificationField.EMAIL, user.getUsername());
                 break;
             default:
                 throw new NotificationException("NotificationType " + type + " is not supported in this context.");
         }
 
         return fields;
+    }
+
+    private void prepareGroupMemberFieldsForNotification(final EnumMap<NotificationField, String> fields) {
+        fields.put(NotificationField.ROLE, role.getRole());
+        fields.put(NotificationField.ON_PUBLIC_LIST, String.valueOf(onPublicList));
+        fields.put(NotificationField.ON_PRIVATE_LIST, String.valueOf(onPrivateList));
+        fields.put(NotificationField.USER_STATUS, user.getStatus().name());
+        fields.put(NotificationField.ROLE, role.getRole());
     }
 }

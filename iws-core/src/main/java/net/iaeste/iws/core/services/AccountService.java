@@ -136,7 +136,8 @@ public final class AccountService extends CommonService<AccessDao> {
         final GroupEntity studentGroup = findOrCreateStudentGroup(authentication);
 
         final UserEntity user = createAndPersistUserEntity(authentication, username, request.getPassword(), request.getFirstname(), request.getLastname(), request.isStudent());
-        final StudentEntity studentEntity = new StudentEntity(user);
+        final StudentEntity studentEntity = new StudentEntity();
+        studentEntity.setUser(user);
         dao.persist(studentEntity);
         final RoleEntity student = dao.findRoleById(InternalConstants.ROLE_STUDENT);
 

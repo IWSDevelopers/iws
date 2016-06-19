@@ -66,7 +66,7 @@ public final class User extends Verifications {
     @XmlElement(required = true, nillable = true)  @StandardMethods(StandardMethods.For.NONE) private Person person = null;
     @XmlElement(required = true, nillable = true)  @StandardMethods(StandardMethods.For.ALL)  private UserStatus status = null;
     @XmlElement(required = true)                   @StandardMethods(StandardMethods.For.ALL)  private UserType type = UserType.VOLUNTEER;
-    @XmlElement(required = true)                   @StandardMethods(StandardMethods.For.NONE) private Privacy privacy = Privacy.PRIVATE;
+    @XmlElement(required = true)                   @StandardMethods(StandardMethods.For.NONE) private Privacy privacy = Privacy.PROTECTED;
     @XmlElement(required = true)                   @StandardMethods(StandardMethods.For.NONE) private NotificationFrequency notifications = NotificationFrequency.IMMEDIATELY;
 
     // =========================================================================

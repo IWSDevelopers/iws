@@ -24,7 +24,6 @@ import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.Field;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.MonitoringLevel;
-import net.iaeste.iws.api.enums.StorageType;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.util.Page;
 import net.iaeste.iws.api.util.Serializer;
@@ -35,6 +34,7 @@ import net.iaeste.iws.persistence.Externable;
 import net.iaeste.iws.persistence.entities.AddressEntity;
 import net.iaeste.iws.persistence.entities.CountryEntity;
 import net.iaeste.iws.persistence.entities.FileEntity;
+import net.iaeste.iws.persistence.entities.FiledataEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.GroupTypeEntity;
 import net.iaeste.iws.persistence.entities.IWSEntity;
@@ -109,7 +109,7 @@ public class BasicJpaDao implements BasicDao {
 
         final MonitoringLevel level = findMonitoringLevel(entityToPersist, authentication.getGroup());
         if (level != MonitoringLevel.NONE) {
-            final ArrayList<Field> changes = monitoringProcessor.findChanges(level, entityToPersist);
+            final List<Field> changes = monitoringProcessor.findChanges(level, entityToPersist);
             final String className = monitoringProcessor.findClassMonitoringName(entityToPersist);
             persistMonitoredData(authentication, className, entityToPersist.getId(), changes);
         }
@@ -122,7 +122,7 @@ public class BasicJpaDao implements BasicDao {
     public final <T extends Updateable<T>> void persist(final Authentication authentication, final T entityToPersist, final T changesToBeMerged) {
         final MonitoringLevel level = findMonitoringLevel(entityToPersist, authentication.getGroup());
         if (level != MonitoringLevel.NONE) {
-            final ArrayList<Field> changes = monitoringProcessor.findChanges(level, entityToPersist, changesToBeMerged);
+            final List<Field> changes = monitoringProcessor.findChanges(level, entityToPersist, changesToBeMerged);
             final String className = monitoringProcessor.findClassMonitoringName(entityToPersist);
             persistMonitoredData(authentication, className, entityToPersist.getId(), changes);
         }
@@ -164,9 +164,13 @@ public class BasicJpaDao implements BasicDao {
         return query.getResultList();
     }
 
-    private void persistMonitoredData(final Authentication authentication, final String className, final Long recordId, final ArrayList<Field> fields) {
+    private void persistMonitoredData(final Authentication authentication, final String className, final Long recordId, final List<Field> fields) {
         final MonitoringEntity monitoringEntity = new MonitoringEntity();
-        final byte[] data = Serializer.serialize(fields);
+        final ArrayList<Field> list = new ArrayList<>(0);
+        if (fields != null) {
+            list.addAll(fields);
+        }
+        final byte[] data = Serializer.serialize(list);
 
         monitoringEntity.setUser(authentication.getUser());
         monitoringEntity.setGroup(authentication.getGroup());
@@ -324,16 +328,12 @@ public class BasicJpaDao implements BasicDao {
      * {@inheritDoc}
      */
     @Override
-    public final FileEntity findAttachedFile(final String externalFileId, final String externalGroupId, final StorageType type) {
-        if (type == StorageType.ATTACHED_TO_APPLICATION) {
-            final Query query = entityManager.createNamedQuery("file.findApplicationByReceivingGroupAndExternalFileId");
-            query.setParameter("egid", externalGroupId);
-            query.setParameter("efid", externalFileId);
+    public final FiledataEntity findAttachedFile(final String fileId, final String groupId) {
+        final Query query = entityManager.createNamedQuery("file.findApplicationByReceivingGroupAndExternalFileId");
+        query.setParameter("egid", groupId);
+        query.setParameter("efid", fileId);
 
-            return findUniqueResult(query, "File");
-        } else {
-            throw new IWSException(IWSErrors.NOT_IMPLEMENTED, "Retrieving Attachments of type " + type.getDescription() + " is not yet supported.");
-        }
+        return findUniqueResult(query, "File");
     }
 
     // =========================================================================

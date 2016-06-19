@@ -56,7 +56,7 @@ public enum GroupType implements Descriptable<GroupType> {
      * well. Among the private data is also users files. A user may store files
      * for private purposes.</p>
      */
-    PRIVATE("Private", WhoMayJoin.NONE, false, true, FolderType.PRIVATE),
+    PRIVATE("Private", WhoMayJoin.NONE, false, true, FolderType.PROTECTED),
 
     /**
      * <p>All members are assigned to this type, which gives the rights to the
@@ -74,7 +74,7 @@ public enum GroupType implements Descriptable<GroupType> {
      *
      * <p><i>Note;</i> users can only be member of 1 Members Group!</p>
      */
-    MEMBER("Members", WhoMayJoin.NONE, true, false, FolderType.PRIVATE),
+    MEMBER("Members", WhoMayJoin.NONE, true, false, FolderType.PROTECTED),
 
     /**
      * <p>International Groups, are Groups which share members across Country
@@ -152,7 +152,7 @@ public enum GroupType implements Descriptable<GroupType> {
      * National. However, the Local Committees may have private sharing of
      * files.</p>
      */
-    LOCAL("Local Committee", WhoMayJoin.MEMBERS, true, true, FolderType.PRIVATE),
+    LOCAL("Local Committee", WhoMayJoin.MEMBERS, true, true, FolderType.PROTECTED),
 
     /**
      * <p>For Groups, where you need only to have a common mailinglist as well
@@ -167,7 +167,7 @@ public enum GroupType implements Descriptable<GroupType> {
      * <p>WorkGroup's can be assigned as a sub-group to any of the other
      * groups.</p>
      */
-    WORKGROUP("WorkGroup", WhoMayJoin.INHERITED, true, true, FolderType.PRIVATE),
+    WORKGROUP("WorkGroup", WhoMayJoin.INHERITED, true, true, FolderType.PROTECTED),
 
     /**
      * <p>The Student Group is for Offer Applicants, meaning that if a person
@@ -212,7 +212,7 @@ public enum GroupType implements Descriptable<GroupType> {
     }
 
     public enum FolderType {
-        PRIVATE,
+        PROTECTED,
         PUBLIC,
         NONE
     }

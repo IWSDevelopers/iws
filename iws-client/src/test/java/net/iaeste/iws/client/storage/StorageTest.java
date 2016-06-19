@@ -158,7 +158,7 @@ public final class StorageTest extends AbstractTest {
 
         // Fetch the File
         final FetchFileRequest fetchRequest = new FetchFileRequest(response.getFile().getFileId());
-        fetchRequest.setReadFileData(true);
+        //fetchRequest.setReadFileData(true);
         final FetchFileResponse fetchResponseForGroup = storage.fetchFile(token, fetchRequest);
         token.setGroupId(null);
         final FetchFileResponse fetchResponseForUser = storage.fetchFile(token, fetchRequest);

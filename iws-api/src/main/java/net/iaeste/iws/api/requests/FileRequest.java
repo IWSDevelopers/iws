@@ -54,7 +54,7 @@ public final class FileRequest extends Actions {
      * allowed, hence - it is important that the type is set accordingly.</p>
      */
     @XmlElement(required = true)
-    private StorageType type = StorageType.OWNER;
+    private StorageType type = StorageType.FOLDER;
 
     // =========================================================================
     // Object Constructors

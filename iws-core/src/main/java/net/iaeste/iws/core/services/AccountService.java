@@ -367,7 +367,7 @@ public final class AccountService extends CommonService<AccessDao> {
                 // We're in the Group Context, where the Privacy flag applies,
                 // meaning that if a user has set this, then the user's private
                 // or personal data may not be displayed
-                if (user.getPrivacy() == Privacy.PRIVATE) {
+                if (user.getPrivacy() == Privacy.PROTECTED) {
                     user.setPerson(null);
                 }
             }

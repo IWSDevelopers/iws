@@ -57,11 +57,5 @@ public enum Privacy {
      * context, meaning to events where it is required, and only for the
      * duration leading up to the event.</p>
      */
-    PROTECTED,
-
-    /**
-     * <p>All the users data is restricted, and only partly available -
-     * depending on the context.</p>
-     */
-    PRIVATE
+    PROTECTED
 }

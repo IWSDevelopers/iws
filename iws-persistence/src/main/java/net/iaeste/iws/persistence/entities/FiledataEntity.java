@@ -32,7 +32,7 @@ import javax.persistence.TemporalType;
 import java.util.Date;
 
 /**
- * Entity for holder the actual file data. This entity is referencing the file,
+ * Entity which holds the file data. This entity is referencing the file,
  * rather than the other way around, as we this way will by default never read
  * out any data, which may be resource demanding, instead we use this Entity to
  * retrieve data once we have verified that the User is allowed.

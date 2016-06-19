@@ -89,7 +89,7 @@ public final class FileEntity extends AbstractUpdateable<FileEntity> implements 
      */
     @Enumerated(EnumType.STRING)
     @Column(name = "privacy", length = 10, nullable = false)
-    private Privacy privacy = Privacy.PRIVATE;
+    private Privacy privacy = Privacy.PROTECTED;
 
     /**
      * Some Files are of a general Purpose nature, and thus cannot have a Group

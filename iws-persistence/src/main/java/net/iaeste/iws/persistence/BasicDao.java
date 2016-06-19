@@ -18,11 +18,11 @@
 package net.iaeste.iws.persistence;
 
 import net.iaeste.iws.api.enums.GroupType;
-import net.iaeste.iws.api.enums.StorageType;
 import net.iaeste.iws.api.util.Page;
 import net.iaeste.iws.persistence.entities.AddressEntity;
 import net.iaeste.iws.persistence.entities.CountryEntity;
 import net.iaeste.iws.persistence.entities.FileEntity;
+import net.iaeste.iws.persistence.entities.FiledataEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.GroupTypeEntity;
 import net.iaeste.iws.persistence.entities.IWSEntity;
@@ -176,13 +176,12 @@ public interface BasicDao {
      * Finds a file for a given Group, which is attached to a Object of the
      * given type.
      *
-     * @param externalFileId  External File Id
-     * @param externalGroupId The Group that the file is shared to
-     * @param type            Storage Type
-     * @return File
+     * @param fileId  External File Id
+     * @param groupId The Group that the file is shared to
+     * @return File with data
      * @throws PersistenceException if a single file could not be found
      */
-    FileEntity findAttachedFile(String externalFileId, String externalGroupId, StorageType type);
+    FiledataEntity findAttachedFile(String fileId, String groupId);
 
     List<UserGroupEntity> findGroupMembers(GroupEntity group);
 }

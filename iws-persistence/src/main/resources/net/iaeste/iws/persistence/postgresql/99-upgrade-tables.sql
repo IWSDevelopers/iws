@@ -11,6 +11,13 @@ insert into versions (db_version, iws_version) values (9, '1.2.0');
 
 
 -- =============================================================================
+-- Issue #2: Storage
+-- =============================================================================
+alter table users alter column private_date set default 'PROTECTED';
+update grouptypes set folder_type = 'PROTECTED' where folder_type = 'PRIVATE';
+
+
+-- =============================================================================
 -- Issue #4 EULA corrections
 -- =============================================================================
 -- Considering the importance of Data Protection, it is necessary to frequently
@@ -20,6 +27,16 @@ alter table users drop column eula_version;
 alter table users add column eula_version varchar(50) default '';
 alter table users add constraint user_notnull_eula_version check (eula_version is not null);
 update users set eula_version = '';
+
+
+-- =============================================================================
+-- Issue #6: Process Role
+-- =============================================================================
+insert into permissions (id, permission, restricted) values (205, 'PROCESS_ROLE', false);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (2, 205);
+insert into permission_to_role (role_id, permission_id) values (1, 205);
+insert into permission_to_role (role_id, permission_id) values (2, 205);
+update permissions set restricted = false where id in (101, 111, 121, 202);
 
 
 -- =============================================================================
@@ -173,7 +190,7 @@ update offers set language_2_op = null, language_3_level = null where language_3
 -- }
 --
 -- It is clear that the Offers lacking the WorkType must have it set, but what
--- is not clear is to what. For the IW3 migrator, we used 'O' (Office Work) as
+-- is not clear is to what. For the IW3 Migrator, we used 'O' (Office Work) as
 -- the default, and unless a different value is preferred, the same will be used
 -- for IWS.
 update offers set work_type = 'O' where work_type is null;
@@ -201,12 +218,3 @@ insert into user_to_group (external_id, user_id, group_id, role_id) values
 insert into aliases (external_id, group_id, alias_address) values ('877d4640-a28a-4e85-8435-56fbabaca61b', 5, 'idt');
 alter table user_to_group drop constraint u2g_unique_session_key;
 alter table user_to_group add constraint u2g_unique_user_group  unique (user_id, group_id);
-
--- =============================================================================
--- Issue #6: Process Role
--- =============================================================================
-insert into permissions (id, permission, restricted) values (205, 'PROCESS_ROLE', false);
-insert into permission_to_grouptype (grouptype_id, permission_id) values (2, 205);
-insert into permission_to_role (role_id, permission_id) values (1, 205);
-insert into permission_to_role (role_id, permission_id) values (2, 205);
-update permissions set restricted = false where id in (101, 111, 121, 202);

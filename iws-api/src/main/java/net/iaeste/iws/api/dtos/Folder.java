@@ -46,7 +46,7 @@ public final class Folder extends Verifications {
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     /** Default allowed Actions for the Committee Request. */
-    private static final Set<Privacy> ALLOWED = EnumSet.of(Privacy.PUBLIC, Privacy.PROTECTED, Privacy.PRIVATE);
+    private static final Set<Privacy> ALLOWED = EnumSet.of(Privacy.PUBLIC, Privacy.PROTECTED, Privacy.PROTECTED);
 
     @XmlElement(required = true, nillable = true)  private String folderId = null;
     @XmlElement(required = true, nillable = true)  private String parentId = null;

@@ -22,6 +22,7 @@ import static net.iaeste.iws.core.transformers.CommonTransformer.convert;
 import net.iaeste.iws.api.dtos.File;
 import net.iaeste.iws.api.dtos.Folder;
 import net.iaeste.iws.persistence.entities.FileEntity;
+import net.iaeste.iws.persistence.entities.FiledataEntity;
 import net.iaeste.iws.persistence.entities.FolderEntity;
 
 import java.util.ArrayList;
@@ -90,6 +91,33 @@ public final class StorageTransformer {
             result.setKeywords(entity.getKeywords());
             result.setChecksum(entity.getChecksum());
             result.setModified(convert(entity.getModified()));
+            result.setCreated(convert(entity.getCreated()));
+        }
+
+        return result;
+    }
+
+    public static File transform(final FiledataEntity entity) {
+        File result = null;
+
+        if (entity != null) {
+            result = new File();
+
+            result.setFileId(entity.getFile().getExternalId());
+            result.setPrivacy(entity.getFile().getPrivacy());
+            result.setGroup(CommonTransformer.transform(entity.getFile().getGroup()));
+            result.setUser(AdministrationTransformer.transform(entity.getFile().getUser()));
+            if (entity.getFile().getFolder() != null) {
+                result.setFolderId(entity.getFile().getFolder().getExternalId());
+            }
+            result.setFilename(entity.getFile().getFilename());
+            result.setFilesize(entity.getFile().getFilesize());
+            result.setFiledata(entity.getFileData());
+            result.setMimetype(entity.getFile().getMimetype());
+            result.setDescription(entity.getFile().getDescription());
+            result.setKeywords(entity.getFile().getKeywords());
+            result.setChecksum(entity.getFile().getChecksum());
+            result.setModified(convert(entity.getFile().getModified()));
             result.setCreated(convert(entity.getCreated()));
         }
 

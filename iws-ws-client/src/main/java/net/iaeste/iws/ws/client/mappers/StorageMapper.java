@@ -126,8 +126,8 @@ public final class StorageMapper extends CommonMapper {
 
             ws.setFileId(api.getFileId());
             ws.setGroupId(api.getGroupId());
-            ws.setType(map(api.getType()));
-            ws.setReadFileData(api.getReadFileData());
+//            ws.setType(map(api.getType()));
+//            ws.setReadFileData(api.getReadFileData());
         }
 
         return ws;

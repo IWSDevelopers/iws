@@ -522,7 +522,7 @@ create table users (
     eula_version        varchar(50) default '',
     status              varchar(25) default 'NEW',
     user_type           varchar(10) default 'VOLUNTEER',
-    private_data        varchar(10) default 'PRIVATE',
+    private_data        varchar(10) default 'PROTECTED',
     notifications       varchar(25) default 'IMMEDIATELY',
     temporary_code      varchar(128),
     temporary_data      varchar(128),

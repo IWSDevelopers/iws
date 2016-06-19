@@ -27,14 +27,10 @@ import javax.xml.bind.annotation.XmlType;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
+ * @deprecated
  */
 @XmlType(name = "storageType")
 public enum StorageType implements Descriptable<StorageType> {
-
-    /**
-     * By default, the storage type is the Owner.
-     */
-    OWNER("Owner"),
 
     /**
      * If reading a file from a public folder, then this Storage Type must be

@@ -25,6 +25,7 @@ import org.slf4j.LoggerFactory;
 
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This processor is using the Java Reflection framework to read the Annotation
@@ -97,7 +98,7 @@ public final class MonitoringProcessor {
      * @return List with all the monitored values or null
      * @see MonitoringLevel
      */
-    public ArrayList<Field> findChanges(final MonitoringLevel classLevel, final IWSEntity entity) {
+    public List<Field> findChanges(final MonitoringLevel classLevel, final IWSEntity entity) {
         // It is customary to return an empty list, however - an empty list
         // may indicate that we checked for details, but didn't find any -
         // in our case, we wish to return a true null, so it is clear that
@@ -146,7 +147,7 @@ public final class MonitoringProcessor {
      * @return List with all the monitored changes or null
      * @see MonitoringLevel
      */
-    public ArrayList<Field> findChanges(final MonitoringLevel classLevel, final IWSEntity oldEntity, final IWSEntity newEntity) {
+    public List<Field> findChanges(final MonitoringLevel classLevel, final IWSEntity oldEntity, final IWSEntity newEntity) {
         // It is customary to return an empty list, however - an empty list
         // may indicate that we checked for details, but didn't find any -
         // in our case, we wish to return a true null, so it is clear that

@@ -26,9 +26,7 @@ import net.iaeste.iws.api.dtos.Folder;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.enums.Action;
 import net.iaeste.iws.api.enums.GroupType;
-import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.enums.Privacy;
-import net.iaeste.iws.api.enums.StorageType;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.requests.FetchFileRequest;
 import net.iaeste.iws.api.requests.FetchFolderRequest;
@@ -40,7 +38,6 @@ import net.iaeste.iws.api.responses.FileResponse;
 import net.iaeste.iws.api.responses.FolderResponse;
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.core.exceptions.StorageException;
-import net.iaeste.iws.core.exceptions.UnsupportedOperationException;
 import net.iaeste.iws.core.transformers.StorageTransformer;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
@@ -360,41 +357,41 @@ public final class StorageService extends CommonService<AccessDao> {
 
     public FetchFileResponse fetchFile(final Authentication authentication, final FetchFileRequest request) {
         final String externalGroupId = request.getGroupId();
-        final FileEntity entity;
+        final FileEntity entity = null;
 
-        switch (request.getType()) {
-            case OWNER:
-                if (externalGroupId == null) {
-                    entity = dao.findFileByUserAndExternalId(authentication.getUser(), request.getFileId());
-                } else {
-                    // Check if the user is permitted to fetch files for the group, if
-                    // not then the method will thrown an Exception
-                    final GroupEntity group = dao.findGroupByPermission(authentication.getUser(), externalGroupId, Permission.FETCH_FILE);
-
-                    // Read the allowed file
-                    entity = dao.findFileByUserGroupAndExternalId(authentication.getUser(), group, request.getFileId());
-                }
-                break;
-            case FOLDER:
-                final FileEntity toCheck = readFile(request.getFileId());
-                final List<UserGroupEntity> u2gList = dao.findAllUserGroups(authentication.getUser());
-                entity = checkFile(authentication, toCheck, u2gList);
-
-                // Just to ensure that the data is read out during transformation below
-                request.setReadFileData(true);
-                break;
-            case ATTACHED_TO_APPLICATION:
-                entity = dao.findAttachedFile(request.getFileId(), externalGroupId, StorageType.ATTACHED_TO_APPLICATION);
-                break;
-            default:
-                // Just in case...
-                throw new UnsupportedOperationException("This operation is not implemented.");
-        }
-
+//        switch (request.getType()) {
+//            case OWNER:
+//                if (externalGroupId == null) {
+//                    entity = dao.findFileByUserAndExternalId(authentication.getUser(), request.getFileId());
+//                } else {
+//                    // Check if the user is permitted to fetch files for the group, if
+//                    // not then the method will thrown an Exception
+//                    final GroupEntity group = dao.findGroupByPermission(authentication.getUser(), externalGroupId, Permission.FETCH_FILE);
+//
+//                    // Read the allowed file
+//                    entity = dao.findFileByUserGroupAndExternalId(authentication.getUser(), group, request.getFileId());
+//                }
+//                break;
+//            case FOLDER:
+//                final FileEntity toCheck = readFile(request.getFileId());
+//                final List<UserGroupEntity> u2gList = dao.findAllUserGroups(authentication.getUser());
+//                entity = checkFile(authentication, toCheck, u2gList);
+//
+//                // Just to ensure that the data is read out during transformation below
+//                request.setReadFileData(true);
+//                break;
+//            case ATTACHED_TO_APPLICATION:
+//                entity = dao.findAttachedFile(request.getFileId(), externalGroupId, StorageType.ATTACHED_TO_APPLICATION);
+//                break;
+//            default:
+//                // Just in case...
+//                throw new UnsupportedOperationException("This operation is not implemented.");
+//        }
+//
         final File file = transform(entity);
-        if (request.getReadFileData()) {
-            file.setFiledata(readFile(entity));
-        }
+//        if (request.getReadFileData()) {
+//            file.setFiledata(readFile(entity));
+//        }
 
         return new FetchFileResponse(file);
     }
@@ -442,7 +439,7 @@ public final class StorageService extends CommonService<AccessDao> {
                 // is no need to perform any other checks. Owners can always do
                 // whatever they wish with their files.
                 file = entity;
-            } else if (entity.getPrivacy() != Privacy.PRIVATE) {
+            } else if (entity.getPrivacy() != Privacy.PROTECTED) {
                 // Private files is for owners only. And as the Owners were
                 // handled in the first check above - we can focus on files
                 // which have either status Public or Protected.

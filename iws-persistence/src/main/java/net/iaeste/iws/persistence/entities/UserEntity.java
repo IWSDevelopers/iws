@@ -222,7 +222,7 @@ public final class UserEntity extends AbstractUpdateable<UserEntity> implements 
      */
     @Enumerated(EnumType.STRING)
     @Column(name = "private_data", length = 10, nullable = false)
-    private Privacy privateData = Privacy.PRIVATE;
+    private Privacy privateData = Privacy.PROTECTED;
 
     /**
      * Personal Notifications period. By default, all notifications are

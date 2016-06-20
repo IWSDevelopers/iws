@@ -91,7 +91,7 @@ public final class StorageService extends CommonService<StorageDao> {
     public FolderResponse processFolder(final Authentication authentication, final FolderRequest request) {
         final String folderExternalId = request.getFolder().getFolderId();
         final Action action = request.getAction();
-        final Folder folder;
+        Folder folder = null;
 
         if (action == Action.PROCESS) {
             if (folderExternalId == null) {
@@ -100,7 +100,7 @@ public final class StorageService extends CommonService<StorageDao> {
                 folder = processExistingFolder(authentication, request, folderExternalId);
             }
         } else if (action == Action.DELETE) {
-            folder = deleteFolder(authentication, request, folderExternalId);
+            deleteFolder(authentication, request, folderExternalId);
         } else {
             throw new IWSException(IWSErrors.ILLEGAL_ACTION, "The requested action " + action + " is not yet supported.");
         }
@@ -159,16 +159,17 @@ public final class StorageService extends CommonService<StorageDao> {
             dao.persist(authentication, entity);
             folder = transform(entity);
         }
+
         return folder;
     }
 
     private Folder processExistingFolder(final Authentication authentication, final FolderRequest request, final String folderExternalId) {
-        final Folder folder;// Requesting to process an existing Folder, with a given
-        // External Folder Id
+        // Requesting to process an existing Folder, with a given Folder Id
         final FolderEntity existingFolder = dao.findFolders(folderExternalId).get(0);
         if (existingFolder == null) {
             throw new StorageException("The requested folder with Id '" + folderExternalId + "' could not be found.");
         }
+
         // Now, let's just check that there wasn't any fiddling with the
         // Id's. The simplest check that the Groups given match.
         if (authentication.getGroup().equals(existingFolder.getGroup())) {
@@ -187,33 +188,32 @@ public final class StorageService extends CommonService<StorageDao> {
         } else {
             throw new StorageException("Cannot process the Folder, as it doesn't belong to the given Group.");
         }
-        folder = transform(existingFolder);
-        return folder;
+
+        return transform(existingFolder);
     }
 
-    private Folder deleteFolder(final Authentication authentication, final FolderRequest request, final String folderExternalId) {
+    private void deleteFolder(final Authentication authentication, final FolderRequest request, final String folderExternalId) {
         final FolderEntity foundFolder = dao.findFolders(request.getFolder().getFolderId()).get(0);
-        final Folder folder;
 
         if (foundFolder == null) {
             throw new StorageException("The requested folder with Id '" + folderExternalId + "' could not be found.");
         }
+
         if (!Objects.equals(foundFolder.getGroup(), authentication.getGroup())) {
             throw new StorageException("Cannot delete a Folder belonging to someone else.");
         }
+
         // Now, let's see if it contains data. Only empty folders can be
         // deleted from the system
         final List<FolderEntity> subFolders = dao.readSubFolders(foundFolder);
         final List<FileEntity> files = dao.findFiles(foundFolder);
+
         if (subFolders.isEmpty() && files.isEmpty()) {
             LOG.info(formatLogMessage(authentication, "Deleting folder %s from the system.", foundFolder));
             dao.delete(foundFolder);
-            folder = null;
         } else {
             throw new StorageException("Cannot delete a folder that contains data.");
         }
-
-        return folder;
     }
 
     /**

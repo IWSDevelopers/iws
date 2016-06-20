@@ -106,35 +106,39 @@ public final class WSClient {
             // We're running the next requests within a try block, since we need
             // to ensure that the Session is closed in the end.
             try {
-                // Access related requests
-                final FetchPermissionResponse permissionResponse = client.fetchPermissions(token);
-                LOG.info("PermissionResponse: {}.", permissionResponse.getMessage());
-
-                final EmergencyListResponse emergency = client.fetchEmergencyList(token);
-                LOG.info("Received the Emergency List with {} records.", emergency.getEmergencyContacts().size());
-
-                final OfferCSVDownloadResponse downloadResponse = client.downloadOffers(token, FetchType.DOMESTIC);
-                LOG.info("Offer CSV Download: {}.", downloadResponse.getMessage());
-
-                // Exchange related requests
-                LOG.info("Offer Statistics: {}.", client.fetchOfferStatistics(token).getMessage());
-                LOG.info("Fetch Employers: {}.", client.fetchEmployers(token).getMessage());
-                final FetchOffersResponse domesticOfferResponse = client.fetchOffers(token, FetchType.DOMESTIC);
-                final FetchOffersResponse sharedOfferResponse = client.fetchOffers(token, FetchType.SHARED);
-                LOG.info("Fetch Domestic Offers: {} with {} Offers.", domesticOfferResponse.getMessage(), domesticOfferResponse.getOffers().size());
-                LOG.info("Fetch Shared Offers: {} with {} Offers.", sharedOfferResponse.getMessage(), sharedOfferResponse.getOffers().size());
-                if (domesticOfferResponse.isOk() && (domesticOfferResponse.getOffers() != null)) {
-                    for (final Offer offer : domesticOfferResponse.getOffers()) {
-                        LOG.info("Processing Employer '{}': {}.", offer.getEmployer().getName(), client.processEmployer(token, offer.getEmployer()).getMessage());
-                        LOG.info("Processing Offer with Reference Number '{}': {}.", offer.getRefNo(), client.processOffer(token, offer).getMessage());
-                    }
-                }
+                runRequests(client, token);
             } catch (RuntimeException t) {
                 LOG.error(t.getMessage(), t);
             } finally {
                 // Always remember to log out, otherwise the Account will be
                 // blocked for a longer time period
                 LOG.info("DeprecateSession: {}.", client.deprecateSession(token).getMessage());
+            }
+        }
+    }
+
+    private static void runRequests(final WSClient client, final AuthenticationToken token) {
+        // Access related requests
+        final FetchPermissionResponse permissionResponse = client.fetchPermissions(token);
+        LOG.info("PermissionResponse: {}.", permissionResponse.getMessage());
+
+        final EmergencyListResponse emergency = client.fetchEmergencyList(token);
+        LOG.info("Received the Emergency List with {} records.", emergency.getEmergencyContacts().size());
+
+        final OfferCSVDownloadResponse downloadResponse = client.downloadOffers(token, FetchType.DOMESTIC);
+        LOG.info("Offer CSV Download: {}.", downloadResponse.getMessage());
+
+        // Exchange related requests
+        LOG.info("Offer Statistics: {}.", client.fetchOfferStatistics(token).getMessage());
+        LOG.info("Fetch Employers: {}.", client.fetchEmployers(token).getMessage());
+        final FetchOffersResponse domesticOfferResponse = client.fetchOffers(token, FetchType.DOMESTIC);
+        final FetchOffersResponse sharedOfferResponse = client.fetchOffers(token, FetchType.SHARED);
+        LOG.info("Fetch Domestic Offers: {} with {} Offers.", domesticOfferResponse.getMessage(), domesticOfferResponse.getOffers().size());
+        LOG.info("Fetch Shared Offers: {} with {} Offers.", sharedOfferResponse.getMessage(), sharedOfferResponse.getOffers().size());
+        if (domesticOfferResponse.isOk() && (domesticOfferResponse.getOffers() != null)) {
+            for (final Offer offer : domesticOfferResponse.getOffers()) {
+                LOG.info("Processing Employer '{}': {}.", offer.getEmployer().getName(), client.processEmployer(token, offer.getEmployer()).getMessage());
+                LOG.info("Processing Offer with Reference Number '{}': {}.", offer.getRefNo(), client.processOffer(token, offer).getMessage());
             }
         }
     }

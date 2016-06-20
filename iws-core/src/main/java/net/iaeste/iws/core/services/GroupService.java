@@ -72,6 +72,12 @@ public final class GroupService {
     private final AccessDao dao;
     private final Notifications notifications;
 
+    /**
+     * Default Constructor.
+     *
+     * @param dao           Access Dao
+     * @param notifications Notification system
+     */
     public GroupService(final AccessDao dao, final Notifications notifications) {
         this.dao = dao;
         this.notifications = notifications;
@@ -90,6 +96,7 @@ public final class GroupService {
      *
      * @param authentication User & Group information
      * @param request        Group Request information
+     * @return Response Object
      */
     public ProcessGroupResponse processGroup(final Authentication authentication, final GroupRequest request) {
         final String externalGroupId = request.getGroup().getGroupId();
@@ -101,7 +108,7 @@ public final class GroupService {
 
             // Create new subgroup for the current group. We allow that the
             // following GroupTypes can be created using this feature: Local
-            // Committe or WorkGroup. A Local Committee can again have
+            // Committee or WorkGroup. A Local Committee can again have
             // sub-groups of type WorkGroup. However, a WorkGroup cannot have
             // further sub-groups. If it is a Local Committee, then it belongs
             // under the Members Group, and is parallel to the National Group
@@ -294,33 +301,37 @@ public final class GroupService {
             final UserEntity user = dao.findActiveUserByExternalId(request.getUser().getUserId());
 
             if (user != null) {
-                final GroupEntity group = authentication.getGroup();
-                final GroupType type = group.getGroupType().getGrouptype();
-
-                // If we have a National/General Secretary change, we
-                // additionally have to change the Owner of the (Parent)
-                // Member Group
-                if ((type == GroupType.NATIONAL) || group.getId().equals(GENERAL_SECRETARY_GROUP)) {
-                    final GroupEntity memberGroup = dao.findMemberGroup(user);
-                    LOG.debug(formatLogMessage(authentication, "Changing owner for Member Group '%s' with Id '%s'.", memberGroup.getGroupName(), memberGroup.getExternalId()));
-                    if (memberGroup.getId().equals(group.getParentId())) {
-                        changeGroupOwner(authentication, user, memberGroup, request.getTitle());
-                    } else {
-                        final String secretary = group.getId().equals(GENERAL_SECRETARY_GROUP) ? "General" : "National";
-                        throw new PermissionException("Cannot reassign " + secretary + " Secretary to a person who is not a member from " + group.getGroupName() + '.');
-                    }
-                }
-
-                // As the NS/GS aspects are gone, we can deal with the actual
-                // change just as with any other group
-                LOG.debug(formatLogMessage(authentication, "Changing owner for the Group '%s' with Id '%s'.", group.getGroupName(), group.getExternalId()));
-                changeGroupOwner(authentication, user, group, request.getTitle());
+                changeUserGroupOwner(authentication, request, user);
             } else {
                 throw new PermissionException("Cannot reassign ownership to an inactive person.");
             }
         } else {
             throw new PermissionException("Cannot reassign ownership to the current Owner.");
         }
+    }
+
+    private void changeUserGroupOwner(final Authentication authentication, final OwnerRequest request, final UserEntity user) {
+        final GroupEntity group = authentication.getGroup();
+        final GroupType type = group.getGroupType().getGrouptype();
+
+        // If we have a National/General Secretary change, we
+        // additionally have to change the Owner of the (Parent)
+        // Member Group
+        if ((type == GroupType.NATIONAL) || group.getId().equals(GENERAL_SECRETARY_GROUP)) {
+            final GroupEntity memberGroup = dao.findMemberGroup(user);
+            LOG.debug(formatLogMessage(authentication, "Changing owner for Member Group '%s' with Id '%s'.", memberGroup.getGroupName(), memberGroup.getExternalId()));
+            if (memberGroup.getId().equals(group.getParentId())) {
+                changeGroupOwner(authentication, user, memberGroup, request.getTitle());
+            } else {
+                final String secretary = group.getId().equals(GENERAL_SECRETARY_GROUP) ? "General" : "National";
+                throw new PermissionException("Cannot reassign " + secretary + " Secretary to a person who is not a member from " + group.getGroupName() + '.');
+            }
+        }
+
+        // As the NS/GS aspects are gone, we can deal with the actual
+        // change just as with any other group
+        LOG.debug(formatLogMessage(authentication, "Changing owner for the Group '%s' with Id '%s'.", group.getGroupName(), group.getExternalId()));
+        changeGroupOwner(authentication, user, group, request.getTitle());
     }
 
     /**
@@ -467,7 +478,7 @@ public final class GroupService {
      * @param request User Group Request Object
      * @return True if attempting to delete a user from a Member Group
      */
-    private boolean shouldDeleteMember(final UserGroupAssignmentRequest request) {
+    private static boolean shouldDeleteMember(final UserGroupAssignmentRequest request) {
         final Action action = request.getAction();
         final GroupType type = request.getUserGroup().getGroup().getGroupType();
 

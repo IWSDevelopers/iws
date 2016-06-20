@@ -215,6 +215,12 @@ public final class ViewTransformer {
         return application;
     }
 
+    /**
+     * Transforms a SharedOfferGroup View to a Group DTO.
+     *
+     * @param view View to transform
+     * @return Transformed DTO
+     */
     public static Group transform(final OfferSharedToGroupView view) {
         final Country country = convert(view.getCountry());
         final Group group = convert(view.getGroup());
@@ -249,16 +255,23 @@ public final class ViewTransformer {
         return file;
     }
 
+    /**
+     * Interim Stage Transformer. We need to somehow make the two different
+     * Objects more like, so we can use the same routine for transforming
+     * it, since at least 90% of the content is identical. What is annoying
+     *is the control of the ordering, as we could then just convert the
+     * sub-Objects without any problems. But as the are mixed for various
+     * historical reasons - we're currently sticking to it, until a better
+     * and more permanent solution is found.
+     *
+     * @param view View to transform
+     * @param type Offer type
+     * @param <V> Actual View
+     * @return Transformed list of Objects
+     */
     public static <V extends IWSView> List<Object> transformOfferToObjectList(final V view, final OfferFields.Type type) {
         final List<Object> result;
 
-        // This is an interim stage, we need to somehow make the two different
-        // Objects more like, so we can use the same routine for transforming
-        // it, since at least 90% of the content is identical. What is annoying
-        // is the control of the ordering, as we could then just convert the
-        // sub-Objects without any problems. But as the are mixed for various
-        // historical reasons - we're currently sticking to it, until a better
-        // and more permanent solution is found.
         if (view instanceof OfferView) {
             final OfferView offer = (OfferView) view;
             result = transformOfferToList(offer, type);
@@ -493,30 +506,33 @@ public final class ViewTransformer {
     private static void addSpecializationIfRequired(final OfferFields field, final OfferFields.Type type, final List<Object> result, final String value) {
         if (field.useField(type)) {
             final StringBuilder builder = new StringBuilder(16);
-            boolean firstRow = true;
 
             // Before we begin, we'll just clean up the value we've received
             // to ensure that our logic is working.
             final String parsedValue = PATTERN_UNWANTED_CHARACTERS.matcher(value).replaceAll(" ").trim();
-
-            for (final String specialization : CollectionTransformer.explodeStringSet(parsedValue)) {
-                if ((specialization != null) && !specialization.isEmpty()) {
-                    if (firstRow) {
-                        firstRow = false;
-                    } else {
-                        builder.append(", ");
-                    }
-
-                    // Now we have to add the data. Specializations are free
-                    // format so they can contain many things. But generally,
-                    // we're assuming that they don't contain any comma's.
-                    //   The first letter is Capitalized, and the rest is lower,
-                    // and any white space (including newlines) builder.append(is removed.
-                    builder.append(capitalizeFully(specialization.trim()));
-                }
-            }
-
+            addSpecializationFields(builder, parsedValue);
             result.add(builder.toString());
+        }
+    }
+
+    private static void addSpecializationFields(final StringBuilder builder, final String parsedValue) {
+        boolean firstRow = true;
+
+        for (final String specialization : CollectionTransformer.explodeStringSet(parsedValue)) {
+            if ((specialization != null) && !specialization.isEmpty()) {
+                if (firstRow) {
+                    firstRow = false;
+                } else {
+                    builder.append(", ");
+                }
+
+                // Now we have to add the data. Specializations are free
+                // format so they can contain many things. But generally,
+                // we're assuming that they don't contain any comma's.
+                //   The first letter is Capitalized, and the rest is lower,
+                // and any white space (including newlines) builder.append(is removed.
+                builder.append(capitalizeFully(specialization.trim()));
+            }
         }
     }
 

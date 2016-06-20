@@ -25,6 +25,7 @@ import net.iaeste.iws.persistence.AdminDao;
 import net.iaeste.iws.persistence.CommitteeDao;
 import net.iaeste.iws.persistence.CountryDao;
 import net.iaeste.iws.persistence.ExchangeDao;
+import net.iaeste.iws.persistence.StorageDao;
 import net.iaeste.iws.persistence.StudentDao;
 import net.iaeste.iws.persistence.ViewsDao;
 import net.iaeste.iws.persistence.jpa.AccessJpaDao;
@@ -32,6 +33,7 @@ import net.iaeste.iws.persistence.jpa.AdminJpaDao;
 import net.iaeste.iws.persistence.jpa.CommitteeJpaDao;
 import net.iaeste.iws.persistence.jpa.CountryJpaDao;
 import net.iaeste.iws.persistence.jpa.ExchangeJpaDao;
+import net.iaeste.iws.persistence.jpa.StorageJpaDao;
 import net.iaeste.iws.persistence.jpa.StudentJpaDao;
 import net.iaeste.iws.persistence.jpa.ViewsJpaDao;
 
@@ -61,6 +63,13 @@ public final class ServiceFactory {
     private final Notifications notifications;
     private final Settings settings;
 
+    /**
+     * Default Constructor.
+     *
+     * @param entityManager Entity Manager Instance to use for the DAOs
+     * @param notifications Notification System
+     * @param settings      IWS Settings
+     */
     public ServiceFactory(final EntityManager entityManager, final Notifications notifications, final Settings settings) {
         this.entityManager = entityManager;
         this.notifications = notifications;
@@ -76,37 +85,78 @@ public final class ServiceFactory {
     // Service Handlers
     // =========================================================================
 
+    /**
+     * Prepares the Account Service.
+     *
+     * @return Prepared Account Service
+     */
     public AccountService prepareAccountService() {
         return new AccountService(settings, accessDao, notifications);
     }
 
+    /**
+     * Prepares the Group Service.
+     *
+     * @return Prepared Group Service
+     */
     public GroupService prepareGroupService() {
         return new GroupService(accessDao, notifications);
     }
 
+    /**
+     * Prepares the Committee Service.
+     *
+     * @return Prepared Committee Service
+     */
     public CommitteeService prepareCommitteeService() {
         final CommitteeDao committeeDao = new CommitteeJpaDao(entityManager, settings);
         return new CommitteeService(settings, committeeDao, notifications);
     }
 
+    /**
+     * Prepares the Country Service.
+     *
+     * @return Prepared Country Service
+     */
     public CountryService prepareCountryService() {
         return new CountryService(countryDao);
     }
 
+    /**
+     * Prepares the Storage Service.
+     *
+     * @return Prepared Storage Service
+     */
     public StorageService prepareStorageService() {
-        return new StorageService(settings, accessDao, entityManager);
+        final StorageDao dao = new StorageJpaDao(entityManager, settings);
+        return new StorageService(settings, dao);
     }
 
+    /**
+     * Prepares the Authentication Service.
+     *
+     * @return Prepared Authentication Service
+     */
     public AccessService prepareAuthenticationService() {
         return new AccessService(settings, accessDao, notifications);
     }
 
+    /**
+     * Prepares the Exchange Service.
+     *
+     * @return Prepared Exchange Service
+     */
     public ExchangeService prepareExchangeService() {
         final ExchangeDao dao = new ExchangeJpaDao(entityManager, settings);
 
         return new ExchangeService(settings, dao, accessDao, notifications);
     }
 
+    /**
+     * Prepares the Exchange Fetching Service.
+     *
+     * @return Prepared Exchange Fetching Service
+     */
     public ExchangeFetchService prepareExchangeFetchService() {
         final ExchangeDao dao = new ExchangeJpaDao(entityManager, settings);
         final ViewsDao viewsDao = new ViewsJpaDao(entityManager, settings);
@@ -114,12 +164,22 @@ public final class ServiceFactory {
         return new ExchangeFetchService(settings, dao, viewsDao, accessDao);
     }
 
+    /**
+     * Prepares the Exchange CSV Service.
+     *
+     * @return Prepared Exchange CSV Service
+     */
     public ExchangeCSVService prepareExchangeCSVService() {
         final ExchangeDao dao = new ExchangeJpaDao(entityManager, settings);
 
         return new ExchangeCSVService(settings, dao, accessDao);
     }
 
+    /**
+     * Prepares the Exchange CSV Fetching Service.
+     *
+     * @return Prepared Exchange CSV Fetching Service
+     */
     public ExchangeCSVFetchService prepareExchangeCSVFetchService() {
         final ExchangeDao dao = new ExchangeJpaDao(entityManager, settings);
         final ViewsDao viewsDao = new ViewsJpaDao(entityManager, settings);
@@ -127,12 +187,22 @@ public final class ServiceFactory {
         return new ExchangeCSVFetchService(settings, dao, viewsDao);
     }
 
+    /**
+     * Prepares the Student Service.
+     *
+     * @return Prepared Student Service
+     */
     public StudentService prepareStudentService() {
         final ViewsDao viewsDao = new ViewsJpaDao(entityManager, settings);
 
         return new StudentService(settings, accessDao, exchangeDao, studentDao, viewsDao);
     }
 
+    /**
+     * Prepares the Contacts Service.
+     *
+     * @return Prepared Contacts Service
+     */
     public ContactsService prepareContacsService() {
         final AdminDao adminDao = new AdminJpaDao(entityManager, settings);
 

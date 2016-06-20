@@ -22,7 +22,6 @@ import net.iaeste.iws.api.util.Page;
 import net.iaeste.iws.persistence.entities.AddressEntity;
 import net.iaeste.iws.persistence.entities.CountryEntity;
 import net.iaeste.iws.persistence.entities.FileEntity;
-import net.iaeste.iws.persistence.entities.FiledataEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.GroupTypeEntity;
 import net.iaeste.iws.persistence.entities.IWSEntity;
@@ -181,7 +180,15 @@ public interface BasicDao {
      * @return File with data
      * @throws PersistenceException if a single file could not be found
      */
-    FiledataEntity findAttachedFile(String fileId, String groupId);
+    FileEntity findAttachedFile(String fileId, String groupId);
 
     List<UserGroupEntity> findGroupMembers(GroupEntity group);
+    /**
+     * Finds all groups the user is member
+     *
+     * @param  user UserEntity
+     * @return List of GroupEntity
+     */
+    List<UserGroupEntity> findAllUserGroups(UserEntity user);
+
 }

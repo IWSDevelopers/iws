@@ -233,14 +233,6 @@ public interface AccessDao extends BasicDao {
     RoleEntity findRoleByExternalId(String externalId);
 
     /**
-     * Finds all groups the user is member
-     *
-     * @param  user UserEntity
-     * @return List of GroupEntity
-     */
-    List<UserGroupEntity> findAllUserGroups(UserEntity user);
-
-    /**
      * Finds a list of User Accounts, which is having status NEW, but have not
      * been updated for x days. Where x is a number defined via the IWS
      * Settings, and injected here as parameter.

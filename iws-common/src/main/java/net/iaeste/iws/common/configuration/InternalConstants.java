@@ -181,6 +181,12 @@ public final class InternalConstants {
      */
     public static final String ALLOWED_GENERATOR_CHARACTERS = "abcdefghjkmnpqrstuvwxzy23456789";
 
+    /** The root folder is having the internal Id 3. However, since we're only
+     * getting the ExternalId for all other folders, it makes more sense to the
+     * existing ExternalId for the Root folder instead of the Id.
+     */
+    public static final String ROOT_FOLDER_EID = "afec3bc0-296b-4bf2-8a9e-c2d7b74e93a0";
+
     /**
      * Whenever one of the Schedulers or any other System Service requires a
      * User for the Authentication information, the System Account should be

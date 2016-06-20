@@ -41,6 +41,12 @@ public final class StorageTransformer {
     private StorageTransformer() {
     }
 
+    /**
+     * Transformation of a List of Folder Entities to a List of Folder DTOs.
+     *
+     * @param entities Entities to transform
+     * @return Transformed DTOs
+     */
     public static List<Folder> transformFolders(final List<FolderEntity> entities) {
         final List<Folder> result;
 
@@ -56,6 +62,12 @@ public final class StorageTransformer {
         return result;
     }
 
+    /**
+     * Transformation of a List of File Entities to a List of File DTOs.
+     *
+     * @param entities Entities to transform
+     * @return Transformed DTOs
+     */
     public static List<File> transformFiles(final List<FileEntity> entities) {
         final List<File> result;
 
@@ -71,6 +83,12 @@ public final class StorageTransformer {
         return result;
     }
 
+    /**
+     * Transformation of a File Entity to a File DTO.
+     *
+     * @param entity Entity to transform
+     * @return Transformed DTO
+     */
     public static File transform(final FileEntity entity) {
         File result = null;
 
@@ -97,6 +115,12 @@ public final class StorageTransformer {
         return result;
     }
 
+    /**
+     * Transformation of a FileData Entity to a File DTO.
+     *
+     * @param entity Entity to transform
+     * @return Transformed DTO
+     */
     public static File transform(final FiledataEntity entity) {
         File result = null;
 
@@ -124,6 +148,14 @@ public final class StorageTransformer {
         return result;
     }
 
+    /**
+     * Transformation of a File DTO to a File Entity. If the File is located
+     * within a Folder, the FolderEntity must be provided.
+     *
+     * @param file   DTO to transform
+     * @param folder Folder Entity, which the File is stored in
+     * @return Transformed Entity
+     */
     public static FileEntity transform(final File file, final FolderEntity folder) {
         FileEntity entity = null;
 
@@ -146,7 +178,13 @@ public final class StorageTransformer {
         return entity;
     }
 
-    public static Folder transform(FolderEntity entity) {
+    /**
+     * Transformation of a Folder Entity to Folder DTO.
+     *
+     * @param entity Entity to transform
+     * @return Transformed DTO
+     */
+    public static Folder transform(final FolderEntity entity) {
         Folder result = null;
 
         if (entity != null) {
@@ -163,7 +201,13 @@ public final class StorageTransformer {
         return result;
     }
 
-    public static FolderEntity transform(Folder folder) {
+    /**
+     * Transformation of a Folder DTO to a Folder Entity.
+     *
+     * @param folder DTO to transform
+     * @return Transformed Entity
+     */
+    public static FolderEntity transform(final Folder folder) {
         FolderEntity entity = null;
 
         if (folder != null) {

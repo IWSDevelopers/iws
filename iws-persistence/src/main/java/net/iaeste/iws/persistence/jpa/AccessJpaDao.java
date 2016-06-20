@@ -582,17 +582,6 @@ public final class AccessJpaDao extends BasicJpaDao implements AccessDao {
      * {@inheritDoc}
      */
     @Override
-    public List<UserGroupEntity> findAllUserGroups(final UserEntity user) {
-        final Query query = entityManager.createNamedQuery("userGroup.findAllUserGroups");
-        query.setParameter("uid", user.getId());
-
-        return query.getResultList();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public List<UserEntity> findAccountsWithState(final UserStatus status, final Long daysBeforeExpiration) {
         final Date date = new Date(new Date().getTime() - (daysBeforeExpiration * DAY_IN_MILLIS));
         final Query query = entityManager.createNamedQuery("user.findAccountsWithStateAfterModification");

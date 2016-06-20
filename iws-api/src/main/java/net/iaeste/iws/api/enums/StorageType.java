@@ -27,9 +27,10 @@ import javax.xml.bind.annotation.XmlType;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
- * @deprecated
+ * @deprecated pending removal, as it has become obsolete
  */
 @XmlType(name = "storageType")
+@Deprecated
 public enum StorageType implements Descriptable<StorageType> {
 
     /**

@@ -87,7 +87,10 @@ public final class FetchFileRequest extends Verifications {
     }
 
     /**
-     * <p>Files which is attached to an IWS Object, must have the GroupId set, so the IWS can ascertain if the User is permitted to read out the File. The IWS will assume that the File is shared via a Folder if no GroupId is present.</p>
+     * <p>Files which is attached to an IWS Object, must have the GroupId set,
+     * so the IWS can ascertain if the User is permitted to read out the File.
+     * The IWS will assume that the File is shared via a Folder if no GroupId
+     * is present.</p>
      *
      * <p>The method will throw an {@code IllegalArgumentException} if the given
      * GroupId is invalid.</p>

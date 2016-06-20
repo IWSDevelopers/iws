@@ -141,7 +141,7 @@ public final class EntityConstants {
     /**
      * The name of the Attachment for Applications in the Attachment Table.
      */
-    public static final String STUDENT_APPLICATIONS_ATTACHMENT = DELIMITER + "student_applications" + DELIMITER;
+    public static final String STUDENT_APPLICATIONS_ATTACHMENT = "student_applications";
 
     /**
      * Private Constructor, this is a utility class.

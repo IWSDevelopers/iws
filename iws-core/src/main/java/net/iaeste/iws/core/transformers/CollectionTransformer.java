@@ -45,7 +45,7 @@ public final class CollectionTransformer {
     public static final Logger LOG = LoggerFactory.getLogger(CollectionTransformer.class);
 
     private static final String DELIMITER_REG_EXP = ",|\\" + IWSExchangeConstants.SET_DELIMITER;
-    public static final Pattern SPLIT_PATTERN = Pattern.compile(DELIMITER_REG_EXP);
+    private static final Pattern SPLIT_PATTERN = Pattern.compile(DELIMITER_REG_EXP);
 
     /**
      * Private Constructor, this is a utility class.
@@ -108,7 +108,7 @@ public final class CollectionTransformer {
      * @param value    String which is split into the list of enum values
      * @return Set of enum values
      */
-    public static <E extends Enum<E> & Descriptable<E>> HashSet<E> explodeEnumSet(final Class<E> enumType, final String value) {
+    public static <E extends Enum<E> & Descriptable<E>> Set<E> explodeEnumSet(final Class<E> enumType, final String value) {
         final List<E> list = explodeEnumList(enumType, value);
         final HashSet<E> result = new HashSet<>();
 

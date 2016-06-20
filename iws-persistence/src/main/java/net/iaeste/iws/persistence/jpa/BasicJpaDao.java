@@ -33,8 +33,8 @@ import net.iaeste.iws.persistence.BasicDao;
 import net.iaeste.iws.persistence.Externable;
 import net.iaeste.iws.persistence.entities.AddressEntity;
 import net.iaeste.iws.persistence.entities.CountryEntity;
+import net.iaeste.iws.persistence.entities.EntityConstants;
 import net.iaeste.iws.persistence.entities.FileEntity;
-import net.iaeste.iws.persistence.entities.FiledataEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.GroupTypeEntity;
 import net.iaeste.iws.persistence.entities.IWSEntity;
@@ -282,8 +282,9 @@ public class BasicJpaDao implements BasicDao {
     @Override
     public final FileEntity findAttachedFileByUserAndExternalId(final GroupEntity group, final String externalId) {
         final Query query = entityManager.createNamedQuery("file.findApplicationBySendingGroupAndExternalFileId");
+        query.setParameter("table", EntityConstants.STUDENT_APPLICATIONS_ATTACHMENT);
         query.setParameter("gid", group.getId());
-        query.setParameter("efid", externalId);
+        query.setParameter("fid", externalId);
 
         return findUniqueResult(query, "File");
     }
@@ -328,12 +329,24 @@ public class BasicJpaDao implements BasicDao {
      * {@inheritDoc}
      */
     @Override
-    public final FiledataEntity findAttachedFile(final String fileId, final String groupId) {
+    public final FileEntity findAttachedFile(final String fileId, final String groupId) {
         final Query query = entityManager.createNamedQuery("file.findApplicationByReceivingGroupAndExternalFileId");
-        query.setParameter("egid", groupId);
-        query.setParameter("efid", fileId);
+        query.setParameter("table", EntityConstants.STUDENT_APPLICATIONS_ATTACHMENT);
+        query.setParameter("gid", groupId);
+        query.setParameter("fid", fileId);
 
         return findUniqueResult(query, "File");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<UserGroupEntity> findAllUserGroups(final UserEntity user) {
+        final Query query = entityManager.createNamedQuery("userGroup.findAllUserGroups");
+        query.setParameter("uid", user.getId());
+
+        return query.getResultList();
     }
 
     // =========================================================================

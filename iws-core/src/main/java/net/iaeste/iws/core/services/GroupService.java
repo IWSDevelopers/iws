@@ -103,49 +103,60 @@ public final class GroupService {
         final GroupEntity entity;
 
         if (externalGroupId == null) {
-            final GroupType type = request.getGroup().getGroupType();
-            final GroupType parentType = authentication.getGroup().getGroupType().getGrouptype();
-
-            // Create new subgroup for the current group. We allow that the
-            // following GroupTypes can be created using this feature: Local
-            // Committee or WorkGroup. A Local Committee can again have
-            // sub-groups of type WorkGroup. However, a WorkGroup cannot have
-            // further sub-groups. If it is a Local Committee, then it belongs
-            // under the Members Group, and is parallel to the National Group
-            if ((parentType != GroupType.WORKGROUP) && (type == GroupType.WORKGROUP)) {
-                entity = createGroup(authentication, GroupType.WORKGROUP, request.getGroup(), authentication.getGroup());
-                setGroupOwner(authentication, entity);
-            } else if ((parentType == GroupType.MEMBER) && (type == GroupType.LOCAL)) {
-                // Create new Local Committee
-                entity = createGroup(authentication, GroupType.LOCAL, request.getGroup(), authentication.getGroup());
-                setGroupOwner(authentication, entity);
-            } else {
-                throw new PermissionException("Not allowed to create a sub-group of type '" + type.getDescription() + "'.");
-            }
-            notifications.notify(authentication, entity, NotificationType.NEW_GROUP);
+            entity = processNewGroup(authentication, request);
         } else {
-            // We're fetching the Group with a permission check, to ensure that
-            // a user is not attempting to force update different groups. The
-            // lookup will throw an Exception, if no such Group exists that the
-            // user is permitted to process.
-            entity = dao.findGroupByPermission(authentication.getUser(), externalGroupId, Permission.PROCESS_GROUP);
-            final GroupType type = entity.getGroupType().getGrouptype();
-
-            if ((type == GroupType.LOCAL) || (type == GroupType.WORKGROUP)) {
-                final String name = request.getGroup().getGroupName();
-                if (!dao.hasGroupsWithSimilarName(entity, name)) {
-                    updateGroup(authentication, entity, request.getGroup());
-                } else {
-                    throw new IdentificationException("Another Group exist with a similar name " + name);
-                }
-            } else {
-                final Group theGroup = request.getGroup();
-                LOG.info(formatLogMessage(authentication, "Group Updated was made for the restricted group %s of type %s. Only selected fields have been updated!", theGroup.getGroupName(), theGroup.getGroupType().getDescription()));
-                limitedGroupUpdate(authentication, entity, theGroup);
-            }
+            entity = processExistingGroup(authentication, request, externalGroupId);
         }
 
         return new ProcessGroupResponse(CommonTransformer.transform(entity));
+    }
+
+    private GroupEntity processNewGroup(final Authentication authentication, final GroupRequest request) {
+        final GroupEntity entity;
+        final GroupType type = request.getGroup().getGroupType();
+        final GroupType parentType = authentication.getGroup().getGroupType().getGrouptype();
+
+        // Create new subgroup for the current group. We allow that the
+        // following GroupTypes can be created using this feature: Local
+        // Committee or WorkGroup. A Local Committee can again have
+        // sub-groups of type WorkGroup. However, a WorkGroup cannot have
+        // further sub-groups. If it is a Local Committee, then it belongs
+        // under the Members Group, and is parallel to the National Group
+        if ((parentType != GroupType.WORKGROUP) && (type == GroupType.WORKGROUP)) {
+            entity = createGroup(authentication, GroupType.WORKGROUP, request.getGroup(), authentication.getGroup());
+            setGroupOwner(authentication, entity);
+        } else if ((parentType == GroupType.MEMBER) && (type == GroupType.LOCAL)) {
+            // Create new Local Committee
+            entity = createGroup(authentication, GroupType.LOCAL, request.getGroup(), authentication.getGroup());
+            setGroupOwner(authentication, entity);
+        } else {
+            throw new PermissionException("Not allowed to create a sub-group of type '" + type.getDescription() + "'.");
+        }
+        notifications.notify(authentication, entity, NotificationType.NEW_GROUP);
+        return entity;
+    }
+
+    private GroupEntity processExistingGroup(final Authentication authentication, final GroupRequest request, final String externalGroupId) {
+        final GroupEntity entity;// We're fetching the Group with a permission check, to ensure that
+        // a user is not attempting to force update different groups. The
+        // lookup will throw an Exception, if no such Group exists that the
+        // user is permitted to process.
+        entity = dao.findGroupByPermission(authentication.getUser(), externalGroupId, Permission.PROCESS_GROUP);
+        final GroupType type = entity.getGroupType().getGrouptype();
+
+        if ((type == GroupType.LOCAL) || (type == GroupType.WORKGROUP)) {
+            final String name = request.getGroup().getGroupName();
+            if (!dao.hasGroupsWithSimilarName(entity, name)) {
+                updateGroup(authentication, entity, request.getGroup());
+            } else {
+                throw new IdentificationException("Another Group exist with a similar name " + name);
+            }
+        } else {
+            final Group theGroup = request.getGroup();
+            LOG.info(formatLogMessage(authentication, "Group Updated was made for the restricted group %s of type %s. Only selected fields have been updated!", theGroup.getGroupName(), theGroup.getGroupType().getDescription()));
+            limitedGroupUpdate(authentication, entity, theGroup);
+        }
+        return entity;
     }
 
     /**

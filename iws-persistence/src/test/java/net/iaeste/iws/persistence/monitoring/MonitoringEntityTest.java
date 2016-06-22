@@ -75,16 +75,21 @@ public class MonitoringEntityTest {
         final MonitoringEntity found = result.get(0);
         final List<Field> read = Serializer.deserialize(found.getFields());
         assertThat(data.toString(), is(read.toString()));
+        assertThat(data.size(), is(5));
+        assertThat(data.get(0).getField(), is(read.get(0).getField()));
+        assertThat(data.get(0).getOldValue(), is(read.get(0).getOldValue()));
+        assertThat(data.get(0).getNewValue(), is(read.get(0).getNewValue()));
     }
 
     private static ArrayList<Field> createMonitoringData(final int count) {
         final ArrayList<Field> list = new ArrayList<>(count);
 
         for (int i = 0; i < count; i++) {
-            final String field = "field" + i;
-            final String oldValue = "old FieldValue for " + i;
-            final String newValue = "new FieldValue for " + i;
-            final Field data = new Field(field, oldValue, newValue);
+            final Field data = new Field();
+            data.setField("field" + i);
+            data.setOldValue("old FieldValue for " + i);
+            data.setNewValue("new FieldValue for " + i);
+
             list.add(data);
         }
 

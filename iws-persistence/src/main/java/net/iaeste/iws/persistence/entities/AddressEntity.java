@@ -55,7 +55,7 @@ public final class AddressEntity extends AbstractUpdateable<AddressEntity> {
     @Column(name = "id", unique = true, nullable = false, updatable = false)
     private Long id = null;
 
-    @Monitored(name="Address Street 2", level = MonitoringLevel.DETAILED)
+    @Monitored(name="Address Street 1", level = MonitoringLevel.DETAILED)
     @Column(name = "street1", length = 100)
     private String street1 = null;
 

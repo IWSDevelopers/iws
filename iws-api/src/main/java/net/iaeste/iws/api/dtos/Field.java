@@ -41,55 +41,6 @@ public final class Field implements Serializable {
     private String newValue = null;
 
     // =========================================================================
-    // Object Constructors
-    // =========================================================================
-
-    /**
-     * Empty Constructor, to use if the setters are invoked. This is required
-     * for WebServices to work properly.
-     */
-    public Field() {
-        // Required for WebServices to work. Comment added to please Sonar.
-    }
-
-    /**
-     * Marking Constructor for Fields, where the actual change (old &amp; new)
-     * values should not be stored.
-     *
-     * @param field  Name of the Field, which was updated
-     */
-    public Field(final String field) {
-        this.theField = field;
-    }
-
-    /**
-     * Detailed Constructor, for the case where the information about the Field
-     * together with the old and new values should be stored.
-     *
-     * @param field    Name of the Field, which was updated
-     * @param oldValue The old value of the Field
-     * @param newValue The new value of the Field
-     */
-    public Field(final String field, final String oldValue, final String newValue) {
-        this.theField = field;
-        this.oldValue = oldValue;
-        this.newValue = newValue;
-    }
-
-    /**
-     * Copy Constructor.
-     *
-     * @param field Field Object to copy
-     */
-    public Field(final Field field) {
-        if (field != null) {
-            theField = field.theField;
-            oldValue = field.oldValue;
-            newValue = field.newValue;
-        }
-    }
-
-    // =========================================================================
     // Standard Setters & Getters
     // =========================================================================
 

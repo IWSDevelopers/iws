@@ -74,12 +74,29 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
     private final ViewsDao viewsDao;
     private final AccessDao accessDao;
 
+    /**
+     * Default Constructor.
+     *
+     * @param settings  IWS Settings
+     * @param dao       Exchange DAO instance
+     * @param viewsDao  Views DAO instance
+     * @param accessDao Access DAO instance
+     */
     public ExchangeFetchService(final Settings settings, final ExchangeDao dao, final ViewsDao viewsDao, final AccessDao accessDao) {
         super(settings, dao);
         this.viewsDao = viewsDao;
         this.accessDao = accessDao;
     }
 
+    /**
+     * Actual implementation of the Fetch Offer Statistics request. Will try to
+     * collect the information about Offers, both domestic and foreign based on
+     * their status and return this in the Response Object.
+     *
+     * @param authentication User Authentication Information
+     * @param request        Offer Statistics Request Object
+     * @return Offer Statistics Response Object
+     */
     public OfferStatisticsResponse fetchOfferStatistics(final Authentication authentication, final OfferStatisticsRequest request) {
         final Integer year = request.getExchangeYear();
         final GroupEntity nationalGroup = findNationalGroup(authentication);
@@ -135,6 +152,15 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
         return group;
     }
 
+    /**
+     * Actual implementation of the Fetch Employers Request. This will retrieve
+     * a list of Employers for a given Committee, based on the lookup criteria's
+     * from the Request Object.
+     *
+     * @param authentication User Authentication Information
+     * @param request        Fetch Employer Request Object
+     * @return Fetch Employer Response Object
+     */
     public FetchEmployerResponse fetchEmployers(final Authentication authentication, final FetchEmployerRequest request) {
         final FetchEmployerResponse response = new FetchEmployerResponse();
         final Long groupId = authentication.getGroup().getId();
@@ -142,11 +168,7 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
 
         switch (request.getFetchType()) {
             case ID:
-                list = findEmployerById(groupId, request.getFetchField());
-                if (!list.isEmpty() && request.getFetchOfferReferenceNumbers()) {
-                    final List<String> refnos = viewsDao.findOfferRefNoForEmployers(list);
-                    response.setOfferRefNos(refnos);
-               }
+                list = fetchEmployersById(request, response, groupId);
                 break;
             case NAME:
                 list = findEmployerByName(groupId, request.getPage(), request.getFetchField());
@@ -157,6 +179,16 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
         response.setEmployers(list);
 
         return response;
+    }
+
+    private List<Employer> fetchEmployersById(final FetchEmployerRequest request, final FetchEmployerResponse response, final Long groupId) {
+        final List<Employer> list;
+        list = findEmployerById(groupId, request.getFetchField());
+        if (!list.isEmpty() && request.getFetchOfferReferenceNumbers()) {
+            final List<String> refnos = viewsDao.findOfferRefNoForEmployers(list);
+            response.setOfferRefNos(refnos);
+       }
+        return list;
     }
 
     private List<Employer> findEmployerById(final Long groupId, final String externalId) {
@@ -197,6 +229,14 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
         return result;
     }
 
+    /**
+     * Actual implementation of the Fetch Offers request. Will try to retrieve
+     * a collection of Offer Objects based on the request lookup criteria.
+     *
+     * @param authentication User Authentication Information
+     * @param request        Fetch Offer Request Object
+     * @return Fetch Offer Response Object
+     */
     public FetchOffersResponse fetchOffers(final Authentication authentication, final FetchOffersRequest request) {
         final FetchOffersResponse response;
         switch (request.getFetchType()) {
@@ -268,6 +308,16 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
         return result;
     }
 
+    /**
+     * Actual implementation of the Fetch Publish Groups request. It is possible
+     * to store a collection of Groups in the IWS as a Publish Group, which can
+     * be used as a quick way to share an Offer to a number of Countries. The
+     * request is not having any Request Object, since the method will retrieve
+     * a complete list of all Publish Groups for the given User/Group.
+     *
+     * @param authentication User Authentication Information
+     * @return Fetch PublishGroups Response Object
+     */
     public FetchPublishingGroupResponse fetchPublishGroups(final Authentication authentication) {
         final List<PublishingGroupEntity> sharingLists = dao.getSharingListForOwner(authentication.getGroup().getId());
         final List<PublishingGroup> publishingGroups = new ArrayList<>(sharingLists.size());
@@ -278,6 +328,14 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
         return new FetchPublishingGroupResponse(publishingGroups);
     }
 
+    /**
+     * Actual implementation of the Fetch Groups for Sharing request. It will
+     * simply retrieve all National Groups, minus the the one from the Request,
+     * and return them in the Response.
+     *
+     * @param authentication User Authentication Information
+     * @return Collection of all National Committees, except the requester's
+     */
     public FetchGroupsForSharingResponse fetchGroupsForSharing(final Authentication authentication) {
         final List<GroupEntity> groups = dao.findGroupsForSharing(authentication.getGroup());
         final List<Group> groupList = AdministrationTransformer.transform(groups);

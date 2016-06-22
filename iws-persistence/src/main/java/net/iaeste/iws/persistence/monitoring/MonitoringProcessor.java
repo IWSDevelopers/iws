@@ -36,7 +36,6 @@ import java.util.List;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
- * @noinspection ObjectAllocationInLoop
  */
 public final class MonitoringProcessor {
 
@@ -124,14 +123,12 @@ public final class MonitoringProcessor {
         final MonitoringLevel fieldLevel = annotation.level();
 
         if (fieldLevel == MonitoringLevel.MARKED) {
-            found.add(new Field(annotation.name()));
+            found.add(prepareField(annotation.name()));
         } else if (fieldLevel == MonitoringLevel.DETAILED) {
-            final String name = annotation.name();
-            final String newValue = readObjectValue(field, entity);
-
             // For new Objects, there cannot be any old value, so
             // we set the 'old' value to null
-            found.add(new Field(name, null, newValue));
+            final String newValue = readObjectValue(field, entity);
+            found.add(prepareField(annotation.name(), null, newValue));
         }
     }
 
@@ -178,11 +175,25 @@ public final class MonitoringProcessor {
             final String name = annotation.name();
 
             if (fieldLevel == MonitoringLevel.MARKED) {
-                found.add(new Field(name));
+                found.add(prepareField(name));
             } else if (fieldLevel == MonitoringLevel.DETAILED) {
-                found.add(new Field(name, oldValue, newValue));
+                found.add(prepareField(name, oldValue, newValue));
             }
         }
+    }
+
+    private static Field prepareField(final String... fields) {
+        final Field field = new Field();
+
+        if (fields.length == 1) {
+            field.setField(fields[0]);
+        } else if (fields.length == 3) {
+            field.setField(fields[0]);
+            field.setOldValue(fields[1]);
+            field.setNewValue(fields[2]);
+        }
+
+        return field;
     }
 
     /**

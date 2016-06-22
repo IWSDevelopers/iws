@@ -54,28 +54,10 @@ public final class GroupUtil {
 
         switch (parentType) {
             case MEMBER:
-                // Following is required to avoid problems with test data. As
-                // most countries already uses the countryname as the base -
-                // the solution is production safe.
-                //   Note, that bugs was discovered with the data model for Trac
-                // task #811. Requiring an additional check
-                if ((parentFullname == null) || (parentFullname.lastIndexOf('.') == -1)) {
-                    basename = country + '.';
-                } else {
-                    basename = parentFullname.substring(0, parentFullname.lastIndexOf('.')) + '.';
-                }
+                basename = prepareBseGroupNameForMemberGroup(country, parentFullname);
                 break;
             case NATIONAL:
-                // Following is required to avoid problems with test data. As
-                // most countries already uses the countryname as the base -
-                // the solution is production safe.
-                //   Note, that bugs was discovered with the data model for Trac
-                // task #811. Requiring an additional check
-                if ((parentFullname == null) || (parentFullname.lastIndexOf('.') == -1)) {
-                    basename = country + '.' + parentType.getDescription() + '.';
-                } else {
-                    basename = parentFullname.substring(0, parentFullname.lastIndexOf('.')) + '.';
-                }
+                basename = prepareBaseGroupNameForNationalGroup(parentType, country, parentFullname);
                 break;
             case INTERNATIONAL:
                 basename = parentGroupName + '.';
@@ -89,6 +71,40 @@ public final class GroupUtil {
             case PRIVATE:
             default:
                 basename = "";
+        }
+
+        return basename;
+    }
+
+    private static String prepareBseGroupNameForMemberGroup(final String country, final String parentFullname) {
+        final String basename;
+
+        // Following is required to avoid problems with test data. As
+        // most countries already uses the country name as the base -
+        // the solution is production safe.
+        //   Note, that bugs was discovered with the data model for Trac
+        // task #811. Requiring an additional check
+        if ((parentFullname == null) || (parentFullname.lastIndexOf('.') == -1)) {
+            basename = country + '.';
+        } else {
+            basename = parentFullname.substring(0, parentFullname.lastIndexOf('.')) + '.';
+        }
+
+        return basename;
+    }
+
+    private static String prepareBaseGroupNameForNationalGroup(final GroupType parentType, final String country, final String parentFullname) {
+        final String basename;
+
+        // Following is required to avoid problems with test data. As
+        // most countries already uses the country name as the base -
+        // the solution is production safe.
+        //   Note, that bugs was discovered with the data model for Trac
+        // task #811. Requiring an additional check
+        if ((parentFullname == null) || (parentFullname.lastIndexOf('.') == -1)) {
+            basename = country + '.' + parentType.getDescription() + '.';
+        } else {
+            basename = parentFullname.substring(0, parentFullname.lastIndexOf('.')) + '.';
         }
 
         return basename;
@@ -110,11 +126,7 @@ public final class GroupUtil {
         switch (type) {
             case MEMBER:
             case NATIONAL:
-                if (fullname == null  || fullname.lastIndexOf('.') == -1) {
-                    listname = country;
-                } else {
-                    listname = fullname.substring(0, fullname.lastIndexOf('.'));
-                }
+                listname = prepareListNameForNationalGroup(fullname, country);
                 break;
             case INTERNATIONAL:
             case LOCAL:
@@ -129,6 +141,18 @@ public final class GroupUtil {
         }
 
         return toLower(listname);
+    }
+
+    private static String prepareListNameForNationalGroup(final String fullname, final String country) {
+        final String listname;
+
+        if ((fullname == null) || (fullname.lastIndexOf('.') == -1)) {
+            listname = country;
+        } else {
+            listname = fullname.substring(0, fullname.lastIndexOf('.'));
+        }
+
+        return listname;
     }
 
     /**

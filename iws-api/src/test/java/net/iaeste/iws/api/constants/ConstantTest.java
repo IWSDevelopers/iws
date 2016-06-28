@@ -41,6 +41,18 @@ public final class ConstantTest {
     }
 
     /**
+     * ReDoS or Regular expression Denial of Services, is a way to exploit the
+     * complexity of a regular expression engine. It is an advise from
+     * <a href="https://www.owasp.org/index.php/Regular_expression_Denial_of_Service_-_ReDoS">OWASP</a>.
+     * As the e-mail addresses are used as an input parameter, it is added here,
+     * to ensure that any such will not cause the IWS to become unstable.
+     */
+    @Test
+    public void testReDoSResilience() {
+        assertThat(IWSConstants.EMAIL_PATTERN.matcher("aaaaaaaaaaaaaaaaaaaaaaaa!").matches(), is(false));
+    }
+
+    /**
      * <p>This test verifies the e-mail pattern we're using. The Wikipedia page
      * for e-mail addresses contains a list of known valid and invalid addresses
      * which is used as a base for this test.</p>

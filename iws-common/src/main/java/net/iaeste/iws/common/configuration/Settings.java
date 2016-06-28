@@ -137,7 +137,7 @@ public final class Settings {
         properties.setProperty(PROPERTY_MAX_ACTIVE_TOKENS, String.valueOf(maxActiveTokens));
     }
 
-    public int getMaxActiveTokens() {
+    public Integer getMaxActiveTokens() {
         return Integer.valueOf(properties.getProperty(PROPERTY_MAX_ACTIVE_TOKENS));
     }
 
@@ -146,7 +146,7 @@ public final class Settings {
         properties.setProperty(PROPERTY_MAX_LOGIN_RETRIES, String.valueOf(maxLoginRetries));
     }
 
-    public int getMaxLoginRetries() {
+    public Integer getMaxLoginRetries() {
         return Integer.valueOf(properties.getProperty(PROPERTY_MAX_LOGIN_RETRIES));
     }
 
@@ -155,7 +155,7 @@ public final class Settings {
         properties.setProperty(PROPERTY_MAX_IDLE_TIME_FOR_SESSIONS, String.valueOf(maxIdleTimeForSessions));
     }
 
-    public long getMaxIdleTimeForSessions() {
+    public Long getMaxIdleTimeForSessions() {
         return Long.valueOf(properties.getProperty(PROPERTY_MAX_IDLE_TIME_FOR_SESSIONS));
     }
 
@@ -164,7 +164,7 @@ public final class Settings {
         properties.setProperty(PROPERTY_LOGIN_BLOCKED_PERIOD, String.valueOf(loginBlockedTime));
     }
 
-    public long getLoginBlockedTime() {
+    public Long getLoginBlockedTime() {
         return Long.valueOf(properties.getProperty(PROPERTY_LOGIN_BLOCKED_PERIOD));
     }
 

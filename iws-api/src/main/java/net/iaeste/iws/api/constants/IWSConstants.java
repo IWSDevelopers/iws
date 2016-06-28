@@ -103,17 +103,18 @@ public final class IWSConstants {
      * <p>See <a href="http://en.wikipedia.org/wiki/Email_address">Wikipedia</a>
      * for more information.</p>
      *
-     * <p>This regex does not support the quotation rules, which makes the rule
-     * check more complicated, nor does it support IPv6 addresses.</p>
+     * <p>The final regex is very simple, to both avoid handling loads of
+     * special cases, but also to avoid making it so complex that it is
+     * vulnerable to a ReDoS attack.</p>
      */
-    public static final String EMAIL_REGEX = "^[a-zA-Z0-9_\\.\\-\\+ !#\\$%&'\\*/=\\?\\^`\\{\\}\\|~]+@([a-zA-Z0-9_\\-]+\\.)*[a-zA-Z0-9]{2,}$";
+    public static final String EMAIL_REGEX = "^[a-z0-9_\\.\\-\\+ !#\\$%&'\\*/=\\?\\^`\\{\\}\\|~]+@[a-z0-9.-]+[a-z0-9]{2,6}$";
 
     /**
      * <p>The compiled e-mail pattern to use. Note, that the Pattern Class is
      * safe to pre-compile into a Global constant, whereas the Matcher must be
      * generated on a per-thread basis.</p>
      */
-    public static final Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX);
+    public static final Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX, Pattern.CASE_INSENSITIVE);
 
     /**
      * <p>XML files are generally very error tolerant, however - certain
@@ -136,7 +137,7 @@ public final class IWSConstants {
      *   <li><b>31 (0x1F)</b> US or Unit Separator</li>
      * </ul>
      */
-    public static final String REGEX_INVALID_SPACES = "[\\x1C\\x1D\\x1E\\x1F]";
+    private static final String REGEX_INVALID_SPACES = "[\\x1C\\x1D\\x1E\\x1F]";
 
     /**
      * <p>The compiled invalid newline pattern to use. Note, that the Pattern
@@ -164,7 +165,7 @@ public final class IWSConstants {
      *   <li><b>12 (0x0C)</b> FF or Form Feed</li>
      * </ul>
      */
-    public static final String REGEX_INVALID_NEWLINES = "[\\x0B\\x0C]";
+    private static final String REGEX_INVALID_NEWLINES = "[\\x0B\\x0C]";
 
     /**
      * <p>The compiled invalid space pattern to use. Note, that the Pattern
@@ -193,7 +194,7 @@ public final class IWSConstants {
      *   <li><b>23 (0x17)</b> ETB or End of Transmission Block</li>
      * </ul>
      */
-    public static final String REGEX_INVALID_CHARS = "[\\x04\\x07\\x17]";
+    private static final String REGEX_INVALID_CHARS = "[\\x04\\x07\\x17]";
 
     /**
      * <p>The compiled invalid char pattern to use. Note, that the Pattern Class

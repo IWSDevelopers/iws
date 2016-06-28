@@ -386,7 +386,7 @@ public class BasicJpaDao implements BasicDao {
             expanded.add(emptyValue);
         }
 
-        return collection;
+        return expanded;
     }
 
     /**

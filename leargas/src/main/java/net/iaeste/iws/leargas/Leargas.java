@@ -108,7 +108,7 @@ public final class Leargas {
             final MysqlDataSource dataSource = new MysqlDataSource();
 
             dataSource.setServerName(settings.readDatabaseHost());
-            dataSource.setPortNumber(Integer.valueOf(settings.readDatabasePort()));
+            dataSource.setPortNumber(Integer.parseInt(settings.readDatabasePort()));
             dataSource.setDatabaseName(settings.readDatabaseName());
             dataSource.setUser(settings.readDatabaseUsername());
             dataSource.setPassword(settings.readDatabasePassword());
@@ -124,7 +124,7 @@ public final class Leargas {
             final PGSimpleDataSource dataSource = new PGSimpleDataSource();
 
             dataSource.setServerName(settings.readDatabaseHost());
-            dataSource.setPortNumber(Integer.valueOf(settings.readDatabasePort()));
+            dataSource.setPortNumber(Integer.parseInt(settings.readDatabasePort()));
             dataSource.setDatabaseName(settings.readDatabaseName());
             dataSource.setUser(settings.readDatabaseUsername());
             dataSource.setPassword(settings.readDatabasePassword());

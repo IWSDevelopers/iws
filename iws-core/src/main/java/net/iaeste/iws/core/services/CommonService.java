@@ -68,6 +68,7 @@ import java.util.zip.Checksum;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
+ * @param <T> Required BasicDAO instance
  */
 public class CommonService<T extends BasicDao> {
 
@@ -484,16 +485,6 @@ public class CommonService<T extends BasicDao> {
         return entity;
     }
 
-    byte[] readFile(final FileEntity entity) {
-        final byte[] bytes = readFileFromSystem(entity.getStoredFilename());
-
-        if (calculateChecksum(bytes) != entity.getChecksum()) {
-            throw new IWSException(IWSErrors.ERROR, "The file checksum ia incorrect, most likely the file has been corrupted.");
-        }
-
-        return bytes;
-    }
-
     void deleteFile(final Authentication authentication, final File file, final StorageType type) {
         final FileEntity entity;
         if (type == StorageType.ATTACHED_TO_APPLICATION) {
@@ -548,14 +539,6 @@ public class CommonService<T extends BasicDao> {
             } catch (IOException e) {
                 throw new IWSException(IWSErrors.FATAL, "I/O Error while attempting to write file: " + e.getMessage(), e);
             }
-        }
-    }
-
-    private byte[] readFileFromSystem(final String name) {
-        try {
-            return Files.readAllBytes(getPath(name));
-        } catch (IOException e) {
-            throw new IWSException(IWSErrors.ERROR, "I/O Error while attempting to read file: " + e.getMessage(), e);
         }
     }
 

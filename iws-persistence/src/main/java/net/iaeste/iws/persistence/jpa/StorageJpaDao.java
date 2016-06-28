@@ -102,15 +102,17 @@ public final class StorageJpaDao extends BasicJpaDao implements StorageDao {
         final String jql =
                 "select f FROM FileEntity f " +
                 "where f.folder.id = :fid" +
-                "  and ((f.group.groupType.folderType = '" + GroupType.FolderType.PUBLIC + '\'' +
-                "    and f.privacy = '" + Privacy.PUBLIC + "')" +
+                "  and ((f.group.groupType.folderType = :folderType" +
+                "    and f.privacy = :privacy)" +
                 "  or (f.group.id in (" +
                 "      select u2g.group.id" +
                 "      from UserGroupEntity u2g" +
                 "      where u2g.user.id = :uid)))";
         final Query query = entityManager.createQuery(jql);
-        query.setParameter("uid", authentication.getUser().getId());
         query.setParameter("fid", folder.getId());
+        query.setParameter("folderType", GroupType.FolderType.PUBLIC);
+        query.setParameter("privacy", Privacy.PUBLIC);
+        query.setParameter("uid", authentication.getUser().getId());
 
         return query.getResultList();
     }

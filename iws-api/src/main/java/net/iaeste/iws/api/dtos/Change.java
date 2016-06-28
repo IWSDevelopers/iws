@@ -80,7 +80,7 @@ public final class Change implements Serializable {
         this.user = user;
         this.group = group;
         setFields(fields);
-        this.changed = changed;
+        setChanged(changed);
     }
 
     /**
@@ -146,11 +146,11 @@ public final class Change implements Serializable {
      * @param changed Date of Change
      */
     public void setChanged(final Date changed) {
-        this.changed = changed;
+        this.changed = new Date(changed.getTime());
     }
 
     public Date getChanged() {
-        return changed;
+        return new Date(changed.getTime());
     }
 
     // =========================================================================

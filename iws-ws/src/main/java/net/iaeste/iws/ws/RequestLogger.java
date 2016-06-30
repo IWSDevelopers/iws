@@ -21,7 +21,7 @@ import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.util.Fallible;
-import net.iaeste.iws.api.util.LogUtil;
+import net.iaeste.iws.common.utils.LogUtil;
 import net.iaeste.iws.api.util.Traceable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

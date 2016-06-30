@@ -17,11 +17,12 @@
  */
 package net.iaeste.iws.api.responses;
 
+import static net.iaeste.iws.api.util.Immutable.immutableList;
+
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.UserGroup;
-import net.iaeste.iws.api.util.Verifications;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -100,7 +101,7 @@ public final class FetchGroupResponse extends FallibleResponse {
     }
 
     public List<UserGroup> getMembers() {
-        return Verifications.immutableList(members);
+        return immutableList(members);
     }
 
     public void setStudents(final List<UserGroup> students) {
@@ -108,7 +109,7 @@ public final class FetchGroupResponse extends FallibleResponse {
     }
 
     public List<UserGroup> getStudents() {
-        return Verifications.immutableList(students);
+        return immutableList(students);
     }
 
     public void setSubGroups(final List<Group> subGroups) {
@@ -116,6 +117,6 @@ public final class FetchGroupResponse extends FallibleResponse {
     }
 
     public List<Group> getSubGroups() {
-        return Verifications.immutableList(subGroups);
+        return immutableList(subGroups);
     }
 }

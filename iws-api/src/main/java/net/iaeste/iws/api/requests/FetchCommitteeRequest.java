@@ -17,6 +17,9 @@
  */
 package net.iaeste.iws.api.requests;
 
+import static net.iaeste.iws.api.util.Immutable.immutableList;
+import static net.iaeste.iws.api.util.Immutable.immutableSet;
+
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.GroupStatus;
 import net.iaeste.iws.api.enums.Membership;

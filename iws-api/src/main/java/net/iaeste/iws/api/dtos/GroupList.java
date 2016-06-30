@@ -17,8 +17,9 @@
  */
 package net.iaeste.iws.api.dtos;
 
+import static net.iaeste.iws.api.util.Immutable.immutableList;
+
 import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.api.util.Verifications;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -73,21 +74,38 @@ public final class GroupList implements Serializable {
     }
 
     public List<Group> getGroups() {
-        return Verifications.immutableList(groups);
+        return immutableList(groups);
     }
 
     // =========================================================================
     // Mapped Collection Methods
     // =========================================================================
 
+    /**
+     * Adds a Group to the internal Group List.
+     *
+     * @param group Group to add
+     */
     public void add(final Group group) {
         groups.add(group);
     }
 
+    /**
+     * Retrieves the Group from a given position in the internal Group List,
+     * specified by the given Index.
+     *
+     * @param index Index of the Group to retrieve
+     * @return Group
+     */
     public Group get(final int index) {
         return groups.get(index);
     }
 
+    /**
+     * Retrieves the size of the internal Group Listing.
+     *
+     * @return Size of the internal Group List
+     */
     public int size() {
         return groups.size();
     }

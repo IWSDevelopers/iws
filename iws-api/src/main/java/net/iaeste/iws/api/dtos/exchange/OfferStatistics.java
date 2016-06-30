@@ -17,7 +17,7 @@
  */
 package net.iaeste.iws.api.dtos.exchange;
 
-import static net.iaeste.iws.api.util.Verifications.immutableMap;
+import static net.iaeste.iws.api.util.Immutable.immutableMap;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.exchange.OfferState;

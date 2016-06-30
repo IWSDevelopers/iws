@@ -17,12 +17,13 @@
  */
 package net.iaeste.iws.api.responses;
 
+import static net.iaeste.iws.api.util.Immutable.immutableList;
+
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.User;
 import net.iaeste.iws.api.enums.ContactsType;
-import net.iaeste.iws.api.util.Verifications;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -85,7 +86,7 @@ public final class ContactsResponse extends FallibleResponse {
      * @return List with either 1 User, all Users or empty list
      */
     public List<User> getUsers() {
-        return Verifications.immutableList(users);
+        return immutableList(users);
     }
 
     public void setGroups(final List<Group> groups) {
@@ -100,7 +101,7 @@ public final class ContactsResponse extends FallibleResponse {
      * @return List with either 1 Group, All User Groups or all Top Groups
      */
     public List<Group> getGroups() {
-        return Verifications.immutableList(groups);
+        return immutableList(groups);
     }
 
     public void setType(final ContactsType type) {

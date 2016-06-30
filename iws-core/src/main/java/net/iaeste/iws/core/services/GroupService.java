@@ -17,7 +17,7 @@
  */
 package net.iaeste.iws.core.services;
 
-import static net.iaeste.iws.api.util.LogUtil.formatLogMessage;
+import static net.iaeste.iws.common.utils.LogUtil.formatLogMessage;
 import static net.iaeste.iws.core.transformers.AdministrationTransformer.transform;
 import static net.iaeste.iws.core.transformers.AdministrationTransformer.transformMembers;
 

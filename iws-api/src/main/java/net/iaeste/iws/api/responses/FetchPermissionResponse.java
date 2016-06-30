@@ -17,6 +17,8 @@
  */
 package net.iaeste.iws.api.responses;
 
+import static net.iaeste.iws.api.util.Immutable.immutableList;
+
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.dtos.Authorization;
@@ -24,7 +26,6 @@ import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.Role;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.Permission;
-import net.iaeste.iws.api.util.Verifications;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -83,7 +84,7 @@ public final class FetchPermissionResponse extends FallibleResponse {
      */
     public FetchPermissionResponse(final String userId, final List<Authorization> authorizations) {
         this.userId = userId;
-        this.authorizations = Verifications.immutableList(authorizations);
+        this.authorizations = immutableList(authorizations);
     }
 
     /**
@@ -112,11 +113,11 @@ public final class FetchPermissionResponse extends FallibleResponse {
     }
 
     public void setAuthorizations(final List<Authorization> authorizations) {
-        this.authorizations = Verifications.immutableList(authorizations);
+        this.authorizations = immutableList(authorizations);
     }
 
     public List<Authorization> getAuthorizations() {
-        return Verifications.immutableList(authorizations);
+        return immutableList(authorizations);
     }
 
     // =========================================================================

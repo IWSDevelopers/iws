@@ -17,7 +17,7 @@
  */
 package net.iaeste.iws.core.services;
 
-import static net.iaeste.iws.api.util.LogUtil.formatLogMessage;
+import static net.iaeste.iws.common.utils.LogUtil.formatLogMessage;
 import static net.iaeste.iws.common.utils.PasswordGenerator.generatePassword;
 import static net.iaeste.iws.common.utils.StringUtils.toLower;
 import static net.iaeste.iws.core.transformers.StorageTransformer.transform;

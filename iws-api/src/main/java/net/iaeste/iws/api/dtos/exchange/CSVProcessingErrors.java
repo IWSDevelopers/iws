@@ -17,7 +17,8 @@
  */
 package net.iaeste.iws.api.dtos.exchange;
 
-import static net.iaeste.iws.api.util.Verifications.immutableMap;
+import static net.iaeste.iws.api.util.Immutable.immutableMap;
+import static net.iaeste.iws.api.util.Immutable.immutableSet;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 
@@ -82,22 +83,50 @@ public final class CSVProcessingErrors implements Serializable {
     // Mapped Collection Methods
     // =========================================================================
 
+    /**
+     * Adds a new key/value pair to the internal errors.
+     *
+     * @param key   Key for the new error
+     * @param value The error to be added
+     */
     public void put(final String key, final String value) {
         csvErrors.put(key, value);
     }
 
+    /**
+     * Adds all the errors from an existing error map to the internal.
+     *
+     * @param map Map of errors to add to the internal
+     */
     public void putAll(final Map<String, String> map) {
         csvErrors.putAll(map);
     }
 
+    /**
+     * Checks if the internal error map is empty or not
+     *
+     * @return True if no errors is present, otherwise true
+     */
     public boolean isEmpty() {
         return csvErrors.isEmpty();
     }
 
+    /**
+     * Retrieves an immutable set of keys for the internal error map.
+     *
+     * @return Immutable set of keys from the internal error map
+     */
     public Set<String> keySet() {
-        return csvErrors.keySet();
+        return immutableSet(csvErrors.keySet());
     }
 
+    /**
+     * Retrieves a specific error from the internal error map, identified by the
+     * given key.
+     *
+     * @param key Error key
+     * @return Error message
+     */
     public String get(final String key) {
         return csvErrors.get(key);
     }

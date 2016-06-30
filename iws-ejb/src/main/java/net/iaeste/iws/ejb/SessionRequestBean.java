@@ -17,7 +17,7 @@
  */
 package net.iaeste.iws.ejb;
 
-import static net.iaeste.iws.api.util.LogUtil.formatLogMessage;
+import static net.iaeste.iws.common.utils.LogUtil.formatLogMessage;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;

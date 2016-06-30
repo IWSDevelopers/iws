@@ -17,10 +17,11 @@
  */
 package net.iaeste.iws.api.responses;
 
+import static net.iaeste.iws.api.util.Immutable.immutableList;
+
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.dtos.UserGroup;
-import net.iaeste.iws.api.util.Verifications;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -75,6 +76,6 @@ public final class EmergencyListResponse extends FallibleResponse {
     }
 
     public List<UserGroup> getEmergencyContacts() {
-        return Verifications.immutableList(emergencyContacts);
+        return immutableList(emergencyContacts);
     }
 }

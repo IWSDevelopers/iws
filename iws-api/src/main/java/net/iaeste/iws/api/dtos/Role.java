@@ -17,6 +17,8 @@
  */
 package net.iaeste.iws.api.dtos;
 
+import static net.iaeste.iws.api.util.Immutable.immutableSet;
+
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.util.Verifications;

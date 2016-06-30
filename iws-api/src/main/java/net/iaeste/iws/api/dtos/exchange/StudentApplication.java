@@ -17,6 +17,9 @@
  */
 package net.iaeste.iws.api.dtos.exchange;
 
+import static net.iaeste.iws.api.util.Immutable.immutableList;
+import static net.iaeste.iws.api.util.Immutable.immutableSet;
+
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.exchange.IWSExchangeConstants;
 import net.iaeste.iws.api.dtos.Address;
@@ -71,12 +74,12 @@ public final class StudentApplication extends Verifications {
      * Offer Id for the {@link Offer} that the {@link Student} is
      * applying for.
      */
-    @XmlElement(required = true, nillable = false) private String offerId = null;
+    @XmlElement(required = true)                  private String offerId = null;
 
     @XmlElement(required = true, nillable = true) private OfferState offerState = null;
 
     /** {@link Student} as User */
-    @XmlElement(required = true, nillable = false) private Student student = null;
+    @XmlElement(required = true)                  private Student student = null;
 
     /** Status of the {@link StudentApplication} */
     @XmlElement(required = true, nillable = true) private ApplicationStatus status = null;

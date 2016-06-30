@@ -17,11 +17,12 @@
  */
 package net.iaeste.iws.api.responses.exchange;
 
+import static net.iaeste.iws.api.util.Immutable.immutableList;
+
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.dtos.exchange.PublishingGroup;
 import net.iaeste.iws.api.responses.FallibleResponse;
-import net.iaeste.iws.api.util.Verifications;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -80,6 +81,6 @@ public final class FetchPublishingGroupResponse extends FallibleResponse {
     }
 
     public List<PublishingGroup> getPublishingGroups() {
-        return Verifications.immutableList(publishingGroups);
+        return immutableList(publishingGroups);
     }
 }

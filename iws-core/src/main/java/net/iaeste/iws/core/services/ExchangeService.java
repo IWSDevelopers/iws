@@ -20,7 +20,7 @@ package net.iaeste.iws.core.services;
 import static net.iaeste.iws.api.enums.exchange.OfferState.AT_EMPLOYER;
 import static net.iaeste.iws.api.enums.exchange.OfferState.OPEN;
 import static net.iaeste.iws.api.enums.exchange.OfferState.VIEWED;
-import static net.iaeste.iws.api.util.LogUtil.formatLogMessage;
+import static net.iaeste.iws.common.utils.LogUtil.formatLogMessage;
 import static net.iaeste.iws.api.util.Verifications.calculateExchangeYear;
 import static net.iaeste.iws.common.utils.StringUtils.toUpper;
 import static net.iaeste.iws.core.transformers.ExchangeTransformer.transform;

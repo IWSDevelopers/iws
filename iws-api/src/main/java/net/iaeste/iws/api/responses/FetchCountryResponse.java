@@ -17,10 +17,11 @@
  */
 package net.iaeste.iws.api.responses;
 
+import static net.iaeste.iws.api.util.Immutable.immutableList;
+
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.dtos.Country;
-import net.iaeste.iws.api.util.Verifications;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -79,6 +80,6 @@ public final class FetchCountryResponse extends FallibleResponse {
     }
 
     public List<Country> getCountries() {
-        return Verifications.immutableList(countries);
+        return immutableList(countries);
     }
 }

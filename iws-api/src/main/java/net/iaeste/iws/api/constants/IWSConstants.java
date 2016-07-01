@@ -56,16 +56,20 @@ public final class IWSConstants {
      * <p>The IWS is currently being developed as an Open Source Project under
      * GitHub, the group response is the IWSDevelopers, who can be contacted
      * via this <a href="mailto:iws@dawn.dk">e-mail address</a>.</p>
+     *
+     * <p>As IAESTE currently does not allow the use of the e-mail address
+     * 'iws@iaeste.net|org' for the IWS developers, the official address is not
+     * affiliated with IAESTE.</p>
      */
     public static final String CONTACT_EMAIL = "IWS Developers <iws@dawn.dk>";
 
     /**
      * <p>The IWS is currently being developed as an Open Source Project under
      * GitHub, the group responsible is the IWSDevelopers, who can be reached at
-     * the <a href="https://github.com/IWSDevelopers"></a>here</a>. In case of
-     * problems, this is the place to go and report errors.</p>
+     * the <a href="http://iwsdevelopers.github.io/iws/"></a>here</a>. In case
+     * of problems, this is the place to go and report errors.</p>
      */
-    public static final String CONTACT_URL = "https://github.com/IWSDevelopers";
+    public static final String CONTACT_URL = "http://iwsdevelopers.github.io/iws/";
 
     /**
      * Current Version of the IWS, which is running.

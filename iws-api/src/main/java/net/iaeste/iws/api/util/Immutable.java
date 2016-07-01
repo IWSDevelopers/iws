@@ -18,6 +18,7 @@
 package net.iaeste.iws.api.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -44,8 +45,18 @@ public final class Immutable {
      * @param date Date Object to copy
      * @return Copied Date Object
      */
-    public static Date copy(final Date date) {
-        return (date != null) ? new Date(date.getTime()) : null;
+    public static java.util.Date copy(final java.util.Date date) {
+        return (date != null) ? new java.util.Date(date.getTime()) : null;
+    }
+
+    /**
+     * Takes a Byte Array, and returns a copy of it.
+     *
+     * @param bytes Byte Array to copy
+     * @return Copied Byte Array
+     */
+    public static byte[] copy(final byte[] bytes) {
+        return (bytes != null) ? Arrays.copyOf(bytes, bytes.length) : null;
     }
 
     // =========================================================================

@@ -77,6 +77,10 @@ public final class AccessController extends CommonController implements Access {
         VersionResponse response;
 
         try {
+            // Please note, that the information presented here is deliberately
+            // not including any DB calls, since a DOS attack against this
+            // request can be rejected by the Application Server, but if it also
+            // includes DB invocations, it may influence performance as well.
             response = new VersionResponse();
             response.setHostname(InetAddress.getLocalHost().getHostName());
             response.setAddress(InetAddress.getLocalHost().getHostAddress());

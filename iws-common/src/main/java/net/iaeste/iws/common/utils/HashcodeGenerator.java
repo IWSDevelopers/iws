@@ -25,6 +25,7 @@ import net.iaeste.iws.common.configuration.Settings;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 
 /**
  * The Hashcode Generator, will generate a hash value for a given value. A Hash
@@ -59,9 +60,35 @@ public final class HashcodeGenerator {
 
     /**
      * Private Constructor, this is a utility class.
+     *
+     * @param settings IWS Settings
      */
     public HashcodeGenerator(final Settings settings) {
         this.settings = settings;
+    }
+
+    /**
+     * <p>Generates a secure Salt. The method will use the SecureRandom Object
+     * to generate enough Randomness via /dev/urandom.</p>
+     *
+     * @param bytes Number of random bytes to generate
+     * @return String with random bytes
+     */
+    public static String generateSalt(final int bytes) {
+        final SecureRandom random = new SecureRandom();
+        final byte[] values = new byte[bytes];
+        random.nextBytes(values);
+
+        return new String(values, Charset.defaultCharset());
+    }
+
+    /**
+     * Generates a strong Hashcode, which can be used for Sessions.
+     *
+     * @return Hashed Securely Randomized set of bytes
+     */
+    public String generateRandomHash() {
+        return generateHash(HASHCODE_ALGORITHM_SHA256, generateSalt(64));
     }
 
     /**
@@ -145,12 +172,17 @@ public final class HashcodeGenerator {
         String result = null;
 
         if (str != null) {
-            final MessageDigest digest = getDigest(algorithm);
-            final byte[] bytes = digest.digest((salt + str).getBytes(CHARSET));
-            result = convertBytesToHex(bytes);
+            result = generateHashcode(algorithm, (salt + str).getBytes(CHARSET));
         }
 
         return result;
+    }
+
+    private static String generateHashcode(final String algorithm, final byte[] bytes) {
+        final MessageDigest digest = getDigest(algorithm);
+        final byte[] hashed = digest.digest(bytes);
+
+        return convertBytesToHex(hashed);
     }
 
     /**

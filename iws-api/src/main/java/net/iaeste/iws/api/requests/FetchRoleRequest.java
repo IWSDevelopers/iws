@@ -33,13 +33,13 @@ import java.util.Map;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "fetchRoleRequest", propOrder = { "groupId" })
+@XmlType(name = "fetchRoleRequest", propOrder = "groupId")
 public final class FetchRoleRequest extends Verifications {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    @XmlElement(required = true, nillable = false)
+    @XmlElement(required = true)
     private String groupId = null;
 
     // =========================================================================

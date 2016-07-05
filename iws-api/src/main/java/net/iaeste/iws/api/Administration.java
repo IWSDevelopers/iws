@@ -209,10 +209,54 @@ public interface Administration {
      */
     FetchUserResponse fetchUser(AuthenticationToken token, FetchUserRequest request);
 
+    /**
+     * <p>Roles is an essential part of the Permission Scheme, as the IWS uses
+     * these together with Group information to ascertain whether a person is
+     * allowed to perform an action or not. Roles is thus a collection of
+     * Permissions, which a User is granted within a Group. Since Roles are not
+     * Group specific, they may contain a different set of Permissions than a
+     * specific Group.</p>
+     *
+     * <p>The IWS uses the Intersect between the Role based Permissions and the
+     * Group based Permissions, to check if a User is allowed to perform a
+     * specific Action.</p>
+     *
+     * <p>The IWS already have a couple of standard Roles defined, but to allow
+     * Users to fine-tune the Permissions more, this request is present. It will
+     * allow the creation of a customized role or update it accordingly.</p>
+     *
+     * <p>Some Permissions are not allowed to be used in custom Roles, since
+     * their usage is limited to administrative purposes.</p>
+     *
+     * @param token   Authentication information about the user invoking the
+     *                request
+     * @param request Role Request Object
+     * @return Response Object with processed Role and Error information
+     */
     ProcessRoleResponse processRole(AuthenticationToken token, RoleRequest request);
 
+    /**
+     * <p>Retrieves the list of Roles, which a User may have towards a specific
+     * Group.</p>
+     *
+     * @param token   Authentication information about the user invoking the
+     *                request
+     * @param request Fetch Role Request Object with Group information
+     * @return Response Object with available Roles and Error information
+     */
     FetchRoleResponse fetchRoles(AuthenticationToken token, FetchRoleRequest request);
 
+    /**
+     * <p>Groups is a core part of the IWS. All data belongs to Groups and
+     * users must be a member of a Group to be allowed to perform actions
+     * within a Group. This request will allow creation and corrections of
+     * Groups. Though not deleting them.</p>
+     *
+     * @param token   Authentication information about the user invoking the
+     *                request
+     * @param request Group Request Object
+     * @return Response Object with processed Group and Error information
+     */
     ProcessGroupResponse processGroup(AuthenticationToken token, GroupRequest request);
 
     /**

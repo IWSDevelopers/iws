@@ -17,6 +17,8 @@
  */
 package net.iaeste.iws.client.notifications;
 
+import net.iaeste.iws.api.constants.IWSErrors;
+import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.common.notification.Notifiable;
 import net.iaeste.iws.common.notification.NotificationType;
 import net.iaeste.iws.common.utils.Observer;
@@ -159,10 +161,11 @@ public final class NotificationSpy implements Notifications {
     /**
      * Reads the first Notification from the Notification Stack, and pops it
      * from the stack. As long as a non-null value is returned, the Stack is not
-     * empty.
+     * empty. If no more messages is pending, then an IWS Exception is thrown.
      *
      * @param types If defined, then it'll fetch the first matching type
      * @return First Notification from the Stack or null if stack is empty
+     * @throws IWSException if no more messages is pending for given type
      */
     public NotificationMessage getNext(final NotificationType... types) {
         NotificationMessage message = null;
@@ -178,6 +181,10 @@ public final class NotificationSpy implements Notifications {
 
             message = notifiables.get(index);
             notifiables.remove(index);
+        }
+
+        if (message == null) {
+            throw new IWSException(IWSErrors.ERROR, "No more messages pending.");
         }
 
         return message;

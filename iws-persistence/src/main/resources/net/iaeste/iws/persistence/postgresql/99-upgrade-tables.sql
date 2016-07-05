@@ -218,3 +218,41 @@ insert into user_to_group (external_id, user_id, group_id, role_id) values
 insert into aliases (external_id, group_id, alias_address) values ('877d4640-a28a-4e85-8435-56fbabaca61b', 5, 'idt');
 alter table user_to_group drop constraint u2g_unique_session_key;
 alter table user_to_group add constraint u2g_unique_user_group  unique (user_id, group_id);
+drop view view_users;
+alter table users add column tmp_salt varchar(36);
+update users set tmp_salt = salt;
+alter table users drop column salt;
+alter table users add column salt varchar(128);
+update users set salt = tmp_salt;
+alter table users drop column tmp_salt;
+
+-- =============================================================================
+-- List User Information
+-- =============================================================================
+create view view_users as
+  select
+    u.id                                                                              as id,
+    u.external_id                                                                     as external_id,
+    u.firstname                                                                       as firstname,
+    u.lastname                                                                        as lastname,
+    u.username                                                                        as username,
+    c.nationality                                                                     as nationality,
+    case when u.salt in ('undefined', 'heartbleed') then u.salt else 'defined' end    as password,
+    u.created::date                                                                   as created,
+    case when max(s.created) is null then 'never' else max(s.created)::date::text end as last_login
+  from
+    countries c,
+    persons p,
+    users u
+    left join sessions s on u.id = s.user_id
+  where p.id = u.person_id
+    and c.id = p.nationality
+  group by
+    u.id,
+    u.external_id,
+    u.firstname,
+    u.lastname,
+    u.username,
+    c.nationality,
+    u.salt,
+    u.created;

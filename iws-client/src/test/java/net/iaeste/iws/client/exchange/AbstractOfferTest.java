@@ -24,6 +24,7 @@ import static org.junit.Assert.assertThat;
 
 import net.iaeste.iws.api.Exchange;
 import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.TestData;
@@ -31,8 +32,8 @@ import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.dtos.exchange.StudentApplication;
 import net.iaeste.iws.api.enums.Action;
 import net.iaeste.iws.api.enums.FetchType;
+import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
-import net.iaeste.iws.api.requests.exchange.FetchPublishedGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.OfferRequest;
 import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
 import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
@@ -77,7 +78,7 @@ public abstract class AbstractOfferTest extends AbstractTest {
             }
         }
 
-        return application;
+        return throwIfNull(application, "Cannot find the requested Application.");
     }
 
     protected static Group findGroupFromResponse(final String offerId, final String groupId, final FetchPublishedGroupsResponse response) {
@@ -106,7 +107,15 @@ public abstract class AbstractOfferTest extends AbstractTest {
             }
         }
 
-        return offer;
+        return throwIfNull(offer, "No offer with refno '" + refno + "' was found.");
+    }
+
+    private static <T> T throwIfNull(final T obj, final String errorMessage) {
+        if (obj == null) {
+            throw new IWSException(IWSErrors.OBJECT_IDENTIFICATION_ERROR, errorMessage);
+        }
+
+        return obj;
     }
 
     // =========================================================================
@@ -215,15 +224,5 @@ public abstract class AbstractOfferTest extends AbstractTest {
         }
 
         return offer;
-    }
-
-    protected final FetchPublishedGroupsResponse fetchPublishedGroups(final AuthenticationToken authentication, final List<String> offerIds) {
-        final FetchPublishedGroupsRequest request = new FetchPublishedGroupsRequest();
-        request.setIdentifiers(offerIds);
-
-        final FetchPublishedGroupsResponse response = exchange.fetchPublishedGroups(authentication, request);
-        assertThat(response.isOk(), is(true));
-
-        return response;
     }
 }

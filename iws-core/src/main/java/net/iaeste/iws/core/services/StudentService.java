@@ -265,6 +265,14 @@ public final class StudentService extends CommonService<StudentDao> {
         return attachmentEntity;
     }
 
+    /**
+     * Retrieves the Student Applications matching the criteria's from the
+     * Request Object.
+     *
+     * @param authentication User Authentication information
+     * @param request        Request Object
+     * @return Response Object with the found Student Applications
+     */
     public FetchStudentApplicationsResponse fetchStudentApplications(final Authentication authentication, final FetchStudentApplicationsRequest request) {
         final String offerExternalId = request.getOfferId();
         final OfferEntity ownedOffer = exchangeDao.findOfferByOwnerAndExternalId(authentication, offerExternalId);
@@ -300,6 +308,13 @@ public final class StudentService extends CommonService<StudentDao> {
         return files;
     }
 
+    /**
+     * Process the status of an Application.
+     *
+     * @param authentication Authentication Information for the requesting User
+     * @param request Request Object
+     * @return Response Object with the processed Application
+     */
     public StudentApplicationResponse processApplicationStatus(final Authentication authentication, final StudentApplicationRequest request) {
         final ApplicationEntity found = dao.findApplicationByExternalId(request.getApplicationId());
 
@@ -309,6 +324,10 @@ public final class StudentService extends CommonService<StudentDao> {
 
         final GroupEntity nationalGroup = accessDao.findNationalGroup(authentication.getUser());
         final OfferEntity offer = found.getOfferGroup().getOffer();
+
+        if (nationalGroup == null) {
+            throw new IWSException(IWSErrors.OBJECT_IDENTIFICATION_ERROR, "No National Group was found for the User.");
+        }
 
         if (found.getOfferGroup().getGroup().getId().equals(nationalGroup.getId())) {
             //application owner

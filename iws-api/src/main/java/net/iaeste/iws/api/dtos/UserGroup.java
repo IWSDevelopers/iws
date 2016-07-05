@@ -230,6 +230,12 @@ public final class UserGroup extends Verifications {
         this.writeToPrivateList = writeToPrivateList;
     }
 
+    /**
+     * Returns true if a User may write to the Private Mailing list, otherwise
+     * false.
+     *
+     * @return True if the User may write to the Private List, otherwise false
+     */
     public boolean mayWriteToPrivateList() {
         return writeToPrivateList;
     }

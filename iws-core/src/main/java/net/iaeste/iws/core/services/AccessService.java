@@ -391,9 +391,7 @@ public final class AccessService extends CommonService<AccessDao> {
     }
 
     private SessionEntity generateAndPersistSessionKey(final UserEntity user) {
-        // Generate new Hashcode from the User Credentials, and some other entropy
-        final String entropy = UUID.randomUUID() + user.getPassword();
-        final String sessionKey = hashcodeGenerator.generateHash(entropy, UUID.randomUUID().toString());
+        final String sessionKey = hashcodeGenerator.generateRandomHash();
 
         // Generate the new Session, and persist it
         final SessionEntity entity = new SessionEntity();

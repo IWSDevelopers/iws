@@ -210,6 +210,12 @@ public final class Group extends Verifications {
         this.privateList = privateList;
     }
 
+    /**
+     * Groups may have both Public and Private mailing lists, this method will
+     * return true if the Group has a Private mailing list, otherwise false.
+     *
+     * @return True if Group has a Private List, otherwise false
+     */
     public boolean hasPrivateList() {
         return (groupType != null) && groupType.getMayHavePrivateMailinglist() && privateList;
     }
@@ -254,6 +260,12 @@ public final class Group extends Verifications {
         this.publicList = publicList;
     }
 
+    /**
+     * Groups may have both Public and Private mailing lists, this method will
+     * return true if the Group has a Public mailing list, otherwise false.
+     *
+     * @return True if Group has a Public List, otherwise false
+     */
     public boolean hasPublicList() {
         return (groupType != null) && groupType.getMayHavePublicMailinglist() && publicList;
     }

@@ -524,7 +524,7 @@ create table users (
     username            varchar(100),
     alias               varchar(125),
     password            varchar(128),
-    salt                varchar(36),
+    salt                varchar(128),
     firstname           varchar(50),
     lastname            varchar(50),
     person_id           integer,

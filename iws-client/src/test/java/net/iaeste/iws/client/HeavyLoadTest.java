@@ -46,9 +46,9 @@ import java.util.concurrent.Future;
 
 /**
  * Trac report #648, shows that there's some serious performance problems within
- * the system. These need adressing. This test is going to perform a heavy run
+ * the system. These need addressing. This test is going to perform a heavy run
  * against the, performing some of the most intensive requests in parallel,
- * using a rather large Threadpool. The purpose of the test is not to be run as
+ * using a rather large ThreadPool. The purpose of the test is not to be run as
  * a regular test, but a way to use VisualVM to help detecting problems.
  *
  * @author  Kim Jensen / last $Author:$

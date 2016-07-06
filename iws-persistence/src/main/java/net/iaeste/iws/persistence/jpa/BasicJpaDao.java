@@ -309,7 +309,7 @@ public class BasicJpaDao implements BasicDao {
         query.setParameter("uid", user.getId());
         query.setParameter("type", GroupType.MEMBER);
 
-        return findSingleResult(query, "User");
+        return findUniqueResult(query, "User");
     }
 
     /**

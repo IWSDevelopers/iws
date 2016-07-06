@@ -197,7 +197,7 @@ public final class CommitteeJpaDao extends BasicJpaDao implements CommitteeDao {
         final Query query = entityManager.createNamedQuery("role.findById");
         query.setParameter("id", id);
 
-        return findSingleResult(query, "role");
+        return findUniqueResult(query, "role");
     }
 
     /**
@@ -214,7 +214,7 @@ public final class CommitteeJpaDao extends BasicJpaDao implements CommitteeDao {
         query.setParameter("gid", groupEntity.getId());
         query.setParameter("rid", InternalConstants.ROLE_OWNER);
 
-        return findSingleResult(query, "UserGroup");
+        return findUniqueResult(query, "UserGroup");
     }
 
     /**
@@ -258,7 +258,7 @@ public final class CommitteeJpaDao extends BasicJpaDao implements CommitteeDao {
         final Query query = entityManager.createQuery(jql);
         query.setParameter("pgid", staff.getParentId());
 
-        return findSingleResult(query, "Group");
+        return findUniqueResult(query, "Group");
     }
 
     /**
@@ -307,6 +307,6 @@ public final class CommitteeJpaDao extends BasicJpaDao implements CommitteeDao {
         query.setParameter("gid", group.getId());
         query.setParameter("uid", user.getId());
 
-        return findSingleResult(query, "User");
+        return findUniqueResult(query, "User");
     }
 }

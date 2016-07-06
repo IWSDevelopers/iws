@@ -22,7 +22,6 @@ import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.fail;
 
-import net.iaeste.iws.api.Administration;
 import net.iaeste.iws.api.Committees;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.Country;
@@ -42,7 +41,6 @@ import net.iaeste.iws.api.responses.FetchCommitteeResponse;
 import net.iaeste.iws.api.responses.FetchCountryResponse;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.client.AbstractTest;
-import net.iaeste.iws.client.AdministrationClient;
 import net.iaeste.iws.client.CommitteeClient;
 import net.iaeste.iws.common.notification.NotificationType;
 import org.junit.After;
@@ -61,7 +59,6 @@ import java.util.UUID;
  */
 public final class ProcessCommitteeTest extends AbstractTest {
 
-    private final Administration administration = new AdministrationClient();
     private final Committees committees = new CommitteeClient();
 
     /**

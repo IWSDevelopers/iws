@@ -105,7 +105,7 @@ public final class AccessJpaDao extends BasicJpaDao implements AccessDao {
         final Query query = entityManager.createNamedQuery("user.findActiveByCode");
         query.setParameter("code", code);
 
-        return findSingleResult(query, "User");
+        return findUniqueResult(query, "User");
     }
 
     /**
@@ -356,7 +356,7 @@ public final class AccessJpaDao extends BasicJpaDao implements AccessDao {
         final Query query = entityManager.createNamedQuery("group.findNationalByUser");
         query.setParameter("uid", user.getId());
 
-        return findSingleResult(query, "Group");
+        return findUniqueResult(query, "Group");
     }
 
     /**
@@ -368,7 +368,7 @@ public final class AccessJpaDao extends BasicJpaDao implements AccessDao {
         query.setParameter("gid", authentication.getGroup().getId());
         query.setParameter("uid", authentication.getUser().getId());
 
-        return findSingleResult(query, "Group");
+        return findUniqueResult(query, "Group");
     }
 
     /**
@@ -414,7 +414,7 @@ public final class AccessJpaDao extends BasicJpaDao implements AccessDao {
         final Query query = entityManager.createNamedQuery("role.findById");
         query.setParameter("id", id);
 
-        return findSingleResult(query, "Role");
+        return findUniqueResult(query, "Role");
     }
 
     /**

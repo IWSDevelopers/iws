@@ -30,6 +30,7 @@ import net.iaeste.iws.persistence.entities.SessionEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.UserGroupEntity;
 import net.iaeste.iws.persistence.entities.exchange.StudentEntity;
+import net.iaeste.iws.persistence.exceptions.IdentificationException;
 import net.iaeste.iws.persistence.views.UserPermissionView;
 
 import java.util.List;
@@ -81,6 +82,14 @@ public interface AccessDao extends BasicDao {
      */
     UserEntity findUserByUsername(String username);
 
+    /**
+     * Finds a User from the given Code, and returns it. If no User was found,
+     * then an {@link IdentificationException} is thrown.
+     *
+     * @param code User Session Key
+     * @return User
+     * @throws IdentificationException if no User was found with the given Active Session Key
+     */
     UserEntity findActiveUserByCode(String code);
 
     UserEntity findNewUserByCode(String code);
@@ -164,8 +173,26 @@ public interface AccessDao extends BasicDao {
 
     GroupEntity findGroupByUserAndType(UserEntity user, GroupType type);
 
+    /**
+     * Finds the Users National Group and returns this. If no National Group is
+     * found, then an {@link IdentificationException} is thrown.
+     *
+     * @param user User to find the National Group for
+     * @return National Group
+     * @throws IdentificationException if no Group was found
+     */
     GroupEntity findNationalGroup(UserEntity user);
 
+    /**
+     * Finds the National Group for a Given Local Group, and returns this. If
+     * no such Group can be found, then an {@link IdentificationException} is
+     * thrown as that indicates that there is a data quality problem in the IWS
+     * Database.
+     *
+     * @param authentication User Authentication with Local Group Id
+     * @return National Group
+     * @throws IdentificationException if the National Group could not be found
+     */
     GroupEntity findNationalGroupByLocalGroup(Authentication authentication);
 
     GroupEntity findPrivateGroup(UserEntity user);
@@ -175,11 +202,12 @@ public interface AccessDao extends BasicDao {
     GroupEntity findGroupByExternalId(String externalId);
 
     /**
-     * Finds a role based on the Id. Returns either the found RoleEntity or if
-     * nothing was found - null.
+     * Finds a Role based on the Id, and returns it. If no Role was found, then
+     * an {@link IdentificationException} is thrown.
      *
      * @param id  Id of the Role to find
-     * @return Found RoleEntity or null
+     * @return Found RoleEntity
+     * @throws IdentificationException if no Role was found
      */
     RoleEntity findRoleById(Long id);
 

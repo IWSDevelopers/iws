@@ -53,19 +53,57 @@ public interface CommitteeDao extends BasicDao {
 
     GroupTypeEntity findGroupTypeByType(GroupType type);
 
+    /**
+     * Finds a Role in the IWS, based on the given Id. If no role is found, or
+     * if multiple roles is found, an {@link net.iaeste.iws.persistence.exceptions.IdentificationException}
+     * is thrown. Otherwise, the found Role is returned.
+     *
+     * @param id Role Id
+     * @return Role
+     * @throws net.iaeste.iws.persistence.exceptions.IdentificationException if none or multiple results is found
+     */
     RoleEntity findRole(Long id);
 
+    /**
+     * Finds and returns the Owner of a Group. If no Owner is found, then an
+     * {@link net.iaeste.iws.persistence.exceptions.IdentificationException} is
+     * thrown - this is something that is considered a flaw and should never
+     * happen.
+     *
+     * @param groupEntity Group to find the Owner for
+     * @return Group Owner
+     * @throws net.iaeste.iws.persistence.exceptions.IdentificationException if no Owner is found
+     */
     UserGroupEntity findGroupOwner(GroupEntity groupEntity);
 
     UserGroupEntity findExistingRelation(GroupEntity groupEntity, UserEntity userEntity);
 
     List<GroupEntity> findAllCommitteesForCountry(CountryEntity country);
 
+    /**
+     * Finds the Member Group for the given Staff, if no Member Group is found,
+     * then an {@link net.iaeste.iws.persistence.exceptions.IdentificationException}
+     * is thrown otherwise the found Member Group is returned.
+     *
+     * @param staff The Staff to find the Member (parent) Group for
+     * @return Found Member Group
+     * @throws net.iaeste.iws.persistence.exceptions.IdentificationException if no MemberGroup was found
+     */
     GroupEntity findMemberGroupForStaff(GroupEntity staff);
 
     List<GroupEntity> findSubgroups(GroupEntity group);
 
     UserEntity findUserByUsername(String username);
 
+    /**
+     * Finds the relation between a Group and a User, and returns this. If no
+     * relation is found, then an {@link net.iaeste.iws.persistence.exceptions.IdentificationException}
+     * is thrown.
+     *
+     * @param group Group Entity to find a relation for
+     * @param user  User Entity to find a relation for
+     * @return Found UserGroup relation
+     * @throws net.iaeste.iws.persistence.exceptions.IdentificationException if no relation is found
+     */
     UserGroupEntity findUserGroupRelation(GroupEntity group, UserEntity user);
 }

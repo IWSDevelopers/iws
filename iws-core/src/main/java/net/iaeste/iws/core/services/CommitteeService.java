@@ -28,8 +28,6 @@ import net.iaeste.iws.api.enums.GroupStatus;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.MailReply;
 import net.iaeste.iws.api.enums.Membership;
-import net.iaeste.iws.common.exceptions.NotImplementedException;
-import net.iaeste.iws.common.exceptions.VerificationException;
 import net.iaeste.iws.api.requests.CommitteeRequest;
 import net.iaeste.iws.api.requests.CountrySurveyRequest;
 import net.iaeste.iws.api.requests.FetchCommitteeRequest;
@@ -43,6 +41,8 @@ import net.iaeste.iws.api.responses.FetchInternationalGroupResponse;
 import net.iaeste.iws.common.configuration.InternalConstants;
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.common.exceptions.IllegalActionException;
+import net.iaeste.iws.common.exceptions.NotImplementedException;
+import net.iaeste.iws.common.exceptions.VerificationException;
 import net.iaeste.iws.common.notification.NotificationType;
 import net.iaeste.iws.common.utils.PasswordGenerator;
 import net.iaeste.iws.common.utils.StringUtils;
@@ -313,28 +313,35 @@ public final class CommitteeService extends CommonService<CommitteeDao> {
     private UserGroupEntity makeUserNationalSecretary(final Authentication authentication, final UserEntity user, final GroupEntity member, final GroupEntity staff) {
         final UserGroupEntity nsStaff;
 
-        final UserGroupEntity memberEntity = dao.findUserGroupRelation(member, user);
-        if (memberEntity != null) {
-            if (!Objects.equals(memberEntity.getRole().getId(), InternalConstants.ROLE_OWNER)) {
-                // First, we'll downgrade the existing Owner to Moderator
-                final RoleEntity moderator = dao.findRole(InternalConstants.ROLE_MODERATOR);
-                changeExistingOwnerRole(authentication, moderator, member, staff);
+        final UserGroupEntity memberEntity = findGroupMember(user, member);
+        if (!Objects.equals(memberEntity.getRole().getId(), InternalConstants.ROLE_OWNER)) {
+            // First, we'll downgrade the existing Owner to Moderator
+            final RoleEntity moderator = dao.findRole(InternalConstants.ROLE_MODERATOR);
+            changeExistingOwnerRole(authentication, moderator, member, staff);
 
-                // Now we can upgrade the role for the new Owner
-                nsStaff = dao.findUserGroupRelation(staff, user);
-                final RoleEntity owner = dao.findRole(InternalConstants.ROLE_OWNER);
-                memberEntity.setRole(owner);
-                nsStaff.setRole(owner);
-                dao.persist(authentication, memberEntity);
-                dao.persist(authentication, nsStaff);
-            } else {
-                throw new IllegalActionException("Attempting to make existing National Secretary new National Secretary is not allowed.");
-            }
+            // Now we can upgrade the role for the new Owner
+            nsStaff = dao.findUserGroupRelation(staff, user);
+            final RoleEntity owner = dao.findRole(InternalConstants.ROLE_OWNER);
+            memberEntity.setRole(owner);
+            nsStaff.setRole(owner);
+            dao.persist(authentication, memberEntity);
+            dao.persist(authentication, nsStaff);
         } else {
-            throw new IllegalActionException("New National Secretary is not a member of the Committee.");
+            throw new IllegalActionException("Attempting to make existing National Secretary new National Secretary is not allowed.");
         }
 
         return nsStaff;
+    }
+
+    private UserGroupEntity findGroupMember(final UserEntity user, final GroupEntity member) {
+        try {
+            return dao.findUserGroupRelation(member, user);
+        } catch (IdentificationException e) {
+            // We're converting the Identification Exception here, since we
+            // have a more specific reason
+            LOG.debug("Converting Identification Exception to IllegalAction Exception: {}", e.getMessage(), e);
+            throw new IllegalActionException("New National Secretary is not a member of the Committee.");
+        }
     }
 
     private UserGroupEntity makeUserNationalSecretary(final Authentication authentication, final CommitteeRequest request, final GroupEntity member, final GroupEntity staff) {

@@ -157,6 +157,14 @@ public interface BasicDao {
 
     int deleteAttachmentRecord(FileEntity file);
 
+    /**
+     * Finds a Users Member Group and returns it. If no Member Group was found,
+     * then an {@link net.iaeste.iws.persistence.exceptions.IdentificationException} is thrown.
+     *
+     * @param user User to find the Member Group for
+     * @return Found Member Group
+     * @throws net.iaeste.iws.persistence.exceptions.IdentificationException if no Member Group was found
+     */
     GroupEntity findMemberGroup(UserEntity user);
 
     /**

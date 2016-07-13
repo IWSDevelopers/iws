@@ -17,6 +17,7 @@
  */
 package net.iaeste.iws.client.exchange;
 
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
@@ -118,6 +119,7 @@ public final class PublishingGroupTest extends AbstractTest {
 
         assertThat(fetchResponse.isOk(), is(true));
         final PublishingGroup fetchedList = findPublishingGroupFromResponse(listName, fetchResponse);
+        assertThat(fetchedList, is(not(nullValue())));
         assertThat(fetchedList.getGroups().size(), is(groups.size()));
     }
 

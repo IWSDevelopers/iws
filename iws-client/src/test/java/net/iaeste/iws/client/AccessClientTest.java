@@ -91,7 +91,7 @@ public final class AccessClientTest extends AbstractTest {
         final AuthenticationResponse response = access.generateSession(request);
         assertThat(response.isOk(), is(false));
         assertThat(response.getError(), is(IWSErrors.AUTHENTICATION_ERROR));
-        assertThat(response.getMessage(), is("No account for the user 'albania@iaeste.al' was found."));
+        assertThat(response.getMessage(), is("No User was found."));
     }
 
     /**
@@ -107,7 +107,7 @@ public final class AccessClientTest extends AbstractTest {
         final AuthenticationResponse response = access.generateSession(request);
         assertThat(response.isOk(), is(false));
         assertThat(response.getError(), is(IWSErrors.AUTHENTICATION_ERROR));
-        assertThat(response.getMessage(), is("No account for the user '" + username + "' was found."));
+        assertThat(response.getMessage(), is("No User was found."));
     }
 
     @Test
@@ -271,15 +271,16 @@ public final class AccessClientTest extends AbstractTest {
         final Fallible validEmailResponse = access.forgotPassword("user@domain.com");
         assertThat(validEmailResponse.isOk(), is(false));
         assertThat(validEmailResponse.getError(), is(IWSErrors.AUTHENTICATION_ERROR));
-        assertThat(validEmailResponse.getMessage(), is("No account for this user was found."));
+        assertThat(validEmailResponse.getMessage(), is("No User was found."));
     }
+
     @Test
     public void testResetPasswordCountrySuspended() {
         // Bu default, the Albanian Test Group is Suspended
         final Fallible suspendedGroupResponse = access.forgotPassword("albania@iaeste.al");
         assertThat(suspendedGroupResponse.isOk(), is(false));
         assertThat(suspendedGroupResponse.getError(), is(IWSErrors.AUTHENTICATION_ERROR));
-        assertThat(suspendedGroupResponse.getMessage(), is("No account for this user was found."));
+        assertThat(suspendedGroupResponse.getMessage(), is("No User was found."));
     }
 
     @Test
@@ -288,7 +289,7 @@ public final class AccessClientTest extends AbstractTest {
         final Fallible suspendedUserResponse = access.forgotPassword("argentina@iaeste.ar");
         assertThat(suspendedUserResponse.isOk(), is(false));
         assertThat(suspendedUserResponse.getError(), is(IWSErrors.AUTHENTICATION_ERROR));
-        assertThat(suspendedUserResponse.getMessage(), is("No account for this user was found."));
+        assertThat(suspendedUserResponse.getMessage(), is("No User was found."));
     }
 
     @Test

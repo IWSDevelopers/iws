@@ -22,6 +22,7 @@ import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.exchange.Employer;
 import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.enums.Currency;
+import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.Language;
 import net.iaeste.iws.api.enums.Membership;
 import net.iaeste.iws.api.enums.exchange.ExchangeType;
@@ -195,8 +196,19 @@ public final class TestData {
         employer.setCanteen(EMPLOYER_CANTEEN);
         employer.setNearestAirport(EMPLOYER_NEAREAST_AIRPORT);
         employer.setNearestPublicTransport(EMPLOYER_NEAREST_PUBLIC_TRANSPORT);
+        employer.setGroup(prepareGroup(countryCode));
 
         return employer;
+    }
+
+    private static Group prepareGroup(final String countryCode) {
+        final Group group = new Group();
+
+        group.setGroupType(GroupType.NATIONAL);
+        group.setCountry(prepareCountry(countryCode));
+        group.setGroupName(group.getCountry().getCountryName());
+
+        return group;
     }
 
     public static Address prepareAddress(final String countryCode) {

@@ -21,12 +21,9 @@ import static net.iaeste.iws.api.constants.exchange.IWSExchangeConstants.REFNO_P
 
 import net.iaeste.iws.api.constants.IWSConstants;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;

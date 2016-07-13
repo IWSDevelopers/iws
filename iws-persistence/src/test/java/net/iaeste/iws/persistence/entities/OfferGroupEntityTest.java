@@ -27,29 +27,23 @@ import net.iaeste.iws.api.enums.exchange.LanguageLevel;
 import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.api.enums.exchange.StudyLevel;
 import net.iaeste.iws.common.configuration.Settings;
-import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.ExchangeDao;
 import net.iaeste.iws.persistence.entities.exchange.EmployerEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity;
-import net.iaeste.iws.persistence.jpa.AccessJpaDao;
 import net.iaeste.iws.persistence.jpa.ExchangeJpaDao;
 import net.iaeste.iws.persistence.setup.SpringConfig;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 /**
@@ -60,7 +54,7 @@ import java.util.UUID;
  * @since   IWS 1.0
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = { SpringConfig.class })
+@ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = SpringConfig.class)
 public class OfferGroupEntityTest {
 
     private static final String REF_NO = "AT-2012-1234-AB";
@@ -88,11 +82,10 @@ public class OfferGroupEntityTest {
     public void before() {
         final Settings settings = new Settings();
         offerDao = new ExchangeJpaDao(entityManager, settings);
-        final AccessDao accessDao = new AccessJpaDao(entityManager, settings);
 
         offer = getMinimalOffer();
         final AuthenticationToken token = new AuthenticationToken();
-        final UserEntity user = accessDao.findActiveUserByUsername("austria@iaeste.at");
+        final UserEntity user = null;
         final GroupEntity group = null;
         authentication = new Authentication(token, user, group, UUID.randomUUID().toString());
     }
@@ -102,43 +95,6 @@ public class OfferGroupEntityTest {
         final OfferGroupEntity offerGroupEntity = new OfferGroupEntity();
 
         assertThat(offerGroupEntity.getStatus(), is(OfferState.SHARED));
-    }
-
-    @Test
-    @Transactional
-    @Ignore("Ignored 2013-10-15 by Kim - Reason: The test is using hardcoded Id's, which is bad.")
-    public void testFindGroupsForSharedOffer() {
-        assertThat(offerDao.findAllOffers(authentication).size(), is(0));
-        offerDao.persist(authentication, offer);
-
-        assertThat(offerDao.findAllOffers(authentication).size(), is(1));
-        final List<String> externalIds = new ArrayList<>(1);
-        externalIds.add(GROUP_EXTERNAL_ID);
-        externalIds.add(GROUP_EXTERNAL_ID_2);
-
-        assertThat(offerDao.findInfoForSharedOffer(offer.getId()).size(), is(0));
-        assertThat(offerDao.findInfoForSharedOffer(offer.getExternalId()).size(), is(0));
-
-        final List<GroupEntity> groups = offerDao.findGroupByExternalIds(externalIds);
-        assertThat(groups.size(), is(2));
-
-        offerDao.persist(new OfferGroupEntity(offer, groups.get(0)));
-        offerDao.persist(new OfferGroupEntity(offer, groups.get(1)));
-
-        assertThat(offerDao.findInfoForSharedOffer(offer.getId()).size(), is(2));
-        assertThat(offerDao.findInfoForSharedOffer(offer.getExternalId()).size(), is(2));
-
-        offerDao.unshareFromAllGroups(offer.getId());
-        assertThat(offerDao.findInfoForSharedOffer(offer.getId()).size(), is(0));
-
-        offerDao.persist(new OfferGroupEntity(offer, groups.get(0)));
-        offerDao.persist(new OfferGroupEntity(offer, groups.get(1)));
-        assertThat(offerDao.findInfoForSharedOffer(offer.getId()).size(), is(2));
-
-        final List<Long> groupIdsToUnshare = new ArrayList<>(1);
-        groupIdsToUnshare.add(groups.get(0).getId());
-        offerDao.unshareFromGroups(offer.getId(), groupIdsToUnshare);
-        assertThat(offerDao.findInfoForSharedOffer(offer.getId()).size(), is(1));
     }
 
     private static OfferEntity getMinimalOffer() {

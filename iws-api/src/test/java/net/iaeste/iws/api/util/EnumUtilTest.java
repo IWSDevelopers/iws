@@ -27,7 +27,6 @@ import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.Language;
 import net.iaeste.iws.api.enums.MonitoringLevel;
 import net.iaeste.iws.api.enums.NotificationFrequency;
-import net.iaeste.iws.api.enums.StorageType;
 import net.iaeste.iws.api.enums.UserType;
 import net.iaeste.iws.api.enums.exchange.ExchangeType;
 import net.iaeste.iws.api.enums.exchange.FieldOfStudy;
@@ -164,14 +163,6 @@ public final class EnumUtilTest {
         for (final Specialization type : Specialization.values()) {
             assertThat(EnumUtil.valueOf(Specialization.class, type.name()), is(type));
             assertThat(EnumUtil.valueOf(Specialization.class, type.getDescription()), is(type));
-        }
-    }
-
-    @Test
-    public void testEnumUtilOnStorageType() {
-        for (final StorageType type : StorageType.values()) {
-            assertThat(EnumUtil.valueOf(StorageType.class, type.name()), is(type));
-            assertThat(EnumUtil.valueOf(StorageType.class, type.getDescription()), is(type));
         }
     }
 

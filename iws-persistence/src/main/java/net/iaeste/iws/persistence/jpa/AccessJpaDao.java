@@ -72,7 +72,7 @@ public final class AccessJpaDao extends BasicJpaDao implements AccessDao {
         final Query query = entityManager.createNamedQuery("user.findActiveByUserName");
         query.setParameter("username", username);
 
-        return findSingleResult(query, "User");
+        return findUniqueResult(query, "User");
     }
 
     /**

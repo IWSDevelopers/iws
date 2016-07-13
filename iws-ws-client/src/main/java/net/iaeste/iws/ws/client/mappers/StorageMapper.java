@@ -18,7 +18,6 @@
 package net.iaeste.iws.ws.client.mappers;
 
 import net.iaeste.iws.api.dtos.Folder;
-import net.iaeste.iws.api.enums.StorageType;
 import net.iaeste.iws.api.requests.FetchFileRequest;
 import net.iaeste.iws.api.requests.FetchFolderRequest;
 import net.iaeste.iws.api.requests.FileRequest;
@@ -27,6 +26,7 @@ import net.iaeste.iws.api.responses.FetchFileResponse;
 import net.iaeste.iws.api.responses.FetchFolderResponse;
 import net.iaeste.iws.api.responses.FileResponse;
 import net.iaeste.iws.api.responses.FolderResponse;
+import net.iaeste.iws.ws.StorageType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -100,7 +100,6 @@ public final class StorageMapper extends CommonMapper {
 
             ws.setAction(map(api.getAction()));
             ws.setFile(map(api.getFile()));
-            ws.setType(map(api.getType()));
         }
 
         return ws;
@@ -126,8 +125,6 @@ public final class StorageMapper extends CommonMapper {
 
             ws.setFileId(api.getFileId());
             ws.setGroupId(api.getGroupId());
-//            ws.setType(map(api.getType()));
-//            ws.setReadFileData(api.getReadFileData());
         }
 
         return ws;

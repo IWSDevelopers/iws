@@ -82,7 +82,7 @@ final class CSVTransformer {
 
         if ((value != null) && !value.isEmpty()) {
             try {
-                final Integer number = Integer.parseInt(value);
+                final Integer number = Integer.valueOf(value);
                 invokeMethodOnObject(errors, obj, field, number);
             } catch (NumberFormatException e) {
                 LOG.debug(e.getMessage(), e);
@@ -110,7 +110,7 @@ final class CSVTransformer {
 
         if ((value != null) && !value.isEmpty()) {
             try {
-                final Float number = Float.parseFloat(value);
+                final Float number = Float.valueOf(value);
                 invokeMethodOnObject(errors, obj, field, number);
             } catch (NumberFormatException e) {
                 LOG.debug(e.getMessage(), e);

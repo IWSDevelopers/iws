@@ -30,10 +30,10 @@ import net.iaeste.iws.api.dtos.Person;
 import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.MailReply;
-import net.iaeste.iws.api.enums.StorageType;
 import net.iaeste.iws.api.enums.exchange.LanguageLevel;
 import net.iaeste.iws.api.enums.exchange.LanguageOperator;
 import net.iaeste.iws.api.exceptions.IWSException;
+import net.iaeste.iws.api.requests.FileRequest;
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.common.exceptions.AuthorizationException;
 import net.iaeste.iws.common.utils.HashcodeGenerator;
@@ -485,13 +485,8 @@ public class CommonService<T extends BasicDao> {
         return entity;
     }
 
-    void deleteFile(final Authentication authentication, final File file, final StorageType type) {
-        final FileEntity entity;
-        if (type == StorageType.ATTACHED_TO_APPLICATION) {
-            entity = dao.findAttachedFileByUserAndExternalId(authentication.getGroup(), file.getFileId());
-        } else {
-            entity = dao.findFileByUserAndExternalId(authentication.getUser(), file.getFileId());
-        }
+    void deleteFile(final Authentication authentication, final FileRequest request) {
+        final FileEntity entity = dao.findFileByUserAndExternalId(authentication.getUser(), request.getFile().getFileId());
 
         if (entity != null) {
             final String filename = entity.getFilename();

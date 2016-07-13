@@ -328,6 +328,8 @@ public final class StorageService extends CommonService<StorageDao> {
         for (final UserGroupEntity userGroup : dao.findAllUserGroups(authentication.getUser())) {
             if (userGroup.getGroup().getId().equals(folderGroup.getId())) {
                 groupMember = true;
+                // Our work is done, we found the member - let's move on
+                break;
             }
         }
 
@@ -346,7 +348,7 @@ public final class StorageService extends CommonService<StorageDao> {
         final FileResponse response;
 
         if (request.getAction() == Action.DELETE) {
-            deleteFile(authentication, request.getFile(), request.getType());
+            deleteFile(authentication, request);
             response = new FileResponse();
         } else {
             final String folderId = request.getFile().getFolderId();
@@ -450,6 +452,8 @@ public final class StorageService extends CommonService<StorageDao> {
             for (final UserGroupEntity u2g : u2gList) {
                 if (u2g.getGroup().getId().equals(entity.getGroup().getId())) {
                     file = entity;
+                    // Our work is done, we found the Group - let's move on
+                    break;
                 }
             }
 

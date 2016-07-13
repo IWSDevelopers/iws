@@ -134,7 +134,7 @@ public final class Offer extends Verifications {
     @XmlElement(required = true, nillable = true)  private DateTime shared = null;
 
     // custom flag used by the FE to hide irrelevant offers
-    @XmlElement(required = true, nillable = true)  private Boolean hidden = false;
+    @XmlElement(required = true, nillable = true)  private Boolean hidden = Boolean.FALSE;
 
     // =========================================================================
     // Object Constructors
@@ -836,7 +836,7 @@ public final class Offer extends Verifications {
         return shared;
     }
 
-    public void setHidden(final boolean hidden) {
+    public void setHidden(final Boolean hidden) {
         this.hidden = hidden;
     }
 

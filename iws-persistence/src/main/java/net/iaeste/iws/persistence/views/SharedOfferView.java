@@ -180,6 +180,14 @@ public final class SharedOfferView implements IWSView {
      * {@inheritDoc}
      */
     @Override
+    public Transfomer getTransformer() {
+        return Transfomer.SHAREDOFFER;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public boolean equals(final Object obj) {
         if (this == obj) {
             return true;

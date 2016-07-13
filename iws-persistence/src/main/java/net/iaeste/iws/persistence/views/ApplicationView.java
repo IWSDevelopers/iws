@@ -194,6 +194,14 @@ public final class ApplicationView implements IWSView {
      * {@inheritDoc}
      */
     @Override
+    public Transfomer getTransformer() {
+        return Transfomer.DEFAULT;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public boolean equals(final Object obj) {
         if (this == obj) {
             return true;

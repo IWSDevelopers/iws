@@ -270,12 +270,13 @@ public final class ViewTransformer {
      * @return Transformed list of Objects
      */
     public static <V extends IWSView> List<Object> transformOfferToObjectList(final V view, final OfferFields.Type type) {
+        final IWSView.Transfomer transformer = view.getTransformer();
         final List<Object> result;
 
-        if (view instanceof OfferView) {
+        if (transformer == IWSView.Transfomer.OFFER) {
             final OfferView offer = (OfferView) view;
             result = transformOfferToList(offer, type);
-        } else if (view instanceof SharedOfferView) {
+        } else if (transformer == IWSView.Transfomer.SHAREDOFFER) {
             final SharedOfferView offer = (SharedOfferView) view;
             result = transformToStringList(offer, type);
         } else {

@@ -26,7 +26,6 @@ import net.iaeste.iws.api.responses.FetchFileResponse;
 import net.iaeste.iws.api.responses.FetchFolderResponse;
 import net.iaeste.iws.api.responses.FileResponse;
 import net.iaeste.iws.api.responses.FolderResponse;
-import net.iaeste.iws.ws.StorageType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -216,9 +215,5 @@ public final class StorageMapper extends CommonMapper {
         }
 
         return ws;
-    }
-
-    private static net.iaeste.iws.ws.StorageType map(final StorageType api) {
-        return (api != null) ? net.iaeste.iws.ws.StorageType.valueOf(api.name()) : null;
     }
 }

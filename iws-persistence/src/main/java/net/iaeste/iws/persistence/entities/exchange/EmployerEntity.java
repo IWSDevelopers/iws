@@ -90,19 +90,19 @@ public final class EmployerEntity extends AbstractUpdateable<EmployerEntity> imp
     private GroupEntity group = null;
 
     @Monitored(name="Employer name", level = MonitoringLevel.DETAILED)
-    @Column(name = "name", length = 255, nullable = false)
+    @Column(name = "name", nullable = false)
     private String name = null;
 
     @Monitored(name="Employer department", level = MonitoringLevel.DETAILED)
-    @Column(name = "department", length = 255, nullable = false)
+    @Column(name = "department", nullable = false)
     private String department = "";
 
     @Monitored(name="Employer business", level = MonitoringLevel.DETAILED)
-    @Column(name = "business", length = 255)
+    @Column(name = "business")
     private String business = null;
 
     @Monitored(name="Employer working place", level = MonitoringLevel.DETAILED)
-    @Column(name = "working_place", length = 255, nullable = false)
+    @Column(name = "working_place", nullable = false)
     private String workingPlace = "";
 
     @ManyToOne(targetEntity = AddressEntity.class)
@@ -114,19 +114,19 @@ public final class EmployerEntity extends AbstractUpdateable<EmployerEntity> imp
     private String numberOfEmployees = null;
 
     @Monitored(name="Employer website", level = MonitoringLevel.DETAILED)
-    @Column(name = "website", length = 255)
+    @Column(name = "website")
     private String website = null;
 
     @Monitored(name="Employer canteen", level = MonitoringLevel.DETAILED)
-    @Column(name = "canteen", length = 255)
-    private Boolean canteen = false;
+    @Column(name = "canteen")
+    private Boolean canteen = Boolean.FALSE;
 
     @Monitored(name="Employer nearest airport", level = MonitoringLevel.DETAILED)
-    @Column(name = "nearest_airport", length = 255)
+    @Column(name = "nearest_airport")
     private String nearestAirport = null;
 
     @Monitored(name="Employer nearest public transport", level = MonitoringLevel.DETAILED)
-    @Column(name = "nearest_public_transport", length = 255)
+    @Column(name = "nearest_public_transport")
     private String nearestPublicTransport = null;
 
     /**

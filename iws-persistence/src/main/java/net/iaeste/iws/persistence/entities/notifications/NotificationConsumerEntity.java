@@ -84,7 +84,7 @@ public final class NotificationConsumerEntity implements IWSEntity {
      * Is activate - do we want to load this consumer?
      */
     @Column(name = "active")
-    private Boolean active = false;
+    private Boolean active = Boolean.FALSE;
 
     /**
      * Timestamp when the Entity was modified.

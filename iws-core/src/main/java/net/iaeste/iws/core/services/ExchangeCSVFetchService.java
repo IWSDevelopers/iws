@@ -54,12 +54,28 @@ public final class ExchangeCSVFetchService extends CommonCSVService<ExchangeDao>
 
     private final ViewsDao viewsDao;
 
+    /**
+     * Default Constructor.
+     *
+     * @param settings IWS Settings
+     * @param dao      Exchange DAO to use for the processing
+     * @param viewsDao Views DAO to read data via Database Views
+     */
     public ExchangeCSVFetchService(final Settings settings, final ExchangeDao dao, final ViewsDao viewsDao) {
         super(settings, dao);
 
         this.viewsDao = viewsDao;
     }
 
+    /**
+     * Primary implementation of the Offer Download, which will result in a
+     * list of either Domestic or Shared offers, depending on the request
+     * details.
+     *
+     * @param authentication User Authentication Information
+     * @param request        Request Object
+     * @return Response Object
+     */
     public OfferCSVDownloadResponse downloadOffers(final Authentication authentication, final FetchOffersRequest request) {
         final OfferCSVDownloadResponse response = new OfferCSVDownloadResponse();
         switch (request.getFetchType()) {

@@ -34,6 +34,16 @@ package net.iaeste.iws.persistence.views;
 public interface IWSView {
 
     /**
+     * The transformation of a View to an Entity ot DTO may have to be done via
+     * a different process, rather than using an InstanceOf to handle this, it
+     * should be done by a process controlled within the Views. This method will
+     * return the desired Transformation Process to be used.
+     *
+     * @return Preferable Transformation Method
+     */
+    Transfomer getTransformer();
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -44,4 +54,16 @@ public interface IWSView {
      */
     @Override
     int hashCode();
+
+    /**
+     * For the Transformation of the Views to other Objects, different
+     * transformation methods may be needed. This enum is present to let the
+     * individual views determine this themselves and then leave it to the
+     * Transformation Process to deal with the actual implementation.
+     */
+    enum Transfomer {
+        DEFAULT,
+        OFFER,
+        SHAREDOFFER
+    }
 }

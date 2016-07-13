@@ -49,9 +49,9 @@ public final class Group extends Verifications {
     @XmlElement(required = true)                   private String groupName = null;
     @XmlElement(required = true, nillable = true)  private String fullName = null;
     @XmlElement(required = true, nillable = true)  private String listName = null;
-    @XmlElement(required = true)                   private Boolean privateList = true;
+    @XmlElement(required = true)                   private Boolean privateList = Boolean.TRUE;
     @XmlElement(required = true)                   private MailReply privateListReplyTo = MailReply.REPLY_TO_LIST;
-    @XmlElement(required = true)                   private Boolean publicList = true;
+    @XmlElement(required = true)                   private Boolean publicList = Boolean.TRUE;
     @XmlElement(required = true)                   private MailReply publicListReplyTo = MailReply.REPLY_TO_SENDER;
     @XmlElement(required = true)                   private GroupType groupType = null;
     @XmlElement(required = true, nillable = true)  private String description = null;

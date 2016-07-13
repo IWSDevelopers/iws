@@ -53,8 +53,8 @@ public final class Person extends Verifications {
     @XmlElement(required = true, nillable = true) private String fax = null;
     @XmlElement(required = true, nillable = true) private Date birthday = null;
     @XmlElement(required = true, nillable = true) private Gender gender = null;
-    @XmlElement(required = true, nillable = true) private Boolean understoodPrivacySettings = false;
-    @XmlElement(required = true, nillable = true) private Boolean acceptNewsletters = true;
+    @XmlElement(required = true, nillable = true) private Boolean understoodPrivacySettings = Boolean.FALSE;
+    @XmlElement(required = true, nillable = true) private Boolean acceptNewsletters = Boolean.TRUE;
 
     // =========================================================================
     // Object Constructors

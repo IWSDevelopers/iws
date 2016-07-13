@@ -219,8 +219,8 @@ public enum GroupType implements Descriptable<GroupType> {
 
     private final String description;
     private final WhoMayJoin whoMayJoin;
-    private final Boolean mayHavePrivateMailinglist;
-    private final Boolean mayHavePublicMailinglist;
+    private final boolean mayHavePrivateMailinglist;
+    private final boolean mayHavePublicMailinglist;
     private final FolderType folderType;
 
     /**
@@ -241,7 +241,7 @@ public enum GroupType implements Descriptable<GroupType> {
      * @param mayHavePublicMailinglist  May this GroupType have public lists
      * @param folderType                What type of folder the GroupType allows
      */
-    GroupType(final String description, final WhoMayJoin whoMayJoin, final Boolean mayHavePrivateMailinglist, final Boolean mayHavePublicMailinglist, final FolderType folderType) {
+    GroupType(final String description, final WhoMayJoin whoMayJoin, final boolean mayHavePrivateMailinglist, final boolean mayHavePublicMailinglist, final FolderType folderType) {
         this.description = description;
         this.whoMayJoin = whoMayJoin;
         this.mayHavePrivateMailinglist = mayHavePrivateMailinglist;
@@ -261,11 +261,11 @@ public enum GroupType implements Descriptable<GroupType> {
         return whoMayJoin;
     }
 
-    public Boolean getMayHavePrivateMailinglist() {
+    public boolean getMayHavePrivateMailinglist() {
         return mayHavePrivateMailinglist;
     }
 
-    public Boolean getMayHavePublicMailinglist() {
+    public boolean getMayHavePublicMailinglist() {
         return mayHavePublicMailinglist;
     }
 

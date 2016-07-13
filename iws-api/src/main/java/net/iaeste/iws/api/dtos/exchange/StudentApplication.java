@@ -95,7 +95,7 @@ public final class StudentApplication extends Verifications {
     @XmlElement(required = true, nillable = true) private Gender gender = null;
     @XmlElement(required = true, nillable = true) private Integer completedYearsOfStudy = null;
     @XmlElement(required = true, nillable = true) private Integer totalYearsOfStudy = null;
-    @XmlElement(required = true, nillable = true) private Boolean lodgingByIaeste = false;
+    @XmlElement(required = true, nillable = true) private Boolean lodgingByIaeste = Boolean.FALSE;
 
     // Language is already part of the Student Object
     @XmlElement(required = true, nillable = true) private Language language1 = null;

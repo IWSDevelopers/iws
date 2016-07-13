@@ -78,6 +78,13 @@ public final class AccountService extends CommonService<AccessDao> {
     private static final Logger LOG = LoggerFactory.getLogger(AccountService.class);
     private final Notifications notifications;
 
+    /**
+     * Default Constructor.
+     *
+     * @param settings      IWS Settings
+     * @param dao           Access DAO
+     * @param notifications Notifications
+     */
     public AccountService(final Settings settings, final AccessDao dao, final Notifications notifications) {
         super(settings, dao);
 
@@ -108,6 +115,14 @@ public final class AccountService extends CommonService<AccessDao> {
         return new CreateUserResponse(transform(user));
     }
 
+    /**
+     * Creates a new Student In the IWS.
+     *
+     * @param authentication User Authentication Information
+     * @param request        Create User Request, used for Student creation
+     * @return Response Object with new Student
+     * @throws IWSException if an error occurred
+     */
     public CreateUserResponse createStudent(final Authentication authentication, final CreateUserRequest request) {
         final UserEntity user = createStudentAccount(authentication, request);
         return new CreateUserResponse(transform(user));
@@ -184,16 +199,16 @@ public final class AccountService extends CommonService<AccessDao> {
         return username;
     }
 
-    private void addUserToGroup(final UserEntity user, final GroupEntity group, final RoleEntity role, final Boolean isStudent) {
+    private void addUserToGroup(final UserEntity user, final GroupEntity group, final RoleEntity role, final boolean isStudent) {
         final UserGroupEntity userGroup = new UserGroupEntity(user, group, role);
 
         // By default, users are not allowed to be on neither the public nor
         // private mailing lists. We're therefore checking if it is a Student
         // account we're generating and forcing an update accordingly
         if (isStudent) {
-            userGroup.setOnPublicList(false);
-            userGroup.setOnPrivateList(false);
-            userGroup.setWriteToPrivateList(false);
+            userGroup.setOnPublicList(Boolean.FALSE);
+            userGroup.setOnPrivateList(Boolean.FALSE);
+            userGroup.setWriteToPrivateList(Boolean.FALSE);
         }
 
         dao.persist(userGroup);
@@ -376,10 +391,27 @@ public final class AccountService extends CommonService<AccessDao> {
         return new FetchUserResponse(user);
     }
 
+    /**
+     * Processes a Customized Role for a Group. If the Role is not yet present
+     * in the IWS Database, a new one is created otherwise the existing is
+     * updated.
+     *
+     * @param authentication User Authentication Information
+     * @param request        Request Object with information about the Role
+     * @return Response Object with the newly processed Role
+     * @throws IWSException if an error occurred
+     */
     public ProcessRoleResponse processRole(final Authentication authentication, final RoleRequest request) {
         throw new NotImplementedException("Not yet implemented.");
     }
 
+    /**
+     * Retrieves the Roles which the requesting User may use or has access to.
+     *
+     * @param authentication User Authentication Information
+     * @return Response Object with all the Roles present
+     * @throws IWSException if an error occurred
+     */
     public FetchRoleResponse fetchRoles(final Authentication authentication) {
         final List<PermissionRoleEntity> entities = dao.findRoles(authentication.getGroup());
         final Map<Long, Set<Permission>> permissions = readPermissionMap(entities);
@@ -600,6 +632,7 @@ public final class AccountService extends CommonService<AccessDao> {
      * prevent others from taking over ownership of this Group.
      *
      * @param authentication User that is invoking the request
+     * @param user           User to delete private data for
      */
     public void deletePrivateData(final Authentication authentication, final UserEntity user) {
         final List<UserGroupEntity> groupRelations = findGroupRelationsForDeletion(user);

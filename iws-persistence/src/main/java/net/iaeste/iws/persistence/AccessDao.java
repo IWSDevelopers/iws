@@ -235,6 +235,14 @@ public interface AccessDao extends BasicDao {
 
     UserGroupEntity findByGroupAndExternalUserId(GroupEntity group, String externalUserId);
 
+    /**
+     * Finds the User Group relation for a given Group &amp; User. If none is
+     * found, then a null is returned.
+     *
+     * @param group Group to find the User Group relation for
+     * @param user  User to find the User Group relation for
+     * @return Found User Group relation or null if nothing was found
+     */
     UserGroupEntity findByGroupAndUser(GroupEntity group, UserEntity user);
 
     GroupTypeEntity findGroupTypeByType(GroupType groupType);

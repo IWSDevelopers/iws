@@ -359,6 +359,10 @@ public final class GroupService {
      */
     private void changeGroupOwner(final Authentication authentication, final UserEntity user, final GroupEntity group, final String title) {
         final UserGroupEntity oldOwner = dao.findByGroupAndUser(group, authentication.getUser());
+        if (oldOwner == null) {
+            LOG.error("Data Inconsistency Problem detected, there is no Owner found for the Group {}.", group);
+            throw new IWSException(IWSErrors.FATAL, "A problem with data inconsistency was detected, please contact the IWS Administrators.");
+        }
         final UserGroupEntity newOwner;
 
         // Check if the person already is a member of the Group, if not then

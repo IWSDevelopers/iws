@@ -735,6 +735,6 @@ public final class AccessJpaDao extends BasicJpaDao implements AccessDao {
             throw new AuthenticationException("Multiple " + entityName + "s were found.");
         }
 
-        return super.findUniqueResult(query, entityName);
+        return found.get(0);
     }
 }

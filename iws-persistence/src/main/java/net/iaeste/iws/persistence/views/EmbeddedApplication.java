@@ -71,7 +71,7 @@ public final class EmbeddedApplication {
     private Integer totalYearsOfStudy = null;
 
     @Column(name = "application_lodging_by_iaeste", insertable = false, updatable = false)
-    private Boolean lodgingByIaeste = false;
+    private Boolean lodgingByIaeste = Boolean.FALSE;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "application_language_1", insertable = false, updatable = false)

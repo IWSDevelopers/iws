@@ -78,7 +78,7 @@ public final class NotificationJpaDao extends BasicJpaDao implements Notificatio
     @Override
     public List<NotificationConsumerEntity> findActiveNotificationConsumers() {
         final Query query = entityManager.createNamedQuery("notifications.findConsumersByActive");
-        query.setParameter("active", true);
+        query.setParameter("active", Boolean.TRUE);
 
         return query.getResultList();
     }
@@ -89,7 +89,7 @@ public final class NotificationJpaDao extends BasicJpaDao implements Notificatio
     @Override
     public List<NotificationJobEntity> findUnprocessedNotificationJobs(final Date date) {
         final Query query = entityManager.createNamedQuery("notifications.findJobsByNotifiedAndDate");
-        query.setParameter("notified", false);
+        query.setParameter("notified", Boolean.FALSE);
         query.setParameter("date", date);
 
         return query.getResultList();

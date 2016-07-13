@@ -106,6 +106,18 @@ public final class NotificationJobTasksView implements IWSView {
         return consumerId;
     }
 
+    // =========================================================================
+    // Standard View Methods
+    // =========================================================================
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Transfomer getTransformer() {
+        return Transfomer.DEFAULT;
+    }
+
     /**
      * {@inheritDoc}
      */

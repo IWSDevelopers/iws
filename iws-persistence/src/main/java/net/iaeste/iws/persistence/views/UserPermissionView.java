@@ -234,6 +234,18 @@ public final class UserPermissionView implements IWSView {
         return permission;
     }
 
+    // =========================================================================
+    // Standard View Methods
+    // =========================================================================
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Transfomer getTransformer() {
+        return Transfomer.DEFAULT;
+    }
+
     /**
      * {@inheritDoc}
      */

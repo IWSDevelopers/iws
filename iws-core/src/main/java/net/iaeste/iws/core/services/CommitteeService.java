@@ -338,7 +338,8 @@ public final class CommitteeService extends CommonService<CommitteeDao> {
             return dao.findUserGroupRelation(member, user);
         } catch (IdentificationException e) {
             // We're converting the Identification Exception here, since we
-            // have a more specific reason
+            // have a more specific reason. We're deliberately ignoring the
+            // caught Exception, since it will result in incorrect errors.
             LOG.debug("Converting Identification Exception to IllegalAction Exception: {}", e.getMessage(), e);
             throw new IllegalActionException("New National Secretary is not a member of the Committee.");
         }
@@ -810,9 +811,9 @@ public final class CommitteeService extends CommonService<CommitteeDao> {
         final UserGroupEntity userGroup = new UserGroupEntity();
         userGroup.setGroup(group);
         userGroup.setUser(user);
-        userGroup.setOnPublicList(true);
-        userGroup.setOnPrivateList(true);
-        userGroup.setWriteToPrivateList(true);
+        userGroup.setOnPublicList(Boolean.TRUE);
+        userGroup.setOnPrivateList(Boolean.TRUE);
+        userGroup.setWriteToPrivateList(Boolean.TRUE);
         userGroup.setRole(dao.findRole(InternalConstants.ROLE_OWNER));
         userGroup.setTitle(group.getGroupName() + " Coordinator");
 
@@ -823,6 +824,13 @@ public final class CommitteeService extends CommonService<CommitteeDao> {
     // Fetch & Process Survey of Country logic
     // =========================================================================
 
+    /**
+     * Fetch Survey of Countries.
+     *
+     * @param authentication User Authentication Information
+     * @param request        Request Object
+     * @return Response Object with the survey data.
+     */
     public FetchCountrySurveyResponse fetchCountrySurvey(final Authentication authentication, final FetchCountrySurveyRequest request) {
         LOG.debug("fetchCountrySurvey Request from '{}' with Request '{}'.", authentication, request);
         throw new NotImplementedException("Method pending implementation, see Trac #924.");

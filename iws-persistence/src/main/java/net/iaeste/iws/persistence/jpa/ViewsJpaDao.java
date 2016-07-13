@@ -239,7 +239,7 @@ public final class ViewsJpaDao extends BasicJpaDao implements ViewsDao {
      * @param retrieveCurrentAndNextExchangeYear Combine if true, otherwise not
      * @return List with either given Exchange Year or current + next
      */
-    private static List<Integer> prepareExchangeYears(final Integer exchangeYear, final Boolean retrieveCurrentAndNextExchangeYear) {
+    private static List<Integer> prepareExchangeYears(final Integer exchangeYear, final boolean retrieveCurrentAndNextExchangeYear) {
         final int currentYear = new Date().getCurrentYear();
         final List<Integer> years = new ArrayList<>(2);
 

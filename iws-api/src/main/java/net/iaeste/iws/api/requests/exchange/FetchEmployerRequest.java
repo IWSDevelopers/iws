@@ -42,12 +42,16 @@ public final class FetchEmployerRequest extends Paginatable {
 
     @XmlElement(required = true)                   private EmployerFetchType type = EmployerFetchType.ALL;
     @XmlElement(required = true, nillable = true)  private String field = null;
-    @XmlElement(required = true, nillable = true)  private Boolean fetchOfferReferenceNumbers = false;
+    @XmlElement(required = true, nillable = true)  private Boolean fetchOfferReferenceNumbers = Boolean.FALSE;
 
     // =========================================================================
     // Standard Setters & Getters
     // =========================================================================
 
+    /**
+     * Sets the FetchType to ALL, meaning that ALL Employers should be
+     * retrieved.
+     */
     public void setFetchAll() {
         this.type = EmployerFetchType.ALL;
         this.field = null;

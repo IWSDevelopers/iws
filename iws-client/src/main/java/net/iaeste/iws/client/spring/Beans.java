@@ -54,7 +54,7 @@ public class Beans {
     private static final Integer MAX_LOGIN_RETRIES = InternalConstants.MAX_LOGIN_RETRIES;
     private static final long LOGIN_BLOCKED_TIME = InternalConstants.LOGIN_BLOCKING_PERIOD;
 
-    private static final Boolean USE_INMEMORY_DATABASE = true;
+    private static final boolean USE_INMEMORY_DATABASE = true;
 
     // Internal Settings, which we can reuse to control the behaviour of IWS
     // from the tests.
@@ -112,6 +112,11 @@ public class Beans {
         return properties;
     }
 
+    /**
+     * Prepares a Transaction Manager.
+     *
+     * @return New Transaction Manager instance
+     */
     @Bean(name = "transactionManager")
     public PlatformTransactionManager transactionManager() {
         final JpaTransactionManager transactionManager = new JpaTransactionManager();
@@ -120,6 +125,11 @@ public class Beans {
         return transactionManager;
     }
 
+    /**
+     * Prepares a set of IWS Settings, with default settings for testing.
+     *
+     * @return IWS Settings for testing
+     */
     public static Settings settings() {
         synchronized (LOCK) {
             if (settings == null) {

@@ -169,6 +169,14 @@ public final class OfferView implements IWSView {
      * {@inheritDoc}
      */
     @Override
+    public Transfomer getTransformer() {
+        return Transfomer.OFFER;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public boolean equals(final Object obj) {
         if (this == obj) {
             return true;

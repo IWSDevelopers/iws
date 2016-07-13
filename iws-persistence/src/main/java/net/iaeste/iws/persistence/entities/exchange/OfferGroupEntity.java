@@ -156,10 +156,10 @@ public final class OfferGroupEntity extends AbstractUpdateable<OfferGroupEntity>
     private OfferState status = OfferState.SHARED;
 
     @Column(name = "has_application")
-    private Boolean hasApplication = false;
+    private Boolean hasApplication = Boolean.FALSE;
 
     @Column(name = "hidden")
-    private Boolean hidden = false;
+    private Boolean hidden = Boolean.FALSE;
 
     @ManyToOne(targetEntity = UserEntity.class)
     @JoinColumn(name = "modified_by", referencedColumnName = "id", nullable = false)

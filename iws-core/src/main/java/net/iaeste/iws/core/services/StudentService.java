@@ -323,11 +323,12 @@ public final class StudentService extends CommonService<StudentDao> {
         }
 
         final GroupEntity nationalGroup = accessDao.findNationalGroup(authentication.getUser());
-        final OfferEntity offer = found.getOfferGroup().getOffer();
 
         if (nationalGroup == null) {
             throw new IWSException(IWSErrors.OBJECT_IDENTIFICATION_ERROR, "No National Group was found for the User.");
         }
+
+        final OfferEntity offer = found.getOfferGroup().getOffer();
 
         if (found.getOfferGroup().getGroup().getId().equals(nationalGroup.getId())) {
             //application owner

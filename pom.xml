@@ -220,7 +220,9 @@
         <profile>
             <id>coverage</id>
             <properties>
-                <sonar.host.url>http://localhost:9000</sonar.host.url>
+                <!-- To integrate testing with SonarQube.com, the key & host
+                     for the server must be given via "-Dsonar..." options -->
+                <!--<sonar.host.url>http://localhost:9000</sonar.host.url>-->
                 <sonar.language>java</sonar.language>
                 <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
 

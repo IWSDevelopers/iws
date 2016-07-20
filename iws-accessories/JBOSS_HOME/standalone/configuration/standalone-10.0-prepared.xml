@@ -107,6 +107,13 @@
             <logger category="com.arjuna">
                 <level name="WARN"/>
             </logger>
+            <logger category="org.hibernate.dialect.function.TemplateRenderer">
+                <!-- Hibernate is constantly writing warning messages in the
+                     log, when starting up, as the function template expected
+                     4 arguments, but only 3 was given. The function allow 3
+                     values, so this warning is annoying. -->
+                <level name="ERROR"/>
+            </logger>
             <logger category="org.jboss.as.config">
                 <level name="DEBUG"/>
             </logger>

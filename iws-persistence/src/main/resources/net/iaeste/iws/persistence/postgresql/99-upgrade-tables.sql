@@ -13,7 +13,8 @@ insert into versions (db_version, iws_version) values (9, '1.2.0');
 -- =============================================================================
 -- Issue #2: Storage
 -- =============================================================================
-alter table users alter column private_date set default 'PROTECTED';
+alter table users alter column private_data set default 'PROTECTED';
+update users set private_data = 'PROTECTED';
 update grouptypes set folder_type = 'PROTECTED' where folder_type = 'PRIVATE';
 
 
@@ -53,7 +54,7 @@ update permissions set restricted = false where id in (101, 111, 121, 202);
 select max(id) + 1 as restart_value from student_applications;
 
 -- The input from this, must be taken and used in the following, the default is
--- the value which was present at the latest available snapshot (2016-05-30):
+-- the value which was present at the latest available snapshot (2016-07-18):
 alter sequence student_application_sequence restart with 52607;
 -- =============================================================================
 

@@ -42,6 +42,7 @@ import net.iaeste.iws.api.requests.SearchUserRequest;
 import net.iaeste.iws.api.requests.UserRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentsRequest;
 import net.iaeste.iws.api.responses.CreateUserResponse;
+import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchPermissionResponse;
 import net.iaeste.iws.api.responses.FetchRoleResponse;
@@ -53,6 +54,7 @@ import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.client.StudentClient;
 import net.iaeste.iws.common.notification.NotificationField;
 import net.iaeste.iws.common.notification.NotificationType;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -154,6 +156,22 @@ public final class UserAccountTest extends AbstractAdministration {
         final FetchUserResponse fetchResponse = administration.fetchUser(token, fetchRequest);
         assertThat(fetchResponse.isOk(), is(true));
         assertThat(fetchResponse.getUser().getLastname(), is("Aaberg"));
+    }
+
+    /**
+     * From the Production logs on 2016-03-05, there is a problem with a user
+     * who have tried to change the username of an existing account to the same
+     * as is used for another account.
+     */
+    @Ignore("Test is not done yet")
+    @Test
+    public void testChangingUsernameToExisting() {
+        final UserRequest request = new UserRequest();
+        // We're currently logged in as Austria, so we're trying to change the
+        // username to Germany.
+        request.setNewUsername("germany@iaeste.de");
+        final FallibleResponse response = administration.controlUserAccount(token, request);
+        assertThat(response.getError(), is(IWSErrors.FATAL));
     }
 
     /**

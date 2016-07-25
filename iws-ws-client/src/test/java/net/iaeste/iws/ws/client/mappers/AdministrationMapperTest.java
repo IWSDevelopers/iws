@@ -64,6 +64,8 @@ import net.iaeste.iws.api.util.Page;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,6 +75,27 @@ import java.util.List;
  * @since   IWS 1.2
  */
 public final class AdministrationMapperTest {
+
+    /**
+     * <p>Private methods should never be tested, as they are part of an
+     * internal workflow. Classes should always be tested via their contract,
+     * i.e. public methods.</p>
+     *
+     * <p>However, for Utility Classes, with a Private Constructor, the contract
+     * disallows instantiation, so the constructor is thus not testable via
+     * normal means. This little Test method will just do that.</p>
+     */
+    @Test
+    public void testPrivateConstructor() {
+        try {
+            final Constructor<AdministrationMapper> constructor = AdministrationMapper.class.getDeclaredConstructor();
+            constructor.setAccessible(true);
+            final AdministrationMapper mapper = constructor.newInstance();
+            assertThat(mapper, is(not(nullValue())));
+        } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException | InstantiationException e) {
+            fail("Could not invoke Private Constructor: " + e.getMessage());
+        }
+    }
 
     @Test
     public void testNullFallibleResponse() {

@@ -54,6 +54,7 @@ import net.iaeste.iws.api.responses.exchange.OfferCSVUploadResponse;
 import net.iaeste.iws.api.responses.exchange.OfferResponse;
 import net.iaeste.iws.api.responses.exchange.OfferStatisticsResponse;
 import net.iaeste.iws.api.responses.exchange.PublishOfferResponse;
+import net.iaeste.iws.ws.CsvProcessingErrors;
 import net.iaeste.iws.ws.FieldDelimiter;
 import net.iaeste.iws.ws.Group;
 import net.iaeste.iws.ws.ProcessingResult;
@@ -77,6 +78,13 @@ public final class ExchangeMapper extends CommonMapper {
     private ExchangeMapper() {
     }
 
+    /**
+     * Mapping of the API OfferStatistics Request Object to the WebService SOAP
+     * Object.
+     *
+     * @param api API OfferStatistics Request Object
+     * @return WS OfferStatistics Request Object
+     */
     public static net.iaeste.iws.ws.OfferStatisticsRequest map(final OfferStatisticsRequest api) {
         net.iaeste.iws.ws.OfferStatisticsRequest ws = null;
 
@@ -89,6 +97,13 @@ public final class ExchangeMapper extends CommonMapper {
         return ws;
     }
 
+    /**
+     * Mapping of the WebService OfferStatistics Response Object to the API
+     * SOAP Object.
+     *
+     * @param ws WebService OfferStatistics Response Object
+     * @return API OfferStatistics Response Object
+     */
     public static OfferStatisticsResponse map(final net.iaeste.iws.ws.OfferStatisticsResponse ws) {
         OfferStatisticsResponse api = null;
 
@@ -115,6 +130,12 @@ public final class ExchangeMapper extends CommonMapper {
         return api;
     }
 
+    /**
+     * Mapping of the API Employer Request Object to the WebService SOAP Object.
+     *
+     * @param api API Employer Request Object
+     * @return WS Employer Request Object
+     */
     public static net.iaeste.iws.ws.EmployerRequest map(final EmployerRequest api) {
         net.iaeste.iws.ws.EmployerRequest ws = null;
 
@@ -128,6 +149,13 @@ public final class ExchangeMapper extends CommonMapper {
         return ws;
     }
 
+    /**
+     * Mapping of the WebService Employer Response Object to the API SOAP
+     * Object.
+     *
+     * @param ws WebService Employer Response Object
+     * @return API Employer Response Object
+     */
     public static EmployerResponse map(final net.iaeste.iws.ws.EmployerResponse ws) {
         EmployerResponse api = null;
 
@@ -140,12 +168,20 @@ public final class ExchangeMapper extends CommonMapper {
         return api;
     }
 
+    /**
+     * Mapping of the API FetchEmployer Request Object to the WebService SOAP
+     * Object.
+     *
+     * @param api API FetchEmployer Request Object
+     * @return WS FetchEmployer Request Object
+     */
     public static net.iaeste.iws.ws.FetchEmployerRequest map(final FetchEmployerRequest api) {
         net.iaeste.iws.ws.FetchEmployerRequest ws = null;
 
         if (api != null) {
             ws = new net.iaeste.iws.ws.FetchEmployerRequest();
 
+            ws.setPage(map(api.getPage()));
             ws.setType(map(api.getFetchType()));
             ws.setField(api.getFetchField());
             ws.setFetchOfferReferenceNumbers(api.getFetchOfferReferenceNumbers());
@@ -154,6 +190,13 @@ public final class ExchangeMapper extends CommonMapper {
         return ws;
     }
 
+    /**
+     * Mapping of the WebService FetchEmployer Response Object to the API SOAP
+     * Object.
+     *
+     * @param ws WebService FetchEmployer Response Object
+     * @return API FetchEmployer Response Object
+     */
     public static FetchEmployerResponse map(final net.iaeste.iws.ws.FetchEmployerResponse ws) {
         FetchEmployerResponse api = null;
 
@@ -171,12 +214,20 @@ public final class ExchangeMapper extends CommonMapper {
         return api;
     }
 
+    /**
+     * Mapping of the API FetchOffers Request Object to the WebService SOAP
+     * Object.
+     *
+     * @param api API FetchOffers Request Object
+     * @return WS Fetch Offers Request Object
+     */
     public static net.iaeste.iws.ws.FetchOffersRequest map(final FetchOffersRequest api) {
         net.iaeste.iws.ws.FetchOffersRequest ws = null;
 
         if (api != null) {
             ws = new net.iaeste.iws.ws.FetchOffersRequest();
 
+            ws.setPage(map(api.getPage()));
             ws.setFetchType(map(api.getFetchType()));
             ws.getIdentifiers().addAll(mapStringCollection(api.getIdentifiers()));
             ws.setExchangeYear(api.getExchangeYear());
@@ -187,6 +238,13 @@ public final class ExchangeMapper extends CommonMapper {
         return ws;
     }
 
+    /**
+     * Mapping of the WebService FetchOffers Response Object to the API SOAP
+     * Object.
+     *
+     * @param ws WebService FetchOffers Response Object
+     * @return API FetchOffers Response Object
+     */
     public static FetchOffersResponse map(final net.iaeste.iws.ws.FetchOffersResponse ws) {
         FetchOffersResponse api = null;
 
@@ -203,6 +261,12 @@ public final class ExchangeMapper extends CommonMapper {
         return api;
     }
 
+    /**
+     * Mapping of the API Offer Request Object to the WebService SOAP Object.
+     *
+     * @param api API Offer Request Object
+     * @return WS Offer Request Object
+     */
     public static net.iaeste.iws.ws.OfferRequest map(final OfferRequest api) {
         net.iaeste.iws.ws.OfferRequest ws = null;
 
@@ -217,6 +281,12 @@ public final class ExchangeMapper extends CommonMapper {
         return ws;
     }
 
+    /**
+     * Mapping of the WebService Offer Response Object to the API SOAP Object.
+     *
+     * @param ws WebService Offer Response Object
+     * @return API Offer Response Object
+     */
     public static OfferResponse map(final net.iaeste.iws.ws.OfferResponse ws) {
         OfferResponse api = null;
 
@@ -229,6 +299,13 @@ public final class ExchangeMapper extends CommonMapper {
         return api;
     }
 
+    /**
+     * Mapping of the API OfferCSVUpload Request Object to the WebService SOAP
+     * Object.
+     *
+     * @param api API OfferCSVUpload Request Object
+     * @return WS OfferCSVUpload Request Object
+     */
     public static net.iaeste.iws.ws.OfferCSVUploadRequest map(final OfferCSVUploadRequest api) {
         net.iaeste.iws.ws.OfferCSVUploadRequest ws = null;
 
@@ -242,6 +319,13 @@ public final class ExchangeMapper extends CommonMapper {
         return ws;
     }
 
+    /**
+     * Mapping of the WebService OfferCSVUpload Response Object to the API
+     * SOAP Object.
+     *
+     * @param ws WebService OfferCSVUpload Response Object
+     * @return API OfferCSVUpload Response Object
+     */
     public static OfferCSVUploadResponse map(final net.iaeste.iws.ws.OfferCSVUploadResponse ws) {
         OfferCSVUploadResponse api = null;
 
@@ -255,6 +339,13 @@ public final class ExchangeMapper extends CommonMapper {
         return api;
     }
 
+    /**
+     * Mapping of the WebService PublishOffer Response Object to the API SOAP
+     * Object.
+     *
+     * @param ws WebService PublishOffer Response Object
+     * @return API PublishOffer Response Object
+     */
     public static PublishOfferResponse map(final net.iaeste.iws.ws.PublishOfferResponse ws) {
         PublishOfferResponse api = null;
 
@@ -265,6 +356,13 @@ public final class ExchangeMapper extends CommonMapper {
         return api;
     }
 
+    /**
+     * Mapping an IWS API ProcessPublishingGroup Request to the WebService SOAP
+     * Object.
+     *
+     * @param api API ProcessPublishingGroup Request
+     * @return WS ProcessPublishingGroup Request
+     */
     public static net.iaeste.iws.ws.ProcessPublishingGroupRequest map(final ProcessPublishingGroupRequest api) {
         net.iaeste.iws.ws.ProcessPublishingGroupRequest ws = null;
 
@@ -279,6 +377,13 @@ public final class ExchangeMapper extends CommonMapper {
         return ws;
     }
 
+    /**
+     * Mapping of the WebService FetchGroupsForSharing Response Object to the
+     * API SOAP Object.
+     *
+     * @param ws WebService FetchGroupsForSharing Response Object
+     * @return API FetchGroupsForSharing Response Object
+     */
     public static FetchGroupsForSharingResponse map(final net.iaeste.iws.ws.FetchGroupsForSharingResponse ws) {
         FetchGroupsForSharingResponse api = null;
 
@@ -291,6 +396,13 @@ public final class ExchangeMapper extends CommonMapper {
         return api;
     }
 
+    /**
+     * Mapping of the WebService OfferCSVDownload Response Object to the API
+     * SOAP Object.
+     *
+     * @param ws WebService OfferCSVDownload Response Object
+     * @return API OfferCSVDownload Response Object
+     */
     public static OfferCSVDownloadResponse map(final net.iaeste.iws.ws.OfferCSVDownloadResponse ws) {
         OfferCSVDownloadResponse api = null;
 
@@ -303,6 +415,13 @@ public final class ExchangeMapper extends CommonMapper {
         return api;
     }
 
+    /**
+     * Mapping an IWS API FetchPublishGroups Request to the WebService SOAP
+     * Object.
+     *
+     * @param api API FetchPublishGroups Request
+     * @return WS FetchPublishGroups Request
+     */
     public static net.iaeste.iws.ws.FetchPublishGroupsRequest map(final FetchPublishGroupsRequest api) {
         net.iaeste.iws.ws.FetchPublishGroupsRequest ws = null;
 
@@ -314,6 +433,13 @@ public final class ExchangeMapper extends CommonMapper {
         return ws;
     }
 
+    /**
+     * Mapping of the WebService FetchPublishingGroup Response Object to the API
+     * SOAP Object.
+     *
+     * @param ws WebService FetchPublishingGroup Response Object
+     * @return API FetchPublishingGroup Response Object
+     */
     public static FetchPublishingGroupResponse map(final net.iaeste.iws.ws.FetchPublishingGroupResponse ws) {
         FetchPublishingGroupResponse api = null;
 
@@ -326,6 +452,13 @@ public final class ExchangeMapper extends CommonMapper {
         return api;
     }
 
+    /**
+     * Mapping an IWS API FetchPublishedGroups Request to the WebService SOAP
+     * Object.
+     *
+     * @param api API FetchPublishedGroups Request
+     * @return WS FetchPublishedGroups Request
+     */
     public static net.iaeste.iws.ws.FetchPublishedGroupsRequest map(final FetchPublishedGroupsRequest api) {
         net.iaeste.iws.ws.FetchPublishedGroupsRequest ws = null;
 
@@ -340,6 +473,13 @@ public final class ExchangeMapper extends CommonMapper {
         return ws;
     }
 
+    /**
+     * Mapping of the WebService FetchPublishedGroups Response Object to the
+     * API SOAP Object.
+     *
+     * @param ws WebService FetchPublishedGroups Response Object
+     * @return API FetchPublishedGroups Response Object
+     */
     public static FetchPublishedGroupsResponse map(final net.iaeste.iws.ws.FetchPublishedGroupsResponse ws) {
         FetchPublishedGroupsResponse api = null;
 
@@ -365,12 +505,19 @@ public final class ExchangeMapper extends CommonMapper {
         return api;
     }
 
+    /**
+     * Mapping an IWS API PublishOffer Request to the WebService SOAP Object.
+     *
+     * @param api API PublishOffer Request
+     * @return WS PublishOffer Request
+     */
     public static net.iaeste.iws.ws.PublishOfferRequest map(final PublishOfferRequest api) {
         net.iaeste.iws.ws.PublishOfferRequest ws = null;
 
         if (api != null) {
             ws = new net.iaeste.iws.ws.PublishOfferRequest();
 
+            ws.setAction(map(api.getAction()));
             ws.setOfferId(api.getOfferId());
             ws.setNominationDeadline(map(api.getNominationDeadline()));
             ws.getGroupIds().addAll(mapStringCollection(api.getGroupIds()));
@@ -379,18 +526,33 @@ public final class ExchangeMapper extends CommonMapper {
         return ws;
     }
 
+    /**
+     * Mapping an IWS API HideForeignOffers Request to the WebService SOAP
+     * Object.
+     *
+     * @param api API HideForeignOffers Request
+     * @return WS HideForeignOffers Request
+     */
     public static net.iaeste.iws.ws.HideForeignOffersRequest map(final HideForeignOffersRequest api) {
         net.iaeste.iws.ws.HideForeignOffersRequest ws = null;
 
         if (api != null) {
             ws = new net.iaeste.iws.ws.HideForeignOffersRequest();
 
+            ws.setAction(map(api.getAction()));
             ws.getOffers().addAll(mapStringCollection(api.getOffers()));
+
         }
 
         return ws;
     }
 
+    /**
+     * Mapping an IWS API RejectOffer Request to the WebService SOAP Object.
+     *
+     * @param api API RejectOffer Request
+     * @return WS RejectOffer Request
+     */
     public static net.iaeste.iws.ws.RejectOfferRequest map(final RejectOfferRequest api) {
         net.iaeste.iws.ws.RejectOfferRequest ws = null;
 
@@ -466,13 +628,13 @@ public final class ExchangeMapper extends CommonMapper {
         return api;
     }
 
-    private static CSVProcessingErrors map(final net.iaeste.iws.ws.CsvProcessingErrors ws) {
+    private static CSVProcessingErrors map(final CsvProcessingErrors ws) {
         CSVProcessingErrors api = null;
 
         if ((ws != null) && (ws.getCsvErrors() != null)) {
             api = new CSVProcessingErrors();
 
-            for (final net.iaeste.iws.ws.CsvProcessingErrors.CsvErrors.Entry entry : ws.getCsvErrors().getEntry()) {
+            for (final CsvProcessingErrors.CsvErrors.Entry entry : ws.getCsvErrors().getEntry()) {
                 api.put(entry.getKey(), entry.getValue());
             }
         }
@@ -480,7 +642,7 @@ public final class ExchangeMapper extends CommonMapper {
         return api;
     }
 
-    private static Employer map(final net.iaeste.iws.ws.Employer ws) {
+    static Employer map(final net.iaeste.iws.ws.Employer ws) {
         Employer api = null;
 
         if (ws != null) {
@@ -506,7 +668,7 @@ public final class ExchangeMapper extends CommonMapper {
         return api;
     }
 
-    private static net.iaeste.iws.ws.Employer map(final Employer api) {
+    static net.iaeste.iws.ws.Employer map(final Employer api) {
         net.iaeste.iws.ws.Employer ws = null;
 
         if (api != null) {
@@ -524,12 +686,14 @@ public final class ExchangeMapper extends CommonMapper {
             ws.setCanteen(api.getCanteen());
             ws.setNearestAirport(api.getNearestAirport());
             ws.setNearestPublicTransport(api.getNearestPublicTransport());
+            ws.setModified(map(api.getModified()));
+            ws.setCreated(map(api.getCreated()));
         }
 
         return ws;
     }
 
-    private static net.iaeste.iws.ws.Offer map(final Offer api) {
+    static net.iaeste.iws.ws.Offer map(final Offer api) {
         net.iaeste.iws.ws.Offer ws = null;
 
         if (api != null) {
@@ -589,7 +753,7 @@ public final class ExchangeMapper extends CommonMapper {
         return ws;
     }
 
-    private static Offer map(final net.iaeste.iws.ws.Offer ws) {
+    static Offer map(final net.iaeste.iws.ws.Offer ws) {
         Offer api = null;
 
         if (ws != null) {

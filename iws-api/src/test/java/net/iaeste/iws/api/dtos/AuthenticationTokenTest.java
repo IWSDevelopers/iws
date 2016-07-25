@@ -24,6 +24,8 @@ import static org.junit.Assert.assertThat;
 import com.gargoylesoftware.base.testing.EqualsTester;
 import org.junit.Test;
 
+import java.util.Map;
+
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -106,5 +108,26 @@ public final class AuthenticationTokenTest {
     public void testNullToken() {
         final String key = null;
         new AuthenticationToken(key);
+    }
+
+    @Test
+    public void testGetTraceId() {
+        final AuthenticationToken token = new AuthenticationToken();
+        final String traceIdEmpty = token.getTraceId();
+        assertThat(traceIdEmpty, is("none"));
+
+        token.setToken("5a15481fe88d39be1c83c2f72796cc8a70e84272640d5c7209ad9aefa642db11ae8fa1945bc308c15c36d591ea1d047692530c95b68fcc309bbe63889dba363e");
+        final String traceIdDefined = token.getTraceId();
+        assertThat(traceIdDefined, is("5a15481f"));
+    }
+
+    @Test
+    public void testValidation() {
+        final AuthenticationToken token = new AuthenticationToken();
+        final Map<String, String> errors = token.validate();
+
+        assertThat(errors.size(), is(1));
+        assertThat(errors.containsKey("token"), is(true));
+        assertThat(errors.get("token"), is("The field may not be null."));
     }
 }

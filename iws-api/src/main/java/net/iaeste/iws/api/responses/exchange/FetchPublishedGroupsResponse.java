@@ -86,7 +86,9 @@ public final class FetchPublishedGroupsResponse extends FallibleResponse {
     // =========================================================================
 
     public void setOffersGroups(final Map<String, GroupList> offersGroups) {
-        this.offersGroups.putAll(offersGroups);
+        if (offersGroups != null) {
+            this.offersGroups.putAll(offersGroups);
+        }
     }
 
     public Map<String, GroupList> getOffersGroups() {

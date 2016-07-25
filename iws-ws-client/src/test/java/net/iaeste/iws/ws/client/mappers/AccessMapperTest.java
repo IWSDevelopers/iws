@@ -22,8 +22,10 @@ import static net.iaeste.iws.ws.client.mappers.TestUtils.prepareIwsError;
 import static net.iaeste.iws.ws.client.mappers.TestUtils.prepareToken;
 import static net.iaeste.iws.ws.client.mappers.TestUtils.prepareUserGroup;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
@@ -39,6 +41,8 @@ import net.iaeste.iws.api.util.Serializer;
 import net.iaeste.iws.ws.Authorization;
 import org.junit.Test;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.UUID;
 
 /**
@@ -47,6 +51,27 @@ import java.util.UUID;
  * @since   IWS 1.2
  */
 public final class AccessMapperTest {
+
+    /**
+     * <p>Private methods should never be tested, as they are part of an
+     * internal workflow. Classes should always be tested via their contract,
+     * i.e. public methods.</p>
+     *
+     * <p>However, for Utility Classes, with a Private Constructor, the contract
+     * disallows instantiation, so the constructor is thus not testable via
+     * normal means. This little Test method will just do that.</p>
+     */
+    @Test
+    public void testPrivateConstructor() {
+        try {
+            final Constructor<AccessMapper> constructor = AccessMapper.class.getDeclaredConstructor();
+            constructor.setAccessible(true);
+            final AccessMapper mapper = constructor.newInstance();
+            assertThat(mapper, is(not(nullValue())));
+        } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException | InstantiationException e) {
+            fail("Could not invoke Private Constructor: " + e.getMessage());
+        }
+    }
 
     @Test
     public void testNullVersionResponse() {

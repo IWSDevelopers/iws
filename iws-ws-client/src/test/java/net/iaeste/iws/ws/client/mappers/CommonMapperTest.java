@@ -29,6 +29,7 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 import net.iaeste.iws.api.dtos.Address;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
@@ -40,6 +41,8 @@ import net.iaeste.iws.api.dtos.User;
 import net.iaeste.iws.api.dtos.UserGroup;
 import org.junit.Test;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.UUID;
 
 /**
@@ -48,6 +51,27 @@ import java.util.UUID;
  * @since   IWS 1.2
  */
 public final class CommonMapperTest {
+
+    /**
+     * <p>Private methods should never be tested, as they are part of an
+     * internal workflow. Classes should always be tested via their contract,
+     * i.e. public methods.</p>
+     *
+     * <p>However, for Utility Classes, with a Private Constructor, the contract
+     * disallows instantiation, so the constructor is thus not testable via
+     * normal means. This little Test method will just do that.</p>
+     */
+    @Test
+    public void testPrivateConstructor() {
+        try {
+            final Constructor<CommonMapper> constructor = CommonMapper.class.getDeclaredConstructor();
+            constructor.setAccessible(true);
+            final CommonMapper mapper = constructor.newInstance();
+            assertThat(mapper, is(not(nullValue())));
+        } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException | InstantiationException e) {
+            fail("Could not invoke Private Constructor: " + e.getMessage());
+        }
+    }
 
     @Test
     public void testNullAuthenticationToken() {

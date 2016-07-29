@@ -44,7 +44,7 @@ public enum PaymentFrequency implements Descriptable<PaymentFrequency> {
     /**
      * When the Payment frequency is every second week.
      */
-    BYWEEKLY("By Weekly"),
+    BIWEEKLY("Biweekly"),
 
     /**
      * When the Payment frequency is monthly.

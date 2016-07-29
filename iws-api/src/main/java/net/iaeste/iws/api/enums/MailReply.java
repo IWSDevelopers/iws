@@ -28,7 +28,7 @@ import javax.xml.bind.annotation.XmlType;
 public enum MailReply implements Descriptable<GroupType> {
 
     REPLY_TO_SENDER("The Sender is receiving replies."),
-    REPLY_TO_LIST("Te List is receiving replies."),
+    REPLY_TO_LIST("The List is receiving replies."),
     NO_REPLY("Replying is not possible.");
 
     // =========================================================================

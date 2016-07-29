@@ -17,20 +17,56 @@
  */
 package net.iaeste.iws.api.constants;
 
-import static org.hamcrest.Matchers.not;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 import com.gargoylesoftware.base.testing.EqualsTester;
 import org.junit.Test;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
- * @noinspection ResultOfObjectAllocationIgnored
  */
 public class IWSErrorTest {
+
+    /**
+     * <p>Private methods should never be tested, as they are part of an
+     * internal workflow. Classes should always be tested via their contract,
+     * i.e. public methods.</p>
+     *
+     * <p>However, for Utility Classes, with a Private Constructor, the contract
+     * disallows instantiation, so the constructor is thus not testable via
+     * normal means. This little Test method will verify that the contract is
+     * kept, and that the Constructor is not made public.</p>
+     */
+    @Test
+    public void testPrivateConstructor() {
+        try {
+            final Constructor<IWSErrors> constructor = IWSErrors.class.getDeclaredConstructor();
+            assertThat(constructor.isAccessible(), is(false));
+            constructor.setAccessible(true);
+            final IWSErrors mapper = constructor.newInstance();
+            assertThat(mapper, is(not(nullValue())));
+        } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException | InstantiationException e) {
+            fail("Could not invoke Private Constructor: " + e.getMessage());
+        }
+    }
+
+    @Test
+    public void testEmptyError() {
+        final IWSError error = new IWSError();
+
+        assertThat(error, is(not(nullValue())));
+        assertThat(error.getError(), is(IWSErrors.SUCCESS.getError()));
+        assertThat(error.getDescription(), is(IWSErrors.SUCCESS.getDescription()));
+    }
 
     @Test
     public void testClassFlow() {

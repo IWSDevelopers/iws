@@ -195,7 +195,14 @@ update offers set language_2_op = null, language_3_level = null where language_3
 -- the default, and unless a different value is preferred, the same will be used
 -- for IWS.
 update offers set work_type = 'O' where work_type is null;
+
+-- Second correction to the Offers. According to the DB, there's a couple of
+-- 2015 Offers which have the payment frequency "Byweekly", which is a spelling
+-- mistake! The enum has been corrected, and so must the DB.
+update offers set payment_frequency = 'BIWEEKLY' where payment_frequency = 'BYWEEKLY';
+update offers set lodging_cost_frequency = 'BIWEEKLY' where lodging_cost_frequency = 'BYWEEKLY';
 -- =============================================================================
+
 
 -- =============================================================================
 -- Various Corrections...

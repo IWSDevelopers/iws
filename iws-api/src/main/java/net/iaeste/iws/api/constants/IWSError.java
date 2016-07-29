@@ -37,8 +37,8 @@ public final class IWSError implements Serializable {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    @XmlElement(required = true, nillable = false) private final int error;
-    @XmlElement(required = true, nillable = false) private final String description;
+    @XmlElement(required = true) private final int error;
+    @XmlElement(required = true) private final String description;
 
     /**
      * Empty Constructor, required for WebServices to work.

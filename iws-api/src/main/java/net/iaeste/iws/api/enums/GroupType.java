@@ -211,6 +211,11 @@ public enum GroupType implements Descriptable<GroupType> {
         INHERITED
     }
 
+    /**
+     * The internal folder type, which is applicable to the GroupType. Only
+     * certain Groups may publish their information, others may not, and some
+     * even cannot have folders or storage.
+     */
     public enum FolderType {
         PROTECTED,
         PUBLIC,

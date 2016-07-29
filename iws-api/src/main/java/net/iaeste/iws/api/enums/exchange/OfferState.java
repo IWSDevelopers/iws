@@ -81,7 +81,7 @@ public enum OfferState implements Descriptable<OfferState> {
     TAKEN("Taken"),
     NOMINATION_ACCEPTED("Nomination Accepted"),
     VIEWED("Viewed"),
-    WAITING_SN("Waiting"),
+    WAITING_SN("Waiting SN"),
     AC_EXCHANGED("AC Exchanged"),
     UNKNOWN("Unknown");
 

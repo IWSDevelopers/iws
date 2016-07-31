@@ -103,16 +103,16 @@ public enum OfferFields {
     LIVING_COST("LivingCost", Setters.SET_LIVING_COST, EnumSet.allOf(Type.class), BigDecimal.class),
     LIVING_COST_FREQUENCY("LivingCostFrequency", Setters.SET_LIVING_COST_FREQUENCY, EnumSet.allOf(Type.class), PaymentFrequency.class),
     NO_HARD_COPIES("NoHardCopies", Setters.SET_NUMBER_OF_HARD_COPIES, EnumSet.allOf(Type.class), Integer.class),
-    STATUS("Status", null, EnumSet.of(Type.DOMESTIC, Type.FOREIGN)), // Not supported to set this via CSV
+    STATUS("Status", null, EnumSet.of(Type.DOMESTIC, Type.FOREIGN), Object.class), // Not supported to set this via CSV
     PERIOD_2_FROM("Period2_From", Setters.SET_PERIOD_2, EnumSet.allOf(Type.class), DatePeriod.class),
     PERIOD_2_TO("Period2_To", Setters.SET_PERIOD_2, EnumSet.allOf(Type.class), DatePeriod.class),
     HOLIDAYS_FROM("Holidays_From", Setters.SET_UNAVAILABLE, EnumSet.allOf(Type.class), DatePeriod.class),
     HOLIDAYS_TO("Holidays_To", Setters.SET_UNAVAILABLE, EnumSet.allOf(Type.class), DatePeriod.class),
     ADDITIONAL_INFO("Additional_Info", Setters.SET_ADDITIONAL_INFORMATION, EnumSet.allOf(Type.class), String.class),
-    SHARED("Shared", null, EnumSet.of(Type.DOMESTIC, Type.FOREIGN)), // Not supported to set this via CSV
-    LAST_MODIFIED("Last modified", null, EnumSet.of(Type.FOREIGN, Type.DOMESTIC)), // Not supported to set this via CSV
-    NS_FIRST_NAME("NS First Name", null, EnumSet.of(Type.FOREIGN, Type.DOMESTIC)), // Not supported to set this via CSV
-    NS_LAST_NAME("NS Last Name", null, EnumSet.of(Type.FOREIGN, Type.DOMESTIC)); // Not supported to set this via CSV
+    SHARED("Shared", null, EnumSet.of(Type.DOMESTIC, Type.FOREIGN), Object.class), // Not supported to set this via CSV
+    LAST_MODIFIED("Last modified", null, EnumSet.of(Type.FOREIGN, Type.DOMESTIC), Object.class), // Not supported to set this via CSV
+    NS_FIRST_NAME("NS First Name", null, EnumSet.of(Type.FOREIGN, Type.DOMESTIC), Object.class), // Not supported to set this via CSV
+    NS_LAST_NAME("NS Last Name", null, EnumSet.of(Type.FOREIGN, Type.DOMESTIC), Object.class); // Not supported to set this via CSV
 
     // =========================================================================
     // Private Constructor & functionality
@@ -196,13 +196,13 @@ public enum OfferFields {
     private final String field;
     private final Setters setter;
     private final Set<Type> usage;
-    private final Class<?>[] classes;
+    private final Class<?> argumentClass;
 
-    OfferFields(final String field, final Setters setter, final Set<Type> usage, final Class<?>... classes) {
+    OfferFields(final String field, final Setters setter, final Set<Type> usage, final Class<?> argumentClass) {
         this.field = field;
         this.setter = setter;
         this.usage = usage;
-        this.classes = classes;
+        this.argumentClass = argumentClass;
     }
 
     public String getField() {
@@ -221,18 +221,26 @@ public enum OfferFields {
         return usage.contains(type);
     }
 
+    /**
+     * Reflective setting of the values is a nice trick, but we must know what
+     * the name of the method to invoke is called. Together with the Argument
+     * Class, the name of the Setter provides the information required for the
+     * Reflection to work.
+     *
+     * @return Name of the setter to invoke
+     */
     public String getMethod() {
         return setter.getMethod();
     }
 
-    public Class<?>[] getArgumentClasses() {
-        Class<?>[] result = null;
-
-        if (classes != null) {
-            result = new Class[1];
-            result[0] = classes[0];
-        }
-
-        return result;
+    /**
+     * Reflective setting of the values is picky and requires that the explicit
+     * Class is known, hence we have to also provide this value. This getter
+     * will simply return this Class.
+     *
+     * @return Argument class
+     */
+    public Class<?> getArgumentClass() {
+        return argumentClass;
     }
 }

@@ -17,12 +17,13 @@
  */
 package net.iaeste.iws.core.transformers;
 
+import static net.iaeste.iws.api.constants.IWSConstants.DATE_FORMAT;
+import static net.iaeste.iws.api.constants.IWSConstants.DEFAULT_LOCALE;
 import static net.iaeste.iws.api.enums.exchange.OfferFields.STUDY_COMPLETED_BEGINNING;
 import static net.iaeste.iws.api.enums.exchange.OfferFields.STUDY_COMPLETED_END;
 import static net.iaeste.iws.api.enums.exchange.OfferFields.STUDY_COMPLETED_MIDDLE;
 import static net.iaeste.iws.common.utils.StringUtils.toLower;
 
-import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.enums.Descriptable;
 import net.iaeste.iws.api.enums.exchange.OfferFields;
@@ -144,7 +145,7 @@ final class CSVTransformer {
 
         if ((value != null) && !value.isEmpty()) {
             try {
-                final T theEnum = Enum.valueOf(enumType, value.toUpperCase(IWSConstants.DEFAULT_LOCALE));
+                final T theEnum = Enum.valueOf(enumType, value.toUpperCase(DEFAULT_LOCALE));
                 invokeMethodOnObject(errors, obj, field, theEnum);
             } catch (IllegalArgumentException e) {
                 LOG.debug(e.getMessage(), e);
@@ -257,8 +258,8 @@ final class CSVTransformer {
         Date result = null;
 
         if ((value != null) && !value.isEmpty()) {
-            final DateFormat formatter = new SimpleDateFormat(IWSConstants.DATE_FORMAT, IWSConstants.DEFAULT_LOCALE);
             try {
+                final DateFormat formatter = new SimpleDateFormat(DATE_FORMAT, DEFAULT_LOCALE);
                 result = new Date(formatter.parse(value));
             } catch (ParseException e) {
                 LOG.debug(e.getMessage(), e);
@@ -277,17 +278,17 @@ final class CSVTransformer {
      * <p>The method will also catch any thrown IllegalArgument Exceptions and
      * add the result to the error map given.</p>
      *
-     * @param errors Validation Error Map
-     * @param obj    The Object to invoke the Setter on
-     * @param field  The Object field to be set
-     * @param args   Arguments to the Setter
+     * @param errors   Validation Error Map
+     * @param obj      The Object to invoke the Setter on
+     * @param field    The Object field to be set
+     * @param argument Argument to the Setter
      * @throws IWSException If a Reflection Error occurred.
      */
-    private static <O extends Verifiable> void invokeMethodOnObject(final Map<String, String> errors, final O obj, final OfferFields field, final Object... args) {
+    private static <O extends Verifiable> void invokeMethodOnObject(final Map<String, String> errors, final O obj, final OfferFields field, final Object argument) {
         if ((field.getMethod() != null) && field.useField(OfferFields.Type.DOMESTIC)) {
             try {
-                final Method implementation = obj.getClass().getMethod(field.getMethod(), field.getArgumentClasses());
-                implementation.invoke(obj, args);
+                final Method implementation = obj.getClass().getMethod(field.getMethod(), field.getArgumentClass());
+                implementation.invoke(obj, argument);
             } catch (InvocationTargetException e) {
                 // The Reflection Framework is wrapping all caught Exceptions
                 // inside the Invocation Target Exception. Since our setters

@@ -393,7 +393,7 @@ public class ExchangeEnumAPITest {
         assertThat(OfferFields.WORK_TYPE.useField(OfferFields.Type.UPLOAD), is(true));
         assertThat(OfferFields.WORK_TYPE.getField(), is("WorkType"));
         assertThat(OfferFields.WORK_TYPE.getMethod(), is("setTypeOfWork"));
-        assertThat(OfferFields.WORK_TYPE.getArgumentClasses().length, is(1));
+        assertThat(OfferFields.WORK_TYPE.getArgumentClass().getSimpleName(), is("TypeOfWork"));
     }
 
     @Test

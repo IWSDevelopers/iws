@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.iaeste.iws.ws.client.clients;
+package net.iaeste.iws.ws.client;
 
 import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
 

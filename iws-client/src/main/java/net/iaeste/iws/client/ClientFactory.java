@@ -26,12 +26,12 @@ import net.iaeste.iws.api.Students;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.client.spring.Beans;
-import net.iaeste.iws.ws.client.clients.AccessWSClient;
-import net.iaeste.iws.ws.client.clients.AdministrationWSClient;
-import net.iaeste.iws.ws.client.clients.CommitteeWSClient;
-import net.iaeste.iws.ws.client.clients.ExchangeWSClient;
-import net.iaeste.iws.ws.client.clients.StorageWSClient;
-import net.iaeste.iws.ws.client.clients.StudentWSClient;
+import net.iaeste.iws.ws.client.AccessWSClient;
+import net.iaeste.iws.ws.client.AdministrationWSClient;
+import net.iaeste.iws.ws.client.CommitteeWSClient;
+import net.iaeste.iws.ws.client.ExchangeWSClient;
+import net.iaeste.iws.ws.client.StorageWSClient;
+import net.iaeste.iws.ws.client.StudentWSClient;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 

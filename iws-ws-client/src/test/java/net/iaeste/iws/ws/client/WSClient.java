@@ -40,9 +40,6 @@ import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
 import net.iaeste.iws.api.responses.exchange.OfferCSVDownloadResponse;
 import net.iaeste.iws.api.responses.exchange.OfferResponse;
 import net.iaeste.iws.api.responses.exchange.OfferStatisticsResponse;
-import net.iaeste.iws.ws.client.clients.AccessWSClient;
-import net.iaeste.iws.ws.client.clients.AdministrationWSClient;
-import net.iaeste.iws.ws.client.clients.ExchangeWSClient;
 import net.iaeste.iws.ws.client.exceptions.WebServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -148,8 +145,8 @@ public final class WSClient {
     // =========================================================================
 
     /**
-     * <p>Sample IWS Login request. The request requires two parametes, username
-     * (the e-mail address whereby the User is registered), and the
+     * <p>Sample IWS Login request. The request requires two parameters,
+     * username (the e-mail address whereby the User is registered), and the
      * password.</p>
      *
      * <p>The method will build and send the Request Object, and return the

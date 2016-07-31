@@ -37,8 +37,6 @@ import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
 import net.iaeste.iws.api.responses.exchange.OfferCSVDownloadResponse;
 import net.iaeste.iws.api.responses.exchange.OfferResponse;
 import net.iaeste.iws.api.util.Verifications;
-import net.iaeste.iws.ws.client.clients.AccessWSClient;
-import net.iaeste.iws.ws.client.clients.ExchangeWSClient;
 import net.iaeste.iws.ws.client.exceptions.WebServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -331,6 +329,7 @@ public final class ConcurrentWSClient implements Runnable {
      *
      * @param token User Authentication (Session) Token
      * @param type  Type of Offers to be fetch (domestic or shared)
+     * @param year  Exchange Year
      * @return Response Object from the IWS
      */
     public FetchOffersResponse fetchOffers(final AuthenticationToken token, final FetchType type, final int year) {
@@ -351,6 +350,7 @@ public final class ConcurrentWSClient implements Runnable {
      *
      * @param token User Authentication (Session) Token
      * @param type  Type of Offers to be fetch (domestic or shared)
+     * @param year  Exchange Year
      * @return Response Object from the IWS
      */
     public OfferCSVDownloadResponse downloadOffers(final AuthenticationToken token, final FetchType type, final int year) {

@@ -37,7 +37,7 @@ import java.util.List;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "fetchCountryResponse", propOrder = "countries")
-public final class FetchCountryResponse extends FallibleResponse {
+public final class FetchCountryResponse extends Response {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;

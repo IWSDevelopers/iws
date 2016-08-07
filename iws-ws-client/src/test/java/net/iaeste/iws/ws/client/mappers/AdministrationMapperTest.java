@@ -51,14 +51,14 @@ import net.iaeste.iws.api.requests.UserRequest;
 import net.iaeste.iws.api.responses.ContactsResponse;
 import net.iaeste.iws.api.responses.CreateUserResponse;
 import net.iaeste.iws.api.responses.EmergencyListResponse;
-import net.iaeste.iws.api.responses.FallibleResponse;
+import net.iaeste.iws.api.responses.Response;
 import net.iaeste.iws.api.responses.FetchCountryResponse;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchRoleResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
-import net.iaeste.iws.api.responses.ProcessGroupResponse;
-import net.iaeste.iws.api.responses.ProcessRoleResponse;
-import net.iaeste.iws.api.responses.ProcessUserGroupResponse;
+import net.iaeste.iws.api.responses.groupResponse;
+import net.iaeste.iws.api.responses.RoleResponse;
+import net.iaeste.iws.api.responses.UserGroupResponse;
 import net.iaeste.iws.api.responses.SearchUserResponse;
 import net.iaeste.iws.api.util.Page;
 import org.junit.Ignore;
@@ -99,8 +99,8 @@ public final class AdministrationMapperTest {
 
     @Test
     public void testNullFallibleResponse() {
-        final net.iaeste.iws.ws.FallibleResponse response = null;
-        final FallibleResponse mapped = map(response);
+        final net.iaeste.iws.ws.Response response = null;
+        final Response mapped = map(response);
 
         assertThat(mapped, is(nullValue()));
     }
@@ -110,11 +110,11 @@ public final class AdministrationMapperTest {
         final IWSError error = IWSErrors.AUTHENTICATION_ERROR;
         final String message = "The Error Message";
 
-        final net.iaeste.iws.ws.FallibleResponse response = new net.iaeste.iws.ws.FallibleResponse();
+        final net.iaeste.iws.ws.Response response = new net.iaeste.iws.ws.Response();
         response.setError(prepareIwsError(error));
         response.setMessage(message);
 
-        final FallibleResponse mapped = map(response);
+        final Response mapped = map(response);
 
         assertThat(mapped, is(not(nullValue())));
         assertThat(mapped.getError(), is(error));
@@ -302,8 +302,8 @@ public final class AdministrationMapperTest {
 
     @Test
     public void testNullProcessRoleResponse() {
-        final net.iaeste.iws.ws.ProcessRoleResponse response = null;
-        final ProcessRoleResponse mapped = map(response);
+        final net.iaeste.iws.ws.RoleResponse response = null;
+        final RoleResponse mapped = map(response);
 
         assertThat(mapped, is(nullValue()));
     }
@@ -358,8 +358,8 @@ public final class AdministrationMapperTest {
 
     @Test
     public void testNullProcessGroupResponse() {
-        final net.iaeste.iws.ws.ProcessGroupResponse response = null;
-        final ProcessGroupResponse mapped = map(response);
+        final net.iaeste.iws.ws.GroupResponse response = null;
+        final groupResponse mapped = map(response);
 
         assertThat(mapped, is(nullValue()));
     }
@@ -428,8 +428,8 @@ public final class AdministrationMapperTest {
 
     @Test
     public void testNullProcessUserGroupResponse() {
-        final net.iaeste.iws.ws.ProcessUserGroupResponse response = null;
-        final ProcessUserGroupResponse mapped = map(response);
+        final net.iaeste.iws.ws.UserGroupResponse response = null;
+        final UserGroupResponse mapped = map(response);
 
         assertThat(mapped, is(nullValue()));
     }

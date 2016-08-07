@@ -38,14 +38,14 @@ import net.iaeste.iws.api.requests.UserRequest;
 import net.iaeste.iws.api.responses.ContactsResponse;
 import net.iaeste.iws.api.responses.CreateUserResponse;
 import net.iaeste.iws.api.responses.EmergencyListResponse;
-import net.iaeste.iws.api.responses.FallibleResponse;
+import net.iaeste.iws.api.responses.Response;
 import net.iaeste.iws.api.responses.FetchCountryResponse;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchRoleResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
-import net.iaeste.iws.api.responses.ProcessGroupResponse;
-import net.iaeste.iws.api.responses.ProcessRoleResponse;
-import net.iaeste.iws.api.responses.ProcessUserGroupResponse;
+import net.iaeste.iws.api.responses.groupResponse;
+import net.iaeste.iws.api.responses.RoleResponse;
+import net.iaeste.iws.api.responses.UserGroupResponse;
 import net.iaeste.iws.api.responses.SearchUserResponse;
 import net.iaeste.iws.core.services.AccountService;
 import net.iaeste.iws.core.services.ContactsService;
@@ -107,8 +107,8 @@ public final class AdministrationController extends CommonController implements 
      * {@inheritDoc}
      */
     @Override
-    public FallibleResponse processCountry(final AuthenticationToken token, final CountryRequest request) {
-        FallibleResponse response;
+    public Response processCountry(final AuthenticationToken token, final CountryRequest request) {
+        Response response;
 
         try {
             verify(request);
@@ -160,15 +160,15 @@ public final class AdministrationController extends CommonController implements 
      * {@inheritDoc}
      */
     @Override
-    public FallibleResponse activateUser(final String activationString) {
-        FallibleResponse response;
+    public Response activateUser(final String activationString) {
+        Response response;
 
         try {
             verifyCode(activationString, "Provided Activation String is invalid.");
 
             final AccountService service = factory.prepareAccountService();
             service.activateUser(activationString);
-            response = new FallibleResponse();
+            response = new Response();
         } catch (IWSException e) {
             // Generally, Exceptions should always be either logged or rethrown.
             // In our case, we're transforming the Exception into an Error
@@ -176,7 +176,7 @@ public final class AdministrationController extends CommonController implements 
             // that we're not loosing anything - the Exception is also logged
             // here as a debug message
             LOG.debug(e.getMessage(), e);
-            response = new FallibleResponse(e.getError(), e.getMessage());
+            response = new Response(e.getError(), e.getMessage());
         }
 
         return response;
@@ -186,15 +186,15 @@ public final class AdministrationController extends CommonController implements 
      * {@inheritDoc}
      */
     @Override
-    public FallibleResponse updateUsername(final String updateCode) {
-        FallibleResponse response;
+    public Response updateUsername(final String updateCode) {
+        Response response;
 
         try {
             verifyCode(updateCode, "The UpdateCode is invalid.");
 
             final AccountService service = factory.prepareAccountService();
             service.updateUsername(updateCode);
-            response = new FallibleResponse();
+            response = new Response();
         } catch (IWSException e) {
             // Generally, Exceptions should always be either logged or rethrown.
             // In our case, we're transforming the Exception into an Error
@@ -202,7 +202,7 @@ public final class AdministrationController extends CommonController implements 
             // that we're not loosing anything - the Exception is also logged
             // here as a debug message
             LOG.debug(e.getMessage(), e);
-            response = new FallibleResponse(e.getError(), e.getMessage());
+            response = new Response(e.getError(), e.getMessage());
         }
 
         return response;
@@ -212,8 +212,8 @@ public final class AdministrationController extends CommonController implements 
      * {@inheritDoc}
      */
     @Override
-    public FallibleResponse controlUserAccount(final AuthenticationToken token, final UserRequest request) {
-        FallibleResponse response;
+    public Response controlUserAccount(final AuthenticationToken token, final UserRequest request) {
+        Response response;
 
         try {
             // The Permission check for this request, is moved into the service
@@ -225,7 +225,7 @@ public final class AdministrationController extends CommonController implements 
 
             final AccountService service = factory.prepareAccountService();
             service.controlUserAccount(authentication, request);
-            response = new FallibleResponse();
+            response = new Response();
         } catch (IWSException e) {
             // Generally, Exceptions should always be either logged or rethrown.
             // In our case, we're transforming the Exception into an Error
@@ -233,7 +233,7 @@ public final class AdministrationController extends CommonController implements 
             // that we're not loosing anything - the Exception is also logged
             // here as a debug message
             LOG.debug(e.getMessage(), e);
-            response = new FallibleResponse(e.getError(), e.getMessage());
+            response = new Response(e.getError(), e.getMessage());
         }
 
         return response;
@@ -243,8 +243,8 @@ public final class AdministrationController extends CommonController implements 
      * {@inheritDoc}
      */
     @Override
-    public FallibleResponse changeAccountName(final AuthenticationToken token, final AccountNameRequest request) {
-        FallibleResponse response;
+    public Response changeAccountName(final AuthenticationToken token, final AccountNameRequest request) {
+        Response response;
 
         try {
             verify(request);
@@ -252,7 +252,7 @@ public final class AdministrationController extends CommonController implements 
 
             final AccountService service = factory.prepareAccountService();
             service.changeAccountName(authentication, request);
-            response = new FallibleResponse();
+            response = new Response();
         } catch (IWSException e) {
             // Generally, Exceptions should always be either logged or rethrown.
             // In our case, we're transforming the Exception into an Error
@@ -260,7 +260,7 @@ public final class AdministrationController extends CommonController implements 
             // that we're not loosing anything - the Exception is also logged
             // here as a debug message
             LOG.debug(e.getMessage(), e);
-            response = new FallibleResponse(e.getError(), e.getMessage());
+            response = new Response(e.getError(), e.getMessage());
         }
 
         return response;
@@ -299,8 +299,8 @@ public final class AdministrationController extends CommonController implements 
      * {@inheritDoc}
      */
     @Override
-    public ProcessRoleResponse processRole(final AuthenticationToken token, final RoleRequest request) {
-        ProcessRoleResponse response;
+    public RoleResponse processRole(final AuthenticationToken token, final RoleRequest request) {
+        RoleResponse response;
 
         try {
             verify(request);
@@ -315,7 +315,7 @@ public final class AdministrationController extends CommonController implements 
             // that we're not loosing anything - the Exception is also logged
             // here as a debug message
             LOG.debug(e.getMessage(), e);
-            response = new ProcessRoleResponse(e.getError(), e.getMessage());
+            response = new RoleResponse(e.getError(), e.getMessage());
         }
 
         return response;
@@ -352,8 +352,8 @@ public final class AdministrationController extends CommonController implements 
      * {@inheritDoc}
      */
     @Override
-    public ProcessGroupResponse processGroup(final AuthenticationToken token, final GroupRequest request) {
-        ProcessGroupResponse response;
+    public groupResponse processGroup(final AuthenticationToken token, final GroupRequest request) {
+        groupResponse response;
 
         try {
             verify(request);
@@ -368,7 +368,7 @@ public final class AdministrationController extends CommonController implements 
             // that we're not loosing anything - the Exception is also logged
             // here as a debug message
             LOG.debug(e.getMessage(), e);
-            response = new ProcessGroupResponse(e.getError(), e.getMessage());
+            response = new groupResponse(e.getError(), e.getMessage());
         }
 
         return response;
@@ -378,8 +378,8 @@ public final class AdministrationController extends CommonController implements 
      * {@inheritDoc}
      */
     @Override
-    public FallibleResponse deleteSubGroup(final AuthenticationToken token, final GroupRequest request) {
-        FallibleResponse response;
+    public Response deleteSubGroup(final AuthenticationToken token, final GroupRequest request) {
+        Response response;
 
         try {
             verify(request);
@@ -387,7 +387,7 @@ public final class AdministrationController extends CommonController implements 
 
             final GroupService service = factory.prepareGroupService();
             service.deleteGroup(authentication, request);
-            response = new FallibleResponse();
+            response = new Response();
         } catch (IWSException e) {
             // Generally, Exceptions should always be either logged or rethrown.
             // In our case, we're transforming the Exception into an Error
@@ -395,7 +395,7 @@ public final class AdministrationController extends CommonController implements 
             // that we're not loosing anything - the Exception is also logged
             // here as a debug message
             LOG.debug(e.getMessage(), e);
-            response = new FallibleResponse(e.getError(), e.getMessage());
+            response = new Response(e.getError(), e.getMessage());
         }
 
         return response;
@@ -445,8 +445,8 @@ public final class AdministrationController extends CommonController implements 
      * {@inheritDoc}
      */
     @Override
-    public FallibleResponse changeGroupOwner(final AuthenticationToken token, final OwnerRequest request) {
-        FallibleResponse response;
+    public Response changeGroupOwner(final AuthenticationToken token, final OwnerRequest request) {
+        Response response;
 
         try {
             verify(request);
@@ -455,7 +455,7 @@ public final class AdministrationController extends CommonController implements 
 
             final GroupService service = factory.prepareGroupService();
             service.changeUserGroupOwner(authentication, request);
-            response = new FallibleResponse();
+            response = new Response();
         } catch (IWSException e) {
             // Generally, Exceptions should always be either logged or rethrown.
             // In our case, we're transforming the Exception into an Error
@@ -473,8 +473,8 @@ public final class AdministrationController extends CommonController implements 
      * {@inheritDoc}
      */
     @Override
-    public ProcessUserGroupResponse processUserGroupAssignment(final AuthenticationToken token, final UserGroupAssignmentRequest request) {
-        ProcessUserGroupResponse response;
+    public UserGroupResponse processUserGroupAssignment(final AuthenticationToken token, final UserGroupAssignmentRequest request) {
+        UserGroupResponse response;
 
         try {
             verify(request);
@@ -490,7 +490,7 @@ public final class AdministrationController extends CommonController implements 
             // that we're not loosing anything - the Exception is also logged
             // here as a debug message
             LOG.debug(e.getMessage(), e);
-            response = new ProcessUserGroupResponse(e.getError(), e.getMessage());
+            response = new UserGroupResponse(e.getError(), e.getMessage());
         }
 
         return response;

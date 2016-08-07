@@ -26,7 +26,7 @@ import net.iaeste.iws.api.requests.FetchCountrySurveyRequest;
 import net.iaeste.iws.api.requests.FetchInternationalGroupRequest;
 import net.iaeste.iws.api.requests.InternationalGroupRequest;
 import net.iaeste.iws.api.responses.CommitteeResponse;
-import net.iaeste.iws.api.responses.FallibleResponse;
+import net.iaeste.iws.api.responses.Response;
 import net.iaeste.iws.api.responses.FetchCommitteeResponse;
 import net.iaeste.iws.api.responses.FetchCountrySurveyResponse;
 import net.iaeste.iws.api.responses.FetchInternationalGroupResponse;
@@ -168,16 +168,16 @@ public class CommitteeWS implements Committees {
     @Override
     @WebMethod
     @WebResult(name = "response")
-    public FallibleResponse processInternationalGroup(
+    public Response processInternationalGroup(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final InternationalGroupRequest request) {
         LOG.info(requestLogger.prepareLogMessage(token, "processInternationalGroup"));
-        FallibleResponse response;
+        Response response;
 
         try {
             response = bean.processInternationalGroup(token, request);
         } catch (RuntimeException e) {
-            response = RequestLogger.handleError(e, FallibleResponse.class);
+            response = RequestLogger.handleError(e, Response.class);
         }
 
         return response;
@@ -210,16 +210,16 @@ public class CommitteeWS implements Committees {
     @Override
     @WebMethod
     @WebResult(name = "response")
-    public FallibleResponse processCountrySurvey(
+    public Response processCountrySurvey(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final CountrySurveyRequest request) {
         LOG.info(requestLogger.prepareLogMessage(token, "processCountrySurvey"));
-        FallibleResponse response;
+        Response response;
 
         try {
             response = bean.processCountrySurvey(token, request);
         } catch (RuntimeException e) {
-            response = RequestLogger.handleError(e, FallibleResponse.class);
+            response = RequestLogger.handleError(e, Response.class);
         }
 
         return response;

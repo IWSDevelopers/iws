@@ -39,7 +39,7 @@ import net.iaeste.iws.api.requests.UserRequest;
 import net.iaeste.iws.api.responses.CreateUserResponse;
 import net.iaeste.iws.api.responses.FetchRoleResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
-import net.iaeste.iws.api.responses.ProcessRoleResponse;
+import net.iaeste.iws.api.responses.RoleResponse;
 import net.iaeste.iws.common.configuration.InternalConstants;
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.common.exceptions.NotImplementedException;
@@ -401,7 +401,7 @@ public final class AccountService extends CommonService<AccessDao> {
      * @return Response Object with the newly processed Role
      * @throws IWSException if an error occurred
      */
-    public ProcessRoleResponse processRole(final Authentication authentication, final RoleRequest request) {
+    public RoleResponse processRole(final Authentication authentication, final RoleRequest request) {
         throw new NotImplementedException("Not yet implemented.");
     }
 

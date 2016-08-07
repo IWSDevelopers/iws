@@ -23,7 +23,7 @@ import net.iaeste.iws.api.dtos.Password;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.requests.SessionDataRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
-import net.iaeste.iws.api.responses.FallibleResponse;
+import net.iaeste.iws.api.responses.Response;
 import net.iaeste.iws.api.responses.FetchPermissionResponse;
 import net.iaeste.iws.api.responses.SessionDataResponse;
 import net.iaeste.iws.api.responses.VersionResponse;
@@ -151,15 +151,15 @@ public class AccessWS implements Access {
     @Override
     @WebMethod
     @WebResult(name = "fallibleResponse")
-    public FallibleResponse requestResettingSession(
+    public Response requestResettingSession(
             @WebParam(name = "authenticationRequest") final AuthenticationRequest request) {
         LOG.info(requestLogger.prepareLogMessage("requestResettingSession"));
-        FallibleResponse response;
+        Response response;
 
         try {
             response = bean.requestResettingSession(request);
         } catch (RuntimeException e) {
-            response = RequestLogger.handleError(e, FallibleResponse.class);
+            response = RequestLogger.handleError(e, Response.class);
         }
 
         return response;
@@ -191,16 +191,16 @@ public class AccessWS implements Access {
     @Override
     @WebMethod
     @WebResult(name = "fallibleResponse")
-    public <T extends Serializable> FallibleResponse saveSessionData(
+    public <T extends Serializable> Response saveSessionData(
             @WebParam(name = "authenticationToken") final AuthenticationToken token,
             @WebParam(name = "sessionDataRequest") final SessionDataRequest<T> request) {
         LOG.info(requestLogger.prepareLogMessage(token, "saveSessionData"));
-        FallibleResponse response;
+        Response response;
 
         try {
             response = bean.saveSessionData(token, request);
         } catch (RuntimeException e) {
-            response = RequestLogger.handleError(e, FallibleResponse.class);
+            response = RequestLogger.handleError(e, Response.class);
         }
 
         return response;
@@ -232,15 +232,15 @@ public class AccessWS implements Access {
     @Override
     @WebMethod
     @WebResult(name = "fallibleResponse")
-    public FallibleResponse verifySession(
+    public Response verifySession(
             @WebParam(name = "authenticationToken") final AuthenticationToken token) {
         LOG.info(requestLogger.prepareLogMessage(token, "verifySession"));
-        FallibleResponse response;
+        Response response;
 
         try {
             response = bean.verifySession(token);
         } catch (RuntimeException e) {
-            response = RequestLogger.handleError(e, FallibleResponse.class);
+            response = RequestLogger.handleError(e, Response.class);
         }
 
         return response;
@@ -252,15 +252,15 @@ public class AccessWS implements Access {
     @Override
     @WebMethod
     @WebResult(name = "fallibleResponse")
-    public FallibleResponse deprecateSession(
+    public Response deprecateSession(
             @WebParam(name = "authenticationToken") final AuthenticationToken token) {
         LOG.info(requestLogger.prepareLogMessage(token, "deprecateSession"));
-        FallibleResponse response;
+        Response response;
 
         try {
             response = bean.deprecateSession(token);
         } catch (RuntimeException e) {
-            response = RequestLogger.handleError(e, FallibleResponse.class);
+            response = RequestLogger.handleError(e, Response.class);
         }
 
         return response;
@@ -272,15 +272,15 @@ public class AccessWS implements Access {
     @Override
     @WebMethod
     @WebResult(name = "fallibleResponse")
-    public FallibleResponse forgotPassword(
+    public Response forgotPassword(
             @WebParam(name = "username") final String username) {
         LOG.info(requestLogger.prepareLogMessage("forgotPassword"));
-        FallibleResponse response;
+        Response response;
 
         try {
             response = bean.forgotPassword(username);
         } catch (RuntimeException e) {
-            response = RequestLogger.handleError(e, FallibleResponse.class);
+            response = RequestLogger.handleError(e, Response.class);
         }
 
         return response;
@@ -292,15 +292,15 @@ public class AccessWS implements Access {
     @Override
     @WebMethod
     @WebResult(name = "fallibleResponse")
-    public FallibleResponse resetPassword(
+    public Response resetPassword(
             @WebParam(name = "password") final Password password) {
         LOG.info(requestLogger.prepareLogMessage("resetPassword"));
-        FallibleResponse response;
+        Response response;
 
         try {
             response = bean.resetPassword(password);
         } catch (RuntimeException e) {
-            response = RequestLogger.handleError(e, FallibleResponse.class);
+            response = RequestLogger.handleError(e, Response.class);
         }
 
         return response;
@@ -312,16 +312,16 @@ public class AccessWS implements Access {
     @Override
     @WebMethod
     @WebResult(name = "fallibleResponse")
-    public FallibleResponse updatePassword(
+    public Response updatePassword(
             @WebParam(name = "authenticationToken") final AuthenticationToken token,
             @WebParam(name = "password") final Password password) {
         LOG.info(requestLogger.prepareLogMessage(token, "updatePassword"));
-        FallibleResponse response;
+        Response response;
 
         try {
             response = bean.updatePassword(token, password);
         } catch (RuntimeException e) {
-            response = RequestLogger.handleError(e, FallibleResponse.class);
+            response = RequestLogger.handleError(e, Response.class);
         }
 
         return response;

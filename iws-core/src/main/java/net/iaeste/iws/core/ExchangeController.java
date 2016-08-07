@@ -30,10 +30,10 @@ import net.iaeste.iws.api.requests.exchange.HideForeignOffersRequest;
 import net.iaeste.iws.api.requests.exchange.OfferCSVUploadRequest;
 import net.iaeste.iws.api.requests.exchange.OfferRequest;
 import net.iaeste.iws.api.requests.exchange.OfferStatisticsRequest;
-import net.iaeste.iws.api.requests.exchange.ProcessPublishingGroupRequest;
+import net.iaeste.iws.api.requests.exchange.PublishingGroupRequest;
 import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
 import net.iaeste.iws.api.requests.exchange.RejectOfferRequest;
-import net.iaeste.iws.api.responses.FallibleResponse;
+import net.iaeste.iws.api.responses.Response;
 import net.iaeste.iws.api.responses.exchange.EmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchEmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchGroupsForSharingResponse;
@@ -259,8 +259,8 @@ public final class ExchangeController extends CommonController implements Exchan
      * {@inheritDoc}
      */
     @Override
-    public FallibleResponse processPublishingGroup(final AuthenticationToken token, final ProcessPublishingGroupRequest request) {
-        FallibleResponse response;
+    public Response processPublishingGroup(final AuthenticationToken token, final PublishingGroupRequest request) {
+        Response response;
 
         try {
             verify(request);
@@ -268,7 +268,7 @@ public final class ExchangeController extends CommonController implements Exchan
 
             final ExchangeService service = factory.prepareExchangeService();
             service.processPublishingGroups(authentication, request);
-            response = new FallibleResponse();
+            response = new Response();
         } catch (IWSException e) {
             // Generally, Exceptions should always be either logged or rethrown.
             // In our case, we're transforming the Exception into an Error
@@ -276,7 +276,7 @@ public final class ExchangeController extends CommonController implements Exchan
             // that we're not loosing anything - the Exception is also LOG.ed
             // here as a debug message
             LOG.debug(e.getMessage(), e);
-            response = new FallibleResponse(e.getError(), e.getMessage());
+            response = new Response(e.getError(), e.getMessage());
         }
 
         return response;
@@ -389,8 +389,8 @@ public final class ExchangeController extends CommonController implements Exchan
      * {@inheritDoc}
      */
     @Override
-    public FallibleResponse processHideForeignOffers(final AuthenticationToken token, final HideForeignOffersRequest request) {
-        FallibleResponse response;
+    public Response processHideForeignOffers(final AuthenticationToken token, final HideForeignOffersRequest request) {
+        Response response;
 
         try {
             verify(request);
@@ -398,7 +398,7 @@ public final class ExchangeController extends CommonController implements Exchan
 
             final ExchangeService service = factory.prepareExchangeService();
             service.processHideForeignOffers(authentication, request);
-            response = new FallibleResponse();
+            response = new Response();
         } catch (IWSException e) {
             // Generally, Exceptions should always be either logged or rethrown.
             // In our case, we're transforming the Exception into an Error
@@ -406,7 +406,7 @@ public final class ExchangeController extends CommonController implements Exchan
             // that we're not loosing anything - the Exception is also LOG.ed
             // here as a debug message
             LOG.debug(e.getMessage(), e);
-            response = new FallibleResponse(e.getError(), e.getMessage());
+            response = new Response(e.getError(), e.getMessage());
         }
 
         return response;
@@ -416,8 +416,8 @@ public final class ExchangeController extends CommonController implements Exchan
      * {@inheritDoc}
      */
     @Override
-    public FallibleResponse rejectOffer(final AuthenticationToken token, final RejectOfferRequest request) {
-        FallibleResponse response;
+    public Response rejectOffer(final AuthenticationToken token, final RejectOfferRequest request) {
+        Response response;
 
         try {
             verify(request);
@@ -425,7 +425,7 @@ public final class ExchangeController extends CommonController implements Exchan
 
             final ExchangeService service = factory.prepareExchangeService();
             service.rejectOffer(authentication, request);
-            response = new FallibleResponse();
+            response = new Response();
         } catch (IWSException e) {
             // Generally, Exceptions should always be either logged or rethrown.
             // In our case, we're transforming the Exception into an Error
@@ -433,7 +433,7 @@ public final class ExchangeController extends CommonController implements Exchan
             // that we're not loosing anything - the Exception is also LOG.ed
             // here as a debug message
             LOG.debug(e.getMessage(), e);
-            response = new FallibleResponse(e.getError(), e.getMessage());
+            response = new Response(e.getError(), e.getMessage());
         }
 
         return response;

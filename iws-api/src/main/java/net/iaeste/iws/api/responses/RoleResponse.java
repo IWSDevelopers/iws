@@ -19,7 +19,7 @@ package net.iaeste.iws.api.responses;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
-import net.iaeste.iws.api.dtos.UserGroup;
+import net.iaeste.iws.api.dtos.Role;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -29,18 +29,21 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   IWS 1.0
+ * @since   IWS 1.2
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "processUserGroupResponse", propOrder = "userGroup")
-public final class ProcessUserGroupResponse extends FallibleResponse {
+@XmlType(name = "roleResponse", propOrder = "role")
+public final class RoleResponse extends Response {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    /** The newly created User Object. */
+    /**
+     * The newly Role Object. The Object is containing the new Role Id and the
+     * details about the Role, such as name and permissions.
+     */
     @XmlElement(required = true, nillable = true)
-    private UserGroup userGroup = null;
+    private Role role = null;
 
     // =========================================================================
     // Object Constructors
@@ -50,17 +53,8 @@ public final class ProcessUserGroupResponse extends FallibleResponse {
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.
      */
-    public ProcessUserGroupResponse() {
+    public RoleResponse() {
         // Required for WebServices to work. Comment added to please Sonar.
-    }
-
-    /**
-     * Default Constructor.
-     *
-     * @param userGroup Processed User Group relation
-     */
-    public ProcessUserGroupResponse(final UserGroup userGroup) {
-        setUserGroup(userGroup);
     }
 
     /**
@@ -69,7 +63,7 @@ public final class ProcessUserGroupResponse extends FallibleResponse {
      * @param error   IWS Error Object
      * @param message Error Message
      */
-    public ProcessUserGroupResponse(final IWSError error, final String message) {
+    public RoleResponse(final IWSError error, final String message) {
         super(error, message);
     }
 
@@ -77,11 +71,11 @@ public final class ProcessUserGroupResponse extends FallibleResponse {
     // Standard Setters & Getters
     // =========================================================================
 
-    public void setUserGroup(final UserGroup userGroup) {
-        this.userGroup = new UserGroup(userGroup);
+    public void setRole(final Role role) {
+        this.role = role;
     }
 
-    public UserGroup getUserGroup() {
-        return new UserGroup(userGroup);
+    public Role getRole() {
+        return role;
     }
 }

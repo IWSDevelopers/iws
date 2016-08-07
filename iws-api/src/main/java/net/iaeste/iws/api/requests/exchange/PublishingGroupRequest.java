@@ -36,8 +36,8 @@ import java.util.Map;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "processPublishingGroupRequest", propOrder = { "publishingGroup", "publishingGroupId" })
-public final class ProcessPublishingGroupRequest extends Actions {
+@XmlType(name = "publishingGroupRequest", propOrder = { "publishingGroup", "publishingGroupId" })
+public final class PublishingGroupRequest extends Actions {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -52,7 +52,7 @@ public final class ProcessPublishingGroupRequest extends Actions {
     /**
      * Default Constructor.
      */
-    public ProcessPublishingGroupRequest() {
+    public PublishingGroupRequest() {
         super(EnumSet.of(Action.PROCESS, Action.DELETE), Action.PROCESS);
     }
 

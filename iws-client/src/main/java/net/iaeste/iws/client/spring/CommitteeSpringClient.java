@@ -26,7 +26,7 @@ import net.iaeste.iws.api.requests.FetchCountrySurveyRequest;
 import net.iaeste.iws.api.requests.InternationalGroupRequest;
 import net.iaeste.iws.api.requests.CountrySurveyRequest;
 import net.iaeste.iws.api.responses.CommitteeResponse;
-import net.iaeste.iws.api.responses.FallibleResponse;
+import net.iaeste.iws.api.responses.Response;
 import net.iaeste.iws.api.responses.FetchCommitteeResponse;
 import net.iaeste.iws.api.responses.FetchInternationalGroupResponse;
 import net.iaeste.iws.api.responses.FetchCountrySurveyResponse;
@@ -118,7 +118,7 @@ public class CommitteeSpringClient implements Committees {
      * {@inheritDoc}
      */
     @Override
-    public FallibleResponse processInternationalGroup(final AuthenticationToken token, final InternationalGroupRequest request) {
+    public Response processInternationalGroup(final AuthenticationToken token, final InternationalGroupRequest request) {
         return client.processInternationalGroup(token, request);
     }
 
@@ -134,7 +134,7 @@ public class CommitteeSpringClient implements Committees {
      * {@inheritDoc}
      */
     @Override
-    public FallibleResponse processCountrySurvey(final AuthenticationToken token, final CountrySurveyRequest request) {
+    public Response processCountrySurvey(final AuthenticationToken token, final CountrySurveyRequest request) {
         return client.processCountrySurvey(token, request);
     }
 }

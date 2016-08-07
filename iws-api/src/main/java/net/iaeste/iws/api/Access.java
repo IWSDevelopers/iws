@@ -22,7 +22,7 @@ import net.iaeste.iws.api.dtos.Password;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.requests.SessionDataRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
-import net.iaeste.iws.api.responses.FallibleResponse;
+import net.iaeste.iws.api.responses.Response;
 import net.iaeste.iws.api.responses.FetchPermissionResponse;
 import net.iaeste.iws.api.responses.SessionDataResponse;
 import net.iaeste.iws.api.responses.VersionResponse;
@@ -101,7 +101,7 @@ public interface Access {
      * @param request  User Authentication Request object
      * @return Standard Error object
      */
-    FallibleResponse requestResettingSession(AuthenticationRequest request);
+    Response requestResettingSession(AuthenticationRequest request);
 
     /**
      * <p>Handles the second part of Session Resetting. It will check if there
@@ -121,7 +121,7 @@ public interface Access {
      * @param <T>      Serializable Object to use for this session
      * @return Standard Error object
      */
-    <T extends Serializable> FallibleResponse saveSessionData(AuthenticationToken token, SessionDataRequest<T> request);
+    <T extends Serializable> Response saveSessionData(AuthenticationToken token, SessionDataRequest<T> request);
 
     /**
      * <p>Verifies the current Session and returns the associated Session Data in
@@ -142,7 +142,7 @@ public interface Access {
      * @param token The {@code AuthenticationToken} to deprecate the session for
      * @return Standard Error object
      */
-    FallibleResponse verifySession(AuthenticationToken token);
+    Response verifySession(AuthenticationToken token);
 
     /**
      * <p>The IWS doesn't delete ongoing sessions, it only closes them for further
@@ -155,7 +155,7 @@ public interface Access {
      * @param token The {@code AuthenticationToken} to deprecate the session for
      * @return Standard Error object
      */
-    FallibleResponse deprecateSession(AuthenticationToken token);
+    Response deprecateSession(AuthenticationToken token);
 
     /**
      * <p>If a user forgot the password, then this request will send a
@@ -166,7 +166,7 @@ public interface Access {
      * @param username The users username, i.e. e-mail address
      * @return Standard Error object
      */
-    FallibleResponse forgotPassword(String username);
+    Response forgotPassword(String username);
 
     /**
      * <p>Resets a users password in the system, using the Reset Token, which
@@ -175,7 +175,7 @@ public interface Access {
      * @param password Password Object for the user
      * @return Standard Error object
      */
-    FallibleResponse resetPassword(Password password);
+    Response resetPassword(Password password);
 
     /**
      * <p>Updates a users password in the system.</p>
@@ -184,7 +184,7 @@ public interface Access {
      * @param password Password Object for the user
      * @return Standard Error object
      */
-    FallibleResponse updatePassword(AuthenticationToken token, Password password);
+    Response updatePassword(AuthenticationToken token, Password password);
 
     /**
      * <p>Retrieves the list of permissions for a given user, identified by the

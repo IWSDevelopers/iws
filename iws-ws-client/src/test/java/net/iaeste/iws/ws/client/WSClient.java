@@ -32,7 +32,7 @@ import net.iaeste.iws.api.requests.exchange.EmployerRequest;
 import net.iaeste.iws.api.requests.exchange.OfferRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
 import net.iaeste.iws.api.responses.EmergencyListResponse;
-import net.iaeste.iws.api.responses.FallibleResponse;
+import net.iaeste.iws.api.responses.Response;
 import net.iaeste.iws.api.responses.FetchPermissionResponse;
 import net.iaeste.iws.api.responses.exchange.EmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchEmployerResponse;
@@ -174,7 +174,7 @@ public final class WSClient {
      * @param token User Authentication (Session) Token
      * @return Response Object from the IWS
      */
-    public FallibleResponse deprecateSession(final AuthenticationToken token) {
+    public Response deprecateSession(final AuthenticationToken token) {
         return getAccess().deprecateSession(token);
     }
 

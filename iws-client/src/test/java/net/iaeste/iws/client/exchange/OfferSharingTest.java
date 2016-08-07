@@ -41,13 +41,13 @@ import net.iaeste.iws.api.requests.exchange.HideForeignOffersRequest;
 import net.iaeste.iws.api.requests.exchange.OfferRequest;
 import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
 import net.iaeste.iws.api.requests.exchange.RejectOfferRequest;
+import net.iaeste.iws.api.responses.Response;
 import net.iaeste.iws.api.responses.exchange.FetchGroupsForSharingResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
 import net.iaeste.iws.api.responses.exchange.FetchPublishedGroupsResponse;
 import net.iaeste.iws.api.responses.exchange.OfferResponse;
 import net.iaeste.iws.api.responses.exchange.PublishOfferResponse;
 import net.iaeste.iws.api.util.Date;
-import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.api.util.Verifications;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -558,7 +558,7 @@ public final class OfferSharingTest extends AbstractOfferTest {
         offersToHide.add(sharedOffer.getOfferId());
         final HideForeignOffersRequest hideOfferRequest = new HideForeignOffersRequest();
         hideOfferRequest.setOffers(offersToHide);
-        final Fallible hideOfferResponse = exchange.processHideForeignOffers(austriaTokenWithNationalGroup, hideOfferRequest);
+        final Response hideOfferResponse = exchange.processHideForeignOffers(austriaTokenWithNationalGroup, hideOfferRequest);
         assertThat(hideOfferResponse.getError(), is(IWSErrors.SUCCESS));
         assertThat(hideOfferResponse.isOk(), is(true));
 
@@ -616,7 +616,7 @@ public final class OfferSharingTest extends AbstractOfferTest {
         assertThat(foreignOffer, is(not(nullValue())));
 
         final RejectOfferRequest rejectOfferRequest = new RejectOfferRequest(foreignOffer.getOfferId());
-        final Fallible rejectOfferResponse = exchange.rejectOffer(austriaTokenWithNationalGroup, rejectOfferRequest);
+        final Response rejectOfferResponse = exchange.rejectOffer(austriaTokenWithNationalGroup, rejectOfferRequest);
         assertThat(rejectOfferResponse.getError(), is(IWSErrors.SUCCESS));
         assertThat(rejectOfferResponse.isOk(), is(true));
 
@@ -686,7 +686,7 @@ public final class OfferSharingTest extends AbstractOfferTest {
         assertThat(foreignOffer, is(not(nullValue())));
 
         final RejectOfferRequest rejectOfferRequest = new RejectOfferRequest(foreignOffer.getOfferId());
-        final Fallible rejectOfferResponse = exchange.rejectOffer(austriaTokenWithNationalGroup, rejectOfferRequest);
+        final Response rejectOfferResponse = exchange.rejectOffer(austriaTokenWithNationalGroup, rejectOfferRequest);
         assertThat(rejectOfferResponse.getError(), is(IWSErrors.SUCCESS));
         assertThat(rejectOfferResponse.isOk(), is(true));
 
@@ -774,7 +774,7 @@ public final class OfferSharingTest extends AbstractOfferTest {
         assertThat(foreignOffer, is(not(nullValue())));
 
         final RejectOfferRequest rejectOfferRequest = new RejectOfferRequest(foreignOffer.getOfferId());
-        final Fallible rejectOfferResponse = exchange.rejectOffer(austriaTokenWithNationalGroup, rejectOfferRequest);
+        final Response rejectOfferResponse = exchange.rejectOffer(austriaTokenWithNationalGroup, rejectOfferRequest);
         assertThat(rejectOfferResponse.getError(), is(IWSErrors.SUCCESS));
         assertThat(rejectOfferResponse.isOk(), is(true));
 

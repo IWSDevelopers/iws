@@ -27,7 +27,7 @@ import net.iaeste.iws.api.requests.FetchCountrySurveyRequest;
 import net.iaeste.iws.api.requests.InternationalGroupRequest;
 import net.iaeste.iws.api.requests.CountrySurveyRequest;
 import net.iaeste.iws.api.responses.CommitteeResponse;
-import net.iaeste.iws.api.responses.FallibleResponse;
+import net.iaeste.iws.api.responses.Response;
 import net.iaeste.iws.api.responses.FetchCommitteeResponse;
 import net.iaeste.iws.api.responses.FetchInternationalGroupResponse;
 import net.iaeste.iws.api.responses.FetchCountrySurveyResponse;
@@ -188,16 +188,16 @@ public class CommitteeBean implements Committees {
      * {@inheritDoc}
      */
     @Override
-    public FallibleResponse processInternationalGroup(final AuthenticationToken token, final InternationalGroupRequest request) {
+    public Response processInternationalGroup(final AuthenticationToken token, final InternationalGroupRequest request) {
         final long start = System.nanoTime();
-        FallibleResponse response;
+        Response response;
 
         try {
             response = controller.processInternationalGroup(token, request);
             LOG.info(session.generateLogAndUpdateSession("processInternationalGroup", start, response, token));
         } catch (RuntimeException e) {
             LOG.error(session.generateLogAndSaveRequest("processInternationalGroup", start, e, token, request), e);
-            response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
+            response = new Response(IWSErrors.ERROR, e.getMessage());
         }
 
         return response;
@@ -226,16 +226,16 @@ public class CommitteeBean implements Committees {
      * {@inheritDoc}
      */
     @Override
-    public FallibleResponse processCountrySurvey(final AuthenticationToken token, final CountrySurveyRequest request) {
+    public Response processCountrySurvey(final AuthenticationToken token, final CountrySurveyRequest request) {
         final long start = System.nanoTime();
-        FallibleResponse response;
+        Response response;
 
         try {
             response = controller.processCountrySurvey(token, request);
             LOG.info(session.generateLogAndUpdateSession("processCountrySurvey", start, response, token));
         } catch (RuntimeException e) {
             LOG.error(session.generateLogAndSaveRequest("processCountrySurvey", start, e, token, request), e);
-            response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
+            response = new Response(IWSErrors.ERROR, e.getMessage());
         }
 
         return response;

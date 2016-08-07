@@ -32,8 +32,8 @@ import javax.xml.bind.annotation.XmlType;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "processGroupResponse", propOrder = "group")
-public final class ProcessGroupResponse extends FallibleResponse {
+@XmlType(name = "groupResponse", propOrder = "group")
+public final class groupResponse extends Response {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -50,7 +50,7 @@ public final class ProcessGroupResponse extends FallibleResponse {
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.
      */
-    public ProcessGroupResponse() {
+    public groupResponse() {
         // Required for WebServices to work. Comment added to please Sonar.
     }
 
@@ -59,7 +59,7 @@ public final class ProcessGroupResponse extends FallibleResponse {
      *
      * @param group Processed or newly created Group
      */
-    public ProcessGroupResponse(final Group group) {
+    public groupResponse(final Group group) {
         this.group = group;
     }
 
@@ -69,7 +69,7 @@ public final class ProcessGroupResponse extends FallibleResponse {
      * @param error    IWS Error Object
      * @param message  Error Message
      */
-    public ProcessGroupResponse(final IWSError error, final String message) {
+    public groupResponse(final IWSError error, final String message) {
         super(error, message);
     }
 

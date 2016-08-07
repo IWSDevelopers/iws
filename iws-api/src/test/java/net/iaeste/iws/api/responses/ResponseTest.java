@@ -24,7 +24,6 @@ import static org.junit.Assert.assertThat;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.constants.IWSErrors;
-import net.iaeste.iws.api.util.Fallible;
 import org.junit.Test;
 
 /**
@@ -32,11 +31,11 @@ import org.junit.Test;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
-public final class FallibleResponseTest {
+public final class ResponseTest {
 
     @Test
     public void testClassflow() {
-        final Fallible response = new FallibleResponse();
+        final Response response = new Response();
 
         assertThat(response.isOk(), is(true));
         assertThat(response.getError(), is(IWSErrors.SUCCESS));
@@ -47,7 +46,7 @@ public final class FallibleResponseTest {
     public void testClassWithError() {
         final IWSError error = IWSErrors.AUTHORIZATION_ERROR;
         final String message = "Error message";
-        final Fallible response = new FallibleResponse(error, message);
+        final Response response = new Response(error, message);
 
         assertThat(response.isOk(), is(false));
         assertThat(response.getError(), is(error));
@@ -56,9 +55,9 @@ public final class FallibleResponseTest {
 
     @Test
     public void testStandardMethods() {
-        final FallibleResponse obj = new FallibleResponse(IWSErrors.FATAL, "fatal");
-        final FallibleResponse same = new FallibleResponse(IWSErrors.FATAL, "fatal");
-        final FallibleResponse diff = new FallibleResponse();
+        final Response obj = new Response(IWSErrors.FATAL, "fatal");
+        final Response same = new Response(IWSErrors.FATAL, "fatal");
+        final Response diff = new Response();
 
         // Test Equality
         assertThat(obj, is(same));
@@ -70,8 +69,8 @@ public final class FallibleResponseTest {
         assertThat(diff.hashCode(), is(-100086673));
 
         // Test ToString
-        assertThat(obj.toString(), is("FallibleResponse{error=IWSError{error=300, description='A fatal error occurred, which will prevent the IWS from working properly.'}, message='fatal'}"));
-        assertThat(same.toString(), is("FallibleResponse{error=IWSError{error=300, description='A fatal error occurred, which will prevent the IWS from working properly.'}, message='fatal'}"));
-        assertThat(diff.toString(), is("FallibleResponse{error=IWSError{error=0, description='Success.'}, message='OK'}"));
+        assertThat(obj.toString(), is("Response{error=IWSError{error=300, description='A fatal error occurred, which will prevent the IWS from working properly.'}, message='fatal'}"));
+        assertThat(same.toString(), is("Response{error=IWSError{error=300, description='A fatal error occurred, which will prevent the IWS from working properly.'}, message='fatal'}"));
+        assertThat(diff.toString(), is("Response{error=IWSError{error=0, description='Success.'}, message='OK'}"));
     }
 }

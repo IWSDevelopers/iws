@@ -23,7 +23,6 @@ import static net.iaeste.iws.api.constants.IWSConstants.CONTACT_URL;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.constants.IWSErrors;
-import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.api.util.ReflectiveStandardMethods;
 import net.iaeste.iws.api.util.StandardMethods;
 
@@ -31,6 +30,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import java.io.Serializable;
 
 /**
  * Default Response Object, for those methods, that only return the error
@@ -41,8 +41,8 @@ import javax.xml.bind.annotation.XmlType;
  * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "fallibleResponse", propOrder = { "error", "message", "contact" })
-public class FallibleResponse implements Fallible {
+@XmlType(name = "response", propOrder = { "error", "message", "contact" })
+public class Response implements Serializable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -55,7 +55,7 @@ public class FallibleResponse implements Fallible {
     /**
      * Default Constructor.
      */
-    public FallibleResponse() {
+    public Response() {
         error = IWSErrors.SUCCESS;
         message = IWSConstants.SUCCESS;
         contact = CONTACT_EMAIL + "; " + CONTACT_URL;
@@ -67,7 +67,7 @@ public class FallibleResponse implements Fallible {
      * @param error    IWS Error Object
      * @param message  Error Message
      */
-    public FallibleResponse(final IWSError error, final String message) {
+    public Response(final IWSError error, final String message) {
         this.error = error;
         this.message = message;
         contact = CONTACT_EMAIL + "; " + CONTACT_URL;
@@ -76,7 +76,7 @@ public class FallibleResponse implements Fallible {
     /**
      * {@inheritDoc}
      */
-    @Override
+    //@Override
     public final boolean isOk() {
         return IWSErrors.SUCCESS.getError() == error.getError();
     }
@@ -84,7 +84,7 @@ public class FallibleResponse implements Fallible {
     /**
      * {@inheritDoc}
      */
-    @Override
+    //@Override
     public final IWSError getError() {
         return error;
     }
@@ -92,7 +92,7 @@ public class FallibleResponse implements Fallible {
     /**
      * {@inheritDoc}
      */
-    @Override
+    //@Override
     public final String getMessage() {
         return message;
     }
@@ -100,7 +100,7 @@ public class FallibleResponse implements Fallible {
     /**
      * {@inheritDoc}
      */
-    @Override
+    //@Override
     public final String getContact() {
         return contact;
     }

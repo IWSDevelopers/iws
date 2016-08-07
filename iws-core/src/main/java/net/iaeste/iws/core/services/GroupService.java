@@ -34,8 +34,8 @@ import net.iaeste.iws.api.requests.GroupRequest;
 import net.iaeste.iws.api.requests.OwnerRequest;
 import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
-import net.iaeste.iws.api.responses.ProcessGroupResponse;
-import net.iaeste.iws.api.responses.ProcessUserGroupResponse;
+import net.iaeste.iws.api.responses.groupResponse;
+import net.iaeste.iws.api.responses.UserGroupResponse;
 import net.iaeste.iws.common.configuration.InternalConstants;
 import net.iaeste.iws.common.notification.NotificationType;
 import net.iaeste.iws.core.exceptions.PermissionException;
@@ -98,7 +98,7 @@ public final class GroupService {
      * @param request        Group Request information
      * @return Response Object
      */
-    public ProcessGroupResponse processGroup(final Authentication authentication, final GroupRequest request) {
+    public groupResponse processGroup(final Authentication authentication, final GroupRequest request) {
         final String externalGroupId = request.getGroup().getGroupId();
         final GroupEntity entity;
 
@@ -108,7 +108,7 @@ public final class GroupService {
             entity = processExistingGroup(authentication, request, externalGroupId);
         }
 
-        return new ProcessGroupResponse(CommonTransformer.transform(entity));
+        return new groupResponse(CommonTransformer.transform(entity));
     }
 
     private GroupEntity processNewGroup(final Authentication authentication, final GroupRequest request) {
@@ -406,9 +406,9 @@ public final class GroupService {
      * @param request        User Group Request information
      * @return Processed result
      */
-    public ProcessUserGroupResponse processUserGroupAssignment(final Authentication authentication, final UserGroupAssignmentRequest request) {
+    public UserGroupResponse processUserGroupAssignment(final Authentication authentication, final UserGroupAssignmentRequest request) {
         final UserGroupEntity invokingUser = dao.findMemberGroupByUser(authentication.getUser());
-        final ProcessUserGroupResponse response;
+        final UserGroupResponse response;
 
         if (shouldChangeSelf(authentication, request)) {
             response = updateSelf(authentication, invokingUser, request);
@@ -457,7 +457,7 @@ public final class GroupService {
      * @param request        User Group Request information
      * @return Processed UserGroup relation
      */
-    private ProcessUserGroupResponse updateSelf(final Authentication authentication, final UserGroupEntity currentEntity, final UserGroupAssignmentRequest request) {
+    private UserGroupResponse updateSelf(final Authentication authentication, final UserGroupEntity currentEntity, final UserGroupAssignmentRequest request) {
         // Update non critical settings, title & private list
         currentEntity.setTitle(request.getUserGroup().getTitle());
         currentEntity.setOnPrivateList(request.getUserGroup().isOnPrivateList());
@@ -482,7 +482,7 @@ public final class GroupService {
         // Save the changes.
         dao.persist(authentication, currentEntity);
 
-        return new ProcessUserGroupResponse(transform(currentEntity));
+        return new UserGroupResponse(transform(currentEntity));
     }
 
     /**
@@ -525,7 +525,7 @@ public final class GroupService {
         return result;
     }
 
-    private ProcessUserGroupResponse deleteUserGroupRelation(final Authentication authentication, final RoleEntity role, final UserGroupEntity existingEntity) {
+    private UserGroupResponse deleteUserGroupRelation(final Authentication authentication, final RoleEntity role, final UserGroupEntity existingEntity) {
         if (existingEntity != null) {
             if (role.getId() == 1) {
                 // We're attempting to delete the owner, major no-no
@@ -535,16 +535,16 @@ public final class GroupService {
                 notifications.notify(authentication, existingEntity, NotificationType.CHANGE_IN_GROUP_MEMBERS);
                 // We're just returning an empty response Object, since the User
                 // has now been deleted
-                return new ProcessUserGroupResponse();
+                return new UserGroupResponse();
             }
         } else {
             throw new IdentificationException("No user were found to be deleted.");
         }
     }
 
-    private ProcessUserGroupResponse processUserGroupRelation(final Authentication authentication, final UserGroupEntity invokingUser, final UserGroupAssignmentRequest request, final String externalUserId, final RoleEntity role, final UserGroupEntity existingEntity) {
+    private UserGroupResponse processUserGroupRelation(final Authentication authentication, final UserGroupEntity invokingUser, final UserGroupAssignmentRequest request, final String externalUserId, final RoleEntity role, final UserGroupEntity existingEntity) {
         final UserGroupEntity given = transform(request.getUserGroup());
-        final ProcessUserGroupResponse response;
+        final UserGroupResponse response;
 
         if (existingEntity == null) {
             // Throws an exception if no User was found
@@ -569,7 +569,7 @@ public final class GroupService {
             dao.persist(given);
 
             notifications.notify(authentication, given, NotificationType.CHANGE_IN_GROUP_MEMBERS);
-            response = new ProcessUserGroupResponse(transform(given));
+            response = new UserGroupResponse(transform(given));
         } else {
             // We're adding the new role here, and won't have history of the
             // changes, since the normal merge method is a general purpose
@@ -584,7 +584,7 @@ public final class GroupService {
             dao.persist(authentication, existingEntity, given);
 
             notifications.notify(authentication, existingEntity, NotificationType.CHANGE_IN_GROUP_MEMBERS);
-            response = new ProcessUserGroupResponse(transform(existingEntity));
+            response = new UserGroupResponse(transform(existingEntity));
         }
 
         return response;

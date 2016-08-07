@@ -27,10 +27,10 @@ import net.iaeste.iws.api.requests.exchange.HideForeignOffersRequest;
 import net.iaeste.iws.api.requests.exchange.OfferCSVUploadRequest;
 import net.iaeste.iws.api.requests.exchange.OfferRequest;
 import net.iaeste.iws.api.requests.exchange.OfferStatisticsRequest;
-import net.iaeste.iws.api.requests.exchange.ProcessPublishingGroupRequest;
+import net.iaeste.iws.api.requests.exchange.PublishingGroupRequest;
 import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
 import net.iaeste.iws.api.requests.exchange.RejectOfferRequest;
-import net.iaeste.iws.api.responses.FallibleResponse;
+import net.iaeste.iws.api.responses.Response;
 import net.iaeste.iws.api.responses.exchange.EmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchEmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchGroupsForSharingResponse;
@@ -165,7 +165,7 @@ g     * <dl>
      * @param request contains name of the Publishing Group and list of Groups the Publishing Group consists of
      * @return Standard Error Object
      */
-    FallibleResponse processPublishingGroup(AuthenticationToken token, ProcessPublishingGroupRequest request);
+    Response processPublishingGroup(AuthenticationToken token, PublishingGroupRequest request);
 
     /**
      * Retrieve tha Publishing Groups for user's national group
@@ -216,7 +216,7 @@ g     * <dl>
      * @param request contains a list of offer
      * @return Response Object
      */
-    FallibleResponse processHideForeignOffers(AuthenticationToken token, HideForeignOffersRequest request);
+    Response processHideForeignOffers(AuthenticationToken token, HideForeignOffersRequest request);
 
     /**
      * <p>Performs a rejection of the shared offer.</p>
@@ -225,5 +225,5 @@ g     * <dl>
      * @param request contains a field with the offer id
      * @return Response Object
      */
-    FallibleResponse rejectOffer(AuthenticationToken token, RejectOfferRequest request);
+    Response rejectOffer(AuthenticationToken token, RejectOfferRequest request);
 }

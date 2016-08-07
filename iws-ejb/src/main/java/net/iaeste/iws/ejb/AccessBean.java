@@ -24,7 +24,7 @@ import net.iaeste.iws.api.dtos.Password;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.requests.SessionDataRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
-import net.iaeste.iws.api.responses.FallibleResponse;
+import net.iaeste.iws.api.responses.Response;
 import net.iaeste.iws.api.responses.FetchPermissionResponse;
 import net.iaeste.iws.api.responses.SessionDataResponse;
 import net.iaeste.iws.api.responses.VersionResponse;
@@ -167,16 +167,16 @@ public class AccessBean implements Access {
      * {@inheritDoc}
      */
     @Override
-    public FallibleResponse requestResettingSession(final AuthenticationRequest request) {
+    public Response requestResettingSession(final AuthenticationRequest request) {
         final long start = System.nanoTime();
-        FallibleResponse response;
+        Response response;
 
         try {
             response = controller.requestResettingSession(request);
             LOG.info(session.generateLog("requestResettingSession", start, response));
         } catch (RuntimeException e) {
             LOG.error(session.generateLog("requestResettingSession", start, e));
-            response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
+            response = new Response(IWSErrors.ERROR, e.getMessage());
         }
 
         return response;
@@ -205,16 +205,16 @@ public class AccessBean implements Access {
      * {@inheritDoc}
      */
     @Override
-    public <T extends Serializable> FallibleResponse saveSessionData(final AuthenticationToken token, final SessionDataRequest<T> request) {
+    public <T extends Serializable> Response saveSessionData(final AuthenticationToken token, final SessionDataRequest<T> request) {
         final long start = System.nanoTime();
-        FallibleResponse response;
+        Response response;
 
         try {
             response = controller.saveSessionData(token, request);
             LOG.info(session.generateLogAndUpdateSession("saveSessionData", start, response, token));
         } catch (RuntimeException e) {
             LOG.error(session.generateLogAndSaveRequest("saveSessionData", start, e, token, request), e);
-            response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
+            response = new Response(IWSErrors.ERROR, e.getMessage());
         }
 
         return response;
@@ -243,16 +243,16 @@ public class AccessBean implements Access {
      * {@inheritDoc}
      */
     @Override
-    public FallibleResponse verifySession(final AuthenticationToken token) {
+    public Response verifySession(final AuthenticationToken token) {
         final long start = System.nanoTime();
-        FallibleResponse response;
+        Response response;
 
         try {
             response = controller.verifySession(token);
             LOG.info(session.generateLogAndUpdateSession("verifySession", start, response, token));
         } catch (RuntimeException e) {
             LOG.error(session.generateLogAndSaveRequest("verifySession", start, e, token), e);
-            response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
+            response = new Response(IWSErrors.ERROR, e.getMessage());
         }
 
         return response;
@@ -262,16 +262,16 @@ public class AccessBean implements Access {
      * {@inheritDoc}
      */
     @Override
-    public FallibleResponse deprecateSession(final AuthenticationToken token) {
+    public Response deprecateSession(final AuthenticationToken token) {
         final long start = System.nanoTime();
-        FallibleResponse response;
+        Response response;
 
         try {
             response = controller.deprecateSession(token);
             LOG.info(session.generateLogAndUpdateSession("deprecateSession", start, response, token));
         } catch (RuntimeException e) {
             LOG.error(session.generateLogAndSaveRequest("deprecateSession", start, e, token), e);
-            response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
+            response = new Response(IWSErrors.ERROR, e.getMessage());
         }
 
         return response;
@@ -281,16 +281,16 @@ public class AccessBean implements Access {
      * {@inheritDoc}
      */
     @Override
-    public FallibleResponse forgotPassword(final String username) {
+    public Response forgotPassword(final String username) {
         final long start = System.nanoTime();
-        FallibleResponse response;
+        Response response;
 
         try {
             response = controller.forgotPassword(username);
             LOG.info(session.generateLog("forgotPassword", start, response));
         } catch (RuntimeException e) {
             LOG.error(session.generateLog("forgotPassword", start, e));
-            response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
+            response = new Response(IWSErrors.ERROR, e.getMessage());
         }
 
         return response;
@@ -300,16 +300,16 @@ public class AccessBean implements Access {
      * {@inheritDoc}
      */
     @Override
-    public FallibleResponse resetPassword(final Password password) {
+    public Response resetPassword(final Password password) {
         final long start = System.nanoTime();
-        FallibleResponse response;
+        Response response;
 
         try {
             response = controller.resetPassword(password);
             LOG.info(session.generateLog("resetPassword", start, response));
         } catch (RuntimeException e) {
             LOG.error(session.generateLog("resetPassword", start, e), e);
-            response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
+            response = new Response(IWSErrors.ERROR, e.getMessage());
         }
 
         return response;
@@ -319,16 +319,16 @@ public class AccessBean implements Access {
      * {@inheritDoc}
      */
     @Override
-    public FallibleResponse updatePassword(final AuthenticationToken token, final Password password) {
+    public Response updatePassword(final AuthenticationToken token, final Password password) {
         final long start = System.nanoTime();
-        FallibleResponse response;
+        Response response;
 
         try {
             response = controller.updatePassword(token, password);
             LOG.info(session.generateLogAndUpdateSession("updatePassword", start, response, token));
         } catch (RuntimeException e) {
             LOG.error(session.generateLogAndSaveRequest("updatePassword", start, e, token), e);
-            response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
+            response = new Response(IWSErrors.ERROR, e.getMessage());
         }
 
         return response;

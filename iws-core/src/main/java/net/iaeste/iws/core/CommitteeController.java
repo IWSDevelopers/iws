@@ -28,7 +28,7 @@ import net.iaeste.iws.api.requests.FetchCountrySurveyRequest;
 import net.iaeste.iws.api.requests.FetchInternationalGroupRequest;
 import net.iaeste.iws.api.requests.InternationalGroupRequest;
 import net.iaeste.iws.api.responses.CommitteeResponse;
-import net.iaeste.iws.api.responses.FallibleResponse;
+import net.iaeste.iws.api.responses.Response;
 import net.iaeste.iws.api.responses.FetchCommitteeResponse;
 import net.iaeste.iws.api.responses.FetchCountrySurveyResponse;
 import net.iaeste.iws.api.responses.FetchInternationalGroupResponse;
@@ -139,8 +139,8 @@ public final class CommitteeController extends CommonController implements Commi
      * {@inheritDoc}
      */
     @Override
-    public FallibleResponse processInternationalGroup(final AuthenticationToken token, final InternationalGroupRequest request) {
-        FallibleResponse response;
+    public Response processInternationalGroup(final AuthenticationToken token, final InternationalGroupRequest request) {
+        Response response;
 
         try {
             verify(request);
@@ -148,7 +148,7 @@ public final class CommitteeController extends CommonController implements Commi
 
             final CommitteeService service = factory.prepareCommitteeService();
             service.processInternationalGroup(authentication, request);
-            response = new FallibleResponse();
+            response = new Response();
         } catch (IWSException e) {
             // Generally, Exceptions should always be either logged or rethrown.
             // In our case, we're transforming the Exception into an Error
@@ -156,7 +156,7 @@ public final class CommitteeController extends CommonController implements Commi
             // that we're not loosing anything - the Exception is also LOG.ed
             // here as a debug message
             LOG.debug(e.getMessage(), e);
-            response = new FallibleResponse(e.getError(), e.getMessage());
+            response = new Response(e.getError(), e.getMessage());
         }
 
         return response;
@@ -192,8 +192,8 @@ public final class CommitteeController extends CommonController implements Commi
      * {@inheritDoc}
      */
     @Override
-    public FallibleResponse processCountrySurvey(final AuthenticationToken token, final CountrySurveyRequest request) {
-        FallibleResponse response;
+    public Response processCountrySurvey(final AuthenticationToken token, final CountrySurveyRequest request) {
+        Response response;
 
         try {
             verify(request);
@@ -201,7 +201,7 @@ public final class CommitteeController extends CommonController implements Commi
 
             final CommitteeService service = factory.prepareCommitteeService();
             service.processCountrySurvey(authentication, request);
-            response = new FallibleResponse();
+            response = new Response();
         } catch (IWSException e) {
             // Generally, Exceptions should always be either logged or rethrown.
             // In our case, we're transforming the Exception into an Error
@@ -209,7 +209,7 @@ public final class CommitteeController extends CommonController implements Commi
             // that we're not loosing anything - the Exception is also LOG.ed
             // here as a debug message
             LOG.debug(e.getMessage(), e);
-            response = new FallibleResponse(e.getError(), e.getMessage());
+            response = new Response(e.getError(), e.getMessage());
         }
 
         return response;

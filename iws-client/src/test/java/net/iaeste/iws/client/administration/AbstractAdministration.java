@@ -31,7 +31,7 @@ import net.iaeste.iws.api.requests.FetchGroupRequest;
 import net.iaeste.iws.api.requests.GroupRequest;
 import net.iaeste.iws.api.responses.CreateUserResponse;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
-import net.iaeste.iws.api.responses.ProcessGroupResponse;
+import net.iaeste.iws.api.responses.groupResponse;
 import net.iaeste.iws.client.AbstractTest;
 import net.iaeste.iws.client.notifications.NotificationSpy;
 import net.iaeste.iws.common.notification.NotificationField;
@@ -75,7 +75,7 @@ public abstract class AbstractAdministration extends AbstractTest {
         return createGroup(token, GroupType.MEMBER, subgroup, groupName).getGroup();
     }
 
-    protected static ProcessGroupResponse createGroup(final AuthenticationToken token, final GroupType parent, final GroupType subgroup, final String groupName) {
+    protected static groupResponse createGroup(final AuthenticationToken token, final GroupType parent, final GroupType subgroup, final String groupName) {
         final FetchGroupRequest fetchRequest = new FetchGroupRequest(parent);
         fetchRequest.setUsersToFetch(FetchGroupRequest.UserFetchType.ACTIVE);
         fetchRequest.setFetchSubGroups(true);

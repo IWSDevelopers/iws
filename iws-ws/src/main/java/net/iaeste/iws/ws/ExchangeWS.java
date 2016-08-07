@@ -28,10 +28,10 @@ import net.iaeste.iws.api.requests.exchange.OfferCSVUploadRequest;
 import net.iaeste.iws.api.requests.exchange.OfferStatisticsRequest;
 import net.iaeste.iws.api.requests.exchange.EmployerRequest;
 import net.iaeste.iws.api.requests.exchange.OfferRequest;
-import net.iaeste.iws.api.requests.exchange.ProcessPublishingGroupRequest;
+import net.iaeste.iws.api.requests.exchange.PublishingGroupRequest;
 import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
 import net.iaeste.iws.api.requests.exchange.RejectOfferRequest;
-import net.iaeste.iws.api.responses.FallibleResponse;
+import net.iaeste.iws.api.responses.Response;
 import net.iaeste.iws.api.responses.exchange.EmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchEmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchGroupsForSharingResponse;
@@ -285,16 +285,16 @@ public class ExchangeWS implements Exchange {
     @Override
     @WebMethod
     @WebResult(name = "response")
-    public FallibleResponse processPublishingGroup(
+    public Response processPublishingGroup(
             @WebParam(name = "token") final AuthenticationToken token,
-            @WebParam(name = "request") final ProcessPublishingGroupRequest request) {
+            @WebParam(name = "request") final PublishingGroupRequest request) {
         LOG.info(requestLogger.prepareLogMessage(token, "processPublishingGroup"));
-        FallibleResponse response;
+        Response response;
 
         try {
             response = bean.processPublishingGroup(token, request);
         } catch (RuntimeException e) {
-            response = RequestLogger.handleError(e, FallibleResponse.class);
+            response = RequestLogger.handleError(e, Response.class);
         }
 
         return response;
@@ -369,16 +369,16 @@ public class ExchangeWS implements Exchange {
     @Override
     @WebMethod
     @WebResult(name = "response")
-    public FallibleResponse processHideForeignOffers(
+    public Response processHideForeignOffers(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final HideForeignOffersRequest request) {
         LOG.info(requestLogger.prepareLogMessage(token, "processHideForeignOffers"));
-        FallibleResponse response;
+        Response response;
 
         try {
             response = bean.processHideForeignOffers(token, request);
         } catch (RuntimeException e) {
-            response = RequestLogger.handleError(e, FallibleResponse.class);
+            response = RequestLogger.handleError(e, Response.class);
         }
 
         return response;
@@ -390,16 +390,16 @@ public class ExchangeWS implements Exchange {
     @Override
     @WebMethod
     @WebResult(name = "response")
-    public FallibleResponse rejectOffer(
+    public Response rejectOffer(
             @WebParam(name = "token") final AuthenticationToken token,
             @WebParam(name = "request") final RejectOfferRequest request) {
         LOG.info(requestLogger.prepareLogMessage(token, "rejectOffer"));
-        FallibleResponse response;
+        Response response;
 
         try {
             response = bean.rejectOffer(token, request);
         } catch (RuntimeException e) {
-            response = RequestLogger.handleError(e, FallibleResponse.class);
+            response = RequestLogger.handleError(e, Response.class);
         }
 
         return response;

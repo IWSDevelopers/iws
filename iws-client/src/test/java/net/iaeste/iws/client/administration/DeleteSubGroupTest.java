@@ -27,8 +27,8 @@ import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.requests.GroupRequest;
-import net.iaeste.iws.api.responses.ProcessGroupResponse;
-import net.iaeste.iws.api.util.Fallible;
+import net.iaeste.iws.api.responses.groupResponse;
+import net.iaeste.iws.api.responses.Response;
 import org.junit.Test;
 
 /**
@@ -60,12 +60,12 @@ public final class DeleteSubGroupTest extends AbstractAdministration {
 
     @Test
     public void testDeleteLocalCommittee() {
-        final ProcessGroupResponse createResponse = createGroup(token, GroupType.MEMBER, GroupType.LOCAL, "new Local Committee");
+        final groupResponse createResponse = createGroup(token, GroupType.MEMBER, GroupType.LOCAL, "new Local Committee");
 
         final Group memberGroup = findMemberGroup(token);
         token.setGroupId(memberGroup.getGroupId());
         final GroupRequest request = new GroupRequest(createResponse.getGroup());
-        final Fallible deleteResponse = administration.deleteSubGroup(token, request);
+        final Response deleteResponse = administration.deleteSubGroup(token, request);
         assertThat(deleteResponse, is(not(nullValue())));
         assertThat(deleteResponse.isOk(), is(true));
         assertThat(deleteResponse.getError(), is(IWSErrors.SUCCESS));
@@ -74,12 +74,12 @@ public final class DeleteSubGroupTest extends AbstractAdministration {
 
     @Test
     public void testDeleteNationalWorkGroupFromMembers() {
-        final ProcessGroupResponse createResponse = createGroup(token, GroupType.NATIONAL, GroupType.WORKGROUP, "new National WorkGroup");
+        final groupResponse createResponse = createGroup(token, GroupType.NATIONAL, GroupType.WORKGROUP, "new National WorkGroup");
 
         final Group memberGroup = findMemberGroup(token);
         token.setGroupId(memberGroup.getGroupId());
         final GroupRequest request = new GroupRequest(createResponse.getGroup());
-        final Fallible deleteResponse = administration.deleteSubGroup(token, request);
+        final Response deleteResponse = administration.deleteSubGroup(token, request);
         assertThat(deleteResponse, is(not(nullValue())));
         assertThat(deleteResponse.isOk(), is(false));
         assertThat(deleteResponse.getError(), is(IWSErrors.NOT_PERMITTED));
@@ -88,7 +88,7 @@ public final class DeleteSubGroupTest extends AbstractAdministration {
 
     @Test
     public void testDeleteLocalCommitteeWithWorkGroup() {
-        final ProcessGroupResponse createResponse = createGroup(token, GroupType.MEMBER, GroupType.LOCAL, "Local Committee With Workgroup");
+        final groupResponse createResponse = createGroup(token, GroupType.MEMBER, GroupType.LOCAL, "Local Committee With Workgroup");
 
         // Create a Subgroup to our Local Committee
         final Group group = new Group();
@@ -96,13 +96,13 @@ public final class DeleteSubGroupTest extends AbstractAdministration {
         group.setGroupType(GroupType.WORKGROUP);
         token.setGroupId(createResponse.getGroup().getGroupId());
         final GroupRequest subGrouprequest = new GroupRequest(group);
-        final ProcessGroupResponse subGroupResponse = administration.processGroup(token, subGrouprequest);
+        final groupResponse subGroupResponse = administration.processGroup(token, subGrouprequest);
         assertThat(subGroupResponse, is(not(nullValue())));
         assertThat(subGroupResponse.isOk(), is(true));
 
         token.setGroupId(findMemberGroup(token).getGroupId());
         final GroupRequest request = new GroupRequest(createResponse.getGroup());
-        final Fallible response = administration.deleteSubGroup(token, request);
+        final Response response = administration.deleteSubGroup(token, request);
         assertThat(response, is(not(nullValue())));
         assertThat(response.isOk(), is(false));
         assertThat(response.getError(), is(IWSErrors.NOT_PERMITTED));
@@ -116,7 +116,7 @@ public final class DeleteSubGroupTest extends AbstractAdministration {
 
         token.setGroupId(memberGroup.getGroupId());
         final GroupRequest request = new GroupRequest(nationalGroup);
-        final Fallible response = administration.deleteSubGroup(token, request);
+        final Response response = administration.deleteSubGroup(token, request);
         assertThat(response, is(not(nullValue())));
         assertThat(response.isOk(), is(false));
         assertThat(response.getError(), is(IWSErrors.NOT_PERMITTED));

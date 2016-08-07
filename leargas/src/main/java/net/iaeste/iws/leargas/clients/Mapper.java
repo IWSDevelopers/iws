@@ -50,10 +50,21 @@ public final class Mapper {
 
     private final Settings settings;
 
+    /**
+     * Default Constructor.
+     *
+     * @param settings Settings
+     */
     public Mapper(final Settings settings) {
         this.settings = settings;
     }
 
+    /**
+     * Mapping of the IWS Offer Object to the internal Entity for storing.
+     *
+     * @param wsOffer IWS WebService Offer
+     * @return Internal Offer
+     */
     public OfferEntity map(final Offer wsOffer) {
         OfferEntity entity = null;
 
@@ -246,7 +257,7 @@ public final class Mapper {
             case WEEKLY:
                 value = "Weekly";
                 break;
-            case BYWEEKLY:
+            case BIWEEKLY:
                 value = "By Weekly";
                 break;
             case MONTHLY:

@@ -50,7 +50,7 @@ import net.iaeste.iws.api.enums.exchange.StudyLevel;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.requests.CreateUserRequest;
 import net.iaeste.iws.api.responses.CreateUserResponse;
-import net.iaeste.iws.api.responses.FallibleResponse;
+import net.iaeste.iws.api.responses.Response;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.api.util.DatePeriod;
 import net.iaeste.iws.api.util.DateTime;
@@ -80,6 +80,13 @@ class CommonMapper {
     protected CommonMapper() {
     }
 
+    /**
+     * Mapping of the WebService IWSError Response Object to the API SOAP
+     * Object.
+     *
+     * @param ws WebService IWSError Response Object
+     * @return API IWSError Response Object
+     */
     public static IWSError map(final IwsError ws) {
         IWSError api = null;
 
@@ -90,6 +97,13 @@ class CommonMapper {
         return api;
     }
 
+    /**
+     * Mapping of the WebService AuthenticationToken Response Object to the API
+     * SOAP Object.
+     *
+     * @param ws WebService AuthenticationToken Response Object
+     * @return API AuthenticationToken Response Object
+     */
     public static AuthenticationToken map(final net.iaeste.iws.ws.AuthenticationToken ws) {
         final AuthenticationToken api = new AuthenticationToken();
 
@@ -101,6 +115,13 @@ class CommonMapper {
         return api;
     }
 
+    /**
+     * Mapping of the API AuthenticationToken Request Object to the WebService
+     * SOAP Object.
+     *
+     * @param api API AuthenticationToken Request Object
+     * @return WS AuthenticationToken Request Object
+     */
     public static net.iaeste.iws.ws.AuthenticationToken map(final AuthenticationToken api) {
         net.iaeste.iws.ws.AuthenticationToken ws = null;
 
@@ -114,10 +135,24 @@ class CommonMapper {
         return ws;
     }
 
-    public static FallibleResponse map(final net.iaeste.iws.ws.FallibleResponse ws) {
-        return (ws != null) ? new FallibleResponse(map(ws.getError()), ws.getMessage()) : null;
+    /**
+     * Mapping of the WebService FallibleResponse Response Object to the API
+     * SOAP Object.
+     *
+     * @param ws WebService FallibleResponse Response Object
+     * @return API FallibleResponse Response Object
+     */
+    public static Response map(final net.iaeste.iws.ws.Response ws) {
+        return (ws != null) ? new Response(map(ws.getError()), ws.getMessage()) : null;
     }
 
+    /**
+     * Mapping of the API CreateUserRequest Request Object to the WebService
+     * SOAP Object.
+     *
+     * @param api API CreateUserRequest Request Object
+     * @return WS CreateUserRequest Request Object
+     */
     public static net.iaeste.iws.ws.CreateUserRequest map(final CreateUserRequest api) {
         net.iaeste.iws.ws.CreateUserRequest ws = null;
 
@@ -134,6 +169,13 @@ class CommonMapper {
         return ws;
     }
 
+    /**
+     * Mapping of the WebService CreateUserResponse Response Object to the API
+     * SOAP Object.
+     *
+     * @param ws WebService CreateUserResponse Response Object
+     * @return API CreateUserResponse Response Object
+     */
     public static CreateUserResponse map(final net.iaeste.iws.ws.CreateUserResponse ws) {
         CreateUserResponse api = null;
 
@@ -146,6 +188,12 @@ class CommonMapper {
         return api;
     }
 
+    /**
+     * Mapping of the WebService Country Response Object to the API SOAP Object.
+     *
+     * @param ws WebService Country Response Object
+     * @return API Country Response Object
+     */
     public static Country map(final net.iaeste.iws.ws.Country ws) {
         Country api = null;
 
@@ -170,6 +218,12 @@ class CommonMapper {
         return api;
     }
 
+    /**
+     * Mapping of the API Country Request Object to the WebService SOAP Object.
+     *
+     * @param api API Country Request Object
+     * @return WS Country Request Object
+     */
     public static net.iaeste.iws.ws.Country map(final Country api) {
         net.iaeste.iws.ws.Country ws = null;
 
@@ -192,6 +246,12 @@ class CommonMapper {
         return ws;
     }
 
+    /**
+     * Mapping of the WebService Address Response Object to the API SOAP Object.
+     *
+     * @param ws WebService Address Response Object
+     * @return API Address Response Object
+     */
     public static Address map(final net.iaeste.iws.ws.Address ws) {
         Address api = null;
 
@@ -210,6 +270,12 @@ class CommonMapper {
         return api;
     }
 
+    /**
+     * Mapping of the API Address Request Object to the WebService SOAP Object.
+     *
+     * @param api API Address Request Object
+     * @return WS Address Request Object
+     */
     public static net.iaeste.iws.ws.Address map(final Address api) {
         net.iaeste.iws.ws.Address ws = null;
 
@@ -228,6 +294,13 @@ class CommonMapper {
         return ws;
     }
 
+    /**
+     * Mapping of the WebService UserGroup Response Object to the API SOAP
+     * Object.
+     *
+     * @param ws WebService UserGroup Response Object
+     * @return API UserGroup Response Object
+     */
     public static UserGroup map(final net.iaeste.iws.ws.UserGroup ws) {
         UserGroup api = null;
 
@@ -248,6 +321,13 @@ class CommonMapper {
         return api;
     }
 
+    /**
+     * Mapping of the API UserGroup Request Object to the WebService SOAP
+     * Object.
+     *
+     * @param api API UserGroup Request Object
+     * @return WS UserGroup Request Object
+     */
     public static net.iaeste.iws.ws.UserGroup map(final UserGroup api) {
         net.iaeste.iws.ws.UserGroup ws = null;
 

@@ -38,8 +38,8 @@ import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
 import net.iaeste.iws.api.responses.CreateUserResponse;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchRoleResponse;
-import net.iaeste.iws.api.responses.ProcessUserGroupResponse;
-import net.iaeste.iws.api.util.Fallible;
+import net.iaeste.iws.api.responses.UserGroupResponse;
+import net.iaeste.iws.api.responses.Response;
 import org.junit.Test;
 
 /**
@@ -100,13 +100,13 @@ public final class UserGroupTest extends AbstractAdministration {
         userGroup.setRole(fetchRoleResponse.getRoles().get(1));
         final UserGroupAssignmentRequest request = new UserGroupAssignmentRequest();
         request.setUserGroup(userGroup);
-        final Fallible response = administration.processUserGroupAssignment(token, request);
+        final Response response = administration.processUserGroupAssignment(token, request);
         assertThat(response, is(not(nullValue())));
         assertThat(response.isOk(), is(true));
 
         // Delete the user again
         request.setAction(Action.DELETE);
-        final Fallible deleteResponse = administration.processUserGroupAssignment(token, request);
+        final Response deleteResponse = administration.processUserGroupAssignment(token, request);
         assertThat(deleteResponse, is(not(nullValue())));
         assertThat(deleteResponse.isOk(), is(true));
     }
@@ -119,7 +119,7 @@ public final class UserGroupTest extends AbstractAdministration {
         final OwnerRequest request = new OwnerRequest();
         request.setGroup(group);
         request.setUser(user);
-        final Fallible response = administration.changeGroupOwner(token, request);
+        final Response response = administration.changeGroupOwner(token, request);
         assertThat(response, is(not(nullValue())));
         assertThat(response.isOk(), is(true));
         final FetchGroupRequest groupRequest = new FetchGroupRequest(group.getGroupId());
@@ -154,7 +154,7 @@ public final class UserGroupTest extends AbstractAdministration {
         final OwnerRequest request = new OwnerRequest();
         request.setGroup(group);
         request.setUser(user);
-        final Fallible response = administration.changeGroupOwner(alternativeToken, request);
+        final Response response = administration.changeGroupOwner(alternativeToken, request);
         assertThat(response, is(not(nullValue())));
         assertThat(response.isOk(), is(true));
 
@@ -176,7 +176,7 @@ public final class UserGroupTest extends AbstractAdministration {
         userGroup.setRole(member);
         final UserGroupAssignmentRequest userGroupAssignmentRequest = new UserGroupAssignmentRequest();
         userGroupAssignmentRequest.setUserGroup(userGroup);
-        final ProcessUserGroupResponse assignmentResponse = administration.processUserGroupAssignment(alternativeToken, userGroupAssignmentRequest);
+        final UserGroupResponse assignmentResponse = administration.processUserGroupAssignment(alternativeToken, userGroupAssignmentRequest);
 
         // Now, we can check that it didn't work
         assertThat(assignmentResponse.isOk(), is(false));
@@ -195,7 +195,7 @@ public final class UserGroupTest extends AbstractAdministration {
         final OwnerRequest request = new OwnerRequest();
         request.setGroup(group);
         request.setUser(user);
-        final Fallible response = administration.changeGroupOwner(token, request);
+        final Response response = administration.changeGroupOwner(token, request);
         assertThat(response, is(not(nullValue())));
         assertThat(response.isOk(), is(false));
         assertThat(response.getError(), is(IWSErrors.NOT_PERMITTED));
@@ -214,7 +214,7 @@ public final class UserGroupTest extends AbstractAdministration {
         final OwnerRequest request = new OwnerRequest();
         request.setGroup(group);
         request.setUser(user);
-        final Fallible response = administration.changeGroupOwner(alternativeToken, request);
+        final Response response = administration.changeGroupOwner(alternativeToken, request);
         assertThat(response, is(not(nullValue())));
         assertThat(response.isOk(), is(true));
 
@@ -228,7 +228,7 @@ public final class UserGroupTest extends AbstractAdministration {
         // And just to verify that we're no longer the owner - we're attempting
         // to change the Ownership again, and this time expecting an
         // Authorization error
-        final Fallible failedResponse = administration.changeGroupOwner(token, request);
+        final Response failedResponse = administration.changeGroupOwner(token, request);
         assertThat(failedResponse, is(not(nullValue())));
         assertThat(failedResponse.isOk(), is(false));
         assertThat(failedResponse.getError(), is(IWSErrors.AUTHORIZATION_ERROR));
@@ -247,7 +247,7 @@ public final class UserGroupTest extends AbstractAdministration {
         final OwnerRequest request = new OwnerRequest();
         request.setGroup(group);
         request.setUser(user.getUser());
-        final Fallible response = administration.changeGroupOwner(token, request);
+        final Response response = administration.changeGroupOwner(token, request);
         assertThat(response, is(not(nullValue())));
         assertThat(response.isOk(), is(false));
         assertThat(response.getError(), is(IWSErrors.NOT_PERMITTED));
@@ -264,7 +264,7 @@ public final class UserGroupTest extends AbstractAdministration {
         final OwnerRequest request = new OwnerRequest();
         request.setGroup(group);
         request.setUser(user);
-        final Fallible response = administration.changeGroupOwner(token, request);
+        final Response response = administration.changeGroupOwner(token, request);
         assertThat(response, is(not(nullValue())));
         assertThat(response.isOk(), is(false));
         assertThat(response.getError(), is(IWSErrors.NOT_PERMITTED));
@@ -293,7 +293,7 @@ public final class UserGroupTest extends AbstractAdministration {
         final UserGroupAssignmentRequest request = new UserGroupAssignmentRequest();
         request.setAction(Action.DELETE);
         request.setUserGroup(userGroup);
-        final ProcessUserGroupResponse response = administration.processUserGroupAssignment(token, request);
+        final UserGroupResponse response = administration.processUserGroupAssignment(token, request);
         assertThat(response.isOk(), is(false));
         assertThat(response.getError(), is(IWSErrors.WARNING));
         assertThat(response.getMessage(), is("It is not permitted to remove a User from a Member Group with this request. Please delete the user instead."));

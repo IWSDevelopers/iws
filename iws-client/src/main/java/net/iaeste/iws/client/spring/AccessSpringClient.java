@@ -23,7 +23,7 @@ import net.iaeste.iws.api.dtos.Password;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.requests.SessionDataRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
-import net.iaeste.iws.api.responses.FallibleResponse;
+import net.iaeste.iws.api.responses.Response;
 import net.iaeste.iws.api.responses.FetchPermissionResponse;
 import net.iaeste.iws.api.responses.SessionDataResponse;
 import net.iaeste.iws.api.responses.VersionResponse;
@@ -112,7 +112,7 @@ public final class AccessSpringClient implements Access {
      * {@inheritDoc}
      */
     @Override
-    public FallibleResponse requestResettingSession(final AuthenticationRequest request) {
+    public Response requestResettingSession(final AuthenticationRequest request) {
         return client.requestResettingSession(request);
     }
 
@@ -128,7 +128,7 @@ public final class AccessSpringClient implements Access {
      * {@inheritDoc}
      */
     @Override
-    public <T extends Serializable> FallibleResponse saveSessionData(final AuthenticationToken token, final SessionDataRequest<T> request) {
+    public <T extends Serializable> Response saveSessionData(final AuthenticationToken token, final SessionDataRequest<T> request) {
         return client.saveSessionData(token, request);
     }
 
@@ -144,7 +144,7 @@ public final class AccessSpringClient implements Access {
      * {@inheritDoc}
      */
     @Override
-    public FallibleResponse verifySession(final AuthenticationToken token) {
+    public Response verifySession(final AuthenticationToken token) {
         return client.verifySession(token);
     }
 
@@ -152,7 +152,7 @@ public final class AccessSpringClient implements Access {
      * {@inheritDoc}
      */
     @Override
-    public FallibleResponse deprecateSession(final AuthenticationToken token) {
+    public Response deprecateSession(final AuthenticationToken token) {
         return client.deprecateSession(token);
     }
 
@@ -160,7 +160,7 @@ public final class AccessSpringClient implements Access {
      * {@inheritDoc}
      */
     @Override
-    public FallibleResponse forgotPassword(final String username) {
+    public Response forgotPassword(final String username) {
         return client.forgotPassword(username);
     }
 
@@ -168,7 +168,7 @@ public final class AccessSpringClient implements Access {
      * {@inheritDoc}
      */
     @Override
-    public FallibleResponse resetPassword(final Password password) {
+    public Response resetPassword(final Password password) {
         return client.resetPassword(password);
     }
 
@@ -176,7 +176,7 @@ public final class AccessSpringClient implements Access {
      * {@inheritDoc}
      */
     @Override
-    public FallibleResponse updatePassword(final AuthenticationToken token, final Password password) {
+    public Response updatePassword(final AuthenticationToken token, final Password password) {
         return client.updatePassword(token, password);
     }
 

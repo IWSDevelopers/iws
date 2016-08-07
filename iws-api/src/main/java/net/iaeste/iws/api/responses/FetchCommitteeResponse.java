@@ -37,7 +37,7 @@ import java.util.List;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "fetchCommitteeResponse", propOrder = "committees")
-public final class FetchCommitteeResponse extends FallibleResponse {
+public final class FetchCommitteeResponse extends Response {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;

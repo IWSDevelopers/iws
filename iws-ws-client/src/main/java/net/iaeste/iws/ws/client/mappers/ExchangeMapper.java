@@ -40,7 +40,7 @@ import net.iaeste.iws.api.requests.exchange.HideForeignOffersRequest;
 import net.iaeste.iws.api.requests.exchange.OfferCSVUploadRequest;
 import net.iaeste.iws.api.requests.exchange.OfferRequest;
 import net.iaeste.iws.api.requests.exchange.OfferStatisticsRequest;
-import net.iaeste.iws.api.requests.exchange.ProcessPublishingGroupRequest;
+import net.iaeste.iws.api.requests.exchange.PublishingGroupRequest;
 import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
 import net.iaeste.iws.api.requests.exchange.RejectOfferRequest;
 import net.iaeste.iws.api.responses.exchange.EmployerResponse;
@@ -363,11 +363,11 @@ public final class ExchangeMapper extends CommonMapper {
      * @param api API ProcessPublishingGroup Request
      * @return WS ProcessPublishingGroup Request
      */
-    public static net.iaeste.iws.ws.ProcessPublishingGroupRequest map(final ProcessPublishingGroupRequest api) {
-        net.iaeste.iws.ws.ProcessPublishingGroupRequest ws = null;
+    public static net.iaeste.iws.ws.PublishingGroupRequest map(final PublishingGroupRequest api) {
+        net.iaeste.iws.ws.PublishingGroupRequest ws = null;
 
         if (api != null) {
-            ws = new net.iaeste.iws.ws.ProcessPublishingGroupRequest();
+            ws = new net.iaeste.iws.ws.PublishingGroupRequest();
 
             ws.setPublishingGroup(map(api.getPublishingGroup()));
             ws.setPublishingGroupId(api.getPublishingGroupId());

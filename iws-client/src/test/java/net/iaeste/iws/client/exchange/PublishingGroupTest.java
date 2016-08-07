@@ -30,9 +30,9 @@ import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.exchange.PublishingGroup;
 import net.iaeste.iws.api.enums.Action;
 import net.iaeste.iws.api.requests.exchange.FetchPublishGroupsRequest;
-import net.iaeste.iws.api.requests.exchange.ProcessPublishingGroupRequest;
+import net.iaeste.iws.api.requests.exchange.PublishingGroupRequest;
+import net.iaeste.iws.api.responses.Response;
 import net.iaeste.iws.api.responses.exchange.FetchPublishingGroupResponse;
-import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.client.AbstractTest;
 import net.iaeste.iws.client.ExchangeClient;
 import org.junit.Test;
@@ -76,9 +76,9 @@ public final class PublishingGroupTest extends AbstractTest {
 
         final PublishingGroup publishingGroupList = new PublishingGroup(listName, groups);
 
-        final ProcessPublishingGroupRequest processPublishingGroupRequest = new ProcessPublishingGroupRequest();
-        processPublishingGroupRequest.setPublishingGroup(publishingGroupList);
-        final Fallible processPublishingGroupResponse = exchange.processPublishingGroup(token, processPublishingGroupRequest);
+        final PublishingGroupRequest publishingGroupRequest = new PublishingGroupRequest();
+        publishingGroupRequest.setPublishingGroup(publishingGroupList);
+        final Response processPublishingGroupResponse = exchange.processPublishingGroup(token, publishingGroupRequest);
 
         assertThat(processPublishingGroupResponse.isOk(), is(true));
     }
@@ -94,9 +94,9 @@ public final class PublishingGroupTest extends AbstractTest {
         final PublishingGroup publishingGroup = new PublishingGroup(listName, groups);
         publishingGroup.setPublishingGroupId(UUID.randomUUID().toString());
 
-        final ProcessPublishingGroupRequest request = new ProcessPublishingGroupRequest();
+        final PublishingGroupRequest request = new PublishingGroupRequest();
         request.setPublishingGroup(publishingGroup);
-        final Fallible response = exchange.processPublishingGroup(token, request);
+        final Response response = exchange.processPublishingGroup(token, request);
 
         assertThat(response.isOk(), is(false));
         assertThat(response.getError(), is(IWSErrors.OBJECT_IDENTIFICATION_ERROR));
@@ -141,10 +141,10 @@ public final class PublishingGroupTest extends AbstractTest {
         final PublishingGroup fetchedList = findPublishingGroupFromResponse(listName, fetchResponse);
         assertThat(fetchedList.getGroups().size(), is(groups.size()));
 
-        final ProcessPublishingGroupRequest deleteRequest = new ProcessPublishingGroupRequest();
+        final PublishingGroupRequest deleteRequest = new PublishingGroupRequest();
         deleteRequest.setAction(Action.DELETE);
         deleteRequest.setPublishingGroupId(fetchedList.getPublishingGroupId());
-        final Fallible deleteResponse = exchange.processPublishingGroup(token, deleteRequest);
+        final Response deleteResponse = exchange.processPublishingGroup(token, deleteRequest);
         assertThat(deleteResponse.isOk(), is(true));
         final FetchPublishingGroupResponse fetchResponse2 = exchange.fetchPublishingGroups(token, fetchRequest);
         final PublishingGroup fetchedList2 = findPublishingGroupFromResponse(listName, fetchResponse2);
@@ -169,10 +169,10 @@ public final class PublishingGroupTest extends AbstractTest {
         final PublishingGroup fetchedList = findPublishingGroupFromResponse(listName, fetchResponse);
         assertThat(fetchedList.getGroups().size(), is(groups.size()));
 
-        final ProcessPublishingGroupRequest request = new ProcessPublishingGroupRequest();
+        final PublishingGroupRequest request = new PublishingGroupRequest();
         request.setAction(Action.DELETE);
         request.setPublishingGroupId(fetchedList.getPublishingGroupId());
-        final Fallible deleteResponse = exchange.processPublishingGroup(token, request);
+        final Response deleteResponse = exchange.processPublishingGroup(token, request);
         assertThat(deleteResponse.isOk(), is(true));
         final FetchPublishingGroupResponse fetchResponse2 = exchange.fetchPublishingGroups(token, fetchRequest);
         final PublishingGroup fetchedList2 = findPublishingGroupFromResponse(listName, fetchResponse2);
@@ -219,9 +219,9 @@ public final class PublishingGroupTest extends AbstractTest {
         final PublishingGroup publishGroupList = new PublishingGroup(name, groups);
         publishGroupList.setPublishingGroupId(id);
 
-        final ProcessPublishingGroupRequest processPublishingGroupRequest = new ProcessPublishingGroupRequest();
-        processPublishingGroupRequest.setPublishingGroup(publishGroupList);
-        final Fallible processPublishGroupResponse = exchange.processPublishingGroup(token, processPublishingGroupRequest);
+        final PublishingGroupRequest publishingGroupRequest = new PublishingGroupRequest();
+        publishingGroupRequest.setPublishingGroup(publishGroupList);
+        final Response processPublishGroupResponse = exchange.processPublishingGroup(token, publishingGroupRequest);
 
         assertThat(processPublishGroupResponse.isOk(), is(true));
     }

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://ws.iws.iaeste.net/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="committeeWSService" targetNamespace="http://ws.iws.iaeste.net/">
   <wsdl:documentation>
       Service: IWS Committee Service
-      Version: 1.2.20160606
+      Version: 1.2.20160807
       Owner:   Kim Jensen
   </wsdl:documentation>
   <wsdl:types>
@@ -55,7 +55,7 @@
 
   <xs:complexType final="extension restriction" name="fetchCommitteeResponse">
     <xs:complexContent>
-      <xs:extension base="tns:fallibleResponse">
+      <xs:extension base="tns:response">
         <xs:sequence>
           <xs:element maxOccurs="unbounded" name="committees" type="tns:userGroup"/>
         </xs:sequence>
@@ -63,7 +63,7 @@
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType name="fallibleResponse">
+  <xs:complexType name="response">
     <xs:sequence>
       <xs:element name="error" type="tns:iwsError"/>
       <xs:element name="message" type="xs:string"/>
@@ -222,7 +222,7 @@
 
   <xs:complexType final="extension restriction" name="fetchInternationalGroupResponse">
     <xs:complexContent>
-      <xs:extension base="tns:fallibleResponse">
+      <xs:extension base="tns:response">
         <xs:sequence>
           <xs:element maxOccurs="unbounded" name="groups" nillable="true" type="tns:userGroup"/>
         </xs:sequence>
@@ -242,7 +242,7 @@
 
   <xs:complexType final="extension restriction" name="fetchCountrySurveyRespose">
     <xs:complexContent>
-      <xs:extension base="tns:fallibleResponse">
+      <xs:extension base="tns:response">
         <xs:sequence>
           <xs:element name="survey" nillable="true" type="tns:countrySurvey"/>
         </xs:sequence>
@@ -287,7 +287,7 @@
 
   <xs:complexType final="extension restriction" name="committeeResponse">
     <xs:complexContent>
-      <xs:extension base="tns:fallibleResponse">
+      <xs:extension base="tns:response">
         <xs:sequence>
           <xs:element name="committee" nillable="true" type="tns:userGroup"/>
         </xs:sequence>
@@ -551,7 +551,6 @@
     <xs:restriction base="xs:string">
       <xs:enumeration value="PUBLIC"/>
       <xs:enumeration value="PROTECTED"/>
-      <xs:enumeration value="PRIVATE"/>
     </xs:restriction>
   </xs:simpleType>
 
@@ -693,11 +692,11 @@
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="processCountrySurveyResponse">
-    <wsdl:part name="response" type="tns:fallibleResponse">
+    <wsdl:part name="response" type="tns:response">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="processInternationalGroupResponse">
-    <wsdl:part name="response" type="tns:fallibleResponse">
+    <wsdl:part name="response" type="tns:response">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="processInternationalGroup">

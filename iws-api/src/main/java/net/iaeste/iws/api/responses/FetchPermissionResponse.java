@@ -45,7 +45,7 @@ import java.util.Map;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "fetchPermissionResponse", propOrder = { "userId", "authorizations" })
-public final class FetchPermissionResponse extends FallibleResponse {
+public final class FetchPermissionResponse extends Response {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;

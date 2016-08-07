@@ -19,8 +19,7 @@ package net.iaeste.iws.ws;
 
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.constants.IWSErrors;
-import net.iaeste.iws.api.responses.FallibleResponse;
-import net.iaeste.iws.api.util.Fallible;
+import net.iaeste.iws.api.responses.Response;
 import net.iaeste.iws.common.utils.LogUtil;
 import net.iaeste.iws.api.util.Traceable;
 import org.slf4j.Logger;
@@ -66,7 +65,7 @@ final class RequestLogger {
      * @param <F>    Response must be derived from the IWS Fallible Object
      * @return Response Object instantiated with error information
      */
-    static <F extends Fallible> F handleError(final Throwable cause, final Class<F> clazz) {
+    static <F extends Response> F handleError(final Throwable cause, final Class<F> clazz) {
         LOG.error("External Problem: {}", cause.getMessage(), cause);
         F response;
 
@@ -75,7 +74,7 @@ final class RequestLogger {
             response = constructor.newInstance(IWSErrors.FATAL, "Internal error occurred while handling the request.");
         } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
             LOG.error("Panic: {}", e.getMessage(), e);
-            response = (F) new FallibleResponse(IWSErrors.FATAL, "IWS Panic - please consult the IWS Developers immediately.");
+            response = (F) new Response(IWSErrors.FATAL, "IWS Panic - please consult the IWS Developers immediately.");
         }
 
         return response;

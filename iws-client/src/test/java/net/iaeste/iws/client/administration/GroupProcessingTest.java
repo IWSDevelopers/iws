@@ -33,8 +33,8 @@ import net.iaeste.iws.api.enums.MonitoringLevel;
 import net.iaeste.iws.api.requests.FetchGroupRequest;
 import net.iaeste.iws.api.requests.GroupRequest;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
-import net.iaeste.iws.api.responses.ProcessGroupResponse;
-import net.iaeste.iws.api.util.Fallible;
+import net.iaeste.iws.api.responses.groupResponse;
+import net.iaeste.iws.api.responses.Response;
 import org.junit.Test;
 
 /**
@@ -76,7 +76,7 @@ public final class GroupProcessingTest extends AbstractAdministration {
         token.setGroupId(group.getGroupId());
         group.setMonitoringLevel(MonitoringLevel.DETAILED);
         final GroupRequest request1 = new GroupRequest(group);
-        final ProcessGroupResponse response1 = administration.processGroup(token, request1);
+        final groupResponse response1 = administration.processGroup(token, request1);
         assertThat(response1.isOk(), is(true));
 
         final FetchGroupRequest request2 = new FetchGroupRequest(group.getGroupId());
@@ -95,7 +95,7 @@ public final class GroupProcessingTest extends AbstractAdministration {
         final String publicListName = toLower(fullName.replace(' ', '_') + '@' + IWSConstants.PUBLIC_EMAIL_ADDRESS);
         final String privateListName = toLower(fullName.replace(' ', '_') + '@' + IWSConstants.PRIVATE_EMAIL_ADDRESS);
 
-        final ProcessGroupResponse result = createGroup(token, GroupType.MEMBER, GroupType.LOCAL, groupName);
+        final groupResponse result = createGroup(token, GroupType.MEMBER, GroupType.LOCAL, groupName);
         assertThat(result.isOk(), is(true));
         assertThat(result.getGroup(), is(not(nullValue())));
         assertThat(result.getGroup().getListName(), is(listName));
@@ -108,7 +108,7 @@ public final class GroupProcessingTest extends AbstractAdministration {
         group.setDescription(groupDescription);
 
         final GroupRequest request = new GroupRequest(group);
-        final ProcessGroupResponse response = administration.processGroup(token, request);
+        final groupResponse response = administration.processGroup(token, request);
 
         // Now, check that the changes are in
         assertThat(response.isOk(), is(true));
@@ -133,7 +133,7 @@ public final class GroupProcessingTest extends AbstractAdministration {
         final String publicListName = toLower(fullName.replace(' ', '_') + '@' + IWSConstants.PUBLIC_EMAIL_ADDRESS);
         final String privateListName = toLower(fullName.replace(' ', '_') + '@' + IWSConstants.PRIVATE_EMAIL_ADDRESS);
 
-        final ProcessGroupResponse result = createGroup(token, GroupType.MEMBER, GroupType.WORKGROUP, groupName);
+        final groupResponse result = createGroup(token, GroupType.MEMBER, GroupType.WORKGROUP, groupName);
         assertThat(result.isOk(), is(true));
         assertThat(result.getGroup(), is(not(nullValue())));
         assertThat(result.getGroup().getFullName(), is(fullName));
@@ -146,7 +146,7 @@ public final class GroupProcessingTest extends AbstractAdministration {
         group.setDescription(groupDescription);
 
         final GroupRequest request = new GroupRequest(group);
-        final ProcessGroupResponse response = administration.processGroup(token, request);
+        final groupResponse response = administration.processGroup(token, request);
 
         // Now, check that the changes are in
         assertThat(response.isOk(), is(true));
@@ -166,7 +166,7 @@ public final class GroupProcessingTest extends AbstractAdministration {
         final String groupName = "My Work Group";
         final String groupDescription = "My Description";
 
-        final ProcessGroupResponse result = createGroup(token, GroupType.NATIONAL, GroupType.WORKGROUP, groupName);
+        final groupResponse result = createGroup(token, GroupType.NATIONAL, GroupType.WORKGROUP, groupName);
         assertThat(result.isOk(), is(true));
         assertThat(result.getGroup(), is(not(nullValue())));
 
@@ -177,7 +177,7 @@ public final class GroupProcessingTest extends AbstractAdministration {
         group.setDescription(groupDescription);
 
         final GroupRequest request = new GroupRequest(group);
-        final ProcessGroupResponse response = administration.processGroup(token, request);
+        final groupResponse response = administration.processGroup(token, request);
 
         // Now, check that the changes are in
         assertThat(response.isOk(), is(true));
@@ -200,7 +200,7 @@ public final class GroupProcessingTest extends AbstractAdministration {
         final String workgroupPublicListName = toLower(workgroupFullName.replace(' ', '_') + '@' + IWSConstants.PUBLIC_EMAIL_ADDRESS);
         final String workgroupPrivateListName = toLower(workgroupFullName.replace(' ', '_') + '@' + IWSConstants.PRIVATE_EMAIL_ADDRESS);
 
-        final ProcessGroupResponse result = createGroup(token, GroupType.MEMBER, GroupType.LOCAL, localName);
+        final groupResponse result = createGroup(token, GroupType.MEMBER, GroupType.LOCAL, localName);
         assertThat(result.isOk(), is(true));
 
         final Group group = new Group();
@@ -210,7 +210,7 @@ public final class GroupProcessingTest extends AbstractAdministration {
         token.setGroupId(result.getGroup().getGroupId());
 
         final GroupRequest request = new GroupRequest(group);
-        final ProcessGroupResponse response = administration.processGroup(token, request);
+        final groupResponse response = administration.processGroup(token, request);
 
         assertThat(response.isOk(), is(true));
         assertThat(response.getGroup(), is(not(nullValue())));
@@ -237,7 +237,7 @@ public final class GroupProcessingTest extends AbstractAdministration {
         token.setGroupId(group.getGroupId());
         final GroupRequest request = new GroupRequest(group);
 
-        final ProcessGroupResponse response = administration.processGroup(token, request);
+        final groupResponse response = administration.processGroup(token, request);
         assertThat(response.isOk(), is(true));
         final Group updatedGroup = response.getGroup();
         assertThat(updatedGroup.getGroupName(), is(not(newName)));
@@ -255,7 +255,7 @@ public final class GroupProcessingTest extends AbstractAdministration {
         final GroupRequest request = new GroupRequest(group);
 
         token.setGroupId(findMemberGroup(token).getGroupId());
-        final ProcessGroupResponse response = administration.processGroup(token, request);
+        final groupResponse response = administration.processGroup(token, request);
         assertThat(response, is(not(nullValue())));
         assertThat(response.isOk(), is(false));
         assertThat(response.getError(), is(IWSErrors.AUTHORIZATION_ERROR));
@@ -264,7 +264,7 @@ public final class GroupProcessingTest extends AbstractAdministration {
 
     @Test
     public void testCreatingAdministrationAsSubGroupToMembers() {
-        final Fallible result = createGroup(token, GroupType.MEMBER, GroupType.ADMINISTRATION, "My Group");
+        final Response result = createGroup(token, GroupType.MEMBER, GroupType.ADMINISTRATION, "My Group");
         assertThat(result.isOk(), is(false));
         assertThat(result.getError(), is(IWSErrors.NOT_PERMITTED));
         assertThat(result.getMessage(), is("Not allowed to create a sub-group of type '" + GroupType.ADMINISTRATION.getDescription() + "'."));
@@ -272,7 +272,7 @@ public final class GroupProcessingTest extends AbstractAdministration {
 
     @Test
     public void testCreatingPrivateAsSubGroupToMembers() {
-        final Fallible result = createGroup(token, GroupType.MEMBER, GroupType.PRIVATE, "My Group");
+        final Response result = createGroup(token, GroupType.MEMBER, GroupType.PRIVATE, "My Group");
         assertThat(result.isOk(), is(false));
         assertThat(result.getError(), is(IWSErrors.NOT_PERMITTED));
         assertThat(result.getMessage(), is("Not allowed to create a sub-group of type '" + GroupType.PRIVATE.getDescription() + "'."));
@@ -280,7 +280,7 @@ public final class GroupProcessingTest extends AbstractAdministration {
 
     @Test
     public void testCreatingMemberAsSubGroupToMembers() {
-        final Fallible result = createGroup(token, GroupType.MEMBER, GroupType.MEMBER, "My Group");
+        final Response result = createGroup(token, GroupType.MEMBER, GroupType.MEMBER, "My Group");
         assertThat(result.isOk(), is(false));
         assertThat(result.getError(), is(IWSErrors.NOT_PERMITTED));
         assertThat(result.getMessage(), is("Not allowed to create a sub-group of type '" + GroupType.MEMBER.getDescription() + "'."));
@@ -288,7 +288,7 @@ public final class GroupProcessingTest extends AbstractAdministration {
 
     @Test
     public void testCreatingInternationalAsSubGroupToMembers() {
-        final Fallible result = createGroup(token, GroupType.MEMBER, GroupType.INTERNATIONAL, "My Group");
+        final Response result = createGroup(token, GroupType.MEMBER, GroupType.INTERNATIONAL, "My Group");
         assertThat(result.isOk(), is(false));
         assertThat(result.getError(), is(IWSErrors.NOT_PERMITTED));
         assertThat(result.getMessage(), is("Not allowed to create a sub-group of type '" + GroupType.INTERNATIONAL.getDescription() + "'."));
@@ -296,7 +296,7 @@ public final class GroupProcessingTest extends AbstractAdministration {
 
     @Test
     public void testCreatingNationalAsSubGroupToMembers() {
-        final Fallible result = createGroup(token, GroupType.MEMBER, GroupType.NATIONAL, "My Group");
+        final Response result = createGroup(token, GroupType.MEMBER, GroupType.NATIONAL, "My Group");
         assertThat(result.isOk(), is(false));
         assertThat(result.getError(), is(IWSErrors.NOT_PERMITTED));
         assertThat(result.getMessage(), is("Not allowed to create a sub-group of type '" + GroupType.NATIONAL.getDescription() + "'."));
@@ -304,7 +304,7 @@ public final class GroupProcessingTest extends AbstractAdministration {
 
     @Test
     public void testCreatingStudentsAsSubGroupToMembers() {
-        final Fallible result = createGroup(token, GroupType.MEMBER, GroupType.STUDENT, "My Group");
+        final Response result = createGroup(token, GroupType.MEMBER, GroupType.STUDENT, "My Group");
         assertThat(result.isOk(), is(false));
         assertThat(result.getError(), is(IWSErrors.NOT_PERMITTED));
         assertThat(result.getMessage(), is("Not allowed to create a sub-group of type '" + GroupType.STUDENT.getDescription() + "'."));
@@ -312,7 +312,7 @@ public final class GroupProcessingTest extends AbstractAdministration {
 
     @Test
     public void testCreatingAdministrationAsSubGroupToNational() {
-        final Fallible result = createGroup(token, GroupType.NATIONAL, GroupType.ADMINISTRATION, "My Group");
+        final Response result = createGroup(token, GroupType.NATIONAL, GroupType.ADMINISTRATION, "My Group");
         assertThat(result.isOk(), is(false));
         assertThat(result.getError(), is(IWSErrors.NOT_PERMITTED));
         assertThat(result.getMessage(), is("Not allowed to create a sub-group of type '" + GroupType.ADMINISTRATION.getDescription() + "'."));
@@ -320,7 +320,7 @@ public final class GroupProcessingTest extends AbstractAdministration {
 
     @Test
     public void testCreatingPrivateAsSubGroupToNational() {
-        final Fallible result = createGroup(token, GroupType.NATIONAL, GroupType.PRIVATE, "My Group");
+        final Response result = createGroup(token, GroupType.NATIONAL, GroupType.PRIVATE, "My Group");
         assertThat(result.isOk(), is(false));
         assertThat(result.getError(), is(IWSErrors.NOT_PERMITTED));
         assertThat(result.getMessage(), is("Not allowed to create a sub-group of type '" + GroupType.PRIVATE.getDescription() + "'."));
@@ -328,7 +328,7 @@ public final class GroupProcessingTest extends AbstractAdministration {
 
     @Test
     public void testCreatingMemberAsSubGroupToNational() {
-        final Fallible result = createGroup(token, GroupType.NATIONAL, GroupType.MEMBER, "My Group");
+        final Response result = createGroup(token, GroupType.NATIONAL, GroupType.MEMBER, "My Group");
         assertThat(result.isOk(), is(false));
         assertThat(result.getError(), is(IWSErrors.NOT_PERMITTED));
         assertThat(result.getMessage(), is("Not allowed to create a sub-group of type '" + GroupType.MEMBER.getDescription() + "'."));
@@ -336,7 +336,7 @@ public final class GroupProcessingTest extends AbstractAdministration {
 
     @Test
     public void testCreatingInternationalAsSubGroupToNational() {
-        final Fallible result = createGroup(token, GroupType.NATIONAL, GroupType.INTERNATIONAL, "My Group");
+        final Response result = createGroup(token, GroupType.NATIONAL, GroupType.INTERNATIONAL, "My Group");
         assertThat(result.isOk(), is(false));
         assertThat(result.getError(), is(IWSErrors.NOT_PERMITTED));
         assertThat(result.getMessage(), is("Not allowed to create a sub-group of type '" + GroupType.INTERNATIONAL.getDescription() + "'."));
@@ -344,7 +344,7 @@ public final class GroupProcessingTest extends AbstractAdministration {
 
     @Test
     public void testCreatingNationalAsSubGroupToNational() {
-        final Fallible result = createGroup(token, GroupType.NATIONAL, GroupType.NATIONAL, "My Group");
+        final Response result = createGroup(token, GroupType.NATIONAL, GroupType.NATIONAL, "My Group");
         assertThat(result.isOk(), is(false));
         assertThat(result.getError(), is(IWSErrors.NOT_PERMITTED));
         assertThat(result.getMessage(), is("Not allowed to create a sub-group of type '" + GroupType.NATIONAL.getDescription() + "'."));
@@ -352,7 +352,7 @@ public final class GroupProcessingTest extends AbstractAdministration {
 
     @Test
     public void testCreatingLocalAsSubGroupToNational() {
-        final Fallible result = createGroup(token, GroupType.NATIONAL, GroupType.LOCAL, "My Group");
+        final Response result = createGroup(token, GroupType.NATIONAL, GroupType.LOCAL, "My Group");
         assertThat(result.isOk(), is(false));
         assertThat(result.getError(), is(IWSErrors.NOT_PERMITTED));
         assertThat(result.getMessage(), is("Not allowed to create a sub-group of type '" + GroupType.LOCAL.getDescription() + "'."));
@@ -360,7 +360,7 @@ public final class GroupProcessingTest extends AbstractAdministration {
 
     @Test
     public void testCreatingStudentsAsSubGroupToNational() {
-        final Fallible result = createGroup(token, GroupType.NATIONAL, GroupType.STUDENT, "My Group");
+        final Response result = createGroup(token, GroupType.NATIONAL, GroupType.STUDENT, "My Group");
         assertThat(result.isOk(), is(false));
         assertThat(result.getError(), is(IWSErrors.NOT_PERMITTED));
         assertThat(result.getMessage(), is("Not allowed to create a sub-group of type '" + GroupType.STUDENT.getDescription() + "'."));
@@ -369,10 +369,10 @@ public final class GroupProcessingTest extends AbstractAdministration {
     @Test
     public void testCreatingDuplicateGroup() {
         final String duplicateName = "Duplicate Name";
-        final ProcessGroupResponse result = createGroup(token, GroupType.MEMBER, GroupType.WORKGROUP, duplicateName);
+        final groupResponse result = createGroup(token, GroupType.MEMBER, GroupType.WORKGROUP, duplicateName);
         assertThat(result.isOk(), is(true));
 
-        final ProcessGroupResponse failed = createGroup(token, GroupType.MEMBER, GroupType.WORKGROUP, duplicateName);
+        final groupResponse failed = createGroup(token, GroupType.MEMBER, GroupType.WORKGROUP, duplicateName);
         assertThat(failed.isOk(), is(false));
     }
 }

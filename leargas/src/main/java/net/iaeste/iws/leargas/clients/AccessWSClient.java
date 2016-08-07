@@ -21,8 +21,7 @@ import net.iaeste.iws.ws.AccessWS;
 import net.iaeste.iws.ws.AuthenticationRequest;
 import net.iaeste.iws.ws.AuthenticationResponse;
 import net.iaeste.iws.ws.AuthenticationToken;
-import net.iaeste.iws.ws.FallibleResponse;
-import net.iaeste.iws.ws.FetchPermissionResponse;
+import net.iaeste.iws.ws.Response;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.frontend.ClientProxy;
 import org.apache.cxf.transport.http.HTTPConduit;
@@ -61,8 +60,6 @@ public final class AccessWSClient extends CommonWSClient {
         super(new URL(wsdlLocation), ACCESS_SERVICE_NAME);
         client = getPort(ACCESS_SERVICE_PORT, AccessWS.class);
 
-        // make sure to initialize tlsParams prior to this call somewhere
-        //http.setTlsClientParameters(getTlsParams());
         // The CXF will by default attempt to read the URL from the WSDL at the
         // Server, which is normally given with the server's name. However, as
         // we're running via a loadbalancer and/or proxies, this address may not
@@ -107,11 +104,13 @@ public final class AccessWSClient extends CommonWSClient {
         return client.generateSession(request);
     }
 
-    public FallibleResponse deprecateSession(final AuthenticationToken token) {
+    /**
+     * Closes the currently active Session.
+     *
+     * @param token User Authentication Token
+     * @return Response with information if it was closed properly or not
+     */
+    public Response deprecateSession(final AuthenticationToken token) {
         return client.deprecateSession(token);
-    }
-
-    public FetchPermissionResponse fetchPermissions(final AuthenticationToken token) {
-        return client.fetchPermissions(token);
     }
 }

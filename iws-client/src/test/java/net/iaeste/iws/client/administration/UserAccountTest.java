@@ -42,7 +42,7 @@ import net.iaeste.iws.api.requests.SearchUserRequest;
 import net.iaeste.iws.api.requests.UserRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentsRequest;
 import net.iaeste.iws.api.responses.CreateUserResponse;
-import net.iaeste.iws.api.responses.FallibleResponse;
+import net.iaeste.iws.api.responses.Response;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchPermissionResponse;
 import net.iaeste.iws.api.responses.FetchRoleResponse;
@@ -50,7 +50,6 @@ import net.iaeste.iws.api.responses.FetchUserResponse;
 import net.iaeste.iws.api.responses.SearchUserResponse;
 import net.iaeste.iws.api.responses.student.FetchStudentsResponse;
 import net.iaeste.iws.api.util.Date;
-import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.client.StudentClient;
 import net.iaeste.iws.common.notification.NotificationField;
 import net.iaeste.iws.common.notification.NotificationType;
@@ -94,7 +93,7 @@ public final class UserAccountTest extends AbstractAdministration {
         // To ensure that we can use the account, we have to activate it. Once
         // it is activated, we can move on to the actual test.
         final String activationCode = readCode(NotificationType.ACTIVATE_NEW_USER);
-        final Fallible activateResponse = administration.activateUser(activationCode);
+        final Response activateResponse = administration.activateUser(activationCode);
         assertThat(activateResponse.isOk(), is(true));
 
         // Now we have a fresh new account which is active. So we can now try to
@@ -111,7 +110,7 @@ public final class UserAccountTest extends AbstractAdministration {
         // that nobody is attempting to hijack an active account.
         updateRequest.setPassword(password);
         // Let's just clear the Spy before we're using it :-)
-        final Fallible updateResponse = administration.controlUserAccount(myToken, updateRequest);
+        final Response updateResponse = administration.controlUserAccount(myToken, updateRequest);
         assertThat(updateResponse.isOk(), is(true));
         // Changing username must work without being logged in, well actually
         // it doesn't matter. As it doesn't use the current Session.
@@ -119,7 +118,7 @@ public final class UserAccountTest extends AbstractAdministration {
         // Now, we can read out the update Code from the Notifications, which
         // is a cheap way of reading the value from the e-mail that is send.
         final String updateCode = readCode(NotificationType.UPDATE_USERNAME);
-        final Fallible resetResponse = administration.updateUsername(updateCode);
+        final Response resetResponse = administration.updateUsername(updateCode);
         assertThat(resetResponse.isOk(), is(true));
 
         // Final part of the test, login with the new username, and ensure that
@@ -146,7 +145,7 @@ public final class UserAccountTest extends AbstractAdministration {
         // To rename someone, we need to be Administrator, for the test,
         // Australia acts as Administrator, so we're using this Account for it
         final AuthenticationToken adminToken = login("australia@iaeste.au", "australia");
-        final Fallible response = administration.changeAccountName(adminToken, request);
+        final Response response = administration.changeAccountName(adminToken, request);
         assertThat(response.isOk(), is(true));
         logout(adminToken);
 
@@ -170,7 +169,7 @@ public final class UserAccountTest extends AbstractAdministration {
         // We're currently logged in as Austria, so we're trying to change the
         // username to Germany.
         request.setNewUsername("germany@iaeste.de");
-        final FallibleResponse response = administration.controlUserAccount(token, request);
+        final Response response = administration.controlUserAccount(token, request);
         assertThat(response.getError(), is(IWSErrors.FATAL));
     }
 
@@ -197,14 +196,14 @@ public final class UserAccountTest extends AbstractAdministration {
         final NotificationType type = NotificationType.ACTIVATE_NEW_USER;
         final NotificationField field = NotificationField.CODE;
         final String activationCode = spy.getNext(type).getFields().get(field);
-        final Fallible activateResponse = administration.activateUser(activationCode);
+        final Response activateResponse = administration.activateUser(activationCode);
         assertThat(activateResponse.isOk(), is(true));
 
         // 4. Delete the ACTIVE User
         final UserRequest deleteRequest = new UserRequest();
         deleteRequest.setUser(createResponse.getUser());
         deleteRequest.setNewStatus(UserStatus.DELETED);
-        final Fallible deleteResponse = administration.controlUserAccount(token, deleteRequest);
+        final Response deleteResponse = administration.controlUserAccount(token, deleteRequest);
         assertThat(deleteResponse.isOk(), is(true));
     }
 
@@ -218,14 +217,14 @@ public final class UserAccountTest extends AbstractAdministration {
         final UserRequest deleteRequest = new UserRequest();
         deleteRequest.setUser(createResponse.getUser());
         deleteRequest.setNewStatus(UserStatus.DELETED);
-        final Fallible deleteResponse = administration.controlUserAccount(token, deleteRequest);
+        final Response deleteResponse = administration.controlUserAccount(token, deleteRequest);
         assertThat(deleteResponse.isOk(), is(true));
 
         // Okay, now we're using the activation link to activate the Account
         final NotificationType type = NotificationType.ACTIVATE_NEW_USER;
         final NotificationField field = NotificationField.CODE;
         final String activationCode = spy.getNext(type).getFields().get(field);
-        final Fallible activateResponse = administration.activateUser(activationCode);
+        final Response activateResponse = administration.activateUser(activationCode);
         assertThat(activateResponse.isOk(), is(false));
         assertThat(activateResponse.getError(), is(IWSErrors.AUTHENTICATION_ERROR));
         assertThat(activateResponse.getMessage(), is("No account for this user was found."));
@@ -288,7 +287,7 @@ public final class UserAccountTest extends AbstractAdministration {
 
         // Now, perform the actual test - create the Account, and verify that
         // the response is ok, and that a Notification was sent
-        final Fallible result = administration.createUser(token, createUserRequest);
+        final Response result = administration.createUser(token, createUserRequest);
         assertThat(result.isOk(), is(true));
         // Creating a new User should generate an Activate User notification
         final NotificationType type = NotificationType.ACTIVATE_NEW_USER;
@@ -336,7 +335,7 @@ public final class UserAccountTest extends AbstractAdministration {
         myself.setPerson(person);
         final UserRequest updateRequest = new UserRequest();
         updateRequest.setUser(myself);
-        final Fallible updateResult = administration.controlUserAccount(myToken, updateRequest);
+        final Response updateResult = administration.controlUserAccount(myToken, updateRequest);
         assertThat(updateResult.isOk(), is(true));
 
         // Let's find the account again, and verify that the updates were applied
@@ -396,7 +395,7 @@ public final class UserAccountTest extends AbstractAdministration {
 
         // Now, perform the actual test - create the Account, and verify that
         // the response is ok, and that a Notification was sent
-        final Fallible result = administration.createUser(token, createUserRequest);
+        final Response result = administration.createUser(token, createUserRequest);
         assertThat(result.isOk(), is(true));
         assertThat(spy.size(), is(0));
 
@@ -472,7 +471,7 @@ public final class UserAccountTest extends AbstractAdministration {
         final UserRequest deleteRequest = new UserRequest();
         deleteRequest.setUser(created.getUser());
         deleteRequest.setNewStatus(UserStatus.DELETED);
-        final Fallible deleteResult = administration.controlUserAccount(token, deleteRequest);
+        final Response deleteResult = administration.controlUserAccount(token, deleteRequest);
         assertThat(deleteResult.isOk(), is(true));
 
         // Verify that the Student is deleted
@@ -610,7 +609,7 @@ public final class UserAccountTest extends AbstractAdministration {
         final UserRequest request = new UserRequest();
         request.setUser(response.getUser());
         request.setNewStatus(UserStatus.DELETED);
-        final Fallible deletedUserResponse = administration.controlUserAccount(token, request);
+        final Response deletedUserResponse = administration.controlUserAccount(token, request);
 
         assertThat(deletedUserResponse, is(not(nullValue())));
         assertThat(deletedUserResponse.isOk(), is(true));

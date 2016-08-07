@@ -1,13 +1,13 @@
 <?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://ws.iws.iaeste.net/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="administrationWSService" targetNamespace="http://ws.iws.iaeste.net/">
   <wsdl:documentation>
       Service: IWS Administration Service
-      Version: 1.2.20160607
+      Version: 1.2.20160807
       Owner:   Kim Jensen
   </wsdl:documentation>
   <wsdl:types>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://ws.iws.iaeste.net/" targetNamespace="http://ws.iws.iaeste.net/" version="1.0">
 
-  <xs:complexType name="fallibleResponse">
+  <xs:complexType name="response">
     <xs:sequence>
       <xs:element name="error" type="tns:iwsError"/>
       <xs:element name="message" type="xs:string"/>
@@ -53,7 +53,7 @@
 
   <xs:complexType final="extension restriction" name="createUserResponse">
     <xs:complexContent>
-      <xs:extension base="tns:fallibleResponse">
+      <xs:extension base="tns:response">
         <xs:sequence>
           <xs:element name="user" nillable="true" type="tns:user"/>
         </xs:sequence>
@@ -153,7 +153,7 @@
 
   <xs:complexType final="extension restriction" name="fetchUserResponse">
     <xs:complexContent>
-      <xs:extension base="tns:fallibleResponse">
+      <xs:extension base="tns:response">
         <xs:sequence>
           <xs:element name="user" nillable="true" type="tns:user"/>
         </xs:sequence>
@@ -238,7 +238,7 @@
 
   <xs:complexType final="extension restriction" name="fetchCountryResponse">
     <xs:complexContent>
-      <xs:extension base="tns:fallibleResponse">
+      <xs:extension base="tns:response">
         <xs:sequence>
           <xs:element maxOccurs="unbounded" name="countries" nillable="true" type="tns:country"/>
         </xs:sequence>
@@ -292,9 +292,9 @@
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="processRoleResponse">
+  <xs:complexType final="extension restriction" name="roleResponse">
     <xs:complexContent>
-      <xs:extension base="tns:fallibleResponse">
+      <xs:extension base="tns:response">
         <xs:sequence>
           <xs:element name="role" nillable="true" type="tns:role"/>
         </xs:sequence>
@@ -316,7 +316,7 @@
 
   <xs:complexType final="extension restriction" name="contactsResponse">
     <xs:complexContent>
-      <xs:extension base="tns:fallibleResponse">
+      <xs:extension base="tns:response">
         <xs:sequence>
           <xs:element maxOccurs="unbounded" name="users" nillable="true" type="tns:user"/>
           <xs:element maxOccurs="unbounded" name="groups" nillable="true" type="tns:group"/>
@@ -342,7 +342,7 @@
 
   <xs:complexType final="extension restriction" name="emergencyListResponse">
     <xs:complexContent>
-      <xs:extension base="tns:fallibleResponse">
+      <xs:extension base="tns:response">
         <xs:sequence>
           <xs:element maxOccurs="unbounded" name="emergencyContacts" nillable="true" type="tns:userGroup"/>
         </xs:sequence>
@@ -368,9 +368,9 @@
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="processGroupResponse">
+  <xs:complexType final="extension restriction" name="groupResponse">
     <xs:complexContent>
-      <xs:extension base="tns:fallibleResponse">
+      <xs:extension base="tns:response">
         <xs:sequence>
           <xs:element name="group" nillable="true" type="tns:group"/>
         </xs:sequence>
@@ -388,9 +388,9 @@
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="processUserGroupResponse">
+  <xs:complexType final="extension restriction" name="userGroupResponse">
     <xs:complexContent>
-      <xs:extension base="tns:fallibleResponse">
+      <xs:extension base="tns:response">
         <xs:sequence>
           <xs:element name="userGroup" nillable="true" type="tns:userGroup"/>
         </xs:sequence>
@@ -411,7 +411,7 @@
 
   <xs:complexType final="extension restriction" name="searchUserResponse">
     <xs:complexContent>
-      <xs:extension base="tns:fallibleResponse">
+      <xs:extension base="tns:response">
         <xs:sequence>
           <xs:element maxOccurs="unbounded" name="users" nillable="true" type="tns:userGroup"/>
         </xs:sequence>
@@ -435,7 +435,7 @@
 
   <xs:complexType final="extension restriction" name="fetchGroupResponse">
     <xs:complexContent>
-      <xs:extension base="tns:fallibleResponse">
+      <xs:extension base="tns:response">
         <xs:sequence>
           <xs:element name="group" nillable="true" type="tns:group"/>
           <xs:element maxOccurs="unbounded" name="members" nillable="true" type="tns:userGroup"/>
@@ -458,7 +458,7 @@
 
   <xs:complexType final="extension restriction" name="fetchRoleResponse">
     <xs:complexContent>
-      <xs:extension base="tns:fallibleResponse">
+      <xs:extension base="tns:response">
         <xs:sequence>
           <xs:element maxOccurs="unbounded" name="roles" nillable="true" type="tns:role"/>
         </xs:sequence>
@@ -688,7 +688,6 @@
     <xs:restriction base="xs:string">
       <xs:enumeration value="PUBLIC"/>
       <xs:enumeration value="PROTECTED"/>
-      <xs:enumeration value="PRIVATE"/>
     </xs:restriction>
   </xs:simpleType>
 
@@ -837,7 +836,7 @@
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="updateUsernameResponse">
-    <wsdl:part name="fallibleResponse" type="tns:fallibleResponse">
+    <wsdl:part name="fallibleResponse" type="tns:response">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="changeGroupOwner">
@@ -853,7 +852,7 @@
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="processGroupResponse">
-    <wsdl:part name="processGroupResponse" type="tns:processGroupResponse">
+    <wsdl:part name="processGroupResponse" type="tns:groupResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="fetchEmergencyListResponse">
@@ -881,11 +880,11 @@
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="processUserGroupAssignmentResponse">
-    <wsdl:part name="processUserGroupResponse" type="tns:processUserGroupResponse">
+    <wsdl:part name="processUserGroupResponse" type="tns:userGroupResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="activateUserResponse">
-    <wsdl:part name="fallibleResponse" type="tns:fallibleResponse">
+    <wsdl:part name="fallibleResponse" type="tns:response">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="controlUserAccount">
@@ -941,11 +940,11 @@
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="processRoleResponse">
-    <wsdl:part name="fetchRoleResponse" type="tns:processRoleResponse">
+    <wsdl:part name="fetchRoleResponse" type="tns:roleResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="changeGroupOwnerResponse">
-    <wsdl:part name="fallibleResponse" type="tns:fallibleResponse">
+    <wsdl:part name="fallibleResponse" type="tns:response">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="activateUser">
@@ -959,15 +958,15 @@
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="deleteSubGroupResponse">
-    <wsdl:part name="fallibleResponse" type="tns:fallibleResponse">
+    <wsdl:part name="fallibleResponse" type="tns:response">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="controlUserAccountResponse">
-    <wsdl:part name="fallibleResponse" type="tns:fallibleResponse">
+    <wsdl:part name="fallibleResponse" type="tns:response">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="processCountryResponse">
-    <wsdl:part name="fallibleResponse" type="tns:fallibleResponse">
+    <wsdl:part name="fallibleResponse" type="tns:response">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="fetchContacts">
@@ -985,7 +984,7 @@
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="changeAccountNameResponse">
-    <wsdl:part name="fallibleResponse" type="tns:fallibleResponse">
+    <wsdl:part name="fallibleResponse" type="tns:response">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="searchUsers">

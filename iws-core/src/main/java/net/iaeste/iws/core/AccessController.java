@@ -26,7 +26,7 @@ import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.requests.SessionDataRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
-import net.iaeste.iws.api.responses.FallibleResponse;
+import net.iaeste.iws.api.responses.Response;
 import net.iaeste.iws.api.responses.FetchPermissionResponse;
 import net.iaeste.iws.api.responses.SessionDataResponse;
 import net.iaeste.iws.api.responses.VersionResponse;
@@ -127,15 +127,15 @@ public final class AccessController extends CommonController implements Access {
      * {@inheritDoc}
      */
     @Override
-    public FallibleResponse requestResettingSession(final AuthenticationRequest request) {
-        FallibleResponse response;
+    public Response requestResettingSession(final AuthenticationRequest request) {
+        Response response;
 
         try {
             verify(request, AUTHENTICATION_REQUEST_ERROR);
 
             final AccessService service = factory.prepareAuthenticationService();
             service.requestResettingSession(request);
-            response = new FallibleResponse();
+            response = new Response();
         } catch (IWSException e) {
             // Generally, Exceptions should always be either logged or rethrown.
             // In our case, we're transforming the Exception into an Error
@@ -178,15 +178,15 @@ public final class AccessController extends CommonController implements Access {
      * {@inheritDoc}
      */
     @Override
-    public <T extends Serializable> FallibleResponse saveSessionData(final AuthenticationToken token, final SessionDataRequest<T> request) {
-        FallibleResponse response;
+    public <T extends Serializable> Response saveSessionData(final AuthenticationToken token, final SessionDataRequest<T> request) {
+        Response response;
 
         try {
             verifyPrivateAccess(token);
 
             final AccessService service = factory.prepareAuthenticationService();
             service.saveSessionData(token, request);
-            response = new FallibleResponse();
+            response = new Response();
         } catch (IWSException e) {
             // Generally, Exceptions should always be either logged or rethrown.
             // In our case, we're transforming the Exception into an Error
@@ -194,7 +194,7 @@ public final class AccessController extends CommonController implements Access {
             // that we're not loosing anything - the Exception is also logged
             // here as a debug message
             LOG.debug(e.getMessage(), e);
-            response = new FallibleResponse(e.getError(), e.getMessage());
+            response = new Response(e.getError(), e.getMessage());
         }
 
         return response;
@@ -229,12 +229,12 @@ public final class AccessController extends CommonController implements Access {
      * {@inheritDoc}
      */
     @Override
-    public FallibleResponse verifySession(final AuthenticationToken token) {
-        FallibleResponse response;
+    public Response verifySession(final AuthenticationToken token) {
+        Response response;
 
         try {
             verifyPrivateAccess(token);
-            response = new FallibleResponse();
+            response = new Response();
         } catch (IWSException e) {
             // Generally, Exceptions should always be either logged or rethrown.
             // In our case, we're transforming the Exception into an Error
@@ -242,7 +242,7 @@ public final class AccessController extends CommonController implements Access {
             // that we're not loosing anything - the Exception is also logged
             // here as a debug message
             LOG.debug(e.getMessage(), e);
-            response = new FallibleResponse(e.getError(), e.getMessage());
+            response = new Response(e.getError(), e.getMessage());
         }
 
         return response;
@@ -252,15 +252,15 @@ public final class AccessController extends CommonController implements Access {
      * {@inheritDoc}
      */
     @Override
-    public FallibleResponse deprecateSession(final AuthenticationToken token) {
-        FallibleResponse response;
+    public Response deprecateSession(final AuthenticationToken token) {
+        Response response;
 
         try {
             verifyPrivateAccess(token);
 
             final AccessService service = factory.prepareAuthenticationService();
             service.deprecateSession(token);
-            response = new FallibleResponse();
+            response = new Response();
         } catch (IWSException e) {
             // Generally, Exceptions should always be either logged or rethrown.
             // In our case, we're transforming the Exception into an Error
@@ -268,7 +268,7 @@ public final class AccessController extends CommonController implements Access {
             // that we're not loosing anything - the Exception is also logged
             // here as a debug message
             LOG.debug(e.getMessage(), e);
-            response = new FallibleResponse(e.getError(), e.getMessage());
+            response = new Response(e.getError(), e.getMessage());
         }
 
         return response;
@@ -278,14 +278,14 @@ public final class AccessController extends CommonController implements Access {
      * {@inheritDoc}
      */
     @Override
-    public FallibleResponse forgotPassword(final String username) {
-        FallibleResponse response;
+    public Response forgotPassword(final String username) {
+        Response response;
 
         try {
             verifyEmail(username);
             final AccessService service = factory.prepareAuthenticationService();
             service.forgotPassword(username);
-            response = new FallibleResponse();
+            response = new Response();
         } catch (IWSException e) {
             // Generally, Exceptions should always be either logged or rethrown.
             // In our case, we're transforming the Exception into an Error
@@ -293,7 +293,7 @@ public final class AccessController extends CommonController implements Access {
             // that we're not loosing anything - the Exception is also logged
             // here as a debug message
             LOG.debug(e.getMessage(), e);
-            response = new FallibleResponse(e.getError(), e.getMessage());
+            response = new Response(e.getError(), e.getMessage());
         }
 
         return response;
@@ -303,15 +303,15 @@ public final class AccessController extends CommonController implements Access {
      * {@inheritDoc}
      */
     @Override
-    public FallibleResponse resetPassword(final Password password) {
-        FallibleResponse response;
+    public Response resetPassword(final Password password) {
+        Response response;
 
         try {
             verify(password);
 
             final AccessService service = factory.prepareAuthenticationService();
             service.resetPassword(password);
-            response = new FallibleResponse();
+            response = new Response();
         } catch (IWSException e) {
             // Generally, Exceptions should always be either logged or rethrown.
             // In our case, we're transforming the Exception into an Error
@@ -319,7 +319,7 @@ public final class AccessController extends CommonController implements Access {
             // that we're not loosing anything - the Exception is also logged
             // here as a debug message
             LOG.debug(e.getMessage(), e);
-            response = new FallibleResponse(e.getError(), e.getMessage());
+            response = new Response(e.getError(), e.getMessage());
         }
 
         return response;
@@ -329,8 +329,8 @@ public final class AccessController extends CommonController implements Access {
      * {@inheritDoc}
      */
     @Override
-    public FallibleResponse updatePassword(final AuthenticationToken token, final Password password) {
-        FallibleResponse response;
+    public Response updatePassword(final AuthenticationToken token, final Password password) {
+        Response response;
 
         try {
             verify(password);
@@ -338,7 +338,7 @@ public final class AccessController extends CommonController implements Access {
 
             final AccessService service = factory.prepareAuthenticationService();
             service.updatePassword(authentication, password);
-            response = new FallibleResponse();
+            response = new Response();
         } catch (IWSException e) {
             // Generally, Exceptions should always be either logged or rethrown.
             // In our case, we're transforming the Exception into an Error
@@ -346,7 +346,7 @@ public final class AccessController extends CommonController implements Access {
             // that we're not loosing anything - the Exception is also logged
             // here as a debug message
             LOG.debug(e.getMessage(), e);
-            response = new FallibleResponse(e.getError(), e.getMessage());
+            response = new Response(e.getError(), e.getMessage());
         }
 
         return response;

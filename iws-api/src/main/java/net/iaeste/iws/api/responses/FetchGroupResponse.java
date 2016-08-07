@@ -38,7 +38,7 @@ import java.util.List;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "fetchGroupResponse", propOrder = { "group", "members", "students", "subGroups" })
-public final class FetchGroupResponse extends FallibleResponse {
+public final class FetchGroupResponse extends Response {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;

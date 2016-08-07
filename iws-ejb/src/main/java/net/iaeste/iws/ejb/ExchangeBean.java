@@ -29,10 +29,10 @@ import net.iaeste.iws.api.requests.exchange.HideForeignOffersRequest;
 import net.iaeste.iws.api.requests.exchange.OfferCSVUploadRequest;
 import net.iaeste.iws.api.requests.exchange.OfferRequest;
 import net.iaeste.iws.api.requests.exchange.OfferStatisticsRequest;
-import net.iaeste.iws.api.requests.exchange.ProcessPublishingGroupRequest;
+import net.iaeste.iws.api.requests.exchange.PublishingGroupRequest;
 import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
 import net.iaeste.iws.api.requests.exchange.RejectOfferRequest;
-import net.iaeste.iws.api.responses.FallibleResponse;
+import net.iaeste.iws.api.responses.Response;
 import net.iaeste.iws.api.responses.exchange.EmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchEmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchGroupsForSharingResponse;
@@ -308,16 +308,16 @@ public class ExchangeBean implements Exchange {
      */
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public FallibleResponse processPublishingGroup(final AuthenticationToken token, final ProcessPublishingGroupRequest request) {
+    public Response processPublishingGroup(final AuthenticationToken token, final PublishingGroupRequest request) {
         final long start = System.nanoTime();
-        FallibleResponse response;
+        Response response;
 
         try {
             response = controller.processPublishingGroup(token, request);
             LOG.info(session.generateLogAndUpdateSession("processPublishingGroup", start, response, token));
         } catch (RuntimeException e) {
             LOG.error(session.generateLogAndSaveRequest("processPublishingGroup", start, e, token, request), e);
-            response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
+            response = new Response(IWSErrors.ERROR, e.getMessage());
         }
 
         return response;
@@ -388,16 +388,16 @@ public class ExchangeBean implements Exchange {
      */
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public FallibleResponse processHideForeignOffers(final AuthenticationToken token, final HideForeignOffersRequest request) {
+    public Response processHideForeignOffers(final AuthenticationToken token, final HideForeignOffersRequest request) {
         final long start = System.nanoTime();
-        FallibleResponse response;
+        Response response;
 
         try {
             response = controller.processHideForeignOffers(token, request);
             LOG.info(session.generateLogAndUpdateSession("processHideForeignOffers", start, response, token));
         } catch (RuntimeException e) {
             LOG.error(session.generateLogAndSaveRequest("processHideForeignOffers", start, e, token, request), e);
-            response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
+            response = new Response(IWSErrors.ERROR, e.getMessage());
         }
 
         return response;
@@ -408,16 +408,16 @@ public class ExchangeBean implements Exchange {
      */
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public FallibleResponse rejectOffer(final AuthenticationToken token, final RejectOfferRequest request) {
+    public Response rejectOffer(final AuthenticationToken token, final RejectOfferRequest request) {
         final long start = System.nanoTime();
-        FallibleResponse response;
+        Response response;
 
         try {
             response = controller.rejectOffer(token, request);
             LOG.info(session.generateLogAndUpdateSession("rejectOffer", start, response, token));
         } catch (RuntimeException e) {
             LOG.error(session.generateLogAndSaveRequest("rejectOffer", start, e, token, request), e);
-            response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
+            response = new Response(IWSErrors.ERROR, e.getMessage());
         }
 
         return response;

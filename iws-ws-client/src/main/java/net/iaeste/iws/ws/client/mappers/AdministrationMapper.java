@@ -41,9 +41,9 @@ import net.iaeste.iws.api.responses.FetchCountryResponse;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchRoleResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
-import net.iaeste.iws.api.responses.ProcessGroupResponse;
-import net.iaeste.iws.api.responses.ProcessRoleResponse;
-import net.iaeste.iws.api.responses.ProcessUserGroupResponse;
+import net.iaeste.iws.api.responses.groupResponse;
+import net.iaeste.iws.api.responses.RoleResponse;
+import net.iaeste.iws.api.responses.UserGroupResponse;
 import net.iaeste.iws.api.responses.SearchUserResponse;
 import net.iaeste.iws.ws.UserFetchType;
 
@@ -170,11 +170,11 @@ public final class AdministrationMapper extends CommonMapper {
         return ws;
     }
 
-    public static ProcessRoleResponse map(final net.iaeste.iws.ws.ProcessRoleResponse ws) {
-        ProcessRoleResponse api = null;
+    public static RoleResponse map(final net.iaeste.iws.ws.RoleResponse ws) {
+        RoleResponse api = null;
 
         if (ws != null) {
-            api = new ProcessRoleResponse(map(ws.getError()), ws.getMessage());
+            api = new RoleResponse(map(ws.getError()), ws.getMessage());
 
             api.setRole(map(ws.getRole()));
         }
@@ -219,11 +219,11 @@ public final class AdministrationMapper extends CommonMapper {
         return ws;
     }
 
-    public static ProcessGroupResponse map(final net.iaeste.iws.ws.ProcessGroupResponse ws) {
-        ProcessGroupResponse api = null;
+    public static groupResponse map(final net.iaeste.iws.ws.GroupResponse ws) {
+        groupResponse api = null;
 
         if (ws != null) {
-            api = new ProcessGroupResponse(map(ws.getError()), ws.getMessage());
+            api = new groupResponse(map(ws.getError()), ws.getMessage());
 
             api.setGroup(map(ws.getGroup()));
         }
@@ -289,11 +289,11 @@ public final class AdministrationMapper extends CommonMapper {
         return ws;
     }
 
-    public static ProcessUserGroupResponse map(final net.iaeste.iws.ws.ProcessUserGroupResponse ws) {
-        ProcessUserGroupResponse api = null;
+    public static UserGroupResponse map(final net.iaeste.iws.ws.UserGroupResponse ws) {
+        UserGroupResponse api = null;
 
         if (ws != null) {
-            api = new ProcessUserGroupResponse(map(ws.getError()), ws.getMessage());
+            api = new UserGroupResponse(map(ws.getError()), ws.getMessage());
 
             api.setUserGroup(map(ws.getUserGroup()));
         }

@@ -39,7 +39,7 @@ import java.util.List;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "contactsResponse", propOrder = { "users", "groups", "type" })
-public final class ContactsResponse extends FallibleResponse {
+public final class ContactsResponse extends Response {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;

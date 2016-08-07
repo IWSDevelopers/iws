@@ -35,14 +35,14 @@ import net.iaeste.iws.api.requests.UserRequest;
 import net.iaeste.iws.api.responses.ContactsResponse;
 import net.iaeste.iws.api.responses.CreateUserResponse;
 import net.iaeste.iws.api.responses.EmergencyListResponse;
-import net.iaeste.iws.api.responses.FallibleResponse;
+import net.iaeste.iws.api.responses.Response;
 import net.iaeste.iws.api.responses.FetchCountryResponse;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchRoleResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
-import net.iaeste.iws.api.responses.ProcessGroupResponse;
-import net.iaeste.iws.api.responses.ProcessRoleResponse;
-import net.iaeste.iws.api.responses.ProcessUserGroupResponse;
+import net.iaeste.iws.api.responses.groupResponse;
+import net.iaeste.iws.api.responses.RoleResponse;
+import net.iaeste.iws.api.responses.UserGroupResponse;
 import net.iaeste.iws.api.responses.SearchUserResponse;
 
 /**
@@ -67,7 +67,7 @@ public interface Administration {
      * @param request Request data, must contain the Country Record
      * @return Standard Error Object
      */
-    FallibleResponse processCountry(AuthenticationToken token, CountryRequest request);
+    Response processCountry(AuthenticationToken token, CountryRequest request);
 
     /**
      * <p>Retrieves a list of Countries from the internal UN listing of
@@ -142,7 +142,7 @@ public interface Administration {
      *                state for it
      * @return Standard Error Object
      */
-    FallibleResponse controlUserAccount(AuthenticationToken token, UserRequest request);
+    Response controlUserAccount(AuthenticationToken token, UserRequest request);
 
     /**
      * <p>Users cannot access the IWS, until their account has been activated,
@@ -158,7 +158,7 @@ public interface Administration {
      * @param activationString Code used to activate the Account with
      * @return Standard Error Object
      */
-    FallibleResponse activateUser(String activationString);
+    Response activateUser(String activationString);
 
     /**
      * <p>Users who have changed their username, can invoke the
@@ -174,7 +174,7 @@ public interface Administration {
      * @param updateCode Code used for updating the username for the account
      * @return Standard Error Object
      */
-    FallibleResponse updateUsername(String updateCode);
+    Response updateUsername(String updateCode);
 
     /**
      * <p>The request will allow an update of the name of an Account, i.e.
@@ -191,7 +191,7 @@ public interface Administration {
      *                name for it
      * @return Standard Error Object
      */
-    FallibleResponse changeAccountName(AuthenticationToken token, AccountNameRequest request);
+    Response changeAccountName(AuthenticationToken token, AccountNameRequest request);
 
     /**
      * <p>Retrieves the details about a user. The amount of details depends upon
@@ -233,7 +233,7 @@ public interface Administration {
      * @param request Role Request Object
      * @return Response Object with processed Role and Error information
      */
-    ProcessRoleResponse processRole(AuthenticationToken token, RoleRequest request);
+    RoleResponse processRole(AuthenticationToken token, RoleRequest request);
 
     /**
      * <p>Retrieves the list of Roles, which a User may have towards a specific
@@ -257,7 +257,7 @@ public interface Administration {
      * @param request Group Request Object
      * @return Response Object with processed Group and Error information
      */
-    ProcessGroupResponse processGroup(AuthenticationToken token, GroupRequest request);
+    groupResponse processGroup(AuthenticationToken token, GroupRequest request);
 
     /**
      * <p>This request allows a user to delete a subgroup to the one that is
@@ -276,7 +276,7 @@ public interface Administration {
      * @param request Fetch Group Request Object
      * @return Standard Error Object
      */
-    FallibleResponse deleteSubGroup(AuthenticationToken token, GroupRequest request);
+    Response deleteSubGroup(AuthenticationToken token, GroupRequest request);
 
     /**
      * <p>Retrieves the requested Group and the depending on the flags, it will
@@ -310,7 +310,7 @@ public interface Administration {
      * @param request Fetch Group Request Object
      * @return Standard Error Object
      */
-    FallibleResponse changeGroupOwner(AuthenticationToken token, OwnerRequest request);
+    Response changeGroupOwner(AuthenticationToken token, OwnerRequest request);
 
     /**
      * <p>The UserGroup Assignment controls how a User may interact with a
@@ -335,7 +335,7 @@ public interface Administration {
      * @param request  Request data, must contain the UserGroup settings
      * @return Response with altered relation and error information
      */
-    ProcessUserGroupResponse processUserGroupAssignment(AuthenticationToken token, UserGroupAssignmentRequest request);
+    UserGroupResponse processUserGroupAssignment(AuthenticationToken token, UserGroupAssignmentRequest request);
 
     /**
      * <p>Search functionality for Members. When adding users to a Group, it

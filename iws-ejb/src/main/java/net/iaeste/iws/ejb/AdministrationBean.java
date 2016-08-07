@@ -37,14 +37,14 @@ import net.iaeste.iws.api.requests.UserRequest;
 import net.iaeste.iws.api.responses.ContactsResponse;
 import net.iaeste.iws.api.responses.CreateUserResponse;
 import net.iaeste.iws.api.responses.EmergencyListResponse;
-import net.iaeste.iws.api.responses.FallibleResponse;
+import net.iaeste.iws.api.responses.Response;
 import net.iaeste.iws.api.responses.FetchCountryResponse;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchRoleResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
-import net.iaeste.iws.api.responses.ProcessGroupResponse;
-import net.iaeste.iws.api.responses.ProcessRoleResponse;
-import net.iaeste.iws.api.responses.ProcessUserGroupResponse;
+import net.iaeste.iws.api.responses.groupResponse;
+import net.iaeste.iws.api.responses.RoleResponse;
+import net.iaeste.iws.api.responses.UserGroupResponse;
 import net.iaeste.iws.api.responses.SearchUserResponse;
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.core.AdministrationController;
@@ -146,16 +146,16 @@ public class AdministrationBean implements Administration {
      * {@inheritDoc}
      */
     @Override
-    public FallibleResponse processCountry(final AuthenticationToken token, final CountryRequest request) {
+    public Response processCountry(final AuthenticationToken token, final CountryRequest request) {
         final long start = System.nanoTime();
-        FallibleResponse response;
+        Response response;
 
         try {
             response = controller.processCountry(token, request);
             LOG.info(session.generateLogAndUpdateSession("processCountry", start, response, token));
         } catch (RuntimeException e) {
             LOG.error(session.generateLogAndSaveRequest("processCountry", start, e, token, request), e);
-            response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
+            response = new Response(IWSErrors.ERROR, e.getMessage());
         }
 
         return response;
@@ -204,16 +204,16 @@ public class AdministrationBean implements Administration {
      * {@inheritDoc}
      */
     @Override
-    public FallibleResponse activateUser(final String activationString) {
+    public Response activateUser(final String activationString) {
         final long start = System.nanoTime();
-        FallibleResponse response;
+        Response response;
 
         try {
             response = controller.activateUser(activationString);
             LOG.info(session.generateLog("activateUser", start, response));
         } catch (RuntimeException e) {
             LOG.error(session.generateLog("activateUser", start, e), e);
-            response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
+            response = new Response(IWSErrors.ERROR, e.getMessage());
         }
 
         return response;
@@ -223,16 +223,16 @@ public class AdministrationBean implements Administration {
      * {@inheritDoc}
      */
     @Override
-    public FallibleResponse updateUsername(final String updateCode) {
+    public Response updateUsername(final String updateCode) {
         final long start = System.nanoTime();
-        FallibleResponse response;
+        Response response;
 
         try {
             response = controller.updateUsername(updateCode);
             LOG.info(session.generateLog("updateUsername", start, response));
         } catch (RuntimeException e) {
             LOG.error(session.generateLog("updateUsername", start, e), e);
-            response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
+            response = new Response(IWSErrors.ERROR, e.getMessage());
         }
 
         return response;
@@ -242,16 +242,16 @@ public class AdministrationBean implements Administration {
      * {@inheritDoc}
      */
     @Override
-    public FallibleResponse controlUserAccount(final AuthenticationToken token, final UserRequest request) {
+    public Response controlUserAccount(final AuthenticationToken token, final UserRequest request) {
         final long start = System.nanoTime();
-        FallibleResponse response;
+        Response response;
 
         try {
             response = controller.controlUserAccount(token, request);
             LOG.info(session.generateLogAndUpdateSession("controlUserAccount", start, response, token));
         } catch (RuntimeException e) {
             LOG.error(session.generateLogAndSaveRequest("controlUserAccount", start, e, token, request), e);
-            response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
+            response = new Response(IWSErrors.ERROR, e.getMessage());
         }
 
         return response;
@@ -261,16 +261,16 @@ public class AdministrationBean implements Administration {
      * {@inheritDoc}
      */
     @Override
-    public FallibleResponse changeAccountName(final AuthenticationToken token, final AccountNameRequest request) {
+    public Response changeAccountName(final AuthenticationToken token, final AccountNameRequest request) {
         final long start = System.nanoTime();
-        FallibleResponse response;
+        Response response;
 
         try {
             response = controller.changeAccountName(token, request);
             LOG.info(session.generateLogAndUpdateSession("changeAccountName", start, response, token));
         } catch (RuntimeException e) {
             LOG.error(session.generateLogAndSaveRequest("changeAccountName", start, e, token, request), e);
-            response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
+            response = new Response(IWSErrors.ERROR, e.getMessage());
         }
 
         return response;
@@ -301,16 +301,16 @@ public class AdministrationBean implements Administration {
      */
     @Override
     @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-    public ProcessRoleResponse processRole(final AuthenticationToken token, final RoleRequest request) {
+    public RoleResponse processRole(final AuthenticationToken token, final RoleRequest request) {
         final long start = System.nanoTime();
-        ProcessRoleResponse response;
+        RoleResponse response;
 
         try {
             response = controller.processRole(token, request);
             LOG.info(session.generateLogAndUpdateSession("processRole", start, response, token));
         } catch (RuntimeException e) {
             LOG.error(session.generateLogAndSaveRequest("processRole", start, e, token, request), e);
-            response = new ProcessRoleResponse(IWSErrors.ERROR, e.getMessage());
+            response = new RoleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
         return response;
@@ -340,16 +340,16 @@ public class AdministrationBean implements Administration {
      * {@inheritDoc}
      */
     @Override
-    public ProcessGroupResponse processGroup(final AuthenticationToken token, final GroupRequest request) {
+    public groupResponse processGroup(final AuthenticationToken token, final GroupRequest request) {
         final long start = System.nanoTime();
-        ProcessGroupResponse response;
+        groupResponse response;
 
         try {
             response = controller.processGroup(token, request);
             LOG.info(session.generateLogAndUpdateSession("processGroup", start, response, token));
         } catch (RuntimeException e) {
             LOG.error(session.generateLogAndSaveRequest("processGroup", start, e, token, request), e);
-            response = new ProcessGroupResponse(IWSErrors.ERROR, e.getMessage());
+            response = new groupResponse(IWSErrors.ERROR, e.getMessage());
         }
 
         return response;
@@ -359,16 +359,16 @@ public class AdministrationBean implements Administration {
      * {@inheritDoc}
      */
     @Override
-    public FallibleResponse deleteSubGroup(final AuthenticationToken token, final GroupRequest request) {
+    public Response deleteSubGroup(final AuthenticationToken token, final GroupRequest request) {
         final long start = System.nanoTime();
-        FallibleResponse response;
+        Response response;
 
         try {
             response = controller.deleteSubGroup(token, request);
             LOG.info(session.generateLogAndUpdateSession("deleteSubGroup", start, response, token));
         } catch (RuntimeException e) {
             LOG.error(session.generateLogAndSaveRequest("deleteSubGroup", start, e, token, request), e);
-            response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
+            response = new Response(IWSErrors.ERROR, e.getMessage());
         }
 
         return response;
@@ -398,16 +398,16 @@ public class AdministrationBean implements Administration {
      * {@inheritDoc}
      */
     @Override
-    public FallibleResponse changeGroupOwner(final AuthenticationToken token, final OwnerRequest request) {
+    public Response changeGroupOwner(final AuthenticationToken token, final OwnerRequest request) {
         final long start = System.nanoTime();
-        FallibleResponse response;
+        Response response;
 
         try {
             response = controller.changeGroupOwner(token, request);
             LOG.info(session.generateLogAndUpdateSession("changeGroupOwner", start, response, token));
         } catch (RuntimeException e) {
             LOG.error(session.generateLogAndSaveRequest("changeGroupOwner", start, e, token, request), e);
-            response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
+            response = new Response(IWSErrors.ERROR, e.getMessage());
         }
 
         return response;
@@ -417,16 +417,16 @@ public class AdministrationBean implements Administration {
      * {@inheritDoc}
      */
     @Override
-    public ProcessUserGroupResponse processUserGroupAssignment(final AuthenticationToken token, final UserGroupAssignmentRequest request) {
+    public UserGroupResponse processUserGroupAssignment(final AuthenticationToken token, final UserGroupAssignmentRequest request) {
         final long start = System.nanoTime();
-        ProcessUserGroupResponse response;
+        UserGroupResponse response;
 
         try {
             response = controller.processUserGroupAssignment(token, request);
             LOG.info(session.generateLogAndUpdateSession("processUserGroupAssignment", start, response, token));
         } catch (RuntimeException e) {
             LOG.error(session.generateLogAndSaveRequest("processUserGroupAssignment", start, e, token, request), e);
-            response = new ProcessUserGroupResponse(IWSErrors.ERROR, e.getMessage());
+            response = new UserGroupResponse(IWSErrors.ERROR, e.getMessage());
         }
 
         return response;

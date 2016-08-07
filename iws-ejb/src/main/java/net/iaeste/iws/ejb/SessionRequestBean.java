@@ -22,7 +22,7 @@ import static net.iaeste.iws.common.utils.LogUtil.formatLogMessage;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
-import net.iaeste.iws.api.util.Fallible;
+import net.iaeste.iws.api.responses.Response;
 import net.iaeste.iws.api.util.Serializer;
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.common.exceptions.AuthenticationException;
@@ -103,6 +103,9 @@ public class SessionRequestBean {
         this.settings = settings;
     }
 
+    /**
+     * PostConstruct Method for th Session Request Bean.
+     */
     @PostConstruct
     public void postConstruct() {
         dao = new AccessJpaDao(entityManager, settings);
@@ -112,13 +115,31 @@ public class SessionRequestBean {
     // Common functionality to deal with Sessions, Requests and Log Messages
     // =========================================================================
 
+    /**
+     * Generates the Log message and updates the Session.
+     *
+     * @param method   The Method to generate a Log Message for
+     * @param start    The time in milliseconds for request start
+     * @param response The Response from the IWS, to log and update
+     * @param token    The User Authentication Token
+     * @return String to use as log message
+     */
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public String generateLogAndUpdateSession(final String method, final Long start, final Fallible response, final AuthenticationToken token) {
+    public String generateLogAndUpdateSession(final String method, final Long start, final Response response, final AuthenticationToken token) {
         saveRequest(method, response, token);
 
         return generateLog(method, start, response, token);
     }
 
+    /**
+     *
+     * @param method   The Method to generate a Log Message for
+     * @param start    The time in milliseconds for request start
+     * @param cause
+     * @param token    The User Authentication Token
+     * @param request
+     * @return
+     */
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public String generateLogAndSaveRequest(final String method, final Long start, final Throwable cause, final AuthenticationToken token, final Serializable request) {
         saveRequest(method, cause, token, request);
@@ -126,6 +147,14 @@ public class SessionRequestBean {
         return generateLog(method, start, cause, token);
     }
 
+    /**
+     *
+     * @param method   The Method to generate a Log Message for
+     * @param start    The time in milliseconds for request start
+     * @param cause
+     * @param token    The User Authentication Token
+     * @return
+     */
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public String generateLogAndSaveRequest(final String method, final Long start, final Throwable cause, final AuthenticationToken token) {
         saveRequest(method, cause, token, null);
@@ -145,11 +174,11 @@ public class SessionRequestBean {
      *
      * @param method   The name of the Method being invoked
      * @param start    The time when the request started in nanoseconds
-     * @param fallible The result of the request, either success or failure
+     * @param response The result of the request, either success or failure
      * @param token    The users Authentication Token for traceability
      * @return Formatted log message with request, duration and result
      */
-    public String generateLog(final String method, final Long start, final Fallible fallible, final AuthenticationToken token) {
+    public String generateLog(final String method, final Long start, final Response response, final AuthenticationToken token) {
         // The symbols used can vary from locale to locale, so we're setting
         // them according to the default Locale in IWS.
         final DecimalFormatSymbols symbols = new DecimalFormatSymbols(IWSConstants.DEFAULT_LOCALE);
@@ -161,10 +190,10 @@ public class SessionRequestBean {
         final String duration = format.format((System.nanoTime() - start) / 1000000.0);
         final String logMessage;
 
-        if (fallible.isOk()) {
+        if (response.isOk()) {
             logMessage = formatLogMessage(token, SUCCESS, method, duration);
         } else {
-            final String message = fallible.getMessage();
+            final String message = response.getMessage();
             logMessage = formatLogMessage(token, WARINING, method, duration, message);
         }
 
@@ -179,11 +208,11 @@ public class SessionRequestBean {
      *
      * @param method   The name of the Method being invoked
      * @param start    The time when the request started in nanoseconds
-     * @param fallible The result of the request, either success or failure
+     * @param response The result of the request, either success or failure
      * @return Formatted log message with request, duration and result
      */
-    public String generateLog(final String method, final Long start, final Fallible fallible) {
-        return generateLog(method, start, fallible, null);
+    public String generateLog(final String method, final Long start, final Response response) {
+        return generateLog(method, start, response, null);
     }
 
     /**
@@ -237,7 +266,7 @@ public class SessionRequestBean {
         }
     }
 
-    private void saveRequest(final String request, final Fallible response, final AuthenticationToken token) {
+    private void saveRequest(final String request, final Response response, final AuthenticationToken token) {
         final SessionEntity session = findAndUpdateSession(token);
 
         if (!response.getError().equals(IWSErrors.SUCCESS) && (session != null)) {
@@ -247,7 +276,7 @@ public class SessionRequestBean {
         }
     }
 
-    private RequestEntity prepareEntity(final SessionEntity session, final Fallible response, final String request) {
+    private RequestEntity prepareEntity(final SessionEntity session, final Response response, final String request) {
         final RequestEntity entity = new RequestEntity();
         entity.setSession(session);
         entity.setRequest(request);

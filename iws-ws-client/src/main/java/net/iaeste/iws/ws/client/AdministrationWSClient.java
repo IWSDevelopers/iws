@@ -38,14 +38,14 @@ import net.iaeste.iws.api.requests.UserRequest;
 import net.iaeste.iws.api.responses.ContactsResponse;
 import net.iaeste.iws.api.responses.CreateUserResponse;
 import net.iaeste.iws.api.responses.EmergencyListResponse;
-import net.iaeste.iws.api.responses.FallibleResponse;
+import net.iaeste.iws.api.responses.Response;
 import net.iaeste.iws.api.responses.FetchCountryResponse;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchRoleResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
-import net.iaeste.iws.api.responses.ProcessGroupResponse;
-import net.iaeste.iws.api.responses.ProcessRoleResponse;
-import net.iaeste.iws.api.responses.ProcessUserGroupResponse;
+import net.iaeste.iws.api.responses.groupResponse;
+import net.iaeste.iws.api.responses.RoleResponse;
+import net.iaeste.iws.api.responses.UserGroupResponse;
 import net.iaeste.iws.api.responses.SearchUserResponse;
 import net.iaeste.iws.ws.AdministrationWS;
 import org.apache.cxf.endpoint.Client;
@@ -112,7 +112,7 @@ public final class AdministrationWSClient extends CommonWSClient implements Admi
      * {@inheritDoc}
      */
     @Override
-    public FallibleResponse processCountry(final AuthenticationToken token, final CountryRequest request) {
+    public Response processCountry(final AuthenticationToken token, final CountryRequest request) {
         return map(client.processCountry(map(token), map(request)));
     }
 
@@ -136,7 +136,7 @@ public final class AdministrationWSClient extends CommonWSClient implements Admi
      * {@inheritDoc}
      */
     @Override
-    public FallibleResponse controlUserAccount(final AuthenticationToken token, final UserRequest request) {
+    public Response controlUserAccount(final AuthenticationToken token, final UserRequest request) {
         return map(client.controlUserAccount(map(token), map(request)));
     }
 
@@ -144,7 +144,7 @@ public final class AdministrationWSClient extends CommonWSClient implements Admi
      * {@inheritDoc}
      */
     @Override
-    public FallibleResponse activateUser(final String activationString) {
+    public Response activateUser(final String activationString) {
         return map(client.activateUser(activationString));
     }
 
@@ -152,7 +152,7 @@ public final class AdministrationWSClient extends CommonWSClient implements Admi
      * {@inheritDoc}
      */
     @Override
-    public FallibleResponse updateUsername(final String updateCode) {
+    public Response updateUsername(final String updateCode) {
         return map(client.updateUsername(updateCode));
     }
 
@@ -160,7 +160,7 @@ public final class AdministrationWSClient extends CommonWSClient implements Admi
      * {@inheritDoc}
      */
     @Override
-    public FallibleResponse changeAccountName(final AuthenticationToken token, final AccountNameRequest request) {
+    public Response changeAccountName(final AuthenticationToken token, final AccountNameRequest request) {
         return map(client.changeAccountName(map(token), map(request)));
     }
 
@@ -176,7 +176,7 @@ public final class AdministrationWSClient extends CommonWSClient implements Admi
      * {@inheritDoc}
      */
     @Override
-    public ProcessRoleResponse processRole(final AuthenticationToken token, final RoleRequest request) {
+    public RoleResponse processRole(final AuthenticationToken token, final RoleRequest request) {
         return map(client.processRole(map(token), map(request)));
     }
 
@@ -192,7 +192,7 @@ public final class AdministrationWSClient extends CommonWSClient implements Admi
      * {@inheritDoc}
      */
     @Override
-    public ProcessGroupResponse processGroup(final AuthenticationToken token, final GroupRequest request) {
+    public groupResponse processGroup(final AuthenticationToken token, final GroupRequest request) {
         return map(client.processGroup(map(token), map(request)));
     }
 
@@ -200,7 +200,7 @@ public final class AdministrationWSClient extends CommonWSClient implements Admi
      * {@inheritDoc}
      */
     @Override
-    public FallibleResponse deleteSubGroup(final AuthenticationToken token, final GroupRequest request) {
+    public Response deleteSubGroup(final AuthenticationToken token, final GroupRequest request) {
         return map(client.deleteSubGroup(map(token), map(request)));
     }
 
@@ -216,7 +216,7 @@ public final class AdministrationWSClient extends CommonWSClient implements Admi
      * {@inheritDoc}
      */
     @Override
-    public FallibleResponse changeGroupOwner(final AuthenticationToken token, final OwnerRequest request) {
+    public Response changeGroupOwner(final AuthenticationToken token, final OwnerRequest request) {
         return map(client.changeGroupOwner(map(token), map(request)));
     }
 
@@ -224,7 +224,7 @@ public final class AdministrationWSClient extends CommonWSClient implements Admi
      * {@inheritDoc}
      */
     @Override
-    public ProcessUserGroupResponse processUserGroupAssignment(final AuthenticationToken token, final UserGroupAssignmentRequest request) {
+    public UserGroupResponse processUserGroupAssignment(final AuthenticationToken token, final UserGroupAssignmentRequest request) {
         return map(client.processUserGroupAssignment(map(token), map(request)));
     }
 

@@ -19,7 +19,7 @@ package net.iaeste.iws.api.responses;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
-import net.iaeste.iws.api.dtos.Role;
+import net.iaeste.iws.api.dtos.UserGroup;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -29,21 +29,18 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   IWS 1.2
+ * @since   IWS 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "processRoleResponse", propOrder = "role")
-public final class ProcessRoleResponse extends FallibleResponse {
+@XmlType(name = "userGroupResponse", propOrder = "userGroup")
+public final class UserGroupResponse extends Response {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    /**
-     * The newly created Folder Object. The Object is containing the new Folder
-     * Id together with other meta information.
-     */
+    /** The newly created User Object. */
     @XmlElement(required = true, nillable = true)
-    private Role role = null;
+    private UserGroup userGroup = null;
 
     // =========================================================================
     // Object Constructors
@@ -53,8 +50,17 @@ public final class ProcessRoleResponse extends FallibleResponse {
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.
      */
-    public ProcessRoleResponse() {
+    public UserGroupResponse() {
         // Required for WebServices to work. Comment added to please Sonar.
+    }
+
+    /**
+     * Default Constructor.
+     *
+     * @param userGroup Processed User Group relation
+     */
+    public UserGroupResponse(final UserGroup userGroup) {
+        setUserGroup(userGroup);
     }
 
     /**
@@ -63,7 +69,7 @@ public final class ProcessRoleResponse extends FallibleResponse {
      * @param error   IWS Error Object
      * @param message Error Message
      */
-    public ProcessRoleResponse(final IWSError error, final String message) {
+    public UserGroupResponse(final IWSError error, final String message) {
         super(error, message);
     }
 
@@ -71,11 +77,11 @@ public final class ProcessRoleResponse extends FallibleResponse {
     // Standard Setters & Getters
     // =========================================================================
 
-    public void setRole(final Role role) {
-        this.role = role;
+    public void setUserGroup(final UserGroup userGroup) {
+        this.userGroup = new UserGroup(userGroup);
     }
 
-    public Role getRole() {
-        return role;
+    public UserGroup getUserGroup() {
+        return new UserGroup(userGroup);
     }
 }

@@ -39,7 +39,7 @@ import net.iaeste.iws.api.requests.FetchCountryRequest;
 import net.iaeste.iws.api.responses.CommitteeResponse;
 import net.iaeste.iws.api.responses.FetchCommitteeResponse;
 import net.iaeste.iws.api.responses.FetchCountryResponse;
-import net.iaeste.iws.api.util.Fallible;
+import net.iaeste.iws.api.responses.Response;
 import net.iaeste.iws.client.AbstractTest;
 import net.iaeste.iws.client.CommitteeClient;
 import net.iaeste.iws.common.notification.NotificationType;
@@ -109,7 +109,7 @@ public final class ProcessCommitteeTest extends AbstractTest {
         assertThat(createResponse.getCommittee().getGroup().getCountry().getMemberSince(), is(Calendar.getInstance().get(Calendar.YEAR)));
 
         // Now, we're repeating the same request, expecting an error!
-        final Fallible failedCreateResponse = createCommittee("AA", "Donald", "Duck", "DD");
+        final Response failedCreateResponse = createCommittee("AA", "Donald", "Duck", "DD");
         assertThat(failedCreateResponse.isOk(), is(false));
         assertThat(failedCreateResponse.getError(), is(IWSErrors.ILLEGAL_ACTION));
         assertThat(failedCreateResponse.getMessage(), containsString("A Committee with the name "));
@@ -134,7 +134,7 @@ public final class ProcessCommitteeTest extends AbstractTest {
     @Test
     public void testCreateCommitteeForExistingAssociateMember() {
         // Azerbaijan is an Associate Member
-        final Fallible failedCreateResponse = createCommittee("AZ", "Donald", "Duck", "DD");
+        final Response failedCreateResponse = createCommittee("AZ", "Donald", "Duck", "DD");
         assertThat(failedCreateResponse.isOk(), is(false));
         assertThat(failedCreateResponse.getError(), is(IWSErrors.ILLEGAL_ACTION));
         assertThat(failedCreateResponse.getMessage(), is("Cannot create a new Cooperating Institution for a Member Country."));
@@ -143,7 +143,7 @@ public final class ProcessCommitteeTest extends AbstractTest {
     @Test
     public void testCreateCommitteeForExistingFullMember() {
         // Austria is a Full Member
-        final Fallible failedCreateResponse = createCommittee("AT", "Donald", "Duck", "DD");
+        final Response failedCreateResponse = createCommittee("AT", "Donald", "Duck", "DD");
         assertThat(failedCreateResponse.isOk(), is(false));
         assertThat(failedCreateResponse.getError(), is(IWSErrors.ILLEGAL_ACTION));
         assertThat(failedCreateResponse.getMessage(), is("Cannot create a new Cooperating Institution for a Member Country."));
@@ -160,7 +160,7 @@ public final class ProcessCommitteeTest extends AbstractTest {
         request.setInstitutionName("Donald Duck");
         request.setInstitutionAbbreviation("DD");
 
-        final Fallible response = committees.processCommittee(token, request);
+        final Response response = committees.processCommittee(token, request);
         assertThat(response.isOk(), is(false));
         assertThat(response.getError(), is(IWSErrors.OBJECT_IDENTIFICATION_ERROR));
         assertThat(response.getMessage(), is("No country was found."));
@@ -177,7 +177,7 @@ public final class ProcessCommitteeTest extends AbstractTest {
         request.setInstitutionName("Donald Duck");
         request.setInstitutionAbbreviation("DD");
 
-        final Fallible response = committees.processCommittee(token, request);
+        final Response response = committees.processCommittee(token, request);
         assertThat(response.isOk(), is(false));
         assertThat(response.getError(), is(IWSErrors.ILLEGAL_ACTION));
         assertThat(response.getMessage(), is("Cannot create a new Cooperating Institution for a Member Country."));
@@ -194,7 +194,7 @@ public final class ProcessCommitteeTest extends AbstractTest {
         request.setInstitutionName("Donald Duck");
         request.setInstitutionAbbreviation("DD");
 
-        final Fallible response = committees.processCommittee(token, request);
+        final Response response = committees.processCommittee(token, request);
         assertThat(response.isOk(), is(false));
         assertThat(response.getError(), is(IWSErrors.ILLEGAL_ACTION));
         assertThat(response.getMessage(), is("Cannot create a new Cooperating Institution for a Member Country."));
@@ -211,7 +211,7 @@ public final class ProcessCommitteeTest extends AbstractTest {
         // We need to make sure that the existing account is also active, so
         // we will activate it.
         final String activationCode = readCode(NotificationType.ACTIVATE_NEW_USER);
-        final Fallible activateResponse = administration.activateUser(activationCode);
+        final Response activateResponse = administration.activateUser(activationCode);
         assertThat(activateResponse.isOk(), is(true));
 
         // Let's try to set the NS to a new User.
@@ -440,7 +440,7 @@ public final class ProcessCommitteeTest extends AbstractTest {
 
         // Second test, let's try to upgrade an invalid National Group
         request.setNationalCommittee(prepareInvalidGroup(GroupType.NATIONAL));
-        final Fallible response1 = committees.processCommittee(token, request);
+        final Response response1 = committees.processCommittee(token, request);
         assertThat(response1.isOk(), is(false));
         assertThat(response1.getError(), is(IWSErrors.ILLEGAL_ACTION));
         assertThat(response1.getMessage(), is("Attempting to upgrade non-existing Committee."));
@@ -458,7 +458,7 @@ public final class ProcessCommitteeTest extends AbstractTest {
 
         // First, let's just make a negative testing... We should not be
         // allowed to activate an active group!
-        final Fallible response1 = committees.processCommittee(token, request);
+        final Response response1 = committees.processCommittee(token, request);
         assertThat(response1.isOk(), is(false));
         assertThat(response1.getError(), is(IWSErrors.ILLEGAL_ACTION));
         assertThat(response1.getMessage(), is("Cannot activate an already active Committee."));
@@ -476,7 +476,7 @@ public final class ProcessCommitteeTest extends AbstractTest {
 
         // Finally, let's reactivate the Group
         request.setAction(Action.ACTIVATE);
-        final Fallible response4 = committees.processCommittee(token, request);
+        final Response response4 = committees.processCommittee(token, request);
         assertThat(response4.isOk(), is(true));
     }
 
@@ -495,7 +495,7 @@ public final class ProcessCommitteeTest extends AbstractTest {
 
         // Second test, let's try to activate an invalid National Group
         request.setNationalCommittee(prepareInvalidGroup(GroupType.NATIONAL));
-        final Fallible response1 = committees.processCommittee(token, request);
+        final Response response1 = committees.processCommittee(token, request);
         assertThat(response1.isOk(), is(false));
         assertThat(response1.getError(), is(IWSErrors.ILLEGAL_ACTION));
         assertThat(response1.getMessage(), is("Attempting to activate non-existing Committee."));
@@ -516,7 +516,7 @@ public final class ProcessCommitteeTest extends AbstractTest {
 
         // Second test, let's try to suspend an invalid National Group
         request.setNationalCommittee(prepareInvalidGroup(GroupType.NATIONAL));
-        final Fallible response1 = committees.processCommittee(token, request);
+        final Response response1 = committees.processCommittee(token, request);
         assertThat(response1.isOk(), is(false));
         assertThat(response1.getError(), is(IWSErrors.ILLEGAL_ACTION));
         assertThat(response1.getMessage(), is("Attempting to suspend non-existing Committee."));
@@ -546,7 +546,7 @@ public final class ProcessCommitteeTest extends AbstractTest {
 
         // Second test, let's try to delete an invalid National Group
         request.setNationalCommittee(prepareInvalidGroup(GroupType.NATIONAL));
-        final Fallible response1 = committees.processCommittee(token, request);
+        final Response response1 = committees.processCommittee(token, request);
         assertThat(response1.isOk(), is(false));
         assertThat(response1.getError(), is(IWSErrors.ILLEGAL_ACTION));
         assertThat(response1.getMessage(), is("Attempting to delete non-existing Committee."));

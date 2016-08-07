@@ -25,7 +25,7 @@ import net.iaeste.iws.api.requests.FetchCountrySurveyRequest;
 import net.iaeste.iws.api.requests.InternationalGroupRequest;
 import net.iaeste.iws.api.requests.CountrySurveyRequest;
 import net.iaeste.iws.api.responses.CommitteeResponse;
-import net.iaeste.iws.api.responses.FallibleResponse;
+import net.iaeste.iws.api.responses.Response;
 import net.iaeste.iws.api.responses.FetchCommitteeResponse;
 import net.iaeste.iws.api.responses.FetchInternationalGroupResponse;
 import net.iaeste.iws.api.responses.FetchCountrySurveyResponse;
@@ -214,7 +214,7 @@ public interface Committees {
      * @param request International Group Request Object
      * @return Standard Error object
      */
-    FallibleResponse processInternationalGroup(AuthenticationToken token, InternationalGroupRequest request);
+    Response processInternationalGroup(AuthenticationToken token, InternationalGroupRequest request);
 
     /**
      * <p>Retrieves the Survey for a given Country. The survey is a rather
@@ -236,5 +236,5 @@ public interface Committees {
      * @param request Survey of Country Request Object
      * @return Standard Error object
      */
-    FallibleResponse processCountrySurvey(AuthenticationToken token, CountrySurveyRequest request);
+    Response processCountrySurvey(AuthenticationToken token, CountrySurveyRequest request);
 }

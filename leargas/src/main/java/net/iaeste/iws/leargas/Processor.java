@@ -25,11 +25,11 @@ import net.iaeste.iws.leargas.persistence.OfferDao;
 import net.iaeste.iws.leargas.persistence.OfferEntity;
 import net.iaeste.iws.ws.AuthenticationResponse;
 import net.iaeste.iws.ws.AuthenticationToken;
-import net.iaeste.iws.ws.FallibleResponse;
 import net.iaeste.iws.ws.FetchOffersRequest;
 import net.iaeste.iws.ws.FetchOffersResponse;
 import net.iaeste.iws.ws.FetchType;
 import net.iaeste.iws.ws.Offer;
+import net.iaeste.iws.ws.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,6 +54,12 @@ public final class Processor {
     private final OfferDao dao;
     private final Mapper mapper;
 
+    /**
+     * Default Constructor.
+     *
+     * @param settings   Settings
+     * @param connection Connection Properties
+     */
     public Processor(final Settings settings, final Connection connection) {
         this.settings = settings;
         mapper = new Mapper(settings);
@@ -67,7 +73,13 @@ public final class Processor {
         }
     }
 
-    public State start() throws LeargasException {
+    /**
+     * Starts the communication with the IWS, downloads the currently available
+     * Offers and stores them in the local Database.
+     *
+     * @return State from the communication and processing
+     */
+    public State start() {
         // First, create a new Authentication Token, all requests and
         // responses to the IWS is wrapped with Request Objects for
         // request validation & Response Objects with Error information
@@ -85,8 +97,8 @@ public final class Processor {
             } finally {
                 // Don't forget to log out in the end, otherwise the account
                 // is blocked for more requests for a limited period
-                final FallibleResponse deprecate = accessWS.deprecateSession(token);
-                LOG.info("Deprecating IWS Token gave: " + deprecate.getMessage());
+                final Response deprecate = accessWS.deprecateSession(token);
+                LOG.info("Deprecating IWS Token gave: {}", deprecate.getMessage());
             }
         } else {
             throw new LeargasException("Unable to create IWS Session Token: " + authResponse.getMessage());
@@ -105,7 +117,7 @@ public final class Processor {
         final FetchOffersResponse offerResponse = fetchSharedOffers(token);
 
         if ("Ok".equals(offerResponse.getMessage())) {
-            LOG.info("We have " + offerResponse.getOffers().size() + " Offers shared.");
+            LOG.info("We have {} Offers shared.", offerResponse.getOffers().size());
 
             // Now, we're done with the IWS Communication for now, we still need
             // to log out later, but at this point we have a list of Offers, which

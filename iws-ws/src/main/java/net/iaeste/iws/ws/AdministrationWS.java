@@ -36,14 +36,14 @@ import net.iaeste.iws.api.requests.UserRequest;
 import net.iaeste.iws.api.responses.ContactsResponse;
 import net.iaeste.iws.api.responses.CreateUserResponse;
 import net.iaeste.iws.api.responses.EmergencyListResponse;
-import net.iaeste.iws.api.responses.FallibleResponse;
+import net.iaeste.iws.api.responses.Response;
 import net.iaeste.iws.api.responses.FetchCountryResponse;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchRoleResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
-import net.iaeste.iws.api.responses.ProcessGroupResponse;
-import net.iaeste.iws.api.responses.ProcessRoleResponse;
-import net.iaeste.iws.api.responses.ProcessUserGroupResponse;
+import net.iaeste.iws.api.responses.groupResponse;
+import net.iaeste.iws.api.responses.RoleResponse;
+import net.iaeste.iws.api.responses.UserGroupResponse;
 import net.iaeste.iws.api.responses.SearchUserResponse;
 import net.iaeste.iws.ejb.AdministrationBean;
 import net.iaeste.iws.ejb.cdi.IWSBean;
@@ -120,16 +120,16 @@ public class AdministrationWS implements Administration {
     @Override
     @WebMethod
     @WebResult(name = "fallibleResponse")
-    public FallibleResponse processCountry(
+    public Response processCountry(
             @WebParam(name = "authenticationToken") final AuthenticationToken token,
             @WebParam(name = "countryRequest") final CountryRequest request) {
         LOG.info(requestLogger.prepareLogMessage(token, "processCountry"));
-        FallibleResponse response;
+        Response response;
 
         try {
             response = bean.processCountry(token, request);
         } catch (RuntimeException e) {
-            response = RequestLogger.handleError(e, FallibleResponse.class);
+            response = RequestLogger.handleError(e, Response.class);
         }
 
         return response;
@@ -183,16 +183,16 @@ public class AdministrationWS implements Administration {
     @Override
     @WebMethod
     @WebResult(name = "fallibleResponse")
-    public FallibleResponse controlUserAccount(
+    public Response controlUserAccount(
             @WebParam(name = "authenticationToken") final AuthenticationToken token,
             @WebParam(name = "userRequest") final UserRequest request) {
         LOG.info(requestLogger.prepareLogMessage(token, "controlUserAccount"));
-        FallibleResponse response;
+        Response response;
 
         try {
             response = bean.controlUserAccount(token, request);
         } catch (RuntimeException e) {
-            response = RequestLogger.handleError(e, FallibleResponse.class);
+            response = RequestLogger.handleError(e, Response.class);
         }
 
         return response;
@@ -204,15 +204,15 @@ public class AdministrationWS implements Administration {
     @Override
     @WebMethod
     @WebResult(name = "fallibleResponse")
-    public FallibleResponse activateUser(
+    public Response activateUser(
             @WebParam(name = "activationString") final String activationString) {
         LOG.info(requestLogger.prepareLogMessage("activateUser"));
-        FallibleResponse response;
+        Response response;
 
         try {
             response = bean.activateUser(activationString);
         } catch (RuntimeException e) {
-            response = RequestLogger.handleError(e, FallibleResponse.class);
+            response = RequestLogger.handleError(e, Response.class);
         }
 
         return response;
@@ -224,15 +224,15 @@ public class AdministrationWS implements Administration {
     @Override
     @WebMethod
     @WebResult(name = "fallibleResponse")
-    public FallibleResponse updateUsername(
+    public Response updateUsername(
             @WebParam(name = "updateCode") final String updateCode) {
         LOG.info(requestLogger.prepareLogMessage("updateUsername"));
-        FallibleResponse response;
+        Response response;
 
         try {
             response = bean.updateUsername(updateCode);
         } catch (RuntimeException e) {
-            response = RequestLogger.handleError(e, FallibleResponse.class);
+            response = RequestLogger.handleError(e, Response.class);
         }
 
         return response;
@@ -244,16 +244,16 @@ public class AdministrationWS implements Administration {
     @Override
     @WebMethod
     @WebResult(name = "fallibleResponse")
-    public FallibleResponse changeAccountName(
+    public Response changeAccountName(
             @WebParam(name = "authenticationToken") final AuthenticationToken token,
             @WebParam(name = "accountNameRequest") final AccountNameRequest request) {
         LOG.info(requestLogger.prepareLogMessage(token, "changeAccountName"));
-        FallibleResponse response;
+        Response response;
 
         try {
             response = bean.changeAccountName(token, request);
         } catch (RuntimeException e) {
-            response = RequestLogger.handleError(e, FallibleResponse.class);
+            response = RequestLogger.handleError(e, Response.class);
         }
 
         return response;
@@ -286,16 +286,16 @@ public class AdministrationWS implements Administration {
     @Override
     @WebMethod
     @WebResult(name = "fetchRoleResponse")
-    public ProcessRoleResponse processRole(
+    public RoleResponse processRole(
             @WebParam(name = "authenticationToken") final AuthenticationToken token,
             @WebParam(name = "roleRequest") final RoleRequest request) {
         LOG.info(requestLogger.prepareLogMessage(token, "processRole"));
-        ProcessRoleResponse response;
+        RoleResponse response;
 
         try {
             response = bean.processRole(token, request);
         } catch (RuntimeException e) {
-            response = RequestLogger.handleError(e, ProcessRoleResponse.class);
+            response = RequestLogger.handleError(e, RoleResponse.class);
         }
 
         return response;
@@ -328,16 +328,16 @@ public class AdministrationWS implements Administration {
     @Override
     @WebMethod
     @WebResult(name = "processGroupResponse")
-    public ProcessGroupResponse processGroup(
+    public groupResponse processGroup(
             @WebParam(name = "authenticationToken") final AuthenticationToken token,
             @WebParam(name = "groupRequest") final GroupRequest request) {
         LOG.info(requestLogger.prepareLogMessage(token, "processGroup"));
-        ProcessGroupResponse response;
+        groupResponse response;
 
         try {
             response = bean.processGroup(token, request);
         } catch (RuntimeException e) {
-            response = RequestLogger.handleError(e, ProcessGroupResponse.class);
+            response = RequestLogger.handleError(e, groupResponse.class);
         }
 
         return response;
@@ -349,16 +349,16 @@ public class AdministrationWS implements Administration {
     @Override
     @WebMethod
     @WebResult(name = "fallibleResponse")
-    public FallibleResponse deleteSubGroup(
+    public Response deleteSubGroup(
             @WebParam(name = "authenticationToken") final AuthenticationToken token,
             @WebParam(name = "groupRequest") final GroupRequest request) {
         LOG.info(requestLogger.prepareLogMessage(token, "deleteSubGroup"));
-        FallibleResponse response;
+        Response response;
 
         try {
             response = bean.deleteSubGroup(token, request);
         } catch (RuntimeException e) {
-            response = RequestLogger.handleError(e, FallibleResponse.class);
+            response = RequestLogger.handleError(e, Response.class);
         }
 
         return response;
@@ -391,16 +391,16 @@ public class AdministrationWS implements Administration {
     @Override
     @WebMethod
     @WebResult(name = "fallibleResponse")
-    public FallibleResponse changeGroupOwner(
+    public Response changeGroupOwner(
             @WebParam(name = "authenticationToken") final AuthenticationToken token,
             @WebParam(name = "ownerRequest") final OwnerRequest request) {
         LOG.info(requestLogger.prepareLogMessage(token, "changeGroupOwner"));
-        FallibleResponse response;
+        Response response;
 
         try {
             response = bean.changeGroupOwner(token, request);
         } catch (RuntimeException e) {
-            response = RequestLogger.handleError(e, FallibleResponse.class);
+            response = RequestLogger.handleError(e, Response.class);
         }
 
         return response;
@@ -412,16 +412,16 @@ public class AdministrationWS implements Administration {
     @Override
     @WebMethod
     @WebResult(name = "processUserGroupResponse")
-    public ProcessUserGroupResponse processUserGroupAssignment(
+    public UserGroupResponse processUserGroupAssignment(
             @WebParam(name = "authenticationToken") final AuthenticationToken token,
             @WebParam(name = "userGroupAssignmentRequest") final UserGroupAssignmentRequest request) {
         LOG.info(requestLogger.prepareLogMessage(token, "processUserGroupAssignment"));
-        ProcessUserGroupResponse response;
+        UserGroupResponse response;
 
         try {
             response = bean.processUserGroupAssignment(token, request);
         } catch (RuntimeException e) {
-            response = RequestLogger.handleError(e, ProcessUserGroupResponse.class);
+            response = RequestLogger.handleError(e, UserGroupResponse.class);
         }
 
         return response;

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://ws.iws.iaeste.net/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="exchangeWSService" targetNamespace="http://ws.iws.iaeste.net/">
   <wsdl:documentation>
     Service: IWS Exchange Service
-    Version: 1.2.20160530
+    Version: 1.2.20160807
     Owner: Kim Jensen
   </wsdl:documentation>
   <wsdl:types>
@@ -35,7 +35,7 @@
 
   <xs:complexType final="extension restriction" name="offerCSVUploadResponse">
     <xs:complexContent>
-      <xs:extension base="tns:fallibleResponse">
+      <xs:extension base="tns:response">
         <xs:sequence>
           <xs:element name="processingResult">
             <xs:complexType>
@@ -70,7 +70,7 @@
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType name="fallibleResponse">
+  <xs:complexType name="response">
     <xs:sequence>
       <xs:element name="error" type="tns:iwsError"/>
       <xs:element name="message" type="xs:string"/>
@@ -133,7 +133,7 @@
 
   <xs:complexType final="extension restriction" name="fetchPublishingGroupResponse">
     <xs:complexContent>
-      <xs:extension base="tns:fallibleResponse">
+      <xs:extension base="tns:response">
         <xs:sequence>
           <xs:element maxOccurs="unbounded" name="publishingGroups" nillable="true" type="tns:publishingGroup"/>
         </xs:sequence>
@@ -229,7 +229,7 @@
 
   <xs:complexType final="extension restriction" name="fetchEmployerResponse">
     <xs:complexContent>
-      <xs:extension base="tns:fallibleResponse">
+      <xs:extension base="tns:response">
         <xs:sequence>
           <xs:element maxOccurs="unbounded" name="employers" type="tns:employer"/>
           <xs:element maxOccurs="unbounded" name="offerRefNos" type="xs:string"/>
@@ -307,7 +307,7 @@
 
   <xs:complexType final="extension restriction" name="employerResponse">
     <xs:complexContent>
-      <xs:extension base="tns:fallibleResponse">
+      <xs:extension base="tns:response">
         <xs:sequence>
           <xs:element name="employer" nillable="true" type="tns:employer"/>
         </xs:sequence>
@@ -335,7 +335,7 @@
 
   <xs:complexType final="extension restriction" name="publishOfferResponse">
     <xs:complexContent>
-      <xs:extension base="tns:fallibleResponse">
+      <xs:extension base="tns:response">
         <xs:sequence>
           <xs:element name="offerId" type="xs:string"/>
           <xs:element maxOccurs="unbounded" name="groupIds" type="xs:string"/>
@@ -360,7 +360,7 @@
 
   <xs:complexType final="extension restriction" name="offerCSVDownloadResponse">
     <xs:complexContent>
-      <xs:extension base="tns:fallibleResponse">
+      <xs:extension base="tns:response">
         <xs:sequence>
           <xs:element name="csv" nillable="true" type="xs:string"/>
         </xs:sequence>
@@ -368,7 +368,7 @@
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType final="extension restriction" name="processPublishingGroupRequest">
+  <xs:complexType final="extension restriction" name="publishingGroupRequest">
     <xs:complexContent>
       <xs:extension base="tns:actions">
         <xs:sequence>
@@ -392,7 +392,7 @@
 
   <xs:complexType final="extension restriction" name="fetchPublishedGroupsResponse">
     <xs:complexContent>
-      <xs:extension base="tns:fallibleResponse">
+      <xs:extension base="tns:response">
         <xs:sequence>
           <xs:element name="offersGroups">
             <xs:complexType>
@@ -421,7 +421,7 @@
 
   <xs:complexType final="extension restriction" name="fetchOffersResponse">
     <xs:complexContent>
-      <xs:extension base="tns:fallibleResponse">
+      <xs:extension base="tns:response">
         <xs:sequence>
           <xs:element maxOccurs="unbounded" name="offers" nillable="true" type="tns:offer"/>
         </xs:sequence>
@@ -510,7 +510,7 @@
 
   <xs:complexType final="extension restriction" name="offerStatisticsResponse">
     <xs:complexContent>
-      <xs:extension base="tns:fallibleResponse">
+      <xs:extension base="tns:response">
         <xs:sequence>
           <xs:element name="domesticStatistics" nillable="true" type="tns:offerStatistics"/>
           <xs:element name="foreignStatistics" nillable="true" type="tns:offerStatistics"/>
@@ -552,7 +552,7 @@
 
   <xs:complexType final="extension restriction" name="offerResponse">
     <xs:complexContent>
-      <xs:extension base="tns:fallibleResponse">
+      <xs:extension base="tns:response">
         <xs:sequence>
           <xs:element name="offer" nillable="true" type="tns:offer"/>
         </xs:sequence>
@@ -562,7 +562,7 @@
 
   <xs:complexType final="extension restriction" name="fetchGroupsForSharingResponse">
     <xs:complexContent>
-      <xs:extension base="tns:fallibleResponse">
+      <xs:extension base="tns:response">
         <xs:sequence>
           <xs:element maxOccurs="unbounded" name="groups" nillable="true" type="tns:group"/>
         </xs:sequence>
@@ -995,7 +995,7 @@
     <xs:restriction base="xs:string">
       <xs:enumeration value="DAILY"/>
       <xs:enumeration value="WEEKLY"/>
-      <xs:enumeration value="BYWEEKLY"/>
+      <xs:enumeration value="BIWEEKLY"/>
       <xs:enumeration value="MONTHLY"/>
       <xs:enumeration value="YEARLY"/>
     </xs:restriction>
@@ -1227,7 +1227,7 @@
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="processHideForeignOffersResponse">
-    <wsdl:part name="response" type="tns:fallibleResponse">
+    <wsdl:part name="response" type="tns:response">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="fetchEmployers">
@@ -1293,11 +1293,11 @@
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="rejectOfferResponse">
-    <wsdl:part name="response" type="tns:fallibleResponse">
+    <wsdl:part name="response" type="tns:response">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="processPublishingGroupResponse">
-    <wsdl:part name="response" type="tns:fallibleResponse">
+    <wsdl:part name="response" type="tns:response">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="fetchPublishingGroupsResponse">
@@ -1315,7 +1315,7 @@
   <wsdl:message name="processPublishingGroup">
     <wsdl:part name="token" type="tns:authenticationToken">
     </wsdl:part>
-    <wsdl:part name="request" type="tns:processPublishingGroupRequest">
+    <wsdl:part name="request" type="tns:publishingGroupRequest">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="fetchPublishedGroups">

@@ -33,12 +33,11 @@ import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.requests.CreateUserRequest;
 import net.iaeste.iws.api.requests.SessionDataRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
-import net.iaeste.iws.api.responses.FallibleResponse;
+import net.iaeste.iws.api.responses.Response;
 import net.iaeste.iws.api.responses.FetchPermissionResponse;
 import net.iaeste.iws.api.responses.SessionDataResponse;
 import net.iaeste.iws.api.responses.VersionResponse;
 import net.iaeste.iws.api.util.Date;
-import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.client.spring.Beans;
 import net.iaeste.iws.common.configuration.InternalConstants;
 import net.iaeste.iws.common.notification.NotificationField;
@@ -141,7 +140,7 @@ public final class AccessClientTest extends AbstractTest {
 
         // Now, let's try to see if we can deprecate the Session, and thus
         // ensure that the first Object is properly persisted
-        final Fallible result = client.deprecateSession(response.getToken());
+        final Response result = client.deprecateSession(response.getToken());
         assertThat(result.getMessage(), is(IWSConstants.SUCCESS));
         assertThat(result.isOk(), is(true));
         assertThat(result.getError(), is(IWSErrors.SUCCESS));
@@ -159,15 +158,15 @@ public final class AccessClientTest extends AbstractTest {
         final AuthenticationToken myToken = response.getToken();
 
         // Verify that our current token is valid
-        final FallibleResponse aliveResponse = client.verifySession(myToken);
+        final Response aliveResponse = client.verifySession(myToken);
         assertThat(aliveResponse.isOk(), is(true));
 
         // Logout
-        final FallibleResponse deprecateResponse = client.deprecateSession(myToken);
+        final Response deprecateResponse = client.deprecateSession(myToken);
         assertThat(deprecateResponse.isOk(), is(true));
 
         // Verify that our current token is invalid
-        final FallibleResponse inactiveResponse = client.verifySession(myToken);
+        final Response inactiveResponse = client.verifySession(myToken);
         assertThat(inactiveResponse.isOk(), is(false));
         assertThat(inactiveResponse.getError(), is(IWSErrors.SESSION_EXPIRED));
         assertThat(inactiveResponse.getMessage(), is("The token has expired."));
@@ -207,8 +206,8 @@ public final class AccessClientTest extends AbstractTest {
         final AuthenticationResponse newResponse = access.resetSession(resetCode);
 
         // Now verify that control was handed over to the new Session
-        final FallibleResponse fetchPermissionResponse2 = access.verifySession(newResponse.getToken());
-        final FallibleResponse fetchPermissionResponse3 = access.verifySession(response.getToken());
+        final Response fetchPermissionResponse2 = access.verifySession(newResponse.getToken());
+        final Response fetchPermissionResponse3 = access.verifySession(response.getToken());
         assertThat(fetchPermissionResponse2.isOk(), is(true));
         assertThat(fetchPermissionResponse3.isOk(), is(false));
         assertThat(fetchPermissionResponse3.getError(), is(IWSErrors.SESSION_EXPIRED));
@@ -222,7 +221,7 @@ public final class AccessClientTest extends AbstractTest {
     public void testCallWithInvalidToken() {
         final AuthenticationToken invalidToken = new AuthenticationToken("5a15481fe88d39be1c83c2f72796cc8a70e84272640d5c7209ad9aefa642db11ae8fa1945bc308c15c36d591ea1d047692530c95b68fcc309bbe63889dba363e");
 
-        final FallibleResponse response = access.verifySession(invalidToken);
+        final Response response = access.verifySession(invalidToken);
         //final List<Authorization> permissions = response.getAuthorizations();
 
         // Verify that the call went through - however, as we just invented a
@@ -246,7 +245,7 @@ public final class AccessClientTest extends AbstractTest {
         // Perform the actual test, first we create a simple Object, and saves it
         final Date data = new Date();
         final SessionDataRequest<Date> sessionData = new SessionDataRequest<>(data);
-        final Fallible saving = access.saveSessionData(newToken, sessionData);
+        final Response saving = access.saveSessionData(newToken, sessionData);
         assertThat(saving.isOk(), is(true));
 
         // Object saved, now - let's read it from the IWS
@@ -260,7 +259,7 @@ public final class AccessClientTest extends AbstractTest {
 
     @Test
     public void testResetPasswordInvalidRequest() {
-        final Fallible invalidAccountResponse = access.forgotPassword("Some Crap");
+        final Response invalidAccountResponse = access.forgotPassword("Some Crap");
         assertThat(invalidAccountResponse.isOk(), is(false));
         assertThat(invalidAccountResponse.getError(), is(IWSErrors.VERIFICATION_ERROR));
         assertThat(invalidAccountResponse.getMessage(), is("Invalid e-mail address provided."));
@@ -268,7 +267,7 @@ public final class AccessClientTest extends AbstractTest {
 
     @Test
     public void testResetPasswordUnknownUsername() {
-        final Fallible validEmailResponse = access.forgotPassword("user@domain.com");
+        final Response validEmailResponse = access.forgotPassword("user@domain.com");
         assertThat(validEmailResponse.isOk(), is(false));
         assertThat(validEmailResponse.getError(), is(IWSErrors.AUTHENTICATION_ERROR));
         assertThat(validEmailResponse.getMessage(), is("No User was found."));
@@ -277,7 +276,7 @@ public final class AccessClientTest extends AbstractTest {
     @Test
     public void testResetPasswordCountrySuspended() {
         // Bu default, the Albanian Test Group is Suspended
-        final Fallible suspendedGroupResponse = access.forgotPassword("albania@iaeste.al");
+        final Response suspendedGroupResponse = access.forgotPassword("albania@iaeste.al");
         assertThat(suspendedGroupResponse.isOk(), is(false));
         assertThat(suspendedGroupResponse.getError(), is(IWSErrors.AUTHENTICATION_ERROR));
         assertThat(suspendedGroupResponse.getMessage(), is("No User was found."));
@@ -286,7 +285,7 @@ public final class AccessClientTest extends AbstractTest {
     @Test
     public void testResetPasswordUserSuspended() {
         // By default, the Argentinian User is Suspended
-        final Fallible suspendedUserResponse = access.forgotPassword("argentina@iaeste.ar");
+        final Response suspendedUserResponse = access.forgotPassword("argentina@iaeste.ar");
         assertThat(suspendedUserResponse.isOk(), is(false));
         assertThat(suspendedUserResponse.getError(), is(IWSErrors.AUTHENTICATION_ERROR));
         assertThat(suspendedUserResponse.getMessage(), is("No User was found."));
@@ -294,7 +293,7 @@ public final class AccessClientTest extends AbstractTest {
 
     @Test
     public void testResetPasswordValidRequest() {
-        final Fallible forgotResponse = access.forgotPassword("uzbekistan@iaeste.uz");
+        final Response forgotResponse = access.forgotPassword("uzbekistan@iaeste.uz");
         assertThat(forgotResponse.isOk(), is(true));
 
         // Verify Token sent with the Notification
@@ -309,7 +308,7 @@ public final class AccessClientTest extends AbstractTest {
         final Password password = new Password();
         password.setNewPassword(newPassword);
         password.setIdentification(resetCode);
-        final Fallible resetResponse = access.resetPassword(password);
+        final Response resetResponse = access.resetPassword(password);
         assertThat(resetResponse.isOk(), is(true));
 
         // Login with the new Password
@@ -317,7 +316,7 @@ public final class AccessClientTest extends AbstractTest {
         assertThat(loginResponse.isOk(), is(true));
 
         // Wrap up the test with logging out :-)
-        final Fallible logoutResponse = access.deprecateSession(loginResponse.getToken());
+        final Response logoutResponse = access.deprecateSession(loginResponse.getToken());
         assertThat(logoutResponse.isOk(), is(true));
     }
 
@@ -330,14 +329,14 @@ public final class AccessClientTest extends AbstractTest {
         final String username = "updating@iaeste.at";
         final String oldPassword = "oldPassword";
         final CreateUserRequest createUserRequest = new CreateUserRequest(username, oldPassword, "testFirstName", "testLastName");
-        final Fallible createUserResponse = administration.createUser(adminToken, createUserRequest);
+        final Response createUserResponse = administration.createUser(adminToken, createUserRequest);
         assertThat(createUserResponse.isOk(), is(true));
         // Now, we don't need the old token anymore
         access.deprecateSession(adminToken);
 
         // Activate the Account
         final String activationCode = spy.getNext().getFields().get(NotificationField.CODE);
-        final Fallible acticationResult = administration.activateUser(activationCode);
+        final Response acticationResult = administration.activateUser(activationCode);
         assertThat(acticationResult.isOk(), is(true));
 
         // Now we can start the actual testing. First, we're trying up update the
@@ -346,17 +345,17 @@ public final class AccessClientTest extends AbstractTest {
         final String newPassword = "newPassword";
         final Password password = new Password();
         password.setNewPassword(newPassword);
-        final Fallible update1 = access.updatePassword(userToken, password);
+        final Response update1 = access.updatePassword(userToken, password);
         assertThat(update1.isOk(), is(false));
         assertThat(update1.getError(), is(IWSErrors.VERIFICATION_ERROR));
 
         // Now, we're trying to update the password by providing a false old password
-        final Fallible update2 = access.updatePassword(userToken, preparePassword(newPassword, "bla"));
+        final Response update2 = access.updatePassword(userToken, preparePassword(newPassword, "bla"));
         assertThat(update2.isOk(), is(false));
         assertThat(update2.getError(), is(IWSErrors.CANNOT_UPDATE_PASSWORD));
 
         // Finally, let's update the password using the correct old password
-        final Fallible update3 = access.updatePassword(userToken, preparePassword(newPassword, oldPassword));
+        final Response update3 = access.updatePassword(userToken, preparePassword(newPassword, oldPassword));
         assertThat(update3.isOk(), is(true));
 
         // Let's check that it also works... Logout, and log in again :-)
@@ -381,7 +380,7 @@ public final class AccessClientTest extends AbstractTest {
         // Pre test conditions, check that we can log in & out without problems
         final AuthenticationResponse response1 = access.generateSession(request);
         assertThat(response1.getMessage(), is(IWSConstants.SUCCESS));
-        final Fallible response2 = access.deprecateSession(response1.getToken());
+        final Response response2 = access.deprecateSession(response1.getToken());
         assertThat(response2.getMessage(), is(IWSConstants.SUCCESS));
 
         // Now we're setting a new EULA version, which will cause our account
@@ -403,7 +402,7 @@ public final class AccessClientTest extends AbstractTest {
         request.setEulaVersion("eula1");
         final AuthenticationResponse response5 = access.generateSession(request);
         assertThat(response5.getMessage(), is(IWSConstants.SUCCESS));
-        final Fallible response6 = access.deprecateSession(response5.getToken());
+        final Response response6 = access.deprecateSession(response5.getToken());
         assertThat(response6.getMessage(), is(IWSConstants.SUCCESS));
 
         // Finally, let's reset the EULA version so other tests won't fail.

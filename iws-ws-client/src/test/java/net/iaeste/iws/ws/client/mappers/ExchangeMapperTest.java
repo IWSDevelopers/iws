@@ -43,7 +43,7 @@ import net.iaeste.iws.api.requests.exchange.HideForeignOffersRequest;
 import net.iaeste.iws.api.requests.exchange.OfferCSVUploadRequest;
 import net.iaeste.iws.api.requests.exchange.OfferRequest;
 import net.iaeste.iws.api.requests.exchange.OfferStatisticsRequest;
-import net.iaeste.iws.api.requests.exchange.ProcessPublishingGroupRequest;
+import net.iaeste.iws.api.requests.exchange.PublishingGroupRequest;
 import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
 import net.iaeste.iws.api.requests.exchange.RejectOfferRequest;
 import net.iaeste.iws.api.responses.exchange.EmployerResponse;
@@ -507,8 +507,8 @@ public final class ExchangeMapperTest {
 
     @Test
     public void testNullProcessPublishingGroupRequest() {
-        final ProcessPublishingGroupRequest api = null;
-        final net.iaeste.iws.ws.ProcessPublishingGroupRequest mapped = map(api);
+        final PublishingGroupRequest api = null;
+        final net.iaeste.iws.ws.PublishingGroupRequest mapped = map(api);
 
         assertThat(mapped, is(nullValue()));
     }
@@ -521,12 +521,12 @@ public final class ExchangeMapperTest {
         publishingGroup.setGroups(Arrays.asList(TestUtils.prepareGroup(), TestUtils.prepareGroup()));
         publishingGroup.setName("Name");
 
-        final ProcessPublishingGroupRequest api = new ProcessPublishingGroupRequest();
+        final PublishingGroupRequest api = new PublishingGroupRequest();
         api.setPublishingGroupId(publishingGroupId);
         api.setAction(Action.DELETE);
         api.setPublishingGroup(publishingGroup);
 
-        final net.iaeste.iws.ws.ProcessPublishingGroupRequest mapped = map(api);
+        final net.iaeste.iws.ws.PublishingGroupRequest mapped = map(api);
 
         assertThat(mapped, is(not(nullValue())));
         assertThat(mapped.getPublishingGroupId(), is(publishingGroupId));

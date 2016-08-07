@@ -44,7 +44,7 @@ import java.util.Arrays;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "sessionDataResponse", propOrder = { "sessionData", "modified", "created" })
-public final class SessionDataResponse<T extends Serializable> extends FallibleResponse {
+public final class SessionDataResponse<T extends Serializable> extends Response {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;

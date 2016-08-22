@@ -43,7 +43,7 @@ import net.iaeste.iws.api.responses.FetchCountryResponse;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchRoleResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
-import net.iaeste.iws.api.responses.groupResponse;
+import net.iaeste.iws.api.responses.GroupResponse;
 import net.iaeste.iws.api.responses.RoleResponse;
 import net.iaeste.iws.api.responses.UserGroupResponse;
 import net.iaeste.iws.api.responses.SearchUserResponse;
@@ -352,8 +352,8 @@ public final class AdministrationController extends CommonController implements 
      * {@inheritDoc}
      */
     @Override
-    public groupResponse processGroup(final AuthenticationToken token, final GroupRequest request) {
-        groupResponse response;
+    public GroupResponse processGroup(final AuthenticationToken token, final GroupRequest request) {
+        GroupResponse response;
 
         try {
             verify(request);
@@ -368,7 +368,7 @@ public final class AdministrationController extends CommonController implements 
             // that we're not loosing anything - the Exception is also logged
             // here as a debug message
             LOG.debug(e.getMessage(), e);
-            response = new groupResponse(e.getError(), e.getMessage());
+            response = new GroupResponse(e.getError(), e.getMessage());
         }
 
         return response;

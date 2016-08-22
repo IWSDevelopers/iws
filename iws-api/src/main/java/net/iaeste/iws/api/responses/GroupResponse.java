@@ -33,7 +33,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "groupResponse", propOrder = "group")
-public final class groupResponse extends Response {
+public final class GroupResponse extends Response {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -50,7 +50,7 @@ public final class groupResponse extends Response {
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.
      */
-    public groupResponse() {
+    public GroupResponse() {
         // Required for WebServices to work. Comment added to please Sonar.
     }
 
@@ -59,7 +59,7 @@ public final class groupResponse extends Response {
      *
      * @param group Processed or newly created Group
      */
-    public groupResponse(final Group group) {
+    public GroupResponse(final Group group) {
         this.group = group;
     }
 
@@ -69,7 +69,7 @@ public final class groupResponse extends Response {
      * @param error    IWS Error Object
      * @param message  Error Message
      */
-    public groupResponse(final IWSError error, final String message) {
+    public GroupResponse(final IWSError error, final String message) {
         super(error, message);
     }
 

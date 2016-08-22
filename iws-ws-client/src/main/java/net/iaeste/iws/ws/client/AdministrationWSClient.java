@@ -43,7 +43,7 @@ import net.iaeste.iws.api.responses.FetchCountryResponse;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchRoleResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
-import net.iaeste.iws.api.responses.groupResponse;
+import net.iaeste.iws.api.responses.GroupResponse;
 import net.iaeste.iws.api.responses.RoleResponse;
 import net.iaeste.iws.api.responses.UserGroupResponse;
 import net.iaeste.iws.api.responses.SearchUserResponse;
@@ -192,7 +192,7 @@ public final class AdministrationWSClient extends CommonWSClient implements Admi
      * {@inheritDoc}
      */
     @Override
-    public groupResponse processGroup(final AuthenticationToken token, final GroupRequest request) {
+    public GroupResponse processGroup(final AuthenticationToken token, final GroupRequest request) {
         return map(client.processGroup(map(token), map(request)));
     }
 

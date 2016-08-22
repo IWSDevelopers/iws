@@ -33,7 +33,7 @@ import net.iaeste.iws.api.enums.MonitoringLevel;
 import net.iaeste.iws.api.requests.FetchGroupRequest;
 import net.iaeste.iws.api.requests.GroupRequest;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
-import net.iaeste.iws.api.responses.groupResponse;
+import net.iaeste.iws.api.responses.GroupResponse;
 import net.iaeste.iws.api.responses.Response;
 import org.junit.Test;
 
@@ -76,7 +76,7 @@ public final class GroupProcessingTest extends AbstractAdministration {
         token.setGroupId(group.getGroupId());
         group.setMonitoringLevel(MonitoringLevel.DETAILED);
         final GroupRequest request1 = new GroupRequest(group);
-        final groupResponse response1 = administration.processGroup(token, request1);
+        final GroupResponse response1 = administration.processGroup(token, request1);
         assertThat(response1.isOk(), is(true));
 
         final FetchGroupRequest request2 = new FetchGroupRequest(group.getGroupId());
@@ -95,7 +95,7 @@ public final class GroupProcessingTest extends AbstractAdministration {
         final String publicListName = toLower(fullName.replace(' ', '_') + '@' + IWSConstants.PUBLIC_EMAIL_ADDRESS);
         final String privateListName = toLower(fullName.replace(' ', '_') + '@' + IWSConstants.PRIVATE_EMAIL_ADDRESS);
 
-        final groupResponse result = createGroup(token, GroupType.MEMBER, GroupType.LOCAL, groupName);
+        final GroupResponse result = createGroup(token, GroupType.MEMBER, GroupType.LOCAL, groupName);
         assertThat(result.isOk(), is(true));
         assertThat(result.getGroup(), is(not(nullValue())));
         assertThat(result.getGroup().getListName(), is(listName));
@@ -108,7 +108,7 @@ public final class GroupProcessingTest extends AbstractAdministration {
         group.setDescription(groupDescription);
 
         final GroupRequest request = new GroupRequest(group);
-        final groupResponse response = administration.processGroup(token, request);
+        final GroupResponse response = administration.processGroup(token, request);
 
         // Now, check that the changes are in
         assertThat(response.isOk(), is(true));
@@ -133,7 +133,7 @@ public final class GroupProcessingTest extends AbstractAdministration {
         final String publicListName = toLower(fullName.replace(' ', '_') + '@' + IWSConstants.PUBLIC_EMAIL_ADDRESS);
         final String privateListName = toLower(fullName.replace(' ', '_') + '@' + IWSConstants.PRIVATE_EMAIL_ADDRESS);
 
-        final groupResponse result = createGroup(token, GroupType.MEMBER, GroupType.WORKGROUP, groupName);
+        final GroupResponse result = createGroup(token, GroupType.MEMBER, GroupType.WORKGROUP, groupName);
         assertThat(result.isOk(), is(true));
         assertThat(result.getGroup(), is(not(nullValue())));
         assertThat(result.getGroup().getFullName(), is(fullName));
@@ -146,7 +146,7 @@ public final class GroupProcessingTest extends AbstractAdministration {
         group.setDescription(groupDescription);
 
         final GroupRequest request = new GroupRequest(group);
-        final groupResponse response = administration.processGroup(token, request);
+        final GroupResponse response = administration.processGroup(token, request);
 
         // Now, check that the changes are in
         assertThat(response.isOk(), is(true));
@@ -166,7 +166,7 @@ public final class GroupProcessingTest extends AbstractAdministration {
         final String groupName = "My Work Group";
         final String groupDescription = "My Description";
 
-        final groupResponse result = createGroup(token, GroupType.NATIONAL, GroupType.WORKGROUP, groupName);
+        final GroupResponse result = createGroup(token, GroupType.NATIONAL, GroupType.WORKGROUP, groupName);
         assertThat(result.isOk(), is(true));
         assertThat(result.getGroup(), is(not(nullValue())));
 
@@ -177,7 +177,7 @@ public final class GroupProcessingTest extends AbstractAdministration {
         group.setDescription(groupDescription);
 
         final GroupRequest request = new GroupRequest(group);
-        final groupResponse response = administration.processGroup(token, request);
+        final GroupResponse response = administration.processGroup(token, request);
 
         // Now, check that the changes are in
         assertThat(response.isOk(), is(true));
@@ -200,7 +200,7 @@ public final class GroupProcessingTest extends AbstractAdministration {
         final String workgroupPublicListName = toLower(workgroupFullName.replace(' ', '_') + '@' + IWSConstants.PUBLIC_EMAIL_ADDRESS);
         final String workgroupPrivateListName = toLower(workgroupFullName.replace(' ', '_') + '@' + IWSConstants.PRIVATE_EMAIL_ADDRESS);
 
-        final groupResponse result = createGroup(token, GroupType.MEMBER, GroupType.LOCAL, localName);
+        final GroupResponse result = createGroup(token, GroupType.MEMBER, GroupType.LOCAL, localName);
         assertThat(result.isOk(), is(true));
 
         final Group group = new Group();
@@ -210,7 +210,7 @@ public final class GroupProcessingTest extends AbstractAdministration {
         token.setGroupId(result.getGroup().getGroupId());
 
         final GroupRequest request = new GroupRequest(group);
-        final groupResponse response = administration.processGroup(token, request);
+        final GroupResponse response = administration.processGroup(token, request);
 
         assertThat(response.isOk(), is(true));
         assertThat(response.getGroup(), is(not(nullValue())));
@@ -237,7 +237,7 @@ public final class GroupProcessingTest extends AbstractAdministration {
         token.setGroupId(group.getGroupId());
         final GroupRequest request = new GroupRequest(group);
 
-        final groupResponse response = administration.processGroup(token, request);
+        final GroupResponse response = administration.processGroup(token, request);
         assertThat(response.isOk(), is(true));
         final Group updatedGroup = response.getGroup();
         assertThat(updatedGroup.getGroupName(), is(not(newName)));
@@ -255,7 +255,7 @@ public final class GroupProcessingTest extends AbstractAdministration {
         final GroupRequest request = new GroupRequest(group);
 
         token.setGroupId(findMemberGroup(token).getGroupId());
-        final groupResponse response = administration.processGroup(token, request);
+        final GroupResponse response = administration.processGroup(token, request);
         assertThat(response, is(not(nullValue())));
         assertThat(response.isOk(), is(false));
         assertThat(response.getError(), is(IWSErrors.AUTHORIZATION_ERROR));
@@ -369,10 +369,10 @@ public final class GroupProcessingTest extends AbstractAdministration {
     @Test
     public void testCreatingDuplicateGroup() {
         final String duplicateName = "Duplicate Name";
-        final groupResponse result = createGroup(token, GroupType.MEMBER, GroupType.WORKGROUP, duplicateName);
+        final GroupResponse result = createGroup(token, GroupType.MEMBER, GroupType.WORKGROUP, duplicateName);
         assertThat(result.isOk(), is(true));
 
-        final groupResponse failed = createGroup(token, GroupType.MEMBER, GroupType.WORKGROUP, duplicateName);
+        final GroupResponse failed = createGroup(token, GroupType.MEMBER, GroupType.WORKGROUP, duplicateName);
         assertThat(failed.isOk(), is(false));
     }
 }

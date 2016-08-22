@@ -34,7 +34,7 @@ import net.iaeste.iws.api.requests.GroupRequest;
 import net.iaeste.iws.api.requests.OwnerRequest;
 import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
-import net.iaeste.iws.api.responses.groupResponse;
+import net.iaeste.iws.api.responses.GroupResponse;
 import net.iaeste.iws.api.responses.UserGroupResponse;
 import net.iaeste.iws.common.configuration.InternalConstants;
 import net.iaeste.iws.common.notification.NotificationType;
@@ -98,7 +98,7 @@ public final class GroupService {
      * @param request        Group Request information
      * @return Response Object
      */
-    public groupResponse processGroup(final Authentication authentication, final GroupRequest request) {
+    public GroupResponse processGroup(final Authentication authentication, final GroupRequest request) {
         final String externalGroupId = request.getGroup().getGroupId();
         final GroupEntity entity;
 
@@ -108,7 +108,7 @@ public final class GroupService {
             entity = processExistingGroup(authentication, request, externalGroupId);
         }
 
-        return new groupResponse(CommonTransformer.transform(entity));
+        return new GroupResponse(CommonTransformer.transform(entity));
     }
 
     private GroupEntity processNewGroup(final Authentication authentication, final GroupRequest request) {

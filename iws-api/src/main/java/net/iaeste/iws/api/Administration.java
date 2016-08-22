@@ -40,7 +40,7 @@ import net.iaeste.iws.api.responses.FetchCountryResponse;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchRoleResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
-import net.iaeste.iws.api.responses.groupResponse;
+import net.iaeste.iws.api.responses.GroupResponse;
 import net.iaeste.iws.api.responses.RoleResponse;
 import net.iaeste.iws.api.responses.UserGroupResponse;
 import net.iaeste.iws.api.responses.SearchUserResponse;
@@ -257,7 +257,7 @@ public interface Administration {
      * @param request Group Request Object
      * @return Response Object with processed Group and Error information
      */
-    groupResponse processGroup(AuthenticationToken token, GroupRequest request);
+    GroupResponse processGroup(AuthenticationToken token, GroupRequest request);
 
     /**
      * <p>This request allows a user to delete a subgroup to the one that is

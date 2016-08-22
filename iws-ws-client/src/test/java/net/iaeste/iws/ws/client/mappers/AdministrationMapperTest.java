@@ -56,7 +56,7 @@ import net.iaeste.iws.api.responses.FetchCountryResponse;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchRoleResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
-import net.iaeste.iws.api.responses.groupResponse;
+import net.iaeste.iws.api.responses.GroupResponse;
 import net.iaeste.iws.api.responses.RoleResponse;
 import net.iaeste.iws.api.responses.UserGroupResponse;
 import net.iaeste.iws.api.responses.SearchUserResponse;
@@ -359,7 +359,7 @@ public final class AdministrationMapperTest {
     @Test
     public void testNullProcessGroupResponse() {
         final net.iaeste.iws.ws.GroupResponse response = null;
-        final groupResponse mapped = map(response);
+        final GroupResponse mapped = map(response);
 
         assertThat(mapped, is(nullValue()));
     }

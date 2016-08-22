@@ -42,7 +42,7 @@ import net.iaeste.iws.api.responses.FetchCountryResponse;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchRoleResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
-import net.iaeste.iws.api.responses.groupResponse;
+import net.iaeste.iws.api.responses.GroupResponse;
 import net.iaeste.iws.api.responses.RoleResponse;
 import net.iaeste.iws.api.responses.UserGroupResponse;
 import net.iaeste.iws.api.responses.SearchUserResponse;
@@ -340,16 +340,16 @@ public class AdministrationBean implements Administration {
      * {@inheritDoc}
      */
     @Override
-    public groupResponse processGroup(final AuthenticationToken token, final GroupRequest request) {
+    public GroupResponse processGroup(final AuthenticationToken token, final GroupRequest request) {
         final long start = System.nanoTime();
-        groupResponse response;
+        GroupResponse response;
 
         try {
             response = controller.processGroup(token, request);
             LOG.info(session.generateLogAndUpdateSession("processGroup", start, response, token));
         } catch (RuntimeException e) {
             LOG.error(session.generateLogAndSaveRequest("processGroup", start, e, token, request), e);
-            response = new groupResponse(IWSErrors.ERROR, e.getMessage());
+            response = new GroupResponse(IWSErrors.ERROR, e.getMessage());
         }
 
         return response;

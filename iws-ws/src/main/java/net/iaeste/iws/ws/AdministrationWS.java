@@ -41,7 +41,7 @@ import net.iaeste.iws.api.responses.FetchCountryResponse;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchRoleResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
-import net.iaeste.iws.api.responses.groupResponse;
+import net.iaeste.iws.api.responses.GroupResponse;
 import net.iaeste.iws.api.responses.RoleResponse;
 import net.iaeste.iws.api.responses.UserGroupResponse;
 import net.iaeste.iws.api.responses.SearchUserResponse;
@@ -328,16 +328,16 @@ public class AdministrationWS implements Administration {
     @Override
     @WebMethod
     @WebResult(name = "processGroupResponse")
-    public groupResponse processGroup(
+    public GroupResponse processGroup(
             @WebParam(name = "authenticationToken") final AuthenticationToken token,
             @WebParam(name = "groupRequest") final GroupRequest request) {
         LOG.info(requestLogger.prepareLogMessage(token, "processGroup"));
-        groupResponse response;
+        GroupResponse response;
 
         try {
             response = bean.processGroup(token, request);
         } catch (RuntimeException e) {
-            response = RequestLogger.handleError(e, groupResponse.class);
+            response = RequestLogger.handleError(e, GroupResponse.class);
         }
 
         return response;

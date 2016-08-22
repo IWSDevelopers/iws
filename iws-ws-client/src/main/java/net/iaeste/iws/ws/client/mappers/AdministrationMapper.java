@@ -41,7 +41,7 @@ import net.iaeste.iws.api.responses.FetchCountryResponse;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchRoleResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
-import net.iaeste.iws.api.responses.groupResponse;
+import net.iaeste.iws.api.responses.GroupResponse;
 import net.iaeste.iws.api.responses.RoleResponse;
 import net.iaeste.iws.api.responses.UserGroupResponse;
 import net.iaeste.iws.api.responses.SearchUserResponse;
@@ -219,11 +219,11 @@ public final class AdministrationMapper extends CommonMapper {
         return ws;
     }
 
-    public static groupResponse map(final net.iaeste.iws.ws.GroupResponse ws) {
-        groupResponse api = null;
+    public static GroupResponse map(final net.iaeste.iws.ws.GroupResponse ws) {
+        GroupResponse api = null;
 
         if (ws != null) {
-            api = new groupResponse(map(ws.getError()), ws.getMessage());
+            api = new GroupResponse(map(ws.getError()), ws.getMessage());
 
             api.setGroup(map(ws.getGroup()));
         }

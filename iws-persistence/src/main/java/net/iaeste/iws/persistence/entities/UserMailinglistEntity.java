@@ -29,6 +29,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -41,6 +43,94 @@ import java.util.Objects;
  * @since   IWS 1.1
  */
 @Entity
+@NamedQueries({
+        @NamedQuery(name = "userMailinglist.findSubscription",
+                query = "select u " +
+                        "from UserMailinglistEntity u " +
+                        "where u.mailinglist = :mailinglist" +
+                        "  and u.userGroup.id = :subscriber"),
+        @NamedQuery(name = "userMailinglist.findChangedSubscribers",
+                query = "select u " +
+                        "from UserMailinglistEntity u " +
+                        "where u.member != u.userGroup.user.username"),
+        @NamedQuery(name = "userMailinglist.findUnprocessedSubscriptions",
+                query = "select u from UserGroupEntity u " +
+                        "where u.user.status = 'ACTIVE'" +
+                        "  and u.id not in (" +
+                        "    select s.userGroup.id" +
+                        "    from UserMailinglistEntity s)"),
+        @NamedQuery(name = "userMailinglist.findMissingNcsSubscribers",
+                query = "select ug " +
+                        "from UserGroupEntity ug " +
+                        "where ug.group.status = :groupStatus" +
+                        "  and ug.user.status = :userStatus" +
+                        "  and ug.onPublicList = true" +
+                        "  and ug.group.groupType.grouptype in (:types)" +
+                        "  and ug not in (" +
+                        "    select um.userGroup" +
+                        "    from UserMailinglistEntity um" +
+                        "    where um.mailinglist.listAddress = :address)"),
+        @NamedQuery(name = "userMailinglist.findMissingAnnounceSubscribers",
+                query = "select ug " +
+                        "from UserGroupEntity ug " +
+                        "where ug.group.groupType.grouptype = :type" +
+                        "  and ug.user.status = :status" +
+                        "  and ug not in (" +
+                        "    select um.userGroup" +
+                        "    from UserMailinglistEntity um" +
+                        "    where um.mailinglist.listAddress = :address)"),
+        @NamedQuery(name = "userMailinglist.deleteSubscriber",
+                query = "delete from UserMailinglistEntity " +
+                        "where mailinglist.id = :mailinglist"),
+        @NamedQuery(name = "userMailinglist.updatePrivateSubscriptions",
+                query = "update UserMailinglistEntity set" +
+                        "   status = :status," +
+                        "   modified = current_timestamp " +
+                        "where userGroup.id in (" +
+                        "    select s.userGroup.id" +
+                        "    from UserMailinglistEntity s" +
+                        "    where s.mailinglist.listType = 'PRIVATE_LIST'" +
+                        "      and s.status != :status" +
+                        "      and (s.userGroup.user.status = :status" +
+                        "        and s.userGroup.onPrivateList = :onList))"),
+        @NamedQuery(name = "userMailinglist.updatePublicSubscriptions",
+                query = "update UserMailinglistEntity set" +
+                        "   status = :status," +
+                        "   modified = current_timestamp " +
+                        "where userGroup.id in (" +
+                        "    select s.userGroup.id" +
+                        "    from UserMailinglistEntity s" +
+                        "    where s.mailinglist.listType != 'PRIVATE_LIST'" +
+                        "      and s.status != :status" +
+                        "      and (s.userGroup.user.status = :status" +
+                        "        and s.userGroup.onPublicList = :onList))"),
+        @NamedQuery(name = "userMailinglist.updateWritePermission",
+                query = "update UserMailinglistEntity set" +
+                        "   mayWrite = :mayWrite," +
+                        "   modified = current_timestamp " +
+                        "where userGroup.id in (" +
+                        "    select s.userGroup.id" +
+                        "    from UserMailinglistEntity s" +
+                        "    where s.mailinglist.listType = 'PRIVATE_LIST'" +
+                        "      and s.mayWrite != :mayWrite" +
+                        "      and s.userGroup.writeToPrivateList = :mayWrite)"),
+        @NamedQuery(name = "userMailinglist.findDeprecatedNcsSubscribers",
+                query = "select ug " +
+                        "from UserGroupEntity ug " +
+                        "where (ug.group.status != :groupStatus" +
+                        "  or ug.user.status != :userStatus" +
+                        "  or ug.onPublicList = false)" +
+                        "  and ug in (" +
+                        "    select um.userGroup" +
+                        "    from UserMailinglistEntity um" +
+                        "    where um.mailinglist.listAddress = :address)"),
+        @NamedQuery(name = "userMailinglist.deleteDeprecatedSubscribers",
+                query = "delete from UserMailinglistEntity " +
+                        "where userGroup.id in (" +
+                        "    select s.id" +
+                        "    from UserGroupEntity s" +
+                        "    where s.user.status = 'DELETED')")
+})
 @Table(name = "user_to_mailing_list")
 public final class UserMailinglistEntity extends AbstractUpdateable<UserMailinglistEntity> {
 

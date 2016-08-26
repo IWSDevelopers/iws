@@ -19,7 +19,6 @@ package net.iaeste.iws.persistence.jpa;
 
 import net.iaeste.iws.api.enums.GroupStatus;
 import net.iaeste.iws.api.enums.GroupType;
-import net.iaeste.iws.api.enums.MailinglistType;
 import net.iaeste.iws.api.enums.UserStatus;
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.persistence.MailingListDao;
@@ -46,6 +45,14 @@ public final class MailingListJpaDao extends BasicJpaDao implements MailingListD
 
     private static final Logger LOG = LoggerFactory.getLogger(MailingListJpaDao.class);
 
+    // Internal constants for the different query parameters, which is (re)used
+    private static final String PARAMETER_GROUP_STATUS = "groupStatus";
+    private static final String PARAMETER_USER_STATUS = "userStatus";
+    private static final String PARAMETER_ADDRESS = "address";
+    private static final String PARAMETER_STATUS = "status";
+    private static final String PARAMETER_ONLIST = "onList";
+    private static final String PARAMETER_MAYWRITE = "mayWrite";
+
     /**
      * Default Constructor.
      *
@@ -64,14 +71,10 @@ public final class MailingListJpaDao extends BasicJpaDao implements MailingListD
      */
     @Override
     public List<MailinglistEntity> findMailingList(final GroupEntity group) {
-        final String jql =
-                "select m " +
-                "from MailinglistEntity m " +
-                "where m.group.id = :group";
-        final Query query = entityManager.createQuery(jql);
-        query.setParameter("group", group.getId());
-
-        return query.getResultList();
+        return entityManager
+                .createNamedQuery("mailinglist.findByGroupId")
+                .setParameter("gid", group.getId())
+                .getResultList();
     }
 
     /**
@@ -79,12 +82,9 @@ public final class MailingListJpaDao extends BasicJpaDao implements MailingListD
      */
     @Override
     public MailinglistEntity findMailingList(final String address) {
-        final String jql =
-                "select m " +
-                "from MailinglistEntity m " +
-                "where m.listAddress = :address";
-        final Query query = entityManager.createQuery(jql);
-        query.setParameter("address", address);
+        final Query query = entityManager
+                .createNamedQuery("mailinglist.findByAddress")
+                .setParameter(PARAMETER_ADDRESS, address);
 
         return findSingleResult(query, "Mailinglist");
     }
@@ -94,11 +94,9 @@ public final class MailingListJpaDao extends BasicJpaDao implements MailingListD
      */
     @Override
     public List<AliasEntity> findAliases() {
-        final String jql =
-                "select a from AliasEntity a";
-        final Query query = entityManager.createQuery(jql);
-
-        return query.getResultList();
+        return entityManager
+                .createNamedQuery("alias.findAll")
+                .getResultList();
     }
 
     /**
@@ -106,14 +104,10 @@ public final class MailingListJpaDao extends BasicJpaDao implements MailingListD
      */
     @Override
     public UserMailinglistEntity findSubscription(final MailinglistEntity list, final UserGroupEntity subscriber) {
-        final String jql =
-                "select u " +
-                "from UserMailinglistEntity u " +
-                "where u.mailinglist = :list" +
-                "  and u.userGroup.id = :subscriber";
-        final Query query = entityManager.createQuery(jql);
-        query.setParameter("list", list);
-        query.setParameter("subscriber", subscriber.getId());
+        final Query query = entityManager
+                .createNamedQuery("userMailinglist.findSubscription")
+                .setParameter("mailinglist", list)
+                .setParameter("subscriber", subscriber.getId());
 
         return findSingleResult(query, "UserMailinglist");
     }
@@ -123,17 +117,9 @@ public final class MailingListJpaDao extends BasicJpaDao implements MailingListD
      */
     @Override
     public List<GroupEntity> findUnprocessedGroups() {
-        final String jql =
-                "select g from GroupEntity g " +
-                "where g.status = 'ACTIVE'" +
-                "  and (g.publicList = true" +
-                "    or g.privateList = true)" +
-                "  and g.id not in (" +
-                "    select m.group.id" +
-                "    from MailinglistEntity m)";
-        final Query query = entityManager.createQuery(jql);
-
-        return query.getResultList();
+        return entityManager
+                .createNamedQuery("mailinglist.findUnprocessedGroups")
+                .getResultList();
     }
 
     /**
@@ -141,15 +127,9 @@ public final class MailingListJpaDao extends BasicJpaDao implements MailingListD
      */
     @Override
     public List<UserGroupEntity> findUnprocessedSubscriptions() {
-        final String jql =
-                "select u from UserGroupEntity u " +
-                "where u.user.status = 'ACTIVE'" +
-                "  and u.id not in (" +
-                "    select s.userGroup.id" +
-                "    from UserMailinglistEntity s)";
-        final Query query = entityManager.createQuery(jql);
-
-        return query.getResultList();
+        return entityManager
+                .createNamedQuery("userMailinglist.findUnprocessedSubscriptions")
+                .getResultList();
     }
 
     /**
@@ -157,24 +137,13 @@ public final class MailingListJpaDao extends BasicJpaDao implements MailingListD
      */
     @Override
     public List<UserGroupEntity> findMissingNcsSubscribers() {
-        final String jql =
-                "select ug " +
-                "from UserGroupEntity ug " +
-                "where ug.group.status = :groupStatus" +
-                "  and ug.user.status = :userStatus" +
-                "  and ug.onPublicList = true" +
-                "  and ug.group.groupType.grouptype in (:types)" +
-                "  and ug not in (" +
-                "    select um.userGroup" +
-                "    from UserMailinglistEntity um" +
-                "    where um.mailinglist.listAddress = :address)";
-        final Query query = entityManager.createQuery(jql);
-        query.setParameter("groupStatus", GroupStatus.ACTIVE);
-        query.setParameter("userStatus", UserStatus.ACTIVE);
-        query.setParameter("types", EnumSet.of(GroupType.ADMINISTRATION, GroupType.INTERNATIONAL, GroupType.NATIONAL));
-        query.setParameter("address", settings.getNcsList() + '@' + settings.getPrivateMailAddress());
-
-        return query.getResultList();
+        return entityManager
+                .createNamedQuery("userMailinglist.findMissingNcsSubscribers")
+                .setParameter(PARAMETER_GROUP_STATUS, GroupStatus.ACTIVE)
+                .setParameter(PARAMETER_USER_STATUS, UserStatus.ACTIVE)
+                .setParameter("types", EnumSet.of(GroupType.ADMINISTRATION, GroupType.INTERNATIONAL, GroupType.NATIONAL))
+                .setParameter(PARAMETER_ADDRESS, settings.getNcsList() + '@' + settings.getPrivateMailAddress())
+                .getResultList();
     }
 
     /**
@@ -182,22 +151,12 @@ public final class MailingListJpaDao extends BasicJpaDao implements MailingListD
      */
     @Override
     public List<UserGroupEntity> findDeprecatedNcsSubscribers() {
-        final String jql =
-                "select ug " +
-                "from UserGroupEntity ug " +
-                "where (ug.group.status != :groupStatus" +
-                "  or ug.user.status != :userStatus" +
-                "  or ug.onPublicList = false)" +
-                "  and ug in (" +
-                "    select um.userGroup" +
-                "    from UserMailinglistEntity um" +
-                "    where um.mailinglist.listAddress = :address)";
-        final Query query = entityManager.createQuery(jql);
-        query.setParameter("groupStatus", GroupStatus.ACTIVE);
-        query.setParameter("userStatus", UserStatus.ACTIVE);
-        query.setParameter("address", settings.getNcsList() + '@' + settings.getPrivateMailAddress());
-
-        return query.getResultList();
+        return entityManager
+                .createNamedQuery("userMailinglist.findDeprecatedNcsSubscribers")
+                .setParameter("groupStatus", GroupStatus.ACTIVE)
+                .setParameter("userStatus", UserStatus.ACTIVE)
+                .setParameter(PARAMETER_ADDRESS, settings.getNcsList() + '@' + settings.getPrivateMailAddress())
+                .getResultList();
     }
 
     /**
@@ -205,21 +164,12 @@ public final class MailingListJpaDao extends BasicJpaDao implements MailingListD
      */
     @Override
     public List<UserGroupEntity> findMissingAnnounceSubscribers() {
-        final String jql =
-                "select ug " +
-                "from UserGroupEntity ug " +
-                "where ug.group.groupType.grouptype = :type" +
-                "  and ug.user.status = :status" +
-                "  and ug not in (" +
-                "    select um.userGroup" +
-                "    from UserMailinglistEntity um" +
-                "    where um.mailinglist.listAddress = :address)";
-        final Query query = entityManager.createQuery(jql);
-        query.setParameter("type", GroupType.MEMBER);
-        query.setParameter("status", UserStatus.ACTIVE);
-        query.setParameter("address", settings.getAnnounceList() + '@' + settings.getPrivateMailAddress());
-
-        return query.getResultList();
+        return entityManager
+                .createNamedQuery("userMailinglist.findMissingAnnounceSubscribers")
+                .setParameter("type", GroupType.MEMBER)
+                .setParameter(PARAMETER_STATUS, UserStatus.ACTIVE)
+                .setParameter(PARAMETER_ADDRESS, settings.getAnnounceList() + '@' + settings.getPrivateMailAddress())
+                .getResultList();
     }
 
     /**
@@ -227,12 +177,9 @@ public final class MailingListJpaDao extends BasicJpaDao implements MailingListD
      */
     @Override
     public int updateSubscribedAddress() {
-        final String jql =
-                "select u " +
-                "from UserMailinglistEntity u " +
-                "where u.member != u.userGroup.user.username";
-        final Query query = entityManager.createQuery(jql);
-        final List<UserMailinglistEntity> subscribers = query.getResultList();
+        final List<UserMailinglistEntity> subscribers = entityManager
+                .createNamedQuery("userMailinglist.findChangedSubscribers")
+                .getResultList();
 
         for (final UserMailinglistEntity subscriber : subscribers) {
             final UserEntity user = subscriber.getUserGroup().getUser();
@@ -253,13 +200,10 @@ public final class MailingListJpaDao extends BasicJpaDao implements MailingListD
      */
     @Override
     public int deleteMailinglistSubscriptions(final MailinglistEntity mailingList) {
-        final String jql =
-                "delete from UserMailinglistEntity " +
-                "where mailinglist.id = :list";
-        final Query query = entityManager.createQuery(jql);
-        query.setParameter("list", mailingList.getId());
-
-        return query.executeUpdate();
+        return entityManager
+                .createNamedQuery("userMailinglist.deleteSubscriber")
+                .setParameter("mailinglist", mailingList.getId())
+                .executeUpdate();
     }
 
     /**
@@ -279,19 +223,10 @@ public final class MailingListJpaDao extends BasicJpaDao implements MailingListD
     }
 
     private int changeMailingListState(final GroupStatus status) {
-        final String jql =
-                "update MailinglistEntity set" +
-                "   status = :status," +
-                "   modified = current_timestamp " +
-                "where group.id in (" +
-                "    select m.group.id" +
-                "    from MailinglistEntity m" +
-                "    where m.group.status = :status" +
-                "      and m.status <> m.group.status)";
-        final Query query = entityManager.createQuery(jql);
-        query.setParameter("status", status);
-
-        return query.executeUpdate();
+        return entityManager
+                .createNamedQuery("mailinglist.updateState")
+                .setParameter(PARAMETER_STATUS, status)
+                .executeUpdate();
     }
 
     /**
@@ -299,16 +234,10 @@ public final class MailingListJpaDao extends BasicJpaDao implements MailingListD
      */
     @Override
     public int deleteDeprecatedMailinglists() {
-        final String jql =
-                "delete from MailinglistEntity " +
-                "where group.id in (" +
-                "    select g.id" +
-                "    from GroupEntity g" +
-                "    where g.status = :status)";
-        final Query query = entityManager.createQuery(jql);
-        query.setParameter("status", GroupStatus.DELETED);
-
-        return query.executeUpdate();
+        return entityManager
+                .createNamedQuery("mailinglist.deleteDeprecatedLists")
+                .setParameter(PARAMETER_STATUS, GroupStatus.DELETED)
+                .executeUpdate();
     }
 
     /**
@@ -316,13 +245,10 @@ public final class MailingListJpaDao extends BasicJpaDao implements MailingListD
      */
     @Override
     public int deleteMailingLists(final GroupEntity group) {
-        final String jql =
-                "delete from MailinglistEntity " +
-                "where group.id = :group";
-        final Query query = entityManager.createQuery(jql);
-        query.setParameter("group", group.getId());
-
-        return query.executeUpdate();
+        return entityManager
+                .createNamedQuery("mailinglist.deleteListByGroup")
+                .setParameter("gid", group.getId())
+                .executeUpdate();
     }
 
     /**
@@ -330,22 +256,11 @@ public final class MailingListJpaDao extends BasicJpaDao implements MailingListD
      */
     @Override
     public int activatePrivateMailinglistSubscriptions() {
-        final String jql =
-                "update UserMailinglistEntity set" +
-                "   status = :status," +
-                "   modified = current_timestamp " +
-                "where userGroup.id in (" +
-                "    select s.userGroup.id" +
-                "    from UserMailinglistEntity s" +
-                "    where s.mailinglist.listType = :type" +
-                "      and s.status != :status" +
-                "      and (s.userGroup.user.status = :status" +
-                "        and s.userGroup.onPrivateList = true))";
-        final Query query = entityManager.createQuery(jql);
-        query.setParameter("status", UserStatus.ACTIVE);
-        query.setParameter("type", MailinglistType.PRIVATE_LIST);
-
-        return query.executeUpdate();
+        return entityManager
+                .createNamedQuery("userMailinglist.updatePrivateSubscriptions")
+                .setParameter(PARAMETER_STATUS, UserStatus.ACTIVE)
+                .setParameter(PARAMETER_ONLIST, true)
+                .executeUpdate();
     }
 
     /**
@@ -353,22 +268,11 @@ public final class MailingListJpaDao extends BasicJpaDao implements MailingListD
      */
     @Override
     public int activatePublicMailinglistSubscriptions() {
-        final String jql =
-                "update UserMailinglistEntity set" +
-                "   status = :status," +
-                "   modified = current_timestamp " +
-                "where userGroup.id in (" +
-                "    select s.userGroup.id" +
-                "    from UserMailinglistEntity s" +
-                "    where s.mailinglist.listType != :type" +
-                "      and s.status != :status" +
-                "      and (s.userGroup.user.status = :status" +
-                "        and s.userGroup.onPublicList = true))";
-        final Query query = entityManager.createQuery(jql);
-        query.setParameter("status", UserStatus.ACTIVE);
-        query.setParameter("type", MailinglistType.PRIVATE_LIST);
-
-        return query.executeUpdate();
+        return entityManager
+                .createNamedQuery("userMailinglist.updatePublicSubscriptions")
+                .setParameter(PARAMETER_STATUS, UserStatus.ACTIVE)
+                .setParameter(PARAMETER_ONLIST, true)
+                .executeUpdate();
     }
 
     /**
@@ -376,20 +280,10 @@ public final class MailingListJpaDao extends BasicJpaDao implements MailingListD
      */
     @Override
     public int addWritePermission() {
-        final String jql =
-                "update UserMailinglistEntity set" +
-                "   mayWrite = true," +
-                "   modified = current_timestamp " +
-                "where userGroup.id in (" +
-                "    select s.userGroup.id" +
-                "    from UserMailinglistEntity s" +
-                "    where s.mailinglist.listType = :type" +
-                "      and s.mayWrite = false" +
-                "      and s.userGroup.writeToPrivateList = true)";
-        final Query query = entityManager.createQuery(jql);
-        query.setParameter("type", MailinglistType.PRIVATE_LIST);
-
-        return query.executeUpdate();
+        return entityManager
+                .createNamedQuery("userMailinglist.updateWritePermission")
+                .setParameter(PARAMETER_MAYWRITE, true)
+                .executeUpdate();
     }
 
     /**
@@ -397,20 +291,10 @@ public final class MailingListJpaDao extends BasicJpaDao implements MailingListD
      */
     @Override
     public int removeWritePermission() {
-        final String jql =
-                "update UserMailinglistEntity set" +
-                "   mayWrite = false," +
-                "   modified = current_timestamp " +
-                "where userGroup.id in (" +
-                "    select s.userGroup.id" +
-                "    from UserMailinglistEntity s" +
-                "    where s.mailinglist.listType = :type" +
-                "      and s.mayWrite = true" +
-                "      and s.userGroup.writeToPrivateList = false)";
-        final Query query = entityManager.createQuery(jql);
-        query.setParameter("type", MailinglistType.PRIVATE_LIST);
-
-        return query.executeUpdate();
+        return entityManager
+                .createNamedQuery("userMailinglist.updateWritePermission")
+                .setParameter(PARAMETER_MAYWRITE, false)
+                .executeUpdate();
     }
 
     /**
@@ -418,22 +302,11 @@ public final class MailingListJpaDao extends BasicJpaDao implements MailingListD
      */
     @Override
     public int suspendPrivateMailinglistSubscriptions() {
-        final String jql =
-                "update UserMailinglistEntity set" +
-                "   status = :status," +
-                "   modified = current_timestamp " +
-                "where userGroup.id in (" +
-                "    select s.userGroup.id" +
-                "    from UserMailinglistEntity s" +
-                "    where s.mailinglist.listType = :type" +
-                "      and s.status != :status" +
-                "      and (s.userGroup.user.status = :status" +
-                "        or s.userGroup.onPrivateList = false))";
-        final Query query = entityManager.createQuery(jql);
-        query.setParameter("status", UserStatus.SUSPENDED);
-        query.setParameter("type", MailinglistType.PRIVATE_LIST);
-
-        return query.executeUpdate();
+        return entityManager
+                .createNamedQuery("userMailinglist.updatePrivateSubscriptions")
+                .setParameter(PARAMETER_STATUS, UserStatus.SUSPENDED)
+                .setParameter(PARAMETER_ONLIST, false)
+                .executeUpdate();
     }
 
     /**
@@ -441,22 +314,11 @@ public final class MailingListJpaDao extends BasicJpaDao implements MailingListD
      */
     @Override
     public int suspendPublicMailinglistSubscriptions() {
-        final String jql =
-                "update UserMailinglistEntity set" +
-                        "   status = :status," +
-                        "   modified = current_timestamp " +
-                        "where userGroup.id in (" +
-                        "    select s.userGroup.id" +
-                        "    from UserMailinglistEntity s" +
-                        "    where s.mailinglist.listType != :type" +
-                        "      and s.status != :status" +
-                        "      and (s.userGroup.user.status = :status" +
-                        "        or s.userGroup.onPublicList = false))";
-        final Query query = entityManager.createQuery(jql);
-        query.setParameter("status", UserStatus.SUSPENDED);
-        query.setParameter("type", MailinglistType.PRIVATE_LIST);
-
-        return query.executeUpdate();
+        return entityManager
+                .createNamedQuery("userMailinglist.updatePublicSubscriptions")
+                .setParameter(PARAMETER_STATUS, UserStatus.SUSPENDED)
+                .setParameter(PARAMETER_ONLIST, false)
+                .executeUpdate();
     }
 
     /**
@@ -464,14 +326,8 @@ public final class MailingListJpaDao extends BasicJpaDao implements MailingListD
      */
     @Override
     public int deleteDeprecatedMailinglistSubscriptions() {
-        final String jql =
-                "delete from UserMailinglistEntity " +
-                "where userGroup.id in (" +
-                "    select s.id" +
-                "    from UserGroupEntity s" +
-                "    where s.user.status = 'DELETED')";
-        final Query query = entityManager.createQuery(jql);
-
-        return query.executeUpdate();
+        return entityManager
+                .createNamedQuery("userMailinglist.deleteDeprecatedSubscribers")
+                .executeUpdate();
     }
 }

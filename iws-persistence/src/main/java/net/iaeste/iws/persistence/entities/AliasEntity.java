@@ -29,6 +29,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -46,6 +48,11 @@ import java.util.Date;
  * @since   IWS 1.1
  */
 @Entity
+@NamedQueries({
+    @NamedQuery(name = "alias.findAll",
+            query = "select a " +
+                    "from AliasEntity a")
+})
 @Table(name = "aliases")
 @Monitored(name = "Aliases", level = MonitoringLevel.DETAILED)
 public final class AliasEntity extends AbstractUpdateable<AliasEntity> implements Externable<AliasEntity> {

@@ -31,6 +31,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -43,6 +45,42 @@ import java.util.Objects;
  * @since   IWS 1.1
  */
 @Entity
+@NamedQueries({
+        @NamedQuery(name = "mailinglist.findByGroupId",
+                query = "select m " +
+                        "from MailinglistEntity m " +
+                        "where m.group.id = :gid"),
+        @NamedQuery(name = "mailinglist.findByAddress",
+                query = "select m " +
+                        "from MailinglistEntity m " +
+                        "where m.listAddress = :address"),
+        @NamedQuery(name = "mailinglist.findUnprocessedGroups",
+                query = "select g from GroupEntity g " +
+                        "where g.status = 'ACTIVE'" +
+                        "  and (g.publicList = true" +
+                        "    or g.privateList = true)" +
+                        "  and g.id not in (" +
+                        "    select m.group.id" +
+                        "    from MailinglistEntity m)"),
+        @NamedQuery(name = "mailinglist.updateState",
+                query = "update MailinglistEntity set" +
+                        "   status = :status," +
+                        "   modified = current_timestamp " +
+                        "where group.id in (" +
+                        "    select m.group.id" +
+                        "    from MailinglistEntity m" +
+                        "    where m.group.status = :status" +
+                        "      and m.status <> m.group.status)"),
+        @NamedQuery(name = "mailinglist.deleteDeprecatedLists",
+                query = "delete from MailinglistEntity " +
+                        "where group.id in (" +
+                        "    select g.id" +
+                        "    from GroupEntity g" +
+                        "    where g.status = :status)"),
+        @NamedQuery(name = "mailinglist.deleteListByGroup",
+                query = "delete from MailinglistEntity " +
+                        "where group.id = :gid")
+})
 @Table(name = "mailing_lists")
 public final class MailinglistEntity extends AbstractUpdateable<MailinglistEntity> {
 

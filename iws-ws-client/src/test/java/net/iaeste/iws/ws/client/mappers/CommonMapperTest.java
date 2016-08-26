@@ -31,6 +31,7 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
+import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.dtos.Address;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.dtos.Country;
@@ -39,6 +40,7 @@ import net.iaeste.iws.api.dtos.Person;
 import net.iaeste.iws.api.dtos.Role;
 import net.iaeste.iws.api.dtos.User;
 import net.iaeste.iws.api.dtos.UserGroup;
+import net.iaeste.iws.ws.IwsError;
 import org.junit.Test;
 
 import java.lang.reflect.Constructor;
@@ -73,6 +75,22 @@ public final class CommonMapperTest {
         }
     }
 
+    /**
+     * <p>Similar to the test above, but for the parent Class, which handles
+     * mapping of enumerated values.</p>
+     */
+    @Test
+    public void testPrivateEnumConstructor() {
+        try {
+            final Constructor<EnumMapper> constructor = EnumMapper.class.getDeclaredConstructor();
+            constructor.setAccessible(true);
+            final EnumMapper mapper = constructor.newInstance();
+            assertThat(mapper, is(not(nullValue())));
+        } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException | InstantiationException e) {
+            fail("Could not invoke Private Constructor: " + e.getMessage());
+        }
+    }
+
     @Test
     public void testNullAuthenticationToken() {
         final AuthenticationToken token = null;
@@ -95,6 +113,14 @@ public final class CommonMapperTest {
         final AuthenticationToken mapped = map(map(token));
         assertThat(mapped.getToken(), is(key));
         assertThat(mapped.getGroupId(), is(groupId));
+    }
+
+    @Test
+    public void testNullError() {
+        final IwsError api = null;
+        final IWSError mapped = map(api);
+
+        assertThat(mapped, is(nullValue()));
     }
 
     @Test

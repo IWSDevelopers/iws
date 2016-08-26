@@ -211,9 +211,27 @@ public final class AdministrationMapperTest {
     }
 
     @Test
-    @Ignore("Not yet implemented")
     public void testCreateUserRequest() {
-        fail("not yet implemented.");
+        final String username = "User@domain.name";
+        final String password = "Password";
+        final String firstname = "Firstname";
+        final String lastname = "Lastname";
+
+        final CreateUserRequest request = new CreateUserRequest();
+        request.setUsername(username);
+        request.setPassword(password);
+        request.setFirstname(firstname);
+        request.setLastname(lastname);
+        request.setStudentAccount(true);
+
+        final net.iaeste.iws.ws.CreateUserRequest mapped = map(request);
+
+        assertThat(mapped, is(not(nullValue())));
+        assertThat(mapped.getUsername(), is(username));
+        assertThat(mapped.getPassword(), is(password));
+        assertThat(mapped.getFirstname(), is(firstname));
+        assertThat(mapped.getLastname(), is(lastname));
+        assertThat(mapped.isStudentAccount(), is(true));
     }
 
     @Test

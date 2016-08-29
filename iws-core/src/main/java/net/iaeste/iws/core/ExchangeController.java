@@ -90,7 +90,7 @@ public final class ExchangeController extends CommonController implements Exchan
             // Generally, Exceptions should always be either logged or rethrown.
             // In our case, we're transforming the Exception into an Error
             // Object which can be returned to the User. However, to ensure
-            // that we're not loosing anything - the Exception is also LOG.ed
+            // that we're not loosing anything - the Exception is also logged
             // here as a debug message
             LOG.debug(e.getMessage(), e);
             response = new OfferStatisticsResponse(e.getError(), e.getMessage());
@@ -116,7 +116,7 @@ public final class ExchangeController extends CommonController implements Exchan
             // Generally, Exceptions should always be either logged or rethrown.
             // In our case, we're transforming the Exception into an Error
             // Object which can be returned to the User. However, to ensure
-            // that we're not loosing anything - the Exception is also LOG.ed
+            // that we're not loosing anything - the Exception is also logged
             // here as a debug message
             LOG.debug(e.getMessage(), e);
             response = new EmployerResponse(e.getError(), e.getMessage());
@@ -142,7 +142,7 @@ public final class ExchangeController extends CommonController implements Exchan
             // Generally, Exceptions should always be either logged or rethrown.
             // In our case, we're transforming the Exception into an Error
             // Object which can be returned to the User. However, to ensure
-            // that we're not loosing anything - the Exception is also LOG.ed
+            // that we're not loosing anything - the Exception is also logged
             // here as a debug message
             LOG.debug(e.getMessage(), e);
             response = new FetchEmployerResponse(e.getError(), e.getMessage());
@@ -168,7 +168,7 @@ public final class ExchangeController extends CommonController implements Exchan
             // Generally, Exceptions should always be either logged or rethrown.
             // In our case, we're transforming the Exception into an Error
             // Object which can be returned to the User. However, to ensure
-            // that we're not loosing anything - the Exception is also LOG.ed
+            // that we're not loosing anything - the Exception is also logged
             // here as a debug message
             LOG.debug(e.getMessage(), e);
             response = new OfferResponse(e.getError(), e.getMessage());
@@ -194,7 +194,7 @@ public final class ExchangeController extends CommonController implements Exchan
             // Generally, Exceptions should always be either logged or rethrown.
             // In our case, we're transforming the Exception into an Error
             // Object which can be returned to the User. However, to ensure
-            // that we're not loosing anything - the Exception is also LOG.ed
+            // that we're not loosing anything - the Exception is also logged
             // here as a debug message
             LOG.debug(e.getMessage(), e);
             response = new OfferCSVUploadResponse(e.getError(), e.getMessage());
@@ -220,7 +220,7 @@ public final class ExchangeController extends CommonController implements Exchan
             // Generally, Exceptions should always be either logged or rethrown.
             // In our case, we're transforming the Exception into an Error
             // Object which can be returned to the User. However, to ensure
-            // that we're not loosing anything - the Exception is also LOG.ed
+            // that we're not loosing anything - the Exception is also logged
             // here as a debug message
             LOG.debug(e.getMessage(), e);
             response = new FetchOffersResponse(e.getError(), e.getMessage());
@@ -246,7 +246,7 @@ public final class ExchangeController extends CommonController implements Exchan
             // Generally, Exceptions should always be either logged or rethrown.
             // In our case, we're transforming the Exception into an Error
             // Object which can be returned to the User. However, to ensure
-            // that we're not loosing anything - the Exception is also LOG.ed
+            // that we're not loosing anything - the Exception is also logged
             // here as a debug message
             LOG.debug(e.getMessage(), e);
             response = new OfferCSVDownloadResponse(e.getError(), e.getMessage());
@@ -273,7 +273,7 @@ public final class ExchangeController extends CommonController implements Exchan
             // Generally, Exceptions should always be either logged or rethrown.
             // In our case, we're transforming the Exception into an Error
             // Object which can be returned to the User. However, to ensure
-            // that we're not loosing anything - the Exception is also LOG.ed
+            // that we're not loosing anything - the Exception is also logged
             // here as a debug message
             LOG.debug(e.getMessage(), e);
             response = new Response(e.getError(), e.getMessage());
@@ -299,7 +299,7 @@ public final class ExchangeController extends CommonController implements Exchan
             // Generally, Exceptions should always be either logged or rethrown.
             // In our case, we're transforming the Exception into an Error
             // Object which can be returned to the User. However, to ensure
-            // that we're not loosing anything - the Exception is also LOG.ed
+            // that we're not loosing anything - the Exception is also logged
             // here as a debug message
             LOG.debug(e.getMessage(), e);
             response = new FetchPublishingGroupResponse(e.getError(), e.getMessage());
@@ -324,7 +324,7 @@ public final class ExchangeController extends CommonController implements Exchan
             // Generally, Exceptions should always be either logged or rethrown.
             // In our case, we're transforming the Exception into an Error
             // Object which can be returned to the User. However, to ensure
-            // that we're not loosing anything - the Exception is also LOG.ed
+            // that we're not loosing anything - the Exception is also logged
             // here as a debug message
             LOG.debug(e.getMessage(), e);
             response = new FetchGroupsForSharingResponse(e.getError(), e.getMessage());
@@ -350,7 +350,7 @@ public final class ExchangeController extends CommonController implements Exchan
             // Generally, Exceptions should always be either logged or rethrown.
             // In our case, we're transforming the Exception into an Error
             // Object which can be returned to the User. However, to ensure
-            // that we're not loosing anything - the Exception is also LOG.ed
+            // that we're not loosing anything - the Exception is also logged
             // here as a debug message
             LOG.debug(e.getMessage(), e);
             response = new PublishOfferResponse(e.getError(), e.getMessage());
@@ -376,7 +376,7 @@ public final class ExchangeController extends CommonController implements Exchan
             // Generally, Exceptions should always be either logged or rethrown.
             // In our case, we're transforming the Exception into an Error
             // Object which can be returned to the User. However, to ensure
-            // that we're not loosing anything - the Exception is also LOG.ed
+            // that we're not loosing anything - the Exception is also logged
             // here as a debug message
             LOG.debug(e.getMessage(), e);
             response = new FetchPublishedGroupsResponse(e.getError(), e.getMessage());
@@ -403,7 +403,7 @@ public final class ExchangeController extends CommonController implements Exchan
             // Generally, Exceptions should always be either logged or rethrown.
             // In our case, we're transforming the Exception into an Error
             // Object which can be returned to the User. However, to ensure
-            // that we're not loosing anything - the Exception is also LOG.ed
+            // that we're not loosing anything - the Exception is also logged
             // here as a debug message
             LOG.debug(e.getMessage(), e);
             response = new Response(e.getError(), e.getMessage());
@@ -430,7 +430,7 @@ public final class ExchangeController extends CommonController implements Exchan
             // Generally, Exceptions should always be either logged or rethrown.
             // In our case, we're transforming the Exception into an Error
             // Object which can be returned to the User. However, to ensure
-            // that we're not loosing anything - the Exception is also LOG.ed
+            // that we're not loosing anything - the Exception is also logged
             // here as a debug message
             LOG.debug(e.getMessage(), e);
             response = new Response(e.getError(), e.getMessage());

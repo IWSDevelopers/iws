@@ -75,7 +75,7 @@ public final class StudentController extends CommonController implements Student
             // Generally, Exceptions should always be either logged or rethrown.
             // In our case, we're transforming the Exception into an Error
             // Object which can be returned to the User. However, to ensure
-            // that we're not loosing anything - the Exception is also LOG.ed
+            // that we're not loosing anything - the Exception is also logged
             // here as a debug message
             LOG.debug(e.getMessage(), e);
             response = new CreateUserResponse(e.getError(), e.getMessage());
@@ -101,7 +101,7 @@ public final class StudentController extends CommonController implements Student
             // Generally, Exceptions should always be either logged or rethrown.
             // In our case, we're transforming the Exception into an Error
             // Object which can be returned to the User. However, to ensure
-            // that we're not loosing anything - the Exception is also LOG.ed
+            // that we're not loosing anything - the Exception is also logged
             // here as a debug message
             LOG.debug(e.getMessage(), e);
             response = new StudentResponse(e.getError(), e.getMessage());
@@ -127,7 +127,7 @@ public final class StudentController extends CommonController implements Student
             // Generally, Exceptions should always be either logged or rethrown.
             // In our case, we're transforming the Exception into an Error
             // Object which can be returned to the User. However, to ensure
-            // that we're not loosing anything - the Exception is also LOG.ed
+            // that we're not loosing anything - the Exception is also logged
             // here as a debug message
             LOG.debug(e.getMessage(), e);
             response = new FetchStudentsResponse(e.getError(), e.getMessage());
@@ -153,7 +153,7 @@ public final class StudentController extends CommonController implements Student
             // Generally, Exceptions should always be either logged or rethrown.
             // In our case, we're transforming the Exception into an Error
             // Object which can be returned to the User. However, to ensure
-            // that we're not loosing anything - the Exception is also LOG.ed
+            // that we're not loosing anything - the Exception is also logged
             // here as a debug message
             LOG.debug(e.getMessage(), e);
             response = new StudentApplicationResponse(e.getError(), e.getMessage());
@@ -179,7 +179,7 @@ public final class StudentController extends CommonController implements Student
             // Generally, Exceptions should always be either logged or rethrown.
             // In our case, we're transforming the Exception into an Error
             // Object which can be returned to the User. However, to ensure
-            // that we're not loosing anything - the Exception is also LOG.ed
+            // that we're not loosing anything - the Exception is also logged
             // here as a debug message
             LOG.debug(e.getMessage(), e);
             response = new FetchStudentApplicationsResponse(e.getError(), e.getMessage());
@@ -205,7 +205,7 @@ public final class StudentController extends CommonController implements Student
             // Generally, Exceptions should always be either logged or rethrown.
             // In our case, we're transforming the Exception into an Error
             // Object which can be returned to the User. However, to ensure
-            // that we're not loosing anything - the Exception is also LOG.ed
+            // that we're not loosing anything - the Exception is also logged
             // here as a debug message
             LOG.debug(e.getMessage(), e);
             response = new StudentApplicationResponse(e.getError(), e.getMessage());

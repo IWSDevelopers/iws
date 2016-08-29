@@ -76,7 +76,7 @@ public final class StorageController extends CommonController implements Storage
             // Generally, Exceptions should always be either logged or rethrown.
             // In our case, we're transforming the Exception into an Error
             // Object which can be returned to the User. However, to ensure
-            // that we're not loosing anything - the Exception is also LOG.ed
+            // that we're not loosing anything - the Exception is also logged
             // here as a debug message
             LOG.debug(e.getMessage(), e);
             response = new FolderResponse(e.getError(), e.getMessage());
@@ -102,7 +102,7 @@ public final class StorageController extends CommonController implements Storage
             // Generally, Exceptions should always be either logged or rethrown.
             // In our case, we're transforming the Exception into an Error
             // Object which can be returned to the User. However, to ensure
-            // that we're not loosing anything - the Exception is also LOG.ed
+            // that we're not loosing anything - the Exception is also logged
             // here as a debug message
             LOG.debug(e.getMessage(), e);
             response = new FetchFolderResponse(e.getError(), e.getMessage());
@@ -128,7 +128,7 @@ public final class StorageController extends CommonController implements Storage
             // Generally, Exceptions should always be either logged or rethrown.
             // In our case, we're transforming the Exception into an Error
             // Object which can be returned to the User. However, to ensure
-            // that we're not loosing anything - the Exception is also LOG.ed
+            // that we're not loosing anything - the Exception is also logged
             // here as a debug message
             LOG.debug(e.getMessage(), e);
             response = new FileResponse(e.getError(), e.getMessage());
@@ -158,7 +158,7 @@ public final class StorageController extends CommonController implements Storage
             // Generally, Exceptions should always be either logged or rethrown.
             // In our case, we're transforming the Exception into an Error
             // Object which can be returned to the User. However, to ensure
-            // that we're not loosing anything - the Exception is also LOG.ed
+            // that we're not loosing anything - the Exception is also logged
             // here as a debug message
             LOG.debug(e.getMessage(), e);
             response = new FetchFileResponse(e.getError(), e.getMessage());

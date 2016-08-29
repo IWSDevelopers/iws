@@ -74,7 +74,7 @@ public final class CommitteeController extends CommonController implements Commi
             // Generally, Exceptions should always be either logged or rethrown.
             // In our case, we're transforming the Exception into an Error
             // Object which can be returned to the User. However, to ensure
-            // that we're not loosing anything - the Exception is also LOG.ed
+            // that we're not loosing anything - the Exception is also logged
             // here as a debug message
             LOG.debug(e.getMessage(), e);
             response = new FetchCommitteeResponse(e.getError(), e.getMessage());
@@ -100,7 +100,7 @@ public final class CommitteeController extends CommonController implements Commi
             // Generally, Exceptions should always be either logged or rethrown.
             // In our case, we're transforming the Exception into an Error
             // Object which can be returned to the User. However, to ensure
-            // that we're not loosing anything - the Exception is also LOG.ed
+            // that we're not loosing anything - the Exception is also logged
             // here as a debug message
             LOG.debug(e.getMessage(), e);
             response = new CommitteeResponse(e.getError(), e.getMessage());
@@ -126,7 +126,7 @@ public final class CommitteeController extends CommonController implements Commi
             // Generally, Exceptions should always be either logged or rethrown.
             // In our case, we're transforming the Exception into an Error
             // Object which can be returned to the User. However, to ensure
-            // that we're not loosing anything - the Exception is also LOG.ed
+            // that we're not loosing anything - the Exception is also logged
             // here as a debug message
             LOG.debug(e.getMessage(), e);
             response = new FetchInternationalGroupResponse(e.getError(), e.getMessage());
@@ -153,7 +153,7 @@ public final class CommitteeController extends CommonController implements Commi
             // Generally, Exceptions should always be either logged or rethrown.
             // In our case, we're transforming the Exception into an Error
             // Object which can be returned to the User. However, to ensure
-            // that we're not loosing anything - the Exception is also LOG.ed
+            // that we're not loosing anything - the Exception is also logged
             // here as a debug message
             LOG.debug(e.getMessage(), e);
             response = new Response(e.getError(), e.getMessage());
@@ -179,7 +179,7 @@ public final class CommitteeController extends CommonController implements Commi
             // Generally, Exceptions should always be either logged or rethrown.
             // In our case, we're transforming the Exception into an Error
             // Object which can be returned to the User. However, to ensure
-            // that we're not loosing anything - the Exception is also LOG.ed
+            // that we're not loosing anything - the Exception is also logged
             // here as a debug message
             LOG.debug(e.getMessage(), e);
             response = new FetchCountrySurveyResponse(e.getError(), e.getMessage());
@@ -206,7 +206,7 @@ public final class CommitteeController extends CommonController implements Commi
             // Generally, Exceptions should always be either logged or rethrown.
             // In our case, we're transforming the Exception into an Error
             // Object which can be returned to the User. However, to ensure
-            // that we're not loosing anything - the Exception is also LOG.ed
+            // that we're not loosing anything - the Exception is also logged
             // here as a debug message
             LOG.debug(e.getMessage(), e);
             response = new Response(e.getError(), e.getMessage());

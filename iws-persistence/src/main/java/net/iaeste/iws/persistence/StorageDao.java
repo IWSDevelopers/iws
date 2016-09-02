@@ -19,6 +19,7 @@ package net.iaeste.iws.persistence;
 
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.persistence.entities.FileEntity;
+import net.iaeste.iws.persistence.entities.FiledataEntity;
 import net.iaeste.iws.persistence.entities.FolderEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 
@@ -68,7 +69,7 @@ public interface StorageDao extends BasicDao {
 
     List<FileEntity> findFiles(FolderEntity parentFolder);
 
-    FileEntity readFile(final String externalFileId);
+    FiledataEntity readFile(final String externalFileId);
 
     /**
      * The IWS Folder Structure is based on the Adjacency Tree Model [1]. This

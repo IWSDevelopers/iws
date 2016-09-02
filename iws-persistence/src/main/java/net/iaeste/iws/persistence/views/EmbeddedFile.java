@@ -45,9 +45,6 @@ public final class EmbeddedFile {
     @Column(name = "file_name", insertable = false, updatable = false)
     private String fileName = null;
 
-    @Column(name = "file_stored_name", insertable = false, updatable = false)
-    private String storedName = null;
-
     @Column(name = "file_size", insertable = false, updatable = false)
     private Integer size = null;
 
@@ -105,14 +102,6 @@ public final class EmbeddedFile {
 
     public String getFileName() {
         return fileName;
-    }
-
-    public void setStoredName(final String storedName) {
-        this.storedName = storedName;
-    }
-
-    public String getStoredName() {
-        return storedName;
     }
 
     public void setSize(final Integer size) {

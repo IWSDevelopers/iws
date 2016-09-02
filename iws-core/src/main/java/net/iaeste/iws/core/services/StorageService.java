@@ -17,8 +17,8 @@
  */
 package net.iaeste.iws.core.services;
 
-import static net.iaeste.iws.common.utils.LogUtil.formatLogMessage;
 import static net.iaeste.iws.common.configuration.InternalConstants.ROOT_FOLDER_EID;
+import static net.iaeste.iws.common.utils.LogUtil.formatLogMessage;
 import static net.iaeste.iws.core.transformers.StorageTransformer.transform;
 
 import net.iaeste.iws.api.constants.IWSErrors;
@@ -41,6 +41,7 @@ import net.iaeste.iws.core.transformers.StorageTransformer;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.StorageDao;
 import net.iaeste.iws.persistence.entities.FileEntity;
+import net.iaeste.iws.persistence.entities.FiledataEntity;
 import net.iaeste.iws.persistence.entities.FolderEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.UserGroupEntity;
@@ -381,7 +382,7 @@ public final class StorageService extends CommonService<StorageDao> {
      */
     public FetchFileResponse fetchFile(final Authentication authentication, final FetchFileRequest request) {
         final String groupId = request.getGroupId();
-        final FileEntity entity;
+        final FiledataEntity entity;
 
         if (groupId != null) {
             // If the GroupId is not null, then it means that the File is
@@ -391,9 +392,13 @@ public final class StorageService extends CommonService<StorageDao> {
         } else {
             // No GroupId, meaning that the File is fetched the "normal" way,
             // i.e. as if it was shared via a Folder. The reading of the File is
-            final FileEntity toCheck = dao.readFile(request.getFileId());
-            final List<UserGroupEntity> u2gList = dao.findAllUserGroups(authentication.getUser());
-            entity = checkFile(authentication, toCheck, u2gList);
+            final FiledataEntity toCheck = dao.readFile(request.getFileId());
+            if (toCheck != null) {
+                final List<UserGroupEntity> u2gList = dao.findAllUserGroups(authentication.getUser());
+                entity = checkFile(authentication, toCheck, u2gList);
+            } else {
+                throw new IdentificationException("No file with the given Id '" + request.getFileId() + "' could be found.");
+            }
         }
 
         final File file = transform(entity);
@@ -429,20 +434,21 @@ public final class StorageService extends CommonService<StorageDao> {
      * @param u2gList        User Group Relations
      * @return Found file or null
      */
-    private static FileEntity checkFile(final Authentication authentication, final FileEntity entity, final List<UserGroupEntity> u2gList) {
-        FileEntity file = null;
+    private static FiledataEntity checkFile(final Authentication authentication, final FiledataEntity entity, final List<UserGroupEntity> u2gList) {
+        final FileEntity toCheck = entity.getFile();
+        FiledataEntity file = null;
 
         // Per the documentation for the Data Privacy rules, which is also
         // part of the JavaDoc for this method. We can either follow the
         // documented rules or reverse the Order checks, and thus have
         // clearer rules. We're doing the latter to make our method easier
         // to read and understand.
-        if (entity.getUser().getId().equals(authentication.getUser().getId())) {
+        if (toCheck.getUser().getId().equals(authentication.getUser().getId())) {
             // If the current user is also the owner of the file, then there
             // is no need to perform any other checks. Owners can always do
             // whatever they wish with their files.
             file = entity;
-        } else if (entity.getPrivacy() != Privacy.PROTECTED) {
+        } else if (toCheck.getPrivacy() != Privacy.PROTECTED) {
             // Private files is for owners only. And as the Owners were
             // handled in the first check above - we can focus on files
             // which have either status Public or Protected.
@@ -450,7 +456,7 @@ public final class StorageService extends CommonService<StorageDao> {
             // user is member of the Group, which owns the file, then the
             // file can be viewed.
             for (final UserGroupEntity u2g : u2gList) {
-                if (u2g.getGroup().getId().equals(entity.getGroup().getId())) {
+                if (u2g.getGroup().getId().equals(toCheck.getGroup().getId())) {
                     file = entity;
                     // Our work is done, we found the Group - let's move on
                     break;
@@ -460,9 +466,9 @@ public final class StorageService extends CommonService<StorageDao> {
             // If still not allowed, then we're down to the last option,
             // that the file is public and belongs to a public folder.
             // However, first we must check that the Parent Folder exists.
-            if ((file == null) && (entity.getPrivacy() == Privacy.PUBLIC) && (entity.getFolder() != null)) {
+            if ((file == null) && (entity.getFile().getPrivacy() == Privacy.PUBLIC) && (toCheck.getFolder() != null)) {
                 // check that the file belongs to a Group with a public Folder.
-                final GroupType.FolderType folderType = entity.getFolder().getGroup().getGroupType().getFolderType();
+                final GroupType.FolderType folderType = toCheck.getFolder().getGroup().getGroupType().getFolderType();
                 if (folderType == GroupType.FolderType.PUBLIC) {
                     file = entity;
                 }

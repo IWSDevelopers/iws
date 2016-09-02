@@ -26,6 +26,7 @@ import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.StorageDao;
 import net.iaeste.iws.persistence.entities.FileEntity;
+import net.iaeste.iws.persistence.entities.FiledataEntity;
 import net.iaeste.iws.persistence.entities.FolderEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.IWSEntity;
@@ -216,14 +217,14 @@ public final class StorageJpaDao extends BasicJpaDao implements StorageDao {
      * {@inheritDoc}
      */
     @Override
-    public FileEntity readFile(final String externalFileId) {
+    public FiledataEntity readFile(final String externalFileId) {
         final String jql =
-                "select f from FileEntity f " +
-                "where f.externalId = :fid";
+                "select f from FiledataEntity f " +
+                "where f.file.externalId = :fid";
         final Query query = entityManager.createQuery(jql);
         query.setParameter("fid", externalFileId);
 
-        return getSingleResultWithException(query, "Could not uniquely identify the file by its Id.");
+        return getSingleResultWithException(query, "file");
     }
 
     /**
@@ -291,7 +292,7 @@ public final class StorageJpaDao extends BasicJpaDao implements StorageDao {
 
         if (found.size() == 1) {
             entity = found.get(0);
-        } else if (found.size() > 1){
+        } else if (found.size() > 1) {
             throw new StorageException("Could not uniquely identify the " + name + " by its Id.");
         }
 

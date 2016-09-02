@@ -22,6 +22,7 @@ import net.iaeste.iws.api.util.Page;
 import net.iaeste.iws.persistence.entities.AddressEntity;
 import net.iaeste.iws.persistence.entities.CountryEntity;
 import net.iaeste.iws.persistence.entities.FileEntity;
+import net.iaeste.iws.persistence.entities.FiledataEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.GroupTypeEntity;
 import net.iaeste.iws.persistence.entities.IWSEntity;
@@ -155,6 +156,18 @@ public interface BasicDao {
     FileEntity findFileByUserAndExternalId(UserEntity user, String externalId);
     FileEntity findAttachedFileByUserAndExternalId(GroupEntity group, String externalId);
 
+    /**
+     * Deletes the file data for a given file. The data is stored separately
+     * from the actual File Entity, to minimize DB overhead - and also to ensure
+     * that Files don't need to be stored in the Filesystem, since that would
+     * require backup of two different things, and will not work well with
+     * database replication.
+     *
+     * @param file File to delete the data for
+     * @return Number of records deleted
+     */
+    int deleteFileData(FileEntity file);
+
     int deleteAttachmentRecord(FileEntity file);
 
     /**
@@ -188,7 +201,15 @@ public interface BasicDao {
      * @return File with data
      * @throws PersistenceException if a single file could not be found
      */
-    FileEntity findAttachedFile(String fileId, String groupId);
+    FiledataEntity findAttachedFile(String fileId, String groupId);
+
+    /**
+     * Finds the data for a File with the given External Id.
+     *
+     * @param fileId External File Id to find the file data with
+     * @return File Data Entity
+     */
+    FiledataEntity findFileData(String fileId);
 
     List<UserGroupEntity> findGroupMembers(GroupEntity group);
     /**

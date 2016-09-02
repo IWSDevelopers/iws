@@ -26,6 +26,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -42,6 +44,25 @@ import java.util.Date;
  * @since   IWS 1.1
  */
 @Entity
+@NamedQueries({
+        @NamedQuery(name = "filedata.findByFileId",
+                query = "select f from FiledataEntity f " +
+                        "where f.file.externalId = :fid"),
+        @NamedQuery(name = "filedata.findApplicationByReceivingGroupAndExternalFileId",
+                query = "select f " +
+                        "from" +
+                        "  FiledataEntity f," +
+                        "  AttachmentEntity a," +
+                        "  ApplicationEntity sa " +
+                        "where a.table = :table" +
+                        "  and a.record = sa.id" +
+                        "  and sa.offerGroup.offer.employer.group.externalId = :gid" +
+                        "  and a.file.id = f.file.id" +
+                        "  and a.file.externalId = :fid"),
+        @NamedQuery(name = "filedata.deleteByFile",
+                query = "delete from FiledataEntity " +
+                        "where file.id = :fid")
+})
 @Table(name = "filedata")
 public final class FiledataEntity implements IWSEntity {
 

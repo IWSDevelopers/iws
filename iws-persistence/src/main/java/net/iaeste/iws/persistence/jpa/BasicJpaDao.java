@@ -35,6 +35,7 @@ import net.iaeste.iws.persistence.entities.AddressEntity;
 import net.iaeste.iws.persistence.entities.CountryEntity;
 import net.iaeste.iws.persistence.entities.EntityConstants;
 import net.iaeste.iws.persistence.entities.FileEntity;
+import net.iaeste.iws.persistence.entities.FiledataEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.GroupTypeEntity;
 import net.iaeste.iws.persistence.entities.IWSEntity;
@@ -63,6 +64,15 @@ import java.util.UUID;
  * @since   IWS 1.0
  */
 public class BasicJpaDao implements BasicDao {
+
+    private static final String PARAMETER_TABLE = "table";
+    private static final String PARAMETER_RECORD = "record";
+    private static final String PARAMETER_GROUP = "group";
+    private static final String PARAMETER_CODE = "code";
+    private static final String PARAMETER_UID = "uid";
+    private static final String PARAMETER_GID = "gid";
+    private static final String PARAMETER_FID = "fid";
+    private static final String PARAMETER_CID = "cid";
 
     protected EntityManager entityManager;
     protected Settings settings;
@@ -142,8 +152,8 @@ public class BasicJpaDao implements BasicDao {
         // key, we must do this manually.
         final String tableName = monitoringProcessor.findClassMonitoringName(entity);
         final Query query = entityManager.createNamedQuery("monitoring.deleteChanges");
-        query.setParameter("table", tableName);
-        query.setParameter("record", entity.getId());
+        query.setParameter(PARAMETER_TABLE, tableName);
+        query.setParameter(PARAMETER_RECORD, entity.getId());
         query.executeUpdate();
 
         entityManager.remove(entity);
@@ -186,10 +196,9 @@ public class BasicJpaDao implements BasicDao {
      */
     @Override
     public List<UserGroupEntity> findGroupMembers(final GroupEntity group) {
-        final Query query = entityManager.createQuery("select u from UserGroupEntity u where u.group = :group");
-        query.setParameter("group", group);
-
-        return query.getResultList();
+        return entityManager.createQuery("select u from UserGroupEntity u where u.group = :group")
+                            .setParameter(PARAMETER_GROUP, group)
+                            .getResultList();
     }
 
     // =========================================================================
@@ -201,12 +210,11 @@ public class BasicJpaDao implements BasicDao {
      */
     @Override
     public final List<PermissionRoleEntity> findRoles(final GroupEntity group) {
-        final Query query = entityManager.createNamedQuery("permissionRole.findByRoleToGroup");
         final Long cid = (group.getCountry() != null) ? group.getCountry().getId() : 0;
-        query.setParameter("cid", cid);
-        query.setParameter("gid", group.getId());
-
-        return query.getResultList();
+        return entityManager.createNamedQuery("permissionRole.findByRoleToGroup")
+                            .setParameter(PARAMETER_CID, cid)
+                            .setParameter(PARAMETER_GID, group.getId())
+                            .getResultList();
     }
 
     /**
@@ -215,7 +223,7 @@ public class BasicJpaDao implements BasicDao {
     @Override
     public final CountryEntity findCountry(final String countryCode) {
         final Query query = entityManager.createNamedQuery("country.findByCountryCode");
-        query.setParameter("code", toUpper(countryCode));
+        query.setParameter(PARAMETER_CODE, toUpper(countryCode));
 
         return findUniqueResult(query, "country");
     }
@@ -225,9 +233,8 @@ public class BasicJpaDao implements BasicDao {
      */
     @Override
     public final List<CountryEntity> findAllCountries() {
-        final Query query = entityManager.createNamedQuery("country.findAll");
-
-        return query.getResultList();
+        return entityManager.createNamedQuery("country.findAll")
+                            .getResultList();
     }
 
     /**
@@ -270,7 +277,7 @@ public class BasicJpaDao implements BasicDao {
     @Override
     public final FileEntity findFileByUserAndExternalId(final UserEntity user, final String externalId) {
         final Query query = entityManager.createNamedQuery("file.findByUserAndExternalId");
-        query.setParameter("uid", user.getId());
+        query.setParameter(PARAMETER_UID, user.getId());
         query.setParameter("efid", externalId);
 
         return findUniqueResult(query, "File");
@@ -281,10 +288,10 @@ public class BasicJpaDao implements BasicDao {
      */
     @Override
     public final FileEntity findAttachedFileByUserAndExternalId(final GroupEntity group, final String externalId) {
-        final Query query = entityManager.createNamedQuery("file.findApplicationBySendingGroupAndExternalFileId");
-        query.setParameter("table", EntityConstants.STUDENT_APPLICATIONS_ATTACHMENT);
-        query.setParameter("gid", group.getId());
-        query.setParameter("fid", externalId);
+        final Query query = entityManager.createNamedQuery("file.findApplicationBySendingGroupAndExternalFileId")
+                                         .setParameter(PARAMETER_TABLE, EntityConstants.STUDENT_APPLICATIONS_ATTACHMENT)
+                                         .setParameter(PARAMETER_GID, group.getId())
+                                         .setParameter(PARAMETER_FID, externalId);
 
         return findUniqueResult(query, "File");
     }
@@ -293,11 +300,20 @@ public class BasicJpaDao implements BasicDao {
      * {@inheritDoc}
      */
     @Override
-    public final int deleteAttachmentRecord(final FileEntity file) {
-        final Query query = entityManager.createNamedQuery("attachments.deleteByFile");
-        query.setParameter("fid", file.getId());
+    public int deleteFileData(final FileEntity file) {
+        return entityManager.createNamedQuery("filedata.deleteByFile")
+                            .setParameter(PARAMETER_FID, file.getId())
+                            .executeUpdate();
+    }
 
-        return query.executeUpdate();
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final int deleteAttachmentRecord(final FileEntity file) {
+        return entityManager.createNamedQuery("attachments.deleteByFile")
+                            .setParameter(PARAMETER_FID, file.getId())
+                            .executeUpdate();
     }
 
     /**
@@ -306,7 +322,7 @@ public class BasicJpaDao implements BasicDao {
     @Override
     public final GroupEntity findMemberGroup(final UserEntity user) {
         final Query query = entityManager.createNamedQuery("group.findGroupByUserAndType");
-        query.setParameter("uid", user.getId());
+        query.setParameter(PARAMETER_UID, user.getId());
         query.setParameter("type", GroupType.MEMBER);
 
         return findUniqueResult(query, "User");
@@ -317,10 +333,10 @@ public class BasicJpaDao implements BasicDao {
      */
     @Override
     public final FileEntity findFileByUserGroupAndExternalId(final UserEntity user, final GroupEntity group, final String externalId) {
-        final Query query = entityManager.createNamedQuery("file.findByUserGroupAndExternalId");
-        query.setParameter("uid", user.getId());
-        query.setParameter("gid", group.getId());
-        query.setParameter("efid", externalId);
+        final Query query = entityManager.createNamedQuery("file.findByUserGroupAndExternalId")
+                                         .setParameter(PARAMETER_UID, user.getId())
+                                         .setParameter(PARAMETER_GID, group.getId())
+                                         .setParameter("efid", externalId);
 
         return findUniqueResult(query, "File");
     }
@@ -329,13 +345,24 @@ public class BasicJpaDao implements BasicDao {
      * {@inheritDoc}
      */
     @Override
-    public final FileEntity findAttachedFile(final String fileId, final String groupId) {
-        final Query query = entityManager.createNamedQuery("file.findApplicationByReceivingGroupAndExternalFileId");
-        query.setParameter("table", EntityConstants.STUDENT_APPLICATIONS_ATTACHMENT);
-        query.setParameter("gid", groupId);
-        query.setParameter("fid", fileId);
+    public final FiledataEntity findAttachedFile(final String fileId, final String groupId) {
+        final Query query = entityManager.createNamedQuery("filedata.findApplicationByReceivingGroupAndExternalFileId")
+                                         .setParameter(PARAMETER_TABLE, EntityConstants.STUDENT_APPLICATIONS_ATTACHMENT)
+                                         .setParameter(PARAMETER_GID, groupId)
+                                         .setParameter(PARAMETER_FID, fileId);
 
         return findUniqueResult(query, "File");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final FiledataEntity findFileData(final String fileId) {
+        final Query query = entityManager.createNamedQuery("filedata.findByFileId")
+                                         .setParameter(PARAMETER_FID, fileId);
+
+        return findSingleResult(query, "File");
     }
 
     /**
@@ -343,10 +370,9 @@ public class BasicJpaDao implements BasicDao {
      */
     @Override
     public List<UserGroupEntity> findAllUserGroups(final UserEntity user) {
-        final Query query = entityManager.createNamedQuery("userGroup.findAllUserGroups");
-        query.setParameter("uid", user.getId());
-
-        return query.getResultList();
+        return entityManager.createNamedQuery("userGroup.findAllUserGroups")
+                            .setParameter(PARAMETER_UID, user.getId())
+                            .getResultList();
     }
 
     // =========================================================================
@@ -370,7 +396,7 @@ public class BasicJpaDao implements BasicDao {
      * @param emptyValue new value to be added if the list is empty
      * @return Collection with at least 1 element
      */
-    final <T> Collection<T> expandEmptyCollection(final Collection<T> collection, final T emptyValue) {
+    static <T> Collection<T> expandEmptyCollection(final Collection<T> collection, final T emptyValue) {
         final Collection<T> expanded;
 
         if (collection != null) {
@@ -473,7 +499,7 @@ public class BasicJpaDao implements BasicDao {
      * @param entityName Name of the entity expected, used if exception is thrown
      * @return Single Entity
      */
-    final <T extends IWSEntity> T findSingleResult(final Query query, final String entityName) {
+    static <T extends IWSEntity> T findSingleResult(final Query query, final String entityName) {
         final List<T> found = query.getResultList();
         T result = null;
 

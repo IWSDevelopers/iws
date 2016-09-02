@@ -111,15 +111,6 @@ public final class FileEntity extends AbstractUpdateable<FileEntity> implements 
     @Column(name = "filename", length = 100, nullable = false)
     private String filename = null;
 
-    /**
-     * The file data is not read out here, since it may be a rather large blob.
-     * Instead, there is a View which will handle the read requests. Changes to
-     * this field is likewise not dealt with in details, but rather the changes
-     * can only be marked.
-     */
-    @Column(name = "stored_filename", length = 100, updatable = false)
-    private String storedFilename = null;
-
     @Monitored(name="File size", level = MonitoringLevel.DETAILED)
     @Column(name = "filesize")
     private Integer filesize = null;
@@ -139,9 +130,6 @@ public final class FileEntity extends AbstractUpdateable<FileEntity> implements 
     @Monitored(name="Checksum", level = MonitoringLevel.DETAILED)
     @Column(name = "checksum", length = 128)
     private Long checksum = null;
-
-    @Column(name = "old_iw3_file_id")
-    private Long oldIW3FileId = null;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "modified", nullable = false)
@@ -227,14 +215,6 @@ public final class FileEntity extends AbstractUpdateable<FileEntity> implements 
         return filename;
     }
 
-    public void setStoredFilename(final String filedata) {
-        this.storedFilename = filedata;
-    }
-
-    public String getStoredFilename() {
-        return storedFilename;
-    }
-
     public void setFilesize(final Integer filesize) {
         this.filesize = filesize;
     }
@@ -273,14 +253,6 @@ public final class FileEntity extends AbstractUpdateable<FileEntity> implements 
 
     public Long getChecksum() {
         return checksum;
-    }
-
-    public void setOldIW3FileId(final Long oldIW3FileId) {
-        this.oldIW3FileId = oldIW3FileId;
-    }
-
-    public Long getOldIW3FileId() {
-        return oldIW3FileId;
     }
 
     /**

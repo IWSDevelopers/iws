@@ -125,24 +125,9 @@ public final class StorageTransformer {
         File result = null;
 
         if (entity != null) {
-            result = new File();
-
-            result.setFileId(entity.getFile().getExternalId());
-            result.setPrivacy(entity.getFile().getPrivacy());
-            result.setGroup(CommonTransformer.transform(entity.getFile().getGroup()));
-            result.setUser(AdministrationTransformer.transform(entity.getFile().getUser()));
-            if (entity.getFile().getFolder() != null) {
-                result.setFolderId(entity.getFile().getFolder().getExternalId());
-            }
-            result.setFilename(entity.getFile().getFilename());
-            result.setFilesize(entity.getFile().getFilesize());
+            // Re-using the File Transformer above
+            result = transform(entity.getFile());
             result.setFiledata(entity.getFileData());
-            result.setMimetype(entity.getFile().getMimetype());
-            result.setDescription(entity.getFile().getDescription());
-            result.setKeywords(entity.getFile().getKeywords());
-            result.setChecksum(entity.getFile().getChecksum());
-            result.setModified(convert(entity.getFile().getModified()));
-            result.setCreated(convert(entity.getCreated()));
         }
 
         return result;

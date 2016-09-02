@@ -16,6 +16,7 @@ insert into versions (db_version, iws_version) values (9, '1.2.0');
 alter table users alter column private_data set default 'PROTECTED';
 update users set private_data = 'PROTECTED';
 update grouptypes set folder_type = 'PROTECTED' where folder_type = 'PRIVATE';
+alter table files drop column stored_filename;
 
 
 -- =============================================================================

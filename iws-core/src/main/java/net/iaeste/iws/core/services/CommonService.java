@@ -23,7 +23,6 @@ import static net.iaeste.iws.common.utils.StringUtils.toLower;
 import static net.iaeste.iws.core.transformers.StorageTransformer.transform;
 
 import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.Address;
 import net.iaeste.iws.api.dtos.File;
 import net.iaeste.iws.api.dtos.Person;
@@ -45,6 +44,7 @@ import net.iaeste.iws.persistence.BasicDao;
 import net.iaeste.iws.persistence.entities.AddressEntity;
 import net.iaeste.iws.persistence.entities.CountryEntity;
 import net.iaeste.iws.persistence.entities.FileEntity;
+import net.iaeste.iws.persistence.entities.FiledataEntity;
 import net.iaeste.iws.persistence.entities.FolderEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.PersonEntity;
@@ -52,10 +52,6 @@ import net.iaeste.iws.persistence.entities.UserEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.UUID;
 import java.util.zip.CRC32;
 import java.util.zip.Checksum;
@@ -448,7 +444,7 @@ public class CommonService<T extends BasicDao> {
                 final FileEntity changes = transform(file, entity.getFolder());
                 final Long checksum = calculateChecksum(data);
                 if (!entity.getChecksum().equals(checksum)) {
-                    writeFileToSystem(entity.getStoredFilename(), data);
+                    saveFileDataEntity(authentication, entity, data);
                     changes.setChecksum(checksum);
                     changes.setFilesize((data != null) ? data.length : 0);
                 }
@@ -464,12 +460,10 @@ public class CommonService<T extends BasicDao> {
     private FileEntity processNewFile(final Authentication authentication, final File file, final byte[] data, final FolderEntity[] folder) {
         final FileEntity entity;
         final String newId = UUID.randomUUID().toString();
-        final String storedNamed = authentication.getGroup().getExternalId() + '/' + newId;
 
         entity = transform(file, ((folder != null) && (folder.length > 0)) ? folder[0] : null);
         entity.setExternalId(newId);
         entity.setChecksum(calculateChecksum(data));
-        entity.setStoredFilename(storedNamed);
         entity.setFilesize((data != null) ? data.length : 0);
         entity.setUser(authentication.getUser());
         entity.setGroup(authentication.getGroup());
@@ -480,8 +474,13 @@ public class CommonService<T extends BasicDao> {
             entity.setFolder(null);
         }
 
-        writeFileToSystem(storedNamed, data);
+        // Save the new File Entity, so we have a File Id, with that we can also
+        // add a new FileData record.
         dao.persist(authentication, entity);
+
+        // Now we have persisted the File Entity, we can add the data also
+        saveFileDataEntity(authentication, entity, data);
+
         return entity;
     }
 
@@ -490,13 +489,27 @@ public class CommonService<T extends BasicDao> {
 
         if (entity != null) {
             final String filename = entity.getFilename();
-            deleteFileFromSystem(entity.getStoredFilename());
+            dao.deleteFileData(entity);
             final int attachmentsDeleted = dao.deleteAttachmentRecord(entity);
             dao.delete(entity);
 
             LOG.info(formatLogMessage(authentication, "File %s, Attached %d times, has been successfully deleted from the IWS.", filename, attachmentsDeleted));
         } else {
             throw new AuthorizationException("The user is not authorized to process this file.");
+        }
+    }
+
+    private void saveFileDataEntity(final Authentication authentication, final FileEntity file, final byte[] data) {
+        final FiledataEntity existing = dao.findFileData(file.getExternalId());
+
+        if (existing != null) {
+            existing.setFileData(data);
+            dao.persist(authentication, existing);
+        } else {
+            final FiledataEntity entity = new FiledataEntity();
+            entity.setFile(file);
+            entity.setFileData(data);
+            dao.persist(authentication, entity);
         }
     }
 
@@ -523,42 +536,6 @@ public class CommonService<T extends BasicDao> {
         }
 
         return crc;
-    }
-
-    private void writeFileToSystem(final String name, final byte[] bytes) {
-        if ((bytes != null) && (bytes.length > 0)) {
-            checkDirectoryExistsOrCreate(name);
-
-            try {
-                Files.write(getPath(name), bytes);
-            } catch (IOException e) {
-                throw new IWSException(IWSErrors.FATAL, "I/O Error while attempting to write file: " + e.getMessage(), e);
-            }
-        }
-    }
-
-    private void deleteFileFromSystem(final String name) {
-        try {
-            Files.delete(getPath(name));
-        } catch (IOException e) {
-            throw new IWSException(IWSErrors.ERROR, "The File could not be deleted: " + e.getMessage(), e);
-        }
-    }
-
-    private Path getPath(final String name) {
-        return Paths.get(settings.getRootFilePath() + '/' + name);
-    }
-
-    private void checkDirectoryExistsOrCreate(final String fileWithPartialPath) {
-        final String dir = fileWithPartialPath.substring(0, fileWithPartialPath.indexOf('/'));
-        final String systemPath = settings.getRootFilePath() + '/' + dir + '/';
-        final java.io.File file = new java.io.File(systemPath);
-
-        // It can be that none of the directories exists, so let's just let
-        // Java crawl through them all and create them for us
-        if (!file.exists() && !file.mkdirs()) {
-            throw new IWSException(IWSErrors.ERROR, "Cannot create the directory to store the Group files.");
-        }
     }
 
     // =========================================================================

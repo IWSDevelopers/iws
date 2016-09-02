@@ -789,7 +789,6 @@ create table files (
     user_id          integer,
     folder_id        integer,
     filename         varchar(100),
-    stored_filename  varchar(100),
     filesize         integer     default 0,
     mimetype         varchar(50),
     description      varchar(250),

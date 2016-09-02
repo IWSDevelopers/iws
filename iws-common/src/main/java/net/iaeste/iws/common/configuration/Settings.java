@@ -37,7 +37,6 @@ public final class Settings {
     private static final String PROPERTY_RUN_CLEAN_TIME = "run.clean.time";
     private static final String PROPERTY_MAIL_SYNCHRONIZE_TIME = "mail.synchronize.time";
     private static final String PROPERTY_STARTUP_RESET_SESSIONS = "startup.reset.sessions";
-    private static final String PROPERTY_ROOT_FILE_PATH = "root.file.path";
     private static final String PROPERTY_INSTANCE_SALT = "iws.instance.salt";
     private static final String PROPERTY_MAX_ACTIVE_TOKENS = "max.active.tokens";
     private static final String PROPERTY_MAX_LOGIN_RETRIES = "max.login.retries";
@@ -69,7 +68,6 @@ public final class Settings {
 
         properties.setProperty(PROPERTY_RUN_CLEAN_TIME, InternalConstants.RUN_CLEAN_TIME);
         properties.setProperty(PROPERTY_MAIL_SYNCHRONIZE_TIME, InternalConstants.MAIL_SYNCHRONIZE_TIME);
-        properties.setProperty(PROPERTY_ROOT_FILE_PATH, System.getProperty("java.io.tmpdir"));
         properties.setProperty(PROPERTY_STARTUP_RESET_SESSIONS, InternalConstants.STARTUP_RESET_SESSIONS);
         properties.setProperty(PROPERTY_INSTANCE_SALT, "");
         properties.setProperty(PROPERTY_MAX_ACTIVE_TOKENS, String.valueOf(InternalConstants.MAX_ACTIVE_TOKENS));
@@ -118,10 +116,6 @@ public final class Settings {
 
     public boolean resetSessionsAtStartup() {
         return Boolean.valueOf(properties.getProperty(PROPERTY_STARTUP_RESET_SESSIONS));
-    }
-
-    public String getRootFilePath() {
-        return properties.getProperty(PROPERTY_ROOT_FILE_PATH);
     }
 
     public void setinstanceSalt(final String salt) {

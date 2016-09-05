@@ -47,7 +47,7 @@ import java.util.Date;
 @NamedQueries({
         @NamedQuery(name = "filedata.findByFileId",
                 query = "select f from FiledataEntity f " +
-                        "where f.file.externalId = :fid"),
+                        "where f.file.id = :fid"),
         @NamedQuery(name = "filedata.findApplicationByReceivingGroupAndExternalFileId",
                 query = "select f " +
                         "from" +
@@ -77,7 +77,7 @@ public final class FiledataEntity implements IWSEntity {
     @JoinColumn(name = "file_id", referencedColumnName = "id", nullable = false, updatable = false)
     private FileEntity file = null;
 
-    @Column(name = "file_data", updatable = false)
+    @Column(name = "file_data")
     private byte[] fileData = null;
 
     @Temporal(TemporalType.TIMESTAMP)

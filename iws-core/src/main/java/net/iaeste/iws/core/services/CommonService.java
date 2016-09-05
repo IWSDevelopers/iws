@@ -70,7 +70,7 @@ public class CommonService<T extends BasicDao> {
 
     private static final Logger LOG = LoggerFactory.getLogger(CommonService.class);
 
-    protected final HashcodeGenerator hashcodeGenerator;
+    final HashcodeGenerator hashcodeGenerator;
     protected final Settings settings;
     protected final T dao;
 
@@ -500,7 +500,7 @@ public class CommonService<T extends BasicDao> {
     }
 
     private void saveFileDataEntity(final Authentication authentication, final FileEntity file, final byte[] data) {
-        final FiledataEntity existing = dao.findFileData(file.getExternalId());
+        final FiledataEntity existing = dao.findFileData(file.getId());
 
         if (existing != null) {
             existing.setFileData(data);

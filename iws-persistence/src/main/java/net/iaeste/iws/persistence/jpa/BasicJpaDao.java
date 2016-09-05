@@ -358,7 +358,7 @@ public class BasicJpaDao implements BasicDao {
      * {@inheritDoc}
      */
     @Override
-    public final FiledataEntity findFileData(final String fileId) {
+    public final FiledataEntity findFileData(final Long fileId) {
         final Query query = entityManager.createNamedQuery("filedata.findByFileId")
                                          .setParameter(PARAMETER_FID, fileId);
 

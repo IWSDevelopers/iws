@@ -352,6 +352,9 @@ public final class StorageService extends CommonService<StorageDao> {
             deleteFile(authentication, request);
             response = new FileResponse();
         } else {
+            // It is possible to set the Folder via the API request, this
+            // allows Users to create new files in an existing folder, or
+            // to move files between folders.
             final String folderId = request.getFile().getFolderId();
             FolderEntity folderEntity = null;
 

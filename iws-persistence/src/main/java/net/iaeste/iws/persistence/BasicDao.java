@@ -204,12 +204,12 @@ public interface BasicDao {
     FiledataEntity findAttachedFile(String fileId, String groupId);
 
     /**
-     * Finds the data for a File with the given External Id.
+     * Finds the data for a File with the File Id.
      *
-     * @param fileId External File Id to find the file data with
+     * @param fileId The File Id to find the file data with
      * @return File Data Entity
      */
-    FiledataEntity findFileData(String fileId);
+    FiledataEntity findFileData(Long fileId);
 
     List<UserGroupEntity> findGroupMembers(GroupEntity group);
     /**

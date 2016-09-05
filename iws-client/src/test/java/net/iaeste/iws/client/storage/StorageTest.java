@@ -183,9 +183,8 @@ public final class StorageTest extends AbstractTest {
         final FetchFileResponse fetchUpdatedFile = storage.fetchFile(token, fetchRequest);
         assertThat(fetchUpdatedFile.isOk(), is(true));
         assertThat(fetchUpdatedFile.getFile().getChecksum(), is(updateResponse.getFile().getChecksum()));
-        // TODO The following two checks is giving problems. The data returned is the initial data, not the updated. The cause of this error must be found!
-        //assertThat(fetchUpdatedFile.getFile().getFiledata(), is(not(testData1)));
-        //assertThat(fetchUpdatedFile.getFile().getFiledata(), is(testData2));
+        assertThat(fetchUpdatedFile.getFile().getFiledata(), is(not(testData1)));
+        assertThat(fetchUpdatedFile.getFile().getFiledata(), is(testData2));
 
         // Delete the File
         final FileRequest deleteRequest = new FileRequest();

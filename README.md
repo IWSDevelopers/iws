@@ -21,6 +21,26 @@ iws-accessories folder.
   * [PostgreSQL](http://www.postgresql.org/)
   * [HyperSQL](http://hsqldb.org/)
 
+## IWS moving away from IAESTE
+The IAESTE Board have made a decision to move to a new platform during 2016,
+meaning that the IWS will no longer be needed for their future infrastructure.
+This also means that the IAESTE specific aspects of the IWS is obsolete and
+can be removed.
+
+Rather than dismissing the project, the IWS will continue to evolve, but
+without IAESTE. This means that during the Autumn 2016, the IWS code will
+be split into an IAESTE release 1.2, and an IWS 2.0, where the IWS 2.0 will
+have all IAESTE specific parts removed so a focus can be shifted towards
+the following goals:
+
+* Pure Java 8 & JavaEE 7
+* Highly configurable User/Group model with customizable Roles & permissions
+* Strong cryptographical backend with support for exchange of data securely
+* Two disctinct Types:
+  * Sharing of Rules based Objects
+  * Sharing of Folders & Files
+* SOAP & REST based API's
+
 ## License
 Copyright (C) 2012-2016 IWSDevelopers
 

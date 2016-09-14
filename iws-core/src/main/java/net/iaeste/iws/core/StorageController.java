@@ -94,6 +94,9 @@ public final class StorageController extends CommonController implements Storage
 
         try {
             verify(request);
+            // Reading Folders is granted to the Member Groups, so if a GroupId
+            // is set here, it will lead to an error.
+            token.setGroupId(null);
             final Authentication authentication = verifyAccess(token, Permission.FETCH_FOLDER);
 
             final StorageService service = factory.prepareStorageService();

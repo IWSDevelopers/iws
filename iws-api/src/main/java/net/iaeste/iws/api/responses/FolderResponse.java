@@ -84,7 +84,7 @@ public final class FolderResponse extends Response {
         this.folder = new Folder(folder);
     }
 
-    public Folder getFile() {
+    public Folder getFolder() {
         return new Folder(folder);
     }
 }

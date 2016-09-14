@@ -259,7 +259,7 @@ public final class GroupProcessingTest extends AbstractAdministration {
         assertThat(response, is(not(nullValue())));
         assertThat(response.isOk(), is(false));
         assertThat(response.getError(), is(IWSErrors.AUTHORIZATION_ERROR));
-        assertThat(response.getMessage().contains("is not permitted to perform action 'Process Group'."), is(true));
+        assertThat(response.getMessage().contains("is not permitted to perform the action 'Process Group'."), is(true));
     }
 
     @Test

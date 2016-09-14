@@ -239,7 +239,7 @@ public final class AccessJpaDao extends BasicJpaDao implements AccessDao {
         if (groups.size() == 1) {
             return groups.get(0);
         } else if (groups.isEmpty()) {
-            throw new AuthorizationException("User is not permitted to perform action '" + permission.getName() + "'.");
+            throw new AuthorizationException("User is not permitted to perform the action '" + permission.getName() + "'.");
         } else {
             throw new AuthorizationException("User permission " + permission.getName() + " could not be uniquely identified for user, please provide the Group for the user.");
         }

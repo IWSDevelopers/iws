@@ -37,6 +37,14 @@ import java.util.Set;
  */
 public interface CommitteeDao extends BasicDao {
 
+    /**
+     * Finds a list of Committee National Secretaries (with group type
+     * NATIONAL), matching the given list of countries and status values.
+     *
+     * @param countryIds CountryId's (2 letter), to use for the lookup
+     * @param statuses   The Status values to lookup with
+     * @return List of Committees with their National Secretaries
+     */
     List<UserGroupEntity> findCommitteesByContryIds(List<String> countryIds, Set<GroupStatus> statuses);
 
     List<UserGroupEntity> findCommitteesByMembership(Membership membership, Set<GroupStatus> statuses);

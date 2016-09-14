@@ -26,14 +26,18 @@ import net.iaeste.iws.api.Storage;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.File;
+import net.iaeste.iws.api.dtos.Folder;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.enums.Action;
+import net.iaeste.iws.api.enums.Privacy;
 import net.iaeste.iws.api.requests.FetchFileRequest;
 import net.iaeste.iws.api.requests.FetchFolderRequest;
 import net.iaeste.iws.api.requests.FileRequest;
+import net.iaeste.iws.api.requests.FolderRequest;
 import net.iaeste.iws.api.responses.FetchFileResponse;
 import net.iaeste.iws.api.responses.FetchFolderResponse;
 import net.iaeste.iws.api.responses.FileResponse;
+import net.iaeste.iws.api.responses.FolderResponse;
 import net.iaeste.iws.client.AbstractTest;
 import net.iaeste.iws.client.StorageClient;
 import org.junit.Test;
@@ -106,7 +110,10 @@ public final class StorageTest extends AbstractTest {
 
         // Now, let's check that we have a folder with content
         assertThat(response.getFolder(), is(not(nullValue())));
-        assertThat(response.getFolder().getFolders().size(), is(3));
+        // Some of the tests will be creating new folders & files, to ensure
+        // that this assertion is correct, we're simply making the assumption
+        // that at least 3 folders exist
+        assertThat(response.getFolder().getFolders().size() >= 3, is(true));
         assertThat(response.getFolder().getFiles().size(), is(0));
     }
 
@@ -131,6 +138,60 @@ public final class StorageTest extends AbstractTest {
         assertThat(response.getFolder(), is(not(nullValue())));
         assertThat(response.getFolder().getFolders().size(), is(4));
         assertThat(response.getFolder().getFiles().size(), is(0));
+    }
+
+    @Test
+    public void testProcessingFolder() {
+        token = login("finland@iaeste.fi", "finland");
+
+        // Create a new Folder and fetch it
+        final Folder folder = new Folder();
+        folder.setGroup(findNationalGroup(token));
+        folder.setFoldername("Finnish Folder");
+        folder.setPrivacy(Privacy.PROTECTED);
+        final FolderRequest createRequest = new FolderRequest();
+        createRequest.setFolder(folder);
+        final FolderResponse createResponse = storage.processFolder(token, createRequest);
+        assertThat(createResponse.getMessage(), is(IWSConstants.SUCCESS));
+        final Folder created = createResponse.getFolder();
+        final FetchFolderRequest fetchFolderRequest = new FetchFolderRequest();
+        fetchFolderRequest.setFolderId(created.getFolderId());
+        final FetchFolderResponse fetchFolderResponse = storage.fetchFolder(token, fetchFolderRequest);
+        assertThat(fetchFolderResponse.getMessage(), is(IWSConstants.SUCCESS));
+
+        // Update the newly created folder
+        final FolderRequest updateRequest = new FolderRequest();
+        final Folder updateFolder = fetchFolderResponse.getFolder();
+        updateFolder.setFoldername("Finnish Data Folder");
+        updateFolder.setPrivacy(Privacy.PUBLIC);
+        updateRequest.setFolder(updateFolder);
+        final FolderResponse updateResponse = storage.processFolder(token, updateRequest);
+        assertThat(updateResponse.getMessage(), is(IWSConstants.SUCCESS));
+
+        // Delete the Folder and verify that it is gone
+        final FolderRequest deleteRequest = new FolderRequest();
+        deleteRequest.setFolder(updateFolder);
+        deleteRequest.setAction(Action.DELETE);
+        final FolderResponse deleteResponse = storage.processFolder(token, deleteRequest);
+        assertThat(deleteResponse.getMessage(), is(IWSConstants.SUCCESS));
+        final FetchFolderRequest fetchDeletedFolderRequest = new FetchFolderRequest();
+        fetchDeletedFolderRequest.setFolderId(created.getFolderId());
+        final FetchFolderResponse fetchDeletedFolderResponse = storage.fetchFolder(token, fetchDeletedFolderRequest);
+        assertThat(fetchDeletedFolderResponse.getMessage(), is("No Folders were found, matching the Id " + created.getFolderId() + '.'));
+        //
+        //// Final cleanup, since a new Root Group folder was created by the IWS,
+        //// we're just removing it again here, as it may otherwise interfere with
+        //// other tests.
+        //final FetchFolderRequest rootFolderRequest = new FetchFolderRequest();
+        //rootFolderRequest.setFolderId(updateFolder.getParentId());
+        //final FetchFolderResponse rootFolderResponse = storage.fetchFolder(token, rootFolderRequest);
+        //assertThat(rootFolderResponse.getMessage(), is(IWSConstants.SUCCESS));
+        //final FolderRequest deleteRootGroupFolderRequest = new FolderRequest();
+        //deleteRootGroupFolderRequest.setFolder(rootFolderResponse.getFolder());
+        //deleteRootGroupFolderRequest.setAction(Action.DELETE);
+        //token.setGroupId(findMemberGroup(token).getGroupId());
+        //final FolderResponse deleteRootFolderResponse = storage.processFolder(token, deleteRootGroupFolderRequest);
+        //assertThat(deleteRootFolderResponse.getMessage(), is(IWSConstants.SUCCESS));
     }
 
     @Test

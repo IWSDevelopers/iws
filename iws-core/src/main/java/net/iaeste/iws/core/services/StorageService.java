@@ -150,11 +150,12 @@ public final class StorageService extends CommonService<StorageDao> {
             dao.persist(authentication, entity);
             folder = transform(entity);
         } else {
-            // No root folder was found, let's create a new one. The
-            // data from the Request is ignored in this case
+            final FolderEntity groupRootFolder = createGroupRoot(authentication, request);
             final FolderEntity entity = new FolderEntity();
             entity.setFoldername(request.getFolder().getGroup().getGroupName());
             entity.setGroup(authentication.getGroup());
+            entity.setPrivacy(request.getFolder().getPrivacy());
+            entity.setParentId(groupRootFolder.getId());
 
             // Now, let's save it and return the converted Folder
             dao.persist(authentication, entity);
@@ -162,6 +163,33 @@ public final class StorageService extends CommonService<StorageDao> {
         }
 
         return folder;
+    }
+
+    /**
+     * Groups must have a root folder, where there data is stored. These are
+     * again linked to the global root folder, to ensure that the entire
+     * hierarchy is consistent.
+     *
+     * @param authentication User Authentication Object
+     * @param request        User Processing Request Object
+     * @return New Root Folder for the Group
+     */
+    private FolderEntity createGroupRoot(final Authentication authentication, final FolderRequest request) {
+        final FolderEntity root = dao.findRootFolder();
+        // No root folder was found, let's create a new one. The
+        // data from the Request is ignored in this case
+        final FolderEntity entity = new FolderEntity();
+        entity.setFoldername(request.getFolder().getGroup().getGroupName());
+        entity.setGroup(authentication.getGroup());
+        entity.setPrivacy(request.getFolder().getPrivacy());
+        entity.setParentId(root.getId());
+
+        // Now, let's save it and return the converted Folder
+        dao.persist(authentication, entity);
+
+        // Return the new Root folder for the Group, this will then be used to
+        // create a new Folder with
+        return entity;
     }
 
     private Folder processExistingFolder(final Authentication authentication, final FolderRequest request, final String folderExternalId) {

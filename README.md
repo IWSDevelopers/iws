@@ -7,10 +7,10 @@ to replace the existing backend system for the [IAESTE](http://www.iaeste.org/) 
 add a new public API, to properly facilitate automated interaction for the many
 Committees around the world.
 
-IWS is designed as a pure JEE6 Application later upgraded to JEE7, written in
-Java7. It has been tested to run under [WildFly](http://wildfly.org/), [JBoss](http://www.redhat.com/en/technologies/jboss-middleware) & [Glassfish](https://glassfish.java.net/). To build,
-please check out the sources and run the Maven build command. Note that
-only Configuration files for [WildFly](http://wildfly.org/) has been created, and can be found in the
+IWS was designed as a pure JavaEE 6 Application later upgraded to JavaEE 7,
+written in Java 7. It has been tested to run under [WildFly](http://wildfly.org/), [JBoss](http://www.redhat.com/en/technologies/jboss-middleware) & [Glassfish](https://glassfish.java.net/). To build,
+please check out the sources and run the Maven build command. Note that only
+Configuration files for [WildFly](http://wildfly.org/) has been created, and can be found in the
 iws-accessories folder.
 
 * Supported Application Servers
@@ -21,7 +21,7 @@ iws-accessories folder.
   * [PostgreSQL](http://www.postgresql.org/)
   * [HyperSQL](http://hsqldb.org/)
 
-## IWS moving away from IAESTE
+## IAESTE moving away from IWS
 The IAESTE Board have made a decision to move to a new platform during 2016,
 meaning that the IWS will no longer be needed for their future infrastructure.
 
